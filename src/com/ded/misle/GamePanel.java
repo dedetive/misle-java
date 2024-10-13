@@ -40,8 +40,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 	double cameraOffsetX = 0;
 	double cameraOffsetY = 0;
-	double worldWidth = 1000;
-	double worldHeight = 1000;
 
 	public GamePanel() {
 		// Setting up the JFrame
@@ -250,6 +248,10 @@ public class GamePanel extends JPanel implements Runnable {
 		cameraOffsetX = playerX - width / 2 + (double) playerWidth / 2;
 		cameraOffsetY = playerY - height / 2 + (double) playerHeight / 2;
 
+		// Calculate world borders
+		double worldWidth = 1000 * scale;
+		double worldHeight = 1000 * scale;
+
 		// Ensure camera doesn't show out-of-bounds areas (world boundaries)
 		cameraOffsetX = Math.max(0, Math.min(cameraOffsetX, worldWidth - width));
 		cameraOffsetY = Math.max(0, Math.min(cameraOffsetY, worldHeight - height));
@@ -316,15 +318,18 @@ protected void paintComponent(Graphics g) {
 
 	// Draw other game elements, using the camera offset as well
 	g2d.setColor(new Color(210, 165, 5));
-	final double boxXFactor = 300.0 / 512;
-	final double boxYFactor = 200.0 / 288; // 288 = 512 * 9 / 16
-	int boxX = (int) (boxXFactor * width - cameraOffsetX);
-	int boxY = (int) (boxYFactor * height - cameraOffsetY);
+	final double boxXCoordinate = 0;
+	final double boxYCoordinate = 10;
+	int boxX = (int) (coordinateToPixel(boxXCoordinate) - cameraOffsetX);
+	int boxY = (int) (coordinateToPixel(boxYCoordinate) - cameraOffsetY);
 	g2d.fillRect(boxX, boxY, tileSize, tileSize);
 
 	g2d.dispose();
 }
 
+private double coordinateToPixel(double coordinate) {
+	return coordinate * tileSize;
+}
 
 private void renderFrame() {
 	// Insert render logic here
