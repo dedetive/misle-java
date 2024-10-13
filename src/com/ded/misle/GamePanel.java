@@ -36,6 +36,13 @@ public class GamePanel extends JPanel implements Runnable {
 	int playerWidth = tileSize;
 	int playerHeight = tileSize;
 
+	// PLAYER CAMERA
+
+	double cameraOffsetX = 0;
+	double cameraOffsetY = 0;
+	double worldWidth = 1000;
+	double worldHeight = 1000;
+
 	public GamePanel() {
 		// Setting up the JFrame
 		window = new JFrame();
@@ -84,8 +91,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 				tileSize = (int) (originalTileSize * scale) / 3;
 				playerSpeed = (scale * 2 + 0.166) / 3;
-
-				updateLabelPositionAndSize();
 
 				playerX = Math.min(playerX, width - playerWidth);
 				playerY = Math.min(playerY, height - playerHeight);
@@ -241,80 +246,87 @@ public class GamePanel extends JPanel implements Runnable {
 
 
 	private void updateGame() {
+		// Calculate the camera offset to keep the player centered
+		cameraOffsetX = playerX - width / 2 + (double) playerWidth / 2;
+		cameraOffsetY = playerY - height / 2 + (double) playerHeight / 2;
+
+		// Ensure camera doesn't show out-of-bounds areas (world boundaries)
+		cameraOffsetX = Math.max(0, Math.min(cameraOffsetX, worldWidth - width));
+		cameraOffsetY = Math.max(0, Math.min(cameraOffsetY, worldHeight - height));
+
 		updateKeys();
 	}
 
+
 	private void updateKeys() {
 		if (keyH.upPressed) {
-			if (playerY > 0) {
-				if (!keyH.leftPressed || !keyH.rightPressed) {
-					movePlayer(0, -playerSpeed);
-				} else {
-					movePlayer(0, -(playerSpeed * Math.sqrt(2) / 3));
-				}
+			if (!keyH.leftPressed || !keyH.rightPressed) {
+				movePlayer(0, -playerSpeed);
+			} else {
+				movePlayer(0, -(playerSpeed * Math.sqrt(2) / 3));
 			}
 		}
 		if (keyH.downPressed) {
-			if (playerY + playerHeight * (scale + 0.5) < height) {
-				if (!keyH.leftPressed || !keyH.rightPressed) {
-					movePlayer(0, playerSpeed);
-				} else {
-					movePlayer(0, (playerSpeed * Math.sqrt(2) / 3));
-				}
+			if (!keyH.leftPressed || !keyH.rightPressed) {
+				movePlayer(0, playerSpeed);
+			} else {
+				movePlayer(0, (playerSpeed * Math.sqrt(2) / 3));
 			}
 		}
 		if (keyH.leftPressed) {
-			if (playerX > 0) {
-				if (!keyH.upPressed || !keyH.downPressed) {
-					movePlayer(-playerSpeed, 0);
-				} else {
-					movePlayer((playerSpeed * Math.sqrt(2) / 3), 0);
-				}
+			if (!keyH.upPressed || !keyH.downPressed) {
+				movePlayer(-playerSpeed, 0);
+			} else {
+				movePlayer((playerSpeed * Math.sqrt(2) / 3), 0);
 			}
 		}
 		if (keyH.rightPressed) {
-			if (playerX + playerWidth * (scale - 0.5) < width) {
-				movePlayer(playerSpeed, 0);
-			}
+			movePlayer(playerSpeed, 0);
 		}
 	}
 
-	/**
-	 * This moves the player by x, oftentimes being the playerSpeed, or by y.
-	 * Set the other as 0, unless you intend to move the player diagonally.
-	 * <p></p>
-	 * Example use:
-	 * movePlayer(playerSpeed, 0);
-	 *
-	 * @param x How many pixels in x direction (this is not based on scale).
-	 * @param y How many pixels in y direction (this is not based on scale).
-	 */
-	private void movePlayer(double x, double y) {
-		playerX += x;
-		playerY += y;
-	}
+/**
+ * This moves the player by x, oftentimes being the playerSpeed, or by y.
+ * Set the other as 0, unless you intend to move the player diagonally.
+ * <p></p>
+ * Example use:
+ * movePlayer(playerSpeed, 0);
+ *
+ * @param x How many pixels in x direction (this is not based on scale).
+ * @param y How many pixels in y direction (this is not based on scale).
+ */
+private void movePlayer(double x, double y) {
+	playerX += x;
+	playerY += y;
+}
 
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
+@Override
+protected void paintComponent(Graphics g) {
+	super.paintComponent(g);
 
-		Graphics2D g2d = (Graphics2D) g;
+	Graphics2D g2d = (Graphics2D) g;
 
-		// Draw the player
-		g2d.setColor(Color.WHITE); // For now, a rectangle
-		g2d.fillRect((int) playerX, (int) playerY, tileSize, tileSize);
+	// Adjust the player's position based on the camera offsets
+	int playerScreenX = (int) (playerX - cameraOffsetX);
+	int playerScreenY = (int) (playerY - cameraOffsetY);
 
-		// Draw a box
-		g2d.setColor(new Color(210, 165, 5));
-		final double boxXFactor = 300.0 / 512;
-		final double boxYFactor = 200.0 / 288; // 288 = 512 * 9 / 16
-		int boxX = (int) (boxXFactor * width);
-		int boxY = (int) (boxYFactor * height);
-		g2d.fillRect(boxX, boxY, tileSize, tileSize);
-		g2d.dispose();
-	}
+	// Draw the player
+	g2d.setColor(Color.WHITE); // For now, a rectangle
+	g2d.fillRect(playerScreenX, playerScreenY, tileSize, tileSize);
 
-	private void renderFrame() {
-		// Insert render logic here
-	}
+	// Draw other game elements, using the camera offset as well
+	g2d.setColor(new Color(210, 165, 5));
+	final double boxXFactor = 300.0 / 512;
+	final double boxYFactor = 200.0 / 288; // 288 = 512 * 9 / 16
+	int boxX = (int) (boxXFactor * width - cameraOffsetX);
+	int boxY = (int) (boxYFactor * height - cameraOffsetY);
+	g2d.fillRect(boxX, boxY, tileSize, tileSize);
+
+	g2d.dispose();
+}
+
+
+private void renderFrame() {
+	// Insert render logic here
+}
 }
