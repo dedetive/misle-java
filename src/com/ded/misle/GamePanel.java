@@ -21,8 +21,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 	// TILES SIZE
 
-	final int originalTileSize = 64; // 64x64 tiles
-	int tileSize = (int) (originalTileSize * scale)/3;
+	static final int originalTileSize = 64; // 64x64 tiles
+	static int tileSize = (int) (originalTileSize * scale)/3;
 	final double maxScreenCol = 24; // Horizontal
 	final double maxScreenRow = 13.5; // Vertical
 	double width = maxScreenCol * tileSize;
@@ -60,7 +60,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 		Thread windowSizeThread = new Thread(this::changeAndDetectWindowSize);
 		windowSizeThread.start();
-
 
 		if (displayFPS) {
 			fpsLabel = new JLabel("FPS: 0");
@@ -261,29 +260,35 @@ public class GamePanel extends JPanel implements Runnable {
 
 
 	private void updateKeys() {
+		double[] willMovePlayer = {0, 0};
 		if (keyH.upPressed) {
 			if (!keyH.leftPressed || !keyH.rightPressed) {
-				movePlayer(0, -playerSpeed);
+				willMovePlayer[1] -= playerSpeed;
 			} else {
-				movePlayer(0, -(playerSpeed * Math.sqrt(2) / 3));
+				willMovePlayer[1] -= (playerSpeed * Math.sqrt(2) / 3);
 			}
 		}
 		if (keyH.downPressed) {
 			if (!keyH.leftPressed || !keyH.rightPressed) {
-				movePlayer(0, playerSpeed);
+				willMovePlayer[1] += playerSpeed;
 			} else {
-				movePlayer(0, (playerSpeed * Math.sqrt(2) / 3));
+				willMovePlayer[1] += playerSpeed * Math.sqrt(2) / 3;
 			}
 		}
 		if (keyH.leftPressed) {
 			if (!keyH.upPressed || !keyH.downPressed) {
-				movePlayer(-playerSpeed, 0);
+				willMovePlayer[0] -= playerSpeed;
 			} else {
-				movePlayer((playerSpeed * Math.sqrt(2) / 3), 0);
+				willMovePlayer[0] -= playerSpeed * Math.sqrt(2) / 3;
 			}
 		}
 		if (keyH.rightPressed) {
-			movePlayer(playerSpeed, 0);
+			willMovePlayer[0] += playerSpeed;
+		}
+		if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
+			if (!isCoordinateOccupied(pixelToCoordinate(playerX + willMovePlayer[0]), pixelToCoordinate(playerY + willMovePlayer[1]))) {
+				movePlayer(willMovePlayer[0], willMovePlayer[1]);
+			}
 		}
 	}
 
@@ -294,12 +299,16 @@ public class GamePanel extends JPanel implements Runnable {
  * Example use:
  * movePlayer(playerSpeed, 0);
  *
- * @param x How many pixels in x direction (this is not based on scale).
- * @param y How many pixels in y direction (this is not based on scale).
+ * @param x double - How many pixels in x direction (this is not based on scale).
+ * @param y double - How many pixels in y direction (this is not based on scale).
  */
 private void movePlayer(double x, double y) {
 	playerX += x;
 	playerY += y;
+}
+
+private boolean isCoordinateOccupied(double coordinateX, double coordinateY) {
+	return false;
 }
 
 @Override
@@ -317,18 +326,34 @@ protected void paintComponent(Graphics g) {
 	g2d.fillRect(playerScreenX, playerScreenY, tileSize, tileSize);
 
 	// Draw other game elements, using the camera offset as well
-	g2d.setColor(new Color(210, 165, 5));
-	final double boxXCoordinate = 0;
-	final double boxYCoordinate = 10;
-	int boxX = (int) (coordinateToPixel(boxXCoordinate) - cameraOffsetX);
-	int boxY = (int) (coordinateToPixel(boxYCoordinate) - cameraOffsetY);
-	g2d.fillRect(boxX, boxY, tileSize, tileSize);
+	int maxX = pixelToCoordinate(1000 * scale) / 3;
+	int x = 0;
+	int maxY = pixelToCoordinate(1000 * scale) / 3;
+	int y = 0;
+	while (x < maxX) {
+		while (y < maxY) {
+			g2d.setColor(new Color(210, 165, 40));
+			final double boxXCoordinate = x * 3;
+			final double boxYCoordinate = y * 3;
+			int boxX = (int) (coordinateToPixel((int) boxXCoordinate) - cameraOffsetX);
+			int boxY = (int) (coordinateToPixel((int) boxYCoordinate) - cameraOffsetY);
+			g2d.fillRect(boxX, boxY, tileSize, tileSize);
+
+			y++;
+		}
+		y = 0;
+		x++;
+	}
 
 	g2d.dispose();
 }
 
-private double coordinateToPixel(double coordinate) {
+public static double coordinateToPixel(int coordinate) {
 	return coordinate * tileSize;
+}
+
+public static int pixelToCoordinate(double pixel) {
+	return (int) (pixel / tileSize);
 }
 
 private void renderFrame() {
