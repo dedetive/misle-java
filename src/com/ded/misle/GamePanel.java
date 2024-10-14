@@ -1,5 +1,8 @@
 package com.ded.misle;
 
+import com.ded.misle.boxes.Box;
+import com.ded.misle.boxes.BoxesHandling;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -58,6 +61,26 @@ public class GamePanel extends JPanel implements Runnable {
 
 		this.setBackground(Color.BLACK);
 
+		int maxX = pixelToCoordinate(1000 * scale) / 3;
+		int x = 0;
+		int maxY = pixelToCoordinate(1000 * scale) / 3;
+		int y = 0;
+		while (x < maxX) {
+			while (y < maxY) {
+				final double boxXCoordinate = x * 3;
+				final double boxYCoordinate = y * 3;
+				int boxX = (int) (coordinateToPixel((int) boxXCoordinate) - cameraOffsetX);
+				int boxY = (int) (coordinateToPixel((int) boxYCoordinate) - cameraOffsetY);
+				int colorRed = (210 * x) % 255;
+				int colorGreen = (165 * x) % 255;
+				int colorBlue = ((40 * x * y) / 2) % 255;
+				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue));
+				y++;
+			}
+			y = 0;
+			x++;
+		}
+
 		Thread windowSizeThread = new Thread(this::changeAndDetectWindowSize);
 		windowSizeThread.start();
 
@@ -89,6 +112,7 @@ public class GamePanel extends JPanel implements Runnable {
 				tileSize = (int) (originalTileSize * scale) / 3;
 				playerSpeed = (scale * 2 + 0.166) / 3;
 
+				// Constrain the player's position within the window bounds (world coordinates)
 				playerX = Math.min(playerX, width - playerWidth);
 				playerY = Math.min(playerY, height - playerHeight);
 
@@ -145,11 +169,13 @@ public class GamePanel extends JPanel implements Runnable {
 			detectedWidth = Math.min(detectedWidth, screenWidth);
 			detectedHeight = Math.min(detectedHeight, screenHeight);
 
-			double scaleX = (double) detectedWidth / previousWidth;
-			double scaleY = (double) detectedHeight / previousHeight;
+			// Here, we removed the scaling of playerX and playerY
+			// double scaleX = (double) detectedWidth / previousWidth;
+			// double scaleY = (double) detectedHeight / previousHeight;
 
-			playerX *= scaleX;
-			playerY *= scaleY;
+			// No longer necessary to scale the player's position
+			// playerX *= scaleX;
+			// playerY *= scaleY;
 
 			previousWidth = detectedWidth;
 			previousHeight = detectedHeight;
@@ -179,8 +205,6 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 		}
 	}
-
-
 
 	public void startGameThread() {
 		gameThread = new Thread(this);
@@ -218,7 +242,6 @@ public class GamePanel extends JPanel implements Runnable {
 			repaint();
 			renderFrame();
 
-
 			frameCount++;
 
 			// Update FPS label every second
@@ -241,22 +264,21 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 	}
 
-
-	private void updateGame() {
-		// Calculate the camera offset to keep the player centered
+	public void updateGame() {
+		// Update the camera offset to center the player in the view
 		cameraOffsetX = playerX - width / 2 + (double) playerWidth / 2;
 		cameraOffsetY = playerY - height / 2 + (double) playerHeight / 2;
 
-		// Calculate world borders
+		// Ensure camera doesn't show out-of-bounds areas (world boundaries)
 		double worldWidth = 1000 * scale;
 		double worldHeight = 1000 * scale;
 
-		// Ensure camera doesn't show out-of-bounds areas (world boundaries)
 		cameraOffsetX = Math.max(0, Math.min(cameraOffsetX, worldWidth - width));
 		cameraOffsetY = Math.max(0, Math.min(cameraOffsetY, worldHeight - height));
 
-		updateKeys();
+		updateKeys();  // Check for player input and update position accordingly
 	}
+
 
 
 	private void updateKeys() {
@@ -292,71 +314,53 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 	}
 
-/**
- * This moves the player by x, oftentimes being the playerSpeed, or by y.
- * Set the other as 0, unless you intend to move the player diagonally.
- * <p></p>
- * Example use:
- * movePlayer(playerSpeed, 0);
- *
- * @param x double - How many pixels in x direction (this is not based on scale).
- * @param y double - How many pixels in y direction (this is not based on scale).
- */
-private void movePlayer(double x, double y) {
-	playerX += x;
-	playerY += y;
-}
-
-private boolean isCoordinateOccupied(double coordinateX, double coordinateY) {
-	return false;
-}
-
-@Override
-protected void paintComponent(Graphics g) {
-	super.paintComponent(g);
-
-	Graphics2D g2d = (Graphics2D) g;
-
-	// Adjust the player's position based on the camera offsets
-	int playerScreenX = (int) (playerX - cameraOffsetX);
-	int playerScreenY = (int) (playerY - cameraOffsetY);
-
-	// Draw the player
-	g2d.setColor(Color.WHITE); // For now, a rectangle
-	g2d.fillRect(playerScreenX, playerScreenY, tileSize, tileSize);
-
-	// Draw other game elements, using the camera offset as well
-	int maxX = pixelToCoordinate(1000 * scale) / 3;
-	int x = 0;
-	int maxY = pixelToCoordinate(1000 * scale) / 3;
-	int y = 0;
-	while (x < maxX) {
-		while (y < maxY) {
-			g2d.setColor(new Color(210, 165, 40));
-			final double boxXCoordinate = x * 3;
-			final double boxYCoordinate = y * 3;
-			int boxX = (int) (coordinateToPixel((int) boxXCoordinate) - cameraOffsetX);
-			int boxY = (int) (coordinateToPixel((int) boxYCoordinate) - cameraOffsetY);
-			g2d.fillRect(boxX, boxY, tileSize, tileSize);
-
-			y++;
-		}
-		y = 0;
-		x++;
+	/**
+	 * This moves the player by x, oftentimes being the playerSpeed, or by y.
+	 * Set the other as 0, unless you intend to move the player diagonally.
+	 * <p></p>
+	 * Example use:
+	 * movePlayer(playerSpeed, 0);
+	 *
+	 * @param x double - How many pixels in x direction (this is not based on scale).
+	 * @param y double - How many pixels in y direction (this is not based on scale).
+	 */
+	private void movePlayer(double x, double y) {
+		playerX += x;
+		playerY += y;
 	}
 
-	g2d.dispose();
-}
+	private boolean isCoordinateOccupied(double coordinateX, double coordinateY) {
+		return false;
+	}
 
-public static double coordinateToPixel(int coordinate) {
-	return coordinate * tileSize;
-}
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 
-public static int pixelToCoordinate(double pixel) {
-	return (int) (pixel / tileSize);
-}
+		Graphics2D g2d = (Graphics2D) g;
 
-private void renderFrame() {
-	// Insert render logic here
-}
+		// Adjust the player's position based on the camera offsets
+		int playerScreenX = (int) (playerX - cameraOffsetX);
+		int playerScreenY = (int) (playerY - cameraOffsetY);
+
+		// Draw the player
+		g2d.setColor(Color.WHITE); // For now, a rectangle
+		g2d.fillRect(playerScreenX, playerScreenY, tileSize, tileSize);
+
+		// Draw other game elements, using the camera offset as well
+		BoxesHandling.renderBoxes(g2d, cameraOffsetX, cameraOffsetY, scale, tileSize);
+		g2d.dispose();
+	}
+
+	public static double coordinateToPixel(int coordinate) {
+		return coordinate * tileSize;
+	}
+
+	public static int pixelToCoordinate(double pixel) {
+		return (int) (pixel / tileSize);
+	}
+
+	private void renderFrame() {
+		// Insert render logic here
+	}
 }
