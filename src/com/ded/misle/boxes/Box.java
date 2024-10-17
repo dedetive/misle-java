@@ -29,9 +29,9 @@ public class Box {
 	}
 
 	// Check if a point (e.g., player) is inside this box (adjusted for the new scale)
-	public boolean isPointInside(double px, double py, double scale, int tileSize) {
+	public boolean isPointInside(double pointX, double pointY, double scale, int tileSize) {
 		double scaledX = originalX * scale;
 		double scaledY = originalY * scale;
-		return px >= scaledX && px <= scaledX + tileSize && py >= scaledY && py <= scaledY + tileSize;
+		return pointX >= scaledX && pointX <= scaledX + tileSize && pointY >= scaledY && pointY <= scaledY + tileSize;
 	}
 }

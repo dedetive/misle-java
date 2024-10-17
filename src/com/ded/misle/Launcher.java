@@ -5,13 +5,13 @@ import javax.swing.*;
 import static com.ded.misle.ChangeSettings.getSetting;
 
 /**
-	 * This launches the game. Only ever run the game from this class.
-	 *
-	 * @author ded
-	 */
+ * This launches the game. Only ever run the game from this class.
+ *
+ * @author ded
+ */
 public class Launcher {
 
-		// VARIABLE INITIALIZATIONS
+	// VARIABLE INITIALIZATIONS
 
 	static String windowTitle;
 	static int width;
@@ -23,16 +23,17 @@ public class Launcher {
 	static int frameRateCap;
 	static double scale;
 
-		/**
-		 * Loads main menu. <p>
-		 * Never use this after the game is loaded. <p>
-		 * I do not know what would happen if I did and I'm scared to try it out.
-		 */
+	/**
+	 * Loads main menu.
+	 * <p>
+	 * Never use this after the game is loaded.
+	 * <p>
+	 * I do not know what would happen if I did and I'm scared to try it out.
+	 */
 
 	public static void loadMainMenu() {
 
-
-			// VARIABLE DECLARATIONS
+		// VARIABLE DECLARATIONS
 
 		String screenSize = getSetting("screenSize");
 		isFullscreen = Boolean.parseBoolean(getSetting("isFullscreen"));
@@ -40,11 +41,11 @@ public class Launcher {
 		displayFPS = Boolean.parseBoolean(getSetting("displayFPS"));
 		frameRateCap = Integer.parseInt(getSetting("frameRateCap"));
 
-			// WINDOW CONFIGS
+		// WINDOW CONFIGS
 
 		windowTitle = "Misle";
 
-			// SCREEN SIZE
+		// SCREEN SIZE
 
 		switch (screenSize) {
 			case "small":
@@ -74,10 +75,9 @@ public class Launcher {
 		loadMainMenu();
 
 		SwingUtilities.invokeLater(() -> {
-		    GamePanel mainGamePanel = new GamePanel();
+			GamePanel mainGamePanel = new GamePanel();
 			mainGamePanel.showScreen();
 			mainGamePanel.startGameThread();
-		}
-		);
+		});
 	}
 }

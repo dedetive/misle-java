@@ -25,7 +25,7 @@ public class GamePanel extends JPanel implements Runnable {
 	// TILES SIZE
 
 	static final int originalTileSize = 64; // 64x64 tiles
-	static int tileSize = (int) (originalTileSize * scale)/3;
+	static int tileSize = (int) (originalTileSize * scale) / 3;
 	final double maxScreenCol = 24; // Horizontal
 	final double maxScreenRow = 13.5; // Vertical
 	double width = maxScreenCol * tileSize;
@@ -33,8 +33,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 	// PLAYER'S DEFAULT POSITION
 
-	double playerX = (0.1 * width);
-	double playerY = (0.1 * height);
+	double playerX = (1.5 * width);
+	double playerY = (1.5 * height);
+	double originalPlayerX = playerX / scale;
+	double originalPlayerY = playerY / scale;
 	double playerSpeed = (scale * 2 + 0.166) / 3;
 	int playerWidth = tileSize;
 	int playerHeight = tileSize;
@@ -71,9 +73,9 @@ public class GamePanel extends JPanel implements Runnable {
 				final double boxYCoordinate = y * 3;
 				int boxX = (int) (coordinateToPixel((int) boxXCoordinate) - cameraOffsetX);
 				int boxY = (int) (coordinateToPixel((int) boxYCoordinate) - cameraOffsetY);
-				int colorRed = (210 * x) % 255;
-				int colorGreen = (165 * x) % 255;
-				int colorBlue = ((40 * x * y) / 2) % 255;
+				int colorRed = Math.min((x * 30), 255);
+				int colorGreen = Math.min((x * 8), 255);
+				int colorBlue = Math.min((x * 27), 255);
 				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue));
 				y++;
 			}
@@ -109,13 +111,7 @@ public class GamePanel extends JPanel implements Runnable {
 				}
 				scale = width / 512.0;
 
-				tileSize = (int) (originalTileSize * scale) / 3;
-				playerSpeed = (scale * 2 + 0.166) / 3;
-
-				// Constrain the player's position within the window bounds (world coordinates)
-				playerX = Math.min(playerX, width - playerWidth);
-				playerY = Math.min(playerY, height - playerHeight);
-
+			
 				repaint();
 			}
 		});
@@ -166,40 +162,41 @@ public class GamePanel extends JPanel implements Runnable {
 			int detectedWidth = window.getWidth();
 			int detectedHeight = window.getHeight();
 
-			detectedWidth = Math.min(detectedWidth, screenWidth);
-			detectedHeight = Math.min(detectedHeight, screenHeight);
-
-			// Here, we removed the scaling of playerX and playerY
-			// double scaleX = (double) detectedWidth / previousWidth;
-			// double scaleY = (double) detectedHeight / previousHeight;
-
-			// No longer necessary to scale the player's position
-			// playerX *= scaleX;
-			// playerY *= scaleY;
-
-			previousWidth = detectedWidth;
-			previousHeight = detectedHeight;
-
-			scale = (double) detectedWidth / 512;
-			width = Math.min(width, screenWidth);
-			height = Math.min(height, screenHeight);
-
-			tileSize = (int) (originalTileSize * scale) / 3;
-			playerSpeed = (scale * 2 + 0.166) / 3;
-
-			if (Math.abs(detectedWidth - (detectedHeight * 16) / 9) > 9) {
-				window.setSize((int) width, (int) height);
-				if (detectedWidth > detectedHeight) {
-					width = detectedWidth;
-					height = (double) (detectedWidth * 9) / 16;
-				} else {
-					height = detectedHeight;
-					width = (double) (detectedHeight * 16) / 9;
+			if (detectedWidth != previousWidth) {
+				detectedWidth = Math.min(detectedWidth, screenWidth);
+				detectedHeight = Math.min(detectedHeight, screenHeight);
+				if (Math.abs(detectedWidth - (detectedHeight * 16) / 9) > 9) {
+					window.setSize((int) width, (int) height);
+					if (detectedWidth > detectedHeight) {
+						width = detectedWidth;
+						height = (double) (detectedWidth * 9) / 16;
+					} else {
+						height = detectedHeight;
+						width = (double) (detectedHeight * 16) / 9;
+					}
 				}
+
+				scale = (double) detectedWidth / 512;
+				width = Math.min(width, screenWidth);
+				height = Math.min(height, screenHeight);
+
+				tileSize = (int) (originalTileSize * scale) / 3;
+				playerSpeed = (scale * 2 + 0.166) / 3;
+				playerWidth = tileSize;
+				playerHeight = tileSize;
+
+				playerX = originalPlayerX * scale;
+				playerY = originalPlayerY * scale;
+
+				previousWidth = detectedWidth;
+				previousHeight = detectedHeight;
+
+				// System.out.println("x: " + playerX + ", y: " + playerY + ", s: " + scale);
+				System.out.println("x: " + playerX / scale + ", y: " + playerY / scale);
 			}
 
 			try {
-				Thread.sleep(333);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 			}
@@ -308,8 +305,11 @@ public class GamePanel extends JPanel implements Runnable {
 			willMovePlayer[0] += playerSpeed;
 		}
 		if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
-			if (!isCoordinateOccupied(pixelToCoordinate(playerX + willMovePlayer[0]), pixelToCoordinate(playerY + willMovePlayer[1]))) {
-				movePlayer(willMovePlayer[0], willMovePlayer[1]);
+			if (!isPixelOccupied((playerX + willMovePlayer[0]), playerY, playerWidth, playerHeight)) {
+				movePlayer(willMovePlayer[0], 0);
+			}
+			if (!isPixelOccupied(playerX, (playerY + willMovePlayer[1]), playerWidth, playerHeight)) {
+				movePlayer(0, willMovePlayer[1]);
 			}
 		}
 	}
@@ -327,10 +327,21 @@ public class GamePanel extends JPanel implements Runnable {
 	private void movePlayer(double x, double y) {
 		playerX += x;
 		playerY += y;
+		originalPlayerX = playerX / scale;
+		originalPlayerY = playerY / scale;
 	}
 
-	private boolean isCoordinateOccupied(double coordinateX, double coordinateY) {
-		return false;
+	private boolean isPixelOccupied(double pixelX, double pixelY, double objectWidth, double objectHeight) {
+		for (Box box : BoxesHandling.getAllBoxes()) {
+    	if (box.isPointInside(pixelX, pixelY, scale, tileSize) || // Up-left corner
+    		(box.isPointInside(pixelX + objectWidth, pixelY, scale, tileSize)) || // Up-right corner
+      	(box.isPointInside(pixelX, pixelY + objectHeight, scale, tileSize)) || // Bottom-left corner
+    		(box.isPointInside(pixelX + objectWidth, pixelY + objectHeight, scale, tileSize)) // Bottom-right corner
+    	) {
+        return true;
+      }
+    }
+    return false;
 	}
 
 	@Override

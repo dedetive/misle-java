@@ -19,12 +19,7 @@ public class BoxesHandling {
 		}
 	}
 
-	public static boolean isCoordinateOccupied(double px, double py, double scale, int tileSize) {
-		for (Box box : boxes) {
-			if (box.isPointInside(px, py, scale, tileSize)) {
-				return true;
-			}
-		}
-		return false;
-	}
+	public static List<Box> getAllBoxes() {
+      return new ArrayList<>(boxes);
+  }
 }
