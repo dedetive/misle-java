@@ -6,11 +6,13 @@ public class Box {
 	private final double originalX; // The original world position (unscaled)
 	private final double originalY; // The original world position (unscaled)
 	private final Color color;
+	private final boolean hasCollision;
 
-	public Box(double x, double y, Color color) {
+	public Box(double x, double y, Color color, boolean hasCollision) {
 		this.originalX = x; // Store the original position
 		this.originalY = y; // Store the original position
 		this.color = color;
+		this.hasCollision = hasCollision;
 	}
 
 	// Method to render the box with the current tileSize and scale the position
@@ -34,4 +36,16 @@ public class Box {
 		double scaledY = originalY * scale;
 		return pointX >= scaledX && pointX <= scaledX + tileSize && pointY >= scaledY && pointY <= scaledY + tileSize;
 	}
+
+ 	public double getOriginalX() {
+        return originalX;
+  }
+
+  public double getOriginalY() {
+      return originalY;
+  }
+
+  public boolean getHasCollision() {
+  	return hasCollision;
+  }
 }

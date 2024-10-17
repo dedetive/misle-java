@@ -6,6 +6,8 @@ import com.ded.misle.boxes.BoxesHandling;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
+import java.util.ArrayList;
 
 import static com.ded.misle.Launcher.*;
 
@@ -69,14 +71,31 @@ public class GamePanel extends JPanel implements Runnable {
 		int y = 0;
 		while (x < maxX) {
 			while (y < maxY) {
-				final double boxXCoordinate = x * 3;
-				final double boxYCoordinate = y * 3;
+				final double boxXCoordinate = (x * 4) + 2;
+				final double boxYCoordinate = (y * 4) + 2;
 				int boxX = (int) (coordinateToPixel((int) boxXCoordinate) - cameraOffsetX);
 				int boxY = (int) (coordinateToPixel((int) boxYCoordinate) - cameraOffsetY);
-				int colorRed = Math.min((x * 30), 255);
-				int colorGreen = Math.min((x * 8), 255);
-				int colorBlue = Math.min((x * 27), 255);
-				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue));
+				int colorRed = Math.min((60), 255);
+				int colorGreen = Math.min((170), 255);
+				int colorBlue = Math.min((60), 255);
+				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false);
+				y++;
+			}
+			y = 0;
+			x++;
+		}
+		x = 0;
+		y = 0;
+		while (x < maxX) {
+			while (y < maxY) {
+				final double boxXCoordinate = x * 4;
+				final double boxYCoordinate = y * 4;
+				int boxX = (int) (coordinateToPixel((int) boxXCoordinate) - cameraOffsetX);
+				int boxY = (int) (coordinateToPixel((int) boxYCoordinate) - cameraOffsetY);
+				int colorRed = Math.min((190), 255);
+				int colorGreen = Math.min((60), 255);
+				int colorBlue = Math.min((60), 255);
+				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), true);
 				y++;
 			}
 			y = 0;
@@ -330,9 +349,25 @@ public class GamePanel extends JPanel implements Runnable {
 		originalPlayerX = playerX / scale;
 		originalPlayerY = playerY / scale;
 	}
-
+	
+	/**
+	 * This takes the top-left corner of an object as pixels and the object width and height and returns
+	 * either true or false based if there's a box with collision on in the pixel detected.
+	 * <p></p>
+	 * Example use:
+	 * (!isPixelOccupied((playerX + 45), playerY, playerWidth, playerHeight) will check if there's
+	 * something blocking the player at 45 pixels in the X axis from where the player is, based on
+	 * the player entire hitbox, not just from the top-left corner.
+	 *
+	 * @param x double - The X location in pixels of the object.
+	 * @param y double - The Y location in pixels of the object.
+	 * @param objectWidth double - The width of the object, in pixels.
+	 * @param objectHeight double - The height of the object, in pixels.
+ 	 */
 	private boolean isPixelOccupied(double pixelX, double pixelY, double objectWidth, double objectHeight) {
-		for (Box box : BoxesHandling.getAllBoxes()) {
+		double range = 100 * scale;
+		List<Box> nearbyCollisionBoxes = BoxesHandling.getCollisionBoxesInRange(playerX, playerY, range, scale, tileSize);
+		for (Box box : nearbyCollisionBoxes) {
     	if (box.isPointInside(pixelX, pixelY, scale, tileSize) || // Up-left corner
     		(box.isPointInside(pixelX + objectWidth, pixelY, scale, tileSize)) || // Up-right corner
       	(box.isPointInside(pixelX, pixelY + objectHeight, scale, tileSize)) || // Bottom-left corner
@@ -340,7 +375,7 @@ public class GamePanel extends JPanel implements Runnable {
     	) {
         return true;
       }
-    }
+    } 
     return false;
 	}
 
