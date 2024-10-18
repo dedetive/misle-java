@@ -1,8 +1,23 @@
 # Misle
 
+### Uso
+
 Para abrir o jogo, navegue até o diretório Misle/ em um terminal e execute `javac src/com/ded/misle/*.java src/com/ded/misle/boxes/*.java` para compilar o projeto. Em seguida, utilize `java -cp src com.ded.misle.Launcher` para abrir o projeto compilado. Alternativamente, navegue até o diretório /src/com/ded/misle/ e execute diretamente o .java com `java Launcher.java`.
 
+Em Misle/:
+```
+javac src/com/ded/misle/*.java src/com/ded/misle/boxes/*.java
+java -cp src com.ded.misle.Launcher
+```
+
+ou em Misle/src/com/ded/misle/:
+```
+java Launcher.java
+```
+
 Até o momento os controles são as setinhas para movimentar o quadrado branco, que é o jogador.
+
+### Configurações
 
 Para alterar as configurações padrões do jogo, navegue até o arquivo resources/settings.config e mude os valores. O valor default é usado quando o valor encontrado é diferente de qualquer opção possível. AS opções disponíveis são:
 
