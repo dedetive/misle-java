@@ -66,8 +66,8 @@ public class GamePanel extends JPanel implements Runnable {
 		this.setBackground(Color.BLACK);
 
 		int maxX = pixelToCoordinate(1000 * scale) / 3;
-		int x = 0;
 		int maxY = pixelToCoordinate(1000 * scale) / 3;
+		int x = 0;
 		int y = 0;
 		while (x < maxX) {
 			while (y < maxY) {
@@ -76,7 +76,7 @@ public class GamePanel extends JPanel implements Runnable {
 				int boxX = (int) (coordinateToPixel((int) boxXCoordinate) - cameraOffsetX);
 				int boxY = (int) (coordinateToPixel((int) boxYCoordinate) - cameraOffsetY);
 				int colorRed = Math.min((60), 255);
-				int colorGreen = Math.min((170), 255);
+				int colorGreen = Math.min((170), 255); // GREEN SQUARES, COLLISION DISABLED
 				int colorBlue = Math.min((60), 255);
 				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false);
 				y++;
@@ -92,7 +92,7 @@ public class GamePanel extends JPanel implements Runnable {
 				final double boxYCoordinate = y * 4;
 				int boxX = (int) (coordinateToPixel((int) boxXCoordinate) - cameraOffsetX);
 				int boxY = (int) (coordinateToPixel((int) boxYCoordinate) - cameraOffsetY);
-				int colorRed = Math.min((190), 255);
+				int colorRed = Math.min((190), 255); // RED SQUARES, COLLISION ENABLED
 				int colorGreen = Math.min((60), 255);
 				int colorBlue = Math.min((60), 255);
 				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), true);
@@ -211,7 +211,7 @@ public class GamePanel extends JPanel implements Runnable {
 				previousHeight = detectedHeight;
 
 				// System.out.println("x: " + playerX + ", y: " + playerY + ", s: " + scale);
-				System.out.println("x: " + playerX / scale + ", y: " + playerY / scale);
+				// System.out.println("x: " + playerX / scale + ", y: " + playerY / scale);
 			}
 
 			try {
@@ -359,8 +359,8 @@ public class GamePanel extends JPanel implements Runnable {
 	 * something blocking the player at 45 pixels in the X axis from where the player is, based on
 	 * the player entire hitbox, not just from the top-left corner.
 	 *
-	 * @param x double - The X location in pixels of the object.
-	 * @param y double - The Y location in pixels of the object.
+	 * @param pixelX double - The X location in pixels of the object.
+	 * @param pixelY double - The Y location in pixels of the object.
 	 * @param objectWidth double - The width of the object, in pixels.
 	 * @param objectHeight double - The height of the object, in pixels.
  	 */
@@ -391,7 +391,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		// Draw the player
 		g2d.setColor(Color.WHITE); // For now, a rectangle
-		g2d.fillRect(playerScreenX, playerScreenY, tileSize, tileSize);
+		g2d.fillRect(playerScreenX, playerScreenY, playerWidth, playerHeight);
 
 		// Draw other game elements, using the camera offset as well
 		BoxesHandling.renderBoxes(g2d, cameraOffsetX, cameraOffsetY, scale, tileSize);

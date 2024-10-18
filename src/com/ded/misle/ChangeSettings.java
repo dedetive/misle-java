@@ -3,6 +3,8 @@ package com.ded.misle;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is for changing settings (use changeThis()) and for getting the path of the game (use getPath())
@@ -50,14 +52,18 @@ public class ChangeSettings {
 	 * @return the path of the game (com/ded/misle/) in a File format
 	 */
 
+
+
 	public static File getPath() {
-		String workingDir = System.getProperty("user.dir"); // gets the current working directory
-		if (!workingDir.contains("src/com/ded/misle")) {
-			return new File(workingDir + "/src/com/ded/misle");
-		} else {
-			return new File(workingDir);
-		}
-	}
+    	String workingDir = System.getProperty("user.dir");
+    	String expectedPath = "src/com/ded/misle";
+
+			if (workingDir.endsWith(expectedPath)) {
+				return new File(workingDir);
+			} else {
+      	return new File(workingDir, expectedPath);
+    }
+  }
 
 
 	/**
@@ -88,6 +94,7 @@ public class ChangeSettings {
 		}
 		return result;
 	}
+
 	private static String getDefault(String args) {
 		String defaultSetting = "";
 		switch (args) {
