@@ -51,9 +51,6 @@ public class ChangeSettings {
 	 *
 	 * @return the path of the game (com/ded/misle/) in a File format
 	 */
-
-
-
 	public static File getPath() {
     	String workingDir = System.getProperty("user.dir");
     	String expectedPath = "src/com/ded/misle";
@@ -72,7 +69,6 @@ public class ChangeSettings {
 	 * @param args the setting you want to know the value of
 	 * @return the value of a specific setting from settings.config in a String format
 	 */
-
 	static String getSetting(String args) {
 
 		// GET INFO FROM SETTINGS.CONFIG

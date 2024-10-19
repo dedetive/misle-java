@@ -8,14 +8,14 @@ public class BoxesHandling {
 
 	private static final List<Box> boxes = new ArrayList<>();
 
-	public static void addBox(double x, double y, Color color, boolean hasCollision) {
-		boxes.add(new Box(x, y, color, hasCollision));
+	public static void addBox(double x, double y, Color color, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical) {
+		boxes.add(new Box(x, y, color, hasCollision, boxScaleHorizontal, boxScaleVertical));
 	}
 
 	// Render boxes with camera offset, scale, and tileSize
 	public static void renderBoxes(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY, double scale, int tileSize) {
 		for (Box box : boxes) {
-			box.draw(g2d, cameraOffsetX, cameraOffsetY, scale, tileSize);
+			box.draw(g2d, cameraOffsetX, cameraOffsetY, scale, tileSize, box.getBoxScaleHorizontal(), box.getBoxScaleVertical());
 		}
 	}
 

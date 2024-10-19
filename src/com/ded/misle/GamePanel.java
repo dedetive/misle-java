@@ -78,7 +78,7 @@ public class GamePanel extends JPanel implements Runnable {
 				int colorRed = Math.min((60), 255);
 				int colorGreen = Math.min((170), 255); // GREEN SQUARES, COLLISION DISABLED
 				int colorBlue = Math.min((60), 255);
-				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false);
+				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 0.5, 0.5);
 				y++;
 			}
 			y = 0;
@@ -95,7 +95,7 @@ public class GamePanel extends JPanel implements Runnable {
 				int colorRed = Math.min((190), 255); // RED SQUARES, COLLISION ENABLED
 				int colorGreen = Math.min((60), 255);
 				int colorBlue = Math.min((60), 255);
-				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), true);
+				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), true, 0.25, 2);
 				y++;
 			}
 			y = 0;
@@ -323,11 +323,12 @@ public class GamePanel extends JPanel implements Runnable {
 		if (keyH.rightPressed) {
 			willMovePlayer[0] += playerSpeed;
 		}
+		double range = 200 * scale;
 		if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
-			if (!isPixelOccupied((playerX + willMovePlayer[0]), playerY, playerWidth, playerHeight)) {
+			if (!isPixelOccupied((playerX + willMovePlayer[0]), playerY, playerWidth, playerHeight, range)) {
 				movePlayer(willMovePlayer[0], 0);
 			}
-			if (!isPixelOccupied(playerX, (playerY + willMovePlayer[1]), playerWidth, playerHeight)) {
+			if (!isPixelOccupied(playerX, (playerY + willMovePlayer[1]), playerWidth, playerHeight, range)) {
 				movePlayer(0, willMovePlayer[1]);
 			}
 		}
@@ -364,18 +365,30 @@ public class GamePanel extends JPanel implements Runnable {
 	 * @param objectWidth double - The width of the object, in pixels.
 	 * @param objectHeight double - The height of the object, in pixels.
  	 */
-	private boolean isPixelOccupied(double pixelX, double pixelY, double objectWidth, double objectHeight) {
-		double range = 100 * scale;
+	private boolean isPixelOccupied(double pixelX, double pixelY, double objectWidth, double objectHeight, double range) {
 		List<Box> nearbyCollisionBoxes = BoxesHandling.getCollisionBoxesInRange(playerX, playerY, range, scale, tileSize);
 		for (Box box : nearbyCollisionBoxes) {
-    	if (box.isPointInside(pixelX, pixelY, scale, tileSize) || // Up-left corner
-    		(box.isPointInside(pixelX + objectWidth, pixelY, scale, tileSize)) || // Up-right corner
-      	(box.isPointInside(pixelX, pixelY + objectHeight, scale, tileSize)) || // Bottom-left corner
-    		(box.isPointInside(pixelX + objectWidth, pixelY + objectHeight, scale, tileSize)) // Bottom-right corner
-    	) {
-        return true;
-      }
-    } 
+			if (box.getBoxScaleHorizontal() >= 1 && box.getBoxScaleVertical() >= 1) {
+				if (box.isPointColliding(pixelX, pixelY, scale, objectWidth, objectHeight) || // Up-left corner
+					(box.isPointColliding(pixelX + objectWidth, pixelY, scale, objectWidth, objectHeight)) || // Up-right corner
+					(box.isPointColliding(pixelX, pixelY + objectHeight, scale, objectWidth, objectHeight)) || // Bottom-left corner
+					(box.isPointColliding(pixelX + objectWidth, pixelY + objectHeight, scale, objectWidth, objectHeight)) // Bottom-right corner
+				) {
+					return true;
+				}
+			} else {
+				int inverseBoxScale = (int) (1 / Math.min(box.getBoxScaleHorizontal(), box.getBoxScaleVertical())) + 1;
+				for (int i = 0; i <= inverseBoxScale; i++) {
+					if ((box.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY, scale, objectWidth, objectHeight)) || // Top edge
+						(box.isPointColliding(pixelX, pixelY + i * objectHeight / inverseBoxScale, scale, objectWidth, objectHeight)) || // Left edge
+						(box.isPointColliding(pixelX + objectWidth, pixelY + i * objectHeight / inverseBoxScale, scale, objectWidth, objectHeight)) || // Right edge
+						(box.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY + objectHeight, scale, objectWidth, objectHeight)) // Bottom edge
+					) {
+						return true;
+					}
+				}
+			}
+        }
     return false;
 	}
 
