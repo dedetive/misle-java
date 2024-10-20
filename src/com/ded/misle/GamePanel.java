@@ -35,8 +35,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 	// PLAYER'S DEFAULT POSITION
 
-	double playerX = (1.5 * width);
-	double playerY = (1.5 * height);
+	double playerX = 250 * scale;
+	double playerY = 200 * scale;
 	double originalPlayerX = playerX / scale;
 	double originalPlayerY = playerY / scale;
 	double playerSpeed = (scale * 2 + 0.166) / 3;
@@ -47,6 +47,13 @@ public class GamePanel extends JPanel implements Runnable {
 
 	double cameraOffsetX = 0;
 	double cameraOffsetY = 0;
+
+	// CAMERA WORLD BOUNDARIES
+
+	double originalWorldWidth = 100000;
+	double originalWorldHeight = 100000;
+	double worldWidth = originalWorldWidth * scale;
+	double worldHeight = originalWorldHeight * scale;
 
 	public GamePanel() {
 		// Setting up the JFrame
@@ -65,14 +72,14 @@ public class GamePanel extends JPanel implements Runnable {
 
 		this.setBackground(Color.BLACK);
 
-		int maxX = pixelToCoordinate(1000 * scale) / 3;
-		int maxY = pixelToCoordinate(1000 * scale) / 3;
+		int maxX = (int) (worldWidth / 375); // This 375 is a truly magical number, as it for some reason is
+		int maxY = (int) (worldHeight / 375); // exactly the amount to display boxes within the world for both axis
 		int x = 0;
 		int y = 0;
 		while (x < maxX) {
 			while (y < maxY) {
-				final double boxXCoordinate = (x * 4) + 2;
-				final double boxYCoordinate = (y * 4) + 2;
+				final double boxXCoordinate = (x * 8) + 4;
+				final double boxYCoordinate = (y * 8) + 4;
 				int boxX = (int) (coordinateToPixel((int) boxXCoordinate) - cameraOffsetX);
 				int boxY = (int) (coordinateToPixel((int) boxYCoordinate) - cameraOffsetY);
 				int colorRed = Math.min((60), 255);
@@ -88,8 +95,8 @@ public class GamePanel extends JPanel implements Runnable {
 		y = 0;
 		while (x < maxX) {
 			while (y < maxY) {
-				final double boxXCoordinate = x * 4;
-				final double boxYCoordinate = y * 4;
+				final double boxXCoordinate = x * 8;
+				final double boxYCoordinate = y * 8;
 				int boxX = (int) (coordinateToPixel((int) boxXCoordinate) - cameraOffsetX);
 				int boxY = (int) (coordinateToPixel((int) boxYCoordinate) - cameraOffsetY);
 				int colorRed = Math.min((190), 255); // RED SQUARES, COLLISION ENABLED
@@ -203,6 +210,8 @@ public class GamePanel extends JPanel implements Runnable {
 				playerSpeed = (scale * 2 + 0.166) / 3;
 				playerWidth = tileSize;
 				playerHeight = tileSize;
+				worldWidth = originalWorldWidth * scale;
+				worldHeight = originalWorldHeight * scale;
 
 				playerX = originalPlayerX * scale;
 				playerY = originalPlayerY * scale;
@@ -246,54 +255,59 @@ public class GamePanel extends JPanel implements Runnable {
 
 	@Override
 	public void run() {
-		long lastTime = System.currentTimeMillis();
+		long lastTime = System.nanoTime(); // Using nanoTime for precision with delta time
+		double delta = 0;
+		double nsPerFrame = 1000000000.0 / targetFPS;
 		long frameCount = 0;
-		long lastFPSUpdate = lastTime;
+		long lastFPSUpdate = System.currentTimeMillis();
 
 		while (gameThread != null && running) {
-			long currentTime = System.currentTimeMillis();
-			long elapsedTime = currentTime - lastTime;
+			long currentTime = System.nanoTime();
+			delta += (currentTime - lastTime) / nsPerFrame;
+			lastTime = currentTime;
 
-			updateGame();
-			repaint();
+			// Process updates and rendering while delta is >= 1
+			while (delta >= 1) {
+				updateGame();
+				delta--;
+			}
+
+			repaint(); // Render the game (renderFrame if necessary)
 			renderFrame();
 
 			frameCount++;
 
 			// Update FPS label every second
-			if (currentTime - lastFPSUpdate >= FPS_UPDATE_INTERVAL) {
+			long currentMillis = System.currentTimeMillis();
+			if (currentMillis - lastFPSUpdate >= 1000) {
 				if (displayFPS) {
 					fpsLabel.setText("FPS: " + frameCount);
 					System.out.println(frameCount);
 				}
 				frameCount = 0;
-				lastFPSUpdate = currentTime;
+				lastFPSUpdate = currentMillis;
 			}
 
-			// Sleep to maintain the target FPS
-			long sleepTime = 1000 / Math.max(1, Math.min(targetFPS, 144));
+			// Sleep dynamically to maintain target FPS
 			try {
-				Thread.sleep(sleepTime);
+				Thread.sleep(Math.max(0, (long) ((nsPerFrame - (System.nanoTime() - lastTime)) / 1000000))); // Sleep in milliseconds
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 			}
 		}
 	}
 
+
 	public void updateGame() {
 		// Update the camera offset to center the player in the view
 		cameraOffsetX = playerX - width / 2 + (double) playerWidth / 2;
 		cameraOffsetY = playerY - height / 2 + (double) playerHeight / 2;
 
-		// Ensure camera doesn't show out-of-bounds areas (world boundaries)
-		double worldWidth = 1000 * scale;
-		double worldHeight = 1000 * scale;
-
 		cameraOffsetX = Math.max(0, Math.min(cameraOffsetX, worldWidth - width));
 		cameraOffsetY = Math.max(0, Math.min(cameraOffsetY, worldHeight - height));
 
 		updateKeys();  // Check for player input and update position accordingly
-	}
+		}
 
 
 
@@ -323,7 +337,7 @@ public class GamePanel extends JPanel implements Runnable {
 		if (keyH.rightPressed) {
 			willMovePlayer[0] += playerSpeed;
 		}
-		double range = 200 * scale;
+		double range = (playerSpeed * 64) * scale;
 		if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
 			if (!isPixelOccupied((playerX + willMovePlayer[0]), playerY, playerWidth, playerHeight, range)) {
 				movePlayer(willMovePlayer[0], 0);
@@ -407,7 +421,7 @@ public class GamePanel extends JPanel implements Runnable {
 		g2d.fillRect(playerScreenX, playerScreenY, playerWidth, playerHeight);
 
 		// Draw other game elements, using the camera offset as well
-		BoxesHandling.renderBoxes(g2d, cameraOffsetX, cameraOffsetY, scale, tileSize);
+		BoxesHandling.renderBoxes(g2d, cameraOffsetX, cameraOffsetY, playerX, playerY, width, scale, tileSize);
 		g2d.dispose();
 	}
 

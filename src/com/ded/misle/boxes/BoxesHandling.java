@@ -13,8 +13,9 @@ public class BoxesHandling {
 	}
 
 	// Render boxes with camera offset, scale, and tileSize
-	public static void renderBoxes(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY, double scale, int tileSize) {
-		for (Box box : boxes) {
+	public static void renderBoxes(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY, double playerX, double playerY, double range, double scale, int tileSize) {
+		List<Box> nearbyBoxes = getBoxesInRange(playerX, playerY, range, scale, tileSize);
+		for (Box box : nearbyBoxes) {
 			box.draw(g2d, cameraOffsetX, cameraOffsetY, scale, tileSize, box.getBoxScaleHorizontal(), box.getBoxScaleVertical());
 		}
 	}

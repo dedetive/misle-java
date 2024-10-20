@@ -14,7 +14,7 @@ public class Launcher {
 	// VARIABLE INITIALIZATIONS
 
 	static String windowTitle;
-	static int width;
+	public static int width;
 	static int height;
 	static boolean isFullscreen;
 	static String fullscreenMode;
