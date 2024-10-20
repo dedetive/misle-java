@@ -1,7 +1,5 @@
 package com.ded.misle;
 
-import com.ded.misle.player.Player;
-
 import javax.swing.*;
 
 import static com.ded.misle.ChangeSettings.getSetting;
@@ -16,11 +14,8 @@ public class Launcher {
 	// VARIABLE INITIALIZATIONS
 
 	static String windowTitle;
-	public static int width;
-	static int height;
 	static boolean isFullscreen;
 	static String fullscreenMode;
-	static boolean vSync;
 	static boolean displayFPS;
 	static int frameRateCap;
 	public static double scale;

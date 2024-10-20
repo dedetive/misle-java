@@ -17,7 +17,6 @@ import static com.ded.misle.Launcher.*;
 public class GamePanel extends JPanel implements Runnable {
 
 	private final JFrame window;
-	private static final int FPS_UPDATE_INTERVAL = 1000;
 	private final int targetFPS = frameRateCap;
 	private volatile boolean running = true;
 	private JLabel fpsLabel;
