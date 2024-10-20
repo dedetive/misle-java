@@ -1,5 +1,7 @@
 package com.ded.misle;
 
+import com.ded.misle.player.Player;
+
 import javax.swing.*;
 
 import static com.ded.misle.ChangeSettings.getSetting;
@@ -21,7 +23,7 @@ public class Launcher {
 	static boolean vSync;
 	static boolean displayFPS;
 	static int frameRateCap;
-	static double scale;
+	public static double scale;
 
 	/**
 	 * Loads main menu.

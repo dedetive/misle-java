@@ -2,12 +2,12 @@ package com.ded.misle;
 
 import com.ded.misle.boxes.Box;
 import com.ded.misle.boxes.BoxesHandling;
+import com.ded.misle.player.Player;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
-import java.util.ArrayList;
 
 import static com.ded.misle.Launcher.*;
 
@@ -27,31 +27,20 @@ public class GamePanel extends JPanel implements Runnable {
 	// TILES SIZE
 
 	static final int originalTileSize = 64; // 64x64 tiles
-	static int tileSize = (int) (originalTileSize * scale) / 3;
+	public static int tileSize = (int) (originalTileSize * scale) / 3;
 	final double maxScreenCol = 24; // Horizontal
 	final double maxScreenRow = 13.5; // Vertical
 	double width = maxScreenCol * tileSize;
 	double height = maxScreenRow * tileSize;
 
-	// PLAYER'S DEFAULT POSITION
+	// INITIALIZING PLAYER
 
-	double playerX = 250 * scale;
-	double playerY = 200 * scale;
-	double originalPlayerX = playerX / scale;
-	double originalPlayerY = playerY / scale;
-	double playerSpeed = (scale * 2 + 0.166) / 3;
-	int playerWidth = tileSize;
-	int playerHeight = tileSize;
-
-	// PLAYER CAMERA
-
-	double cameraOffsetX = 0;
-	double cameraOffsetY = 0;
+	Player player = new Player();
 
 	// CAMERA WORLD BOUNDARIES
 
-	double originalWorldWidth = 100000;
-	double originalWorldHeight = 100000;
+	double originalWorldWidth = 1000;
+	double originalWorldHeight = 1000;
 	double worldWidth = originalWorldWidth * scale;
 	double worldHeight = originalWorldHeight * scale;
 
@@ -71,21 +60,23 @@ public class GamePanel extends JPanel implements Runnable {
 		this.setFocusable(true);
 
 		this.setBackground(Color.BLACK);
+		player.initializePlayer();
 
-		int maxX = (int) (worldWidth / 375); // This 375 is a truly magical number, as it for some reason is
-		int maxY = (int) (worldHeight / 375); // exactly the amount to display boxes within the world for both axis
+		int interval = 4;
+		int maxX = (int) (originalWorldWidth / (31.25 * interval));
+		int maxY = (int) (originalWorldHeight / (31.25 * interval));
 		int x = 0;
 		int y = 0;
 		while (x < maxX) {
 			while (y < maxY) {
-				final double boxXCoordinate = (x * 8) + 4;
-				final double boxYCoordinate = (y * 8) + 4;
-				int boxX = (int) (coordinateToPixel((int) boxXCoordinate) - cameraOffsetX);
-				int boxY = (int) (coordinateToPixel((int) boxYCoordinate) - cameraOffsetY);
+				final double boxXCoordinate = (x * interval) + (double) interval / 2;
+				final double boxYCoordinate = (y * interval) + (double) interval / 2;
+				int boxX = (int) (coordinateToPixel((int) boxXCoordinate) - player.getCameraOffsetX());
+				int boxY = (int) (coordinateToPixel((int) boxYCoordinate) - player.getCameraOffsetY());
 				int colorRed = Math.min((60), 255);
 				int colorGreen = Math.min((170), 255); // GREEN SQUARES, COLLISION DISABLED
 				int colorBlue = Math.min((60), 255);
-				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 0.5, 0.5);
+				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 1, 1);
 				y++;
 			}
 			y = 0;
@@ -95,14 +86,14 @@ public class GamePanel extends JPanel implements Runnable {
 		y = 0;
 		while (x < maxX) {
 			while (y < maxY) {
-				final double boxXCoordinate = x * 8;
-				final double boxYCoordinate = y * 8;
-				int boxX = (int) (coordinateToPixel((int) boxXCoordinate) - cameraOffsetX);
-				int boxY = (int) (coordinateToPixel((int) boxYCoordinate) - cameraOffsetY);
+				final double boxXCoordinate = x * interval;
+				final double boxYCoordinate = y * interval;
+				int boxX = (int) (coordinateToPixel((int) boxXCoordinate) - player.getCameraOffsetX());
+				int boxY = (int) (coordinateToPixel((int) boxYCoordinate) - player.getCameraOffsetY());
 				int colorRed = Math.min((190), 255); // RED SQUARES, COLLISION ENABLED
 				int colorGreen = Math.min((60), 255);
 				int colorBlue = Math.min((60), 255);
-				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), true, 0.25, 2);
+				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), true, 1, 1);
 				y++;
 			}
 			y = 0;
@@ -207,14 +198,14 @@ public class GamePanel extends JPanel implements Runnable {
 				height = Math.min(height, screenHeight);
 
 				tileSize = (int) (originalTileSize * scale) / 3;
-				playerSpeed = (scale * 2 + 0.166) / 3;
-				playerWidth = tileSize;
-				playerHeight = tileSize;
+				player.setPlayerSpeedModifier(player.getPlayerSpeedModifier());
+				player.setPlayerWidth(tileSize);
+				player.setPlayerHeight(tileSize);
 				worldWidth = originalWorldWidth * scale;
 				worldHeight = originalWorldHeight * scale;
 
-				playerX = originalPlayerX * scale;
-				playerY = originalPlayerY * scale;
+				player.setX(player.getOriginalPlayerX() * scale);
+				player.setY(player.getOriginalPlayerY() * scale);
 
 				previousWidth = detectedWidth;
 				previousHeight = detectedHeight;
@@ -300,11 +291,11 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void updateGame() {
 		// Update the camera offset to center the player in the view
-		cameraOffsetX = playerX - width / 2 + (double) playerWidth / 2;
-		cameraOffsetY = playerY - height / 2 + (double) playerHeight / 2;
+		player.setCameraOffsetX(player.getX() - width / 2 + player.getPlayerWidth() / 2);
+		player.setCameraOffsetY(player.getY() - height / 2 + player.getPlayerHeight() / 2);
 
-		cameraOffsetX = Math.max(0, Math.min(cameraOffsetX, worldWidth - width));
-		cameraOffsetY = Math.max(0, Math.min(cameraOffsetY, worldHeight - height));
+		player.setCameraOffsetX(Math.max(0, Math.min(player.getCameraOffsetX(), worldWidth - width)));
+		player.setCameraOffsetY(Math.max(0, Math.min(player.getCameraOffsetY(), worldHeight - height)));
 
 		updateKeys();  // Check for player input and update position accordingly
 		}
@@ -315,34 +306,34 @@ public class GamePanel extends JPanel implements Runnable {
 		double[] willMovePlayer = {0, 0};
 		if (keyH.upPressed) {
 			if (!keyH.leftPressed || !keyH.rightPressed) {
-				willMovePlayer[1] -= playerSpeed;
+				willMovePlayer[1] -= player.getPlayerSpeed();
 			} else {
-				willMovePlayer[1] -= (playerSpeed * Math.sqrt(2) / 3);
+				willMovePlayer[1] -= (player.getPlayerSpeed() * Math.sqrt(2) / 3);
 			}
 		}
 		if (keyH.downPressed) {
 			if (!keyH.leftPressed || !keyH.rightPressed) {
-				willMovePlayer[1] += playerSpeed;
+				willMovePlayer[1] += player.getPlayerSpeed();
 			} else {
-				willMovePlayer[1] += playerSpeed * Math.sqrt(2) / 3;
+				willMovePlayer[1] += player.getPlayerSpeed() * Math.sqrt(2) / 3;
 			}
 		}
 		if (keyH.leftPressed) {
 			if (!keyH.upPressed || !keyH.downPressed) {
-				willMovePlayer[0] -= playerSpeed;
+				willMovePlayer[0] -= player.getPlayerSpeed();
 			} else {
-				willMovePlayer[0] -= playerSpeed * Math.sqrt(2) / 3;
+				willMovePlayer[0] -= player.getPlayerSpeed() * Math.sqrt(2) / 3;
 			}
 		}
 		if (keyH.rightPressed) {
-			willMovePlayer[0] += playerSpeed;
+			willMovePlayer[0] += player.getPlayerSpeed();
 		}
-		double range = (playerSpeed * 64) * scale;
+		double range = (player.getPlayerSpeed() * 64) * scale;
 		if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
-			if (!isPixelOccupied((playerX + willMovePlayer[0]), playerY, playerWidth, playerHeight, range)) {
+			if (!isPixelOccupied((player.getX() + willMovePlayer[0]), player.getY(), player.getPlayerWidth(), player.getPlayerHeight(), range)) {
 				movePlayer(willMovePlayer[0], 0);
 			}
-			if (!isPixelOccupied(playerX, (playerY + willMovePlayer[1]), playerWidth, playerHeight, range)) {
+			if (!isPixelOccupied(player.getX(), (player.getY() + willMovePlayer[1]), player.getPlayerWidth(), player.getPlayerHeight(), range)) {
 				movePlayer(0, willMovePlayer[1]);
 			}
 		}
@@ -359,10 +350,10 @@ public class GamePanel extends JPanel implements Runnable {
 	 * @param y double - How many pixels in y direction (this is not based on scale).
 	 */
 	private void movePlayer(double x, double y) {
-		playerX += x;
-		playerY += y;
-		originalPlayerX = playerX / scale;
-		originalPlayerY = playerY / scale;
+		player.setX(player.getX() + x);
+		player.setY(player.getY() + y);
+		player.setOriginalPlayerX(player.getX() / scale);
+		player.setOriginalPlayerY(player.getY() / scale);
 	}
 	
 	/**
@@ -380,7 +371,7 @@ public class GamePanel extends JPanel implements Runnable {
 	 * @param objectHeight double - The height of the object, in pixels.
  	 */
 	private boolean isPixelOccupied(double pixelX, double pixelY, double objectWidth, double objectHeight, double range) {
-		List<Box> nearbyCollisionBoxes = BoxesHandling.getCollisionBoxesInRange(playerX, playerY, range, scale, tileSize);
+		List<Box> nearbyCollisionBoxes = BoxesHandling.getCollisionBoxesInRange(player.getX(), player.getY(), range, scale, tileSize);
 		for (Box box : nearbyCollisionBoxes) {
 			if (box.getBoxScaleHorizontal() >= 1 && box.getBoxScaleVertical() >= 1) {
 				if (box.isPointColliding(pixelX, pixelY, scale, objectWidth, objectHeight) || // Up-left corner
@@ -413,15 +404,15 @@ public class GamePanel extends JPanel implements Runnable {
 		Graphics2D g2d = (Graphics2D) g;
 
 		// Adjust the player's position based on the camera offsets
-		int playerScreenX = (int) (playerX - cameraOffsetX);
-		int playerScreenY = (int) (playerY - cameraOffsetY);
+		int playerScreenX = (int) (player.getX() - player.getCameraOffsetX());
+		int playerScreenY = (int) (player.getY() - player.getCameraOffsetY());
 
 		// Draw the player
 		g2d.setColor(Color.WHITE); // For now, a rectangle
-		g2d.fillRect(playerScreenX, playerScreenY, playerWidth, playerHeight);
+		g2d.fillRect(playerScreenX, playerScreenY, (int) player.getPlayerWidth(), (int) player.getPlayerHeight());
 
 		// Draw other game elements, using the camera offset as well
-		BoxesHandling.renderBoxes(g2d, cameraOffsetX, cameraOffsetY, playerX, playerY, width, scale, tileSize);
+		BoxesHandling.renderBoxes(g2d, player.getCameraOffsetX(), player.getCameraOffsetY(), player.getX(), player.getY(), width, scale, tileSize);
 		g2d.dispose();
 	}
 
