@@ -59,7 +59,6 @@ public class GamePanel extends JPanel implements Runnable {
 		this.setFocusable(true);
 
 		this.setBackground(Color.BLACK);
-		player.initializePlayer();
 
 		int interval = 4;
 		int maxX = (int) (originalWorldWidth / (31.25 * interval));

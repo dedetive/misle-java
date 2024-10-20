@@ -16,7 +16,7 @@ public class Player {
 	private double playerWidth;
 	private double playerHeight;
 
-	public void initializePlayer() {
+	public Player() {
 		this.setX(250 * scale);
 		this.setY(200 * scale);
 		this.setOriginalPlayerX(250);
