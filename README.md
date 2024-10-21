@@ -2,17 +2,12 @@
 
 ### Uso
 
-Para abrir o jogo, navegue até o diretório misle-java-master/ em um terminal e execute `javac src/com/ded/misle/*.java src/com/ded/misle/boxes/*.java` para compilar o projeto. Em seguida, utilize `java -cp src com.ded.misle.Launcher` para abrir o projeto compilado. Alternativamente, navegue até o diretório /src/com/ded/misle/ e execute diretamente o .java com `java Launcher.java`.
+Para abrir o jogo, navegue até o diretório misle-java-master/ em um terminal e execute `javac src/com/ded/misle/*.java src/com/ded/misle/boxes/*.java` para compilar o projeto. Em seguida, utilize `java -cp src com.ded.misle.Launcher` para abrir o projeto compilado. Alternativamente, use sua IDE de preferência com compilador para executar o código automaticamente.
 
 Em misle-java-master/:
 ```
 javac src/com/ded/misle/*.java src/com/ded/misle/boxes/*.java
 java -cp src com.ded.misle.Launcher
-```
-
-ou em misle-java-master/src/com/ded/misle/:
-```
-java Launcher.java
 ```
 
 Até o momento os controles são as setinhas para movimentar o quadrado branco, que é o jogador.
