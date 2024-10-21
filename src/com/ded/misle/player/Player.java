@@ -1,10 +1,18 @@
 package com.ded.misle.player;
 
+import com.ded.misle.KeyHandler;
+
+import java.awt.*;
+import java.util.HashMap;
+
 import static com.ded.misle.GamePanel.tileSize;
 import static com.ded.misle.Launcher.scale;
 
 public class Player {
 
+	public HashMap<String, Boolean> keyPressed;
+	private HashMap<String, Double> keyMaxCooldown = new HashMap<>();
+	public HashMap<String, Double> keyCurrentCooldown = new HashMap<>();
 	private double x;
 	private double originalPlayerX;
 	private double cameraOffsetX;
@@ -13,20 +21,26 @@ public class Player {
 	private double cameraOffsetY;
 	private double playerSpeed;
 	private double playerSpeedModifier;
-	private double playerWidth;
-	private double playerHeight;
+	private double width;
+	private double height;
+	private double HP;
+	private double maxHP;
 
 	public Player() {
+		this.keyPressed = new HashMap<>();
 		this.setX(250 * scale);
 		this.setY(200 * scale);
-		this.setOriginalPlayerX(250);
-		this.setOriginalPlayerY(200);
+		this.setOriginalPlayerX(getX() / scale);
+		this.setOriginalPlayerY(getY() / scale);
 		this.setCameraOffsetX(0);
 		this.setCameraOffsetY(0);
 		this.setPlayerSpeedModifier(1);
-		System.out.println(getPlayerSpeedModifier());
 		this.setPlayerWidth(tileSize);
 		this.setPlayerHeight(tileSize);
+		this.setPlayerMaxHP(100);
+		this.setPlayerHP(getPlayerMaxHP());
+		this.setKeyMaxCooldown("debug1", 150);
+		this.setKeyMaxCooldown("debug2", 150);
 	}
 
 	public double getX() {
@@ -91,18 +105,66 @@ public class Player {
 	}
 
 	public double getPlayerWidth() {
-		return playerWidth;
+		return width;
 	}
 
 	public void setPlayerWidth(double playerWidth) {
-		this.playerWidth = playerWidth;
+		this.width = playerWidth;
 	}
 
 	public double getPlayerHeight() {
-		return playerHeight;
+		return height;
 	}
 
 	public void setPlayerHeight(double playerHeight) {
-		this.playerHeight = playerHeight;
+		this.height = playerHeight;
+	}
+
+	public double getPlayerHP() {
+		return HP;
+	}
+
+	public void setPlayerHP(double HP) {
+		this.HP = HP;
+	}
+
+	public double getPlayerMaxHP() {
+		return maxHP;
+	}
+
+	public void setPlayerMaxHP(double maxHP) {
+		this.maxHP = maxHP;
+	}
+
+	public double getKeyMaxCooldown(String key) {
+		try {
+			return Math.max(keyMaxCooldown.get(key), 0);
+		} catch (NullPointerException e) {
+			return 0;
+		}
+	}
+
+	public void setKeyMaxCooldown(String key, double cooldownMS) {
+		this.keyMaxCooldown.put(key, Math.max(cooldownMS, 0));
+	}
+
+	public double getKeyCurrentCooldown(String key) {
+		try {
+			return Math.max(keyCurrentCooldown.get(key), 0);
+		} catch (NullPointerException e) {
+			return 0;
+		}
+	}
+
+	public void setKeyCurrentCooldown(String key, double cooldownMS) {
+		this.keyCurrentCooldown.put(key, Math.max(cooldownMS, 0));
+	}
+
+	public void fillKeyCurrentCooldown(String key) {
+		this.keyCurrentCooldown.put(key, System.currentTimeMillis() + getKeyMaxCooldown(key));
+	}
+
+	public void resetAllCooldowns() {
+		this.keyCurrentCooldown.replaceAll((k, v) -> v = 0.0);
 	}
 }

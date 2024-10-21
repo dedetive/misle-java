@@ -34,7 +34,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 	// INITIALIZING PLAYER
 
-	Player player = new Player();
+	public static Player player;
+	static {
+		player = new Player();
+	}
 
 	// CAMERA WORLD BOUNDARIES
 
@@ -59,6 +62,8 @@ public class GamePanel extends JPanel implements Runnable {
 		this.setFocusable(true);
 
 		this.setBackground(Color.BLACK);
+
+		KeyHandler.initializeKeyHandler();
 
 		int interval = 4;
 		int maxX = (int) (originalWorldWidth / (31.25 * interval));
@@ -302,28 +307,28 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private void updateKeys() {
 		double[] willMovePlayer = {0, 0};
-		if (keyH.upPressed) {
-			if (!keyH.leftPressed || !keyH.rightPressed) {
+		if (player.keyPressed.get("up")) {
+			if (!player.keyPressed.get("left") || !player.keyPressed.get("right")) {
 				willMovePlayer[1] -= player.getPlayerSpeed();
 			} else {
 				willMovePlayer[1] -= (player.getPlayerSpeed() * Math.sqrt(2) / 3);
 			}
 		}
-		if (keyH.downPressed) {
-			if (!keyH.leftPressed || !keyH.rightPressed) {
+		if (player.keyPressed.get("down")) {
+			if (!player.keyPressed.get("left") || !player.keyPressed.get("right")) {
 				willMovePlayer[1] += player.getPlayerSpeed();
 			} else {
 				willMovePlayer[1] += player.getPlayerSpeed() * Math.sqrt(2) / 3;
 			}
 		}
-		if (keyH.leftPressed) {
-			if (!keyH.upPressed || !keyH.downPressed) {
+		if (player.keyPressed.get("left")) {
+			if (!player.keyPressed.get("up") || !player.keyPressed.get("down")) {
 				willMovePlayer[0] -= player.getPlayerSpeed();
 			} else {
 				willMovePlayer[0] -= player.getPlayerSpeed() * Math.sqrt(2) / 3;
 			}
 		}
-		if (keyH.rightPressed) {
+		if (player.keyPressed.get("right")) {
 			willMovePlayer[0] += player.getPlayerSpeed();
 		}
 		double range = (player.getPlayerSpeed() * 64) * scale;
@@ -334,6 +339,16 @@ public class GamePanel extends JPanel implements Runnable {
 			if (!isPixelOccupied(player.getX(), (player.getY() + willMovePlayer[1]), player.getPlayerWidth(), player.getPlayerHeight(), range)) {
 				movePlayer(0, willMovePlayer[1]);
 			}
+		}
+		if (player.keyPressed.get("debug1")) {
+			player.setPlayerHP(Math.max((player.getPlayerHP() - 1), 0));
+			System.out.println("Reduced 1 HP, currently at: " + player.getPlayerHP());
+			player.keyPressed.put("debug1", false);
+		}
+		if (player.keyPressed.get("debug2")) {
+			player.setPlayerHP(Math.min((player.getPlayerHP() + 1), player.getPlayerMaxHP()));
+			System.out.println("Regenerated 1 HP, currently at: " + player.getPlayerHP());
+			player.keyPressed.put("debug2", false);
 		}
 	}
 
