@@ -2,7 +2,7 @@
 
 ### Uso
 
-Para abrir o jogo, navegue até o diretório misle-java-master/ em um terminal e execute `javac src/com/ded/misle/*.java src/com/ded/misle/boxes/*.java` para compilar o projeto. Em seguida, utilize `java -cp src com.ded.misle.Launcher` para abrir o projeto compilado. Alternativamente, use sua IDE de preferência com compilador para executar o código automaticamente.
+Para abrir o jogo, navegue até o diretório misle-java-master/ em um terminal e execute `javac src/com/ded/misle/*.java src/com/ded/misle/boxes/*.java` para compilar o projeto. Em seguida, utilize `java -cp src com.ded.misle.Launcher` para abrir o projeto compilado. Alternativamente, use sua IDE de preferência com compilador para executar o código automaticamente, sempre usando o Launcher como base.
 
 Em misle-java-master/:
 ```
