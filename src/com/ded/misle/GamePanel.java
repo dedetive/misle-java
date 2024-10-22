@@ -332,6 +332,8 @@ public class GamePanel extends JPanel implements Runnable {
 			willMovePlayer[0] += player.attr.getPlayerSpeed();
 		}
 
+		// MOVING
+
 		double range = (player.attr.getPlayerSpeed() * 64) * scale;
 		if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
 			if (!isPixelOccupied((player.pos.getX() + willMovePlayer[0]), player.pos.getY(), player.attr.getPlayerWidth(), player.attr.getPlayerHeight(), range)) {
@@ -341,13 +343,16 @@ public class GamePanel extends JPanel implements Runnable {
 				movePlayer(0, willMovePlayer[1]);
 			}
 		}
+
+		// DEBUG KEYS '[' AND ']'
+
 		if (player.keys.keyPressed.get("debug1")) {
-			double damageDealt = player.attr.takeDamage(15, "absolute");
+			double damageDealt = player.attr.takeDamage(15, "post-mortem");
 			System.out.println("Took " + damageDealt + " damage, now at " + player.attr.getPlayerHP() + " HP.");
 			player.keys.keyPressed.put("debug1", false);
 		}
 		if (player.keys.keyPressed.get("debug2")) {
-			double healReceived = player.attr.receiveHeal(5, "normal");
+			double healReceived = player.attr.receiveHeal(5, "absolute revival exclusive");
 			System.out.println("Received " + healReceived + " heal, now at " + player.attr.getPlayerHP() + " HP.");
 			player.keys.keyPressed.put("debug2", false);
 		}

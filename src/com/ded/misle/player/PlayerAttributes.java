@@ -1,5 +1,7 @@
 package com.ded.misle.player;
 
+import java.util.Objects;
+
 import static com.ded.misle.GamePanel.tileSize;
 import static com.ded.misle.Launcher.scale;
 
@@ -15,6 +17,7 @@ public class PlayerAttributes {
 	private double xp;
 	private double XPtoLevelUp;
 	private int level = 1;
+	private boolean isDead = false;
 
 	public PlayerAttributes() {
 			this.setPlayerSpeedModifier(1);
@@ -102,6 +105,9 @@ public class PlayerAttributes {
 			default:
 				throw (new IllegalArgumentException("Invalid reason: " + reason));
 		}
+		if (this.hp <= 0) {
+			playerDies();
+		}
 		return damageToReceive;
 	}
 
@@ -133,26 +139,33 @@ public class PlayerAttributes {
 	/**
 	 * REASONS: <br>
 	 * - "normal": the heal can be affected by external forces, but is limited by max HP <br> <br>
+	 * - "absolute": the heal will be received no matter what, unless max HP is hit <br> <br>
 	 * - "overheal": the heal can be affected by external forces, but is NOT limited by max HP <br> <br>
 	 * - "absolute overheal": the heal will be received no matter what, and is NOT limited by max HP <br> <br>
-	 * - "absolute": the heal will be received no matter what, unless max HP is hit <br> <br>
+	 * - "revival": the heal will be received regardless of whether the player is dead. This can revive the player. The value entered may be affected by external forces <br><br>
+	 * - "absolute revival": the heal will be received regardless of whether the player is dead. This can revive the player. The value entered will not be affected by external forces <br><br>
+	 * - "revival exclusive": the heal will only be received if the player is dead. This will revive the player. The value entered may be affected by external forces <br><br>
+	 * - "absolute revival exclusive": the heal will only be received if the player is dead. This will revive the player. The value entered will not be affected by external forces
 	 *
 	 * @param heal the heal to be received
 	 * @param reason the kind of heal that's taking place; see above for a list
 	 * @return Final heal received
 	 */
 	public double receiveHeal(double heal, String reason) {
-		if (heal <= 0) {
+		if (heal <= 0 || (this.isDead && !reason.contains("revival"))) {
 			return 0;
 		}
 		double healToReceive;
 		switch (reason) {
-			case "normal", "overheal", "absolute", "absolute overheal":
+			case "normal", "overheal", "absolute", "absolute overheal", "revival", "revival exclusive", "absolute revival", "absolute revival exclusive":
 				healToReceive = calculateHeal(heal, reason);
 				this.hp += healToReceive;
 				break;
 			default:
 				throw (new IllegalArgumentException("Invalid reason: " + reason));
+		}
+		if (reason.contains("revival") && this.hp > 0) {
+			this.isDead = false;
 		}
 		return healToReceive;
 	}
@@ -163,10 +176,10 @@ public class PlayerAttributes {
 	 *
 	 */
 	public double calculateHeal(double heal, String reason) {
-		if (heal <= 0) {
+		if (heal <= 0 || (this.isDead && !reason.contains("revival"))) {
 			return 0;
 		}
-		double theoreticalHeal;
+		double theoreticalHeal = 0;
 		return switch (reason) {
 			case "normal" -> {              // NORMAL: heals as per usual, possibly being diminished by other effects
 				theoreticalHeal = Math.min(heal, this.maxHP - this.hp);
@@ -184,6 +197,26 @@ public class PlayerAttributes {
 				theoreticalHeal = heal;
 				yield theoreticalHeal;
 			}
+			case "revival" -> {             // REVIVAL: heals and may revive player
+				theoreticalHeal = Math.min(heal, this.maxHP - this.hp);
+				yield theoreticalHeal;
+			}
+			case "revival exclusive" -> {   // REVIVAL EXCLUSIVE: heals only if the player is dead, may revive player
+				if (this.isDead) {
+					theoreticalHeal = Math.min(heal, this.maxHP - this.hp);
+				}
+				yield theoreticalHeal;
+			}
+			case "absolute revival" -> {    // ABSOLUTE REVIVAL: heals exact amount and may revive player
+				theoreticalHeal = Math.min(heal, this.maxHP - this.hp);
+				yield theoreticalHeal;
+			}
+			case "absolute revival exclusive" -> {  // ABSOLUTE REVIVAL EXCLUSIVE: heals exact amount only if player is dead,
+				if (this.isDead) {                  // may revive player
+					theoreticalHeal = Math.min(heal, this.maxHP - this.hp);
+				}
+					yield theoreticalHeal;
+			}
 			default -> throw (new IllegalArgumentException("Invalid reason: " + reason));
 		};
 	}
@@ -194,6 +227,16 @@ public class PlayerAttributes {
 
 	public void setPlayerDefense(double defense) {
 		this.defense = defense;
+	}
+
+	// DEATH HANDLING
+
+	public boolean isDead() {
+		return isDead;
+	}
+
+	public void playerDies() {
+		this.isDead = true;
 	}
 
 	// XP
