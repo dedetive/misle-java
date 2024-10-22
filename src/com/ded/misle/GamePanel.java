@@ -213,8 +213,6 @@ public class GamePanel extends JPanel implements Runnable {
 				previousWidth = detectedWidth;
 				previousHeight = detectedHeight;
 
-				// System.out.println("x: " + playerX + ", y: " + playerY + ", s: " + scale);
-				// System.out.println("x: " + playerX / scale + ", y: " + playerY / scale);
 			}
 
 			try {
@@ -331,6 +329,7 @@ public class GamePanel extends JPanel implements Runnable {
 		if (player.keys.keyPressed.get("right")) {
 			willMovePlayer[0] += player.attr.getPlayerSpeed();
 		}
+
 		double range = (player.attr.getPlayerSpeed() * 64) * scale;
 		if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
 			if (!isPixelOccupied((player.pos.getX() + willMovePlayer[0]), player.pos.getY(), player.attr.getPlayerWidth(), player.attr.getPlayerHeight(), range)) {
@@ -365,6 +364,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private void movePlayer(double x, double y) {
 		player.pos.setX(player.pos.getX() + x);
 		player.pos.setY(player.pos.getY() + y);
+		player.stats.increaseDistance(x, y);
 		player.pos.setOriginalPlayerX(player.pos.getX() / scale);
 		player.pos.setOriginalPlayerY(player.pos.getY() / scale);
 	}
