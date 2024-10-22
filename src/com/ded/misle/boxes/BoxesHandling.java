@@ -8,8 +8,13 @@ public class BoxesHandling {
 
 	private static final List<Box> boxes = new ArrayList<>();
 
-	public static void addBox(double x, double y, Color color, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical) {
-		boxes.add(new Box(x, y, color, hasCollision, boxScaleHorizontal, boxScaleVertical));
+	/**
+	 *
+	 * Refer to the documentation of {@link com.ded.misle.boxes.Box#Box(double, double, Color, boolean, double, double, String[])}
+	 *
+	 */
+	public static void addBox(double x, double y, Color color, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] canDamage) {
+		boxes.add(new Box(x, y, color, hasCollision, boxScaleHorizontal, boxScaleVertical, canDamage));
 	}
 
 	// Render boxes with camera offset, scale, and tileSize

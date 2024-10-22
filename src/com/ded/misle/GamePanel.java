@@ -79,7 +79,7 @@ public class GamePanel extends JPanel implements Runnable {
 				int colorRed = Math.min((60), 255);
 				int colorGreen = Math.min((170), 255); // GREEN SQUARES, COLLISION DISABLED
 				int colorBlue = Math.min((60), 255);
-				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 1, 1);
+				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 1, 1, new String[]{"0"});
 				y++;
 			}
 			y = 0;
@@ -96,7 +96,8 @@ public class GamePanel extends JPanel implements Runnable {
 				int colorRed = Math.min((190), 255); // RED SQUARES, COLLISION ENABLED
 				int colorGreen = Math.min((60), 255);
 				int colorBlue = Math.min((60), 255);
-				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), true, 1, 1);
+
+				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), true, 1, 1, new String[]{Double.toString(x * y), "1000", "normal"});
 				y++;
 			}
 			y = 0;
@@ -334,25 +335,27 @@ public class GamePanel extends JPanel implements Runnable {
 
 		// MOVING
 
-		double range = (player.attr.getPlayerSpeed() * 64) * scale;
-		if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
-			if (!isPixelOccupied((player.pos.getX() + willMovePlayer[0]), player.pos.getY(), player.attr.getPlayerWidth(), player.attr.getPlayerHeight(), range)) {
-				movePlayer(willMovePlayer[0], 0);
-			}
-			if (!isPixelOccupied(player.pos.getX(), (player.pos.getY() + willMovePlayer[1]), player.attr.getPlayerWidth(), player.attr.getPlayerHeight(), range)) {
-				movePlayer(0, willMovePlayer[1]);
+		if (!player.attr.isDead()) {
+			double range = (player.attr.getPlayerSpeed() * 64) * scale;
+			if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
+				if (!isPixelOccupied((player.pos.getX() + willMovePlayer[0]), player.pos.getY(), player.attr.getPlayerWidth(), player.attr.getPlayerHeight(), range)) {
+					movePlayer(willMovePlayer[0], 0);
+				}
+				if (!isPixelOccupied(player.pos.getX(), (player.pos.getY() + willMovePlayer[1]), player.attr.getPlayerWidth(), player.attr.getPlayerHeight(), range)) {
+					movePlayer(0, willMovePlayer[1]);
+				}
 			}
 		}
 
 		// DEBUG KEYS '[' AND ']'
 
 		if (player.keys.keyPressed.get("debug1")) {
-			double damageDealt = player.attr.takeDamage(15, "post-mortem");
+			double damageDealt = player.attr.takeDamage(20, "post-mortem");
 			System.out.println("Took " + damageDealt + " damage, now at " + player.attr.getPlayerHP() + " HP.");
 			player.keys.keyPressed.put("debug1", false);
 		}
 		if (player.keys.keyPressed.get("debug2")) {
-			double healReceived = player.attr.receiveHeal(5, "absolute revival exclusive");
+			double healReceived = player.attr.receiveHeal(20, "absolute revival exclusive");
 			System.out.println("Received " + healReceived + " heal, now at " + player.attr.getPlayerHP() + " HP.");
 			player.keys.keyPressed.put("debug2", false);
 		}
@@ -399,6 +402,9 @@ public class GamePanel extends JPanel implements Runnable {
 					(box.isPointColliding(pixelX, pixelY + objectHeight, scale, objectWidth, objectHeight)) || // Bottom-left corner
 					(box.isPointColliding(pixelX + objectWidth, pixelY + objectHeight, scale, objectWidth, objectHeight)) // Bottom-right corner
 				) {
+					if (box.getDamageValue() > 0) {
+						handleBoxDamageCooldown(box, box.getDamageReason());
+					}
 					return true;
 				}
 			} else {
@@ -416,6 +422,21 @@ public class GamePanel extends JPanel implements Runnable {
         }
     return false;
 	}
+
+	public void handleBoxDamageCooldown(Box box, String reason) {
+		long currentTime = System.currentTimeMillis();
+		long cooldownDuration = (long) box.getDamageRate(); // Use the box's damage rate for cooldown
+
+		// Check if enough time has passed since the last damage was dealt
+		if (currentTime - box.getLastDamageTime() >= cooldownDuration) {
+			box.setLastDamageTime(currentTime); // Update the last damage time
+			box.setDamageReason(reason);
+			player.attr.takeDamage(box.getDamageValue(), reason);
+			System.out.println(box.getDamageValue() + " damage dealt! Now at " + player.attr.getPlayerHP() + " HP.");
+		}
+	}
+
+
 
 	@Override
 	public void paintComponent(Graphics g) {
