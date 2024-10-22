@@ -177,8 +177,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 		double previousWidth = window.getWidth();
 		double previousHeight = window.getHeight();
-
 		while (running) {
+
 			int detectedWidth = window.getWidth();
 			int detectedHeight = window.getHeight();
 
@@ -298,6 +298,8 @@ public class GamePanel extends JPanel implements Runnable {
 		player.pos.setCameraOffsetX(Math.max(0, Math.min(player.pos.getCameraOffsetX(), worldWidth - width)));
 		player.pos.setCameraOffsetY(Math.max(0, Math.min(player.pos.getCameraOffsetY(), worldHeight - height)));
 
+		player.attr.checkIfLevelUp();
+
 		updateKeys();  // Check for player input and update position accordingly
 		}
 
@@ -340,13 +342,13 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 		}
 		if (player.keys.keyPressed.get("debug1")) {
-			player.attr.setPlayerHP(Math.max((player.attr.getPlayerHP() - 1), 0));
-			System.out.println("Reduced 1 HP, currently at: " + player.attr.getPlayerHP());
+			double damageDealt = player.attr.takeDamage(15, "absolute");
+			System.out.println("Took " + damageDealt + " damage, now at " + player.attr.getPlayerHP() + " HP.");
 			player.keys.keyPressed.put("debug1", false);
 		}
 		if (player.keys.keyPressed.get("debug2")) {
-			player.attr.setPlayerHP(Math.min((player.attr.getPlayerHP() + 1), player.attr.getPlayerMaxHP()));
-			System.out.println("Regenerated 1 HP, currently at: " + player.attr.getPlayerHP());
+			double healReceived = player.attr.receiveHeal(5, "normal");
+			System.out.println("Received " + healReceived + " heal, now at " + player.attr.getPlayerHP() + " HP.");
 			player.keys.keyPressed.put("debug2", false);
 		}
 	}
