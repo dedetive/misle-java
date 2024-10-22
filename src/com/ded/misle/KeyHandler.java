@@ -13,12 +13,12 @@ public class KeyHandler implements KeyListener {
 	}
 
 	public static void initializeKeyHandler() {
-		player.keyPressed.put("up", false);
-		player.keyPressed.put("down", false);
-		player.keyPressed.put("left", false);
-		player.keyPressed.put("right", false);
-		player.keyPressed.put("debug1", false);
-		player.keyPressed.put("debug2", false);
+		player.keys.keyPressed.put("up", false);
+		player.keys.keyPressed.put("down", false);
+		player.keys.keyPressed.put("left", false);
+		player.keys.keyPressed.put("right", false);
+		player.keys.keyPressed.put("debug1", false);
+		player.keys.keyPressed.put("debug2", false);
 	}
 
 	int KeyUp = KeyEvent.VK_UP;
@@ -32,16 +32,16 @@ public class KeyHandler implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 		if (code == KeyUp) {
-			player.keyPressed.put("up", true);
+			player.keys.keyPressed.put("up", true);
 		}
 		if (code == KeyDown) {
-			player.keyPressed.put("down", true);
+			player.keys.keyPressed.put("down", true);
 		}
 		if (code == KeyLeft) {
-			player.keyPressed.put("left", true);
+			player.keys.keyPressed.put("left", true);
 		}
 		if (code == KeyRight) {
-			player.keyPressed.put("right", true);
+			player.keys.keyPressed.put("right", true);
 		}
 		if (code == KeyDebug1) {
 			handleCooldownPress("debug1");
@@ -55,33 +55,33 @@ public class KeyHandler implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		int code = e.getKeyCode();
 		if (code == KeyUp) {
-			player.keyPressed.put("up", false);
+			player.keys.keyPressed.put("up", false);
 		}
 		if (code == KeyDown) {
-			player.keyPressed.put("down", false);
+			player.keys.keyPressed.put("down", false);
 		}
 		if (code == KeyLeft) {
-			player.keyPressed.put("left", false);
+			player.keys.keyPressed.put("left", false);
 		}
 		if (code == KeyRight) {
-			player.keyPressed.put("right", false);
+			player.keys.keyPressed.put("right", false);
 		}
 		if (code == KeyDebug1) {
-			player.keyPressed.put("debug1", false);
+			player.keys.keyPressed.put("debug1", false);
 		}
 		if (code == KeyDebug2) {
-			player.keyPressed.put("debug2", false);
+			player.keys.keyPressed.put("debug2", false);
 		}
 	}
 
 	private void handleCooldownPress(String key) {
 		long currentTime = System.currentTimeMillis();
-		double cooldownEndTime = player.getKeyCurrentCooldown(key);
-		double cooldownDuration = player.getKeyMaxCooldown(key);
+		double cooldownEndTime = player.keys.getKeyCurrentCooldown(key);
+		double cooldownDuration = player.keys.getKeyMaxCooldown(key);
 
 		if ( currentTime >= (long) cooldownEndTime) {
-			player.fillKeyCurrentCooldown(key);
-			player.keyPressed.put(key, true);
+			player.keys.fillKeyCurrentCooldown(key);
+			player.keys.keyPressed.put(key, true);
 		}
 	}
 }
