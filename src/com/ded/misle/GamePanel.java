@@ -79,7 +79,7 @@ public class GamePanel extends JPanel implements Runnable {
 				int colorRed = Math.min((60), 255);
 				int colorGreen = Math.min((170), 255); // GREEN SQUARES, COLLISION DISABLED
 				int colorBlue = Math.min((60), 255);
-				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 3, 3, new String[]{"velocity", Double.toString((double) (x * y) / 10)});
+				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 3, 3, new String[]{"velocity", Double.toString(1.75)});
 				y++;
 			}
 			y = 0;
@@ -97,7 +97,7 @@ public class GamePanel extends JPanel implements Runnable {
 				int colorGreen = Math.min((60), 255);
 				int colorBlue = Math.min((60), 255);
 
-				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), true, 3, 3, new String[]{"damage", Double.toString(x * y), "1000", "normal"});
+				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), true, 3, 3, new String[]{"damage", Double.toString(x * y + 10), "1000", "normal"});
 				y++;
 			}
 			y = 0;
@@ -350,12 +350,12 @@ public class GamePanel extends JPanel implements Runnable {
 		// DEBUG KEYS '[' AND ']'
 
 		if (player.keys.keyPressed.get("debug1")) {
-			double damageDealt = player.attr.takeDamage(20, "absolute");
+			double damageDealt = player.attr.takeDamage(20, "absolute post-mortem");
 			System.out.println("Took " + damageDealt + " damage, now at " + player.attr.getPlayerHP() + " HP.");
 			player.keys.keyPressed.put("debug1", false);
 		}
 		if (player.keys.keyPressed.get("debug2")) {
-			double healReceived = player.attr.receiveHeal(20, "absolute revival");
+			double healReceived = player.attr.receiveHeal(125, "absolute revival exclusive overheal");
 			System.out.println("Received " + healReceived + " heal, now at " + player.attr.getPlayerHP() + " HP.");
 			player.keys.keyPressed.put("debug2", false);
 		}
@@ -469,7 +469,7 @@ public class GamePanel extends JPanel implements Runnable {
 		int healthBarY = playerScreenY - healthBarHeight - 5; // Offset slightly above the player rectangle
 
 		// Calculate the percentage of health remaining
-		double healthPercentage = (double) player.attr.getPlayerHP() / player.attr.getPlayerMaxHP();
+		double healthPercentage = Math.min((double) player.attr.getPlayerHP() / player.attr.getPlayerMaxHP(), 1);
 
 		// Draw the background of the health bar (gray)
 		g2d.setColor(Color.GRAY);

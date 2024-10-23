@@ -5,6 +5,7 @@ import com.ded.misle.boxes.Box;
 import static com.ded.misle.GamePanel.tileSize;
 import static com.ded.misle.Launcher.scale;
 
+@SuppressWarnings("ConditionalExpressionWithIdenticalBranches")
 public class PlayerAttributes {
 
 	private double playerSpeed;
@@ -27,6 +28,7 @@ public class PlayerAttributes {
 			this.setPlayerWidth(tileSize);
 			this.setPlayerHeight(tileSize);
 			this.setPlayerMaxHP(100);
+			this.setPlayerDefense(4);
 			this.setPlayerHP(getPlayerMaxHP());
 			this.updateXPtoLevelUp();
 	}
@@ -115,25 +117,36 @@ public class PlayerAttributes {
 	 * @return Final damage dealt
 	 */
 	public double takeDamage(double damage, String reason) {
-		double damageToReceive;
-		switch (reason) {
-			case "normal", "absolute":
-				damageToReceive = calculateDamage(damage, reason);
-				this.hp = (Math.max(this.hp - damageToReceive, 0));
-				break;
-
-			case "post-mortem", "absolute post-mortem":
-				damageToReceive = calculateDamage(damage, reason);
-				this.hp -= damageToReceive;
-				break;
-			default:
-				throw (new IllegalArgumentException("Invalid reason: " + reason));
+		// Early exit for invalid damage
+		if (damage <= 0) {
+			return 0;
 		}
+
+		double damageToReceive;
+
+		// Define boolean flags for different conditions
+		boolean isNormalOrAbsolute = reason.equals("normal") || reason.equals("absolute");
+		boolean isPostMortem = reason.equals("post-mortem") || reason.equals("absolute post-mortem");
+
+		// Calculate damage based on the reason
+		if (isNormalOrAbsolute) {
+			damageToReceive = calculateDamage(damage, reason);
+			this.hp = Math.max(this.hp - damageToReceive, 0); // Ensure HP doesn't go below 0
+		} else if (isPostMortem) {
+			damageToReceive = calculateDamage(damage, reason);
+			this.hp -= damageToReceive; // Apply damage without floor
+		} else {
+			throw new IllegalArgumentException("Invalid reason: " + reason); // Handle invalid reasons
+		}
+
+		// Check if the player dies
 		if (this.hp <= 0) {
 			playerDies();
 		}
+
 		return damageToReceive;
 	}
+
 
 	/**
 	 *
@@ -141,24 +154,36 @@ public class PlayerAttributes {
 	 *
 	 */
 	public double calculateDamage(double damage, String reason) {
-		double theoreticalDamage;
+		// Early exit for invalid damage
+		if (damage <= 0) {
+			return 0;
+		}
+
 		double defenseCalculation = damage - ((damage * this.defense) / (this.defense + 100)) - this.defense / 2;
-		return switch (reason) {
-			case "normal" -> {              // NORMAL: defense and item effects take place normally
-				theoreticalDamage = Math.min(defenseCalculation, this.hp);
-				yield theoreticalDamage;
-			}
-			case "absolute" ->              // ABSOLUTE: defense and item effects are ignored
-					Math.min(damage, this.hp);
-			case "post-mortem" -> {         // POST-MORTEM: damage will be dealt past 0 into the negatives
-				theoreticalDamage = defenseCalculation;
-				yield theoreticalDamage;
-			}
-			case "absolute post-mortem" ->  // ABSOLUTE POST-MORTEM: damage will be dealt past 0 and
-					damage;                 // defense and item effects are ignored
-			default -> throw (new IllegalArgumentException("Invalid reason: " + reason));
-		};
+		double theoreticalDamage;
+
+		// Define boolean flags for different conditions
+		boolean isAbsolute = reason.contains("absolute");
+		boolean isPostMortem = reason.contains("post-mortem");
+
+		// Calculate damage based on the reason
+		if (isAbsolute && isPostMortem) {
+			// Absolute post-mortem: damage will be dealt past 0 and defense effects are ignored
+			return damage; // Return full damage
+		} else if (isAbsolute) {
+			// Absolute: defense effects are ignored
+			theoreticalDamage = Math.min(damage, this.hp);
+		} else if (isPostMortem) {
+			// Post-mortem: damage will be dealt past 0 into the negatives
+			theoreticalDamage = defenseCalculation;
+		} else {
+			// Normal: defense and item effects take place normally
+			theoreticalDamage = Math.min(defenseCalculation, this.hp);
+		}
+
+		return theoreticalDamage;
 	}
+
 
 	/**
 	 * REASONS: <br>
@@ -171,28 +196,45 @@ public class PlayerAttributes {
 	 * - "revival exclusive": the heal will only be received if the player is dead. This will revive the player. The value entered may be affected by external forces <br><br>
 	 * - "absolute revival exclusive": the heal will only be received if the player is dead. This will revive the player. The value entered will not be affected by external forces
 	 *
-	 * @param heal the heal to be received
+	 * if (reason.contains("revival exclusive")) {
+					if (this.isDead) {
+						healingExpression = Math.min(heal, this.maxHP - this.hp);
+					} else {
+						healingExpression = 0;
+					}
+				}@param heal the heal to be received
 	 * @param reason the kind of heal that's taking place; see above for a list
 	 * @return Final heal received
 	 */
 	public double receiveHeal(double heal, String reason) {
+		// Early exit for invalid heal or if the character is dead without revival
 		if (heal <= 0 || (this.isDead && !reason.contains("revival"))) {
 			return 0;
 		}
+
 		double healToReceive;
-		switch (reason) {
-			case "normal", "overheal", "absolute", "absolute overheal", "revival", "revival exclusive", "absolute revival", "absolute revival exclusive":
-				healToReceive = calculateHeal(heal, reason);
-				this.hp += healToReceive;
-				break;
-			default:
-				throw (new IllegalArgumentException("Invalid reason: " + reason));
+
+		// Define boolean flags for different conditions
+		boolean isValidReason = reason.contains("normal") || reason.contains("overheal") ||
+				reason.contains("revival") || reason.contains("revival exclusive") ||
+				reason.contains("absolute");
+
+		// Check for valid healing reasons
+		if (isValidReason) {
+			healToReceive = calculateHeal(heal, reason);
+			setPlayerHP(getPlayerHP() + healToReceive);
+
+			// Check for revival condition
+			if (reason.contains("revival") && this.hp > 0) {
+				this.isDead = false; // Set isDead to false if revived
+			}
+		} else {
+			throw new IllegalArgumentException("Invalid reason: " + reason); // Handle invalid reasons
 		}
-		if (reason.contains("revival") && this.hp > 0) {
-			this.isDead = false;
-		}
+
 		return healToReceive;
 	}
+
 
 	/**
 	 *
@@ -200,50 +242,49 @@ public class PlayerAttributes {
 	 *
 	 */
 	public double calculateHeal(double heal, String reason) {
+		// Invalid heal or dead character without revival
 		if (heal <= 0 || (this.isDead && !reason.contains("revival"))) {
 			return 0;
 		}
-		double theoreticalHeal = 0;
-		return switch (reason) {
-			case "normal" -> {              // NORMAL: heals as per usual, possibly being diminished by other effects
-				theoreticalHeal = Math.min(heal, this.maxHP - this.hp);
-				yield theoreticalHeal;
+
+		double healingExpression = 0;
+		boolean isAbsolute = reason.contains("absolute");
+		boolean isOverheal = reason.contains("overheal");
+		boolean isRevivalExclusive = reason.contains("revival exclusive");
+		boolean isRevival = reason.contains("revival");
+		boolean isNormal = reason.contains("normal");
+
+		if (isRevivalExclusive) {
+			if (!this.isDead) {
+				return 0; // Revival exclusive healing only works if the character is dead
 			}
-			case "overheal" -> {            // OVERHEAL: ignores max HP and heals over that. Might be diminished by other effects
-				theoreticalHeal = heal;
-				yield theoreticalHeal;
+			// Overheal logic for revival exclusive
+			if (isOverheal) {
+				healingExpression = isAbsolute ?
+						heal :
+						heal;
+			} else {
+				healingExpression = isAbsolute ?
+						Math.min(heal, this.maxHP - this.hp) :
+						Math.min(heal, this.maxHP - this.hp);
 			}
-			case "absolute" -> {            // ABSOLUTE: heals no matter the circumstance, although doesn't overheal
-				theoreticalHeal = Math.min(heal, this.maxHP - this.hp);
-				yield theoreticalHeal;
-			}
-			case "absolute overheal" -> {   // ABSOLUTE OVERHEAL: ignores max HP and heals over that under any circumstance
-				theoreticalHeal = heal;
-				yield theoreticalHeal;
-			}
-			case "revival" -> {             // REVIVAL: heals and may revive player
-				theoreticalHeal = Math.min(heal, this.maxHP - this.hp);
-				yield theoreticalHeal;
-			}
-			case "revival exclusive" -> {   // REVIVAL EXCLUSIVE: heals only if the player is dead, may revive player
-				if (this.isDead) {
-					theoreticalHeal = Math.min(heal, this.maxHP - this.hp);
-				}
-				yield theoreticalHeal;
-			}
-			case "absolute revival" -> {    // ABSOLUTE REVIVAL: heals exact amount and may revive player
-				theoreticalHeal = Math.min(heal, this.maxHP - this.hp);
-				yield theoreticalHeal;
-			}
-			case "absolute revival exclusive" -> {  // ABSOLUTE REVIVAL EXCLUSIVE: heals exact amount only if player is dead,
-				if (this.isDead) {                  // may revive player
-					theoreticalHeal = Math.min(heal, this.maxHP - this.hp);
-				}
-					yield theoreticalHeal;
-			}
-			default -> throw (new IllegalArgumentException("Invalid reason: " + reason));
-		};
+		} else if (isNormal || isRevival) {
+			// Normal or revival healing logic
+			healingExpression = isAbsolute ?
+					Math.min(heal, this.maxHP - this.hp) :
+					Math.min(heal, this.maxHP - this.hp);
+		}
+
+		// Overheal logic
+		if (isOverheal && !isRevivalExclusive) {
+			healingExpression = isAbsolute ?
+					heal :
+					heal;
+		}
+
+		return healingExpression;
 	}
+
 
 	public double getPlayerDefense() {
 		return defense;
