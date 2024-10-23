@@ -1,5 +1,7 @@
 package com.ded.misle.player;
 
+import static com.ded.misle.Launcher.scale;
+
 public class PlayerPosition {
 
 	private double x;
@@ -10,12 +12,10 @@ public class PlayerPosition {
 	private double cameraOffsetY;
 
 	public PlayerPosition(double x, double y) {
-		this.x = x;
-		this.y = y;
-		this.originalPlayerX = x;
-		this.originalPlayerY = y;
-		this.cameraOffsetX = 0;
-		this.cameraOffsetY = 0;
+		setX(x);
+		setY(y);
+		setCameraOffsetX(0);
+		setCameraOffsetY(0);
 	}
 
 	public double getX() {
@@ -24,14 +24,11 @@ public class PlayerPosition {
 
 	public void setX(double x) {
 		this.x = x;
+		this.originalPlayerX = x / scale;
 	}
 
 	public double getOriginalPlayerX() {
 		return originalPlayerX;
-	}
-
-	public void setOriginalPlayerX(double originalPlayerX) {
-		this.originalPlayerX = originalPlayerX;
 	}
 
 	public double getCameraOffsetX() {
@@ -48,14 +45,11 @@ public class PlayerPosition {
 
 	public void setY(double y) {
 		this.y = y;
+		this.originalPlayerY = y / scale;
 	}
 
 	public double getOriginalPlayerY() {
 		return originalPlayerY;
-	}
-
-	public void setOriginalPlayerY(double originalPlayerY) {
-		this.originalPlayerY = originalPlayerY;
 	}
 
 	public double getCameraOffsetY() {

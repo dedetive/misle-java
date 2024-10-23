@@ -11,7 +11,7 @@ public class Player {
 
 	public Player() {
 		this.keys = new PlayerKeys();
-		this.pos = new PlayerPosition(250 * scale, 200 * scale);
+		this.pos = new PlayerPosition(325, 225);
 		this.attr = new PlayerAttributes();
 		this.stats = new PlayerStats();
 	}

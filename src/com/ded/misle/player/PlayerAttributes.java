@@ -1,6 +1,6 @@
 package com.ded.misle.player;
 
-import java.util.Objects;
+import com.ded.misle.boxes.Box;
 
 import static com.ded.misle.GamePanel.tileSize;
 import static com.ded.misle.Launcher.scale;
@@ -9,6 +9,7 @@ public class PlayerAttributes {
 
 	private double playerSpeed;
 	private double playerSpeedModifier;
+	private double environmentSpeedModifier;
 	private double width;
 	private double height;
 	private double hp;
@@ -18,9 +19,11 @@ public class PlayerAttributes {
 	private double XPtoLevelUp;
 	private int level = 1;
 	private boolean isDead = false;
+	private Box lastVelocityBox = null;
 
 	public PlayerAttributes() {
 			this.setPlayerSpeedModifier(1);
+			this.setPlayerEnvironmentSpeedModifier(1);
 			this.setPlayerWidth(tileSize);
 			this.setPlayerHeight(tileSize);
 			this.setPlayerMaxHP(100);
@@ -30,6 +33,10 @@ public class PlayerAttributes {
 
 	// PLAYER SPEED
 
+	public void updateSpeed() {
+		this.playerSpeed = this.playerSpeedModifier * (scale * 2 + 0.166) / 3 * this.environmentSpeedModifier;
+	}
+
 	public double getPlayerSpeed() {
 		return playerSpeed;
 	}
@@ -38,9 +45,26 @@ public class PlayerAttributes {
 		return playerSpeedModifier;
 	}
 
+	public double getPlayerEnvironmentSpeedModifier() {
+		return this.environmentSpeedModifier;
+	}
+
+	public void setPlayerEnvironmentSpeedModifier(double environmentSpeedModifier) {
+		this.environmentSpeedModifier = Math.max(environmentSpeedModifier, 0.025);
+		updateSpeed();
+	}
+
 	public void setPlayerSpeedModifier(double playerSpeedModifier) {
 		this.playerSpeedModifier = playerSpeedModifier;
-		this.playerSpeed = playerSpeedModifier * (scale * 2 + 0.166) / 3;
+		updateSpeed();
+	}
+
+	public Box getLastVelocityBox() {
+		return lastVelocityBox;
+	}
+
+	public void setLastVelocityBox(Box box) {
+		this.lastVelocityBox = box;
 	}
 
 	// PLAYER SIZES

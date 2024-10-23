@@ -79,7 +79,7 @@ public class GamePanel extends JPanel implements Runnable {
 				int colorRed = Math.min((60), 255);
 				int colorGreen = Math.min((170), 255); // GREEN SQUARES, COLLISION DISABLED
 				int colorBlue = Math.min((60), 255);
-				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 1, 1, new String[]{"0"});
+				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 3, 3, new String[]{"velocity", Double.toString((double) (x * y) / 10)});
 				y++;
 			}
 			y = 0;
@@ -97,7 +97,7 @@ public class GamePanel extends JPanel implements Runnable {
 				int colorGreen = Math.min((60), 255);
 				int colorBlue = Math.min((60), 255);
 
-				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), true, 1, 1, new String[]{Double.toString(x * y), "1000", "normal"});
+				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), true, 3, 3, new String[]{"damage", Double.toString(x * y), "1000", "normal"});
 				y++;
 			}
 			y = 0;
@@ -336,7 +336,7 @@ public class GamePanel extends JPanel implements Runnable {
 		// MOVING
 
 		if (!player.attr.isDead()) {
-			double range = (player.attr.getPlayerSpeed() * 64) * scale;
+			double range = (tileSize + 1) * Math.max(1, player.attr.getPlayerSpeed());
 			if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
 				if (!isPixelOccupied((player.pos.getX() + willMovePlayer[0]), player.pos.getY(), player.attr.getPlayerWidth(), player.attr.getPlayerHeight(), range)) {
 					movePlayer(willMovePlayer[0], 0);
@@ -350,12 +350,12 @@ public class GamePanel extends JPanel implements Runnable {
 		// DEBUG KEYS '[' AND ']'
 
 		if (player.keys.keyPressed.get("debug1")) {
-			double damageDealt = player.attr.takeDamage(20, "post-mortem");
+			double damageDealt = player.attr.takeDamage(20, "absolute");
 			System.out.println("Took " + damageDealt + " damage, now at " + player.attr.getPlayerHP() + " HP.");
 			player.keys.keyPressed.put("debug1", false);
 		}
 		if (player.keys.keyPressed.get("debug2")) {
-			double healReceived = player.attr.receiveHeal(20, "absolute revival exclusive");
+			double healReceived = player.attr.receiveHeal(20, "absolute revival");
 			System.out.println("Received " + healReceived + " heal, now at " + player.attr.getPlayerHP() + " HP.");
 			player.keys.keyPressed.put("debug2", false);
 		}
@@ -375,8 +375,18 @@ public class GamePanel extends JPanel implements Runnable {
 		player.pos.setX(player.pos.getX() + x);
 		player.pos.setY(player.pos.getY() + y);
 		player.stats.increaseDistance(x, y);
-		player.pos.setOriginalPlayerX(player.pos.getX() / scale);
-		player.pos.setOriginalPlayerY(player.pos.getY() / scale);
+
+		if (player.attr.getLastVelocityBox() != null) {
+			player.attr.setPlayerEnvironmentSpeedModifier(1.0); // Reset to default speed
+			player.attr.setLastVelocityBox(null); // Clear the last velocity box
+		}
+
+		List<Box> nearbyNonCollisionBoxes = ((BoxesHandling.getNonCollisionBoxesInRange(player.pos.getX(), player.pos.getY(), tileSize, scale, tileSize)));
+		for (Box box: nearbyNonCollisionBoxes) {
+			if (!box.getEffect().isEmpty()) {
+				Box.handleEffect(box);
+			}
+		}
 	}
 	
 	/**
@@ -402,8 +412,8 @@ public class GamePanel extends JPanel implements Runnable {
 					(box.isPointColliding(pixelX, pixelY + objectHeight, scale, objectWidth, objectHeight)) || // Bottom-left corner
 					(box.isPointColliding(pixelX + objectWidth, pixelY + objectHeight, scale, objectWidth, objectHeight)) // Bottom-right corner
 				) {
-					if (box.getDamageValue() > 0) {
-						handleBoxDamageCooldown(box, box.getDamageReason());
+					if (!box.getEffect().isEmpty()) {
+						Box.handleEffect(box);
 					}
 					return true;
 				}
@@ -415,6 +425,9 @@ public class GamePanel extends JPanel implements Runnable {
 						(box.isPointColliding(pixelX + objectWidth, pixelY + i * objectHeight / inverseBoxScale, scale, objectWidth, objectHeight)) || // Right edge
 						(box.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY + objectHeight, scale, objectWidth, objectHeight)) // Bottom edge
 					) {
+						if (!box.getEffect().isEmpty()) {
+							Box.handleEffect(box);
+						}
 						return true;
 					}
 				}
@@ -423,38 +436,49 @@ public class GamePanel extends JPanel implements Runnable {
     return false;
 	}
 
-	public void handleBoxDamageCooldown(Box box, String reason) {
-		long currentTime = System.currentTimeMillis();
-		long cooldownDuration = (long) box.getDamageRate(); // Use the box's damage rate for cooldown
-
-		// Check if enough time has passed since the last damage was dealt
-		if (currentTime - box.getLastDamageTime() >= cooldownDuration) {
-			box.setLastDamageTime(currentTime); // Update the last damage time
-			box.setDamageReason(reason);
-			player.attr.takeDamage(box.getDamageValue(), reason);
-			System.out.println(box.getDamageValue() + " damage dealt! Now at " + player.attr.getPlayerHP() + " HP.");
-		}
-	}
-
-
-
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
 		Graphics2D g2d = (Graphics2D) g;
 
+
+		// Draw other game elements, using the camera offset as well
+		BoxesHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), player.pos.getX(), player.pos.getY(), width, scale, tileSize);
+
+
 		// Adjust the player's position based on the camera offsets
 		int playerScreenX = (int) (player.pos.getX() - player.pos.getCameraOffsetX());
 		int playerScreenY = (int) (player.pos.getY() - player.pos.getCameraOffsetY());
+
+		drawUIElements(g2d, playerScreenX, playerScreenY);
 
 		// Draw the player
 		g2d.setColor(Color.WHITE); // For now, a rectangle
 		g2d.fillRect(playerScreenX, playerScreenY, (int) player.attr.getPlayerWidth(), (int) player.attr.getPlayerHeight());
 
-		// Draw other game elements, using the camera offset as well
-		BoxesHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), player.pos.getX(), player.pos.getY(), width, scale, tileSize);
+		// For optimizing reasons
 		g2d.dispose();
+	}
+
+	private static void drawUIElements(Graphics2D g2d, int playerScreenX, int playerScreenY) {
+		// Draw the health bar
+		int healthBarWidth = (int) (50 * scale); // Width of the health bar
+		int healthBarHeight = (int) (10 * scale); // Height of the health bar
+		int healthBarX = (int) (playerScreenX - player.attr.getPlayerWidth() / 2 - 2 * scale); // Position it above the player
+		int healthBarY = playerScreenY - healthBarHeight - 5; // Offset slightly above the player rectangle
+
+		// Calculate the percentage of health remaining
+		double healthPercentage = (double) player.attr.getPlayerHP() / player.attr.getPlayerMaxHP();
+
+		// Draw the background of the health bar (gray)
+		g2d.setColor(Color.GRAY);
+		g2d.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+
+		// Draw the current health bar (green, for example)
+		g2d.setColor(Color.GREEN);
+		g2d.fillRect(healthBarX, healthBarY, (int) (healthBarWidth * healthPercentage), healthBarHeight);
+
 	}
 
 	public static double coordinateToPixel(int coordinate) {

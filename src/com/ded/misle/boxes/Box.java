@@ -2,6 +2,8 @@ package com.ded.misle.boxes;
 
 import java.awt.*;
 
+import static com.ded.misle.GamePanel.player;
+
 public class Box {
 	private final double originalX; // The original world position (unscaled)
 	private final double originalY; // The original world position (unscaled)
@@ -9,10 +11,21 @@ public class Box {
 	private final boolean hasCollision;
 	private final double boxScaleHorizontal;
 	private final double boxScaleVertical;
-	private final String[] canDamage;
+	private final String[] effect;
 	private long lastDamageTime = 0;
 
 	/**
+	 *
+	 * Effect is what the box can do when interacted. If it has collision, the effect will be given after colliding with it.
+	 * If the box has no collision, simply walking above it will give the effect. <br><br>
+	 *
+	 * List of effects: <br><br>
+	 *
+	 * - "": for no effect <br>
+	 * - "damage": for damaging over time. Second value within the list is the damage amount. Third value is the rate
+	 * at which the damage is given. The fourth value is the reason of the damage. See {@link com.ded.misle.player.PlayerAttributes#takeDamage(double, String)}
+	 * for a list of reasons.
+	 * - "velocity": for changing the speed. Second value is the multiplier of the speed based on player's playerSpeed.
 	 *
 	 * @param x original x of the box
 	 * @param y original y of the box
@@ -20,16 +33,16 @@ public class Box {
 	 * @param hasCollision a boolean of whether the box has collision
 	 * @param boxScaleHorizontal how many tilesizes is the box in the x axis
 	 * @param boxScaleVertical how many tilesizes is the box in the y axis
-	 * @param canDamage first value, if negative, means the box cannot deal damage. If it is positive, it means the box will deal that much damage. The second value is the rate in milliseconds of the damage dealt
+	 * @param effect first value is the type of effect. See above for a list of effects. Set "" if none
 	 */
-	public Box(double x, double y, Color color, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] canDamage) {
+	public Box(double x, double y, Color color, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect) {
 		this.originalX = x; // Store the original position
 		this.originalY = y; // Store the original position
 		this.color = color;
 		this.hasCollision = hasCollision;
 		this.boxScaleHorizontal = boxScaleHorizontal;
 		this.boxScaleVertical = boxScaleVertical;
-		this.canDamage = canDamage;
+		this.effect = effect;
 	}
 
 	// Method to render the box with the current tileSize and scale the position
@@ -78,37 +91,88 @@ public class Box {
 		return boxScaleVertical;
 	}
 
-	// DAMAGE
+	// EFFECTS
 
-	public double getDamageValue() {
-		return Double.parseDouble(canDamage[0]);
+	public String getEffect() {
+		return effect[0];
 	}
 
-	public double getDamageRate() {
-		return Double.parseDouble(canDamage[1]);
+	public double getEffectValue() {
+		if (getEffect().equals("damage")) {
+			return Double.parseDouble(effect[1]);
+		}
+		if (getEffect().equals("velocity")) {
+			return Double.parseDouble(effect[1]);
+		}
+		return 0;
 	}
 
-	public void setDamageValue(double damageValue) {
-		this.canDamage[0] = String.valueOf(damageValue);
+	public double getEffectRate() {
+		if (getEffect().equals("damage")) {
+			return Double.parseDouble(effect[2]);
+		}
+		return 0;
 	}
 
-	public void setDamageRate(double damageRate) {
-		this.canDamage[1] = String.valueOf(damageRate);
+	public void setEffect(String effect) {
+		this.effect[0] = effect;
 	}
 
-	public String getDamageReason() {
-		return this.canDamage[2];
+	public static void handleEffect(Box box) {
+		if (box.effect[0].equals("damage")) {
+			handleBoxDamageCooldown(box);
+		}
+		if (box.effect[0].equals("velocity")) {
+			handleBoxVelocity(box);
+		}
 	}
 
-	public void setDamageReason(String reason) {
-		this.canDamage[2] = reason;
+	public void setEffectValue(double effectValue) {
+		this.effect[1] = String.valueOf(effectValue);
 	}
 
-	public long getLastDamageTime() {
+	public void setEffectRate(double effectRate) {
+		this.effect[2] = String.valueOf(effectRate);
+	}
+
+	public String getEffectReason() {
+		if (getEffect().equals("damage")) {
+			return this.effect[3];
+		}
+		return "";
+	}
+
+	public void setEffectReason(String reason) {
+		if (reason.equals("damage")) {
+			this.effect[3] = reason;
+		}
+	}
+
+	// EFFECT HANDLING
+
+	public long getLastEffectTime() {
 		return lastDamageTime;
 	}
 
-	public void setLastDamageTime(long lastDamageTime) {
+	public void setLastEffectTime(long lastDamageTime) {
 		this.lastDamageTime = lastDamageTime;
+	}
+
+	private static void handleBoxDamageCooldown(Box box) {
+		long currentTime = System.currentTimeMillis();
+		long cooldownDuration = (long) box.getEffectRate(); // Use the box's damage rate for cooldown
+
+		// Check if enough time has passed since the last damage was dealt
+		if (currentTime - box.getLastEffectTime() >= cooldownDuration) {
+			box.setLastEffectTime(currentTime); // Update the last damage time
+			box.setEffectReason(box.getEffectReason());
+			player.attr.takeDamage(box.getEffectValue(), box.getEffectReason());
+			System.out.println(box.getEffectValue() + " damage dealt! Now at " + player.attr.getPlayerHP() + " HP.");
+		}
+	}
+
+	private static void handleBoxVelocity(Box box) {
+		player.attr.setPlayerEnvironmentSpeedModifier(box.getEffectValue());
+		player.attr.setLastVelocityBox(box);
 	}
 }
