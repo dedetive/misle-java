@@ -2,6 +2,10 @@ package com.ded.misle.player;
 
 import com.ded.misle.boxes.Box;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.GamePanel.tileSize;
 import static com.ded.misle.Launcher.scale;
 
@@ -27,8 +31,8 @@ public class PlayerAttributes {
 			this.setPlayerEnvironmentSpeedModifier(1);
 			this.setPlayerWidth(tileSize);
 			this.setPlayerHeight(tileSize);
-			this.setPlayerMaxHP(1080);
-			this.setPlayerDefense(4);
+			this.setPlayerMaxHP(100);
+			this.setPlayerDefense(0);
 			this.setPlayerHP(getPlayerMaxHP());
 			this.updateXPtoLevelUp();
 	}
@@ -304,6 +308,23 @@ public class PlayerAttributes {
 
 	public void playerDies() {
 		this.isDead = true;
+
+		// Schedule playerRespawns() to run after 5 seconds (5000 milliseconds)
+		Timer timerToRespawn = new Timer();
+		timerToRespawn.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				if (isDead) {
+					playerRespawns();
+				}
+			}
+		}, 4000);
+	}
+
+	private void playerRespawns() {
+		player.pos.reloadSpawnpoint();
+		this.setPlayerHP(getPlayerMaxHP());
+		this.isDead = false;
 	}
 
 	// XP

@@ -66,44 +66,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		KeyHandler.initializeKeyHandler();
 
-		int interval = 4;
-		int maxX = (int) (originalWorldWidth / (31.25 * interval));
-		int maxY = (int) (originalWorldHeight / (31.25 * interval));
-		int x = 0;
-		int y = 0;
-		while (x < maxX) {
-			while (y < maxY) {
-				final double boxXCoordinate = (x * interval) + (double) interval / 2;
-				final double boxYCoordinate = (y * interval) + (double) interval / 2;
-				int boxX = (int) (coordinateToPixel((int) boxXCoordinate) - player.pos.getCameraOffsetX());
-				int boxY = (int) (coordinateToPixel((int) boxYCoordinate) - player.pos.getCameraOffsetY());
-				int colorRed = Math.min((60), 255);
-				int colorGreen = Math.min((170), 255); // GREEN SQUARES, COLLISION DISABLED
-				int colorBlue = Math.min((60), 255);
-				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 3, 3, new String[]{"velocity", Double.toString(1.75)});
-				y++;
-			}
-			y = 0;
-			x++;
-		}
-		x = 0;
-		y = 0;
-		while (x < maxX) {
-			while (y < maxY) {
-				final double boxXCoordinate = x * interval;
-				final double boxYCoordinate = y * interval;
-				int boxX = (int) (coordinateToPixel((int) boxXCoordinate) - player.pos.getCameraOffsetX());
-				int boxY = (int) (coordinateToPixel((int) boxYCoordinate) - player.pos.getCameraOffsetY());
-				int colorRed = Math.min((190), 255); // RED SQUARES, COLLISION ENABLED
-				int colorGreen = Math.min((60), 255);
-				int colorBlue = Math.min((60), 255);
-
-				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), true, 3, 3, new String[]{"damage", Double.toString(x * y + 10), "1000", "normal"});
-				y++;
-			}
-			y = 0;
-			x++;
-		}
+		addBoxes();
 
 		Thread windowSizeThread = new Thread(this::changeAndDetectWindowSize);
 		windowSizeThread.start();
@@ -173,7 +136,67 @@ public class GamePanel extends JPanel implements Runnable {
 		});
 	}
 
-	public void changeAndDetectWindowSize() {
+	private void addBoxes() {            // TEMPORARY
+
+		// CHECKPOINTS
+
+		int boxX = (int) (340 - player.pos.getCameraOffsetX());
+		int boxY = (int) (150 - player.pos.getCameraOffsetX());
+		int colorRed = 240;
+		int colorGreen = 240;
+		int colorBlue = 90;
+		BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 1, 1, new String[]{"spawnpoint", "-1"});
+
+		boxX = (int) (340 - player.pos.getCameraOffsetX());
+		boxY = (int) (280 - player.pos.getCameraOffsetX());
+		BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 1, 1, new String[]{"spawnpoint", "-1"});
+
+		// GREEN SQUARES
+
+		int interval = 4;
+		int maxX = (int) (originalWorldWidth / (31.25 * interval));
+		int maxY = (int) (originalWorldHeight / (31.25 * interval));
+		int x = 0;
+		int y = 0;
+		while (x < maxX) {
+			while (y < maxY) {
+				final double boxXCoordinate = (x * interval) + (double) interval / 2;
+				final double boxYCoordinate = (y * interval) + (double) interval / 2;
+				boxX = (int) (coordinateToPixel((int) boxXCoordinate) - player.pos.getCameraOffsetX());
+				boxY = (int) (coordinateToPixel((int) boxYCoordinate) - player.pos.getCameraOffsetY());
+				colorRed = 60;
+				colorGreen = 170; // GREEN SQUARES, COLLISION DISABLED
+				colorBlue = 60;
+				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 3, 3, new String[]{"velocity", Double.toString(0.75)});
+				y++;
+			}
+			y = 0;
+			x++;
+		}
+
+		// RED SQUARES
+
+		x = 0;
+		y = 0;
+		while (x < maxX) {
+			while (y < maxY) {
+				final double boxXCoordinate = x * interval;
+				final double boxYCoordinate = y * interval;
+				boxX = (int) (coordinateToPixel((int) boxXCoordinate) - player.pos.getCameraOffsetX());
+				boxY = (int) (coordinateToPixel((int) boxYCoordinate) - player.pos.getCameraOffsetY());
+				colorRed = 190; // RED SQUARES, COLLISION ENABLED
+				colorGreen = 60;
+				colorBlue = 60;
+
+				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), true, 3, 3, new String[]{"damage", Double.toString(x * y + 10), "1000", "normal"});
+				y++;
+			}
+			y = 0;
+			x++;
+		}
+	}
+
+	private void changeAndDetectWindowSize() {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		int screenWidth = (int) toolkit.getScreenSize().getWidth();
 		int screenHeight = (int) toolkit.getScreenSize().getHeight();
@@ -352,12 +375,12 @@ public class GamePanel extends JPanel implements Runnable {
 		// DEBUG KEYS '[' AND ']'
 
 		if (player.keys.keyPressed.get("debug1")) {
-			double damageDealt = player.attr.takeDamage(20, "absolute normal");
+			double damageDealt = player.attr.takeDamage(20, "absolute");
 			System.out.println("Took " + damageDealt + " damage, now at " + player.attr.getPlayerHP() + " HP.");
 			player.keys.keyPressed.put("debug1", false);
 		}
 		if (player.keys.keyPressed.get("debug2")) {
-			double healReceived = player.attr.receiveHeal(125, "absolute normal");
+			double healReceived = player.attr.receiveHeal(125, "absolute revival");
 			System.out.println("Received " + healReceived + " heal, now at " + player.attr.getPlayerHP() + " HP.");
 			player.keys.keyPressed.put("debug2", false);
 		}

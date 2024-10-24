@@ -1,6 +1,8 @@
 package com.ded.misle.boxes;
 
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Objects;
 
 import static com.ded.misle.GamePanel.player;
 
@@ -125,6 +127,9 @@ public class Box {
 		if (box.effect[0].equals("velocity")) {
 			handleBoxVelocity(box);
 		}
+		if (box.effect[0].equals("spawnpoint")) {
+			handleBoxCheckpoint(box);
+		}
 	}
 
 	public void setEffectValue(double effectValue) {
@@ -174,5 +179,15 @@ public class Box {
 	private static void handleBoxVelocity(Box box) {
 		player.attr.setPlayerEnvironmentSpeedModifier(box.getEffectValue());
 		player.attr.setLastVelocityBox(box);
+	}
+
+	private static void handleBoxCheckpoint(Box box) {
+		if ((Objects.equals(box.effect[1], "-1") || Integer.parseInt(box.effect[1]) > 0) && !Arrays.equals(player.pos.getSpawnpoint(), new double[]{box.getOriginalX(), box.getOriginalY()})) {
+			player.pos.setSpawnpoint(box.getOriginalX(), box.getOriginalY());
+			System.out.println("Saved spawnpoint as " + box.getOriginalX() + ", " + box.getOriginalY());
+			if (Integer.parseInt(box.effect[1]) > 0) {
+				box.effect[1] = String.valueOf(Integer.parseInt(box.effect[1]) - 1);
+			}
+		}
 	}
 }

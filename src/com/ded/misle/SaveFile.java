@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 
@@ -39,11 +40,26 @@ public class SaveFile {
 				double playerMaxHP = 255 * maxHPHigh + maxHPLow;
 				player.attr.setPlayerMaxHP(playerMaxHP);
 
+				// Load spawnpoint
+
+				int spawnpointXHighest = new Color(image.getRGB(42, 69)).getRed();
+				int spawnpointXHigh = new Color(image.getRGB(69, 42)).getRed();
+				int spawnpointXLow = new Color(image.getRGB(42, 69)).getBlue();
+
+				int spawnpointYHighest = new Color(image.getRGB(69, 42)).getBlue();
+				int spawnpointYHigh = new Color(image.getRGB(69, 42)).getGreen();
+				int spawnpointYLow = new Color(image.getRGB(42, 69)).getGreen();
+
+				double spawnpointX = spawnpointXHighest * 255 * 255 + spawnpointXHigh * 255 + spawnpointXLow;
+				double spawnpointY = spawnpointYHighest * 255 * 255 + spawnpointYHigh * 255 + spawnpointYLow;
+				player.pos.setSpawnpoint(spawnpointX, spawnpointY);
+				player.pos.reloadSpawnpoint();
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		} else {
-			System.out.println("Save file does not exist. Cannot load HP and Max HP.");
+			System.out.println("Save file does not exist. Creating a blank one.");
 		}
 	}
 
@@ -51,6 +67,7 @@ public class SaveFile {
 	public static void saveEverything() {
 		brandIntoSaveFile("hp", Double.toString(player.attr.getPlayerHP()));
 		brandIntoSaveFile("maxHP", Double.toString(player.attr.getPlayerMaxHP()));
+		brandIntoSaveFile("spawnpoint", Arrays.toString(player.pos.getSpawnpoint()));
 	}
 
 	private static void brandIntoSaveFile(String key, String value) {
@@ -80,6 +97,30 @@ public class SaveFile {
 				pos[0] = 99;
 				pos[1] = 1;
 				image.setRGB(pos[0], pos[1], new Color(maxHP % 255, new Color(image.getRGB(pos[0], pos[1])).getGreen(), new Color(image.getRGB(pos[0], pos[1])).getBlue()).getRGB());
+			}  else if (Objects.equals(key, "spawnpoint")) {
+				pos[0] = 42;
+				pos[1] = 69;
+				image.setRGB(pos[0], pos[1], new Color((int) (player.pos.getSpawnpoint()[0] / (255 * 255)), new Color(image.getRGB(pos[0], pos[1])).getGreen(), new Color(image.getRGB(pos[0], pos[1])).getBlue()).getRGB());
+
+				pos[0] = 69;
+				pos[1] = 42;
+				image.setRGB(pos[0], pos[1], new Color((int) (player.pos.getSpawnpoint()[0] / 255), new Color(image.getRGB(pos[0], pos[1])).getGreen(), new Color(image.getRGB(pos[0], pos[1])).getBlue()).getRGB());
+
+				pos[0] = 42;
+				pos[1] = 69;
+				image.setRGB(pos[0], pos[1], new Color(new Color(image.getRGB(pos[0], pos[1])).getRed(), new Color(image.getRGB(pos[0], pos[1])).getGreen(), (int) (player.pos.getSpawnpoint()[0] % 255)).getRGB());
+
+				pos[0] = 69;
+				pos[1] = 42;
+				image.setRGB(pos[0], pos[1], new Color(new Color(image.getRGB(pos[0], pos[1])).getRed(), new Color(image.getRGB(pos[0], pos[1])).getGreen(), (int) (player.pos.getSpawnpoint()[1] / (255 * 255))).getRGB());
+
+				pos[0] = 69;
+				pos[1] = 42;
+				image.setRGB(pos[0], pos[1], new Color(new Color(image.getRGB(pos[0], pos[1])).getRed(), (int) (player.pos.getSpawnpoint()[1] / 255), new Color(image.getRGB(pos[0], pos[1])).getBlue()).getRGB());
+
+				pos[0] = 42;
+				pos[1] = 69;
+				image.setRGB(pos[0], pos[1], new Color(new Color(image.getRGB(pos[0], pos[1])).getRed(), (int) (player.pos.getSpawnpoint()[1] % 255), new Color(image.getRGB(pos[0], pos[1])).getBlue()).getRGB());
 			}
 		} catch (NumberFormatException e) {
 			throw new IllegalArgumentException("Invalid key or value: " + key + ", " + value);

@@ -1,5 +1,6 @@
 package com.ded.misle.player;
 
+import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
 
 public class Player {
@@ -11,7 +12,7 @@ public class Player {
 
 	public Player() {
 		this.keys = new PlayerKeys();
-		this.pos = new PlayerPosition(325, 225);
+		this.pos = new PlayerPosition();
 		this.attr = new PlayerAttributes();
 		this.stats = new PlayerStats();
 	}
