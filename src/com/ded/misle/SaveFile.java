@@ -4,10 +4,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.security.InvalidKeyException;
 import java.util.Objects;
 import javax.imageio.ImageIO;
-import javax.swing.*;
 
 import static com.ded.misle.ChangeSettings.getPath;
 import static com.ded.misle.GamePanel.player;
@@ -51,11 +49,11 @@ public class SaveFile {
 
 
 	public static void saveEverything() {
-		brandingIntoSaveFile("hp", Double.toString(player.attr.getPlayerHP()));
-		brandingIntoSaveFile("maxHP", Double.toString(player.attr.getPlayerMaxHP()));
+		brandIntoSaveFile("hp", Double.toString(player.attr.getPlayerHP()));
+		brandIntoSaveFile("maxHP", Double.toString(player.attr.getPlayerMaxHP()));
 	}
 
-	private static void brandingIntoSaveFile(String key, String value) {
+	private static void brandIntoSaveFile(String key, String value) {
 		try {
 			for (int i = 0; i < image.getWidth(); i++) {
 				image.setRGB(i, i, new Color(254, 197, 229).getRGB()); // For guaranteeing the image has not been altered
@@ -65,22 +63,20 @@ public class SaveFile {
 			if (Objects.equals(key, "hp")) {
 				value = value.split("\\.")[0];
 				int hp = Integer.parseInt(value);
-				if (hp > 255) {
-					pos[0] = 30;
-					pos[1] = 127;
-					image.setRGB(pos[0], pos[1], new Color(new Color(image.getRGB(pos[0], pos[1])).getRed(), new Color(image.getRGB(pos[0], pos[1])).getGreen(), hp / 255).getRGB());
-				}
+				pos[0] = 30;
+				pos[1] = 127;
+				image.setRGB(pos[0], pos[1], new Color(new Color(image.getRGB(pos[0], pos[1])).getRed(), new Color(image.getRGB(pos[0], pos[1])).getGreen(), hp / 255).getRGB());
+
 				pos[0] = 99;
 				pos[1] = 0;
 				image.setRGB(pos[0], pos[1], new Color(new Color(image.getRGB(pos[0], pos[1])).getRed(), new Color(image.getRGB(pos[0], pos[1])).getGreen(), hp % 255).getRGB());
 			} else if (Objects.equals(key, "maxHP")) {
 				value = value.split("\\.")[0];
 				int maxHP = Integer.parseInt(value);
-				if (maxHP > 255) {
-					pos[0] = 30;
-					pos[1] = 127;
-					image.setRGB(pos[0], pos[1], new Color(new Color(image.getRGB(pos[0], pos[1])).getRed(), maxHP / 255, new Color(image.getRGB(pos[0], pos[1])).getBlue()).getRGB());
-				}
+				pos[0] = 30;
+				pos[1] = 127;
+				image.setRGB(pos[0], pos[1], new Color(new Color(image.getRGB(pos[0], pos[1])).getRed(), maxHP / 255, new Color(image.getRGB(pos[0], pos[1])).getBlue()).getRGB());
+
 				pos[0] = 99;
 				pos[1] = 1;
 				image.setRGB(pos[0], pos[1], new Color(maxHP % 255, new Color(image.getRGB(pos[0], pos[1])).getGreen(), new Color(image.getRGB(pos[0], pos[1])).getBlue()).getRGB());
