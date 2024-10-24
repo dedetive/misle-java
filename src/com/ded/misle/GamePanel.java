@@ -10,6 +10,7 @@ import java.awt.event.*;
 import java.util.List;
 
 import static com.ded.misle.Launcher.*;
+import static com.ded.misle.SaveFile.saveEverything;
 
 /**
  * This is for loading and altering how the window behaves. Only do this once, otherwise new screens are created.
@@ -165,6 +166,7 @@ public class GamePanel extends JPanel implements Runnable {
 		window.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
+				saveEverything();
 				running = false;
 				System.exit(0);
 			}
@@ -350,12 +352,12 @@ public class GamePanel extends JPanel implements Runnable {
 		// DEBUG KEYS '[' AND ']'
 
 		if (player.keys.keyPressed.get("debug1")) {
-			double damageDealt = player.attr.takeDamage(20, "absolute post-mortem");
+			double damageDealt = player.attr.takeDamage(20, "absolute normal");
 			System.out.println("Took " + damageDealt + " damage, now at " + player.attr.getPlayerHP() + " HP.");
 			player.keys.keyPressed.put("debug1", false);
 		}
 		if (player.keys.keyPressed.get("debug2")) {
-			double healReceived = player.attr.receiveHeal(125, "absolute revival exclusive overheal");
+			double healReceived = player.attr.receiveHeal(125, "absolute normal");
 			System.out.println("Received " + healReceived + " heal, now at " + player.attr.getPlayerHP() + " HP.");
 			player.keys.keyPressed.put("debug2", false);
 		}

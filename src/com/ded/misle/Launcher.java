@@ -3,6 +3,7 @@ package com.ded.misle;
 import javax.swing.*;
 
 import static com.ded.misle.ChangeSettings.getSetting;
+import static com.ded.misle.SaveFile.loadSaveFile;
 
 /**
  * This launches the game. Only ever run the game from this class.
@@ -70,6 +71,7 @@ public class Launcher {
 	public static void main(String[] args) {
 
 		loadMainMenu();
+		loadSaveFile();
 
 		SwingUtilities.invokeLater(() -> {
 			GamePanel mainGamePanel = new GamePanel();

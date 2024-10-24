@@ -27,7 +27,7 @@ public class PlayerAttributes {
 			this.setPlayerEnvironmentSpeedModifier(1);
 			this.setPlayerWidth(tileSize);
 			this.setPlayerHeight(tileSize);
-			this.setPlayerMaxHP(100);
+			this.setPlayerMaxHP(1080);
 			this.setPlayerDefense(4);
 			this.setPlayerHP(getPlayerMaxHP());
 			this.updateXPtoLevelUp();
@@ -93,16 +93,18 @@ public class PlayerAttributes {
 		return hp;
 	}
 
-	public void setPlayerHP(double HP) {
+	public double setPlayerHP(double HP) {
 		this.hp = HP;
+		return HP;
 	}
 
 	public double getPlayerMaxHP() {
 		return maxHP;
 	}
 
-	public void setPlayerMaxHP(double maxHP) {
+	public double setPlayerMaxHP(double maxHP) {
 		this.maxHP = maxHP;
+		return maxHP;
 	}
 
 	/**
@@ -125,8 +127,8 @@ public class PlayerAttributes {
 		double damageToReceive;
 
 		// Define boolean flags for different conditions
-		boolean isNormalOrAbsolute = reason.equals("normal") || reason.equals("absolute");
-		boolean isPostMortem = reason.equals("post-mortem") || reason.equals("absolute post-mortem");
+		boolean isNormalOrAbsolute = reason.contains("normal") || reason.contains("absolute");
+		boolean isPostMortem = reason.contains("post-mortem");
 
 		// Calculate damage based on the reason
 		if (isNormalOrAbsolute) {
