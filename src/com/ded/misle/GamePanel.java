@@ -317,6 +317,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 
 	public void updateGame() {
+		long currentTime = System.currentTimeMillis();
+
 		// Update the camera offset to center the player in the view
 		player.pos.setCameraOffsetX(player.pos.getX() - width / 2 + player.attr.getPlayerWidth() / 2);
 		player.pos.setCameraOffsetY(player.pos.getY() - height / 2 + player.attr.getPlayerHeight() / 2);
@@ -326,6 +328,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		player.attr.checkIfLevelUp();
 
+		player.attr.updateRegenerationHP(currentTime);
 		updateKeys();  // Check for player input and update position accordingly
 		}
 

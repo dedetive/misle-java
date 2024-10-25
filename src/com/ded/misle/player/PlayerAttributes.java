@@ -12,17 +12,32 @@ import static com.ded.misle.Launcher.scale;
 @SuppressWarnings("ConditionalExpressionWithIdenticalBranches")
 public class PlayerAttributes {
 
+	// BASE ATTRIBUTES
+
 	private double playerSpeed;
-	private double playerSpeedModifier;
-	private double environmentSpeedModifier;
 	private double width;
 	private double height;
+
+	// STATS ATTRIBUTES
+
 	private double hp;
 	private double maxHP;
 	private double defense;
+	private double playerSpeedModifier;
+	private double environmentSpeedModifier;
+	private double regenerationQuality;
+	private double regenerationRate;
+
+	// XP
+
 	private double xp;
 	private double XPtoLevelUp;
 	private int level = 1;
+
+	// ETC
+
+	private long lastRegenerationMillis;
+	private long lastHitMillis;
 	private boolean isDead = false;
 	private Box lastVelocityBox = null;
 
@@ -32,6 +47,8 @@ public class PlayerAttributes {
 			this.setPlayerWidth(tileSize);
 			this.setPlayerHeight(tileSize);
 			this.setPlayerMaxHP(100);
+			this.setPlayerRegenerationQuality(1);
+			this.setPlayerRegenerationRate(1);
 			this.setPlayerDefense(0);
 			this.setPlayerHP(getPlayerMaxHP());
 			this.updateXPtoLevelUp();
@@ -143,6 +160,10 @@ public class PlayerAttributes {
 			this.hp -= damageToReceive; // Apply damage without floor
 		} else {
 			throw new IllegalArgumentException("Invalid reason: " + reason); // Handle invalid reasons
+		}
+
+		if (damageToReceive > 0) {
+			lastHitMillis = System.currentTimeMillis();
 		}
 
 		// Check if the player dies
@@ -300,6 +321,35 @@ public class PlayerAttributes {
 		this.defense = defense;
 	}
 
+	// REGENERATION
+
+	public void updateRegenerationHP(long currentTime) {
+		// Calculate the interval for healing 1 HP, based on the existing regeneration rate and quality
+		double regenerationInterval = ((2500L / regenerationRate) / 10 / regenerationQuality);
+
+		if ((lastHitMillis + 2500 < currentTime) && lastRegenerationMillis + regenerationInterval < currentTime && !this.isDead) {
+			receiveHeal(1, "normal");
+			lastRegenerationMillis = currentTime;
+		}
+	}
+
+
+	public double getPlayerRegenerationQuality() {
+		return regenerationQuality;
+	}
+
+	public void setPlayerRegenerationQuality(double regenerationQuality) {
+		this.regenerationQuality = regenerationQuality;
+	}
+
+	public double getPlayerRegenerationRate() {
+		return regenerationRate;
+	}
+
+	public void setPlayerRegenerationRate(double regenerationRate) {
+		this.regenerationRate = regenerationRate;
+	}
+
 	// DEATH HANDLING
 
 	public boolean isDead() {
@@ -309,7 +359,7 @@ public class PlayerAttributes {
 	public void playerDies() {
 		this.isDead = true;
 
-		// Schedule playerRespawns() to run after 5 seconds (5000 milliseconds)
+		// Schedule playerRespawns() to run after 4 seconds (4000 milliseconds)
 		Timer timerToRespawn = new Timer();
 		timerToRespawn.schedule(new TimerTask() {
 			@Override
