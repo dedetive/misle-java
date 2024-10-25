@@ -188,7 +188,7 @@ public class GamePanel extends JPanel implements Runnable {
 				colorGreen = 60;
 				colorBlue = 60;
 
-				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), true, 3, 3, new String[]{"damage", Double.toString(x * y + 10), "1000", "normal"});
+				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), true, 3, 3, new String[]{"damage", Double.toString(x * y + 10), "1000", "locker", "7000"});
 				y++;
 			}
 			y = 0;
@@ -378,13 +378,15 @@ public class GamePanel extends JPanel implements Runnable {
 		// DEBUG KEYS '[' AND ']'
 
 		if (player.keys.keyPressed.get("debug1")) {
-			double damageDealt = player.attr.takeDamage(20, "absolute");
-			System.out.println("Took " + damageDealt + " damage, now at " + player.attr.getPlayerHP() + " HP.");
+			String reason = "absolute";
+			double damageDealt = player.attr.takeDamage(20, reason, new String[]{});
+			System.out.println("Took " + damageDealt + " " + reason + " damage, now at " + player.attr.getPlayerHP() + " HP.");
 			player.keys.keyPressed.put("debug1", false);
 		}
 		if (player.keys.keyPressed.get("debug2")) {
-			double healReceived = player.attr.receiveHeal(125, "absolute revival");
-			System.out.println("Received " + healReceived + " heal, now at " + player.attr.getPlayerHP() + " HP.");
+			String reason = "absolute revival";
+			double healReceived = player.attr.receiveHeal(125, reason);
+			System.out.println("Received " + healReceived + " " + reason + " heal, now at " + player.attr.getPlayerHP() + " HP.");
 			player.keys.keyPressed.put("debug2", false);
 		}
 	}
@@ -507,6 +509,11 @@ public class GamePanel extends JPanel implements Runnable {
 		g2d.setColor(Color.GREEN);
 		g2d.fillRect(healthBarX, healthBarY, (int) (healthBarWidth * healthPercentage), healthBarHeight);
 
+		// Draw locked HP, if any
+		double lockedHPPercentage = Math.min(player.attr.getPlayerLockedHP() / player.attr.getPlayerMaxHP(), 1);
+
+		g2d.setColor(Color.DARK_GRAY);
+		g2d.fillRect(healthBarX, healthBarY, (int) (healthBarWidth * lockedHPPercentage), healthBarHeight);
 	}
 
 	public static double coordinateToPixel(int coordinate) {

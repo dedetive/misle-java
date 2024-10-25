@@ -22,6 +22,7 @@ public class PlayerAttributes {
 
 	private double hp;
 	private double maxHP;
+	private double lockedHP;
 	private double defense;
 	private double playerSpeedModifier;
 	private double environmentSpeedModifier;
@@ -128,18 +129,28 @@ public class PlayerAttributes {
 		return maxHP;
 	}
 
+	public double getPlayerLockedHP() {
+		return lockedHP;
+	}
+
+	public double setPlayerLockedHP(double lockedHP) {
+		this.lockedHP = lockedHP;
+		return lockedHP;
+	}
+
 	/**
 	 * REASONS: <br>
 	 * - "normal": defense and item effects take place normally. <br><br>
 	 * - "post-mortem": the damage will be dealt even if the player dies. Defense and item effects take place normally. May result in negative values. <br><br>
 	 * - "absolute post-mortem": the damage will be dealt even if the player dies. The damage will be dealt no matter what. May result in negative values. <br><br>
 	 * - "absolute": the damage will be dealt no matter what, unless player dies. <br><br>
+	 * - "locker": no damage is actually done. instead, a portion of the HP is locked and is temporarily not considered. Takes args[0] as how many milliseconds it takes for the HP to be unlocked. <br><br>
 	 *
 	 * @param damage the damage to be dealt
 	 * @param reason the kind of damage that's taking place; see above for a list
 	 * @return Final damage dealt
 	 */
-	public double takeDamage(double damage, String reason) {
+	public double takeDamage(double damage, String reason, String[] args) {
 		// Early exit for invalid damage
 		if (damage <= 0) {
 			return 0;
@@ -150,14 +161,29 @@ public class PlayerAttributes {
 		// Define boolean flags for different conditions
 		boolean isNormalOrAbsolute = reason.contains("normal") || reason.contains("absolute");
 		boolean isPostMortem = reason.contains("post-mortem");
+		boolean isLocker = reason.contains("locker");
 
 		// Calculate damage based on the reason
-		if (isNormalOrAbsolute) {
+		if (isLocker) {
 			damageToReceive = calculateDamage(damage, reason);
-			this.hp = Math.max(this.hp - damageToReceive, 0); // Ensure HP doesn't go below 0
+			lockedHP += damageToReceive;
+			// Schedule unlockHP() to run after a few seconds, based on args[0] in milliseconds
+			Timer timerToUnlock = new Timer();
+			timerToUnlock.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					unlockHP(damage);
+				}
+			}, Integer.parseInt(args[0]));
+
+		} else if (isNormalOrAbsolute) {
+			damageToReceive = calculateDamage(damage, reason);
+			this.hp = Math.max(this.hp - damageToReceive, 0); // Ensure HP doesn't go below 0 for non post mortem
+
 		} else if (isPostMortem) {
 			damageToReceive = calculateDamage(damage, reason);
-			this.hp -= damageToReceive; // Apply damage without floor
+			this.hp -= damageToReceive; // Apply damage without floor so it can go below 0
+
 		} else {
 			throw new IllegalArgumentException("Invalid reason: " + reason); // Handle invalid reasons
 		}
@@ -167,7 +193,7 @@ public class PlayerAttributes {
 		}
 
 		// Check if the player dies
-		if (this.hp <= 0) {
+		if (this.hp <= 0 || lockedHP > this.hp) {
 			playerDies();
 		}
 
@@ -177,7 +203,7 @@ public class PlayerAttributes {
 
 	/**
 	 *
-	 * The documentation for the method {@link #takeDamage(double, String)} is valid for this method too.
+	 * The documentation for the method {@link #takeDamage(double, String, String[])} is valid for this method too.
 	 *
 	 */
 	public double calculateDamage(double damage, String reason) {
@@ -196,7 +222,7 @@ public class PlayerAttributes {
 		// Calculate damage based on the reason
 		if (isAbsolute && isPostMortem) {
 			// Absolute post-mortem: damage will be dealt past 0 and defense effects are ignored
-			return damage; // Return full damage
+			theoreticalDamage = damage; // Return full damage
 		} else if (isAbsolute) {
 			// Absolute: defense effects are ignored
 			theoreticalDamage = Math.min(damage, this.hp);
@@ -211,6 +237,9 @@ public class PlayerAttributes {
 		return theoreticalDamage;
 	}
 
+	private void unlockHP(double damage) {
+		this.setPlayerLockedHP(Math.max(lockedHP - damage, 0));
+	}
 
 	/**
 	 * REASONS: <br>
@@ -235,7 +264,7 @@ public class PlayerAttributes {
 	 */
 	public double receiveHeal(double heal, String reason) {
 		// Early exit for invalid heal or if the character is dead without revival
-		if (heal <= 0 || (this.isDead && !reason.contains("revival"))) {
+		if (heal <= 0 || (this.isDead && (!reason.contains("revival"))) || (this.isDead && lockedHP > this.hp && this.hp >= 0)) {
 			return 0;
 		}
 
@@ -257,6 +286,10 @@ public class PlayerAttributes {
 			}
 		} else {
 			throw new IllegalArgumentException("Invalid reason: " + reason); // Handle invalid reasons
+		}
+
+		if (this.hp > lockedHP) {
+			this.isDead = false;        // Set isDead to false if new HP is higher than locked HP
 		}
 
 		return healToReceive;
@@ -327,7 +360,7 @@ public class PlayerAttributes {
 		// Calculate the interval for healing 1 HP, based on the existing regeneration rate and quality
 		double regenerationInterval = ((2500L / regenerationRate) / 10 / regenerationQuality);
 
-		if ((lastHitMillis + 2500 < currentTime) && lastRegenerationMillis + regenerationInterval < currentTime && !this.isDead) {
+		if (lastHitMillis + 2500 < currentTime && lastRegenerationMillis + regenerationInterval < currentTime && !this.isDead) {
 			receiveHeal(1, "normal");
 			lastRegenerationMillis = currentTime;
 		}
@@ -374,6 +407,7 @@ public class PlayerAttributes {
 	private void playerRespawns() {
 		player.pos.reloadSpawnpoint();
 		this.setPlayerHP(getPlayerMaxHP());
+		this.setPlayerLockedHP(0);
 		this.isDead = false;
 	}
 

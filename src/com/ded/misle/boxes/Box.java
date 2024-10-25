@@ -25,7 +25,7 @@ public class Box {
 	 *
 	 * - "": for no effect <br>
 	 * - "damage": for damaging over time. Second value within the list is the damage amount. Third value is the rate
-	 * at which the damage is given. The fourth value is the reason of the damage. See {@link com.ded.misle.player.PlayerAttributes#takeDamage(double, String)}
+	 * at which the damage is given. The fourth value is the reason of the damage. See {@link com.ded.misle.player.PlayerAttributes#takeDamage(double, String, String[])}
 	 * for a list of reasons.
 	 * - "velocity": for changing the speed. Second value is the multiplier of the speed based on player's playerSpeed.
 	 *
@@ -153,6 +153,19 @@ public class Box {
 		}
 	}
 
+	public String[] getEffectArgs() {
+		if (getEffect().equals("damage")) {
+			return new String[]{this.effect[4]};
+		}
+		return new String[]{""};
+	}
+
+	public void setEffectArgs(String[] args) {
+		if (getEffect().equals("damage")) {
+			this.effect[4] = Arrays.toString(args);
+		}
+	}
+
 	// EFFECT HANDLING
 
 	public long getLastEffectTime() {
@@ -171,8 +184,8 @@ public class Box {
 		if (currentTime - box.getLastEffectTime() >= cooldownDuration) {
 			box.setLastEffectTime(currentTime); // Update the last damage time
 			box.setEffectReason(box.getEffectReason());
-			player.attr.takeDamage(box.getEffectValue(), box.getEffectReason());
-			System.out.println(box.getEffectValue() + " damage dealt! Now at " + player.attr.getPlayerHP() + " HP.");
+			player.attr.takeDamage(box.getEffectValue(), box.getEffectReason(), box.getEffectArgs());
+			System.out.println(box.getEffectValue() + " " + box.getEffectReason() + " damage dealt! Now at " + player.attr.getPlayerHP() + " HP.");
 		}
 	}
 
