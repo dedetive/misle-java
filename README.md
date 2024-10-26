@@ -10,7 +10,7 @@ javac src/com/ded/misle/*.java src/com/ded/misle/boxes/*.java
 java -cp src com.ded.misle.Launcher
 ```
 
-Até o momento os controles são as setinhas para movimentar o quadrado branco, que é o jogador.
+Até o momento os controles são as setinhas para movimentar o quadrado branco, que é o jogador. Além disso, existem as teclas de teste [ e ] cujo funcionamento varia de versão para versão. Elas podem ser customizadas no Game panel.java, no fim do método updateKeys().
 
 ### Configurações
 
