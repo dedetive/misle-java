@@ -1,6 +1,7 @@
 package com.ded.misle;
 
 import com.ded.misle.boxes.Box;
+import com.ded.misle.boxes.BoxManipulation;
 import com.ded.misle.boxes.BoxesHandling;
 import com.ded.misle.player.Player;
 
@@ -378,16 +379,30 @@ public class GamePanel extends JPanel implements Runnable {
 		// DEBUG KEYS '[' AND ']'
 
 		if (player.keys.keyPressed.get("debug1")) {
-			String reason = "absolute";
-			double damageDealt = player.attr.takeDamage(20, reason, new String[]{});
-			System.out.println("Took " + damageDealt + " " + reason + " damage, now at " + player.attr.getPlayerHP() + " HP.");
-			player.keys.keyPressed.put("debug1", false);
+
+			double pixelsToMove = -2;
+			List<Box> boxesNearby = BoxesHandling.getBoxesInRange(player.pos.getX(), player.pos.getY(), 40, scale, tileSize);
+			for (Box box : boxesNearby) {
+				BoxManipulation.teleportBox(box, box.getCurrentX(), box.getCurrentY() + pixelsToMove);
+			}
+
+//			String reason = "absolute";
+//			double damageDealt = player.attr.takeDamage(20, reason, new String[]{});
+//			System.out.println("Took " + damageDealt + " " + reason + " damage, now at " + player.attr.getPlayerHP() + " HP.");
+//			player.keys.keyPressed.put("debug1", false);
 		}
 		if (player.keys.keyPressed.get("debug2")) {
-			String reason = "absolute revival";
-			double healReceived = player.attr.receiveHeal(125, reason);
-			System.out.println("Received " + healReceived + " " + reason + " heal, now at " + player.attr.getPlayerHP() + " HP.");
-			player.keys.keyPressed.put("debug2", false);
+
+			double pixelsToMove = 2;
+			List<Box> boxesNearby = BoxesHandling.getBoxesInRange(player.pos.getX(), player.pos.getY(), 40, scale, tileSize);
+			for (Box box : boxesNearby) {
+				BoxManipulation.teleportBox(box, box.getCurrentX(), box.getCurrentY() + pixelsToMove);
+			}
+
+//			String reason = "absolute revival";
+//			double healReceived = player.attr.receiveHeal(125, reason);
+//			System.out.println("Received " + healReceived + " " + reason + " heal, now at " + player.attr.getPlayerHP() + " HP.");
+//			player.keys.keyPressed.put("debug2", false);
 		}
 	}
 

@@ -9,6 +9,8 @@ import static com.ded.misle.GamePanel.player;
 public class Box {
 	private final double originalX; // The original world position (unscaled)
 	private final double originalY; // The original world position (unscaled)
+	private double currentX; // The current world position (unscaled)
+	private double currentY; // The current world position (unscaled)
 	private final Color color;
 	private final boolean hasCollision;
 	private final double boxScaleHorizontal;
@@ -40,6 +42,8 @@ public class Box {
 	public Box(double x, double y, Color color, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect) {
 		this.originalX = x; // Store the original position
 		this.originalY = y; // Store the original position
+		this.currentX = this.originalX;
+		this.currentY = this.originalY;
 		this.color = color;
 		this.hasCollision = hasCollision;
 		this.boxScaleHorizontal = boxScaleHorizontal;
@@ -50,8 +54,8 @@ public class Box {
 	// Method to render the box with the current tileSize and scale the position
 	public void draw(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY, double scale, int tileSize, double boxScaleHorizontal, double boxScaleVertical) {
 		// Scale the position based on the current scale
-		double scaledX = originalX * scale;
-		double scaledY = originalY * scale;
+		double scaledX = currentX * scale;
+		double scaledY = currentY * scale;
 
 		// Apply the camera offset to the scaled position
 		int screenX = (int) (scaledX - cameraOffsetX);
@@ -66,8 +70,8 @@ public class Box {
 
 	// Check if a point (e.g., player) is inside this box (adjusted for the new scale)
 	public boolean isPointColliding(double pointX, double pointY, double scale, double objectWidth, double objectHeight) {
-		double scaledX = originalX * scale;
-		double scaledY = originalY * scale;
+		double scaledX = currentX * scale;
+		double scaledY = currentY * scale;
 		return pointX >= scaledX && pointX <= scaledX + objectWidth * boxScaleHorizontal && pointY >= scaledY && pointY <= scaledY + objectHeight * boxScaleVertical;
 	}
 
@@ -77,13 +81,47 @@ public class Box {
 
 	// BOX POSITION AND SCALING
 
+	/**
+	 * Is unscaled.
+	 */
 	public double getOriginalX() {
         return originalX;
 	}
 
+	/**
+	 * Is unscaled.
+	 */
     public double getOriginalY() {
       return originalY;
     }
+
+	/**
+	 * Is unscaled.
+	 */
+	public double getCurrentX() {
+		return currentX;
+	}
+
+	/**
+	 * Is unscaled.
+	 */
+	public double getCurrentY() {
+		return currentY;
+	}
+
+	/**
+	 * Is unscaled.
+	 */
+	public void setCurrentX(double x) {
+		this.currentX = x;
+	}
+
+	/**
+	 * Is unscaled.
+	 */
+	public void setCurrentY(double y) {
+		this.currentY = y;
+	}
 
 	public double getBoxScaleHorizontal() {
 		return boxScaleHorizontal;
@@ -195,9 +233,9 @@ public class Box {
 	}
 
 	private static void handleBoxCheckpoint(Box box) {
-		if ((Objects.equals(box.effect[1], "-1") || Integer.parseInt(box.effect[1]) > 0) && !Arrays.equals(player.pos.getSpawnpoint(), new double[]{box.getOriginalX(), box.getOriginalY()})) {
-			player.pos.setSpawnpoint(box.getOriginalX(), box.getOriginalY());
-			System.out.println("Saved spawnpoint as " + box.getOriginalX() + ", " + box.getOriginalY());
+		if ((Objects.equals(box.effect[1], "-1") || Integer.parseInt(box.effect[1]) > 0) && !Arrays.equals(player.pos.getSpawnpoint(), new double[]{box.getCurrentX(), box.getCurrentY()})) {
+			player.pos.setSpawnpoint(box.getCurrentX(), box.getCurrentY());
+			System.out.println("Saved spawnpoint as " + box.getCurrentX() + ", " + box.getCurrentY());
 			if (Integer.parseInt(box.effect[1]) > 0) {
 				box.effect[1] = String.valueOf(Integer.parseInt(box.effect[1]) - 1);
 			}
