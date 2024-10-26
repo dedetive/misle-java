@@ -168,7 +168,7 @@ public class GamePanel extends JPanel implements Runnable {
 				colorRed = 60;
 				colorGreen = 170; // GREEN SQUARES, COLLISION DISABLED
 				colorBlue = 60;
-				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 3, 3, new String[]{"velocity", Double.toString(0.75)});
+				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 3, 3, new String[]{"velocity", Double.toString(0.5)});
 				y++;
 			}
 			y = 0;
@@ -189,7 +189,7 @@ public class GamePanel extends JPanel implements Runnable {
 				colorGreen = 60;
 				colorBlue = 60;
 
-				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), true, 3, 3, new String[]{"damage", Double.toString(x * y + 10), "1000", "locker", "7000"});
+				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), true, 3, 3, new String[]{"damage", Double.toString(x * y * 2), "1000", "normal" , ""});
 				y++;
 			}
 			y = 0;
@@ -380,10 +380,9 @@ public class GamePanel extends JPanel implements Runnable {
 
 		if (player.keys.keyPressed.get("debug1")) {
 
-			double pixelsToMove = -2;
-			List<Box> boxesNearby = BoxesHandling.getBoxesInRange(player.pos.getX(), player.pos.getY(), 40, scale, tileSize);
+			List<Box> boxesNearby = BoxesHandling.getBoxesInRange(player.pos.getX(), player.pos.getY(), 100 * scale, scale, tileSize);
 			for (Box box : boxesNearby) {
-				BoxManipulation.teleportBox(box, box.getCurrentX(), box.getCurrentY() + pixelsToMove);
+				BoxManipulation.moveBox(box, 5, 5, 1500);
 			}
 
 //			String reason = "absolute";
@@ -393,11 +392,7 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 		if (player.keys.keyPressed.get("debug2")) {
 
-			double pixelsToMove = 2;
-			List<Box> boxesNearby = BoxesHandling.getBoxesInRange(player.pos.getX(), player.pos.getY(), 40, scale, tileSize);
-			for (Box box : boxesNearby) {
-				BoxManipulation.teleportBox(box, box.getCurrentX(), box.getCurrentY() + pixelsToMove);
-			}
+			movePlayer(5, 5);
 
 //			String reason = "absolute revival";
 //			double healReceived = player.attr.receiveHeal(125, reason);
