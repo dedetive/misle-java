@@ -41,6 +41,15 @@ public class GamePanel extends JPanel implements Runnable {
 		player = new Player();
 	}
 
+	// GAMESTATE
+
+	public enum GameState {
+		PLAYING,
+		MENU
+	}
+	private GameState gameState = GameState.MENU; // Start in MENU by default
+
+
 	// CAMERA WORLD BOUNDARIES
 
 	double originalWorldWidth = 1000;
@@ -280,6 +289,8 @@ public class GamePanel extends JPanel implements Runnable {
 		long frameCount = 0;
 		long lastFPSUpdate = System.currentTimeMillis();
 
+		// GAME LOOP
+
 		while (gameThread != null && running) {
 			long currentTime = System.nanoTime();
 			delta += (currentTime - lastTime) / nsPerFrame;
@@ -287,25 +298,27 @@ public class GamePanel extends JPanel implements Runnable {
 
 			// Process updates and rendering while delta is >= 1
 			while (delta >= 1) {
-				updateGame();
+				if (gameState == GameState.PLAYING) {
+					updateGame(); // Only update if in the playing state
+				}
 				delta--;
 			}
 
-			repaint(); // Render the game (renderFrame if necessary)
-			renderFrame();
-
+			renderFrame(); // Render the appropriate frame based on gameState
 			frameCount++;
 
+			// FPS LABEL DISABLED FOR NOW
+
 			// Update FPS label every second
-			long currentMillis = System.currentTimeMillis();
-			if (currentMillis - lastFPSUpdate >= 1000) {
-				if (displayFPS) {
-					fpsLabel.setText("FPS: " + frameCount);
-					System.out.println(frameCount);
-				}
-				frameCount = 0;
-				lastFPSUpdate = currentMillis;
-			}
+//			long currentMillis = System.currentTimeMillis();
+//			if (currentMillis - lastFPSUpdate >= 1000) {
+//				if (displayFPS) {
+//					fpsLabel.setText("FPS: " + frameCount);
+//					System.out.println(frameCount);
+//				}
+//				frameCount = 0;
+//				lastFPSUpdate = currentMillis;
+//			}
 
 			// Sleep dynamically to maintain target FPS
 			try {
@@ -480,25 +493,24 @@ public class GamePanel extends JPanel implements Runnable {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		Graphics2D g2d = (Graphics2D) g;
+		if (gameState == GameState.PLAYING) {
+			Graphics2D g2d = (Graphics2D) g;
 
+			// Draw game components
+			BoxesHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), player.pos.getX(), player.pos.getY(), width, scale, tileSize);
 
-		// Draw other game elements, using the camera offset as well
-		BoxesHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), player.pos.getX(), player.pos.getY(), width, scale, tileSize);
+			// Player position adjustments
+			int playerScreenX = (int) (player.pos.getX() - player.pos.getCameraOffsetX());
+			int playerScreenY = (int) (player.pos.getY() - player.pos.getCameraOffsetY());
 
+			drawUIElements(g2d, playerScreenX, playerScreenY);
 
-		// Adjust the player's position based on the camera offsets
-		int playerScreenX = (int) (player.pos.getX() - player.pos.getCameraOffsetX());
-		int playerScreenY = (int) (player.pos.getY() - player.pos.getCameraOffsetY());
+			// Draw the player
+			g2d.setColor(Color.WHITE);
+			g2d.fillRect(playerScreenX, playerScreenY, (int) player.attr.getPlayerWidth(), (int) player.attr.getPlayerHeight());
 
-		drawUIElements(g2d, playerScreenX, playerScreenY);
-
-		// Draw the player
-		g2d.setColor(Color.WHITE); // For now, a rectangle
-		g2d.fillRect(playerScreenX, playerScreenY, (int) player.attr.getPlayerWidth(), (int) player.attr.getPlayerHeight());
-
-		// For optimizing reasons
-		g2d.dispose();
+			g2d.dispose();
+		}
 	}
 
 	private static void drawUIElements(Graphics2D g2d, int playerScreenX, int playerScreenY) {
@@ -534,7 +546,30 @@ public class GamePanel extends JPanel implements Runnable {
 		return (int) (pixel / tileSize);
 	}
 
-	private void renderFrame() {
-		// Insert render logic here
+	public void renderFrame() {
+		if (gameState == GameState.PLAYING) {
+			// Repaint the game components
+			repaint();
+		} else if (gameState == GameState.MENU) {
+			// Render the menu
+			renderMenu();
+		}
+	}
+
+	private void renderMenu() {
+		Graphics g = this.getGraphics(); // Use current component's graphics
+		if (g instanceof Graphics2D) {
+			Graphics2D g2d = (Graphics2D) g;
+
+			// Set menu visuals, e.g., background, options
+			g2d.setColor(Color.BLACK); // Background color
+			g2d.fillRect(0, 0, getWidth(), getHeight());
+
+			g2d.setColor(Color.WHITE); // Text color
+			g2d.drawString("Game Menu", getWidth() / 2 - 30, getHeight() / 2 - 50);
+			g2d.drawString("Press Enter to Start", getWidth() / 2 - 50, getHeight() / 2);
+
+			g2d.dispose();
+		}
 	}
 }
