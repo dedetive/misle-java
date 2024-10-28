@@ -24,16 +24,17 @@ public class GameRenderer {
 	private static String currentMenu;
 
 	private static void createButton(Rectangle button, String text, Runnable action, JPanel panel, Graphics2D g2d, double scaleByScreenSize) {
-		Font alefBoldFont = FontManager.loadFont("/fonts/Alef-Bold.ttf", (float) (40 * scale / 3.75));
+		Font alefFont = FontManager.loadFont("/fonts/Alef-Regular.ttf", (float) (44 * scale / 3.75));
+		Font alefBoldFont = FontManager.loadFont("/fonts/Alef-Bold.ttf", (float) (44 * scale / 3.75));
 		g2d.fillRoundRect(button.x, button.y, button.width, button.height, (int) (69 * scaleByScreenSize), (int) (69 * scaleByScreenSize));
 		g2d.setColor(new Color(0, 0, 0));
-		g2d.setFont(alefBoldFont);
+		g2d.setFont(alefFont);
 		FontMetrics fm = g2d.getFontMetrics();
 		String buttonText = text;
 		int textWidth = fm.stringWidth(buttonText);
 		int textHeight = fm.getAscent();
 		int textX = button.x + (button.width - textWidth) / 2;
-		int textY = button.y + (button.height + textHeight) / 2 - fm.getDescent();
+		int textY = button.y + (button.height + textHeight) / 2 - fm.getDescent() + (int) (2 * scale);
 		g2d.drawString(buttonText, textX, textY);
 
 		addClickable(button, action, panel);
