@@ -145,6 +145,7 @@ public class GameRenderer {
 		previousMenu = currentMenu;
 		currentMenu = "PLAYING";
 		loadSaveFile();
+		player.pos.reloadSpawnpoint();
 		GamePanel.gameState = GamePanel.GameState.PLAYING;
 	}
 
