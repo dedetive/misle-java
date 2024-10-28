@@ -6,6 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/lang" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/fonts" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/out/production/Misle/com/ded/misle" />
     </content>
     <orderEntry type="inheritedJdk" />
