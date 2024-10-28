@@ -38,6 +38,8 @@ public class Launcher {
 		fullscreenMode = getSetting("fullscreenMode");
 		displayFPS = Boolean.parseBoolean(getSetting("displayFPS"));
 		frameRateCap = Integer.parseInt(getSetting("frameRateCap"));
+		String languageCode = getSetting("language"); // This will be "en", "pt", or "ppm"
+		LanguageManager languageManager = new LanguageManager(languageCode);
 
 		// WINDOW CONFIGS
 

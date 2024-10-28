@@ -449,4 +449,20 @@ public class PlayerAttributes {
 	public void addXP(double xp) {
 		this.xp += xp;
 	}
+
+	public void unloadAttributes() {
+		this.setPlayerSpeedModifier(1);
+		this.setPlayerEnvironmentSpeedModifier(1);
+		this.setPlayerWidth(tileSize);
+		this.setPlayerHeight(tileSize);
+		this.setPlayerMaxHP(100);
+		this.setPlayerRegenerationQuality(1);
+		this.setPlayerRegenerationRate(1);
+		this.setPlayerDefense(0);
+		this.setPlayerHP(getPlayerMaxHP());
+		this.updateXPtoLevelUp();
+		isDead = false;
+		unlockHP(lockedHP);
+
+	}
 }

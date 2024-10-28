@@ -3,6 +3,8 @@ package com.ded.misle;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.SaveFile.loadSaveFile;
 import static com.ded.misle.SaveFile.saveEverything;
@@ -34,9 +36,16 @@ public class GameRenderer {
 
 			// MENU ITSELF
 
+			// Centering the title
+
 			g2d.setColor(new Color(233, 233, 233));
 			g2d.setFont(new Font("Dialog", Font.BOLD, (int) (96 * scaleByScreenSize)));
-			g2d.drawString("Misle", (int) (820 * scaleByScreenSize), (int) (182 * scaleByScreenSize));
+			FontMetrics fm = g2d.getFontMetrics();
+			String titleText = "Misle";
+			int textWidth = fm.stringWidth(titleText);
+			int centerX = (int) ((width - textWidth) / 2);
+			int textY = (int) (182 * scaleByScreenSize);
+			g2d.drawString(titleText, centerX, textY);
 
 			// Play button
 
@@ -47,7 +56,7 @@ public class GameRenderer {
 			int playButtonHeight = (int) (155 * scaleByScreenSize);
 			Rectangle playButton = new Rectangle(playButtonX, playButtonY, playButtonWidth, playButtonHeight);
 
-			createButton(playButton, "Play", GameRenderer::gameStart, panel, g2d, scaleByScreenSize);
+			createButton(playButton, LanguageManager.getText("main_menu_play"), GameRenderer::gameStart, panel, g2d, scaleByScreenSize);
 
 			// Quit button
 
@@ -58,7 +67,7 @@ public class GameRenderer {
 			int quitButtonHeight = (int) (155 * scaleByScreenSize);
 			Rectangle quitButton = new Rectangle(quitButtonX, quitButtonY, quitButtonWidth, quitButtonHeight);
 
-			createButton(quitButton, "Quit", GameRenderer::quitGame, panel, g2d, scaleByScreenSize);
+			createButton(quitButton, LanguageManager.getText("main_menu_quit"), GameRenderer::quitGame, panel, g2d, scaleByScreenSize);
 
 			// Options menu
 
@@ -69,7 +78,7 @@ public class GameRenderer {
 			int optionsButtonHeight = (int) (155 * scaleByScreenSize);
 			Rectangle optionsButton = new Rectangle(optionsButtonX, optionsButtonY, optionsButtonWidth, optionsButtonHeight);
 
-			createButton(optionsButton, "Options", GameRenderer::optionsMenu, panel, g2d, scaleByScreenSize);
+			createButton(optionsButton, LanguageManager.getText("main_menu_options"), GameRenderer::optionsMenu, panel, g2d, scaleByScreenSize);
 
 			// Version
 
@@ -156,8 +165,6 @@ public class GameRenderer {
 	}
 
 	public static void goToPreviousMenu() {
-		System.out.println("Previous menu: " + previousMenu);
-		System.out.println("Current menu: " + currentMenu);
 		switch (previousMenu) {
 			case "MAIN_MENU":
 				GamePanel.gameState = GamePanel.GameState.MAIN_MENU;
@@ -176,37 +183,9 @@ public class GameRenderer {
 
 	public static void goToMainMenu() {
 		saveEverything();
+		player.unloadPlayer();
 		previousMenu = currentMenu;
 		GamePanel.gameState = GamePanel.GameState.MAIN_MENU;
-	}
-
-	public static void renderOptionsMenu(Graphics g, double width, double height, JPanel panel) {
-		if (g instanceof Graphics2D g2d) {
-
-			double scaleByScreenSize = scale / 3.75;
-
-			// BACKGROUND
-
-			g2d.setColor(new Color(48, 48, 48));
-			g2d.fillRect(0, 0, (int) width, (int) height);
-
-			// MENU ITSELF
-
-			g2d.setColor(new Color(233, 233, 233));
-			g2d.setFont(new Font("Dialog", Font.BOLD, (int) (96 * scaleByScreenSize)));
-			g2d.drawString("Options", (int) (800 * scaleByScreenSize), (int) (182 * scaleByScreenSize));
-
-			// Go back button
-
-			g2d.setColor(new Color(191, 191, 191));
-			int playButtonX = (int) (1338 * scaleByScreenSize);
-			int playButtonY = (int) (883 * Math.pow(scaleByScreenSize, 1.04));
-			int playButtonWidth = (int) (407 * scaleByScreenSize);
-			int playButtonHeight = (int) (116 * scaleByScreenSize);
-			Rectangle playButton = new Rectangle(playButtonX, playButtonY, playButtonWidth, playButtonHeight);
-
-			createButton(playButton, "Go back", GameRenderer::goToPreviousMenu, panel, g2d, scaleByScreenSize);
-		}
 	}
 
 	public static void pauseGame() {
@@ -229,7 +208,12 @@ public class GameRenderer {
 
 			g2d.setColor(new Color(233, 233, 233));
 			g2d.setFont(new Font("Dialog", Font.BOLD, (int) (96 * scaleByScreenSize)));
-			g2d.drawString("Paused", (int) (780 * scaleByScreenSize), (int) (182 * scaleByScreenSize));
+			FontMetrics fm = g2d.getFontMetrics();
+			String titleText = LanguageManager.getText("pause_menu_paused");
+			int textWidth = fm.stringWidth(titleText);
+			int centerX = (int) ((width - textWidth) / 2);
+			int textY = (int) (182 * scaleByScreenSize);
+			g2d.drawString(titleText, centerX, textY);
 
 			// Resume button
 
@@ -240,7 +224,7 @@ public class GameRenderer {
 			int playButtonHeight = (int) (155 * scaleByScreenSize);
 			Rectangle playButton = new Rectangle(playButtonX, playButtonY, playButtonWidth, playButtonHeight);
 
-			createButton(playButton, "Resume", GameRenderer::softGameStart, panel, g2d, scaleByScreenSize);
+			createButton(playButton, LanguageManager.getText("pause_menu_resume"), GameRenderer::softGameStart, panel, g2d, scaleByScreenSize);
 
 			// Quit button
 
@@ -251,7 +235,7 @@ public class GameRenderer {
 			int quitButtonHeight = (int) (155 * scaleByScreenSize);
 			Rectangle quitButton = new Rectangle(quitButtonX, quitButtonY, quitButtonWidth, quitButtonHeight);
 
-			createButton(quitButton, "Quit", GameRenderer::goToMainMenu, panel, g2d, scaleByScreenSize);
+			createButton(quitButton, LanguageManager.getText("pause_menu_quit"), GameRenderer::goToMainMenu, panel, g2d, scaleByScreenSize);
 
 			// Options menu
 
@@ -262,7 +246,41 @@ public class GameRenderer {
 			int optionsButtonHeight = (int) (155 * scaleByScreenSize);
 			Rectangle optionsButton = new Rectangle(optionsButtonX, optionsButtonY, optionsButtonWidth, optionsButtonHeight);
 
-			createButton(optionsButton, "Options", GameRenderer::optionsMenu, panel, g2d, scaleByScreenSize);
+			createButton(optionsButton, LanguageManager.getText("pause_menu_options"), GameRenderer::optionsMenu, panel, g2d, scaleByScreenSize);
+		}
+	}
+
+	public static void renderOptionsMenu(Graphics g, double width, double height, JPanel panel) {
+		if (g instanceof Graphics2D g2d) {
+
+			double scaleByScreenSize = scale / 3.75;
+
+			// BACKGROUND
+
+			g2d.setColor(new Color(48, 48, 48));
+			g2d.fillRect(0, 0, (int) width, (int) height);
+
+			// MENU ITSELF
+
+			g2d.setColor(new Color(233, 233, 233));
+			g2d.setFont(new Font("Dialog", Font.BOLD, (int) (96 * scaleByScreenSize)));
+			FontMetrics fm = g2d.getFontMetrics();
+			String titleText = LanguageManager.getText("options_menu_options");
+			int textWidth = fm.stringWidth(titleText);
+			int centerX = (int) ((width - textWidth) / 2);
+			int textY = (int) (182 * scaleByScreenSize);
+			g2d.drawString(titleText, centerX, textY);
+
+			// Go back button
+
+			g2d.setColor(new Color(191, 191, 191));
+			int playButtonX = (int) (1338 * scaleByScreenSize);
+			int playButtonY = (int) (883 * Math.pow(scaleByScreenSize, 1.04));
+			int playButtonWidth = (int) (407 * scaleByScreenSize);
+			int playButtonHeight = (int) (116 * scaleByScreenSize);
+			Rectangle playButton = new Rectangle(playButtonX, playButtonY, playButtonWidth, playButtonHeight);
+
+			createButton(playButton, LanguageManager.getText("options_menu_go_back"), GameRenderer::goToPreviousMenu, panel, g2d, scaleByScreenSize);
 		}
 	}
 }
