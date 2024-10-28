@@ -84,7 +84,7 @@ public class GameRenderer {
 
 			g2d.setColor(new Color(217, 217, 217));
 			g2d.setFont(new Font("Dialog", Font.BOLD, (int) (40 * scaleByScreenSize)));
-			g2d.drawString("v0.1.3-alpha", (int) (1640 * scaleByScreenSize), (int) (1010* Math.pow(scaleByScreenSize, 1.04)));
+			g2d.drawString("v0.1.4-alpha", (int) (1640 * scaleByScreenSize), (int) (1010* Math.pow(scaleByScreenSize, 1.04)));
 		}
 	}
 
