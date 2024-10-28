@@ -28,11 +28,11 @@ public class SaveFile {
 			try {
 				image = ImageIO.read(save);
 
-				// Load HP
-				int hpHigh = new Color(image.getRGB(30, 127)).getBlue(); // High byte
-				int hpLow = new Color(image.getRGB(99, 0)).getBlue();    // Low byte
-				double playerHP = 255 * hpHigh + hpLow;
-				player.attr.setPlayerHP(playerHP);
+				// Load HP (Currently disabled)
+//				int hpHigh = new Color(image.getRGB(30, 127)).getBlue(); // High byte
+//				int hpLow = new Color(image.getRGB(99, 0)).getBlue();    // Low byte
+//				double playerHP = 255 * hpHigh + hpLow;
+//				player.attr.setPlayerHP(playerHP);
 
 				// Load maxHP
 				int maxHPHigh = new Color(image.getRGB(30, 127)).getGreen(); // High byte

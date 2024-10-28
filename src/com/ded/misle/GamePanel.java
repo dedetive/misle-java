@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
 
+import static com.ded.misle.GameRenderer.*;
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.SaveFile.saveEverything;
 
@@ -20,7 +21,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private final JFrame window;
 	private final int targetFPS = frameRateCap;
-	private volatile boolean running = true;
+	private static volatile boolean running = true;
 	private JLabel fpsLabel;
 	KeyHandler keyH = new KeyHandler();
 	Thread gameThread;
@@ -45,9 +46,12 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public enum GameState {
 		PLAYING,
-		MENU
+		MAIN_MENU,
+		OPTIONS_MENU,
+		PAUSE_MENU
 	}
-	private GameState gameState = GameState.MENU; // Start in MENU by default
+
+	public static GameState gameState = GameState.MAIN_MENU; // Start in PLAYING by default
 
 
 	// CAMERA WORLD BOUNDARIES
@@ -139,11 +143,15 @@ public class GamePanel extends JPanel implements Runnable {
 		window.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				saveEverything();
-				running = false;
-				System.exit(0);
+				quitGame();
 			}
 		});
+	}
+
+	public static void quitGame() {
+		saveEverything();
+		running = false;
+		System.exit(0);
 	}
 
 	private void addBoxes() {            // TEMPORARY
@@ -245,6 +253,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 				player.pos.setX(player.pos.getOriginalPlayerX() * scale);
 				player.pos.setY(player.pos.getOriginalPlayerY() * scale);
+
+				GameRenderer.clearClickables();
 
 				previousWidth = detectedWidth;
 				previousHeight = detectedHeight;
@@ -511,6 +521,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 			g2d.dispose();
 		}
+
+		if (gameState == GameState.MAIN_MENU) {
+			renderMainMenu(g, getWidth(), getHeight(), this);
+		}
 	}
 
 	private static void drawUIElements(Graphics2D g2d, int playerScreenX, int playerScreenY) {
@@ -547,29 +561,25 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void renderFrame() {
-		if (gameState == GameState.PLAYING) {
-			// Repaint the game components
-			repaint();
-		} else if (gameState == GameState.MENU) {
-			// Render the menu
-			renderMenu();
+		switch (gameState) {
+			case PLAYING:
+				repaint();
+				break;
+			case PAUSE_MENU:
+				renderPauseMenu();
+				break;
+			case MAIN_MENU:
+				repaint();
+				break;
+			case OPTIONS_MENU:
+				renderOptionsMenu();
+				break;
 		}
 	}
 
-	private void renderMenu() {
-		Graphics g = this.getGraphics(); // Use current component's graphics
-		if (g instanceof Graphics2D) {
-			Graphics2D g2d = (Graphics2D) g;
+	private void renderOptionsMenu() {
+	}
 
-			// Set menu visuals, e.g., background, options
-			g2d.setColor(Color.BLACK); // Background color
-			g2d.fillRect(0, 0, getWidth(), getHeight());
-
-			g2d.setColor(Color.WHITE); // Text color
-			g2d.drawString("Game Menu", getWidth() / 2 - 30, getHeight() / 2 - 50);
-			g2d.drawString("Press Enter to Start", getWidth() / 2 - 50, getHeight() / 2);
-
-			g2d.dispose();
-		}
+	private void renderPauseMenu() {
 	}
 }
