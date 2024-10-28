@@ -513,6 +513,9 @@ public class GamePanel extends JPanel implements Runnable {
 			case GameState.PLAYING:
 				Graphics2D g2d = (Graphics2D) g;
 
+				// ANTI-ALIASING
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
 				// Draw game components
 				BoxesHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), player.pos.getX(), player.pos.getY(), width, scale, tileSize);
 

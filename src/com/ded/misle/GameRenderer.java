@@ -136,6 +136,9 @@ public class GameRenderer {
 			Font acmeFont = FontManager.loadFont("/fonts/Acme-Regular.ttf", (float) (96 * scale / 3.75));
 			Font basicFont = FontManager.loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));
 
+			// ANTI-ALIASING
+			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
 			currentMenu = "MAIN_MENU";
 
 			double scaleByScreenSize = scale / 3.75;
@@ -203,6 +206,9 @@ public class GameRenderer {
 		if (g instanceof Graphics2D g2d) {
 			Font acmeFont = FontManager.loadFont("/fonts/Acme-Regular.ttf", (float) (96 * scale / 3.75));
 
+			// ANTI-ALIASING
+			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
 			double scaleByScreenSize = scale / 3.75;
 
 			// BACKGROUND
@@ -259,6 +265,9 @@ public class GameRenderer {
 	public static void renderOptionsMenu(Graphics g, double width, double height, JPanel panel) {
 		if (g instanceof Graphics2D g2d) {
 			Font acmeFont = FontManager.loadFont("/fonts/Acme-Regular.ttf", (float) (96 * scale / 3.75));
+
+			// ANTI-ALIASING
+			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
 			double scaleByScreenSize = scale / 3.75;
 
