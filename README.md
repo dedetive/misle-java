@@ -1,27 +1,29 @@
 # Misle
 
-### Uso
+### Usage
 
-Para abrir o jogo, navegue até o diretório misle-java-master/ em um terminal e execute `javac src/com/ded/misle/*.java src/com/ded/misle/boxes/*.java` para compilar o projeto. Em seguida, utilize `java -cp src com.ded.misle.Launcher` para abrir o projeto compilado. Alternativamente, use sua IDE de preferência com compilador para executar o código automaticamente, sempre usando o Launcher como base.
+To open the game, navigate to the directory `misle-java-master/` in a terminal and execute `javac src/com/ded/misle/*.java src/com/ded/misle/boxes/*.java src/com/ded/misle/player/*.java` to compile the project. Then, use `java -cp src com.ded.misle.Launcher` to launch the compiled project. Alternatively, you can use your preferred IDE with a compiler to run the code automatically, always using `Launcher` as the base.
 
-Em misle-java-master/:
-```
-javac src/com/ded/misle/*.java src/com/ded/misle/boxes/*.java
+In `misle-java-master/`:
+
+```bash
+javac src/com/ded/misle/*.java src/com/ded/misle/boxes/*.java src/com/ded/misle/player/*.java
 java -cp src com.ded.misle.Launcher
 ```
 
-Até o momento os controles são as setinhas para movimentar o quadrado branco, que é o jogador. Além disso, existem as teclas de teste [ e ] cujo funcionamento varia de versão para versão. Elas podem ser customizadas no Game panel.java, no fim do método updateKeys().
+Currently, the controls are the arrow keys to move the white square, which represents the player, and the escape key, which pauses the game. Additionally, there are test keys [ and ] whose functionality varies from version to version. These can be customized in `GamePanel.java`, at the end of the `updateKeys()` method.
 
-### Configurações
+### Settings
 
-Para alterar as configurações padrões do jogo, navegue até o arquivo misle-java-master/src/com/ded/misle/resources/settings.config e mude os valores. O valor default é usado quando o valor encontrado é diferente de qualquer opção possível. AS opções disponíveis são:
+To change the default game settings, navigate to the file `misle-java-master/src/com/ded/misle/resources/settings.config` and adjust the values. The default value is used when the specified value differs from any possible option. The available options are:
 
-```
+```sql
 screenSize (small, default=medium, big, huge, tv-sized, comical)
 isFullscreen (default=false, true)
 fullscreenMode (default=windowed, exclusive)
 frameRateCap (1..144, default=60)
 displayFPS (default=false, true)
+language (default=en, pt, ppm)
 ```
 
-O que está entre parênteses e descartado e apenas o que está após o sinal de = é levado em consideração. A função `displayFPS` atualmente não funciona e esteve disponível apenas nos testes iniciais, mas será implementada novamente posteriormente.
+What’s in parentheses is ignored, and only what follows the = sign is considered. The `displayFPS` function currently does not work and was only available in initial tests, but it will be reimplemented later.
