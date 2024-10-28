@@ -10,6 +10,7 @@ public class PlayerKeys {
 
 	public PlayerKeys() {
 		this.keyPressed = new HashMap<>();
+		this.setKeyMaxCooldown("pause", 1000);
 		this.setKeyMaxCooldown("debug1", 150);
 		this.setKeyMaxCooldown("debug2", 150);
 	}

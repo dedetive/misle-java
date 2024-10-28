@@ -226,23 +226,24 @@ public class GamePanel extends JPanel implements Runnable {
 			int detectedWidth = window.getWidth();
 			int detectedHeight = window.getHeight();
 
-			if (detectedWidth != previousWidth) {
+			if (detectedWidth != previousWidth || detectedHeight != previousHeight) {
 				detectedWidth = Math.min(detectedWidth, screenWidth);
 				detectedHeight = Math.min(detectedHeight, screenHeight);
-				if (Math.abs(detectedWidth - (detectedHeight * 16) / 9) > 9) {
-					window.setSize((int) width, (int) height);
-					if (detectedWidth > detectedHeight) {
-						width = detectedWidth;
-						height = (double) (detectedWidth * 9) / 16;
-					} else {
-						height = detectedHeight;
-						width = (double) (detectedHeight * 16) / 9;
-					}
+
+				// Calculate the new dimensions to maintain the 16:9 aspect ratio
+				if (detectedWidth > detectedHeight * 16 / 9) {
+					detectedWidth = detectedHeight * 16 / 9;
+				} else {
+					detectedHeight = detectedWidth * 9 / 16;
 				}
 
+				// Update the window size
+				window.setSize(detectedWidth, detectedHeight);
+
+				// Scale based on the new dimensions
 				scale = (double) detectedWidth / 512;
-				width = Math.min(width, screenWidth);
-				height = Math.min(height, screenHeight);
+				width = Math.min(detectedWidth, screenWidth);
+				height = Math.min(detectedHeight, screenHeight);
 
 				tileSize = (int) (originalTileSize * scale) / 3;
 				player.attr.setPlayerSpeedModifier(player.attr.getPlayerSpeedModifier());
@@ -258,7 +259,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 				previousWidth = detectedWidth;
 				previousHeight = detectedHeight;
-
 			}
 
 			try {
@@ -268,6 +268,7 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 		}
 	}
+
 
 	public void startGameThread() {
 		gameThread = new Thread(this);
@@ -359,68 +360,73 @@ public class GamePanel extends JPanel implements Runnable {
 
 
 	private void updateKeys() {
-		double[] willMovePlayer = {0, 0};
-		if (player.keys.keyPressed.get("up")) {
-			if (!player.keys.keyPressed.get("left") || !player.keys.keyPressed.get("right")) {
-				willMovePlayer[1] -= player.attr.getPlayerSpeed();
-			} else {
-				willMovePlayer[1] -= (player.attr.getPlayerSpeed() * Math.sqrt(2) / 3);
+		if (gameState == GameState.PLAYING) {
+			if (player.keys.keyPressed.get("pause")) {
+				pauseGame();
 			}
-		}
-		if (player.keys.keyPressed.get("down")) {
-			if (!player.keys.keyPressed.get("left") || !player.keys.keyPressed.get("right")) {
-				willMovePlayer[1] += player.attr.getPlayerSpeed();
-			} else {
-				willMovePlayer[1] += player.attr.getPlayerSpeed() * Math.sqrt(2) / 3;
-			}
-		}
-		if (player.keys.keyPressed.get("left")) {
-			if (!player.keys.keyPressed.get("up") || !player.keys.keyPressed.get("down")) {
-				willMovePlayer[0] -= player.attr.getPlayerSpeed();
-			} else {
-				willMovePlayer[0] -= player.attr.getPlayerSpeed() * Math.sqrt(2) / 3;
-			}
-		}
-		if (player.keys.keyPressed.get("right")) {
-			willMovePlayer[0] += player.attr.getPlayerSpeed();
-		}
 
-		// MOVING
-
-		if (!player.attr.isDead()) {
-			double range = (tileSize + 1) * Math.max(1, player.attr.getPlayerSpeed());
-			if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
-				if (!isPixelOccupied((player.pos.getX() + willMovePlayer[0]), player.pos.getY(), player.attr.getPlayerWidth(), player.attr.getPlayerHeight(), range)) {
-					movePlayer(willMovePlayer[0], 0);
-				}
-				if (!isPixelOccupied(player.pos.getX(), (player.pos.getY() + willMovePlayer[1]), player.attr.getPlayerWidth(), player.attr.getPlayerHeight(), range)) {
-					movePlayer(0, willMovePlayer[1]);
+			double[] willMovePlayer = {0, 0};
+			if (player.keys.keyPressed.get("up")) {
+				if (!player.keys.keyPressed.get("left") || !player.keys.keyPressed.get("right")) {
+					willMovePlayer[1] -= player.attr.getPlayerSpeed();
+				} else {
+					willMovePlayer[1] -= (player.attr.getPlayerSpeed() * Math.sqrt(2) / 3);
 				}
 			}
-		}
-
-		// DEBUG KEYS '[' AND ']'
-
-		if (player.keys.keyPressed.get("debug1")) {
-
-			List<Box> boxesNearby = BoxesHandling.getBoxesInRange(player.pos.getX(), player.pos.getY(), 100 * scale, scale, tileSize);
-			for (Box box : boxesNearby) {
-				BoxManipulation.moveBox(box, 5, 5, 1500);
+			if (player.keys.keyPressed.get("down")) {
+				if (!player.keys.keyPressed.get("left") || !player.keys.keyPressed.get("right")) {
+					willMovePlayer[1] += player.attr.getPlayerSpeed();
+				} else {
+					willMovePlayer[1] += player.attr.getPlayerSpeed() * Math.sqrt(2) / 3;
+				}
 			}
+			if (player.keys.keyPressed.get("left")) {
+				if (!player.keys.keyPressed.get("up") || !player.keys.keyPressed.get("down")) {
+					willMovePlayer[0] -= player.attr.getPlayerSpeed();
+				} else {
+					willMovePlayer[0] -= player.attr.getPlayerSpeed() * Math.sqrt(2) / 3;
+				}
+			}
+			if (player.keys.keyPressed.get("right")) {
+				willMovePlayer[0] += player.attr.getPlayerSpeed();
+			}
+
+			// MOVING
+
+			if (!player.attr.isDead()) {
+				double range = (tileSize + 1) * Math.max(1, player.attr.getPlayerSpeed());
+				if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
+					if (!isPixelOccupied((player.pos.getX() + willMovePlayer[0]), player.pos.getY(), player.attr.getPlayerWidth(), player.attr.getPlayerHeight(), range)) {
+						movePlayer(willMovePlayer[0], 0);
+					}
+					if (!isPixelOccupied(player.pos.getX(), (player.pos.getY() + willMovePlayer[1]), player.attr.getPlayerWidth(), player.attr.getPlayerHeight(), range)) {
+						movePlayer(0, willMovePlayer[1]);
+					}
+				}
+			}
+
+			// DEBUG KEYS '[' AND ']'
+
+			if (player.keys.keyPressed.get("debug1")) {
+				List<Box> boxesNearby = BoxesHandling.getBoxesInRange(player.pos.getX(), player.pos.getY(), 100 * scale, scale, tileSize);
+				for (Box box : boxesNearby) {
+					BoxManipulation.moveBox(box, 5, 5, 1500);
+				}
 
 //			String reason = "absolute";
 //			double damageDealt = player.attr.takeDamage(20, reason, new String[]{});
 //			System.out.println("Took " + damageDealt + " " + reason + " damage, now at " + player.attr.getPlayerHP() + " HP.");
 //			player.keys.keyPressed.put("debug1", false);
-		}
-		if (player.keys.keyPressed.get("debug2")) {
+			}
+			if (player.keys.keyPressed.get("debug2")) {
 
-			movePlayer(5, 5);
+				movePlayer(5, 5);
 
 //			String reason = "absolute revival";
 //			double healReceived = player.attr.receiveHeal(125, reason);
 //			System.out.println("Received " + healReceived + " " + reason + " heal, now at " + player.attr.getPlayerHP() + " HP.");
 //			player.keys.keyPressed.put("debug2", false);
+			}
 		}
 	}
 
@@ -503,27 +509,34 @@ public class GamePanel extends JPanel implements Runnable {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		if (gameState == GameState.PLAYING) {
-			Graphics2D g2d = (Graphics2D) g;
+		switch (gameState) {
+			case GameState.PLAYING:
+				Graphics2D g2d = (Graphics2D) g;
 
-			// Draw game components
-			BoxesHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), player.pos.getX(), player.pos.getY(), width, scale, tileSize);
+				// Draw game components
+				BoxesHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), player.pos.getX(), player.pos.getY(), width, scale, tileSize);
 
-			// Player position adjustments
-			int playerScreenX = (int) (player.pos.getX() - player.pos.getCameraOffsetX());
-			int playerScreenY = (int) (player.pos.getY() - player.pos.getCameraOffsetY());
+				// Player position adjustments
+				int playerScreenX = (int) (player.pos.getX() - player.pos.getCameraOffsetX());
+				int playerScreenY = (int) (player.pos.getY() - player.pos.getCameraOffsetY());
 
-			drawUIElements(g2d, playerScreenX, playerScreenY);
+				drawUIElements(g2d, playerScreenX, playerScreenY);
 
-			// Draw the player
-			g2d.setColor(Color.WHITE);
-			g2d.fillRect(playerScreenX, playerScreenY, (int) player.attr.getPlayerWidth(), (int) player.attr.getPlayerHeight());
+				// Draw the player
+				g2d.setColor(Color.WHITE);
+				g2d.fillRect(playerScreenX, playerScreenY, (int) player.attr.getPlayerWidth(), (int) player.attr.getPlayerHeight());
 
-			g2d.dispose();
-		}
-
-		if (gameState == GameState.MAIN_MENU) {
-			renderMainMenu(g, getWidth(), getHeight(), this);
+				g2d.dispose();
+				break;
+			case GameState.MAIN_MENU:
+				renderMainMenu(g, getWidth(), getHeight(), this);
+				break;
+			case GameState.OPTIONS_MENU:
+				renderOptionsMenu(g, getWidth(), getHeight(), this);
+				break;
+			case GameState.PAUSE_MENU:
+				renderPauseMenu(g, getWidth(), getHeight(), this);
+				break;
 		}
 	}
 
@@ -566,20 +579,15 @@ public class GamePanel extends JPanel implements Runnable {
 				repaint();
 				break;
 			case PAUSE_MENU:
-				renderPauseMenu();
+				repaint();
 				break;
 			case MAIN_MENU:
 				repaint();
 				break;
 			case OPTIONS_MENU:
-				renderOptionsMenu();
+				repaint();
 				break;
 		}
 	}
 
-	private void renderOptionsMenu() {
-	}
-
-	private void renderPauseMenu() {
-	}
 }

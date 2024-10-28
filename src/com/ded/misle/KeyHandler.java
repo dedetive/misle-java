@@ -13,6 +13,7 @@ public class KeyHandler implements KeyListener {
 	}
 
 	public static void initializeKeyHandler() {
+		player.keys.keyPressed.put("pause", false);
 		player.keys.keyPressed.put("up", false);
 		player.keys.keyPressed.put("down", false);
 		player.keys.keyPressed.put("left", false);
@@ -21,6 +22,7 @@ public class KeyHandler implements KeyListener {
 		player.keys.keyPressed.put("debug2", false);
 	}
 
+	int KeyPause = KeyEvent.VK_ESCAPE;
 	int KeyUp = KeyEvent.VK_UP;
 	int KeyDown = KeyEvent.VK_DOWN;
 	int KeyLeft = KeyEvent.VK_LEFT;
@@ -31,6 +33,9 @@ public class KeyHandler implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
+		if (code == KeyPause) {
+			handleCooldownPress("pause");
+		}
 		if (code == KeyUp) {
 			player.keys.keyPressed.put("up", true);
 		}
@@ -54,6 +59,9 @@ public class KeyHandler implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		int code = e.getKeyCode();
+		if (code == KeyPause) {
+			player.keys.keyPressed.put("pause", false);
+		}
 		if (code == KeyUp) {
 			player.keys.keyPressed.put("up", false);
 		}

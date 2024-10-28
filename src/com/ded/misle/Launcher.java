@@ -71,7 +71,6 @@ public class Launcher {
 	public static void main(String[] args) {
 
 		loadMainMenu();
-		loadSaveFile();
 
 		SwingUtilities.invokeLater(() -> {
 			GamePanel mainGamePanel = new GamePanel();
