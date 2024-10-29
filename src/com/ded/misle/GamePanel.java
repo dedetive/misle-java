@@ -46,9 +46,11 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public enum GameState {
 		PLAYING,
+		DIALOG,
 		MAIN_MENU,
 		OPTIONS_MENU,
-		PAUSE_MENU
+		PAUSE_MENU,
+		LOADING_MENU,
 	}
 
 	public static GameState gameState = GameState.MAIN_MENU; // Start in PLAYING by default
@@ -540,6 +542,9 @@ public class GamePanel extends JPanel implements Runnable {
 			case GameState.PAUSE_MENU:
 				renderPauseMenu(g, getWidth(), getHeight(), this);
 				break;
+			case GameState.LOADING_MENU:
+				renderLoadingMenu(g, getWidth(), getHeight(), this);
+				break;
 		}
 	}
 
@@ -577,20 +582,7 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void renderFrame() {
-		switch (gameState) {
-			case PLAYING:
-				repaint();
-				break;
-			case PAUSE_MENU:
-				repaint();
-				break;
-			case MAIN_MENU:
-				repaint();
-				break;
-			case OPTIONS_MENU:
-				repaint();
-				break;
-		}
+		repaint();
 	}
 
 }

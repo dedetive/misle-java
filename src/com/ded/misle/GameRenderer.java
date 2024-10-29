@@ -1,6 +1,8 @@
 package com.ded.misle;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -10,10 +12,9 @@ import static com.ded.misle.SaveFile.loadSaveFile;
 import static com.ded.misle.SaveFile.saveEverything;
 
 import java.awt.Rectangle;
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -22,6 +23,11 @@ import java.util.concurrent.TimeUnit;
 public class GameRenderer {
 	private static String previousMenu;
 	private static String currentMenu;
+
+	private static final String gameVersion = "v0.1.4-alpha";
+
+	private static long startTime;
+	private static final int LOADING_DURATION = 50;
 
 	private static void createButton(Rectangle button, String text, Runnable action, JPanel panel, Graphics2D g2d, double scaleByScreenSize) {
 		Font alefFont = FontManager.loadFont("/fonts/Alef-Regular.ttf", (float) (44 * scale / 3.75));
@@ -82,8 +88,17 @@ public class GameRenderer {
 		previousMenu = currentMenu;
 		currentMenu = "PLAYING";
 		loadSaveFile();
-		player.pos.reloadSpawnpoint();
-		GamePanel.gameState = GamePanel.GameState.PLAYING;
+		GamePanel.gameState = GamePanel.GameState.LOADING_MENU;
+
+		startTime = System.currentTimeMillis();
+
+		Timer timer = new Timer(LOADING_DURATION, e -> {
+			player.pos.reloadSpawnpoint();
+			GamePanel.gameState = GamePanel.GameState.PLAYING;
+		});
+
+		timer.setRepeats(false); // Ensure the timer only runs once
+		timer.start();
 	}
 
 	public static void softGameStart() {
@@ -199,7 +214,7 @@ public class GameRenderer {
 
 			g2d.setColor(new Color(217, 217, 217));
 			g2d.setFont(basicFont);
-			g2d.drawString("v0.1.3-alpha", (int) (1640 * scaleByScreenSize), (int) (1010* Math.pow(scaleByScreenSize, 1.04)));
+			g2d.drawString(gameVersion, (int) (1640 * scaleByScreenSize), (int) (1010* Math.pow(scaleByScreenSize, 1.04)));
 		}
 	}
 
@@ -298,6 +313,55 @@ public class GameRenderer {
 			Rectangle playButton = new Rectangle(playButtonX, playButtonY, playButtonWidth, playButtonHeight);
 
 			createButton(playButton, LanguageManager.getText("options_menu_go_back"), GameRenderer::goToPreviousMenu, panel, g2d, scaleByScreenSize);
+		}
+	}
+
+	public static void renderLoadingMenu(Graphics g, double width, double height, JPanel panel) {
+		if (g instanceof Graphics2D g2d) {
+			Font acmeFont = FontManager.loadFont("/fonts/Acme-Regular.ttf", (float) (96 * scale / 3.75));
+			Font alefFont = FontManager.loadFont("/fonts/Alef-Regular.ttf", (float) (40 * scale / 3.75));
+
+			// ANTI-ALIASING
+			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+			double scaleByScreenSize = scale / 3.75;
+
+			// BACKGROUND
+
+			g2d.setColor(new Color(48, 48, 48));
+			g2d.fillRect(0, 0, (int) width, (int) height);
+
+			// MENU ITSELF
+
+			g2d.setColor(new Color(233, 233, 233));
+			g2d.setFont(acmeFont);
+			FontMetrics fm = g2d.getFontMetrics();
+			String titleText = LanguageManager.getText("loading_menu_loading");
+			int textWidth = fm.stringWidth(titleText);
+			int centerX = (int) ((width - textWidth) / 2);
+			int textY = (int) (182 * scaleByScreenSize);
+			g2d.drawString(titleText, centerX, textY);
+
+			// Progress bar
+
+			long elapsedTime = System.currentTimeMillis() - startTime;
+			double progress = Math.min((double) elapsedTime / LOADING_DURATION, 1.0); // Calculate progress (0.0 to 1.0)
+			String percentage = (int) (progress * 100) + "%";
+
+			int progressBarWidth = (int) (640 * progress * scaleByScreenSize);
+			int progressBarHeight = (int) (25 * scaleByScreenSize);
+			int progressBarY = (int) ((textY + 560) * scaleByScreenSize);
+
+			g2d.setColor(new Color(100, 200, 100));
+			g2d.fillRect((int) (660 * scaleByScreenSize), progressBarY, progressBarWidth, progressBarHeight);
+
+			g2d.setColor(new Color(191, 191, 191));
+			g2d.setFont(alefFont);
+			FontMetrics percentageFm = g2d.getFontMetrics();
+			textWidth = percentageFm.stringWidth(percentage); // Use the new font metrics for percentage
+			centerX = (int) ((width - textWidth) / 2);
+			textY = (int) ((progressBarY) - 20 * scaleByScreenSize);
+			g2d.drawString(percentage, centerX, textY);
 		}
 	}
 }
