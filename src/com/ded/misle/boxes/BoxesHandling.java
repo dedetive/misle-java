@@ -26,6 +26,35 @@ public class BoxesHandling {
 		loadPreset(boxes.getLast(), preset);
 	}
 
+	public static void lineAddBox(double startX, double startY, int boxesX, int boxesY, double interval, String preset, String mode) {
+		for (int i = 0; i < boxesX; i++) {
+			for (int j = 0; j < boxesY; j++) {
+				boxes.add(new Box(startX + i * interval, startY + j * interval));
+				loadPreset(boxes.getLast(), preset);
+			}
+		}
+	}
+
+	public static void lineAddBox(double startX, double startY, int boxesX, int boxesY, String preset, String mode) {
+		for (int i = 0; i < boxesX; i++) {
+			for (int j = 0; j < boxesY; j++) {
+				switch (mode) {
+					case "hollow":
+						if ((i == 0 || i == boxesX - 1) || (j == 0 || j == boxesY - 1)) {
+							boxes.add(new Box(startX + i * 20, startY + j * 20));
+							loadPreset(boxes.getLast(), preset);
+						}
+						break;
+					case "fill":
+					default:
+						boxes.add(new Box(startX + i * 20, startY + j * 20));
+						loadPreset(boxes.getLast(), preset);
+						break;
+				}
+			}
+		}
+	}
+
 	public static void lineAddBox(double startX, double startY, int boxesX, int boxesY, double interval, String preset) {
 		for (int i = 0; i < boxesX; i++) {
 			for (int j = 0; j < boxesY; j++) {
