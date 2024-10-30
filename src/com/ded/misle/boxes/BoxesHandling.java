@@ -21,20 +21,16 @@ public class BoxesHandling {
 		boxes.add(new Box(x, y));
 	}
 
+	public static void addBox(double x, double y, String preset) {
+		boxes.add(new Box(x, y));
+		loadPreset(boxes.getLast(), preset);
+	}
+
 	public static void lineAddBox(double startX, double startY, int boxesX, int boxesY, double interval, String preset) {
 		for (int i = 0; i < boxesX; i++) {
 			for (int j = 0; j < boxesY; j++) {
 				boxes.add(new Box(startX + i * interval, startY + j * interval));
-				switch (preset) {
-					case "wall":
-						editLastBox("hasCollision", "true");
-						editLastBox("color", "0x606060");
-						break;
-					case "grass":
-						editLastBox("hasCollision", "false");
-						editLastBox("color", "0x1EA81E");
-						break;
-				}
+				loadPreset(boxes.getLast(), preset);
 			}
 		}
 	}
@@ -43,17 +39,25 @@ public class BoxesHandling {
 		for (int i = 0; i < boxesX; i++) {
 			for (int j = 0; j < boxesY; j++) {
 				boxes.add(new Box(startX + i * 20, startY + j * 20));
-				switch (preset) {
-					case "wall":
-						editLastBox("hasCollision", "true");
-						editLastBox("color", "0x606060");
-						break;
-					case "grass":
-						editLastBox("hasCollision", "false");
-						editLastBox("color", "0x1EA81E");
-						break;
-				}
+				loadPreset(boxes.getLast(), preset);
 			}
+		}
+	}
+
+	private static void loadPreset(Box box, String preset) {
+		switch (preset) {
+			case "spawnpoint":
+				editLastBox("effect", "{spawnpoint, -1}");
+				editLastBox("color", "0xF0F05A");
+				break;
+			case "wall":
+				editLastBox("hasCollision", "true");
+				editLastBox("color", "0x606060");
+				break;
+			case "grass":
+				editLastBox("hasCollision", "false");
+				editLastBox("color", "0x1EA81E");
+				break;
 		}
 	}
 
