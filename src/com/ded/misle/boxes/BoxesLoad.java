@@ -1,7 +1,5 @@
 package com.ded.misle.boxes;
 
-import java.awt.*;
-
 import static com.ded.misle.boxes.BoxesHandling.*;
 
 public class BoxesLoad {
@@ -9,7 +7,7 @@ public class BoxesLoad {
 
 		addBox(200, 150, "spawnpoint");
 
-		addBox(400, 150, "spawnpoint");
+		addBox(400, 150, "chest");
 
 		lineAddBox(160, 110, 15, 5, "wall", "hollow");
 	}

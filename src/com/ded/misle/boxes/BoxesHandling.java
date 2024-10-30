@@ -92,6 +92,11 @@ public class BoxesHandling {
 				editLastBox("effect", "{spawnpoint, -1}");
 				editLastBox("color", "0xF0F05A");
 				break;
+			case "chest":
+//				editLastBox("effect", "{chest, 1}");
+				editLastBox("hasCollision", "true");
+				editLastBox("color", "0xA07030");
+				break;
 			case "wall":
 				editLastBox("hasCollision", "true");
 				editLastBox("color", "0x606060");

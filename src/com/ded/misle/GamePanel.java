@@ -349,10 +349,7 @@ public class GamePanel extends JPanel implements Runnable {
 			// DEBUG KEYS '[' AND ']'
 
 			if (player.keys.keyPressed.get("debug1")) {
-				List<Box> boxesNearby = BoxesHandling.getBoxesInRange(player.pos.getX(), player.pos.getY(), 100 * scale, scale, tileSize);
-				for (Box box : boxesNearby) {
-					BoxManipulation.moveBox(box, 5, 5, 1500);
-				}
+				player.inv.displayInventory();
 
 //			String reason = "absolute";
 //			double damageDealt = player.attr.takeDamage(20, reason, new String[]{});
