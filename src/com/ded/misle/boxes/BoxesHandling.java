@@ -21,8 +21,14 @@ public class BoxesHandling {
 		boxes.add(new Box(x, y));
 	}
 
+
+	/**
+	 *
+	 * @param key name of the parameter to be edited. The key can be either x, y, color, hasCollision, boxScaleHorizontal, boxScaleVertical and effect
+	 * @param value value to be changed to
+	 */
 	public static void editLastBox(String key, String value) {
-		switch (key) { // x, y, color, hasCollision, boxScaleHorizontal, boxScaleVertical, effect
+		switch (key) {
 			case "x":
 				boxes.getLast().setCurrentX(Double.parseDouble(value));
 				break;
@@ -45,6 +51,35 @@ public class BoxesHandling {
 				value = value.replaceAll("[{}]", "");
 				String[] effectArray = value.split(",\\s*");
 				boxes.getLast().setEffect(effectArray);
+		}
+	}
+
+	public static void editLastBox(String key, String value, int boxCount) {
+		for (int i = 1; i < boxCount + 1; i++) {
+			switch (key) {
+				case "x":
+					boxes.get(boxes.size() - i).setCurrentX(Double.parseDouble(value));
+					break;
+				case "y":
+					boxes.get(boxes.size() - i).setCurrentY(Double.parseDouble(value));
+					break;
+				case "color":
+					boxes.get(boxes.size() - i).setColor(Color.decode(value));
+					break;
+				case "hasCollision":
+					boxes.get(boxes.size() - i).setHasCollision(Boolean.parseBoolean(value));
+					break;
+				case "boxScaleHorizontal":
+					boxes.get(boxes.size() - i).setBoxScaleHorizontal(Double.parseDouble(value));
+					break;
+				case "boxScaleVertical":
+					boxes.get(boxes.size() - i).setBoxScaleVertical(Double.parseDouble(value));
+					break;
+				case "effect":
+					value = value.replaceAll("[{}]", "");
+					String[] effectArray = value.split(",\\s*");
+					boxes.get(boxes.size() - i).setEffect(effectArray);
+			}
 		}
 	}
 

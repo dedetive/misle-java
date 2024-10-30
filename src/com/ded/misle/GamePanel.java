@@ -219,11 +219,14 @@ public class GamePanel extends JPanel implements Runnable {
 
 		addBox(200, 200);
 		editLastBox("color", "0xFEC5E5");
-		editLastBox("effect", "heal, 20, 5000, normal");
 
 		addBox(200, 264);
 		editLastBox("color", "0xBEBEBE");
-		editLastBox("effect", "damage, 20, 5000, normal, \"\"");
+
+		addBox(200, 312);
+		editLastBox("color", "0x7D9AEE");
+
+		editLastBox("color", "0xFF0000", 0);
 	}
 
 	private void changeAndDetectWindowSize() {
