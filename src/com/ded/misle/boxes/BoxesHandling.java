@@ -26,16 +26,20 @@ public class BoxesHandling {
 		loadPreset(boxes.getLast(), preset);
 	}
 
-	public static void lineAddBox(double startX, double startY, int boxesX, int boxesY, double interval, String preset, String mode) {
+	public static int lineAddBox(double startX, double startY, int boxesX, int boxesY, double interval, String preset, String mode) {
+		int Counter = 0;
 		for (int i = 0; i < boxesX; i++) {
 			for (int j = 0; j < boxesY; j++) {
 				boxes.add(new Box(startX + i * interval, startY + j * interval));
 				loadPreset(boxes.getLast(), preset);
+				Counter++;
 			}
 		}
+		return Counter;
 	}
 
-	public static void lineAddBox(double startX, double startY, int boxesX, int boxesY, String preset, String mode) {
+	public static int lineAddBox(double startX, double startY, int boxesX, int boxesY, String preset, String mode) {
+		int Counter = 0;
 		for (int i = 0; i < boxesX; i++) {
 			for (int j = 0; j < boxesY; j++) {
 				switch (mode) {
@@ -43,34 +47,43 @@ public class BoxesHandling {
 						if ((i == 0 || i == boxesX - 1) || (j == 0 || j == boxesY - 1)) {
 							boxes.add(new Box(startX + i * 20, startY + j * 20));
 							loadPreset(boxes.getLast(), preset);
+							Counter++;
 						}
 						break;
 					case "fill":
 					default:
 						boxes.add(new Box(startX + i * 20, startY + j * 20));
 						loadPreset(boxes.getLast(), preset);
+						Counter++;
 						break;
 				}
 			}
 		}
+		return Counter;
 	}
 
-	public static void lineAddBox(double startX, double startY, int boxesX, int boxesY, double interval, String preset) {
+	public static int lineAddBox(double startX, double startY, int boxesX, int boxesY, double interval, String preset) {
+		int Counter = 0;
 		for (int i = 0; i < boxesX; i++) {
 			for (int j = 0; j < boxesY; j++) {
 				boxes.add(new Box(startX + i * interval, startY + j * interval));
 				loadPreset(boxes.getLast(), preset);
+				Counter++;
 			}
 		}
+		return Counter;
 	}
 
-	public static void lineAddBox(double startX, double startY, int boxesX, int boxesY, String preset) {
+	public static int lineAddBox(double startX, double startY, int boxesX, int boxesY, String preset) {
+		int Counter = 0;
 		for (int i = 0; i < boxesX; i++) {
 			for (int j = 0; j < boxesY; j++) {
 				boxes.add(new Box(startX + i * 20, startY + j * 20));
 				loadPreset(boxes.getLast(), preset);
+				Counter++;
 			}
 		}
+		return Counter;
 	}
 
 	private static void loadPreset(Box box, String preset) {
