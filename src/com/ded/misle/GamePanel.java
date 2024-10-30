@@ -1,7 +1,6 @@
 package com.ded.misle;
 
 import com.ded.misle.boxes.Box;
-import com.ded.misle.boxes.BoxManipulation;
 import com.ded.misle.boxes.BoxesHandling;
 import com.ded.misle.player.Player;
 
@@ -13,7 +12,6 @@ import java.util.List;
 import static com.ded.misle.GameRenderer.*;
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.SaveFile.saveEverything;
-import static com.ded.misle.boxes.BoxesHandling.*;
 
 /**
  * This is for loading and altering how the window behaves. Only do this once, otherwise new screens are created.
@@ -48,6 +46,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public enum GameState {
 		PLAYING,
 		DIALOG,
+		INVENTORY,
 		MAIN_MENU,
 		OPTIONS_MENU,
 		PAUSE_MENU,
@@ -250,8 +249,13 @@ public class GamePanel extends JPanel implements Runnable {
 
 			// Process updates and rendering while delta is >= 1
 			while (delta >= 1) {
-				if (gameState == GameState.PLAYING) {
+				if (gameState == GameState.PLAYING || gameState == GameState.INVENTORY) {
 					updateGame(); // Only update if in the playing state
+				} else if (gameState == GameState.PAUSE_MENU) {
+					if (player.keys.keyPressed.get("pause")) {
+						softGameStart();
+						player.keys.keyPressed.put("pause", false);
+					}
 				}
 				delta--;
 			}
@@ -301,70 +305,78 @@ public class GamePanel extends JPanel implements Runnable {
 
 
 	private void updateKeys() {
-		if (gameState == GameState.PLAYING) {
-			if (player.keys.keyPressed.get("pause")) {
-				pauseGame();
+		if (player.keys.keyPressed.get("pause")) {
+			pauseGame();
+			player.keys.keyPressed.put("pause", false);
+		}
+		double[] willMovePlayer = {0, 0};
+		if (player.keys.keyPressed.get("up")) {
+			if (!player.keys.keyPressed.get("left") || !player.keys.keyPressed.get("right")) {
+				willMovePlayer[1] -= player.attr.getPlayerSpeed();
+			} else {
+				willMovePlayer[1] -= (player.attr.getPlayerSpeed() * Math.sqrt(2) / 3);
 			}
+		}
+		if (player.keys.keyPressed.get("down")) {
+			if (!player.keys.keyPressed.get("left") || !player.keys.keyPressed.get("right")) {
+				willMovePlayer[1] += player.attr.getPlayerSpeed();
+			} else {
+				willMovePlayer[1] += player.attr.getPlayerSpeed() * Math.sqrt(2) / 3;
+			}
+		}
+		if (player.keys.keyPressed.get("left")) {
+			if (!player.keys.keyPressed.get("up") || !player.keys.keyPressed.get("down")) {
+				willMovePlayer[0] -= player.attr.getPlayerSpeed();
+			} else {
+				willMovePlayer[0] -= player.attr.getPlayerSpeed() * Math.sqrt(2) / 3;
+			}
+		}
+		if (player.keys.keyPressed.get("right")) {
+			willMovePlayer[0] += player.attr.getPlayerSpeed();
+		}
+		if (player.keys.keyPressed.get("inventory")) {
+			if (gameState != GameState.PLAYING) {
+				gameState = GameState.PLAYING;
+				System.out.println("INVENTORY CLOSED");
+			} else {
+				gameState = GameState.INVENTORY;
+				System.out.println("INVENTORY OPEN");
+			}
+			player.keys.keyPressed.put("inventory", false);
+		}
 
-			double[] willMovePlayer = {0, 0};
-			if (player.keys.keyPressed.get("up")) {
-				if (!player.keys.keyPressed.get("left") || !player.keys.keyPressed.get("right")) {
-					willMovePlayer[1] -= player.attr.getPlayerSpeed();
-				} else {
-					willMovePlayer[1] -= (player.attr.getPlayerSpeed() * Math.sqrt(2) / 3);
+		// MOVING
+
+		if (!player.attr.isDead()) {
+			double range = (tileSize + 1) * Math.max(1, player.attr.getPlayerSpeed());
+			if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
+				if (!isPixelOccupied((player.pos.getX() + willMovePlayer[0]), player.pos.getY(), player.attr.getPlayerWidth(), player.attr.getPlayerHeight(), range)) {
+					movePlayer(willMovePlayer[0], 0);
+				}
+				if (!isPixelOccupied(player.pos.getX(), (player.pos.getY() + willMovePlayer[1]), player.attr.getPlayerWidth(), player.attr.getPlayerHeight(), range)) {
+					movePlayer(0, willMovePlayer[1]);
 				}
 			}
-			if (player.keys.keyPressed.get("down")) {
-				if (!player.keys.keyPressed.get("left") || !player.keys.keyPressed.get("right")) {
-					willMovePlayer[1] += player.attr.getPlayerSpeed();
-				} else {
-					willMovePlayer[1] += player.attr.getPlayerSpeed() * Math.sqrt(2) / 3;
-				}
-			}
-			if (player.keys.keyPressed.get("left")) {
-				if (!player.keys.keyPressed.get("up") || !player.keys.keyPressed.get("down")) {
-					willMovePlayer[0] -= player.attr.getPlayerSpeed();
-				} else {
-					willMovePlayer[0] -= player.attr.getPlayerSpeed() * Math.sqrt(2) / 3;
-				}
-			}
-			if (player.keys.keyPressed.get("right")) {
-				willMovePlayer[0] += player.attr.getPlayerSpeed();
-			}
+		}
 
-			// MOVING
+		// DEBUG KEYS '[' AND ']'
 
-			if (!player.attr.isDead()) {
-				double range = (tileSize + 1) * Math.max(1, player.attr.getPlayerSpeed());
-				if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
-					if (!isPixelOccupied((player.pos.getX() + willMovePlayer[0]), player.pos.getY(), player.attr.getPlayerWidth(), player.attr.getPlayerHeight(), range)) {
-						movePlayer(willMovePlayer[0], 0);
-					}
-					if (!isPixelOccupied(player.pos.getX(), (player.pos.getY() + willMovePlayer[1]), player.attr.getPlayerWidth(), player.attr.getPlayerHeight(), range)) {
-						movePlayer(0, willMovePlayer[1]);
-					}
-				}
-			}
-
-			// DEBUG KEYS '[' AND ']'
-
-			if (player.keys.keyPressed.get("debug1")) {
-				player.inv.displayInventory();
+		if (player.keys.keyPressed.get("debug1")) {
+//				player.inv.displayInventory();
 
 //			String reason = "absolute";
 //			double damageDealt = player.attr.takeDamage(20, reason, new String[]{});
 //			System.out.println("Took " + damageDealt + " " + reason + " damage, now at " + player.attr.getPlayerHP() + " HP.");
-//			player.keys.keyPressed.put("debug1", false);
-			}
-			if (player.keys.keyPressed.get("debug2")) {
+			player.keys.keyPressed.put("debug1", false);
+		}
+		if (player.keys.keyPressed.get("debug2")) {
 
-				movePlayer(5, 5);
+//				movePlayer(5, 5);
 
 //			String reason = "absolute revival";
 //			double healReceived = player.attr.receiveHeal(125, reason);
 //			System.out.println("Received " + healReceived + " " + reason + " heal, now at " + player.attr.getPlayerHP() + " HP.");
-//			player.keys.keyPressed.put("debug2", false);
-			}
+			player.keys.keyPressed.put("debug2", false);
 		}
 	}
 
@@ -448,6 +460,8 @@ public class GamePanel extends JPanel implements Runnable {
 		super.paintComponent(g);
 
 		switch (gameState) {
+			case GameState.INVENTORY:
+//				player.inv.displayInventory();
 			case GameState.PLAYING:
 				Graphics2D g2d = (Graphics2D) g;
 
