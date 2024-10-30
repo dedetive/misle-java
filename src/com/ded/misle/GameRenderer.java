@@ -27,7 +27,7 @@ public class GameRenderer {
 	private static final String gameVersion = "v0.1.4-alpha";
 
 	private static long startTime;
-	private static final int LOADING_DURATION = 50;
+	private static final int LOADING_DURATION = 500;
 
 	private static void createButton(Rectangle button, String text, Runnable action, JPanel panel, Graphics2D g2d, double scaleByScreenSize) {
 		Font alefFont = FontManager.loadFont("/fonts/Alef-Regular.ttf", (float) (44 * scale / 3.75));

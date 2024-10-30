@@ -10,11 +10,42 @@ public class BoxesHandling {
 
 	/**
 	 *
-	 * Refer to the documentation of {@link com.ded.misle.boxes.Box#Box(double, double, Color, boolean, double, double, String[])}
+	 *  ...
 	 *
 	 */
 	public static void addBox(double x, double y, Color color, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect) {
 		boxes.add(new Box(x, y, color, hasCollision, boxScaleHorizontal, boxScaleVertical, effect));
+	}
+
+	public static void addBox(double x, double y) {
+		boxes.add(new Box(x, y));
+	}
+
+	public static void editLastBox(String key, String value) {
+		switch (key) { // x, y, color, hasCollision, boxScaleHorizontal, boxScaleVertical, effect
+			case "x":
+				boxes.getLast().setCurrentX(Double.parseDouble(value));
+				break;
+			case "y":
+				boxes.getLast().setCurrentY(Double.parseDouble(value));
+				break;
+			case "color":
+				boxes.getLast().setColor(Color.decode(value));
+				break;
+			case "hasCollision":
+				boxes.getLast().setHasCollision(Boolean.parseBoolean(value));
+				break;
+			case "boxScaleHorizontal":
+				boxes.getLast().setBoxScaleHorizontal(Double.parseDouble(value));
+				break;
+			case "boxScaleVertical":
+				boxes.getLast().setBoxScaleVertical(Double.parseDouble(value));
+				break;
+			case "effect":
+				value = value.replaceAll("[{}]", "");
+				String[] effectArray = value.split(",\\s*");
+				boxes.getLast().setEffect(effectArray);
+		}
 	}
 
 	// Render boxes with camera offset, scale, and tileSize

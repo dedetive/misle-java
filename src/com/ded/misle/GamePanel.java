@@ -13,6 +13,8 @@ import java.util.List;
 import static com.ded.misle.GameRenderer.*;
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.SaveFile.saveEverything;
+import static com.ded.misle.boxes.BoxesHandling.addBox;
+import static com.ded.misle.boxes.BoxesHandling.editLastBox;
 
 /**
  * This is for loading and altering how the window behaves. Only do this once, otherwise new screens are created.
@@ -165,11 +167,11 @@ public class GamePanel extends JPanel implements Runnable {
 		int colorRed = 240;
 		int colorGreen = 240;
 		int colorBlue = 90;
-		BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 1, 1, new String[]{"spawnpoint", "-1"});
+		addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 1, 1, new String[]{"spawnpoint", "-1"});
 
 		boxX = (int) (340 - player.pos.getCameraOffsetX());
 		boxY = (int) (280 - player.pos.getCameraOffsetX());
-		BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 1, 1, new String[]{"spawnpoint", "-1"});
+		addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 1, 1, new String[]{"spawnpoint", "-1"});
 
 		// GREEN SQUARES
 
@@ -187,7 +189,7 @@ public class GamePanel extends JPanel implements Runnable {
 				colorRed = 60;
 				colorGreen = 170; // GREEN SQUARES, COLLISION DISABLED
 				colorBlue = 60;
-				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 3, 3, new String[]{"velocity", Double.toString(0.5)});
+				addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 3, 3, new String[]{"velocity", Double.toString(0.5)});
 				y++;
 			}
 			y = 0;
@@ -208,12 +210,20 @@ public class GamePanel extends JPanel implements Runnable {
 				colorGreen = 60;
 				colorBlue = 60;
 
-				BoxesHandling.addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), true, 3, 3, new String[]{"damage", Double.toString(x * y * 2), "1000", "normal" , ""});
+				addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), true, 3, 3, new String[]{"damage", Double.toString(x * y * 2), "1000", "normal" , ""});
 				y++;
 			}
 			y = 0;
 			x++;
 		}
+
+		addBox(200, 200);
+		editLastBox("color", "0xFEC5E5");
+		editLastBox("effect", "heal, 20, 5000, normal");
+
+		addBox(200, 264);
+		editLastBox("color", "0xBEBEBE");
+		editLastBox("effect", "damage, 20, 5000, normal, \"\"");
 	}
 
 	private void changeAndDetectWindowSize() {
