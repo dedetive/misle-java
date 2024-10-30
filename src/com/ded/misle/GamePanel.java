@@ -13,8 +13,7 @@ import java.util.List;
 import static com.ded.misle.GameRenderer.*;
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.SaveFile.saveEverything;
-import static com.ded.misle.boxes.BoxesHandling.addBox;
-import static com.ded.misle.boxes.BoxesHandling.editLastBox;
+import static com.ded.misle.boxes.BoxesHandling.*;
 
 /**
  * This is for loading and altering how the window behaves. Only do this once, otherwise new screens are created.
@@ -83,8 +82,6 @@ public class GamePanel extends JPanel implements Runnable {
 		this.setBackground(Color.BLACK);
 
 		KeyHandler.initializeKeyHandler();
-
-		addBoxes();
 
 		Thread windowSizeThread = new Thread(this::changeAndDetectWindowSize);
 		windowSizeThread.start();
@@ -156,77 +153,6 @@ public class GamePanel extends JPanel implements Runnable {
 		saveEverything();
 		running = false;
 		System.exit(0);
-	}
-
-	private void addBoxes() {            // TEMPORARY
-
-		// CHECKPOINTS
-
-		int boxX = (int) (340 - player.pos.getCameraOffsetX());
-		int boxY = (int) (150 - player.pos.getCameraOffsetX());
-		int colorRed = 240;
-		int colorGreen = 240;
-		int colorBlue = 90;
-		addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 1, 1, new String[]{"spawnpoint", "-1"});
-
-		boxX = (int) (340 - player.pos.getCameraOffsetX());
-		boxY = (int) (280 - player.pos.getCameraOffsetX());
-		addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 1, 1, new String[]{"spawnpoint", "-1"});
-
-		// GREEN SQUARES
-
-		int interval = 4;
-		int maxX = (int) (originalWorldWidth / (31.25 * interval));
-		int maxY = (int) (originalWorldHeight / (31.25 * interval));
-		int x = 0;
-		int y = 0;
-		while (x < maxX) {
-			while (y < maxY) {
-				final double boxXCoordinate = (x * interval) + (double) interval / 2;
-				final double boxYCoordinate = (y * interval) + (double) interval / 2;
-				boxX = (int) (coordinateToPixel((int) boxXCoordinate) - player.pos.getCameraOffsetX());
-				boxY = (int) (coordinateToPixel((int) boxYCoordinate) - player.pos.getCameraOffsetY());
-				colorRed = 60;
-				colorGreen = 170; // GREEN SQUARES, COLLISION DISABLED
-				colorBlue = 60;
-				addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), false, 3, 3, new String[]{"velocity", Double.toString(0.5)});
-				y++;
-			}
-			y = 0;
-			x++;
-		}
-
-		// RED SQUARES
-
-		x = 0;
-		y = 0;
-		while (x < maxX) {
-			while (y < maxY) {
-				final double boxXCoordinate = x * interval;
-				final double boxYCoordinate = y * interval;
-				boxX = (int) (coordinateToPixel((int) boxXCoordinate) - player.pos.getCameraOffsetX());
-				boxY = (int) (coordinateToPixel((int) boxYCoordinate) - player.pos.getCameraOffsetY());
-				colorRed = 190; // RED SQUARES, COLLISION ENABLED
-				colorGreen = 60;
-				colorBlue = 60;
-
-				addBox(boxX, boxY, new Color(colorRed, colorGreen, colorBlue), true, 3, 3, new String[]{"damage", Double.toString(x * y * 2), "1000", "normal" , ""});
-				y++;
-			}
-			y = 0;
-			x++;
-		}
-
-		addBox(200, 200);
-		editLastBox("color", "0xFEC5E5");
-
-		addBox(200, 264);
-		editLastBox("color", "0xBEBEBE");
-
-		addBox(200, 312);
-		editLastBox("color", "0x7D9AEE");
-
-		editLastBox("color", "0xFF0000", 0);
 	}
 
 	private void changeAndDetectWindowSize() {

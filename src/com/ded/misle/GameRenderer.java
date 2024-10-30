@@ -1,8 +1,6 @@
 package com.ded.misle;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -10,6 +8,7 @@ import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.SaveFile.loadSaveFile;
 import static com.ded.misle.SaveFile.saveEverything;
+import static com.ded.misle.boxes.BoxesLoad.loadBoxes;
 
 import java.awt.Rectangle;
 import javax.swing.*;
@@ -87,10 +86,10 @@ public class GameRenderer {
 	public static void gameStart() {
 		previousMenu = currentMenu;
 		currentMenu = "PLAYING";
-		loadSaveFile();
-		GamePanel.gameState = GamePanel.GameState.LOADING_MENU;
-
 		startTime = System.currentTimeMillis();
+		GamePanel.gameState = GamePanel.GameState.LOADING_MENU;
+		loadSaveFile();
+		loadBoxes();
 
 		Timer timer = new Timer(LOADING_DURATION, e -> {
 			player.pos.reloadSpawnpoint();
