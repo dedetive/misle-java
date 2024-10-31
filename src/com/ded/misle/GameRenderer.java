@@ -453,7 +453,7 @@ public class GameRenderer {
 			}
 
 			if (i == selectedSlot) {
-				g2d.setColor(new Color(255, 255, 255, 70)); // Semi-transparent blue overlay
+				g2d.setColor(new Color(255, 255, 255, 100)); // Semi-transparent overlay
 				g2d.fillRect(slotX, slotY, slotWidth, slotHeight);
 			}
 		}
