@@ -463,26 +463,9 @@ public class GamePanel extends JPanel implements Runnable {
 		switch (gameState) {
 			case GameState.INVENTORY:
 //				player.inv.displayInventory();
+				// Purposefully falls through so game is also rendered
 			case GameState.PLAYING:
-				Graphics2D g2d = (Graphics2D) g;
-
-				// ANTI-ALIASING
-				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-				// Draw game components
-				BoxesHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), player.pos.getX(), player.pos.getY(), width, scale, tileSize);
-
-				// Player position adjustments
-				int playerScreenX = (int) (player.pos.getX() - player.pos.getCameraOffsetX());
-				int playerScreenY = (int) (player.pos.getY() - player.pos.getCameraOffsetY());
-
-				drawUIElements(g2d, playerScreenX, playerScreenY);
-
-				// Draw the player
-				g2d.setColor(Color.WHITE);
-				g2d.fillRect(playerScreenX, playerScreenY, (int) player.attr.getPlayerWidth(), (int) player.attr.getPlayerHeight());
-
-				g2d.dispose();
+				renderPlayingGame(g, getWidth(), getHeight(), this);
 				break;
 			case GameState.MAIN_MENU:
 				renderMainMenu(g, getWidth(), getHeight(), this);
@@ -497,31 +480,6 @@ public class GamePanel extends JPanel implements Runnable {
 				renderLoadingMenu(g, getWidth(), getHeight(), this);
 				break;
 		}
-	}
-
-	private static void drawUIElements(Graphics2D g2d, int playerScreenX, int playerScreenY) {
-		// Draw the health bar
-		int healthBarWidth = (int) (50 * scale); // Width of the health bar
-		int healthBarHeight = (int) (10 * scale); // Height of the health bar
-		int healthBarX = (int) (playerScreenX - player.attr.getPlayerWidth() / 2 - 2 * scale); // Position it above the player
-		int healthBarY = playerScreenY - healthBarHeight - 5; // Offset slightly above the player rectangle
-
-		// Calculate the percentage of health remaining
-		double healthPercentage = Math.min((double) player.attr.getPlayerHP() / player.attr.getPlayerMaxHP(), 1);
-
-		// Draw the background of the health bar (gray)
-		g2d.setColor(Color.GRAY);
-		g2d.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
-
-		// Draw the current health bar (green, for example)
-		g2d.setColor(Color.GREEN);
-		g2d.fillRect(healthBarX, healthBarY, (int) (healthBarWidth * healthPercentage), healthBarHeight);
-
-		// Draw locked HP, if any
-		double lockedHPPercentage = Math.min(player.attr.getPlayerLockedHP() / player.attr.getPlayerMaxHP(), 1);
-
-		g2d.setColor(Color.DARK_GRAY);
-		g2d.fillRect(healthBarX, healthBarY, (int) (healthBarWidth * lockedHPPercentage), healthBarHeight);
 	}
 
 	public static double coordinateToPixel(int coordinate) {

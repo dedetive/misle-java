@@ -6,6 +6,7 @@ public class Inventory {
 	private final Item[][] inventory;
 	private final int rows = 4;
 	private final int cols = 7;
+	private int selectedSlot = 0;
 
 	public Inventory() {
 		this.inventory = new Item[rows][cols];
@@ -76,5 +77,13 @@ public class Inventory {
 			System.out.print("\t");
 		}
 		System.out.println();
+	}
+
+	public int getSelectedSlot() {
+		return selectedSlot;
+	}
+
+	public void setSelectedSlot(int selectedSlot) {
+		this.selectedSlot = selectedSlot;
 	}
 }

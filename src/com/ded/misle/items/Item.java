@@ -1,5 +1,6 @@
 package com.ded.misle.items;
 
+import java.awt.*;
 import java.util.Map;
 
 public class Item {
@@ -69,4 +70,8 @@ public class Item {
 			return null; // or return a default Item
 		}
 	}
+
+//	public Image getIcon() {
+//
+//	}
 }

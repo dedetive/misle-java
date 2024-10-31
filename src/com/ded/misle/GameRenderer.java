@@ -1,10 +1,14 @@
 package com.ded.misle;
 
+import com.ded.misle.boxes.BoxesHandling;
+import com.ded.misle.items.Item;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import static com.ded.misle.GamePanel.player;
+import static com.ded.misle.GamePanel.tileSize;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.SaveFile.loadSaveFile;
 import static com.ded.misle.SaveFile.saveEverything;
@@ -361,6 +365,97 @@ public class GameRenderer {
 			centerX = (int) ((width - textWidth) / 2);
 			textY = (int) ((progressBarY) - 20 * scaleByScreenSize);
 			g2d.drawString(percentage, centerX, textY);
+		}
+	}
+
+	public static void renderPlayingGame(Graphics g, double width, double height, JPanel panel) {
+		Graphics2D g2d = (Graphics2D) g;
+
+		// ANTI-ALIASING
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+		// Draw game components
+		BoxesHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), player.pos.getX(), player.pos.getY(), width, scale, tileSize);
+
+		// Player position adjustments
+		int playerScreenX = (int) (player.pos.getX() - player.pos.getCameraOffsetX());
+		int playerScreenY = (int) (player.pos.getY() - player.pos.getCameraOffsetY());
+
+		drawUIElements(g2d, playerScreenX, playerScreenY, width, height);
+
+		// Draw the player
+		g2d.setColor(Color.WHITE);
+		g2d.fillRect(playerScreenX, playerScreenY, (int) player.attr.getPlayerWidth(), (int) player.attr.getPlayerHeight());
+
+		g2d.dispose();
+	}
+
+	private static void drawUIElements(Graphics2D g2d, int playerScreenX, int playerScreenY, double width, double height) {
+		drawHealthBar(g2d, playerScreenX, playerScreenY);
+		drawInventoryBar(g2d, width, height);
+	}
+
+	private static void drawHealthBar(Graphics2D g2d, int playerScreenX, int playerScreenY) {
+		int healthBarWidth = (int) (50 * scale); // Width of the health bar
+		int healthBarHeight = (int) (10 * scale); // Height of the health bar
+		int healthBarX = (int) (playerScreenX - player.attr.getPlayerWidth() / 2 - 2 * scale); // Position it above the player
+		int healthBarY = playerScreenY - healthBarHeight - 5; // Offset slightly above the player rectangle
+
+		// Calculate the percentage of health remaining
+		double healthPercentage = Math.min((double) player.attr.getPlayerHP() / player.attr.getPlayerMaxHP(), 1);
+
+		// Draw the background of the health bar (gray)
+		g2d.setColor(Color.GRAY);
+		g2d.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+
+		// Draw the current health bar (green, for example)
+		g2d.setColor(Color.GREEN);
+		g2d.fillRect(healthBarX, healthBarY, (int) (healthBarWidth * healthPercentage), healthBarHeight);
+
+		// Draw locked HP, if any
+		double lockedHPPercentage = Math.min(player.attr.getPlayerLockedHP() / player.attr.getPlayerMaxHP(), 1);
+
+		g2d.setColor(Color.DARK_GRAY);
+		g2d.fillRect(healthBarX, healthBarY, (int) (healthBarWidth * lockedHPPercentage), healthBarHeight);
+	}
+
+	private static void drawInventoryBar(Graphics2D g2d, double width, double height) {
+		int inventoryBarWidth = (int) (120 * scale);
+		int inventoryBarHeight = (int) (20 * scale);
+		int inventoryBarX = (int) (width - inventoryBarWidth) / 2; // Centered below the player
+		int inventoryBarY = (int) (height - inventoryBarHeight - 10);
+
+		// Background of the inventory
+		g2d.setColor(new Color(30, 30, 30, 150)); // Semi-transparent black
+		g2d.fillRect(inventoryBarX, inventoryBarY, inventoryBarWidth, inventoryBarHeight);
+
+		int slotWidth = (int) (30 * scale);
+		int slotHeight = (int) (30 * scale);
+		int slotSpacing = (int) (3 * scale);
+
+		int totalSlotsWidth = 7 * slotWidth + (6 * slotSpacing);
+		int slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
+
+		int selectedSlot = player.inv.getSelectedSlot();
+
+		for (int i = 0; i < 7; i++) {
+			int slotX = slotStartX + i * (slotWidth + slotSpacing);
+			int slotY = inventoryBarY + (inventoryBarHeight - slotHeight) / 2;
+
+			// Draw the slot (e.g., as a gray rectangle)
+			g2d.setColor(Color.GRAY);
+			g2d.fillRect(slotX, slotY, slotWidth, slotHeight);
+
+		// Draw item if there is one in this slot (disabled as there's currently no getIcon())
+//			Item item = player.inv.getItem(0, i);
+//			if (item != null) {
+//				g2d.drawImage(item.getIcon(), slotX, slotY, slotWidth, slotHeight, null);
+//			}
+
+			if (i == selectedSlot) {
+				g2d.setColor(new Color(255, 255, 255, 70)); // Semi-transparent blue overlay
+				g2d.fillRect(slotX, slotY, slotWidth, slotHeight);
+			}
 		}
 	}
 }

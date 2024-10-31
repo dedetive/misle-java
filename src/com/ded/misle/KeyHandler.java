@@ -21,6 +21,13 @@ public class KeyHandler implements KeyListener {
 		player.keys.keyPressed.put("debug1", false);
 		player.keys.keyPressed.put("debug2", false);
 		player.keys.keyPressed.put("inventory", false);
+		player.keys.keyPressed.put("1", false);
+		player.keys.keyPressed.put("2", false);
+		player.keys.keyPressed.put("3", false);
+		player.keys.keyPressed.put("4", false);
+		player.keys.keyPressed.put("5", false);
+		player.keys.keyPressed.put("6", false);
+		player.keys.keyPressed.put("7", false);
 	}
 
 	int KeyPause = KeyEvent.VK_ESCAPE;
@@ -31,10 +38,39 @@ public class KeyHandler implements KeyListener {
 	int KeyDebug1 = KeyEvent.VK_OPEN_BRACKET;
 	int KeyDebug2 = KeyEvent.VK_CLOSE_BRACKET;
 	int KeyInventory = KeyEvent.VK_I;
+	int Key1 = KeyEvent.VK_1;
+	int Key2 = KeyEvent.VK_2;
+	int Key3 = KeyEvent.VK_3;
+	int Key4 = KeyEvent.VK_4;
+	int Key5 = KeyEvent.VK_5;
+	int Key6 = KeyEvent.VK_6;
+	int Key7 = KeyEvent.VK_7;
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
+
+		if (code == Key1) {
+			player.inv.setSelectedSlot(0);
+		}
+		if (code == Key2) {
+			player.inv.setSelectedSlot(1);
+		}
+		if (code == Key3) {
+			player.inv.setSelectedSlot(2);
+		}
+		if (code == Key4) {
+			player.inv.setSelectedSlot(3);
+		}
+		if (code == Key5) {
+			player.inv.setSelectedSlot(4);
+		}
+		if (code == Key6) {
+			player.inv.setSelectedSlot(5);
+		}
+		if (code == Key7) {
+			player.inv.setSelectedSlot(6);
+		}
 		if (code == KeyUp) {
 			player.keys.keyPressed.put("up", true);
 		}
