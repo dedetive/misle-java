@@ -1,5 +1,7 @@
 package com.ded.misle.player;
 
+import com.ded.misle.items.Item;
+
 public class Inventory {
 	private final Item[][] inventory;
 	private final int rows = 4;

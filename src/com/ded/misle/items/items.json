@@ -1,0 +1,42 @@
+[
+  {
+    "id": 0,
+    "name": "Dummy Sword",
+    "damage": 10,
+    "type": "weapon",
+    "subtype": "melee",
+    "kind": "sword"
+  },
+  {
+    "id": 1,
+    "name": "Dummy slingshot",
+    "damage": 8,
+    "type": "weapon",
+    "subtype": "ranged",
+    "kind": "slingshot"
+  },
+  {
+    "id": 2,
+    "name": "Health Potion",
+    "healingAmount": 20,
+    "type": "potion",
+    "subtype": "heal",
+    "kind": "self"
+  },
+  {
+    "id": 3,
+    "name": "Entropy Potion",
+    "entropyRestore": 15,
+    "type": "potion",
+    "subtype": "entropy",
+    "kind": "self"
+  },
+  {
+    "id": 4,
+    "name": "Damage Potion",
+    "damage": 15,
+    "type": "potion",
+    "subtype": "damage",
+    "kind": "self"
+  }
+]

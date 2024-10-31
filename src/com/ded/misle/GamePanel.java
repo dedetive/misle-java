@@ -362,7 +362,7 @@ public class GamePanel extends JPanel implements Runnable {
 		// DEBUG KEYS '[' AND ']'
 
 		if (player.keys.keyPressed.get("debug1")) {
-//				player.inv.displayInventory();
+				player.inv.displayInventory();
 
 //			String reason = "absolute";
 //			double damageDealt = player.attr.takeDamage(20, reason, new String[]{});

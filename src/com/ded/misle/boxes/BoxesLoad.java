@@ -9,6 +9,6 @@ public class BoxesLoad {
 
 		addBox(400, 150, "chest");
 
-		lineAddBox(160, 110, 15, 5, "wall", "hollow");
+		lineAddBox(160, 110, 15, 10, "wall", "hollow");
 	}
 }
