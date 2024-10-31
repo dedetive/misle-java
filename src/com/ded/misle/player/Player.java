@@ -20,6 +20,8 @@ public class Player {
 		this.inv.addItem(createItem(0), 0, 0);
 		this.inv.addItem(createItem(1), 0, 5);
 		this.inv.addItem(createItem(2, 5));
+		this.inv.addItem(createItem(2, 35));
+		this.inv.addItem(createItem(2, 127));
 	}
 
 	public void unloadPlayer() {

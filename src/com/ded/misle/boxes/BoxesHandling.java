@@ -111,6 +111,10 @@ public class BoxesHandling {
 
 	/**
 	 *
+	 * Effect needs to be in the expected format of effects. For example: <br>
+	 * <br>
+	 * editLastBox("effect","{damage, 10, 350, normal, {''}}");
+	 *
 	 * @param key name of the parameter to be edited. The key can be either x, y, color, hasCollision, boxScaleHorizontal, boxScaleVertical and effect
 	 * @param value value to be changed to
 	 */

@@ -420,6 +420,8 @@ public class GameRenderer {
 	}
 
 	private static void drawInventoryBar(Graphics2D g2d, double width, double height) {
+		Font itemCountFont = FontManager.loadFont("/fonts/Acme-Regular.ttf", (float) (50 * scale / 3.75));
+
 		int inventoryBarWidth = (int) (120 * scale);
 		int inventoryBarHeight = (int) (20 * scale);
 		int inventoryBarX = (int) (width - inventoryBarWidth) / 2; // Centered below the player
@@ -450,6 +452,16 @@ public class GameRenderer {
 			Item item = player.inv.getItem(0, i);
 			if (item != null) {
 				g2d.drawImage(item.getIcon(), slotX, slotY, slotWidth, slotHeight, null);
+				int itemCount = item.getCount();
+				if (itemCount > 1) {
+					g2d.setFont(itemCountFont);
+					g2d.setColor(Color.white);
+					FontMetrics fm = g2d.getFontMetrics();
+					int textWidth = fm.stringWidth(Integer.toString(itemCount));
+					int textX = (int) (slotX - textWidth + slotWidth);
+					int textY = (int) (slotY + 8 * slotHeight / 9);
+					g2d.drawString(Integer.toString(itemCount), textX, textY);
+				}
 			}
 
 			if (i == selectedSlot) {

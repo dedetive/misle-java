@@ -10,5 +10,10 @@ public class BoxesLoad {
 		addBox(400, 150, "chest");
 
 		lineAddBox(160, 110, 15, 10, "wall", "hollow");
+
+		addBox(300, 230);
+		editLastBox("effect","{damage, 10, 350, normal, {''}}");
+		editLastBox("hasCollision", "true");
+		editLastBox("color", "0xFE4040");
 	}
 }
