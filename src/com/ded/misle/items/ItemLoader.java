@@ -32,9 +32,11 @@ public class ItemLoader {
 
 		for (String block : itemBlocks) {
 			block = block.replace("{", "").replace("}", "").replace("\"", "");
-			String name = null;
-			String type = null;
 			int itemId = 0;
+			String name = null;
+			String description = null;
+			String rarity = null;
+			String type = null;
 			Map<String, Object> attributes = new HashMap<>();
 
 			String[] pairs = block.split(",");
@@ -49,6 +51,12 @@ public class ItemLoader {
 						break;
 					case "name":
 						name = value;
+						break;
+					case "description":
+						description = value;
+						break;
+					case "rarity":
+						rarity = value;
 						break;
 					case "type":
 						type = value;
@@ -65,7 +73,7 @@ public class ItemLoader {
 			}
 
 			if (name != null && type != null) {
-				items.add(new ItemData(itemId, name, type, attributes)); // Store ItemData instead
+				items.add(new ItemData(itemId, name, description, rarity, type, attributes)); // Store ItemData instead
 			}
 		}
 

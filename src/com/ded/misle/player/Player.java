@@ -1,8 +1,6 @@
 package com.ded.misle.player;
 
-import com.ded.misle.items.Item;
-
-import static com.ded.misle.items.Item.getItem;
+import static com.ded.misle.items.Item.createItem;
 
 public class Player {
 
@@ -19,9 +17,9 @@ public class Player {
 		this.stats = new PlayerStats();
 		this.inv = new Inventory();
 
-		this.inv.addItem(getItem(0), 0, 0);
-		this.inv.addItem(getItem(1), 0, 5);
-		this.inv.addItem(getItem(2, 5));
+		this.inv.addItem(createItem(0), 0, 0);
+		this.inv.addItem(createItem(1), 0, 5);
+		this.inv.addItem(createItem(2, 5));
 	}
 
 	public void unloadPlayer() {

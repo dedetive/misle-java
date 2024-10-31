@@ -2,6 +2,8 @@
   {
     "id": 0,
     "name": "Dummy Sword",
+    "description": "A legendary sword forged by a legendary swordsmith.",
+    "rarity": "F",
     "damage": 10,
     "type": "weapon",
     "subtype": "melee",
@@ -10,6 +12,8 @@
   {
     "id": 1,
     "name": "Dummy slingshot",
+    "description": "Shoots.",
+    "rarity": "E",
     "damage": 8,
     "type": "weapon",
     "subtype": "ranged",
@@ -18,6 +22,8 @@
   {
     "id": 2,
     "name": "Health Potion",
+    "description": "Heals.",
+    "rarity": "F",
     "healingAmount": 20,
     "type": "potion",
     "subtype": "heal",
@@ -26,6 +32,8 @@
   {
     "id": 3,
     "name": "Entropy Potion",
+    "description": "Kind of heals.",
+    "rarity": "F",
     "entropyRestore": 15,
     "type": "potion",
     "subtype": "entropy",
@@ -34,6 +42,8 @@
   {
     "id": 4,
     "name": "Damage Potion",
+    "description": "Negatively heals.",
+    "rarity": "D",
     "damage": 15,
     "type": "potion",
     "subtype": "damage",

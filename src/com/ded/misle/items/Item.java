@@ -5,6 +5,8 @@ import java.util.Map;
 public class Item {
 	private final int id;
 	private final String name;
+	private final String description;
+	private final String rarity;
 	private final String type;
 	private final Map<String, Object> attributes; // Holds dynamic attributes
 	private int count; // Changed to lowercase for conventional naming
@@ -17,6 +19,8 @@ public class Item {
 		ItemData itemDetails = ItemLoader.loadItemDataById(id);
 		if (itemDetails != null) {
 			this.name = itemDetails.getName();
+			this.description = itemDetails.getDescription();
+			this.rarity = itemDetails.getRarity();
 			this.type = itemDetails.getType();
 			this.attributes = itemDetails.getAttributes();
 		} else {
@@ -34,6 +38,8 @@ public class Item {
 
 	public int getId() { return id; }
 	public String getName() { return name; }
+	public String getDescription() { return description; }
+	public String getRarity() { return rarity; }
 	public String getType() { return type; }
 	public Map<String, Object> getAttributes() { return attributes; }
 	public int getCount() { return count; }
@@ -41,10 +47,10 @@ public class Item {
 
 	@Override
 	public String toString() {
-		return "Item{id=" + id + ", name='" + name + "', type='" + type + "', attributes=" + attributes + ", count=" + count + "}";
+		return "Item{id=" + id + ", name='" + name + "', description='" + description + "', rarity='" + rarity + "', type='" + type + "', attributes=" + attributes + ", count=" + count + "}";
 	}
 
-	public static Item getItem(int id) {
+	public static Item createItem(int id) {
 		try {
 			return new Item(id); // Attempt to create an Item
 		} catch (Exception e) {
@@ -54,7 +60,7 @@ public class Item {
 		}
 	}
 
-	public static Item getItem(int id, int Count) {
+	public static Item createItem(int id, int Count) {
 		try {
 			return new Item(id, Count); // Attempt to create an Item
 		} catch (Exception e) {
