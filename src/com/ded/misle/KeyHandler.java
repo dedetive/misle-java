@@ -3,7 +3,8 @@ package com.ded.misle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import static com.ded.misle.GamePanel.player;
+import static com.ded.misle.GamePanel.*;
+import static com.ded.misle.GameRenderer.pauseGame;
 
 public class KeyHandler implements KeyListener {
 
@@ -51,25 +52,25 @@ public class KeyHandler implements KeyListener {
 		int code = e.getKeyCode();
 
 		if (code == Key1) {
-			player.inv.setSelectedSlot(0);
+			player.keys.keyPressed.put("1", true);
 		}
 		if (code == Key2) {
-			player.inv.setSelectedSlot(1);
+			player.keys.keyPressed.put("2", true);
 		}
 		if (code == Key3) {
-			player.inv.setSelectedSlot(2);
+			player.keys.keyPressed.put("3", true);
 		}
 		if (code == Key4) {
-			player.inv.setSelectedSlot(3);
+			player.keys.keyPressed.put("4", true);
 		}
 		if (code == Key5) {
-			player.inv.setSelectedSlot(4);
+			player.keys.keyPressed.put("5", true);
 		}
 		if (code == Key6) {
-			player.inv.setSelectedSlot(5);
+			player.keys.keyPressed.put("6", true);
 		}
 		if (code == Key7) {
-			player.inv.setSelectedSlot(6);
+			player.keys.keyPressed.put("7", true);
 		}
 		if (code == KeyUp) {
 			player.keys.keyPressed.put("up", true);
@@ -94,6 +95,30 @@ public class KeyHandler implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		int code = e.getKeyCode();
+		if (code == Key1) {
+			player.keys.keyPressed.put("1", false);
+		}
+		if (code == Key2) {
+			player.keys.keyPressed.put("2", false);
+		}
+		if (code == Key3) {
+			player.keys.keyPressed.put("3", false);
+		}
+		if (code == Key4) {
+			player.keys.keyPressed.put("4", false);
+		}
+		if (code == Key5) {
+			player.keys.keyPressed.put("5", false);
+		}
+		if (code == Key6) {
+			player.keys.keyPressed.put("6", false);
+		}
+		if (code == Key7) {
+			player.keys.keyPressed.put("7", false);
+		}
+		if (code == KeyUp) {
+			player.keys.keyPressed.put("up", true);
+		}
 		if (code == KeyPause) {
 			player.keys.keyPressed.put("pause", true);
 		}
@@ -122,6 +147,122 @@ public class KeyHandler implements KeyListener {
 		if (currentTime >= (long) cooldownEndTime && !player.keys.keyPressed.getOrDefault(key, false)) {
 			player.keys.fillKeyCurrentCooldown(key);
 			player.keys.keyPressed.put(key, true);
+		}
+	}
+
+	public void updateKeys() {
+
+		// PLAYING EXCLUSIVE
+
+		if (gameState == GameState.PLAYING) {
+			if (player.keys.keyPressed.get("1")) {
+				player.inv.setSelectedSlot(0);
+			}
+			if (player.keys.keyPressed.get("2")) {
+				player.inv.setSelectedSlot(1);
+			}
+			if (player.keys.keyPressed.get("3")) {
+				player.inv.setSelectedSlot(2);
+			}
+			if (player.keys.keyPressed.get("4")) {
+				player.inv.setSelectedSlot(3);
+			}
+			if (player.keys.keyPressed.get("5")) {
+				player.inv.setSelectedSlot(4);
+			}
+			if (player.keys.keyPressed.get("6")) {
+				player.inv.setSelectedSlot(5);
+			}
+			if (player.keys.keyPressed.get("7")) {
+				player.inv.setSelectedSlot(6);
+			}
+			if (player.keys.keyPressed.get("pause")) {
+				pauseGame();
+				player.keys.keyPressed.put("pause", false);
+			}
+			double[] willMovePlayer = {0, 0};
+			if (player.keys.keyPressed.get("up")) {
+				if (!player.keys.keyPressed.get("left") || !player.keys.keyPressed.get("right")) {
+					willMovePlayer[1] -= player.attr.getPlayerSpeed();
+				} else {
+					willMovePlayer[1] -= (player.attr.getPlayerSpeed() * Math.sqrt(2) / 3);
+				}
+			}
+			if (player.keys.keyPressed.get("down")) {
+				if (!player.keys.keyPressed.get("left") || !player.keys.keyPressed.get("right")) {
+					willMovePlayer[1] += player.attr.getPlayerSpeed();
+				} else {
+					willMovePlayer[1] += player.attr.getPlayerSpeed() * Math.sqrt(2) / 3;
+				}
+			}
+			if (player.keys.keyPressed.get("left")) {
+				if (!player.keys.keyPressed.get("up") || !player.keys.keyPressed.get("down")) {
+					willMovePlayer[0] -= player.attr.getPlayerSpeed();
+				} else {
+					willMovePlayer[0] -= player.attr.getPlayerSpeed() * Math.sqrt(2) / 3;
+				}
+			}
+			if (player.keys.keyPressed.get("right")) {
+				willMovePlayer[0] += player.attr.getPlayerSpeed();
+			}
+
+			// MOVING
+
+			if (!player.attr.isDead()) {
+				double range = (tileSize + 1) * Math.max(1, player.attr.getPlayerSpeed());
+				if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
+					if (!isPixelOccupied((player.pos.getX() + willMovePlayer[0]), player.pos.getY(), player.attr.getPlayerWidth(), player.attr.getPlayerHeight(), range)) {
+						movePlayer(willMovePlayer[0], 0);
+					}
+					if (!isPixelOccupied(player.pos.getX(), (player.pos.getY() + willMovePlayer[1]), player.attr.getPlayerWidth(), player.attr.getPlayerHeight(), range)) {
+						movePlayer(0, willMovePlayer[1]);
+					}
+				}
+			}
+		}
+
+		// EITHER PLAYING OR INVENTORY
+
+		if (player.keys.keyPressed.get("inventory")) {
+			if (gameState != GamePanel.GameState.PLAYING) {
+				gameState = GamePanel.GameState.PLAYING;
+				System.out.println("INVENTORY CLOSED");
+			} else {
+				gameState = GamePanel.GameState.INVENTORY;
+				System.out.println("INVENTORY OPEN");
+			}
+			player.keys.keyPressed.put("inventory", false);
+		}
+
+		// INVENTORY EXCLUSIVE
+
+		if (gameState == GameState.INVENTORY) {
+			if (player.keys.keyPressed.get("pause")) {
+				gameState = GamePanel.GameState.PLAYING;
+				player.keys.keyPressed.put("pause", false);
+				System.out.println("INVENTORY CLOSED");
+			}
+		}
+
+		// DEBUG KEYS '[' AND ']'
+
+		if (player.keys.keyPressed.get("debug1")) {
+			player.inv.displayInventory();
+
+//			String reason = "absolute";
+//			double damageDealt = player.attr.takeDamage(20, reason, new String[]{});
+//			System.out.println("Took " + damageDealt + " " + reason + " damage, now at " + player.attr.getPlayerHP() + " HP.");
+			player.keys.keyPressed.put("debug1", false);
+		}
+		if (player.keys.keyPressed.get("debug2")) {
+			System.out.println(player.inv.getItem(0, 0));
+
+//				movePlayer(5, 5);
+
+//			String reason = "absolute revival";
+//			double healReceived = player.attr.receiveHeal(125, reason);
+//			System.out.println("Received " + healReceived + " " + reason + " heal, now at " + player.attr.getPlayerHP() + " HP.");
+			player.keys.keyPressed.put("debug2", false);
 		}
 	}
 }
