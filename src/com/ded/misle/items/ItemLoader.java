@@ -37,6 +37,7 @@ public class ItemLoader {
 			String description = null;
 			String rarity = null;
 			String type = null;
+			int resourceID = 0;
 			Map<String, Object> attributes = new HashMap<>();
 
 			String[] pairs = block.split(",");
@@ -61,6 +62,9 @@ public class ItemLoader {
 					case "type":
 						type = value;
 						break;
+					case "resourceID":
+						resourceID = Integer.parseInt(value);
+						break;
 					default:
 						// Parse other attributes as dynamic fields
 						try {
@@ -73,7 +77,7 @@ public class ItemLoader {
 			}
 
 			if (name != null && type != null) {
-				items.add(new ItemData(itemId, name, description, rarity, type, attributes)); // Store ItemData instead
+				items.add(new ItemData(itemId, name, description, rarity, type, resourceID, attributes)); // Store ItemData instead
 			}
 		}
 

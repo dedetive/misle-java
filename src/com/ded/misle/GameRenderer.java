@@ -447,10 +447,10 @@ public class GameRenderer {
 			g2d.fillRect(slotX, slotY, slotWidth, slotHeight);
 
 		// Draw item if there is one in this slot (disabled as there's currently no getIcon())
-//			Item item = player.inv.getItem(0, i);
-//			if (item != null) {
-//				g2d.drawImage(item.getIcon(), slotX, slotY, slotWidth, slotHeight, null);
-//			}
+			Item item = player.inv.getItem(0, i);
+			if (item != null) {
+				g2d.drawImage(item.getIcon(), slotX, slotY, slotWidth, slotHeight, null);
+			}
 
 			if (i == selectedSlot) {
 				g2d.setColor(new Color(255, 255, 255, 70)); // Semi-transparent blue overlay

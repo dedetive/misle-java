@@ -1,7 +1,12 @@
 package com.ded.misle.items;
 
-import java.awt.*;
 import java.util.Map;
+import javax.imageio.ImageIO;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+
+import static com.ded.misle.ChangeSettings.getPath;
 
 public class Item {
 	private final int id;
@@ -9,6 +14,7 @@ public class Item {
 	private final String description;
 	private final String rarity;
 	private final String type;
+	private int resourceID;
 	private final Map<String, Object> attributes; // Holds dynamic attributes
 	private int count; // Changed to lowercase for conventional naming
 
@@ -23,6 +29,7 @@ public class Item {
 			this.description = itemDetails.getDescription();
 			this.rarity = itemDetails.getRarity();
 			this.type = itemDetails.getType();
+			this.resourceID = itemDetails.getResourceID();
 			this.attributes = itemDetails.getAttributes();
 		} else {
 			throw new Exception("Item with ID " + id + " not found.");
@@ -71,7 +78,20 @@ public class Item {
 		}
 	}
 
-//	public Image getIcon() {
-//
-//	}
+	public Image getIcon() {
+		String basePath = getPath() + "/resources/images/items/"; // Directory where images are stored
+		String fileName = resourceID + ".png"; // Assuming the icon files are named based on resourceID
+
+		try {
+			return ImageIO.read(new File(basePath + fileName));
+		} catch (IOException e) {
+			e.printStackTrace(); // Log or handle if image is not found
+			return null; // Return null if image fails to load
+		}
+	}
+
+	public void setIcon(int resourceID) {
+		this.resourceID = resourceID;
+	}
+
 }

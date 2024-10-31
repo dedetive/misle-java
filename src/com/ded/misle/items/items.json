@@ -7,6 +7,7 @@
     "damage": 10,
     "type": "weapon",
     "subtype": "melee",
+    "resourceID": 0,
     "kind": "sword"
   },
   {
@@ -17,6 +18,7 @@
     "damage": 8,
     "type": "weapon",
     "subtype": "ranged",
+    "resourceID": 1,
     "kind": "slingshot"
   },
   {
@@ -27,6 +29,7 @@
     "healingAmount": 20,
     "type": "potion",
     "subtype": "heal",
+    "resourceID": 2,
     "kind": "self"
   },
   {
@@ -37,6 +40,7 @@
     "entropyRestore": 15,
     "type": "potion",
     "subtype": "entropy",
+    "resourceID": 3,
     "kind": "self"
   },
   {
@@ -47,6 +51,7 @@
     "damage": 15,
     "type": "potion",
     "subtype": "damage",
+    "resourceID": 4,
     "kind": "self"
   }
 ]
