@@ -1,6 +1,7 @@
 package com.ded.misle.items;
 
 import java.awt.image.BufferedImage;
+import java.nio.file.Path;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import java.awt.Image;
@@ -83,11 +84,11 @@ public class Item {
 	}
 
 	public BufferedImage getIcon() {
-		String basePath = getPath() + "/resources/images/items/"; // Directory where images are stored
-		String fileName = resourceID + ".png"; // Assuming the icon files are named based on resourceID
+		Path basePath = getPath().resolve("resources/images/items"); // Directory where images are stored
+		Path filePath = basePath.resolve(resourceID + ".png");  // Assuming the icon files are named based on resourceID
 
 		try {
-			return ImageIO.read(new File(basePath + fileName));
+			return ImageIO.read(filePath.toFile());
 		} catch (IOException e) {
 			e.printStackTrace(); // Log or handle if image is not found
 			return null; // Return null if image fails to load

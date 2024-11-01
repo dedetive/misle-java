@@ -1,10 +1,10 @@
 package com.ded.misle;
 
 import java.io.*;
-import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Objects;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This is for changing settings (use changeThis()) and for getting the path of the game (use getPath())
@@ -20,12 +20,14 @@ public class ChangeSettings {
 	 * @param location the position of the file. E.g.: For settings, go with settings.config
 	 */
 
-	public static void changeThis(String setting, String changeTo, String location) {
-		File file = getPath();
-		File settingsFile = new File(file, ""+ location);
-		File tempFile = new File(file, "resources/temp.config");
-		try (BufferedReader reader = new BufferedReader(new FileReader(new File(String.valueOf(settingsFile))));
-		     BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
+	public static void changeSetting(String setting, String changeTo, Path location) {
+		Path file = getPath();
+		Path settingsFile = file.resolve(location);
+		Path tempFile = file.resolve("resources/temp.config");
+
+		try (BufferedReader reader = Files.newBufferedReader(settingsFile);
+		     BufferedWriter writer = Files.newBufferedWriter(tempFile)) {
+
 			String line;
 			while ((line = reader.readLine()) != null) {
 				if (line.contains(setting)) {
@@ -38,29 +40,32 @@ public class ChangeSettings {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		if (!settingsFile.delete()) {
-			throw new RuntimeException("Could not delete the original settings file");
-		}
-		if (!tempFile.renameTo(new File(String.valueOf(settingsFile)))) {
-			throw new RuntimeException("Could not rename the temp file to settings.config");
+
+		try {
+			Files.delete(settingsFile);
+			Files.move(tempFile, settingsFile);
+		} catch (IOException e) {
+			throw new RuntimeException("Could not replace the original settings file", e);
 		}
 	}
+
 
 	/**
 	 * Use this to get the path of the game, usually to equal to a variable. Has to be in a File format.
 	 *
 	 * @return the path of the game (com/ded/misle/) in a File format
 	 */
-	public static File getPath() {
-    	String workingDir = System.getProperty("user.dir");
-    	String expectedPath = "src/com/ded/misle";
+	public static Path getPath() {
+		Path workingDir = Paths.get(System.getProperty("user.dir"));
+		Path expectedPath = Paths.get("src/com/ded/misle");
 
-			if (workingDir.endsWith(expectedPath)) {
-				return new File(workingDir);
-			} else {
-      	return new File(workingDir, expectedPath);
-    }
-  }
+		if (workingDir.endsWith(expectedPath.toString())) {
+			return workingDir;
+		} else {
+			return workingDir.resolve(expectedPath);
+		}
+	}
+
 
 
 	/**
@@ -70,12 +75,10 @@ public class ChangeSettings {
 	 * @return the value of a specific setting from settings.config in a String format
 	 */
 	static String getSetting(String args) {
-
-		// GET INFO FROM SETTINGS.CONFIG
-
-		File file = new File(ChangeSettings.getPath() + "/resources/settings.config");
+		Path file = getPath().resolve("resources/settings.config");
 		String result = "";
-		try (BufferedReader reader = new BufferedReader(new FileReader(String.valueOf(file)))) {
+
+		try (BufferedReader reader = Files.newBufferedReader(file)) {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				if (line.contains(args)) {
@@ -85,11 +88,13 @@ public class ChangeSettings {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		if (Objects.equals(result, "")) {
+
+		if (result.isEmpty()) {
 			result = getDefault(args);
 		}
 		return result;
 	}
+
 
 	private static String getDefault(String args) {
 		String defaultSetting = "";

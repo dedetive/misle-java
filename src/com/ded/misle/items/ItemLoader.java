@@ -1,8 +1,9 @@
 package com.ded.misle.items;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.nio.file.Files;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,19 +12,20 @@ import java.util.Map;
 import static com.ded.misle.ChangeSettings.getPath;
 
 public class ItemLoader {
-	private static final String FILE_PATH = getPath() + "/items/items.json";
+	private static final Path FILE_PATH = getPath().resolve("items/items.json");
 
 	// Load all items from the JSON file
 	public static List<ItemData> loadItems() throws IOException {
 		List<ItemData> items = new ArrayList<>();
-		BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH));
 		StringBuilder jsonContent = new StringBuilder();
 
-		String line;
-		while ((line = reader.readLine()) != null) {
-			jsonContent.append(line.trim());
+		// Using Files.newBufferedReader for easier handling of the Path type
+		try (BufferedReader reader = Files.newBufferedReader(FILE_PATH)) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				jsonContent.append(line.trim());
+			}
 		}
-		reader.close();
 
 		// Remove array brackets
 		String jsonText = jsonContent.toString();

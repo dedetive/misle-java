@@ -97,9 +97,10 @@ public class BoxesHandling {
 				editLastBox("hasCollision", "true");
 				editLastBox("color", "0xA07030");
 				break;
-			case "wall":
+			case "wall1":
 				editLastBox("hasCollision", "true");
 				editLastBox("color", "0x606060");
+				editLastBox("texture", "wall1");
 				break;
 			case "grass":
 				editLastBox("hasCollision", "false");

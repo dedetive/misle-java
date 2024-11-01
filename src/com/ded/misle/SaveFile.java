@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Objects;
 import javax.imageio.ImageIO;
@@ -14,8 +15,8 @@ import static com.ded.misle.GamePanel.player;
 public class SaveFile {
 
 	// FILE PATH FOR .PNG
-	private static final String filePath = getPath() + File.separator + "savefile.png";
-	private static final File save = new File(filePath);
+	private static final Path filePath = getPath().resolve("savefile.png");
+	private static final File save = filePath.toFile();
 
 	// IMAGE
 

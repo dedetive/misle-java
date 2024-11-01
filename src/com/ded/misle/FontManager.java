@@ -8,8 +8,10 @@ import java.io.InputStream;
 
 public class FontManager {
 	public static Font loadFont(String fontPath, float size) {
-		try {
-			InputStream is = FontManager.class.getResourceAsStream(fontPath);
+		try (InputStream is = FontManager.class.getResourceAsStream(fontPath)) {
+			if (is == null) {
+				throw new IOException("Font resource not found: " + fontPath);
+			}
 			Font font = Font.createFont(Font.TRUETYPE_FONT, is);
 			return font.deriveFont(size);
 		} catch (FontFormatException | IOException e) {
