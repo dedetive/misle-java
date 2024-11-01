@@ -7,8 +7,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import static com.ded.misle.GamePanel.player;
-import static com.ded.misle.GamePanel.tileSize;
+import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.SaveFile.loadSaveFile;
 import static com.ded.misle.SaveFile.saveEverything;
@@ -91,13 +90,13 @@ public class GameRenderer {
 		previousMenu = currentMenu;
 		currentMenu = "PLAYING";
 		startTime = System.currentTimeMillis();
-		GamePanel.gameState = GamePanel.GameState.LOADING_MENU;
+		gameState = GamePanel.GameState.LOADING_MENU;
 		loadSaveFile();
 		loadBoxes();
 
 		Timer timer = new Timer(LOADING_DURATION, e -> {
 			player.pos.reloadSpawnpoint();
-			GamePanel.gameState = GamePanel.GameState.PLAYING;
+			gameState = GamePanel.GameState.PLAYING;
 		});
 
 		timer.setRepeats(false); // Ensure the timer only runs once
@@ -107,7 +106,7 @@ public class GameRenderer {
 	public static void softGameStart() {
 		previousMenu = currentMenu;
 		currentMenu = "PLAYING";
-		GamePanel.gameState = GamePanel.GameState.PLAYING;
+		gameState = GamePanel.GameState.PLAYING;
 	}
 
 	public static void quitGame() {
@@ -117,22 +116,22 @@ public class GameRenderer {
 	public static void optionsMenu() {
 		previousMenu = currentMenu;
 		currentMenu = "OPTIONS_MENU";
-		GamePanel.gameState = GamePanel.GameState.OPTIONS_MENU;
+		gameState = GamePanel.GameState.OPTIONS_MENU;
 	}
 
 	public static void goToPreviousMenu() {
 		switch (previousMenu) {
 			case "MAIN_MENU":
-				GamePanel.gameState = GamePanel.GameState.MAIN_MENU;
+				gameState = GamePanel.GameState.MAIN_MENU;
 				break;
 			case "OPTIONS_MENU":
-				GamePanel.gameState = GamePanel.GameState.OPTIONS_MENU;
+				gameState = GamePanel.GameState.OPTIONS_MENU;
 				break;
 			case "PLAYING":
-				GamePanel.gameState = GamePanel.GameState.PLAYING;
+				gameState = GamePanel.GameState.PLAYING;
 				break;
 			case "PAUSE_MENU":
-				GamePanel.gameState = GamePanel.GameState.PAUSE_MENU;
+				gameState = GamePanel.GameState.PAUSE_MENU;
 		}
 		previousMenu = currentMenu;
 	}
@@ -141,13 +140,13 @@ public class GameRenderer {
 		saveEverything();
 		player.unloadPlayer();
 		previousMenu = currentMenu;
-		GamePanel.gameState = GamePanel.GameState.MAIN_MENU;
+		gameState = GamePanel.GameState.MAIN_MENU;
 	}
 
 	public static void pauseGame() {
 		previousMenu = currentMenu;
 		currentMenu = "PAUSE_MENU";
-		GamePanel.gameState = GamePanel.GameState.PAUSE_MENU;
+		gameState = GamePanel.GameState.PAUSE_MENU;
 	}
 
 	public static void renderMainMenu(Graphics g, double width, double height, JPanel panel) {
@@ -387,6 +386,10 @@ public class GameRenderer {
 		g2d.setColor(Color.WHITE);
 		g2d.fillRect(playerScreenX, playerScreenY, (int) player.attr.getPlayerWidth(), (int) player.attr.getPlayerHeight());
 
+		if (gameState == GamePanel.GameState.INVENTORY) {
+			renderInventoryMenu(g, width, height, panel);
+		}
+
 		g2d.dispose();
 	}
 
@@ -431,6 +434,8 @@ public class GameRenderer {
 		g2d.setColor(new Color(30, 30, 30, 150)); // Semi-transparent black
 		g2d.fillRect(inventoryBarX, inventoryBarY, inventoryBarWidth, inventoryBarHeight);
 
+		// Slots info
+
 		int slotWidth = (int) (30 * scale);
 		int slotHeight = (int) (30 * scale);
 		int slotSpacing = (int) (3 * scale);
@@ -467,6 +472,70 @@ public class GameRenderer {
 			if (i == selectedSlot) {
 				g2d.setColor(new Color(255, 255, 255, 100)); // Semi-transparent overlay
 				g2d.fillRect(slotX, slotY, slotWidth, slotHeight);
+			}
+		}
+	}
+
+	public static void renderInventoryMenu(Graphics g, double width, double height, JPanel panel) {
+		Font acmeFont = FontManager.loadFont("/fonts/Acme-Regular.ttf", (float) (96 * scale / 3.75));
+		double scaleByScreenSize = scale / 3.75;
+		Font itemCountFont = FontManager.loadFont("/fonts/Acme-Regular.ttf", (float) (50 * scale / 3.75));
+
+		Graphics2D g2d = (Graphics2D) g;
+
+		// Semi-transparent background overlay
+		g2d.setColor(new Color(15, 15, 15, 130));
+		g2d.fillRect(0, 0, (int) width, (int) height);
+
+		// Inventory title
+		g2d.setColor(new Color(233, 233, 233));
+		g2d.setFont(acmeFont);
+		FontMetrics fm = g2d.getFontMetrics();
+		String titleText = LanguageManager.getText("inventory_menu_inventory");
+		int textWidth = fm.stringWidth(titleText);
+		int centerX = (int) ((width - textWidth) / 2);
+		int textY = (int) (182 * scaleByScreenSize);
+		g2d.drawString(titleText, centerX, textY);
+
+		// Slot dimensions and spacing
+		int slotSize = (int) (30 * scale);
+		int slotSpacing = (int) (3 * scale);
+
+		// Calculate the total width and height of the 7x4 grid with spacing
+		int gridWidth = 7 * slotSize + 6 * slotSpacing;
+		int gridHeight = 4 * slotSize + 3 * slotSpacing;
+
+		// Center the grid on the screen
+		int gridX = (int) ((width - gridWidth) / 2);
+		int gridY = (int) ((height - gridHeight) / 2);
+
+		// Draw slots and item icons in the specified row order: row 1, row 2, row 3, row 0
+		int[] rowOrder = {1, 2, 3, 0};
+
+		for (int j = 0; j < 4; j++) {
+			for (int i = 0; i < 7; i++) {
+				int slotX = gridX + i * (slotSize + slotSpacing);
+				int slotY = gridY + j * (slotSize + slotSpacing);
+
+				// Draw the slot as a gray rectangle
+				g2d.setColor(Color.GRAY);
+				g2d.fillRect(slotX, slotY, slotSize, slotSize);
+
+				// Draw item icon if there is one in this slot
+				Item item = player.inv.getItem(rowOrder[j], i);
+				if (item != null) {
+					g2d.drawImage(item.getIcon(), slotX, slotY, slotSize, slotSize, null);
+					int itemCount = item.getCount();
+					if (itemCount > 1) {
+						g2d.setFont(itemCountFont);
+						g2d.setColor(Color.white);
+						fm = g2d.getFontMetrics();
+						textWidth = fm.stringWidth(Integer.toString(itemCount));
+						int textX = slotX - textWidth + slotSize;
+						int countY = slotY + slotSize;
+						g2d.drawString(Integer.toString(itemCount), textX, countY);
+					}
+				}
 			}
 		}
 	}

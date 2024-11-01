@@ -387,8 +387,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 		switch (gameState) {
 			case GameState.INVENTORY:
-//				player.inv.displayInventory();
-				// Purposefully falls through so game is also rendered
 			case GameState.PLAYING:
 				renderPlayingGame(g, getWidth(), getHeight(), this);
 				break;

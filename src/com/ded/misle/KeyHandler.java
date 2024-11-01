@@ -226,10 +226,8 @@ public class KeyHandler implements KeyListener {
 		if (player.keys.keyPressed.get("inventory")) {
 			if (gameState != GamePanel.GameState.PLAYING) {
 				gameState = GamePanel.GameState.PLAYING;
-				System.out.println("INVENTORY CLOSED");
 			} else {
 				gameState = GamePanel.GameState.INVENTORY;
-				System.out.println("INVENTORY OPEN");
 			}
 			player.keys.keyPressed.put("inventory", false);
 		}
@@ -240,7 +238,6 @@ public class KeyHandler implements KeyListener {
 			if (player.keys.keyPressed.get("pause")) {
 				gameState = GamePanel.GameState.PLAYING;
 				player.keys.keyPressed.put("pause", false);
-				System.out.println("INVENTORY CLOSED");
 			}
 		}
 
