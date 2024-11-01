@@ -174,4 +174,11 @@ public class Inventory {
 	public void setSelectedSlot(int selectedSlot) {
 		this.selectedSlot = selectedSlot;
 	}
+
+	public Item getSelectedItem() {
+		if (getItem(0, selectedSlot) != null) {
+			return getItem(0, selectedSlot);
+		}
+		return null;
+	}
 }

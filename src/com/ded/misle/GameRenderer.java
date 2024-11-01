@@ -15,6 +15,7 @@ import static com.ded.misle.boxes.BoxesLoad.loadBoxes;
 
 import java.awt.Rectangle;
 import javax.swing.*;
+import java.awt.geom.AffineTransform;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
@@ -369,6 +370,7 @@ public class GameRenderer {
 
 	public static void renderPlayingGame(Graphics g, double width, double height, JPanel panel) {
 		Graphics2D g2d = (Graphics2D) g;
+		double scaleByScreenSize = scale / 3.75;
 
 		// ANTI-ALIASING
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -385,6 +387,21 @@ public class GameRenderer {
 		// Draw the player
 		g2d.setColor(Color.WHITE);
 		g2d.fillRect(playerScreenX, playerScreenY, (int) player.attr.getPlayerWidth(), (int) player.attr.getPlayerHeight());
+
+		// Draw selected item on top of player
+
+		Item selectedItem = player.inv.getSelectedItem();
+
+		if (selectedItem.getCountLimit() >= 16 && selectedItem.getCount() > selectedItem.getCountLimit() / 3) {
+			drawRotatedImage(g2d, selectedItem.getIcon(), playerScreenX + player.attr.getPlayerWidth() / 2 + 12 * scaleByScreenSize, playerScreenY + 15 * scaleByScreenSize, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), 35);
+		}
+
+		if (selectedItem.getCountLimit() >= 100 && selectedItem.getCount() > 2 * selectedItem.getCountLimit() / 3) {
+			drawRotatedImage(g2d, selectedItem.getIcon(), playerScreenX + player.attr.getPlayerWidth() / 2 - 12 * scaleByScreenSize, playerScreenY + 15 * scaleByScreenSize, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), -35);
+		}
+
+		g2d.drawImage(selectedItem.getIcon(), (int) (playerScreenX + player.attr.getPlayerWidth() / 2), playerScreenY, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), null);
+
 
 		if (gameState == GamePanel.GameState.INVENTORY) {
 			renderInventoryMenu(g, width, height, panel);
@@ -538,5 +555,23 @@ public class GameRenderer {
 				}
 			}
 		}
+	}
+
+	public static void drawRotatedImage(Graphics2D g2d, Image image, double x, double y, int width, int height, double angle) {
+		// Calculate the rotation center based on the desired width and height
+		double centerX = x + width / 2.0;
+		double centerY = y + height / 2.0;
+
+		// Save the original transform
+		AffineTransform originalTransform = g2d.getTransform();
+
+		// Apply rotation around the calculated center
+		g2d.rotate(Math.toRadians(angle), centerX, centerY);
+
+		// Draw the scaled and rotated image at the specified position
+		g2d.drawImage(image, (int) x, (int) y, width, height, null);
+
+		// Restore the original transform to avoid affecting other drawings
+		g2d.setTransform(originalTransform);
 	}
 }
