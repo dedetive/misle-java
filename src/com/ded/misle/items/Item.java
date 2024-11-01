@@ -12,6 +12,7 @@ public class Item {
 	private final int id;
 	private final String name;
 	private final String description;
+	private final int countLimit;
 	private final String rarity;
 	private final String type;
 	private int resourceID;
@@ -27,6 +28,7 @@ public class Item {
 		if (itemDetails != null) {
 			this.name = itemDetails.getName();
 			this.description = itemDetails.getDescription();
+			this.countLimit = itemDetails.countLimit();
 			this.rarity = itemDetails.getRarity();
 			this.type = itemDetails.getType();
 			this.resourceID = itemDetails.getResourceID();
@@ -47,6 +49,7 @@ public class Item {
 	public int getId() { return id; }
 	public String getName() { return name; }
 	public String getDescription() { return description; }
+	public int getCountLimit() { return countLimit; }
 	public String getRarity() { return rarity; }
 	public String getType() { return type; }
 	public Map<String, Object> getAttributes() { return attributes; }
@@ -55,7 +58,7 @@ public class Item {
 
 	@Override
 	public String toString() {
-		return "Item{id=" + id + ", name='" + name + "', description='" + description + "', rarity='" + rarity + "', type='" + type + "', attributes=" + attributes + ", count=" + count + "}";
+		return "Item{id=" + id + ", name='" + name + "', description='" + description + "', countLimit=" + countLimit +", rarity='" + rarity + "', type='" + type + "', attributes=" + attributes + ", count=" + count + "}";
 	}
 
 	public static Item createItem(int id) {

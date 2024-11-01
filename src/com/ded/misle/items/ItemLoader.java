@@ -35,6 +35,7 @@ public class ItemLoader {
 			int itemId = 0;
 			String name = null;
 			String description = null;
+			int countLimit = 0;
 			String rarity = null;
 			String type = null;
 			int resourceID = 0;
@@ -55,6 +56,9 @@ public class ItemLoader {
 						break;
 					case "description":
 						description = value;
+						break;
+					case "countLimit":
+						countLimit = Integer.parseInt(value);
 						break;
 					case "rarity":
 						rarity = value;
@@ -77,7 +81,7 @@ public class ItemLoader {
 			}
 
 			if (name != null && type != null) {
-				items.add(new ItemData(itemId, name, description, rarity, type, resourceID, attributes)); // Store ItemData instead
+				items.add(new ItemData(itemId, name, description, countLimit, rarity, type, resourceID, attributes)); // Store ItemData instead
 			}
 		}
 

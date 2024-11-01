@@ -1,57 +1,72 @@
 [
   {
     "id": 0,
+    "resourceID": 0,
     "name": "Dummy Sword",
     "description": "A legendary sword forged by a legendary swordsmith.",
+    "countLimit": 1,
     "rarity": "F",
     "damage": 10,
     "type": "weapon",
     "subtype": "melee",
-    "resourceID": 0,
     "kind": "sword"
   },
   {
     "id": 1,
+    "resourceID": 1,
     "name": "Dummy slingshot",
     "description": "Shoots.",
+    "countLimit": 1,
     "rarity": "E",
     "damage": 8,
     "type": "weapon",
     "subtype": "ranged",
-    "resourceID": 1,
     "kind": "slingshot"
   },
   {
     "id": 2,
-    "name": "Health Potion",
+    "resourceID": 2,
+    "name": "Small Health Potion",
     "description": "Heals.",
+    "countLimit": 100,
     "rarity": "F",
     "healingAmount": 20,
     "type": "potion",
     "subtype": "heal",
-    "resourceID": 2,
     "kind": "self"
   },
   {
     "id": 3,
-    "name": "Entropy Potion",
+    "resourceID": 3,
+    "name": "Small Entropy Potion",
     "description": "Kind of heals.",
+    "countLimit": 100,
     "rarity": "F",
     "entropyRestore": 15,
     "type": "potion",
     "subtype": "entropy",
-    "resourceID": 3,
     "kind": "self"
   },
   {
     "id": 4,
-    "name": "Damage Potion",
-    "description": "Negatively heals.",
-    "rarity": "D",
-    "damage": 15,
-    "type": "potion",
-    "subtype": "damage",
     "resourceID": 4,
-    "kind": "self"
+    "name": "Wooden Shield",
+    "description": "",
+    "countLimit": 1,
+    "rarity": "F",
+    "type": "weapon",
+    "subtype": "shield",
+    "kind": "wooden"
+  },
+  {
+    "id": -1,
+    "resourceID": -1,
+    "name": "",
+    "description": "",
+    "countLimit": -1,
+    "rarity": "",
+    "type": "",
+    "subtype": "",
+    "kind": ""
   }
 ]
