@@ -7,6 +7,7 @@ import java.util.List;
 public class BoxesHandling {
 
 	private static final List<Box> boxes = new ArrayList<>();
+	private static final List<String> presetsWithSides = List.of(new String[]{"wallDefault"});
 
 	/**
 	 *
@@ -24,18 +25,9 @@ public class BoxesHandling {
 	public static void addBox(double x, double y, String preset) {
 		boxes.add(new Box(x, y));
 		loadPreset(boxes.getLast(), preset);
-	}
-
-	public static int lineAddBox(double startX, double startY, int boxesX, int boxesY, double interval, String preset, String mode) {
-		int Counter = 0;
-		for (int i = 0; i < boxesX; i++) {
-			for (int j = 0; j < boxesY; j++) {
-				boxes.add(new Box(startX + i * interval, startY + j * interval));
-				loadPreset(boxes.getLast(), preset);
-				Counter++;
-			}
+		if (presetsWithSides.contains(preset)) {
+			editLastBox("texture", preset + "0");
 		}
-		return Counter;
 	}
 
 	public static int lineAddBox(double startX, double startY, int boxesX, int boxesY, String preset, String mode) {
@@ -47,6 +39,29 @@ public class BoxesHandling {
 						if ((i == 0 || i == boxesX - 1) || (j == 0 || j == boxesY - 1)) {
 							boxes.add(new Box(startX + i * 20, startY + j * 20));
 							loadPreset(boxes.getLast(), preset);
+
+							// For wall corner detection
+
+							if (presetsWithSides.contains(preset)) {
+								String openSides;
+								if (j == 0 && i == 0) {
+									openSides = "SD"; // Left-up corner
+								} else if (j == 0 && i == boxesX - 1) {
+									openSides = "AS"; // Right-up corner
+								} else if (j == boxesY - 1 && i == 0) {
+									openSides = "WD"; // Left-down corner
+								} else if (j == boxesY - 1 && i == boxesX - 1) {
+									openSides = "WA"; // Right-down corner
+								} else if (j == 0 || j == boxesY - 1) {
+									openSides = "AD";
+								} else if (i == 0 || i == boxesX - 1) {
+									openSides = "WS";
+								} else {
+									openSides = "0";
+								}
+
+								editLastBox("texture", preset + openSides);
+							}
 							Counter++;
 						}
 						break;
@@ -57,30 +72,6 @@ public class BoxesHandling {
 						Counter++;
 						break;
 				}
-			}
-		}
-		return Counter;
-	}
-
-	public static int lineAddBox(double startX, double startY, int boxesX, int boxesY, double interval, String preset) {
-		int Counter = 0;
-		for (int i = 0; i < boxesX; i++) {
-			for (int j = 0; j < boxesY; j++) {
-				boxes.add(new Box(startX + i * interval, startY + j * interval));
-				loadPreset(boxes.getLast(), preset);
-				Counter++;
-			}
-		}
-		return Counter;
-	}
-
-	public static int lineAddBox(double startX, double startY, int boxesX, int boxesY, String preset) {
-		int Counter = 0;
-		for (int i = 0; i < boxesX; i++) {
-			for (int j = 0; j < boxesY; j++) {
-				boxes.add(new Box(startX + i * 20, startY + j * 20));
-				loadPreset(boxes.getLast(), preset);
-				Counter++;
 			}
 		}
 		return Counter;
@@ -97,10 +88,10 @@ public class BoxesHandling {
 				editLastBox("hasCollision", "true");
 				editLastBox("color", "0xA07030");
 				break;
-			case "wall1":
+			case "wallDefault":
 				editLastBox("hasCollision", "true");
 				editLastBox("color", "0x606060");
-				editLastBox("texture", "wall1");
+				editLastBox("texture", "wallDefault");
 				break;
 			case "grass":
 				editLastBox("hasCollision", "false");
@@ -108,7 +99,6 @@ public class BoxesHandling {
 				break;
 		}
 	}
-
 
 	/**
 	 *

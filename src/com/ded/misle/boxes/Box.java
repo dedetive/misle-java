@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -25,6 +26,8 @@ public class Box {
 	private double boxScaleVertical;
 	private String[] effect;
 	private long lastDamageTime = 0;
+
+	private BufferedImage cachedTexture;
 
 	/**
 	 *
@@ -89,7 +92,7 @@ public class Box {
 			g2d.setColor(color);
 			g2d.fillRect(screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical));
 		} else {
-			g2d.drawImage(this.getIcon(), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), null);
+			g2d.drawImage(this.getTexture(), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), null);
 		}
 	}
 
@@ -304,15 +307,19 @@ public class Box {
 		}
 	}
 
-	public BufferedImage getIcon() {
-		String basePath = getPath() + "/resources/images/boxes/"; // Directory where images are stored
-		String fileName = this.texture + ".png"; // Assuming the icon files are named based on texture name
+	public BufferedImage getTexture() {
+		if (cachedTexture == null) { // Load the texture only once
+			Path basePath = getPath().resolve("resources/images/boxes/");
+			String fileName = this.texture + ".png";
+			Path fullPath = basePath.resolve(fileName);
 
-		try {
-			return ImageIO.read(new File(basePath + fileName));
-		} catch (IOException e) {
-			e.printStackTrace(); // Log or handle if image is not found
-			return null; // Return null if image fails to load
+			try {
+				cachedTexture = ImageIO.read(fullPath.toFile()); // Load and cache the image
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null; // Return null if image fails to load
+			}
 		}
+		return cachedTexture; // Return cached image
 	}
 }
