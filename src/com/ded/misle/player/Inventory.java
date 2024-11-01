@@ -66,8 +66,20 @@ public class Inventory {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
+		} for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j ++) {
+				if (inventory[i][j] != null && inventory[i][j].getId() == item.getId() && inventory[i][j].getCount() < inventory[i][j].getCountLimit()) {
+					int itemCount = inventory[i][j].getCount();
+					inventory[i][j].setCount(Math.min(inventory[i][j].getCount() + item.getCount(), item.getCountLimit()));
+					item.setCount(item.getCount() - (item.getCountLimit() - itemCount));
+					if (item.getCount() <= 0) {
+						return true;
+					}
+				}
+			}
 		}
-			for (int i = 0; i < rows; i++) {
+
+		for (int i = 0; i < rows; i++) {
 				for (int j = 0; j < cols; j++) {
 						if (inventory[i][j] == null && item.getCount() <= item.getCountLimit()) {
 							// If slot is empty and there are less items than limit

@@ -18,9 +18,10 @@ public class Player {
 		this.inv = new Inventory();
 
 		this.inv.addItem(createItem(0), 0, 0);
-		this.inv.addItem(createItem(1, 3), 0, 5);
-		this.inv.addItem(createItem(2, 5));
-		this.inv.addItem(createItem(2, 127));
+		this.inv.addItem(createItem(1, 3), 0, 1);
+		this.inv.addItem(createItem(2, 5), 0, 6);
+		this.inv.addItem(createItem(2, 48), 0, 5);
+		this.inv.addItem(createItem(2, 98));
 	}
 
 	public void unloadPlayer() {
