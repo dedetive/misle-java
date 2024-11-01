@@ -2,12 +2,16 @@ package com.ded.misle.boxes;
 
 import com.ded.misle.player.PlayerAttributes;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 
+import static com.ded.misle.ChangeSettings.getPath;
 import static com.ded.misle.GamePanel.player;
-import static com.ded.misle.GamePanel.tileSize;
 
 public class Box {
 	private final double originalX; // The original world position (unscaled)
@@ -15,6 +19,7 @@ public class Box {
 	private double currentX; // The current world position (unscaled)
 	private double currentY; // The current world position (unscaled)
 	private Color color;
+	private String texture;
 	private boolean hasCollision;
 	private double boxScaleHorizontal;
 	private double boxScaleVertical;
@@ -37,17 +42,19 @@ public class Box {
 	 * @param x original x of the box
 	 * @param y original y of the box
 	 * @param color color of the box
+	 * @param texture texture of the box
 	 * @param hasCollision a boolean of whether the box has collision
 	 * @param boxScaleHorizontal how many tilesizes is the box in the x axis
 	 * @param boxScaleVertical how many tilesizes is the box in the y axis
 	 * @param effect first value is the type of effect. See above for a list of effects. Set "" if none
 	 */
-	public Box(double x, double y, Color color, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect) {
+	public Box(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect) {
 		this.originalX = x;
 		this.originalY = y;
 		this.currentX = this.originalX;
 		this.currentY = this.originalY;
 		this.color = color;
+		this.texture = texture;
 		this.hasCollision = hasCollision;
 		this.boxScaleHorizontal = boxScaleHorizontal;
 		this.boxScaleVertical = boxScaleVertical;
@@ -60,6 +67,7 @@ public class Box {
 		this.currentX = this.originalX;
 		this.currentY = this.originalY;
 		this.color = new Color(255, 255, 255);
+		this.texture = "solid";
 		this.hasCollision = false;
 		this.boxScaleHorizontal = 1;
 		this.boxScaleVertical = 1;
@@ -77,8 +85,12 @@ public class Box {
 		int screenY = (int) (scaledY - cameraOffsetY);
 
 		// Draw the box with the scaled position and tileSize
-		g2d.setColor(color);
-		g2d.fillRect(screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical));
+		if (Objects.equals(this.texture, "solid")) {
+			g2d.setColor(color);
+			g2d.fillRect(screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical));
+		} else {
+			g2d.drawImage(this.getIcon(), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), null);
+		}
 	}
 
 	// COLLISION
@@ -162,6 +174,10 @@ public class Box {
 
 	public void setBoxScaleVertical(double boxScaleVertical) {
 		this.boxScaleVertical = boxScaleVertical;
+	}
+
+	public void setTexture(String texture) {
+		this.texture = texture;
 	}
 
 	// EFFECTS
@@ -285,6 +301,18 @@ public class Box {
 			if (Integer.parseInt(box.effect[1]) > 0) {
 				box.effect[1] = String.valueOf(Integer.parseInt(box.effect[1]) - 1);
 			}
+		}
+	}
+
+	public BufferedImage getIcon() {
+		String basePath = getPath() + "/resources/images/boxes/"; // Directory where images are stored
+		String fileName = this.texture + ".png"; // Assuming the icon files are named based on texture name
+
+		try {
+			return ImageIO.read(new File(basePath + fileName));
+		} catch (IOException e) {
+			e.printStackTrace(); // Log or handle if image is not found
+			return null; // Return null if image fails to load
 		}
 	}
 }

@@ -1,5 +1,6 @@
 package com.ded.misle.items;
 
+import java.awt.image.BufferedImage;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import java.awt.Image;
@@ -81,7 +82,7 @@ public class Item {
 		}
 	}
 
-	public Image getIcon() {
+	public BufferedImage getIcon() {
 		String basePath = getPath() + "/resources/images/items/"; // Directory where images are stored
 		String fileName = resourceID + ".png"; // Assuming the icon files are named based on resourceID
 

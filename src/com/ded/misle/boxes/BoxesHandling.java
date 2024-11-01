@@ -13,8 +13,8 @@ public class BoxesHandling {
 	 *  ...
 	 *
 	 */
-	public static void addBox(double x, double y, Color color, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect) {
-		boxes.add(new Box(x, y, color, hasCollision, boxScaleHorizontal, boxScaleVertical, effect));
+	public static void addBox(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect) {
+		boxes.add(new Box(x, y, color, texture, hasCollision, boxScaleHorizontal, boxScaleVertical, effect));
 	}
 
 	public static void addBox(double x, double y) {
@@ -128,6 +128,9 @@ public class BoxesHandling {
 				break;
 			case "color":
 				boxes.getLast().setColor(Color.decode(value));
+				break;
+			case "texture":
+				boxes.getLast().setTexture(value);
 				break;
 			case "hasCollision":
 				boxes.getLast().setHasCollision(Boolean.parseBoolean(value));

@@ -15,5 +15,6 @@ public class BoxesLoad {
 		editLastBox("effect","{damage, 10, 350, normal, {''}}");
 		editLastBox("hasCollision", "true");
 		editLastBox("color", "0xFE4040");
+		editLastBox("texture", "fire");
 	}
 }
