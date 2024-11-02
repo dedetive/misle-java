@@ -60,6 +60,9 @@ public class Inventory {
 
 
 	public boolean addItem(Item item) {
+		if (item == null) {
+			return false;
+		}
 		Item newItem = null;
 		try {
 			newItem = new Item(item.getId(), item.getCount());

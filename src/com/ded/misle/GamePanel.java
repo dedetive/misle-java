@@ -196,6 +196,7 @@ public class GamePanel extends JPanel implements Runnable {
 				player.pos.setY(player.pos.getOriginalPlayerY() * scale);
 
 				GameRenderer.clearClickables();
+				GameRenderer.updateFontSizes();
 
 				previousWidth = detectedWidth;
 				previousHeight = detectedHeight;

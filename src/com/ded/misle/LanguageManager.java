@@ -8,7 +8,7 @@ public class LanguageManager {
 
 	public LanguageManager(String languageCode) {
 		Locale locale = new Locale(languageCode);
-		messages = ResourceBundle.getBundle("lang.messages", locale);
+		messages = ResourceBundle.getBundle("com.ded.misle.resources.lang.messages", locale);
 	}
 
 	public static String getText(String key) {

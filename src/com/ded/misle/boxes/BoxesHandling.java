@@ -38,7 +38,7 @@ public class BoxesHandling {
 					case "hollow":
 						if ((i == 0 || i == boxesX - 1) || (j == 0 || j == boxesY - 1)) {
 							boxes.add(new Box(startX + i * 20, startY + j * 20));
-							loadPreset(boxes.getLast(), preset);
+							loadPreset(boxes.getLast(), preset.substring(0, preset.indexOf("@")));
 
 							// For wall corner detection
 
