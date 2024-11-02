@@ -181,4 +181,8 @@ public class Inventory {
 		}
 		return null;
 	}
+
+	public boolean hasHeldItem() {
+		return getSelectedItem() != null;
+	}
 }

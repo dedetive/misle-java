@@ -390,18 +390,19 @@ public class GameRenderer {
 
 		// Draw selected item on top of player
 
-		Item selectedItem = player.inv.getSelectedItem();
+		if (player.inv.hasHeldItem()) {
+			Item selectedItem = player.inv.getSelectedItem();
 
-		if (selectedItem.getCountLimit() >= 16 && selectedItem.getCount() > selectedItem.getCountLimit() / 3) {
-			drawRotatedImage(g2d, selectedItem.getIcon(), playerScreenX + player.attr.getPlayerWidth() / 2 + 12 * scaleByScreenSize, playerScreenY + 15 * scaleByScreenSize, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), 35);
+			if (selectedItem.getCountLimit() >= 16 && selectedItem.getCount() > selectedItem.getCountLimit() / 3) {
+				drawRotatedImage(g2d, selectedItem.getIcon(), playerScreenX + player.attr.getPlayerWidth() / 2 + 12 * scaleByScreenSize, playerScreenY + 15 * scaleByScreenSize, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), 35);
+			}
+
+			if (selectedItem.getCountLimit() >= 100 && selectedItem.getCount() > 2 * selectedItem.getCountLimit() / 3) {
+				drawRotatedImage(g2d, selectedItem.getIcon(), playerScreenX + player.attr.getPlayerWidth() / 2 - 12 * scaleByScreenSize, playerScreenY + 15 * scaleByScreenSize, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), -35);
+			}
+
+			g2d.drawImage(selectedItem.getIcon(), (int) (playerScreenX + player.attr.getPlayerWidth() / 2), playerScreenY, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), null);
 		}
-
-		if (selectedItem.getCountLimit() >= 100 && selectedItem.getCount() > 2 * selectedItem.getCountLimit() / 3) {
-			drawRotatedImage(g2d, selectedItem.getIcon(), playerScreenX + player.attr.getPlayerWidth() / 2 - 12 * scaleByScreenSize, playerScreenY + 15 * scaleByScreenSize, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), -35);
-		}
-
-		g2d.drawImage(selectedItem.getIcon(), (int) (playerScreenX + player.attr.getPlayerWidth() / 2), playerScreenY, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), null);
-
 
 		if (gameState == GamePanel.GameState.INVENTORY) {
 			renderInventoryMenu(g, width, height, panel);

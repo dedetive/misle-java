@@ -57,14 +57,18 @@ public class ChangeSettings {
 	 */
 	public static Path getPath() {
 		Path workingDir = Paths.get(System.getProperty("user.dir"));
-		Path expectedPath = Paths.get("src/com/ded/misle");
+		Path srcPath = workingDir.resolve("src/com/ded/misle");
+		Path outPath = workingDir.resolve("com/ded/misle");
 
-		if (workingDir.endsWith(expectedPath.toString())) {
-			return workingDir;
+		if (Files.exists(srcPath)) {
+			return srcPath;
+		} else if (Files.exists(outPath)) {
+			return outPath;
 		} else {
-			return workingDir.resolve(expectedPath);
+			throw new RuntimeException("settings.config file not found");
 		}
 	}
+
 
 
 
