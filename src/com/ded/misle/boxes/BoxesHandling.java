@@ -45,13 +45,13 @@ public class BoxesHandling {
 							if (checkIfPresetHasSides(preset)) {
 								String openSides;
 								if (i == 0 && j == 0) {
-									openSides = ".AW.S"; // Left-up corner
+									openSides = ".AW.S.@"; // Left-up corner
 								} else if (i == 0 && j == boxesY - 1) {
-									openSides = ".AS.D"; // Left-down corner
+									openSides = ".AS.D.@"; // Left-down corner
 								} else if (i == boxesX - 1 && j == 0) {
-									openSides = ".WD.A"; // Right-up corner
+									openSides = ".WD.A.@"; // Right-up corner
 								} else if (i == boxesX - 1 && j == boxesY - 1) {
-									openSides = ".SD.W"; // Right-down corner
+									openSides = ".SD.W.@"; // Right-down corner
 								} else if (i == 0 || i == boxesX - 1) {
 									openSides = ".AD";
 								} else if (j == 0 || j == boxesY - 1) {
@@ -78,6 +78,9 @@ public class BoxesHandling {
 	}
 
 	public static boolean checkIfPresetHasSides(String preset) {
+		if (preset.contains("@")) {
+			return presetsWithSides.contains(preset.substring(0, preset.indexOf("@")));
+		}
 		return presetsWithSides.contains(preset);
 	}
 

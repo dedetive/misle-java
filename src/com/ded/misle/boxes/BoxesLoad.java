@@ -9,7 +9,7 @@ public class BoxesLoad {
 
 		addBox(400, 150, "chest");
 
-		lineAddBox(160, 110, 15, 10, "wallDefault", "hollow");
+		lineAddBox(160, 110, 15, 10, "wallDefault@Deco", "hollow");
 
 		addBox(300, 230);
 		editLastBox("effect","{damage, 10, 350, normal, {''}}");

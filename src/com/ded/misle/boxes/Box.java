@@ -105,10 +105,28 @@ public class Box {
 			// Split texture once and reuse the result
 			String[] textureParts = texture.split("\\.");
 			String textureName = textureParts[0];
-
-			g2d.drawImage(this.getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), null);
+			String textureExtra = "";
 
 			try {
+				if (textureName.contains("@")) {
+					textureExtra = textureName.substring(textureName.indexOf("@") + 1);
+					textureName = textureName.substring(0, textureName.indexOf("@"));
+				} else {
+					g2d.drawImage(this.getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), null);
+				}
+
+				// Draw extras if any
+				if (textureParts.length > 3) {
+					if (textureParts[3].equals("@")) {
+						switch (textureExtra) {
+							case "Deco":
+								g2d.drawImage(this.getTexture(textureName + textureExtra), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), null);
+						}
+					}
+				} else {
+					g2d.drawImage(this.getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), null);
+				}
+
 				// Draw sides if they exist
 				if (textureParts.length > 1) {
 					String sides = textureParts[1];
@@ -129,10 +147,14 @@ public class Box {
 								(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), rotationInstruction.get(corner));
 					}
 				}
+
 			} catch (IndexOutOfBoundsException e) {
 				// This is fine and not an error; IndexOutOfBounds here mean object has no sides and thus is base image
 			}
 		} else {
+			if (texture.contains("@")) {
+				texture.replace("@", "");
+			}
 			g2d.drawImage(this.getTexture(), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), null);
 		}
 	}
