@@ -2,16 +2,24 @@
 
 ### Usage
 
-To open the game, navigate to the directory `misle-java-master/` in a terminal and execute `javac src/com/ded/misle/*.java src/com/ded/misle/boxes/*.java src/com/ded/misle/player/*.java` to compile the project. Then, use `java -cp src com.ded.misle.Launcher` to launch the compiled project. Alternatively, you can use your preferred IDE with a compiler to run the code automatically, always using `Launcher` as the base.
+To open the game, navigate to the directory `misle-java-master/src` in a terminal and copy paste the following lines of code:
 
 In `misle-java-master/`:
 
 ```bash
-javac src/com/ded/misle/*.java src/com/ded/misle/boxes/*.java src/com/ded/misle/player/*.java
-java -cp src com.ded.misle.Launcher
+rm -rf out
+mkdir -p out
+javac -d out $(find . -name "*.java")
+# Copy resources and the items folder
+cp -r com/ded/misle/resources out/com/ded/misle/
+cp -r com/ded/misle/items out/com/ded/misle/
+cd out
+java com.ded.misle.Launcher
 ```
 
-Currently, the controls are the arrow keys to move the white square, which represents the player, and the escape key, which pauses the game. Additionally, there are test keys [ and ] whose functionality varies from version to version. These can be customized in `GamePanel.java`, at the end of the `updateKeys()` method.
+ Alternatively, you can use your preferred IDE with a compiler to run the code automatically, always using `Launcher` as the base.
+
+Currently, the controls are the arrow keys to move the white square, which represents the player, the escape key, which pauses the game and 'I', that opens the inventory. Additionally, there are test keys [ and ] whose functionality varies from version to version. These can be customized in `GamePanel.java`, at the end of the `updateKeys()` method.
 
 ### Settings
 
