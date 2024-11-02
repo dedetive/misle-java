@@ -25,7 +25,7 @@ public class BoxesHandling {
 	public static void addBox(double x, double y, String preset) {
 		boxes.add(new Box(x, y));
 		loadPreset(boxes.getLast(), preset);
-		if (presetsWithSides.contains(preset)) {
+		if (checkIfPresetHasSides(preset)) {
 			editLastBox("texture", preset + "0");
 		}
 	}
@@ -42,22 +42,22 @@ public class BoxesHandling {
 
 							// For wall corner detection
 
-							if (presetsWithSides.contains(preset)) {
+							if (checkIfPresetHasSides(preset)) {
 								String openSides;
-								if (j == 0 && i == 0) {
-									openSides = "SD"; // Left-up corner
-								} else if (j == 0 && i == boxesX - 1) {
-									openSides = "AS"; // Right-up corner
-								} else if (j == boxesY - 1 && i == 0) {
-									openSides = "WD"; // Left-down corner
-								} else if (j == boxesY - 1 && i == boxesX - 1) {
-									openSides = "WA"; // Right-down corner
-								} else if (j == 0 || j == boxesY - 1) {
-									openSides = "AD";
+								if (i == 0 && j == 0) {
+									openSides = ".AW.S"; // Left-up corner
+								} else if (i == 0 && j == boxesY - 1) {
+									openSides = ".AS.D"; // Left-down corner
+								} else if (i == boxesX - 1 && j == 0) {
+									openSides = ".WD.A"; // Right-up corner
+								} else if (i == boxesX - 1 && j == boxesY - 1) {
+									openSides = ".SD.W"; // Right-down corner
 								} else if (i == 0 || i == boxesX - 1) {
-									openSides = "WS";
+									openSides = ".AD";
+								} else if (j == 0 || j == boxesY - 1) {
+									openSides = ".WS";
 								} else {
-									openSides = "0";
+									openSides = "";
 								}
 
 								editLastBox("texture", preset + openSides);
@@ -75,6 +75,10 @@ public class BoxesHandling {
 			}
 		}
 		return Counter;
+	}
+
+	public static boolean checkIfPresetHasSides(String preset) {
+		return presetsWithSides.contains(preset);
 	}
 
 	private static void loadPreset(Box box, String preset) {

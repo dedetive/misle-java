@@ -1,14 +1,16 @@
 package com.ded.misle.boxes;
 
+import com.ded.misle.GameRenderer;
 import com.ded.misle.player.PlayerAttributes;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.ded.misle.ChangeSettings.getPath;
@@ -27,7 +29,15 @@ public class Box {
 	private String[] effect;
 	private long lastDamageTime = 0;
 
-	private BufferedImage cachedTexture;
+	private BufferedImage cachedTexture1;
+	private Map<String, BufferedImage> cachedTexture2 = new HashMap<>();
+	private static final Map<String, Integer> rotationInstruction = new HashMap<>();
+	static {
+				rotationInstruction.put("W", 0);
+				rotationInstruction.put("D", 90);
+				rotationInstruction.put("S", 180);
+				rotationInstruction.put("A", 270);
+	}
 
 	/**
 	 *
@@ -91,6 +101,37 @@ public class Box {
 		if (Objects.equals(this.texture, "solid")) {
 			g2d.setColor(color);
 			g2d.fillRect(screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical));
+		} else if (BoxesHandling.checkIfPresetHasSides(texture.split("\\.")[0])) {
+			// Split texture once and reuse the result
+			String[] textureParts = texture.split("\\.");
+			String textureName = textureParts[0];
+
+			g2d.drawImage(this.getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), null);
+
+			try {
+				// Draw sides if they exist
+				if (textureParts.length > 1) {
+					String sides = textureParts[1];
+					String[] eachSide = sides.split("");
+
+					for (String side : eachSide) {
+						GameRenderer.drawRotatedImage(g2d, getTexture(textureName + "OverlayW"), screenX, screenY,
+								(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), rotationInstruction.get(side));
+					}
+				}
+
+				// Draw corners if they exist
+				if (textureParts.length > 2) {
+					String[] eachCorner = textureParts[2].split("");
+
+					for (String corner : eachCorner) {
+						GameRenderer.drawRotatedImage(g2d, getTexture(textureName + "OverlayC"), screenX, screenY,
+								(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), rotationInstruction.get(corner));
+					}
+				}
+			} catch (IndexOutOfBoundsException e) {
+				// This is fine and not an error; IndexOutOfBounds here mean object has no sides and thus is base image
+			}
 		} else {
 			g2d.drawImage(this.getTexture(), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), null);
 		}
@@ -308,18 +349,37 @@ public class Box {
 	}
 
 	public BufferedImage getTexture() {
-		if (cachedTexture == null) { // Load the texture only once
+		if (cachedTexture1 == null) { // Load the texture only once
 			Path basePath = getPath().resolve("resources/images/boxes/");
 			String fileName = this.texture + ".png";
 			Path fullPath = basePath.resolve(fileName);
 
 			try {
-				cachedTexture = ImageIO.read(fullPath.toFile()); // Load and cache the image
+				cachedTexture1 = ImageIO.read(fullPath.toFile()); // Load and cache the image
 			} catch (IOException e) {
 				e.printStackTrace();
 				return null; // Return null if image fails to load
 			}
 		}
-		return cachedTexture; // Return cached image
+		return cachedTexture1; // Return cached image
+	}
+
+	public BufferedImage getTexture(String boxTextureName) {
+		// Check if the texture is already cached
+		if (!cachedTexture2.containsKey(boxTextureName)) {
+			Path basePath = getPath().resolve("resources/images/boxes/");
+			String fileName = boxTextureName + ".png";
+			Path fullPath = basePath.resolve(fileName);
+
+			try {
+				// Load the texture and cache it
+				BufferedImage texture = ImageIO.read(fullPath.toFile());
+				cachedTexture2.put(boxTextureName, texture); // Cache the loaded image
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null; // Return null if image fails to load
+			}
+		}
+		return cachedTexture2.get(boxTextureName); // Return the cached image
 	}
 }
