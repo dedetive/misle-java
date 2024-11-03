@@ -10,7 +10,6 @@ In `misle-java-master/`:
 rm -rf out
 mkdir -p out
 javac -d out $(find . -name "*.java")
-# Copy resources and the items folder
 cp -r com/ded/misle/resources out/com/ded/misle/
 cp -r com/ded/misle/items out/com/ded/misle/
 cd out
@@ -31,7 +30,7 @@ isFullscreen (default=false, true)
 fullscreenMode (default=windowed, exclusive)
 frameRateCap (1..144, default=60)
 displayFPS (default=false, true)
-language (default=en, pt, ppm)
+language (de_DE, el_GR, default=en_US, es_ES, mi_PM, pt_BR, ru_RU)
 ```
 
 What’s in parentheses is ignored, and only what follows the = sign is considered. The `displayFPS` function currently does not work and was only available in initial tests, but it will be reimplemented later.
