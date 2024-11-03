@@ -29,10 +29,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 	static final int originalTileSize = 64; // 64x64 tiles
 	public static int tileSize = (int) (originalTileSize * scale) / 3;
-	final double maxScreenCol = 24; // Horizontal
-	final double maxScreenRow = 13.5; // Vertical
-	double width = maxScreenCol * tileSize;
-	double height = maxScreenRow * tileSize;
+	static final double maxScreenCol = 24; // Horizontal
+	static final double maxScreenRow = 13.5; // Vertical
+	static double screenWidth = maxScreenCol * tileSize;
+	static double screenHeight = maxScreenRow * tileSize;
 
 	// INITIALIZING PLAYER
 
@@ -69,7 +69,7 @@ public class GamePanel extends JPanel implements Runnable {
 		window.setTitle(windowTitle);
 		window.setResizable(true);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setSize((int) width, (int) height);
+		window.setSize((int) screenWidth, (int) screenHeight);
 		window.setLocationRelativeTo(null);
 
 		window.add(this);
@@ -102,13 +102,13 @@ public class GamePanel extends JPanel implements Runnable {
 			@Override
 			public void componentResized(ComponentEvent e) {
 				if ((window.getExtendedState() & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
-					width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-					height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+					screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+					screenHeight = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 				} else {
-					width = window.getWidth();
-					height = window.getHeight();
+					screenWidth = window.getWidth();
+					screenHeight = window.getHeight();
 				}
-				scale = width / 512.0;
+				scale = screenWidth / 512.0;
 
 			
 				repaint();
@@ -120,8 +120,8 @@ public class GamePanel extends JPanel implements Runnable {
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			window.setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
 			scale = (screenSize.getWidth() * 3) / (originalTileSize * maxScreenCol);
-			width = (int) screenSize.getWidth();
-			height = (int) screenSize.getHeight();
+			screenWidth = (int) screenSize.getWidth();
+			screenHeight = (int) screenSize.getHeight();
 			tileSize = (int) (originalTileSize * scale)/3;
 
 			if (!fullscreenMode.equals("exclusive")) {
@@ -182,8 +182,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 				// Scale based on the new dimensions
 				scale = (double) detectedWidth / 512;
-				width = Math.min(detectedWidth, screenWidth);
-				height = Math.min(detectedHeight, screenHeight);
+				GamePanel.screenWidth = Math.min(detectedWidth, screenWidth);
+				GamePanel.screenHeight = Math.min(detectedHeight, screenHeight);
 
 				tileSize = (int) (originalTileSize * scale) / 3;
 				player.attr.setPlayerSpeedModifier(player.attr.getPlayerSpeedModifier());
@@ -200,6 +200,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 				previousWidth = detectedWidth;
 				previousHeight = detectedHeight;
+
+				updateSelectedItemNamePosition();
 			}
 
 			try {
@@ -291,11 +293,11 @@ public class GamePanel extends JPanel implements Runnable {
 		long currentTime = System.currentTimeMillis();
 
 		// Update the camera offset to center the player in the view
-		player.pos.setCameraOffsetX(player.pos.getX() - width / 2 + player.attr.getPlayerWidth() / 2);
-		player.pos.setCameraOffsetY(player.pos.getY() - height / 2 + player.attr.getPlayerHeight() / 2);
+		player.pos.setCameraOffsetX(player.pos.getX() - screenWidth / 2 + player.attr.getPlayerWidth() / 2);
+		player.pos.setCameraOffsetY(player.pos.getY() - screenHeight / 2 + player.attr.getPlayerHeight() / 2);
 
-		player.pos.setCameraOffsetX(Math.max(0, Math.min(player.pos.getCameraOffsetX(), worldWidth - width)));
-		player.pos.setCameraOffsetY(Math.max(0, Math.min(player.pos.getCameraOffsetY(), worldHeight - height)));
+		player.pos.setCameraOffsetX(Math.max(0, Math.min(player.pos.getCameraOffsetX(), worldWidth - screenWidth)));
+		player.pos.setCameraOffsetY(Math.max(0, Math.min(player.pos.getCameraOffsetY(), worldHeight - screenHeight)));
 
 		player.attr.checkIfLevelUp();
 
@@ -389,19 +391,19 @@ public class GamePanel extends JPanel implements Runnable {
 		switch (gameState) {
 			case GameState.INVENTORY:
 			case GameState.PLAYING:
-				renderPlayingGame(g, getWidth(), getHeight(), this);
+				renderPlayingGame(g, this);
 				break;
 			case GameState.MAIN_MENU:
-				renderMainMenu(g, getWidth(), getHeight(), this);
+				renderMainMenu(g, this);
 				break;
 			case GameState.OPTIONS_MENU:
-				renderOptionsMenu(g, getWidth(), getHeight(), this);
+				renderOptionsMenu(g, this);
 				break;
 			case GameState.PAUSE_MENU:
-				renderPauseMenu(g, getWidth(), getHeight(), this);
+				renderPauseMenu(g, this);
 				break;
 			case GameState.LOADING_MENU:
-				renderLoadingMenu(g, getWidth(), getHeight(), this);
+				renderLoadingMenu(g, this);
 				break;
 		}
 	}
@@ -417,5 +419,4 @@ public class GamePanel extends JPanel implements Runnable {
 	public void renderFrame() {
 		repaint();
 	}
-
 }

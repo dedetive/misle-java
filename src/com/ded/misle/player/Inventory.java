@@ -2,6 +2,10 @@ package com.ded.misle.player;
 
 import com.ded.misle.items.Item;
 
+import java.awt.*;
+
+import static com.ded.misle.GameRenderer.updateSelectedItemNamePosition;
+
 public class Inventory {
 	private final Item[][] inventory;
 	private final int rows = 4;
@@ -63,7 +67,7 @@ public class Inventory {
 		if (item == null) {
 			return false;
 		}
-		Item newItem = null;
+		Item newItem;
 		try {
 			newItem = new Item(item.getId(), item.getCount());
 		} catch (Exception e) {
@@ -144,38 +148,16 @@ public class Inventory {
 		return null; // return null if position is out of bounds
 	}
 
-	public void displayInventory() {
-		System.out.println("Player Inventory:");
-		for (int i = 1; i < rows; i++) {
-			for (int j = 0; j < cols; j++) {
-				if (inventory[i][j] != null) {
-					// Print item name and quantity if available
-					System.out.print(inventory[i][j].getName() + " (x" + inventory[i][j].getCount() + ")");
-				} else {
-					System.out.print("[ ]");
-				}
-				System.out.print("\t");
-			}
-			System.out.println();
-		} // Leave row 0 to the end
-		for (int j = 0; j < cols; j++) {
-			if (inventory[0][j] != null) {
-				// Print item name and quantity if available
-				System.out.print(inventory[0][j].getName() + " (x" + inventory[0][j].getCount() + ")");
-			} else {
-				System.out.print("[ ]");
-			}
-			System.out.print("\t");
-		}
-		System.out.println();
-	}
-
 	public int getSelectedSlot() {
 		return selectedSlot;
 	}
 
+	private String selectedItemName;
+	private Point selectedItemNamePosition;
+
 	public void setSelectedSlot(int selectedSlot) {
 		this.selectedSlot = selectedSlot;
+		updateSelectedItemNamePosition();
 	}
 
 	public Item getSelectedItem() {

@@ -244,21 +244,15 @@ public class KeyHandler implements KeyListener {
 		// DEBUG KEYS '[' AND ']'
 
 		if (player.keys.keyPressed.get("debug1")) {
-			player.inv.displayInventory();
 
-//			String reason = "absolute";
-//			double damageDealt = player.attr.takeDamage(20, reason, new String[]{});
-//			System.out.println("Took " + damageDealt + " " + reason + " damage, now at " + player.attr.getPlayerHP() + " HP.");
+			// Currently nothing
+
 			player.keys.keyPressed.put("debug1", false);
 		}
 		if (player.keys.keyPressed.get("debug2")) {
-			System.out.println(player.inv.getItem(0, 0));
 
-//				movePlayer(5, 5);
+			// Currently nothing
 
-//			String reason = "absolute revival";
-//			double healReceived = player.attr.receiveHeal(125, reason);
-//			System.out.println("Received " + healReceived + " " + reason + " heal, now at " + player.attr.getPlayerHP() + " HP.");
 			player.keys.keyPressed.put("debug2", false);
 		}
 	}

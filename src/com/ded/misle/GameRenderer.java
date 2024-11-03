@@ -12,6 +12,7 @@ import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.SaveFile.loadSaveFile;
 import static com.ded.misle.SaveFile.saveEverything;
 import static com.ded.misle.boxes.BoxesLoad.loadBoxes;
+import static java.lang.System.currentTimeMillis;
 
 import java.awt.Rectangle;
 import javax.swing.*;
@@ -31,6 +32,10 @@ public class GameRenderer {
 
 	private static long startTime;
 	private static final int LOADING_DURATION = 500;
+
+	private static String selectedItemName;
+	private static Point selectedItemNamePosition;
+	private static long itemNameDisplayStartTime;
 
 	private static Font comfortaaFont96 = FontManager.loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
 	private static Font ubuntuFont35 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (35 * scale / 3.75));
@@ -102,7 +107,7 @@ public class GameRenderer {
 	public static void gameStart() {
 		previousMenu = currentMenu;
 		currentMenu = "PLAYING";
-		startTime = System.currentTimeMillis();
+		startTime = currentTimeMillis();
 		gameState = GamePanel.GameState.LOADING_MENU;
 		loadSaveFile();
 		loadBoxes();
@@ -162,7 +167,7 @@ public class GameRenderer {
 		gameState = GamePanel.GameState.PAUSE_MENU;
 	}
 
-	public static void renderMainMenu(Graphics g, double width, double height, JPanel panel) {
+	public static void renderMainMenu(Graphics g, JPanel panel) {
 		if (g instanceof Graphics2D g2d) {
 
 			// ANTI-ALIASING
@@ -175,7 +180,7 @@ public class GameRenderer {
 			// BACKGROUND
 
 			g2d.setColor(new Color(48, 48, 48));
-			g2d.fillRect(0, 0, (int) width, (int) height);
+			g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
 
 			// MENU ITSELF
 
@@ -186,7 +191,7 @@ public class GameRenderer {
 			FontMetrics fm = g2d.getFontMetrics();
 			String titleText = LanguageManager.getText("misle");
 			int textWidth = fm.stringWidth(titleText);
-			int centerX = (int) ((width - textWidth) / 2);
+			int centerX = (int) ((screenWidth - textWidth) / 2);
 			int textY = (int) (182 * scaleByScreenSize);
 			g2d.drawString(titleText, centerX, textY);
 
@@ -231,7 +236,7 @@ public class GameRenderer {
 		}
 	}
 
-	public static void renderPauseMenu(Graphics g, double width, double height, JPanel panel) {
+	public static void renderPauseMenu(Graphics g, JPanel panel) {
 		if (g instanceof Graphics2D g2d) {
 
 			// ANTI-ALIASING
@@ -242,7 +247,7 @@ public class GameRenderer {
 			// BACKGROUND
 
 			g2d.setColor(new Color(48, 48, 48));
-			g2d.fillRect(0, 0, (int) width, (int) height);
+			g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
 
 			// MENU ITSELF
 
@@ -251,7 +256,7 @@ public class GameRenderer {
 			FontMetrics fm = g2d.getFontMetrics();
 			String titleText = LanguageManager.getText("pause_menu_paused");
 			int textWidth = fm.stringWidth(titleText);
-			int centerX = (int) ((width - textWidth) / 2);
+			int centerX = (int) ((screenWidth - textWidth) / 2);
 			int textY = (int) (182 * scaleByScreenSize);
 			g2d.drawString(titleText, centerX, textY);
 
@@ -290,7 +295,7 @@ public class GameRenderer {
 		}
 	}
 
-	public static void renderOptionsMenu(Graphics g, double width, double height, JPanel panel) {
+	public static void renderOptionsMenu(Graphics g, JPanel panel) {
 		if (g instanceof Graphics2D g2d) {
 
 			// ANTI-ALIASING
@@ -301,7 +306,7 @@ public class GameRenderer {
 			// BACKGROUND
 
 			g2d.setColor(new Color(48, 48, 48));
-			g2d.fillRect(0, 0, (int) width, (int) height);
+			g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
 
 			// MENU ITSELF
 
@@ -310,7 +315,7 @@ public class GameRenderer {
 			FontMetrics fm = g2d.getFontMetrics();
 			String titleText = LanguageManager.getText("options_menu_options");
 			int textWidth = fm.stringWidth(titleText);
-			int centerX = (int) ((width - textWidth) / 2);
+			int centerX = (int) ((screenWidth - textWidth) / 2);
 			int textY = (int) (182 * scaleByScreenSize);
 			g2d.drawString(titleText, centerX, textY);
 
@@ -327,7 +332,7 @@ public class GameRenderer {
 		}
 	}
 
-	public static void renderLoadingMenu(Graphics g, double width, double height, JPanel panel) {
+	public static void renderLoadingMenu(Graphics g, JPanel panel) {
 		if (g instanceof Graphics2D g2d) {
 
 			// ANTI-ALIASING
@@ -338,7 +343,7 @@ public class GameRenderer {
 			// BACKGROUND
 
 			g2d.setColor(new Color(48, 48, 48));
-			g2d.fillRect(0, 0, (int) width, (int) height);
+			g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
 
 			// MENU ITSELF
 
@@ -347,13 +352,13 @@ public class GameRenderer {
 			FontMetrics fm = g2d.getFontMetrics();
 			String titleText = LanguageManager.getText("loading_menu_loading");
 			int textWidth = fm.stringWidth(titleText);
-			int centerX = (int) ((width - textWidth) / 2);
+			int centerX = (int) ((screenWidth - textWidth) / 2);
 			int textY = (int) (182 * scaleByScreenSize);
 			g2d.drawString(titleText, centerX, textY);
 
 			// Progress bar
 
-			long elapsedTime = System.currentTimeMillis() - startTime;
+			long elapsedTime = currentTimeMillis() - startTime;
 			double progress = Math.min((double) elapsedTime / LOADING_DURATION, 1.0); // Calculate progress (0.0 to 1.0)
 			String percentage = (int) (progress * 100) + "%";
 
@@ -368,13 +373,13 @@ public class GameRenderer {
 			g2d.setFont(ubuntuFont35);
 			FontMetrics percentageFm = g2d.getFontMetrics();
 			textWidth = percentageFm.stringWidth(percentage); // Use the new font metrics for percentage
-			centerX = (int) ((width - textWidth) / 2);
+			centerX = (int) ((screenWidth - textWidth) / 2);
 			textY = (int) ((progressBarY) - 20 * scaleByScreenSize);
 			g2d.drawString(percentage, centerX, textY);
 		}
 	}
 
-	public static void renderPlayingGame(Graphics g, double width, double height, JPanel panel) {
+	public static void renderPlayingGame(Graphics g, JPanel panel) {
 		Graphics2D g2d = (Graphics2D) g;
 		double scaleByScreenSize = scale / 3.75;
 
@@ -382,13 +387,13 @@ public class GameRenderer {
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		// Draw game components
-		BoxesHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), player.pos.getX(), player.pos.getY(), width, scale, tileSize);
+		BoxesHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), player.pos.getX(), player.pos.getY(), screenWidth, scale, tileSize);
 
 		// Player position adjustments
 		int playerScreenX = (int) (player.pos.getX() - player.pos.getCameraOffsetX());
 		int playerScreenY = (int) (player.pos.getY() - player.pos.getCameraOffsetY());
 
-		drawUIElements(g2d, playerScreenX, playerScreenY, width, height);
+		drawUIElements(g2d, playerScreenX, playerScreenY);
 
 		// Draw the player
 		g2d.setColor(Color.WHITE);
@@ -411,15 +416,16 @@ public class GameRenderer {
 		}
 
 		if (gameState == GamePanel.GameState.INVENTORY) {
-			renderInventoryMenu(g, width, height, panel);
+			renderInventoryMenu(g, panel);
 		}
 
 		g2d.dispose();
 	}
 
-	private static void drawUIElements(Graphics2D g2d, int playerScreenX, int playerScreenY, double width, double height) {
+	private static void drawUIElements(Graphics2D g2d, int playerScreenX, int playerScreenY) {
 		drawHealthBar(g2d, playerScreenX, playerScreenY);
-		drawInventoryBar(g2d, width, height);
+		drawInventoryBar(g2d);
+		drawSelectedItemName(g2d);
 	}
 
 	private static void drawHealthBar(Graphics2D g2d, int playerScreenX, int playerScreenY) {
@@ -446,12 +452,12 @@ public class GameRenderer {
 		g2d.fillRect(healthBarX, healthBarY, (int) (healthBarWidth * lockedHPPercentage), healthBarHeight);
 	}
 
-	private static void drawInventoryBar(Graphics2D g2d, double width, double height) {
+	private static void drawInventoryBar(Graphics2D g2d) {
 
 		int inventoryBarWidth = (int) (120 * scale);
 		int inventoryBarHeight = (int) (20 * scale);
-		int inventoryBarX = (int) (width - inventoryBarWidth) / 2; // Centered below the player
-		int inventoryBarY = (int) (height - inventoryBarHeight - 10);
+		int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
+		int inventoryBarY = (int) (screenHeight - inventoryBarHeight - 60);
 
 		// Background of the inventory
 		g2d.setColor(new Color(30, 30, 30, 150)); // Semi-transparent black
@@ -499,14 +505,65 @@ public class GameRenderer {
 		}
 	}
 
-	public static void renderInventoryMenu(Graphics g, double width, double height, JPanel panel) {
+	public static void updateSelectedItemNamePosition() {
+		Item selectedItem = player.inv.getSelectedItem();
+		if (selectedItem != null) {
+			selectedItemName = selectedItem.getName();
+
+			double scaleByScreenSize = scale;
+			int inventoryBarWidth = (int) (120 * scaleByScreenSize);
+			int inventoryBarHeight = (int) (20 * scaleByScreenSize);
+			int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
+			int inventoryBarY = (int) (screenHeight - inventoryBarHeight - 10);
+
+			int slotWidth = (int) (30 * scaleByScreenSize);
+			int slotSpacing = (int) (3 * scaleByScreenSize);
+			int totalSlotsWidth = 7 * slotWidth + (6 * slotSpacing);
+			int slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
+
+			int slotX = slotStartX + player.inv.getSelectedSlot() * (slotWidth + slotSpacing);
+			int slotY = inventoryBarY;
+
+			// Position the name above the selected slot
+			selectedItemNamePosition = new Point(slotX + slotWidth / 2, slotY - 80);
+			itemNameDisplayStartTime = System.currentTimeMillis();
+		} else {
+			selectedItemName = null;
+			selectedItemNamePosition = null;
+		}
+	}
+
+	public static void drawSelectedItemName(Graphics2D g2d) {
+		if (selectedItemName != null && selectedItemNamePosition != null) {
+			// Check if the current time is within 5 seconds of the start time
+			long currentTime = System.currentTimeMillis();
+			if (currentTime - itemNameDisplayStartTime < 5000) {
+				g2d.setFont(ubuntuFont35);
+				g2d.setColor(Color.WHITE);
+				FontMetrics fm = g2d.getFontMetrics();
+				int textWidth = fm.stringWidth(selectedItemName);
+
+				int textX = selectedItemNamePosition.x - textWidth / 2;
+				int textY = selectedItemNamePosition.y;
+
+				g2d.drawString(selectedItemName, textX, textY);
+			} else {
+				// Clear the selected item name after 5 seconds
+				selectedItemName = null;
+				selectedItemNamePosition = null;
+			}
+		}
+	}
+
+
+	public static void renderInventoryMenu(Graphics g, JPanel panel) {
 		double scaleByScreenSize = scale / 3.75;
 
 		Graphics2D g2d = (Graphics2D) g;
 
 		// Semi-transparent background overlay
 		g2d.setColor(new Color(15, 15, 15, 130));
-		g2d.fillRect(0, 0, (int) width, (int) height);
+		g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
 
 		// Inventory title
 		g2d.setColor(new Color(233, 233, 233));
@@ -514,7 +571,7 @@ public class GameRenderer {
 		FontMetrics fm = g2d.getFontMetrics();
 		String titleText = LanguageManager.getText("inventory_menu_inventory");
 		int textWidth = fm.stringWidth(titleText);
-		int centerX = (int) ((width - textWidth) / 2);
+		int centerX = (int) ((screenWidth - textWidth) / 2);
 		int textY = (int) (182 * scaleByScreenSize);
 		g2d.drawString(titleText, centerX, textY);
 
@@ -527,8 +584,8 @@ public class GameRenderer {
 		int gridHeight = 4 * slotSize + 3 * slotSpacing;
 
 		// Center the grid on the screen
-		int gridX = (int) ((width - gridWidth) / 2);
-		int gridY = (int) ((height - gridHeight) / 2);
+		int gridX = (int) ((screenWidth - gridWidth) / 2);
+		int gridY = (int) ((screenHeight - gridHeight) / 2);
 
 		// Draw slots and item icons in the specified row order: row 1, row 2, row 3, row 0
 		int[] rowOrder = {1, 2, 3, 0};
