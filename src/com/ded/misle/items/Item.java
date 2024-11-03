@@ -65,7 +65,7 @@ public class Item {
 
 	@Override
 	public String toString() {
-		return "Item{id=" + id + ", name='" + name + "', description='" + description + "', countLimit=" + countLimit +", rarity='" + rarity + "', type='" + type + "', attributes=" + attributes + ", count=" + count + "}";
+		return "Item{id=" + id + ", name='" + displayName + "', description='" + description + "', countLimit=" + countLimit +", rarity='" + rarity + "', type='" + type + "', attributes=" + attributes + ", count=" + count + "}";
 	}
 
 	public static Item createItem(int id) {

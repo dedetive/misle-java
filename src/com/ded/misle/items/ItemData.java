@@ -5,17 +5,15 @@ import java.util.Map;
 public class ItemData {
 	private final int id;
 	private final String name;
-	private final String description;
 	private final int countLimit;
 	private final String rarity;
 	private final String type;
 	private final int resourceID;
 	private final Map<String, Object> attributes;
 
-	public ItemData(int id, String name, String description, int countLimit, String rarity, String type, int resourceID, Map<String, Object> attributes) {
+	public ItemData(int id, String name, int countLimit, String rarity, String type, int resourceID, Map<String, Object> attributes) {
 		this.id = id;
 		this.name = name;
-		this.description = description;
 		this.countLimit = countLimit;
 		this.rarity = rarity;
 		this.type = type;
@@ -25,7 +23,6 @@ public class ItemData {
 
 	public int getId() { return id; }
 	public String getName() { return name; }
-	public String getDescription() { return description; }
 	public int countLimit() { return countLimit; }
 	public String getRarity() { return rarity; }
 	public String getType() { return type; }
