@@ -33,14 +33,14 @@ public class GameRenderer {
 	private static final int LOADING_DURATION = 500;
 
 	private static Font comfortaaFont96 = FontManager.loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
-	private static Font ubuntuFont40 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
+	private static Font ubuntuFont35 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (35 * scale / 3.75));
 	private static Font basicFont40 = FontManager.loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));
 	private static Font itemCountFont = FontManager.loadFont("/fonts/Ubuntu-Regular.ttf", (float) (40 * scale / 3.75));
 	private static Font ubuntuFont44 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
 
 	public static void updateFontSizes() {
 		comfortaaFont96 = FontManager.loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
-		ubuntuFont40 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
+		ubuntuFont35 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
 		basicFont40 = FontManager.loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));
 		itemCountFont = FontManager.loadFont("/fonts/Ubuntu-Regular.ttf", (float) (50 * scale / 3.75));
 		ubuntuFont44 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
@@ -365,7 +365,7 @@ public class GameRenderer {
 			g2d.fillRect((int) (660 * scaleByScreenSize), progressBarY, progressBarWidth, progressBarHeight);
 
 			g2d.setColor(new Color(191, 191, 191));
-			g2d.setFont(ubuntuFont40);
+			g2d.setFont(ubuntuFont35);
 			FontMetrics percentageFm = g2d.getFontMetrics();
 			textWidth = percentageFm.stringWidth(percentage); // Use the new font metrics for percentage
 			centerX = (int) ((width - textWidth) / 2);

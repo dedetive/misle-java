@@ -86,7 +86,11 @@ public class ChangeSettings {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				if (line.contains(args)) {
-					result = line.split("= ")[1];
+					try {
+						result = line.split("= ")[1];
+					} catch (ArrayIndexOutOfBoundsException e) {
+						System.out.println("Setting " + args + " not found in settings.config file.");
+					}
 				}
 			}
 		} catch (IOException e) {
@@ -117,6 +121,9 @@ public class ChangeSettings {
 				break;
 			case "displayFPS":
 				defaultSetting = "false";
+				break;
+			case "language":
+				defaultSetting = "en_US";
 				break;
 		}
 		return defaultSetting;
