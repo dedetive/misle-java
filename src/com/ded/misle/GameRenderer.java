@@ -32,27 +32,24 @@ public class GameRenderer {
 	private static long startTime;
 	private static final int LOADING_DURATION = 500;
 
-	private static Font acmeFont96 = FontManager.loadFont("/fonts/Acme-Regular.ttf", (float) (96 * scale / 3.75));
-	private static Font alefFont40 = FontManager.loadFont("/fonts/Alef-Regular.ttf", (float) (40 * scale / 3.75));
+	private static Font comfortaaFont96 = FontManager.loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
+	private static Font ubuntuFont40 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
 	private static Font basicFont40 = FontManager.loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));
-	private static Font itemCountFont = FontManager.loadFont("/fonts/Acme-Regular.ttf", (float) (50 * scale / 3.75));
-	private static Font alefFont44 = FontManager.loadFont("/fonts/Alef-Regular.ttf", (float) (44 * scale / 3.75));
-	private static Font alefBoldFont44 = FontManager.loadFont("/fonts/Alef-Bold.ttf", (float) (44 * scale / 3.75));
+	private static Font itemCountFont = FontManager.loadFont("/fonts/Ubuntu-Regular.ttf", (float) (40 * scale / 3.75));
+	private static Font ubuntuFont44 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
 
 	public static void updateFontSizes() {
-		acmeFont96 = FontManager.loadFont("/fonts/Acme-Regular.ttf", (float) (96 * scale / 3.75));
-		alefFont40 = FontManager.loadFont("/fonts/Alef-Regular.ttf", (float) (40 * scale / 3.75));
+		comfortaaFont96 = FontManager.loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
+		ubuntuFont40 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
 		basicFont40 = FontManager.loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));
-		itemCountFont = FontManager.loadFont("/fonts/Acme-Regular.ttf", (float) (50 * scale / 3.75));
-		alefFont44 = FontManager.loadFont("/fonts/Alef-Regular.ttf", (float) (44 * scale / 3.75));
-		alefBoldFont44 = FontManager.loadFont("/fonts/Alef-Bold.ttf", (float) (44 * scale / 3.75));
-
+		itemCountFont = FontManager.loadFont("/fonts/Ubuntu-Regular.ttf", (float) (50 * scale / 3.75));
+		ubuntuFont44 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
 	}
 
 	private static void createButton(Rectangle button, String text, Runnable action, JPanel panel, Graphics2D g2d, double scaleByScreenSize) {
 		g2d.fillRoundRect(button.x, button.y, button.width, button.height, (int) (69 * scaleByScreenSize), (int) (69 * scaleByScreenSize));
 		g2d.setColor(new Color(0, 0, 0));
-		g2d.setFont(alefFont44);
+		g2d.setFont(ubuntuFont44);
 		FontMetrics fm = g2d.getFontMetrics();
 		String buttonText = text;
 		int textWidth = fm.stringWidth(buttonText);
@@ -185,9 +182,9 @@ public class GameRenderer {
 			// Centering the title
 
 			g2d.setColor(new Color(233, 233, 233));
-			g2d.setFont(acmeFont96);
+			g2d.setFont(comfortaaFont96);
 			FontMetrics fm = g2d.getFontMetrics();
-			String titleText = "Misle";
+			String titleText = LanguageManager.getText("misle");
 			int textWidth = fm.stringWidth(titleText);
 			int centerX = (int) ((width - textWidth) / 2);
 			int textY = (int) (182 * scaleByScreenSize);
@@ -250,7 +247,7 @@ public class GameRenderer {
 			// MENU ITSELF
 
 			g2d.setColor(new Color(233, 233, 233));
-			g2d.setFont(acmeFont96);
+			g2d.setFont(comfortaaFont96);
 			FontMetrics fm = g2d.getFontMetrics();
 			String titleText = LanguageManager.getText("pause_menu_paused");
 			int textWidth = fm.stringWidth(titleText);
@@ -309,7 +306,7 @@ public class GameRenderer {
 			// MENU ITSELF
 
 			g2d.setColor(new Color(233, 233, 233));
-			g2d.setFont(acmeFont96);
+			g2d.setFont(comfortaaFont96);
 			FontMetrics fm = g2d.getFontMetrics();
 			String titleText = LanguageManager.getText("options_menu_options");
 			int textWidth = fm.stringWidth(titleText);
@@ -346,7 +343,7 @@ public class GameRenderer {
 			// MENU ITSELF
 
 			g2d.setColor(new Color(233, 233, 233));
-			g2d.setFont(acmeFont96);
+			g2d.setFont(comfortaaFont96);
 			FontMetrics fm = g2d.getFontMetrics();
 			String titleText = LanguageManager.getText("loading_menu_loading");
 			int textWidth = fm.stringWidth(titleText);
@@ -368,7 +365,7 @@ public class GameRenderer {
 			g2d.fillRect((int) (660 * scaleByScreenSize), progressBarY, progressBarWidth, progressBarHeight);
 
 			g2d.setColor(new Color(191, 191, 191));
-			g2d.setFont(alefFont40);
+			g2d.setFont(ubuntuFont40);
 			FontMetrics percentageFm = g2d.getFontMetrics();
 			textWidth = percentageFm.stringWidth(percentage); // Use the new font metrics for percentage
 			centerX = (int) ((width - textWidth) / 2);
@@ -513,7 +510,7 @@ public class GameRenderer {
 
 		// Inventory title
 		g2d.setColor(new Color(233, 233, 233));
-		g2d.setFont(acmeFont96);
+		g2d.setFont(comfortaaFont96);
 		FontMetrics fm = g2d.getFontMetrics();
 		String titleText = LanguageManager.getText("inventory_menu_inventory");
 		int textWidth = fm.stringWidth(titleText);
