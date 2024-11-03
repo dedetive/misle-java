@@ -30,8 +30,9 @@ public class Item {
 		ItemData itemDetails = ItemLoader.loadItemDataById(id);
 		if (itemDetails != null) {
 			this.name = itemDetails.getName();
-			this.displayName = LanguageManager.getText(itemDetails.getName().replaceAll(" ", "_").toLowerCase());
-			this.description = itemDetails.getDescription();
+			String normalizedName = itemDetails.getName().replaceAll(" ", "_").toLowerCase();
+			this.displayName = LanguageManager.getText(normalizedName);
+			this.description = LanguageManager.getText(normalizedName + "_DESC");
 			this.countLimit = itemDetails.countLimit();
 			this.rarity = itemDetails.getRarity();
 			this.type = itemDetails.getType();
