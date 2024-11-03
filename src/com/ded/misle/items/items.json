@@ -2,23 +2,24 @@
   {
     "id": 0,
     "resourceID": 0,
-    "name": "Dummy Sword",
-    "description": "A legendary sword forged by a legendary swordsmith.",
+    "name": "Copper Claw",
+    "description": "A tough claw of a tough spider. Capable of quick successive deep scratches.",
     "countLimit": 1,
-    "rarity": "F",
-    "damage": 10,
+    "rarity": "E",
+    "damage": 8,
     "type": "weapon",
     "subtype": "melee",
-    "kind": "sword"
+    "kind": "claw"
   },
   {
     "id": 1,
     "resourceID": 1,
-    "name": "Dummy slingshot",
+    "name": "Wooden Slingshot",
     "description": "Shoots.",
     "countLimit": 1,
-    "rarity": "E",
-    "damage": 8,
+    "rarity": "F",
+    "damage": 1,
+    "slingshotDamage": 3,
     "type": "weapon",
     "subtype": "ranged",
     "kind": "slingshot"

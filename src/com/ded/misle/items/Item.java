@@ -1,11 +1,11 @@
 package com.ded.misle.items;
 
+import com.ded.misle.LanguageManager;
+
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 import java.util.Map;
 import javax.imageio.ImageIO;
-import java.awt.Image;
-import java.io.File;
 import java.io.IOException;
 
 import static com.ded.misle.ChangeSettings.getPath;
@@ -13,6 +13,7 @@ import static com.ded.misle.ChangeSettings.getPath;
 public class Item {
 	private final int id;
 	private final String name;
+	private String displayName;
 	private final String description;
 	private final int countLimit;
 	private final String rarity;
@@ -29,6 +30,7 @@ public class Item {
 		ItemData itemDetails = ItemLoader.loadItemDataById(id);
 		if (itemDetails != null) {
 			this.name = itemDetails.getName();
+			this.displayName = LanguageManager.getText(itemDetails.getName().replaceAll(" ", "_").toLowerCase());
 			this.description = itemDetails.getDescription();
 			this.countLimit = itemDetails.countLimit();
 			this.rarity = itemDetails.getRarity();
@@ -50,6 +52,8 @@ public class Item {
 
 	public int getId() { return id; }
 	public String getName() { return name; }
+	public String getDisplayName() { return displayName; }
+	public void setDisplayName(String displayName) { this.displayName = displayName; }
 	public String getDescription() { return description; }
 	public int getCountLimit() { return countLimit; }
 	public String getRarity() { return rarity; }

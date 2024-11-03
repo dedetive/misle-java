@@ -508,7 +508,7 @@ public class GameRenderer {
 	public static void updateSelectedItemNamePosition() {
 		Item selectedItem = player.inv.getSelectedItem();
 		if (selectedItem != null) {
-			selectedItemName = selectedItem.getName();
+			selectedItemName = selectedItem.getDisplayName();
 
 			double scaleByScreenSize = scale;
 			int inventoryBarWidth = (int) (120 * scaleByScreenSize);
@@ -525,7 +525,7 @@ public class GameRenderer {
 			int slotY = inventoryBarY;
 
 			// Position the name above the selected slot
-			selectedItemNamePosition = new Point(slotX + slotWidth / 2, slotY - 80);
+			selectedItemNamePosition = new Point(slotX + slotWidth / 2, slotY - 70);
 			itemNameDisplayStartTime = System.currentTimeMillis();
 		} else {
 			selectedItemName = null;

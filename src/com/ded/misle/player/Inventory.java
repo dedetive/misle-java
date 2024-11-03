@@ -152,9 +152,6 @@ public class Inventory {
 		return selectedSlot;
 	}
 
-	private String selectedItemName;
-	private Point selectedItemNamePosition;
-
 	public void setSelectedSlot(int selectedSlot) {
 		this.selectedSlot = selectedSlot;
 		updateSelectedItemNamePosition();
