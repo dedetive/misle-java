@@ -56,7 +56,7 @@
     "type": "weapon",
     "subtype": "shield",
     "kind": "wooden",
-    "bundles": "mountain|5"
+    "bundles": "mountainDISABLED|5"
   },
   {
     "id": -1,

@@ -39,6 +39,7 @@ public class Box {
 	private long lastDamageTime = 0;
 
 	private BufferedImage cachedTexture1;
+	private String cachedTexture1Name;
 	private final Map<String, BufferedImage> cachedTexture2 = new HashMap<>();
 	private static final Map<String, Integer> rotationInstruction = new HashMap<>();
 	static {
@@ -346,39 +347,42 @@ public class Box {
 
 
 	public BufferedImage getTexture() {
-		if (cachedTexture1 == null) { // Load the texture only once
-			Path basePath = getPath().resolve("resources/images/boxes/");
-			String fileName = this.texture + ".png";
-			Path fullPath = basePath.resolve(fileName);
+		String fileName = this.texture + ".png";
+		Path fullPath = getPath().resolve("resources/images/boxes/").resolve(fileName);
 
+		// Only reload the texture if the cached texture doesn't match the current texture
+		if (cachedTexture1 == null || !cachedTexture1Name.equals(fileName)) {
 			try {
-				cachedTexture1 = ImageIO.read(fullPath.toFile()); // Load and cache the image
+				cachedTexture1 = ImageIO.read(fullPath.toFile());
+				cachedTexture1Name = fileName; // Store the current texture name
 			} catch (IOException e) {
 				System.out.println("Couldn't find box texture " + fullPath + "!");
-				return null; // Return null if image fails to load
+				return null;
 			}
 		}
-		return cachedTexture1; // Return cached image
+		return cachedTexture1;
 	}
 
+
 	public BufferedImage getTexture(String boxTextureName) {
-		// Check if the texture is already cached
+		// Load and cache texture if not already cached
 		if (!cachedTexture2.containsKey(boxTextureName)) {
 			Path basePath = getPath().resolve("resources/images/boxes/");
 			String fileName = boxTextureName + ".png";
 			Path fullPath = basePath.resolve(fileName);
 
 			try {
-				// Load the texture and cache it
 				BufferedImage texture = ImageIO.read(fullPath.toFile());
 				cachedTexture2.put(boxTextureName, texture); // Cache the loaded image
 			} catch (IOException e) {
+				System.out.println("Couldn't find box texture " + fullPath + "!");
 				e.printStackTrace();
 				return null; // Return null if image fails to load
 			}
 		}
 		return cachedTexture2.get(boxTextureName); // Return the cached image
 	}
+
 
 	// EFFECT HANDLING
 
@@ -445,31 +449,29 @@ public class Box {
 
 		int delay = 750;
 		Box droppedItem;
+		int multiplier = 0;
 		if (canGoMinus && canGoPlus) {
-			if (randomNumber > 0.9) {
-				droppedItem = createDroppedItem(this.getCurrentX(), this.getCurrentY() - 10, id);
-				moveBox(droppedItem, 20, 10, delay);
+			if (randomNumber > 0.5) {
+				multiplier = 1;
 			} else {
-				droppedItem = createDroppedItem(this.getCurrentX(), this.getCurrentY() - 10, id);
-				moveBox(droppedItem, -20, 10, delay);
+				multiplier = -1;
 			}
 		} else if (canGoPlus) {
-			droppedItem = createDroppedItem(this.getCurrentX(), this.getCurrentY() - 10, id);
-			moveBox(droppedItem, 20, 10, delay);
+			multiplier = 1;
 		} else if (canGoMinus) {
-			droppedItem = createDroppedItem(this.getCurrentX(), this.getCurrentY() - 10, id);
-			moveBox(droppedItem, -20, 10, delay);
-		} else {
-			droppedItem = createDroppedItem(this.getCurrentX(), this.getCurrentY() - 10, id);
-			moveBox(droppedItem, 0, 10, delay);
+			multiplier = -1;
 		}
 
+		this.setTexture("chestOpen");
+
+		droppedItem = createDroppedItem(this.getCurrentX(), this.getCurrentY() - 10, id);
+		moveBox(droppedItem, multiplier * 20, 10, delay);
+
 		editLastBox("collectible", "false");
-		System.out.println(droppedItem.getEffect());
 
 		Timer timer = new Timer((int) (delay * 1.5), e -> {
 			editBox(droppedItem, "collectible", "true");
-			System.out.println("Now it can be collected");
+			this.setTexture("chest");
 		});
 		timer.setRepeats(false);
 		timer.start();
