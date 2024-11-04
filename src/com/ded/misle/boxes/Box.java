@@ -17,6 +17,7 @@ import static com.ded.misle.ChangeSettings.getPath;
 import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.GamePanel.tileSize;
 import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.boxes.BoxesHandling.*;
 import static com.ded.misle.items.Item.createDroppedItem;
 import static com.ded.misle.items.Item.createItem;
@@ -434,16 +435,21 @@ public class Box {
 
 			if (canGoMinus && canGoPlus) {
 				if (randomNumber > 0.5) {
-					createDroppedItem(box.getCurrentX() + 20, box.getCurrentY(), id);
+					createDroppedItem(box.getCurrentX(), box.getCurrentY() - 10, id);
+					moveBox(getLastBox(), 20, 10, 750);
 				} else {
-					createDroppedItem(box.getCurrentX() - 20, box.getCurrentY(), id);
+					createDroppedItem(box.getCurrentX(), box.getCurrentY() - 10, id);
+					moveBox(getLastBox(), -20, 10, 750);
 				}
 			} else if (canGoPlus) {
-				createDroppedItem(box.getCurrentX() + 20, box.getCurrentY(), id);
+				createDroppedItem(box.getCurrentX(), box.getCurrentY() - 10, id);
+				moveBox(getLastBox(), 20, 10, 750);
 			} else if (canGoMinus) {
-				createDroppedItem(box.getCurrentX() - 20, box.getCurrentY(), id);
+				createDroppedItem(box.getCurrentX() - 20, box.getCurrentY() - 10, id);
+				moveBox(getLastBox(), -20, 10, 750);
 			} else {
-				createDroppedItem(box.getCurrentX(), box.getCurrentY(), id);
+				createDroppedItem(box.getCurrentX(), box.getCurrentY() - 10, id);
+				moveBox(getLastBox(), 0, 10, 750);
 			}
 		}
 	}

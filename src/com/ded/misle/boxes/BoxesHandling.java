@@ -98,7 +98,7 @@ public class BoxesHandling {
 				editLastBox("color", "0xF0F05A");
 				editLastBox("texture", "spawnpoint");
 				break;
-			case "chest":
+			case "mountainChest":
 				editLastBox("effect", "{chest, 5}");
 				editLastBox("hasCollision", "true");
 				editLastBox("texture", "chest");
@@ -247,5 +247,9 @@ public class BoxesHandling {
 
 	public static boolean deleteBox(Box box) {
 		return boxes.remove(box);
+	}
+
+	public static Box getLastBox() {
+		return boxes.getLast();
 	}
 }

@@ -7,7 +7,7 @@ public class BoxesLoad {
 
 		addBox(200, 150, "spawnpoint");
 
-		addBox(400, 150, "chest");
+		addBox(400, 150, "mountainChest");
 
 		lineAddBox(160, 110, 15, 10, "wallDefault@Deco", "hollow");
 
