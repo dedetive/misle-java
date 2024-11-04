@@ -238,4 +238,8 @@ public class BoxesHandling {
 	public static Box getLastBox() {
 		return boxes.getLast();
 	}
+
+	public static void clearAllBoxes() {
+		boxes.clear();
+	}
 }

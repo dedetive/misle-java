@@ -17,4 +17,8 @@ public class BoxesLoad {
 		editLastBox("color", "0xFE4040");
 		editLastBox("texture", "fire");
 	}
+
+	public static void unloadBoxes() {
+		clearAllBoxes();
+	}
 }

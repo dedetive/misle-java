@@ -12,6 +12,7 @@ import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.SaveFile.loadSaveFile;
 import static com.ded.misle.SaveFile.saveEverything;
 import static com.ded.misle.boxes.BoxesLoad.loadBoxes;
+import static com.ded.misle.boxes.BoxesLoad.unloadBoxes;
 import static java.lang.System.currentTimeMillis;
 
 import java.awt.Rectangle;
@@ -109,6 +110,8 @@ public class GameRenderer {
 		currentMenu = "PLAYING";
 		startTime = currentTimeMillis();
 		gameState = GamePanel.GameState.LOADING_MENU;
+
+		unloadBoxes();
 		loadSaveFile();
 		loadBoxes();
 

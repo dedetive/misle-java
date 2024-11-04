@@ -365,24 +365,23 @@ public class Box {
 
 
 	public BufferedImage getTexture(String boxTextureName) {
-		// Load and cache texture if not already cached
+		// Check if the texture is already cached
 		if (!cachedTexture2.containsKey(boxTextureName)) {
 			Path basePath = getPath().resolve("resources/images/boxes/");
 			String fileName = boxTextureName + ".png";
 			Path fullPath = basePath.resolve(fileName);
 
 			try {
+				// Load the texture and cache it
 				BufferedImage texture = ImageIO.read(fullPath.toFile());
 				cachedTexture2.put(boxTextureName, texture); // Cache the loaded image
 			} catch (IOException e) {
-				System.out.println("Couldn't find box texture " + fullPath + "!");
 				e.printStackTrace();
 				return null; // Return null if image fails to load
 			}
 		}
 		return cachedTexture2.get(boxTextureName); // Return the cached image
 	}
-
 
 	// EFFECT HANDLING
 
