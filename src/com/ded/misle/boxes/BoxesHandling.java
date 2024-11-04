@@ -99,7 +99,7 @@ public class BoxesHandling {
 				editLastBox("texture", "spawnpoint");
 				break;
 			case "mountainChest":
-				editLastBox("effect", "{chest, 5}");
+				editLastBox("effect", "{chest, 5, mountain}");
 				editLastBox("hasCollision", "true");
 				editLastBox("texture", "chest");
 				break;

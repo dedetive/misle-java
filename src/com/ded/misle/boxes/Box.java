@@ -19,6 +19,7 @@ import static com.ded.misle.GamePanel.tileSize;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.boxes.BoxesHandling.*;
+import static com.ded.misle.chests.ChestTables.getChestDropID;
 import static com.ded.misle.items.Item.createDroppedItem;
 import static com.ded.misle.items.Item.createItem;
 import static java.lang.System.currentTimeMillis;
@@ -37,7 +38,7 @@ public class Box {
 	private long lastDamageTime = 0;
 
 	private BufferedImage cachedTexture1;
-	private Map<String, BufferedImage> cachedTexture2 = new HashMap<>();
+	private final Map<String, BufferedImage> cachedTexture2 = new HashMap<>();
 	private static final Map<String, Integer> rotationInstruction = new HashMap<>();
 	static {
 				rotationInstruction.put("W", 0);
@@ -160,7 +161,7 @@ public class Box {
 			}
 		} else {
 			if (texture.contains("@")) {
-				texture.replace("@", "");
+				texture = texture.replace("@", "");
 			}
 			g2d.drawImage(this.getTexture(), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), null);
 		}
@@ -350,7 +351,7 @@ public class Box {
 			try {
 				cachedTexture1 = ImageIO.read(fullPath.toFile()); // Load and cache the image
 			} catch (IOException e) {
-				e.printStackTrace();
+				System.out.println("Couldn't find box texture " + fullPath + "!");
 				return null; // Return null if image fails to load
 			}
 		}
@@ -422,7 +423,7 @@ public class Box {
 
 		if (currentTime - box.getLastEffectTime() >= cooldownDuration) {
 			box.setLastEffectTime(currentTime);
-			int id = 2;
+			int id = getChestDropID(box.effect[2]);
 			boolean canGoMinus = false;
 			boolean canGoPlus = false;
 			if (getCollisionBoxesInRange(box.currentX - 20, box.currentY * scale, 0, scale, tileSize).isEmpty()) {

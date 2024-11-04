@@ -4,10 +4,7 @@ import java.io.BufferedReader;
 import java.nio.file.Files;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.ded.misle.ChangeSettings.getPath;
 
@@ -40,6 +37,7 @@ public class ItemLoader {
 			String rarity = null;
 			String type = null;
 			int resourceID = 0;
+			Map<String, Integer> bundleWeights = new HashMap<>();
 			Map<String, Object> attributes = new HashMap<>();
 
 			String[] pairs = block.split(",");
@@ -67,6 +65,15 @@ public class ItemLoader {
 					case "resourceID":
 						resourceID = Integer.parseInt(value);
 						break;
+					case "bundles":
+						String[] bundleEntries = value.split(",");
+						for (String entry : bundleEntries) {
+							String[] parts = entry.split("\\|");
+							String bundleName = parts[0];
+							int weight = Integer.parseInt(parts[1]);
+							bundleWeights.put(bundleName, weight);
+						}
+						break;
 					default:
 						// Parse other attributes as dynamic fields
 						try {
@@ -79,7 +86,7 @@ public class ItemLoader {
 			}
 
 			if (name != null && type != null) {
-				items.add(new ItemData(itemId, name, countLimit, rarity, type, resourceID, attributes)); // Store ItemData instead
+				items.add(new ItemData(itemId, name, countLimit, rarity, type, resourceID, attributes, bundleWeights)); // Store ItemData instead
 			}
 		}
 

@@ -8,7 +8,8 @@
     "damage": 8,
     "type": "weapon",
     "subtype": "melee",
-    "kind": "claw"
+    "kind": "claw",
+    "bundles": "mountain|5"
   },
   {
     "id": 1,
@@ -20,7 +21,8 @@
     "slingshotDamage": 3,
     "type": "weapon",
     "subtype": "ranged",
-    "kind": "slingshot"
+    "kind": "slingshot",
+    "bundles": "mountain|5"
   },
   {
     "id": 2,
@@ -31,7 +33,8 @@
     "healingAmount": 25,
     "type": "potion",
     "subtype": "heal",
-    "kind": "self"
+    "kind": "self",
+    "bundles": "mountain|15"
   },
   {
     "id": 3,
@@ -52,7 +55,8 @@
     "rarity": "F",
     "type": "weapon",
     "subtype": "shield",
-    "kind": "wooden"
+    "kind": "wooden",
+    "bundles": "mountain|5"
   },
   {
     "id": -1,

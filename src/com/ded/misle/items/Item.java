@@ -96,7 +96,7 @@ public class Item {
 		try {
 			return ImageIO.read(filePath.toFile());
 		} catch (IOException e) {
-			e.printStackTrace(); // Log or handle if image is not found
+			System.out.println("Can't find item texture " + filePath + "!");
 			return null; // Return null if image fails to load
 		}
 	}
