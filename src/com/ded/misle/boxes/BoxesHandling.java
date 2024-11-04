@@ -76,7 +76,32 @@ public class BoxesHandling {
 					case "fill":
 					default:
 						boxes.add(new Box(startX + i * 20, startY + j * 20));
-						loadPreset(boxes.getLast(), preset);
+
+						if (checkIfPresetHasSides(preset)) {
+							String openSides;
+							if (i == 0 && j == 0) {
+								openSides = ".AW.S.@"; // Left-up corner
+							} else if (i == 0 && j == boxesY - 1) {
+								openSides = ".AS.D.@"; // Left-down corner
+							} else if (i == boxesX - 1 && j == 0) {
+								openSides = ".WD.A.@"; // Right-up corner
+							} else if (i == boxesX - 1 && j == boxesY - 1) {
+								openSides = ".SD.W.@"; // Right-down corner
+							} else if (i == 0) {
+								openSides = ".A";
+							}  else if (i == boxesX - 1) {
+								openSides = ".D";
+							} else if (j == 0) {
+								openSides = ".W";
+							} else if (j == boxesY - 1) {
+								openSides = ".S";
+							} else {
+								openSides = "";
+							}
+
+							editLastBox("texture", preset + openSides);
+						}
+
 						Counter++;
 						break;
 				}

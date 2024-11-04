@@ -8,13 +8,8 @@ public class BoxesLoad {
 		int boxesAdded = lineAddBox(0,0, 60, 60, "fill", 1.98);
 		editLastBox("texture", "grass", boxesAdded);
 
-//		boxesAdded = lineAddBox(180, 130, 13, 8, "fill");
-//		editLastBox("texture", "grass2", boxesAdded);
-//
-//		boxesAdded = lineAddBox(180, 130, 13, 8, "fill");
-//		editLastBox("texture", "grass3", boxesAdded);
-
 		addBox(200, 150, "spawnpoint");
+		addBox(400, 210, "spawnpoint");
 
 		addBox(400, 150, "mountainChest");
 
@@ -23,6 +18,8 @@ public class BoxesLoad {
 		deleteBox(getAllBoxes().get(getAllBoxes().size() - 5));
 		editBox(getAllBoxes().get(getAllBoxes().size() - 5), "texture", "wallDefault.ASD");
 		editBox(getAllBoxes().get(getAllBoxes().size() - 4), "texture", "wallDefault.AWD");
+		
+		lineAddBox(620, 110, 5, 5, "wallDefault", "fill");
 
 		addBox(300, 230);
 		editLastBox("effect","{damage, 10, 350, normal, {''}}");

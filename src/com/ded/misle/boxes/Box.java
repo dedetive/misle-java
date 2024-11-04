@@ -1,6 +1,5 @@
 package com.ded.misle.boxes;
 
-import com.ded.misle.GamePanel;
 import com.ded.misle.GameRenderer;
 import com.ded.misle.player.PlayerAttributes;
 
