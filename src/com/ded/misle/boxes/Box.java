@@ -486,6 +486,7 @@ public class Box {
 
 		if (totalDistance < 30) {
 			player.inv.addItem(createItem(Integer.parseInt(box.effect[1]), Integer.parseInt(box.effect[2])));
+			GameRenderer.updateSelectedItemNamePosition();
 			deleteBox(box);
 		}
 	}
