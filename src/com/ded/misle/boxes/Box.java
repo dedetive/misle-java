@@ -15,6 +15,11 @@ import java.util.Objects;
 
 import static com.ded.misle.ChangeSettings.getPath;
 import static com.ded.misle.GamePanel.player;
+import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.boxes.BoxesHandling.*;
+import static com.ded.misle.items.Item.createDroppedItem;
+import static com.ded.misle.items.Item.createItem;
+import static java.lang.System.currentTimeMillis;
 
 public class Box {
 	private final double originalX; // The original world position (unscaled)
@@ -265,6 +270,7 @@ public class Box {
 		return switch (getEffect()) {
 			case "damage" -> Double.parseDouble(effect[2]);
 			case "heal" -> Double.parseDouble(effect[2]);
+			case "chest" -> 1000 * Double.parseDouble(effect[1]);
 			default -> 0;
 		};
 	}
@@ -283,6 +289,8 @@ public class Box {
 			case "heal" -> handleBoxHealCooldown(box);
 			case "velocity" -> handleBoxVelocity(box);
 			case "spawnpoint" -> handleBoxCheckpoint(box);
+			case "chest" -> handleBoxChest(box);
+			case "item" -> handleBoxItemCollectible(box);
 		}
 	}
 
@@ -322,8 +330,6 @@ public class Box {
 		}
 	}
 
-	// EFFECT HANDLING
-
 	public long getLastEffectTime() {
 		return lastDamageTime;
 	}
@@ -332,43 +338,6 @@ public class Box {
 		this.lastDamageTime = lastDamageTime;
 	}
 
-	private static void handleBoxDamageCooldown(Box box) {
-		long currentTime = System.currentTimeMillis();
-		long cooldownDuration = (long) box.getEffectRate(); // Use the box's damage rate for cooldown
-
-		// Check if enough time has passed since the last damage was dealt
-		if (currentTime - box.getLastEffectTime() >= cooldownDuration) {
-			box.setLastEffectTime(currentTime); // Update the last damage time
-			player.attr.takeDamage(box.getEffectValue(), box.getEffectReason(), box.getEffectArgs());
-//			System.out.println(box.getEffectValue() + " " + box.getEffectReason() + " damage dealt! Now at " + player.attr.getPlayerHP() + " HP.");
-		}
-	}
-
-	private static void handleBoxHealCooldown(Box box) {
-		long currentTime = System.currentTimeMillis();
-		long cooldownDuration = (long) box.getEffectRate();
-
-		if (currentTime - box.getLastEffectTime() >= cooldownDuration) {
-			box.setLastEffectTime(currentTime);
-			player.attr.receiveHeal(box.getEffectValue(), box.getEffectReason());
-//			System.out.println(box.getEffectValue() + " " + box.getEffectReason() + " heal received! Now at " + player.attr.getPlayerHP() + " HP.");
-		}
-	}
-
-	private static void handleBoxVelocity(Box box) {
-		player.attr.setPlayerEnvironmentSpeedModifier(box.getEffectValue());
-		player.attr.setLastVelocityBox(box);
-	}
-
-	private static void handleBoxCheckpoint(Box box) {
-		if ((Objects.equals(box.effect[1], "-1") || Integer.parseInt(box.effect[1]) > 0) && !Arrays.equals(player.pos.getSpawnpoint(), new double[]{box.getCurrentX(), box.getCurrentY()})) {
-			player.pos.setSpawnpoint(box.getCurrentX(), box.getCurrentY());
-			System.out.println("Saved spawnpoint as " + box.getCurrentX() + ", " + box.getCurrentY());
-			if (Integer.parseInt(box.effect[1]) > 0) {
-				box.effect[1] = String.valueOf(Integer.parseInt(box.effect[1]) - 1);
-			}
-		}
-	}
 
 	public BufferedImage getTexture() {
 		if (cachedTexture1 == null) { // Load the texture only once
@@ -403,5 +372,66 @@ public class Box {
 			}
 		}
 		return cachedTexture2.get(boxTextureName); // Return the cached image
+	}
+
+	// EFFECT HANDLING
+
+	private static void handleBoxDamageCooldown(Box box) {
+		long currentTime = currentTimeMillis();
+		long cooldownDuration = (long) box.getEffectRate(); // Use the box's damage rate for cooldown
+
+		// Check if enough time has passed since the last damage was dealt
+		if (currentTime - box.getLastEffectTime() >= cooldownDuration) {
+			box.setLastEffectTime(currentTime); // Update the last damage time
+			player.attr.takeDamage(box.getEffectValue(), box.getEffectReason(), box.getEffectArgs());
+//			System.out.println(box.getEffectValue() + " " + box.getEffectReason() + " damage dealt! Now at " + player.attr.getPlayerHP() + " HP.");
+		}
+	}
+
+	private static void handleBoxHealCooldown(Box box) {
+		long currentTime = currentTimeMillis();
+		long cooldownDuration = (long) box.getEffectRate();
+
+		if (currentTime - box.getLastEffectTime() >= cooldownDuration) {
+			box.setLastEffectTime(currentTime);
+			player.attr.receiveHeal(box.getEffectValue(), box.getEffectReason());
+//			System.out.println(box.getEffectValue() + " " + box.getEffectReason() + " heal received! Now at " + player.attr.getPlayerHP() + " HP.");
+		}
+	}
+
+	private static void handleBoxVelocity(Box box) {
+		player.attr.setPlayerEnvironmentSpeedModifier(box.getEffectValue());
+		player.attr.setLastVelocityBox(box);
+	}
+
+	private static void handleBoxCheckpoint(Box box) {
+		if ((Objects.equals(box.effect[1], "-1") || Integer.parseInt(box.effect[1]) > 0) && !Arrays.equals(player.pos.getSpawnpoint(), new double[]{box.getCurrentX(), box.getCurrentY()})) {
+			player.pos.setSpawnpoint(box.getCurrentX(), box.getCurrentY());
+			System.out.println("Saved spawnpoint as " + box.getCurrentX() + ", " + box.getCurrentY());
+			if (Integer.parseInt(box.effect[1]) > 0) {
+				box.effect[1] = String.valueOf(Integer.parseInt(box.effect[1]) - 1);
+			}
+		}
+	}
+
+	private static void handleBoxChest(Box box) {
+		long currentTime = currentTimeMillis();
+		long cooldownDuration = (long) box.getEffectRate();
+
+		if (currentTime - box.getLastEffectTime() >= cooldownDuration) {
+			box.setLastEffectTime(currentTime);
+			createDroppedItem(box.getCurrentX() - 20, box.getCurrentY(), 2);
+		}
+	}
+
+	private static void handleBoxItemCollectible(Box box) {
+		double xDistance = Math.abs(box.getCurrentX() - player.pos.getX() / scale);
+		double yDistance = Math.abs(box.getCurrentY() - player.pos.getY() / scale);
+		double totalDistance = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
+
+		if (totalDistance < 30) {
+			player.inv.addItem(createItem(Integer.parseInt(box.effect[1]), Integer.parseInt(box.effect[2])));
+			deleteBox(box);
+		}
 	}
 }

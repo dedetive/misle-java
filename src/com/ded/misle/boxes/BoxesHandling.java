@@ -1,6 +1,7 @@
 package com.ded.misle.boxes;
 
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,12 @@ public class BoxesHandling {
 		if (checkIfPresetHasSides(preset)) {
 			editLastBox("texture", preset + "0");
 		}
+	}
+
+	public static void addBoxItem(double x, double y, int id) {
+		boxes.add(new Box(x, y));
+		editLastBox("effect", "{item, " + id + ", 1}");
+		editLastBox("texture", (".." + File.separator + "items" + File.separator + id));
 	}
 
 	public static int lineAddBox(double startX, double startY, int boxesX, int boxesY, String preset, String mode) {
@@ -91,7 +98,7 @@ public class BoxesHandling {
 				editLastBox("color", "0xF0F05A");
 				break;
 			case "chest":
-//				editLastBox("effect", "{chest, 1}");
+				editLastBox("effect", "{chest, 5}");
 				editLastBox("hasCollision", "true");
 				editLastBox("color", "0xA07030");
 				break;
@@ -235,5 +242,9 @@ public class BoxesHandling {
 			}
 		}
 		return boxesInRange;
+	}
+
+	public static boolean deleteBox(Box box) {
+		return boxes.remove(box);
 	}
 }

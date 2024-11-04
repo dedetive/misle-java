@@ -16,11 +16,6 @@ public class Player {
 		this.attr = new PlayerAttributes();
 		this.stats = new PlayerStats();
 		this.inv = new Inventory();
-
-		this.inv.addItem(createItem(0), 0, 0);
-		this.inv.addItem(createItem(1, 3), 0, 1);
-		this.inv.addItem(createItem(2, 5), 0, 6);
-		this.inv.addItem(createItem(2, 94));
 	}
 
 	public void unloadPlayer() {

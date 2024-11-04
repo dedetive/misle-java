@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 
 import static com.ded.misle.ChangeSettings.getPath;
+import static com.ded.misle.boxes.BoxesHandling.addBoxItem;
 
 public class Item {
 	private final int id;
@@ -104,4 +105,7 @@ public class Item {
 		this.resourceID = resourceID;
 	}
 
+	public static void createDroppedItem(double x, double y, int id) {
+		addBoxItem(x, y, id);
+	}
 }
