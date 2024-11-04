@@ -19,7 +19,10 @@ public class BoxesLoad {
 		addBox(400, 150, "mountainChest");
 
 		lineAddBox(160, 110, 15, 10, "wallDefault@Deco", "hollow");
-
+		deleteBox(getAllBoxes().get(getAllBoxes().size() - 5));
+		deleteBox(getAllBoxes().get(getAllBoxes().size() - 5));
+		editBox(getAllBoxes().get(getAllBoxes().size() - 5), "texture", "wallDefault.ASD");
+		editBox(getAllBoxes().get(getAllBoxes().size() - 4), "texture", "wallDefault.AWD");
 
 		addBox(300, 230);
 		editLastBox("effect","{damage, 10, 350, normal, {''}}");
