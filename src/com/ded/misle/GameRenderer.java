@@ -111,7 +111,6 @@ public class GameRenderer {
 		startTime = currentTimeMillis();
 		gameState = GamePanel.GameState.LOADING_MENU;
 
-		unloadBoxes();
 		loadSaveFile();
 		loadBoxes();
 
@@ -159,6 +158,7 @@ public class GameRenderer {
 
 	public static void goToMainMenu() {
 		saveEverything();
+		unloadBoxes();
 		player.unloadPlayer();
 		previousMenu = currentMenu;
 		gameState = GamePanel.GameState.MAIN_MENU;
