@@ -15,6 +15,7 @@ import java.util.Objects;
 
 import static com.ded.misle.ChangeSettings.getPath;
 import static com.ded.misle.GamePanel.player;
+import static com.ded.misle.GamePanel.tileSize;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.boxes.BoxesHandling.*;
 import static com.ded.misle.items.Item.createDroppedItem;
@@ -420,7 +421,30 @@ public class Box {
 
 		if (currentTime - box.getLastEffectTime() >= cooldownDuration) {
 			box.setLastEffectTime(currentTime);
-			createDroppedItem(box.getCurrentX() - 20, box.getCurrentY(), 2);
+			int id = 2;
+			boolean canGoMinus = false;
+			boolean canGoPlus = false;
+			if (getCollisionBoxesInRange(box.currentX - 20, box.currentY * scale, 0, scale, tileSize).isEmpty()) {
+				canGoMinus = true;
+			}
+			if (getCollisionBoxesInRange(box.currentX + 20, box.currentY * scale, 0, scale, tileSize).isEmpty()) {
+				canGoPlus = true;
+			}
+			double randomNumber = Math.random();
+
+			if (canGoMinus && canGoPlus) {
+				if (randomNumber > 0.5) {
+					createDroppedItem(box.getCurrentX() + 20, box.getCurrentY(), id);
+				} else {
+					createDroppedItem(box.getCurrentX() - 20, box.getCurrentY(), id);
+				}
+			} else if (canGoPlus) {
+				createDroppedItem(box.getCurrentX() + 20, box.getCurrentY(), id);
+			} else if (canGoMinus) {
+				createDroppedItem(box.getCurrentX() - 20, box.getCurrentY(), id);
+			} else {
+				createDroppedItem(box.getCurrentX(), box.getCurrentY(), id);
+			}
 		}
 	}
 

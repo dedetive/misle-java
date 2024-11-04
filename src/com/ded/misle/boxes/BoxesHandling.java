@@ -96,11 +96,12 @@ public class BoxesHandling {
 			case "spawnpoint":
 				editLastBox("effect", "{spawnpoint, -1}");
 				editLastBox("color", "0xF0F05A");
+				editLastBox("texture", "spawnpoint");
 				break;
 			case "chest":
 				editLastBox("effect", "{chest, 5}");
 				editLastBox("hasCollision", "true");
-				editLastBox("color", "0xA07030");
+				editLastBox("texture", "chest");
 				break;
 			case "wallDefault":
 				editLastBox("hasCollision", "true");
