@@ -31,10 +31,11 @@ public class BoxesHandling {
 		}
 	}
 
-	public static void addBoxItem(double x, double y, int id) {
+	public static Box addBoxItem(double x, double y, int id) {
 		boxes.add(new Box(x, y));
-		editLastBox("effect", "{item, " + id + ", 1}");
+		editLastBox("effect", "{item, " + id + ", 1, true}");
 		editLastBox("texture", (".." + File.separator + "items" + File.separator + id));
+		return boxes.getLast();
 	}
 
 	public static int lineAddBox(double startX, double startY, int boxesX, int boxesY, String preset, String mode) {
@@ -115,6 +116,40 @@ public class BoxesHandling {
 		}
 	}
 
+	public static void editBox(Box box, String key, String value) {
+		switch (key) {
+			case "x":
+				box.setCurrentX(Double.parseDouble(value));
+				break;
+			case "y":
+				box.setCurrentY(Double.parseDouble(value));
+				break;
+			case "color":
+				box.setColor(Color.decode(value));
+				break;
+			case "texture":
+				box.setTexture(value);
+				break;
+			case "hasCollision":
+				box.setHasCollision(Boolean.parseBoolean(value));
+				break;
+			case "boxScaleHorizontal":
+				box.setBoxScaleHorizontal(Double.parseDouble(value));
+				break;
+			case "boxScaleVertical":
+				box.setBoxScaleVertical(Double.parseDouble(value));
+				break;
+			case "effect":
+				value = value.replaceAll("[{}]", "");
+				String[] effectArray = value.split(",\\s*");
+				box.setEffect(effectArray);
+				break;
+			case "collectible":
+				box.setEffectReason(value);
+				break;
+		}
+	}
+
 	/**
 	 *
 	 * Effect needs to be in the expected format of effects. For example: <br>
@@ -125,61 +160,12 @@ public class BoxesHandling {
 	 * @param value value to be changed to
 	 */
 	public static void editLastBox(String key, String value) {
-		switch (key) {
-			case "x":
-				boxes.getLast().setCurrentX(Double.parseDouble(value));
-				break;
-			case "y":
-				boxes.getLast().setCurrentY(Double.parseDouble(value));
-				break;
-			case "color":
-				boxes.getLast().setColor(Color.decode(value));
-				break;
-			case "texture":
-				boxes.getLast().setTexture(value);
-				break;
-			case "hasCollision":
-				boxes.getLast().setHasCollision(Boolean.parseBoolean(value));
-				break;
-			case "boxScaleHorizontal":
-				boxes.getLast().setBoxScaleHorizontal(Double.parseDouble(value));
-				break;
-			case "boxScaleVertical":
-				boxes.getLast().setBoxScaleVertical(Double.parseDouble(value));
-				break;
-			case "effect":
-				value = value.replaceAll("[{}]", "");
-				String[] effectArray = value.split(",\\s*");
-				boxes.getLast().setEffect(effectArray);
-		}
+		editBox(boxes.getLast(), key, value);
 	}
 
 	public static void editLastBox(String key, String value, int boxCount) {
 		for (int i = 1; i < boxCount + 1; i++) {
-			switch (key) {
-				case "x":
-					boxes.get(boxes.size() - i).setCurrentX(Double.parseDouble(value));
-					break;
-				case "y":
-					boxes.get(boxes.size() - i).setCurrentY(Double.parseDouble(value));
-					break;
-				case "color":
-					boxes.get(boxes.size() - i).setColor(Color.decode(value));
-					break;
-				case "hasCollision":
-					boxes.get(boxes.size() - i).setHasCollision(Boolean.parseBoolean(value));
-					break;
-				case "boxScaleHorizontal":
-					boxes.get(boxes.size() - i).setBoxScaleHorizontal(Double.parseDouble(value));
-					break;
-				case "boxScaleVertical":
-					boxes.get(boxes.size() - i).setBoxScaleVertical(Double.parseDouble(value));
-					break;
-				case "effect":
-					value = value.replaceAll("[{}]", "");
-					String[] effectArray = value.split(",\\s*");
-					boxes.get(boxes.size() - i).setEffect(effectArray);
-			}
+			editBox(boxes.get(boxes.size() - i), key, value);
 		}
 	}
 

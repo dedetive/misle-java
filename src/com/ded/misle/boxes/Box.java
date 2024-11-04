@@ -1,9 +1,11 @@
 package com.ded.misle.boxes;
 
+import com.ded.misle.GamePanel;
 import com.ded.misle.GameRenderer;
 import com.ded.misle.player.PlayerAttributes;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -14,8 +16,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.ded.misle.ChangeSettings.getPath;
-import static com.ded.misle.GamePanel.player;
-import static com.ded.misle.GamePanel.tileSize;
+import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.boxes.BoxesHandling.*;
@@ -309,6 +310,7 @@ public class Box {
 		return switch (getEffect()) {
 			case "damage" -> this.effect[3];
 			case "heal" -> this.effect[3];
+			case "item" -> this.effect[3];
 			default -> "";
 		};
 	}
@@ -317,6 +319,7 @@ public class Box {
 		switch (reason) {
 			case "damage" -> this.effect[3] = reason;
 			case "heal" -> this.effect[3] = reason;
+			default -> this.effect[3] = reason;
 		}
 	}
 
@@ -432,30 +435,50 @@ public class Box {
 			if (getCollisionBoxesInRange(box.currentX + 20, box.currentY * scale, 0, scale, tileSize).isEmpty()) {
 				canGoPlus = true;
 			}
-			double randomNumber = Math.random();
 
-			if (canGoMinus && canGoPlus) {
-				if (randomNumber > 0.5) {
-					createDroppedItem(box.getCurrentX(), box.getCurrentY() - 10, id);
-					moveBox(getLastBox(), 20, 10, 750);
-				} else {
-					createDroppedItem(box.getCurrentX(), box.getCurrentY() - 10, id);
-					moveBox(getLastBox(), -20, 10, 750);
-				}
-			} else if (canGoPlus) {
-				createDroppedItem(box.getCurrentX(), box.getCurrentY() - 10, id);
-				moveBox(getLastBox(), 20, 10, 750);
-			} else if (canGoMinus) {
-				createDroppedItem(box.getCurrentX() - 20, box.getCurrentY() - 10, id);
-				moveBox(getLastBox(), -20, 10, 750);
-			} else {
-				createDroppedItem(box.getCurrentX(), box.getCurrentY() - 10, id);
-				moveBox(getLastBox(), 0, 10, 750);
-			}
+			box.boxSpawnItem(canGoMinus, canGoPlus, id);
 		}
 	}
 
+	private void boxSpawnItem(boolean canGoMinus, boolean canGoPlus, int id) {
+		double randomNumber = Math.random();
+
+		int delay = 750;
+		Box droppedItem;
+		if (canGoMinus && canGoPlus) {
+			if (randomNumber > 0.9) {
+				droppedItem = createDroppedItem(this.getCurrentX(), this.getCurrentY() - 10, id);
+				moveBox(droppedItem, 20, 10, delay);
+			} else {
+				droppedItem = createDroppedItem(this.getCurrentX(), this.getCurrentY() - 10, id);
+				moveBox(droppedItem, -20, 10, delay);
+			}
+		} else if (canGoPlus) {
+			droppedItem = createDroppedItem(this.getCurrentX(), this.getCurrentY() - 10, id);
+			moveBox(droppedItem, 20, 10, delay);
+		} else if (canGoMinus) {
+			droppedItem = createDroppedItem(this.getCurrentX(), this.getCurrentY() - 10, id);
+			moveBox(droppedItem, -20, 10, delay);
+		} else {
+			droppedItem = createDroppedItem(this.getCurrentX(), this.getCurrentY() - 10, id);
+			moveBox(droppedItem, 0, 10, delay);
+		}
+
+		editLastBox("collectible", "false");
+		System.out.println(droppedItem.getEffect());
+
+		Timer timer = new Timer((int) (delay * 1.5), e -> {
+			editBox(droppedItem, "collectible", "true");
+			System.out.println("Now it can be collected");
+		});
+		timer.setRepeats(false);
+		timer.start();
+	}
+
 	private static void handleBoxItemCollectible(Box box) {
+		if (box.getEffectReason().equals("false")) {
+			return;
+		}
 		double xDistance = Math.abs(box.getCurrentX() - player.pos.getX() / scale);
 		double yDistance = Math.abs(box.getCurrentY() - player.pos.getY() / scale);
 		double totalDistance = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));

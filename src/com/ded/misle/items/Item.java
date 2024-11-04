@@ -1,6 +1,7 @@
 package com.ded.misle.items;
 
 import com.ded.misle.LanguageManager;
+import com.ded.misle.boxes.Box;
 
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
@@ -105,7 +106,7 @@ public class Item {
 		this.resourceID = resourceID;
 	}
 
-	public static void createDroppedItem(double x, double y, int id) {
-		addBoxItem(x, y, id);
+	public static Box createDroppedItem(double x, double y, int id) {
+		return addBoxItem(x, y, id);
 	}
 }
