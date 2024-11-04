@@ -85,6 +85,32 @@ public class BoxesHandling {
 		return Counter;
 	}
 
+	public static int lineAddBox(double startX, double startY, int boxesX, int boxesY, String mode, double boxScale) {
+		int Counter = 0;
+		for (int i = 0; i < boxesX; i++) {
+			for (int j = 0; j < boxesY; j++) {
+				switch (mode) {
+					case "hollow":
+						if ((i == 0 || i == boxesX - 1) || (j == 0 || j == boxesY - 1)) {
+							boxes.add(new Box(startX + i * 20 * boxScale, startY + j * 20 * boxScale));
+							editLastBox("boxScaleHorizontal", String.valueOf(boxScale));
+							editLastBox("boxScaleVertical", String.valueOf(boxScale));
+							Counter++;
+						}
+						break;
+					case "fill":
+					default:
+						boxes.add(new Box(startX + i * 20 * boxScale, startY + j * 20 * boxScale));
+						editLastBox("boxScaleHorizontal", String.valueOf(boxScale));
+						editLastBox("boxScaleVertical", String.valueOf(boxScale));
+						Counter++;
+						break;
+				}
+			}
+		}
+		return Counter;
+	}
+
 	public static boolean checkIfPresetHasSides(String preset) {
 		if (preset.contains("@")) {
 			return presetsWithSides.contains(preset.substring(0, preset.indexOf("@")));
