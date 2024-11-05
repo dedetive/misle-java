@@ -27,7 +27,7 @@ java com.ded.misle.Launcher
 - **Arrow keys:** Move the player (white square).
 - **Escape key:** Pause and unpause the game.
 - **I:** Open inventory.
-- **\[** and **\]:** Test keys with functionality that varies by version; these can be customized in GamePanel.java at the end of the updateKeys() method.
+- **\[** and **\]:** Test keys with functionality that varies by version; these can be customized in KeyHandler.java at the end of the updateKeys() method.
 
 ### Settings
 
