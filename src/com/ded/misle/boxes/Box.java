@@ -152,6 +152,9 @@ public class Box {
 					String[] eachCorner = textureParts[2].split("");
 
 					for (String corner : eachCorner) {
+						if (Objects.equals(corner, "")) {
+							continue;
+						}
 						GameRenderer.drawRotatedImage(g2d, getTexture(textureName + "OverlayC"), screenX, screenY,
 								(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), rotationInstruction.get(corner));
 					}

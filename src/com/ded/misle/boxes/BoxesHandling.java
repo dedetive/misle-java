@@ -38,7 +38,7 @@ public class BoxesHandling {
 		return boxes.getLast();
 	}
 
-	public static int lineAddBox(double startX, double startY, int boxesX, int boxesY, String preset, String mode) {
+	public static int lineAddScaledBox(double startX, double startY, int boxesX, int boxesY, String preset, String mode) {
 		int Counter = 0;
 		for (int i = 0; i < boxesX; i++) {
 			for (int j = 0; j < boxesY; j++) {
@@ -46,7 +46,7 @@ public class BoxesHandling {
 					case "hollow":
 						if ((i == 0 || i == boxesX - 1) || (j == 0 || j == boxesY - 1)) {
 							boxes.add(new Box(startX + i * 20, startY + j * 20));
-							loadPreset(boxes.getLast(), preset.substring(0, preset.indexOf("@")));
+							if (preset.contains("@")) { loadPreset(boxes.getLast(), preset.substring(0, preset.indexOf("@"))); }
 
 							// For wall corner detection
 
@@ -76,17 +76,18 @@ public class BoxesHandling {
 					case "fill":
 					default:
 						boxes.add(new Box(startX + i * 20, startY + j * 20));
+						if (preset.contains("@")) { loadPreset(boxes.getLast(), preset.substring(0, preset.indexOf("@"))); }
 
 						if (checkIfPresetHasSides(preset)) {
 							String openSides;
 							if (i == 0 && j == 0) {
-								openSides = ".AW.S.@"; // Left-up corner
+								openSides = ".AW..@"; // Left-up corner
 							} else if (i == 0 && j == boxesY - 1) {
-								openSides = ".AS.D.@"; // Left-down corner
+								openSides = ".AS..@"; // Left-down corner
 							} else if (i == boxesX - 1 && j == 0) {
-								openSides = ".WD.A.@"; // Right-up corner
+								openSides = ".WD..@"; // Right-up corner
 							} else if (i == boxesX - 1 && j == boxesY - 1) {
-								openSides = ".SD.W.@"; // Right-down corner
+								openSides = ".SD..@"; // Right-down corner
 							} else if (i == 0) {
 								openSides = ".A";
 							}  else if (i == boxesX - 1) {
@@ -110,7 +111,7 @@ public class BoxesHandling {
 		return Counter;
 	}
 
-	public static int lineAddBox(double startX, double startY, int boxesX, int boxesY, String mode, double boxScale) {
+	public static int lineAddScaledBox(double startX, double startY, int boxesX, int boxesY, String mode, double boxScale) {
 		int Counter = 0;
 		for (int i = 0; i < boxesX; i++) {
 			for (int j = 0; j < boxesY; j++) {
@@ -146,23 +147,23 @@ public class BoxesHandling {
 	private static void loadPreset(Box box, String preset) {
 		switch (preset) {
 			case "spawnpoint":
-				editLastBox("effect", "{spawnpoint, -1}");
-				editLastBox("color", "0xF0F05A");
-				editLastBox("texture", "spawnpoint");
+				editBox(box,"effect", "{spawnpoint, -1}");
+				editBox(box,"color", "0xF0F05A");
+				editBox(box,"texture", "spawnpoint");
 				break;
 			case "mountainChest":
-				editLastBox("effect", "{chest, 5, mountain}");
-				editLastBox("hasCollision", "true");
-				editLastBox("texture", "chest");
+				editBox(box,"effect", "{chest, 5, mountain}");
+				editBox(box,"hasCollision", "true");
+				editBox(box,"texture", "chest");
 				break;
 			case "wallDefault":
-				editLastBox("hasCollision", "true");
-				editLastBox("color", "0x606060");
-				editLastBox("texture", "wallDefault");
+				editBox(box,"hasCollision", "true");
+				editBox(box,"color", "0x606060");
+				editBox(box,"texture", "wallDefault");
 				break;
 			case "grass":
-				editLastBox("hasCollision", "false");
-				editLastBox("color", "0x1EA81E");
+				editBox(box,"hasCollision", "false");
+				editBox(box,"color", "0x1EA81E");
 				break;
 		}
 	}
