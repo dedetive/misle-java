@@ -252,13 +252,7 @@ public class PlayerAttributes {
 	 * - "revival exclusive": the heal will only be received if the player is dead. This will revive the player. The value entered may be affected by external forces <br><br>
 	 * - "absolute revival exclusive": the heal will only be received if the player is dead. This will revive the player. The value entered will not be affected by external forces
 	 *
-	 * if (reason.contains("revival exclusive")) {
-					if (this.isDead) {
-						healingExpression = Math.min(heal, this.maxHP - this.hp);
-					} else {
-						healingExpression = 0;
-					}
-				}@param heal the heal to be received
+	 * @param heal the heal to be received
 	 * @param reason the kind of heal that's taking place; see above for a list
 	 * @return Final heal received
 	 */

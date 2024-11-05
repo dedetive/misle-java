@@ -10,7 +10,9 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 
 import static com.ded.misle.ChangeSettings.getPath;
+import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.boxes.BoxesHandling.addBoxItem;
+import static java.lang.System.currentTimeMillis;
 
 public class Item {
 	private final int id;
@@ -22,7 +24,9 @@ public class Item {
 	private final String type;
 	private int resourceID;
 	private final Map<String, Object> attributes; // Holds dynamic attributes
-	private int count; // Changed to lowercase for conventional naming
+	private int count;
+	private long timeToDelay;
+	private boolean active;
 
 	// Constructor that takes only ID and sets default count to 1
 	public Item(int id) throws Exception {
@@ -40,6 +44,8 @@ public class Item {
 			this.type = itemDetails.getType();
 			this.resourceID = itemDetails.getResourceID();
 			this.attributes = itemDetails.getAttributes();
+			this.timeToDelay = currentTimeMillis();
+			this.active = true;
 		} else {
 			throw new Exception("Item with ID " + id + " not found.");
 		}
@@ -63,7 +69,22 @@ public class Item {
 	public String getType() { return type; }
 	public Map<String, Object> getAttributes() { return attributes; }
 	public int getCount() { return count; }
-	public void setCount(int count) { this.count = count; }
+	public long getTimeToDelay() { return timeToDelay; }
+	public void setTimeToDelay(long timeToDelay) { this.timeToDelay = currentTimeMillis() + timeToDelay; }
+	public boolean isActive() { return active; }
+
+
+	public void setCount(int count) {
+		this.count = Math.min(count, countLimit);
+		if (this.count == 0) {
+			removeItem();
+		}
+	}
+
+	public void removeItem() {
+		this.active = false; // Mark the item as inactive
+		// Additional cleanup actions (e.g., removing from lists, notifying other objects)
+	}
 
 	@Override
 	public String toString() {

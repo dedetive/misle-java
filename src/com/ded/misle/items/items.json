@@ -9,6 +9,7 @@
     "type": "weapon",
     "subtype": "melee",
     "kind": "claw",
+    "attackDelay": 1.2,
     "bundles": "mountain|5"
   },
   {
@@ -22,6 +23,7 @@
     "type": "weapon",
     "subtype": "ranged",
     "kind": "slingshot",
+    "attackDelay": 2,
     "bundles": "mountain|5"
   },
   {
@@ -34,6 +36,7 @@
     "type": "potion",
     "subtype": "heal",
     "kind": "self",
+    "potionDelay": 1.6,
     "bundles": "mountain|15"
   },
   {
@@ -45,6 +48,7 @@
     "entropyRestore": 15,
     "type": "potion",
     "subtype": "entropy",
+    "potionDelay": 1.6,
     "kind": "self"
   },
   {

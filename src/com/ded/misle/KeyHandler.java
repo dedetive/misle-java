@@ -5,6 +5,7 @@ import java.awt.event.KeyListener;
 
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.GameRenderer.pauseGame;
+import static com.ded.misle.items.Item.createItem;
 
 public class KeyHandler implements KeyListener {
 
@@ -13,7 +14,7 @@ public class KeyHandler implements KeyListener {
 		// THIS BAD
 	}
 
-	public static void initializeKeyHandler() {
+	public KeyHandler() {
 		player.keys.keyPressed.put("pause", false);
 		player.keys.keyPressed.put("up", false);
 		player.keys.keyPressed.put("down", false);
@@ -245,7 +246,7 @@ public class KeyHandler implements KeyListener {
 
 		if (player.keys.keyPressed.get("debug1")) {
 
-			// Currently nothing
+			player.inv.addItem(createItem(2, 3));
 
 			player.keys.keyPressed.put("debug1", false);
 		}

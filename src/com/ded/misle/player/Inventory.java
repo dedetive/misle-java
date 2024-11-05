@@ -4,7 +4,9 @@ import com.ded.misle.items.Item;
 
 import java.awt.*;
 
+import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.GameRenderer.updateSelectedItemNamePosition;
+import static java.lang.System.currentTimeMillis;
 
 public class Inventory {
 	private final Item[][] inventory;
@@ -166,5 +168,31 @@ public class Inventory {
 
 	public boolean hasHeldItem() {
 		return getSelectedItem() != null;
+	}
+
+	public boolean useItem() {
+		if (getSelectedItem() != null) { // Ensure something is selected
+			String type = getSelectedItem().getType();
+
+			if (type.equals("potion")) {
+				double potionDelay = Double.parseDouble(getSelectedItem().getAttributes().get("potionDelay").toString());
+				long currentTime = currentTimeMillis();
+				if (currentTime > getSelectedItem().getTimeToDelay()) {
+					getSelectedItem().setTimeToDelay((long) (potionDelay * 1000)); // Handle delay
+
+					switch ((String) getSelectedItem().getAttributes().get("subtype")) {
+						case "heal":
+							player.attr.receiveHeal(Integer.parseInt(getSelectedItem().getAttributes().get("healingAmount").toString()), "normal");
+							getSelectedItem().setCount(getSelectedItem().getCount() - 1);
+							if (!getSelectedItem().isActive()) {
+								removeItem(0, getSelectedSlot());
+							}
+							break;
+					}
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

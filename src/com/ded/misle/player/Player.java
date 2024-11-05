@@ -1,5 +1,6 @@
 package com.ded.misle.player;
 
+import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.items.Item.createItem;
 
 public class Player {

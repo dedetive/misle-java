@@ -23,6 +23,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private static volatile boolean running = true;
 	private JLabel fpsLabel;
 	KeyHandler keyH = new KeyHandler();
+	MouseHandler mouseHandler;
 	Thread gameThread;
 
 	// TILES SIZE
@@ -80,7 +81,9 @@ public class GamePanel extends JPanel implements Runnable {
 
 		this.setBackground(Color.BLACK);
 
-		KeyHandler.initializeKeyHandler();
+		mouseHandler = new MouseHandler();
+		addMouseListener(mouseHandler);
+		addMouseMotionListener(mouseHandler);
 
 		Thread windowSizeThread = new Thread(this::changeAndDetectWindowSize);
 		windowSizeThread.start();
@@ -303,6 +306,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		player.attr.updateRegenerationHP(currentTime);
 		keyH.updateKeys();  // Check for player input and update position accordingly
+		mouseHandler.updateMouse();
 		}
 
 
