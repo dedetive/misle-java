@@ -14,6 +14,7 @@ public class PlayerStats {
 	double distanceDown;
 	double distanceLeft;
 	double distanceRight;
+	String walkingDirection;
 
 	public PlayerStats() {
 		this.totalSteps = 0;
@@ -26,6 +27,7 @@ public class PlayerStats {
 		this.distanceDown = 0;
 		this.distanceLeft = 0;
 		this.distanceRight = 0;
+		this.walkingDirection = "none";
 	}
 
 	/**
@@ -136,37 +138,45 @@ public class PlayerStats {
 	public void increaseDistanceUp(double distance) {
 		distanceUp += distance;
 		totalDistance += distance;
+		walkingDirection = "up";
 		incrementStepsUp();
 	}
 
 	public void increaseDistanceDown(double distance) {
 		distanceDown += distance;
 		totalDistance += distance;
+		walkingDirection = "down";
 		incrementStepsDown();
 	}
 
 	public void increaseDistanceLeft(double distance) {
 		distanceLeft += distance;
 		totalDistance += distance;
+		walkingDirection = "left";
 		incrementStepsLeft();
 	}
 
 	public void increaseDistanceRight(double distance) {
 		distanceRight += distance;
 		totalDistance += distance;
+		walkingDirection = "right";
 		incrementStepsRight();
 	}
 
 	public void increaseDistance(double x, double y) {
 		if (x > 0) {
 			increaseDistanceRight(x);
-		} else {
+		} else if (x < 0) {
 			increaseDistanceLeft(-x);
 		}
 		if (y > 0) {
 			increaseDistanceDown(y);
-		} else {
+		} else if (y < 0) {
 			increaseDistanceUp(-y);
 		}
+	}
+
+	public String getWalkingDirection() {
+		return walkingDirection;
 	}
 }
