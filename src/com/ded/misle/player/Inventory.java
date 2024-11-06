@@ -195,4 +195,12 @@ public class Inventory {
 		}
 		return false;
 	}
+
+	public void clearInventory() {
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 7; j++) {
+				player.inv.removeItem(i, j);
+			}
+		}
+	}
 }

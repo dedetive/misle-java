@@ -1,7 +1,7 @@
 [
   {
-    "id": 0,
-    "resourceID": 0,
+    "id": 1,
+    "resourceID": 1,
     "name": "Copper Claw",
     "countLimit": 1,
     "rarity": "E",
@@ -13,8 +13,8 @@
     "bundles": "mountain|5"
   },
   {
-    "id": 1,
-    "resourceID": 1,
+    "id": 2,
+    "resourceID": 2,
     "name": "Wooden Slingshot",
     "countLimit": 1,
     "rarity": "F",
@@ -27,8 +27,8 @@
     "bundles": "mountain|5"
   },
   {
-    "id": 2,
-    "resourceID": 2,
+    "id": 3,
+    "resourceID": 3,
     "name": "Small Health Potion",
     "countLimit": 100,
     "rarity": "F",
@@ -40,8 +40,8 @@
     "bundles": "mountain|15"
   },
   {
-    "id": 3,
-    "resourceID": 3,
+    "id": 4,
+    "resourceID": 4,
     "name": "Small Entropy Potion",
     "countLimit": 100,
     "rarity": "F",
@@ -52,8 +52,8 @@
     "kind": "self"
   },
   {
-    "id": 4,
-    "resourceID": 4,
+    "id": 5,
+    "resourceID": 5,
     "name": "Wooden Shield",
     "countLimit": 1,
     "rarity": "F",

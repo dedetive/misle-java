@@ -246,13 +246,13 @@ public class KeyHandler implements KeyListener {
 
 		if (player.keys.keyPressed.get("debug1")) {
 
-			player.inv.addItem(createItem(2, 3));
+			player.inv.addItem(createItem(3, 300));
 
 			player.keys.keyPressed.put("debug1", false);
 		}
 		if (player.keys.keyPressed.get("debug2")) {
 
-			// Currently nothing
+			player.inv.clearInventory();
 
 			player.keys.keyPressed.put("debug2", false);
 		}

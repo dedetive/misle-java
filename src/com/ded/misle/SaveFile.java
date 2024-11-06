@@ -1,12 +1,12 @@
 package com.ded.misle;
 
+import com.ded.misle.items.Item;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Objects;
 import javax.imageio.ImageIO;
 
 import static com.ded.misle.ChangeSettings.getPath;
@@ -48,6 +48,25 @@ public class SaveFile {
 				double spawnpointY = spawnpointYHighest * 255 * 255 + spawnpointYHigh * 255 + spawnpointYLow;
 				player.pos.setSpawnpoint(spawnpointX, spawnpointY);
 				player.pos.reloadSpawnpoint();
+
+				// Load inventory
+
+				int[][][] tempInventory = new int[4][7][4];
+				for (int i = 0 ; i < 4 ; i++) {
+					for (int j = 0 ; j < 7 ; j++) {
+						tempInventory[i][j][0] = loadThis("red", i, j + 15);
+						tempInventory[i][j][1] = loadThis("green", i, j + 15);
+							// [i][j][0] = ID
+						tempInventory[i][j][0] = tempInventory[i][j][0] * 255 + tempInventory[i][j][1];
+
+						tempInventory[i][j][2] = loadThis("blue", i, j + 15);
+						tempInventory[i][j][3] = loadThis("red", j + 15, i);
+							// [i][j][1] = Count
+						tempInventory[i][j][1] = tempInventory[i][j][2] * 255 + tempInventory[i][j][3];
+
+						player.inv.bruteSetItem(Item.createItem(tempInventory[i][j][0], tempInventory[i][j][1]), i, j);
+					}
+				}
 
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -92,12 +111,17 @@ public class SaveFile {
 
 
 	public static void saveEverything() {
+
+		// Max HP
+
 		int maxHPHighest = ((int) player.attr.getPlayerMaxHP() / (255 * 255)) % 255;
 		int maxHPHigh = ((int) player.attr.getPlayerMaxHP() / 255) % 255;
 		int maxHPLow = (int) player.attr.getPlayerMaxHP() % 255;
 		brandIntoSaveFile(maxHPHighest, "blue", 82, 10);
 		brandIntoSaveFile(maxHPHigh, "green", 30, 127);
 		brandIntoSaveFile(maxHPLow, "red", 99, 1);
+
+		// Spawnpoint
 
 		int spawnpointXHighest = ((int) player.pos.getSpawnpoint()[0] / (255 * 255)) % 255;
 		int spawnpointXHigh = ((int) player.pos.getSpawnpoint()[0] / 255) % 255;
@@ -111,6 +135,26 @@ public class SaveFile {
 		brandIntoSaveFile(spawnpointYHighest, "blue", 69, 42);
 		brandIntoSaveFile(spawnpointYHigh, "green", 69, 42);
 		brandIntoSaveFile(spawnpointYLow, "green", 42, 69);
+		
+		// Inventory
+
+		try {
+			int[][][] tempInventory = new int[4][7][4];
+			for (int i = 0 ; i < 4 ; i++) {
+				for (int j = 0 ; j < 7 ; j++) {
+					tempInventory[i][j][0] = (player.inv.getItem(i, i).getId() / 255) % 255;
+					tempInventory[i][j][1] = player.inv.getItem(i, j).getId() % 255;
+					tempInventory[i][j][2] = (player.inv.getItem(i, j).getCount() / 255) % 255;
+					tempInventory[i][j][3] = player.inv.getItem(i, j).getCount() % 255;
+					brandIntoSaveFile(tempInventory[i][j][0], "red", i, j + 15);
+					brandIntoSaveFile(tempInventory[i][j][1], "green", i, j + 15);
+					brandIntoSaveFile(tempInventory[i][j][2], "blue", i, j + 15);
+					brandIntoSaveFile(tempInventory[i][j][3], "red", j + 15, i);
+				}
+			}
+		} catch (NullPointerException e) {
+			// If the game hadn't been started before quitting, this just means the inventory was not loaded yet.
+		}
 	}
 
 	private static void brandIntoSaveFile(int value, String color, int x, int y) {
@@ -151,10 +195,6 @@ public class SaveFile {
 			System.out.println("Save file not found. Creating a new empty file...");
 
 			try {
-				for (int i = 0; i < image.getWidth(); i++) {
-					image.setRGB(i, i, new Color(254, 197, 229).getRGB()); // For guaranteeing the image has not been altered
-				}                                   // 0xFEC5E5
-
 				// Write the image to a file
 				ImageIO.write(image, "png", SaveFile.save);
 
