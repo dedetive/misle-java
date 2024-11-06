@@ -431,7 +431,9 @@ public class Box {
 
 		if (currentTime - box.getLastEffectTime() >= cooldownDuration) {
 			box.setLastEffectTime(currentTime);
-			int id = getChestDropID(box.effect[2]);
+			int[] results = getChestDropID(box.effect[2]);
+			int id = results[0];
+			int count = results[1];
 			boolean canGoMinus = false;
 			boolean canGoPlus = false;
 			if (getCollisionBoxesInRange(box.currentX - 20, box.currentY * scale, 0, scale, tileSize).isEmpty()) {
@@ -441,11 +443,11 @@ public class Box {
 				canGoPlus = true;
 			}
 
-			box.boxSpawnItem(canGoMinus, canGoPlus, id);
+			box.boxSpawnItem(canGoMinus, canGoPlus, id, count);
 		}
 	}
 
-	private void boxSpawnItem(boolean canGoMinus, boolean canGoPlus, int id) {
+	private void boxSpawnItem(boolean canGoMinus, boolean canGoPlus, int id, int count) {
 		double randomNumber = Math.random();
 
 		int delay = 750;
@@ -465,7 +467,7 @@ public class Box {
 
 		this.setTexture("chestOpen");
 
-		droppedItem = createDroppedItem(this.getCurrentX(), this.getCurrentY() - 10, id);
+		droppedItem = createDroppedItem(this.getCurrentX(), this.getCurrentY() - 10, id, count);
 		moveBox(droppedItem, multiplier * 20, 10, delay);
 
 		editLastBox("collectible", "false");

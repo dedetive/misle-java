@@ -10,7 +10,7 @@
     "subtype": "melee",
     "kind": "claw",
     "attackDelay": 1.2,
-    "bundles": "mountain|5"
+    "bundles": "mountain|100000005"
   },
   {
     "id": 2,
@@ -24,7 +24,7 @@
     "subtype": "ranged",
     "kind": "slingshot",
     "attackDelay": 2,
-    "bundles": "mountain|5"
+    "bundles": "mountain|100000005"
   },
   {
     "id": 3,
@@ -37,7 +37,7 @@
     "subtype": "heal",
     "kind": "self",
     "potionDelay": 1.6,
-    "bundles": "mountain|15"
+    "bundles": "mountain|800000015"
   },
   {
     "id": 4,
@@ -60,7 +60,7 @@
     "type": "weapon",
     "subtype": "shield",
     "kind": "wooden",
-    "bundles": "mountainDISABLED|5"
+    "bundles": "mountainDISABLED|100000005"
   },
   {
     "id": -1,

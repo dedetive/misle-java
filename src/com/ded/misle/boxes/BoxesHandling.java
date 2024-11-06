@@ -31,9 +31,9 @@ public class BoxesHandling {
 		}
 	}
 
-	public static Box addBoxItem(double x, double y, int id) {
+	public static Box addBoxItem(double x, double y, int id, int count) {
 		boxes.add(new Box(x, y));
-		editLastBox("effect", "{item, " + id + ", 1, true}");
+		editLastBox("effect", "{item, " + id + ", " + count + ", true}");
 		editLastBox("texture", (".." + File.separator + "items" + File.separator + id));
 		return boxes.getLast();
 	}
@@ -152,7 +152,7 @@ public class BoxesHandling {
 				editBox(box,"texture", "spawnpoint");
 				break;
 			case "mountainChest":
-				editBox(box,"effect", "{chest, 5, mountain}");
+				editBox(box,"effect", "{chest, 3, mountain}");
 				editBox(box,"hasCollision", "true");
 				editBox(box,"texture", "chest");
 				break;

@@ -127,7 +127,7 @@ public class Item {
 		this.resourceID = resourceID;
 	}
 
-	public static Box createDroppedItem(double x, double y, int id) {
-		return addBoxItem(x, y, id);
+	public static Box createDroppedItem(double x, double y, int id, int count) {
+		return addBoxItem(x, y, id, count);
 	}
 }

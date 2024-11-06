@@ -1,11 +1,16 @@
 package com.ded.misle.player;
 
+import com.ded.misle.boxes.Box;
+import com.ded.misle.boxes.BoxesHandling;
 import com.ded.misle.items.Item;
 
+import javax.swing.*;
 import java.awt.*;
 
 import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.GameRenderer.updateSelectedItemNamePosition;
+import static com.ded.misle.boxes.BoxesHandling.editBox;
+import static com.ded.misle.boxes.BoxesHandling.editLastBox;
 import static java.lang.System.currentTimeMillis;
 
 public class Inventory {
@@ -202,5 +207,15 @@ public class Inventory {
 				player.inv.removeItem(i, j);
 			}
 		}
+	}
+
+	public void dropItem(int row, int col, int quantity) {
+		Box droppedItem = BoxesHandling.addBoxItem(player.pos.getX(), player.pos.getY(), getItem(row, col).getId(), quantity);
+		removeItem(row, col, quantity);
+		Timer timer = new Timer(1000, e -> {
+			editBox(droppedItem, "collectible", "true");
+		});
+		timer.setRepeats(false);
+		timer.start();
 	}
 }
