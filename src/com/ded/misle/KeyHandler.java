@@ -1,5 +1,6 @@
 package com.ded.misle;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -44,7 +45,7 @@ public class KeyHandler implements KeyListener {
 	int KeyDebug2 = KeyEvent.VK_CLOSE_BRACKET;
 	int KeyInventory = KeyEvent.VK_I;
 	int KeyDrop = KeyEvent.VK_Q;
-	int KeyCtrl = KeyEvent.CTRL_DOWN_MASK;
+	int KeyCtrl = KeyEvent.VK_CONTROL;
 	int Key1 = KeyEvent.VK_1;
 	int Key2 = KeyEvent.VK_2;
 	int Key3 = KeyEvent.VK_3;
