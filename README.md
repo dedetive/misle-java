@@ -44,6 +44,15 @@ language (de_DE, el_GR, default=en_US, es_ES, mi_PM, pt_BR, ru_RU) = lang_REGION
 
 What’s between parentheses is ignored, and only what follows the " = " sign is considered, in this case would be STRING, INTEGER or the others. However, since the options do not exist, default value would apply.
 
+At the language section, those parameters are the region codes, which translate to:
+- de_DE: Deutsch / German
+- el_GR: Ελληνικά / Greek
+- en_US: English / U.S. English
+- es_ES: Español / Spanish
+- mi_PM: \[---------\]
+- pt_BR: Português / Brazilian Portuguese
+- ru_RU: Русский / Russian
+
 > **Note:** The `displayFPS` function currently does not work and was only available in initial tests, but it will be reimplemented later.
 
 Example usage of `settings.config`:
