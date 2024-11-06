@@ -142,10 +142,17 @@ public class SaveFile {
 			int[][][] tempInventory = new int[4][7][4];
 			for (int i = 0 ; i < 4 ; i++) {
 				for (int j = 0 ; j < 7 ; j++) {
-					tempInventory[i][j][0] = (player.inv.getItem(i, i).getId() / 255) % 255;
-					tempInventory[i][j][1] = player.inv.getItem(i, j).getId() % 255;
-					tempInventory[i][j][2] = (player.inv.getItem(i, j).getCount() / 255) % 255;
-					tempInventory[i][j][3] = player.inv.getItem(i, j).getCount() % 255;
+					if (player.inv.getItem(i, j) == null) {
+						tempInventory[i][j][0] = 0;
+						tempInventory[i][j][1] = 0;
+						tempInventory[i][j][2] = 0;
+						tempInventory[i][j][3] = 0;
+					} else {
+						tempInventory[i][j][0] = (player.inv.getItem(i, j).getId() / 255) % 255;
+						tempInventory[i][j][1] = player.inv.getItem(i, j).getId() % 255;
+						tempInventory[i][j][2] = (player.inv.getItem(i, j).getCount() / 255) % 255;
+						tempInventory[i][j][3] = player.inv.getItem(i, j).getCount() % 255;
+					}
 					brandIntoSaveFile(tempInventory[i][j][0], "red", i, j + 15);
 					brandIntoSaveFile(tempInventory[i][j][1], "green", i, j + 15);
 					brandIntoSaveFile(tempInventory[i][j][2], "blue", i, j + 15);

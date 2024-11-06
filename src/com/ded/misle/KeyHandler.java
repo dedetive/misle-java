@@ -5,6 +5,7 @@ import java.awt.event.KeyListener;
 
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.GameRenderer.pauseGame;
+import static com.ded.misle.items.Item.createDroppedItem;
 import static com.ded.misle.items.Item.createItem;
 
 public class KeyHandler implements KeyListener {
@@ -23,6 +24,8 @@ public class KeyHandler implements KeyListener {
 		player.keys.keyPressed.put("debug1", false);
 		player.keys.keyPressed.put("debug2", false);
 		player.keys.keyPressed.put("inventory", false);
+		player.keys.keyPressed.put("drop", false);
+		player.keys.keyPressed.put("ctrl", false);
 		player.keys.keyPressed.put("1", false);
 		player.keys.keyPressed.put("2", false);
 		player.keys.keyPressed.put("3", false);
@@ -40,6 +43,8 @@ public class KeyHandler implements KeyListener {
 	int KeyDebug1 = KeyEvent.VK_OPEN_BRACKET;
 	int KeyDebug2 = KeyEvent.VK_CLOSE_BRACKET;
 	int KeyInventory = KeyEvent.VK_I;
+	int KeyDrop = KeyEvent.VK_Q;
+	int KeyCtrl = KeyEvent.CTRL_DOWN_MASK;
 	int Key1 = KeyEvent.VK_1;
 	int Key2 = KeyEvent.VK_2;
 	int Key3 = KeyEvent.VK_3;
@@ -84,6 +89,9 @@ public class KeyHandler implements KeyListener {
 		}
 		if (code == KeyRight) {
 			player.keys.keyPressed.put("right", true);
+		}
+		if (code == KeyCtrl) {
+			player.keys.keyPressed.put("ctrl", true);
 		}
 		if (code == KeyDebug1) {
 			handleCooldownPress("debug1");
@@ -137,6 +145,12 @@ public class KeyHandler implements KeyListener {
 		}
 		if (code == KeyInventory) {
 			player.keys.keyPressed.put("inventory", true);
+		}
+		if (code == KeyDrop) {
+			player.keys.keyPressed.put("drop", true);
+		}
+		if (code == KeyCtrl) {
+			player.keys.keyPressed.put("ctrl", false);
 		}
 	}
 
@@ -205,6 +219,16 @@ public class KeyHandler implements KeyListener {
 			}
 			if (player.keys.keyPressed.get("right")) {
 				willMovePlayer[0] += player.attr.getPlayerSpeed();
+			}
+			if (player.keys.keyPressed.get("drop")) {
+				if (player.inv.hasHeldItem()) {
+					if (player.keys.keyPressed.get("ctrl")) {
+						player.inv.dropItem(0, player.inv.getSelectedSlot(), player.inv.getSelectedItem().getCount());
+					} else {
+						player.inv.dropItem(0, player.inv.getSelectedSlot(), 1);
+					}
+					player.keys.keyPressed.put("drop", false);
+				}
 			}
 
 			// MOVING

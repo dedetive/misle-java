@@ -12,6 +12,7 @@ import java.util.List;
 import static com.ded.misle.GameRenderer.*;
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.SaveFile.saveEverything;
+import static com.ded.misle.boxes.BoxesHandling.editBox;
 
 /**
  * This is for loading and altering how the window behaves. Only do this once, otherwise new screens are created.
@@ -154,7 +155,11 @@ public class GamePanel extends JPanel implements Runnable {
 	public static void quitGame() {
 		saveEverything();
 		running = false;
-		System.exit(0);
+		Timer timer = new Timer(10, e -> {
+			System.exit(0);
+		});
+		timer.setRepeats(false);
+		timer.start();
 	}
 
 	private void changeAndDetectWindowSize() {

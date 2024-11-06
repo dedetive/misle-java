@@ -9,6 +9,7 @@ import java.awt.*;
 
 import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.GameRenderer.updateSelectedItemNamePosition;
+import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.boxes.BoxesHandling.editBox;
 import static com.ded.misle.boxes.BoxesHandling.editLastBox;
 import static java.lang.System.currentTimeMillis;
@@ -141,11 +142,17 @@ public class Inventory {
 		if (row >= 0 && row < rows && col >= 0 && col < cols && inventory[row][col] != null && inventory[row][col].getCount() > quantity) {
 			inventory[row][col].setCount(inventory[row][col].getCount() - quantity);
 			return true;
-		} else if (row >= 0 && row < rows && col >= 0 && col < cols && inventory[row][col] != null && inventory[row][col].getCount() < quantity) {
+		} else if (row >= 0 && row < rows && col >= 0 && col < cols && inventory[row][col] != null && inventory[row][col].getCount() <= quantity) {
 			inventory[row][col] = null;
 			return true;
+		} else {
+			System.out.println("removing the item failed: \n" +
+					"4 > row >= 0, row = " + row +
+					",\n7 > col >= 0, col = " + col +
+					",\ninventory[row][col] != null = " + inventory[row][col] +
+					",\ninventory[row][col].getCount() >< quantity = " + inventory[row][col].getCount());
+			return false; // return false if position is out of bounds or slot is empty
 		}
-		return false; // return false if position is out of bounds or slot is empty
 	}
 
 	public Item getItem(int row, int col) {
@@ -210,9 +217,11 @@ public class Inventory {
 	}
 
 	public void dropItem(int row, int col, int quantity) {
-		Box droppedItem = BoxesHandling.addBoxItem(player.pos.getX(), player.pos.getY(), getItem(row, col).getId(), quantity);
+		Box droppedItem = BoxesHandling.addBoxItem(player.pos.getX() / scale, player.pos.getY() / scale, getItem(row, col).getId(), quantity);
+		editBox(droppedItem, "collectible", "false");
 		removeItem(row, col, quantity);
-		Timer timer = new Timer(1000, e -> {
+		updateSelectedItemNamePosition();
+		Timer timer = new Timer(10000, e -> {
 			editBox(droppedItem, "collectible", "true");
 		});
 		timer.setRepeats(false);
