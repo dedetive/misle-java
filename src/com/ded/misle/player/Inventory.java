@@ -221,7 +221,7 @@ public class Inventory {
 		editBox(droppedItem, "collectible", "false");
 		removeItem(row, col, quantity);
 		updateSelectedItemNamePosition();
-		Timer timer = new Timer(10000, e -> {
+		Timer timer = new Timer(1500, e -> {
 			editBox(droppedItem, "collectible", "true");
 		});
 		timer.setRepeats(false);
