@@ -29,28 +29,21 @@ public class SaveFile {
 			try {
 				image = ImageIO.read(save);
 
-				// Load HP (Currently disabled)
-//				int hpHigh = new Color(image.getRGB(30, 127)).getBlue(); // High byte
-//				int hpLow = new Color(image.getRGB(99, 0)).getBlue();    // Low byte
-//				double playerHP = 255 * hpHigh + hpLow;
-//				player.attr.setPlayerHP(playerHP);
-
 				// Load maxHP
-				int maxHPHigh = new Color(image.getRGB(30, 127)).getGreen(); // High byte
-				int maxHPLow = new Color(image.getRGB(99, 1)).getRed();      // Low byte
-				double playerMaxHP = 255 * maxHPHigh + maxHPLow;
+				int maxHPHighest = loadThis("blue", 82, 10);
+				int maxHPHigh = loadThis("green", 30, 127);
+				int maxHPLow = loadThis("red", 99, 1);
+				double playerMaxHP = 255 * 255 * maxHPHighest + 255 * maxHPHigh + maxHPLow;
 				player.attr.setPlayerMaxHP(playerMaxHP);
 
 				// Load spawnpoint
 
-				int spawnpointXHighest = new Color(image.getRGB(42, 69)).getRed();
-				int spawnpointXHigh = new Color(image.getRGB(69, 42)).getRed();
-				int spawnpointXLow = new Color(image.getRGB(42, 69)).getBlue();
-
-				int spawnpointYHighest = new Color(image.getRGB(69, 42)).getBlue();
-				int spawnpointYHigh = new Color(image.getRGB(69, 42)).getGreen();
-				int spawnpointYLow = new Color(image.getRGB(42, 69)).getGreen();
-
+				int spawnpointXHighest = loadThis("red", 42, 69);
+				int spawnpointXHigh = loadThis("red", 69, 42);
+				int spawnpointXLow = loadThis("blue", 42, 69);
+				int spawnpointYHighest = loadThis("blue", 69, 42);
+				int spawnpointYHigh = loadThis("green", 69, 42);
+				int spawnpointYLow = loadThis("green", 42,69);
 				double spawnpointX = spawnpointXHighest * 255 * 255 + spawnpointXHigh * 255 + spawnpointXLow;
 				double spawnpointY = spawnpointYHighest * 255 * 255 + spawnpointYHigh * 255 + spawnpointYLow;
 				player.pos.setSpawnpoint(spawnpointX, spawnpointY);
@@ -59,73 +52,93 @@ public class SaveFile {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} else {
-			System.out.println("Save file does not exist. Creating a blank one.");
 		}
+	}
+
+	/**
+	 *
+	 * @param color either red, green or blue of the pixel
+	 * @param x x position of the pixel
+	 * @param y y position of the pixel
+	 * @return
+	 */
+	private static int loadThis(String color, int x, int y) {
+		try {
+			image = ImageIO.read(save);
+
+			if (x < 0 || x > 128 || y < 0 || y > 128) {
+				System.out.println("Invalid x or y position for loading from the save file: " + x + ", " + y);
+			}
+
+			Color pixel = new Color(image.getRGB(x, y));
+
+			switch (color.toLowerCase()) {
+				case "red":
+					return pixel.getRed();
+				case "green":
+					return pixel.getGreen();
+				case "blue":
+					return pixel.getBlue();
+				default:
+					System.out.println("Invalid color parameter for loading from the save file: " + color);
+					return 0;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return 0;
 	}
 
 
 	public static void saveEverything() {
-		brandIntoSaveFile("hp", Double.toString(player.attr.getPlayerHP()));
-		brandIntoSaveFile("maxHP", Double.toString(player.attr.getPlayerMaxHP()));
-		brandIntoSaveFile("spawnpoint", Arrays.toString(player.pos.getSpawnpoint()));
+		int maxHPHighest = ((int) player.attr.getPlayerMaxHP() / (255 * 255)) % 255;
+		int maxHPHigh = ((int) player.attr.getPlayerMaxHP() / 255) % 255;
+		int maxHPLow = (int) player.attr.getPlayerMaxHP() % 255;
+		brandIntoSaveFile(maxHPHighest, "blue", 82, 10);
+		brandIntoSaveFile(maxHPHigh, "green", 30, 127);
+		brandIntoSaveFile(maxHPLow, "red", 99, 1);
+
+		int spawnpointXHighest = ((int) player.pos.getSpawnpoint()[0] / (255 * 255)) % 255;
+		int spawnpointXHigh = ((int) player.pos.getSpawnpoint()[0] / 255) % 255;
+		int spawnpointXLow = (int) player.pos.getSpawnpoint()[0] % 255;
+		int spawnpointYHighest = ((int) player.pos.getSpawnpoint()[1] / (255 * 255)) % 255;
+		int spawnpointYHigh = ((int) player.pos.getSpawnpoint()[1] / 255) % 255;
+		int spawnpointYLow = (int) player.pos.getSpawnpoint()[1] % 255;
+		brandIntoSaveFile(spawnpointXHighest, "red", 42, 69);
+		brandIntoSaveFile(spawnpointXHigh, "red", 69, 42);
+		brandIntoSaveFile(spawnpointXLow, "blue", 42, 69);
+		brandIntoSaveFile(spawnpointYHighest, "blue", 69, 42);
+		brandIntoSaveFile(spawnpointYHigh, "green", 69, 42);
+		brandIntoSaveFile(spawnpointYLow, "green", 42, 69);
 	}
 
-	private static void brandIntoSaveFile(String key, String value) {
-		try {
-			for (int i = 0; i < image.getWidth(); i++) {
-				image.setRGB(i, i, new Color(254, 197, 229).getRGB()); // For guaranteeing the image has not been altered
-			}
-			int[] pos = {0, 0};
+	private static void brandIntoSaveFile(int value, String color, int x, int y) {
 
-			if (Objects.equals(key, "hp")) {
-				value = value.split("\\.")[0];
-				int hp = Integer.parseInt(value);
-				pos[0] = 30;
-				pos[1] = 127;
-				image.setRGB(pos[0], pos[1], new Color(new Color(image.getRGB(pos[0], pos[1])).getRed(), new Color(image.getRGB(pos[0], pos[1])).getGreen(), hp / 255).getRGB());
-
-				pos[0] = 99;
-				pos[1] = 0;
-				image.setRGB(pos[0], pos[1], new Color(new Color(image.getRGB(pos[0], pos[1])).getRed(), new Color(image.getRGB(pos[0], pos[1])).getGreen(), hp % 255).getRGB());
-			} else if (Objects.equals(key, "maxHP")) {
-				value = value.split("\\.")[0];
-				int maxHP = Integer.parseInt(value);
-				pos[0] = 30;
-				pos[1] = 127;
-				image.setRGB(pos[0], pos[1], new Color(new Color(image.getRGB(pos[0], pos[1])).getRed(), maxHP / 255, new Color(image.getRGB(pos[0], pos[1])).getBlue()).getRGB());
-
-				pos[0] = 99;
-				pos[1] = 1;
-				image.setRGB(pos[0], pos[1], new Color(maxHP % 255, new Color(image.getRGB(pos[0], pos[1])).getGreen(), new Color(image.getRGB(pos[0], pos[1])).getBlue()).getRGB());
-			}  else if (Objects.equals(key, "spawnpoint")) {
-				pos[0] = 42;
-				pos[1] = 69;
-				image.setRGB(pos[0], pos[1], new Color((int) (player.pos.getSpawnpoint()[0] / (255 * 255)), new Color(image.getRGB(pos[0], pos[1])).getGreen(), new Color(image.getRGB(pos[0], pos[1])).getBlue()).getRGB());
-
-				pos[0] = 69;
-				pos[1] = 42;
-				image.setRGB(pos[0], pos[1], new Color((int) (player.pos.getSpawnpoint()[0] / 255), new Color(image.getRGB(pos[0], pos[1])).getGreen(), new Color(image.getRGB(pos[0], pos[1])).getBlue()).getRGB());
-
-				pos[0] = 42;
-				pos[1] = 69;
-				image.setRGB(pos[0], pos[1], new Color(new Color(image.getRGB(pos[0], pos[1])).getRed(), new Color(image.getRGB(pos[0], pos[1])).getGreen(), (int) (player.pos.getSpawnpoint()[0] % 255)).getRGB());
-
-				pos[0] = 69;
-				pos[1] = 42;
-				image.setRGB(pos[0], pos[1], new Color(new Color(image.getRGB(pos[0], pos[1])).getRed(), new Color(image.getRGB(pos[0], pos[1])).getGreen(), (int) (player.pos.getSpawnpoint()[1] / (255 * 255))).getRGB());
-
-				pos[0] = 69;
-				pos[1] = 42;
-				image.setRGB(pos[0], pos[1], new Color(new Color(image.getRGB(pos[0], pos[1])).getRed(), (int) (player.pos.getSpawnpoint()[1] / 255), new Color(image.getRGB(pos[0], pos[1])).getBlue()).getRGB());
-
-				pos[0] = 42;
-				pos[1] = 69;
-				image.setRGB(pos[0], pos[1], new Color(new Color(image.getRGB(pos[0], pos[1])).getRed(), (int) (player.pos.getSpawnpoint()[1] % 255), new Color(image.getRGB(pos[0], pos[1])).getBlue()).getRGB());
-			}
-		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException("Invalid key or value: " + key + ", " + value);
+		if (value > 255 || value < 0) {
+			throw new IllegalArgumentException("Value must be between 0 and 255. Value inserted: " + value);
 		}
+
+		Color previousValue = new Color(image.getRGB(x, y));
+		int red = previousValue.getRed();
+		int green = previousValue.getGreen();
+		int blue = previousValue.getBlue();
+
+		switch (color.toLowerCase()) {
+			case "red":
+				image.setRGB(x, y, new Color(value, green, blue).getRGB());
+				break;
+			case "green":
+				image.setRGB(x, y, new Color(red, value, blue).getRGB());
+				break;
+			case "blue":
+				image.setRGB(x, y, new Color(red, green, value).getRGB());
+				break;
+			default:
+				System.out.println("Invalid color parameter for branding to the save file: " + color);
+		}
+
+
 		try {
 			ImageIO.write(image, "png", SaveFile.save);
 		} catch (IOException e) {
@@ -135,7 +148,7 @@ public class SaveFile {
 
 	private static boolean checkIfSaveFileExists() {
 		if (!SaveFile.save.exists()) {
-			System.out.println("Save file not found. Creating a new, base PNG...");
+			System.out.println("Save file not found. Creating a new empty file...");
 
 			try {
 				for (int i = 0; i < image.getWidth(); i++) {
