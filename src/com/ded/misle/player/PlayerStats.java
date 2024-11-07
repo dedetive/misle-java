@@ -2,6 +2,9 @@ package com.ded.misle.player;
 
 import java.util.*;
 
+import static com.ded.misle.boxes.BoxesHandling.getCachedBoxes;
+import static com.ded.misle.boxes.BoxesHandling.storeCachedBoxes;
+
 public class PlayerStats {
 
 	int totalSteps;
@@ -95,24 +98,40 @@ public class PlayerStats {
 		return stepsRight;
 	}
 
+	public void incrementTotalDistance() {
+		totalDistance++;
+	}
+
+	public void incrementTotalSteps() {
+		for (int level = 15; level > 0; level--) {
+			if (totalSteps == 0) {
+				storeCachedBoxes(level);
+			} else if (totalSteps % Math.pow(2, level) == 0) {
+				storeCachedBoxes(level);
+			}
+			System.out.println(getCachedBoxes(level).size());
+		}
+		totalSteps++;
+	}
+
 	public void incrementStepsUp() {
 		stepsUp++;
-		totalSteps++;
+		incrementTotalSteps();
 	}
 
 	public void incrementStepsDown() {
 		stepsDown++;
-		totalSteps++;
+		incrementTotalSteps();
 	}
 
 	public void incrementStepsLeft() {
 		stepsLeft++;
-		totalSteps++;
+		incrementTotalSteps();
 	}
 
 	public void incrementStepsRight() {
 		stepsRight++;
-		totalSteps++;
+		incrementTotalSteps();
 	}
 
 	public double getTotalDistance() {
@@ -137,28 +156,28 @@ public class PlayerStats {
 
 	public void increaseDistanceUp(double distance) {
 		distanceUp += distance;
-		totalDistance += distance;
+		incrementTotalDistance();
 		walkingDirection = "up";
 		incrementStepsUp();
 	}
 
 	public void increaseDistanceDown(double distance) {
 		distanceDown += distance;
-		totalDistance += distance;
+		incrementTotalDistance();
 		walkingDirection = "down";
 		incrementStepsDown();
 	}
 
 	public void increaseDistanceLeft(double distance) {
 		distanceLeft += distance;
-		totalDistance += distance;
+		incrementTotalDistance();
 		walkingDirection = "left";
 		incrementStepsLeft();
 	}
 
 	public void increaseDistanceRight(double distance) {
 		distanceRight += distance;
-		totalDistance += distance;
+		incrementTotalDistance();
 		walkingDirection = "right";
 		incrementStepsRight();
 	}

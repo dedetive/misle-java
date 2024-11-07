@@ -11,6 +11,7 @@ import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.SaveFile.loadSaveFile;
 import static com.ded.misle.SaveFile.saveEverything;
+import static com.ded.misle.boxes.BoxesHandling.storeCachedBoxes;
 import static com.ded.misle.boxes.BoxesLoad.loadBoxes;
 import static com.ded.misle.boxes.BoxesLoad.unloadBoxes;
 import static java.lang.System.currentTimeMillis;
@@ -115,6 +116,9 @@ public class GameRenderer {
 		loadBoxes();
 
 		Timer timer = new Timer(LOADING_DURATION, e -> {
+			for (int i = 15; i > 0; i--) {
+				storeCachedBoxes(i);
+			}
 			player.pos.reloadSpawnpoint();
 			gameState = GamePanel.GameState.PLAYING;
 		});

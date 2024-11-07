@@ -60,8 +60,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 	// CAMERA WORLD BOUNDARIES
 
-	double originalWorldWidth = 2500;
-	double originalWorldHeight = 2500;
+	double originalWorldWidth = 25000000;
+	double originalWorldHeight = 25000000;
 	double worldWidth = originalWorldWidth * scale;
 	double worldHeight = originalWorldHeight * scale;
 

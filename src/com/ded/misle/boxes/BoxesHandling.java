@@ -5,11 +5,17 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ded.misle.GamePanel.player;
+import static com.ded.misle.GamePanel.tileSize;
+import static com.ded.misle.Launcher.scale;
+
 public class BoxesHandling {
 
 	private static final List<Box> boxes = new ArrayList<>();
 	private static final List<String> presetsWithSides = List.of(new String[]{"wallDefault"});
 	private static final double boxBaseSize = 20.675;
+	static int maxLevel = 15;
+	private static List<Box>[] cachedBoxes = new ArrayList[]{new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()};
 
 	/**
 	 *
@@ -263,7 +269,7 @@ public class BoxesHandling {
 
 	// Render boxes with camera offset, scale, and tileSize
 	public static void renderBoxes(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY, double playerX, double playerY, double range, double scale, int tileSize) {
-		List<Box> nearbyBoxes = getBoxesInRange(playerX, playerY, range, scale, tileSize);
+		List<Box> nearbyBoxes = getCachedBoxesInRange(10);
 		for (Box box : nearbyBoxes) {
 			box.draw(g2d, cameraOffsetX, cameraOffsetY, scale, tileSize, box.getBoxScaleHorizontal(), box.getBoxScaleVertical());
 		}
@@ -271,8 +277,29 @@ public class BoxesHandling {
 
 	public static List<Box> getAllBoxes() {
       return new ArrayList<>(boxes);
-  }
+    }
 
+	public static boolean deleteBox(Box box) {
+		return boxes.remove(box);
+	}
+
+	public static Box getLastBox() {
+		return boxes.getLast();
+	}
+
+	public static void clearAllBoxes() {
+		boxes.clear();
+	}
+
+	public static int getBoxesCount() {
+		return boxes.size();
+	}
+
+	/**
+	 *
+	 * DEPRECATED. Use getCachedBoxes() instead.
+	 *
+	 */
 	public static List<Box> getBoxesInRange(double playerX, double playerY, double range, double scale, int tileSize) {
     	List<Box> boxesInRange = new ArrayList<>();
     	for (Box box : boxes) {
@@ -288,9 +315,47 @@ public class BoxesHandling {
     	return boxesInRange;
 	}
 
+		// BOX CACHING
+
+	// There are 16 levels. Each of them is a power of 2, starting at 2^0 (1) and ending at 2^15 (32768).
+	// They represent the steps the player may take, and will only update if the player takes steps.
+	// Each level has 2 times the radius of the previous level, thus always storing equal or more boxes than the previous levels.
+	// Only the highest level, 15, uses getBoxesInRange() method, which checks for every loaded box instead of only the nearby ones.
+
+	public static List<Box> getCachedBoxes(int level) {
+		return cachedBoxes[level];
+	}
+
+	public static void storeCachedBoxes(int level) {
+		if (level >= maxLevel) {
+			cachedBoxes[15] = getBoxesInRange(player.pos.getX(), player.pos.getY(), Math.pow(2, level), scale, tileSize);
+		} else {
+			cachedBoxes[level] = getCachedBoxesInRange(level);
+		}
+	}
+
+	public static List<Box> getCachedBoxesInRange(int level) {
+		List<Box> boxesInRange = new ArrayList<>();
+		double playerX = player.pos.getX();
+		double playerY = player.pos.getY();
+		double range = Math.pow(2, level);
+		for (Box box : cachedBoxes[level + 1]) {
+			double scaledX = box.getCurrentX() * scale;
+			double scaledY = box.getCurrentY() * scale;
+
+			if (scaledX + tileSize * box.getBoxScaleHorizontal() / 1.5 >= playerX - range && scaledX <= playerX + range
+					&& scaledY + tileSize * box.getBoxScaleVertical() / 1.5 >= playerY - range && scaledY <= playerY + range) {
+				boxesInRange.add(box);
+			}
+		}
+		return boxesInRange;
+	}
+
+		// END BOX CACHING
+
 	public static List<Box> getCollisionBoxesInRange(double playerX, double playerY, double range, double scale, int tileSize) {
     	List<Box> boxesInRange = new ArrayList<>();
-    	for (Box box : boxes) {
+    	for (Box box : getCachedBoxes(9)) {
     			if (!box.getHasCollision()) {
     				continue;
     			}
@@ -308,7 +373,7 @@ public class BoxesHandling {
 
 	public static List<Box> getNonCollisionBoxesInRange(double playerX, double playerY, double range, double scale, int tileSize) {
 		List<Box> boxesInRange = new ArrayList<>();
-		for (Box box : boxes) {
+		for (Box box : getCachedBoxes(9)) {
 			if (box.getHasCollision()) {
 				continue;
 			}
@@ -321,21 +386,5 @@ public class BoxesHandling {
 			}
 		}
 		return boxesInRange;
-	}
-
-	public static boolean deleteBox(Box box) {
-		return boxes.remove(box);
-	}
-
-	public static Box getLastBox() {
-		return boxes.getLast();
-	}
-
-	public static void clearAllBoxes() {
-		boxes.clear();
-	}
-
-	public static int getBoxesCount() {
-		return boxes.size();
 	}
 }
