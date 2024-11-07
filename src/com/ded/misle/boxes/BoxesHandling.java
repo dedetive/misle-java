@@ -9,6 +9,7 @@ public class BoxesHandling {
 
 	private static final List<Box> boxes = new ArrayList<>();
 	private static final List<String> presetsWithSides = List.of(new String[]{"wallDefault"});
+	private static final double boxBaseSize = 20;
 
 	/**
 	 *
@@ -38,21 +39,44 @@ public class BoxesHandling {
 		return boxes.getLast();
 	}
 
-	public static int lineAddScaledBox(double startX, double startY, int boxesX, int boxesY, String preset, String mode) {
+	public static int lineCoordinatedAddBox(double startX, double startY, int boxesX, int boxesY, String preset, String mode) {
+		return lineAddBox(startX * boxBaseSize, startY * boxBaseSize, boxesX, boxesY, preset, mode);
+	}
+
+	public static int lineCoordinatedAddScaledBox(double startX, double startY, int boxesX, int boxesY, String preset, String mode, double scale) {
+		return lineAddScaledBox(startX * boxBaseSize, startY * boxBaseSize, boxesX, boxesY, mode, scale);
+	}
+
+	public static int lineAddBox(double startX, double startY, int boxesX, int boxesY, String preset, String mode) {
 		int Counter = 0;
 		for (int i = 0; i < boxesX; i++) {
 			for (int j = 0; j < boxesY; j++) {
 				switch (mode) {
 					case "hollow":
 						if ((i == 0 || i == boxesX - 1) || (j == 0 || j == boxesY - 1)) {
-							boxes.add(new Box(startX + i * 20, startY + j * 20));
+							boxes.add(new Box(startX + i * boxBaseSize, startY + j * boxBaseSize));
 							if (preset.contains("@")) { loadPreset(boxes.getLast(), preset.substring(0, preset.indexOf("@"))); }
+							else { loadPreset(boxes.getLast(), preset); }
 
 							// For wall corner detection
 
 							if (checkIfPresetHasSides(preset)) {
 								String openSides;
-								if (i == 0 && j == 0) {
+								if (boxesX == 1 && boxesY == 1) {
+									openSides = ".WASD..@";
+								} else if (boxesX == 1 && j == 0) {
+									openSides = ".WAD..@";
+								} else if (boxesX == 1 && j == boxesY - 1) {
+									openSides = ".ASD..@";
+								} else if (boxesY == 1 && i == 0) {
+									openSides = ".WAS..@";
+								} else if (boxesY == 1 && i == boxesX - 1) {
+									openSides = ".WSD..@";
+								} else if (boxesX == 1) {
+									openSides = ".AD";
+								} else if (boxesY == 1) {
+									openSides = ".WS";
+								} else if (i == 0 && j == 0) {
 									openSides = ".AW.S.@"; // Left-up corner
 								} else if (i == 0 && j == boxesY - 1) {
 									openSides = ".AS.D.@"; // Left-down corner
@@ -70,17 +94,33 @@ public class BoxesHandling {
 
 								editLastBox("texture", preset + openSides);
 							}
+
 							Counter++;
 						}
 						break;
 					case "fill":
 					default:
-						boxes.add(new Box(startX + i * 20, startY + j * 20));
+						boxes.add(new Box(startX + i * boxBaseSize, startY + j * boxBaseSize));
 						if (preset.contains("@")) { loadPreset(boxes.getLast(), preset.substring(0, preset.indexOf("@"))); }
+						else { loadPreset(boxes.getLast(), preset); }
 
 						if (checkIfPresetHasSides(preset)) {
 							String openSides;
-							if (i == 0 && j == 0) {
+							if (boxesX == 1 && boxesY == 1) {
+								openSides = ".WASD..@";
+							} else if (boxesX == 1 && j == 0) {
+								openSides = ".WAD..@";
+							} else if (boxesX == 1 && j == boxesY - 1) {
+								openSides = ".ASD..@";
+							} else if (boxesY == 1 && i == 0) {
+								openSides = ".WAS..@";
+							} else if (boxesY == 1 && i == boxesX - 1) {
+								openSides = ".WSD..@";
+							} else if (boxesX == 1) {
+								openSides = ".AD";
+							} else if (boxesY == 1) {
+								openSides = ".WS";
+							} else if (i == 0 && j == 0) {
 								openSides = ".AW..@"; // Left-up corner
 							} else if (i == 0 && j == boxesY - 1) {
 								openSides = ".AS..@"; // Left-down corner
@@ -118,7 +158,7 @@ public class BoxesHandling {
 				switch (mode) {
 					case "hollow":
 						if ((i == 0 || i == boxesX - 1) || (j == 0 || j == boxesY - 1)) {
-							boxes.add(new Box(startX + i * 20 * boxScale, startY + j * 20 * boxScale));
+							boxes.add(new Box(startX + i * boxBaseSize * boxScale, startY + j * boxBaseSize * boxScale));
 							editLastBox("boxScaleHorizontal", String.valueOf(boxScale));
 							editLastBox("boxScaleVertical", String.valueOf(boxScale));
 							Counter++;
@@ -126,7 +166,7 @@ public class BoxesHandling {
 						break;
 					case "fill":
 					default:
-						boxes.add(new Box(startX + i * 20 * boxScale, startY + j * 20 * boxScale));
+						boxes.add(new Box(startX + i * boxBaseSize * boxScale, startY + j * boxBaseSize * boxScale));
 						editLastBox("boxScaleHorizontal", String.valueOf(boxScale));
 						editLastBox("boxScaleVertical", String.valueOf(boxScale));
 						Counter++;
