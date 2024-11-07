@@ -109,7 +109,6 @@ public class PlayerStats {
 			} else if (totalSteps % Math.pow(2, level) == 0) {
 				storeCachedBoxes(level);
 			}
-			System.out.println(getCachedBoxes(level).size());
 		}
 		totalSteps++;
 	}

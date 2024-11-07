@@ -9,7 +9,7 @@ public class BoxesLoad {
 	public static void loadBoxes() {
 
 		if (Objects.equals(player.pos.getRegion(), "Chain of Lies")) {
-			int boxesAdded = lineAddScaledBox(0, 0, 4000, 4000, "fill", 2);
+			int boxesAdded = lineAddScaledBox(0, 0, 100, 100, "fill", 2);
 			editLastBox("texture", "grass", boxesAdded);
 
 			addBox(200, 150, "spawnpoint");
@@ -34,8 +34,6 @@ public class BoxesLoad {
 			editLastBox("hasCollision", "true");
 			editLastBox("color", "0xFE4040");
 			editLastBox("texture", "fire");
-
-			System.out.println(getBoxesCount());
 		}
 	}
 

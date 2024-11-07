@@ -436,10 +436,10 @@ public class Box {
 			int count = results[1];
 			boolean canGoMinus = false;
 			boolean canGoPlus = false;
-			if (getCollisionBoxesInRange(box.currentX - 20, box.currentY * scale, 0, scale, tileSize).isEmpty()) {
+			if (getCollisionBoxesInRange(box.currentX - 20, box.currentY * scale, 50, scale, tileSize).isEmpty()) {
 				canGoMinus = true;
 			}
-			if (getCollisionBoxesInRange(box.currentX + 20, box.currentY * scale, 0, scale, tileSize).isEmpty()) {
+			if (getCollisionBoxesInRange(box.currentX + 20, box.currentY * scale, 50, scale, tileSize).isEmpty()) {
 				canGoPlus = true;
 			}
 
@@ -464,6 +464,7 @@ public class Box {
 		} else if (canGoMinus) {
 			multiplier = -1;
 		}
+		System.out.println("ID: " + id + "\nCount: " + count + "\nmultiplier: " + multiplier);
 
 		this.setTexture("chestOpen");
 

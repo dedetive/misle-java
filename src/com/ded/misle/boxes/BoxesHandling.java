@@ -42,6 +42,7 @@ public class BoxesHandling {
 		boxes.add(new Box(x, y));
 		editLastBox("effect", "{item, " + id + ", " + count + ", true}");
 		editLastBox("texture", (".." + File.separator + "items" + File.separator + id));
+		addBoxToCache(boxes.getLast());
 		return boxes.getLast();
 	}
 
@@ -280,6 +281,7 @@ public class BoxesHandling {
     }
 
 	public static boolean deleteBox(Box box) {
+		removeBoxFromCache(box);
 		return boxes.remove(box);
 	}
 
@@ -334,6 +336,18 @@ public class BoxesHandling {
 		}
 	}
 
+	public static void addBoxToCache(Box box) {
+		for (int level = 15; level > 0; level--) {
+			cachedBoxes[level].add(box);
+		}
+	}
+
+	public static void removeBoxFromCache(Box box) {
+		for (int level = 15; level > 0; level--) {
+			cachedBoxes[level].remove(box);
+		}
+	}
+
 	public static List<Box> getCachedBoxesInRange(int level) {
 		List<Box> boxesInRange = new ArrayList<>();
 		double playerX = player.pos.getX();
@@ -355,7 +369,7 @@ public class BoxesHandling {
 
 	public static List<Box> getCollisionBoxesInRange(double playerX, double playerY, double range, double scale, int tileSize) {
     	List<Box> boxesInRange = new ArrayList<>();
-    	for (Box box : getCachedBoxes(9)) {
+    	for (Box box : getCachedBoxes(10)) {
     			if (!box.getHasCollision()) {
     				continue;
     			}
