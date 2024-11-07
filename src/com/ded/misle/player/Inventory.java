@@ -6,10 +6,12 @@ import com.ded.misle.items.Item;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.GameRenderer.updateSelectedItemNamePosition;
 import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.boxes.BoxesHandling.editBox;
 import static com.ded.misle.boxes.BoxesHandling.editLastBox;
 import static java.lang.System.currentTimeMillis;
@@ -221,6 +223,26 @@ public class Inventory {
 		editBox(droppedItem, "collectible", "false");
 		removeItem(row, col, quantity);
 		updateSelectedItemNamePosition();
+		switch (player.stats.getWalkingDirection()) {
+			case "up" -> {
+				moveBox(droppedItem, 0, -player.attr.getPlayerSpeed() * 20 * 1.5, 300);
+				moveBox(droppedItem, 0, -player.attr.getPlayerSpeed() * 20 * 1.5 / 2, 50);
+			}
+			case "down" -> {
+				moveBox(droppedItem, 0, player.attr.getPlayerSpeed() * 20 * 1.5, 300);
+				moveBox(droppedItem, 0, player.attr.getPlayerSpeed() * 20 * 1.5 / 2, 50);
+			}
+			case "left" -> {
+				moveBox(droppedItem, -player.attr.getPlayerSpeed() * 20 * 1.5, 0, 300);
+				moveBox(droppedItem, -player.attr.getPlayerSpeed() * 20 * 1.5 / 2, 0, 50);
+			}
+			case "right" -> {
+				moveBox(droppedItem, player.attr.getPlayerSpeed() * 20 * 1.5, 0, 300);
+				moveBox(droppedItem, player.attr.getPlayerSpeed() * 20 * 1.5 / 2, 0, 50);
+			}
+			case null, default -> {
+			}
+		}
 		Timer timer = new Timer(1500, e -> {
 			editBox(droppedItem, "collectible", "true");
 		});
