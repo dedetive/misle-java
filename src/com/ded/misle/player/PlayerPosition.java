@@ -14,6 +14,7 @@ public class PlayerPosition {
 	private double originalPlayerY;
 	private double cameraOffsetY;
 	private double[] spawnpoint = new double[2];
+	private String region = "";
 
 	public PlayerPosition() {
 		if (!Arrays.equals(getSpawnpoint(), new double[]{0, 0})) {
@@ -24,6 +25,7 @@ public class PlayerPosition {
 		}
 		setCameraOffsetX(0);
 		setCameraOffsetY(0);
+		setRegion("Chain of Lies");
 	}
 
 	public double getX() {
@@ -81,5 +83,13 @@ public class PlayerPosition {
 			setX(spawnpoint[0] * scale);
 			setY(spawnpoint[1] * scale);
 		}
+	}
+
+	public String getRegion() {
+		return region;
+	}
+
+	public void setRegion(String region) {
+		this.region = region;
 	}
 }
