@@ -98,7 +98,7 @@ public class PlayerAttributes {
 	}
 
 	public void setPlayerWidth(double playerWidth) {
-		this.width = playerWidth;
+		this.width = playerWidth / 1.03;
 	}
 
 	public double getPlayerHeight() {
@@ -106,7 +106,7 @@ public class PlayerAttributes {
 	}
 
 	public void setPlayerHeight(double playerHeight) {
-		this.height = playerHeight;
+		this.height = playerHeight / 1.03;
 	}
 
 	// HP, DAMAGE AND HEALS

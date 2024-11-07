@@ -9,7 +9,7 @@ public class BoxesHandling {
 
 	private static final List<Box> boxes = new ArrayList<>();
 	private static final List<String> presetsWithSides = List.of(new String[]{"wallDefault"});
-	private static final double boxBaseSize = 20;
+	private static final double boxBaseSize = 21;
 
 	/**
 	 *
