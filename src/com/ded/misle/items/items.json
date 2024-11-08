@@ -53,7 +53,8 @@
     "subtype": "entropy",
     "potionDelay": 1.6,
     "kind": "self",
-    "nameColor": "0x6BC6F5"
+    "bundles": "mountain|800000015",
+    "nameColor": "#6BC6F5"
   },
   {
     "id": 5,
@@ -61,11 +62,13 @@
     "name": "Wooden Shield",
     "countLimit": 1,
     "rarity": "F",
+    "resistance": 3,
+    "hits": 20,
     "type": "weapon",
     "subtype": "shield",
     "kind": "wooden",
     "bundles": "mountainDISABLED|100000005",
-    "nameColor": "0xFFFFFF"
+    "nameColor": "#FFFFFF"
   },
   {
     "id": -1,
@@ -76,6 +79,6 @@
     "type": "",
     "subtype": "",
     "kind": "",
-    "nameColor": "0xFFFFFF"
+    "nameColor": "#FFFFFF"
   }
 ]

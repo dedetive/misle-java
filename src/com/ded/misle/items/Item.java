@@ -11,7 +11,6 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 
 import static com.ded.misle.ChangeSettings.getPath;
-import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.boxes.BoxesHandling.addBoxItem;
 import static java.lang.System.currentTimeMillis;
 
@@ -30,6 +29,7 @@ public class Item {
 	private long timeToDelay;
 	private boolean active;
 	private final Color nameColor;
+	private final String displayEffect;
 
 	// Constructor that takes only ID and sets default count to 1
 	public Item(int id) throws Exception {
@@ -46,6 +46,7 @@ public class Item {
 			this.rarity = itemDetails.getRarity();
 			this.type = itemDetails.getType();
 			this.displayType = LanguageManager.getText("TYPE_" + itemDetails.getType());
+			this.displayEffect = LanguageManager.getText(normalizedName + "_EFFECT");
 			this.resourceID = itemDetails.getResourceID();
 			this.attributes = itemDetails.getAttributes();
 			this.timeToDelay = currentTimeMillis();
@@ -73,6 +74,7 @@ public class Item {
 	public String getRarity() { return rarity; }
 	public String getType() { return type; }
 	public String getDisplayType() { return displayType; }
+	public String getDisplayEffect() { return displayEffect; }
 	public Map<String, Object> getAttributes() { return attributes; }
 	public int getCount() { return count; }
 	public long getTimeToDelay() { return timeToDelay; }

@@ -649,74 +649,109 @@ public class GameRenderer {
 	public static void drawHoveredItemTooltip(Graphics g, int hoveredSlot) {
 		Graphics2D g2d = (Graphics2D) g;
 
+		// Base settings
 		int inventoryBarWidth = (int) (120 * scale);
-		int inventoryBarHeight = (int) (20 * scale);
 		int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
-		int inventoryBarY = (int) (screenHeight - inventoryBarHeight - 60);
-
-		// Slots info
+		int inventoryBarY = (int) (screenHeight - 20 * scale - 60);
 
 		int slotWidth = (int) (30 * scale);
 		int slotHeight = (int) (30 * scale);
 		int slotSpacing = (int) (3 * scale);
-
-		int totalSlotsWidth = 7 * slotWidth + (6 * slotSpacing);
-		int slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
-
+		int slotStartX = inventoryBarX + (inventoryBarWidth - (7 * slotWidth + 6 * slotSpacing)) / 2;
 		int slotX = slotStartX + hoveredSlot * (slotWidth + slotSpacing);
-		int slotY = inventoryBarY + (inventoryBarHeight - slotHeight) / 2;
+		int slotY = (int) (inventoryBarY + (20 * scale - slotHeight) / 2);
 
-		int tooltipWidth = slotWidth * 4;
-		int tooltipHeight = slotHeight * 3;
-		int tooltipX = slotX - (3 * slotWidth / 2);
-		int tooltipY = slotY - (7 * slotHeight / 2);
+		// Get item details
+		Item hoveredItem = player.inv.getItem(0, hoveredSlot);
+		String itemName = hoveredItem.getDisplayName();
+		String itemCount = "";
+		if (hoveredItem.getCount() > 1) {
+			itemCount = " (" + hoveredItem.getCount() + "x)";
+		}
+		String itemType = hoveredItem.getDisplayType();
+		String itemEffect = hoveredItem.getDisplayEffect();
+		String itemDescription = "\"" + hoveredItem.getDescription() + "\"";
 
-		// Main rounded corner tooltip
-		g2d.setColor(new Color(84, 84, 84, 190));
-		g2d.fillRoundRect(tooltipX, tooltipY, tooltipWidth, tooltipHeight, 15, 15);
+		// Font and dimensions
+		g2d.setFont(basicFont40);
+		FontMetrics fm = g2d.getFontMetrics();
 
-		// Triangle stuff
+		// Calculate width based on text
+		int tooltipWidth = Math.max(slotWidth * 4, fm.stringWidth(itemName) + (int) (20 * scale / 3.75));
+		int tooltipX = slotX - (tooltipWidth / 2) + slotWidth / 2;
+		int tooltipY;
 
-		int triangleBase = slotWidth;
+		// Calculate dynamic height
+		int lineHeight = fm.getHeight();
+		int tooltipHeight = lineHeight * 4; // minimum height for basic text
+
+		// Adjust for multi-line description
+		String[] wrappedDescription = wrapText(itemDescription, tooltipWidth - 20, fm);
+		tooltipHeight += lineHeight * wrappedDescription.length;
+
+		int maxTooltipWidth = slotWidth * 6; // Set maximum tooltip width
+		tooltipWidth = Math.min(maxTooltipWidth, Math.max(tooltipWidth, fm.stringWidth(itemEffect) + 20));
+		String[] wrappedEffect = wrapText(itemEffect, tooltipWidth - 20, fm);
+		tooltipHeight += lineHeight * (wrappedEffect.length - 1); // Adjust height based on wrapped lines
+
+		// Shift tooltip upwards if text exceeds height
 		int triangleHeight = slotHeight / 2;
+		tooltipY = slotY - tooltipHeight - (triangleHeight);
 
-		int[] xPoints = {
-			slotX + slotWidth / 2 - triangleBase / 2,  // Left corner of the base
-			slotX + slotWidth / 2 + triangleBase / 2,  // Right corner of the base
-			slotX + slotWidth / 2                     // Tip of the triangle
-		};
-		int[] yPoints = {
-			tooltipY + tooltipHeight,                 // Bottom edge of the tooltip
-			tooltipY + tooltipHeight,                 // Bottom edge of the tooltip
-			tooltipY + tooltipHeight + triangleHeight // Tip of the triangle
-		};
+		// Draw rounded tooltip box
+		g2d.setColor(new Color(84, 84, 84, 190));
+		g2d.fillRoundRect(tooltipX, tooltipY, tooltipWidth, tooltipHeight, (int) (45 * scale / 3.75), (int) (45 * scale / 3.75));
 
+		// Draw triangle
+		int triangleBase = slotWidth;
+		int[] xPoints = { slotX + slotWidth / 2 - triangleBase / 2, slotX + slotWidth / 2 + triangleBase / 2, slotX + slotWidth / 2 };
+		int[] yPoints = { tooltipY + tooltipHeight, tooltipY + tooltipHeight, tooltipY + tooltipHeight + triangleHeight };
 		g2d.fillPolygon(xPoints, yPoints, 3);
 
-		// Draw item name
-
-		Item hoveredItem = player.inv.getItem(0, hoveredSlot);
-		g2d.setFont(basicFont40);
+		// Draw text within tooltip
 		g2d.setColor(hoveredItem.getNameColor());
-		FontMetrics fm = g2d.getFontMetrics();
-		String textToDisplay = "";
-		if (hoveredItem.getCount() > 1) {
-			textToDisplay = hoveredItem.getDisplayName() + " (" + hoveredItem.getCount() + "x)";
-		} else {
-			textToDisplay = hoveredItem.getDisplayName();
-		}
+		int textX = tooltipX + 10;
+		int textY = tooltipY + lineHeight;
 
-		int textX = (int) (tooltipX + 15 * scale / 3.75);
-		int textY = (int) (tooltipY + 40 * scale / 3.75);
+		g2d.setColor(hoveredItem.getNameColor());
+		g2d.drawString(itemName, textX, textY);
+		int itemNameWidth = fm.stringWidth(itemName);
+		g2d.setColor(Color.decode("#FFFFFF"));
+		g2d.drawString(itemCount, textX + itemNameWidth, textY);
 
-		g2d.drawString(textToDisplay, textX, textY);
-
-		// Draw item description
+		textY += lineHeight;
 
 		g2d.setColor(Color.decode("#E0DE9B"));
-		textToDisplay = hoveredItem.getDisplayType();
-		textY = (int) (tooltipY + 80 * scale / 3.75);
+		g2d.drawString(itemType, textX, textY);
+		textY += lineHeight;
 
-		g2d.drawString(textToDisplay, textX, textY);
+		g2d.setColor(Color.decode("#00A2FF"));
+		for (String line : wrappedEffect) {
+			g2d.drawString(line, textX, textY);
+			textY += lineHeight;
+		}
+
+		g2d.setColor(Color.decode("#A0A0A0"));
+		for (String line : wrappedDescription) {
+			g2d.drawString(line, textX, textY);
+			textY += lineHeight;
+		}
+	}
+
+	// Helper method to wrap text
+	private static String[] wrapText(String text, int maxWidth, FontMetrics fm) {
+		java.util.List<String> lines = new java.util.ArrayList<>();
+		StringBuilder line = new StringBuilder();
+
+		for (String word : text.split(" ")) {
+			if (fm.stringWidth(line + word) > maxWidth) {
+				lines.add(line.toString());
+				line = new StringBuilder();
+			}
+			line.append(word).append(" ");
+		}
+		lines.add(line.toString().trim());
+
+		return lines.toArray(new String[0]);
 	}
 }
