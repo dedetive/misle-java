@@ -28,8 +28,8 @@ public class BoxesHandling {
 	 *  ...
 	 *
 	 */
-	public static void addBox(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect) {
-		boxes.add(new Box(x, y, color, texture, hasCollision, boxScaleHorizontal, boxScaleVertical, effect));
+	public static void addBox(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation) {
+		boxes.add(new Box(x, y, color, texture, hasCollision, boxScaleHorizontal, boxScaleVertical, effect, rotation));
 		addBoxToCache(boxes.getLast());
 	}
 
@@ -259,6 +259,10 @@ public class BoxesHandling {
 			case "collectible":
 				box.setEffectReason(value);
 				break;
+			case "rotation":
+				box.setRotation(Double.parseDouble(value));
+				break;
+
 		}
 	}
 

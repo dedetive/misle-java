@@ -1,13 +1,11 @@
 package com.ded.misle.boxes;
 
 import javax.swing.Timer;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.boxes.BoxesHandling.addBox;
 
 public class BoxManipulation {
 
@@ -31,7 +29,6 @@ public class BoxManipulation {
 	 * @param x how many pixels in the x axis
 	 * @param y how many pixels in the y axis
 	 * @param delay how long it takes in milliseconds for the box to be fully moved
-	 * @return final position
 	 */
 	public static void moveBox(Box box, double x, double y, double delay) {
 		int frames = (int)(delay / 1000 * 60);
@@ -59,7 +56,6 @@ public class BoxManipulation {
 	 * @param x how many pixels in the x axis
 	 * @param y how many pixels in the y axis
 	 * @param delay how long it takes in milliseconds for the box to be fully moved
-	 * @return final position
 	 */
 	public static void moveCollisionBox(Box box, double x, double y, double delay) {
 		int frames = (int)(delay / 1000 * 60);
@@ -77,6 +73,21 @@ public class BoxManipulation {
 					count++;
 				} else {
 					((Timer) evt.getSource()).stop();  // Stop the timer when done
+				}
+			}
+		});
+		timer.start();
+	}
+
+	public static void delayedRotateBox(Box box, double angle, double delay) {
+		int frames = (int)(delay / 1000 * 60);
+		double dangle = angle / frames;
+		Timer timer = new Timer(1000 / 60, new ActionListener() {
+			int count = 0;
+			public void actionPerformed(ActionEvent evt) {
+				if (count < frames) {
+					box.setRotation(box.getRotation() + dangle);
+					count++;
 				}
 			}
 		});

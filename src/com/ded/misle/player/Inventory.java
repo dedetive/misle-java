@@ -12,8 +12,7 @@ import static com.ded.misle.AudioPlayer.playThis;
 import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.GameRenderer.updateSelectedItemNamePosition;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.boxes.BoxManipulation.moveBox;
-import static com.ded.misle.boxes.BoxManipulation.moveCollisionBox;
+import static com.ded.misle.boxes.BoxManipulation.*;
 import static com.ded.misle.boxes.BoxesHandling.editBox;
 import static com.ded.misle.boxes.BoxesHandling.editLastBox;
 import static java.lang.System.currentTimeMillis;
@@ -247,6 +246,7 @@ public class Inventory {
 			case null, default -> {
 			}
 		}
+		delayedRotateBox(droppedItem, 365, 250);
 		Timer timer = new Timer(1500, e -> {
 			editBox(droppedItem, "collectible", "true");
 		});

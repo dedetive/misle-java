@@ -37,6 +37,7 @@ public class Box {
 	private double boxScaleVertical;
 	private String[] effect;
 	private long lastDamageTime = 0;
+	private double rotation = 0;
 
 	private BufferedImage cachedTexture1;
 	private String cachedTexture1Name;
@@ -71,7 +72,7 @@ public class Box {
 	 * @param boxScaleVertical how many tilesizes is the box in the y axis
 	 * @param effect first value is the type of effect. See above for a list of effects. Set "" if none
 	 */
-	public Box(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect) {
+	public Box(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation) {
 		this.originalX = x;
 		this.originalY = y;
 		this.currentX = this.originalX;
@@ -82,6 +83,7 @@ public class Box {
 		this.boxScaleHorizontal = boxScaleHorizontal;
 		this.boxScaleVertical = boxScaleVertical;
 		this.effect = effect;
+		this.rotation = rotation;
 	}
 
 	public Box(double x, double y) {
@@ -95,6 +97,7 @@ public class Box {
 		this.boxScaleHorizontal = 1;
 		this.boxScaleVertical = 1;
 		this.effect = new String[]{""};
+		this.rotation = 0;
 	}
 
 	// Method to render the box with the current tileSize and scale the position
@@ -110,7 +113,8 @@ public class Box {
 		// Draw the box with the scaled position and tileSize
 		if (Objects.equals(this.texture, "solid")) {
 			g2d.setColor(color);
-			g2d.fillRect(screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical));
+			Rectangle solidBox = new Rectangle(screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical));
+			GameRenderer.drawRotatedRect(g2d, solidBox, this.rotation);
 		} else if (BoxesHandling.checkIfPresetHasSides(texture.split("\\.")[0])) {
 			// Split texture once and reuse the result
 			String[] textureParts = texture.split("\\.");
@@ -122,7 +126,7 @@ public class Box {
 					textureExtra = textureName.substring(textureName.indexOf("@") + 1);
 					textureName = textureName.substring(0, textureName.indexOf("@"));
 				} else {
-					g2d.drawImage(this.getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), null);
+					GameRenderer.drawRotatedImage(g2d, this.getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
 				}
 
 				// Draw extras if any
@@ -130,11 +134,11 @@ public class Box {
 					if (textureParts[3].equals("@")) {
 						switch (textureExtra) {
 							case "Deco":
-								g2d.drawImage(this.getTexture(textureName + textureExtra), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), null);
+								GameRenderer.drawRotatedImage(g2d, this.getTexture(textureName + textureExtra), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
 						}
 					}
 				} else {
-					g2d.drawImage(this.getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), null);
+					GameRenderer.drawRotatedImage(g2d, this.getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
 				}
 
 				// Draw sides if they exist
@@ -144,7 +148,7 @@ public class Box {
 
 					for (String side : eachSide) {
 						GameRenderer.drawRotatedImage(g2d, getTexture(textureName + "OverlayW"), screenX, screenY,
-								(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), rotationInstruction.get(side));
+								(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), rotationInstruction.get(side) + this.rotation);
 					}
 				}
 
@@ -157,7 +161,7 @@ public class Box {
 							continue;
 						}
 						GameRenderer.drawRotatedImage(g2d, getTexture(textureName + "OverlayC"), screenX, screenY,
-								(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), rotationInstruction.get(corner));
+								(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), rotationInstruction.get(corner) + this.rotation);
 					}
 				}
 
@@ -168,7 +172,7 @@ public class Box {
 			if (texture.contains("@")) {
 				texture = texture.replace("@", "");
 			}
-			g2d.drawImage(this.getTexture(), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), null);
+			GameRenderer.drawRotatedImage(g2d, this.getTexture(), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
 		}
 	}
 
@@ -236,6 +240,10 @@ public class Box {
 	public double getBoxScaleVertical() {
 		return boxScaleVertical;
 	}
+
+	public void setRotation(double rotation) { this.rotation = rotation; }
+
+	public double getRotation() { return rotation; }
 
 	// BOX CHARACTERISTICS
 

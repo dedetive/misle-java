@@ -646,6 +646,23 @@ public class GameRenderer {
 		g2d.setTransform(originalTransform);
 	}
 
+	public static void drawRotatedRect(Graphics2D g2d, Rectangle rectangle, double angle) {
+		double centerX = rectangle.x + rectangle.width / 2.0;
+		double centerY = rectangle.y + rectangle.height / 2.0;
+
+		// Save the original transform
+		AffineTransform originalTransform = g2d.getTransform();
+
+		// Apply rotation around the calculated center
+		g2d.rotate(Math.toRadians(angle), centerX, centerY);
+
+		// Draw the scaled and rotated image at the specified position
+		g2d.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+
+		// Restore the original transform to avoid affecting other drawings
+		g2d.setTransform(originalTransform);
+	}
+
 	public static void drawHoveredItemTooltip(Graphics g, int hoveredSlot) {
 		Graphics2D g2d = (Graphics2D) g;
 
