@@ -2,8 +2,7 @@ package com.ded.misle.player;
 
 import java.util.*;
 
-import static com.ded.misle.boxes.BoxesHandling.getCachedBoxes;
-import static com.ded.misle.boxes.BoxesHandling.storeCachedBoxes;
+import static com.ded.misle.boxes.BoxesHandling.*;
 
 public class PlayerStats {
 
@@ -103,7 +102,7 @@ public class PlayerStats {
 	}
 
 	public void incrementTotalSteps() {
-		for (int level = 15; level > 0; level--) {
+		for (int level = maxLevel; level > 0; level--) {
 			if (totalSteps == 0) {
 				storeCachedBoxes(level);
 			} else if (totalSteps % Math.pow(2, level) == 0) {

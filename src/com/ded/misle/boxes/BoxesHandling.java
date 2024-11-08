@@ -14,8 +14,14 @@ public class BoxesHandling {
 	private static final List<Box> boxes = new ArrayList<>();
 	private static final List<String> presetsWithSides = List.of(new String[]{"wallDefault"});
 	private static final double boxBaseSize = 20.675;
-	static int maxLevel = 15;
-	private static List<Box>[] cachedBoxes = new ArrayList[]{new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()};
+	public static int maxLevel = 19;
+	private static List<Box>[] cachedBoxes = new ArrayList[maxLevel + 1];
+
+	static {
+		for (int i = 0; i < cachedBoxes.length; i++) {
+			cachedBoxes[i] = new ArrayList<>();
+		}
+	}
 
 	/**
 	 *
@@ -65,6 +71,7 @@ public class BoxesHandling {
 					case "hollow":
 						if ((i == 0 || i == boxesX - 1) || (j == 0 || j == boxesY - 1)) {
 							boxes.add(new Box(startX + i * boxBaseSize, startY + j * boxBaseSize));
+							addBoxToCache(boxes.getLast());
 							if (preset.contains("@")) { loadPreset(boxes.getLast(), preset.substring(0, preset.indexOf("@"))); }
 							else { loadPreset(boxes.getLast(), preset); }
 
@@ -111,6 +118,7 @@ public class BoxesHandling {
 					case "fill":
 					default:
 						boxes.add(new Box(startX + i * boxBaseSize, startY + j * boxBaseSize));
+						addBoxToCache(boxes.getLast());
 						if (preset.contains("@")) { loadPreset(boxes.getLast(), preset.substring(0, preset.indexOf("@"))); }
 						else { loadPreset(boxes.getLast(), preset); }
 
@@ -169,6 +177,7 @@ public class BoxesHandling {
 					case "hollow":
 						if ((i == 0 || i == boxesX - 1) || (j == 0 || j == boxesY - 1)) {
 							boxes.add(new Box(startX + i * boxBaseSize * boxScale, startY + j * boxBaseSize * boxScale));
+							addBoxToCache(boxes.getLast());
 							editLastBox("boxScaleHorizontal", String.valueOf(boxScale));
 							editLastBox("boxScaleVertical", String.valueOf(boxScale));
 							Counter++;
@@ -177,6 +186,7 @@ public class BoxesHandling {
 					case "fill":
 					default:
 						boxes.add(new Box(startX + i * boxBaseSize * boxScale, startY + j * boxBaseSize * boxScale));
+						addBoxToCache(boxes.getLast());
 						editLastBox("boxScaleHorizontal", String.valueOf(boxScale));
 						editLastBox("boxScaleVertical", String.valueOf(boxScale));
 						Counter++;
@@ -273,7 +283,7 @@ public class BoxesHandling {
 
 	// Render boxes with camera offset, scale, and tileSize
 	public static void renderBoxes(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY, double playerX, double playerY, double range, double scale, int tileSize) {
-		List<Box> nearbyBoxes = getCachedBoxesInRange(10);
+		List<Box> nearbyBoxes = getCachedBoxesInRange(11);
 		for (Box box : nearbyBoxes) {
 			box.draw(g2d, cameraOffsetX, cameraOffsetY, scale, tileSize, box.getBoxScaleHorizontal(), box.getBoxScaleVertical());
 		}
@@ -333,20 +343,20 @@ public class BoxesHandling {
 
 	public static void storeCachedBoxes(int level) {
 		if (level >= maxLevel) {
-			cachedBoxes[15] = getBoxesInRange(player.pos.getX(), player.pos.getY(), Math.pow(2, level), scale, tileSize);
+			cachedBoxes[maxLevel] = getBoxesInRange(player.pos.getX(), player.pos.getY(), Math.pow(2, level), scale, tileSize);
 		} else {
 			cachedBoxes[level] = getCachedBoxesInRange(level);
 		}
 	}
 
 	public static void addBoxToCache(Box box) {
-		for (int level = 15; level > 0; level--) {
+		for (int level = maxLevel; level > 0; level--) {
 			cachedBoxes[level].add(box);
 		}
 	}
 
 	public static void removeBoxFromCache(Box box) {
-		for (int level = 15; level > 0; level--) {
+		for (int level = maxLevel; level > 0; level--) {
 			cachedBoxes[level].remove(box);
 		}
 	}
