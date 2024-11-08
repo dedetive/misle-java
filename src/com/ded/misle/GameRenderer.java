@@ -404,7 +404,8 @@ public class GameRenderer {
 
 		// Draw the player
 		g2d.setColor(Color.WHITE);
-		g2d.fillRect(playerScreenX, playerScreenY, (int) player.attr.getPlayerWidth(), (int) player.attr.getPlayerHeight());
+		Rectangle playerRect = new Rectangle(playerScreenX, playerScreenY, (int) player.attr.getPlayerWidth(), (int) player.attr.getPlayerHeight());
+		drawRotatedRect(g2d, playerRect, player.pos.getRotation());
 
 		// Draw selected item on top of player
 

@@ -246,7 +246,7 @@ public class Inventory {
 			case null, default -> {
 			}
 		}
-		delayedRotateBox(droppedItem, 365, 250);
+		delayedRotateBox(droppedItem, 360, 250);
 		Timer timer = new Timer(1500, e -> {
 			editBox(droppedItem, "collectible", "true");
 		});

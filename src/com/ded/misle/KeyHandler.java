@@ -271,7 +271,7 @@ public class KeyHandler implements KeyListener {
 
 		if (player.keys.keyPressed.get("debug1")) {
 
-			player.inv.addItem(createItem(3, 300));
+			player.pos.delayedRotate(-360, 700);
 
 			player.keys.keyPressed.put("debug1", false);
 		}

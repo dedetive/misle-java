@@ -1,5 +1,10 @@
 package com.ded.misle.player;
 
+import com.ded.misle.boxes.Box;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 
 import static com.ded.misle.GamePanel.player;
@@ -15,6 +20,7 @@ public class PlayerPosition {
 	private double cameraOffsetY;
 	private double[] spawnpoint = new double[2];
 	private String region = "";
+	private double rotation;
 
 	public PlayerPosition() {
 		if (!Arrays.equals(getSpawnpoint(), new double[]{0, 0})) {
@@ -91,5 +97,28 @@ public class PlayerPosition {
 
 	public void setRegion(String region) {
 		this.region = region;
+	}
+
+	public double getRotation() {
+		return rotation;
+	}
+
+	public void setRotation(double rotation) {
+		this.rotation = rotation;
+	}
+
+	public void delayedRotate(double angle, double delay) {
+		int frames = (int)(delay / 1000 * 60);
+		double dangle = angle / frames;
+		Timer timer = new Timer(1000 / 60, new ActionListener() {
+			int count = 0;
+			public void actionPerformed(ActionEvent evt) {
+				if (count < frames) {
+					player.pos.setRotation(player.pos.getRotation() + dangle);
+					count++;
+				}
+			}
+		});
+		timer.start();
 	}
 }
