@@ -436,10 +436,10 @@ public class Box {
 			int count = results[1];
 			boolean canGoMinus = false;
 			boolean canGoPlus = false;
-			if (getCollisionBoxesInRange(box.currentX - 20, box.currentY * scale, 0, scale, tileSize).isEmpty()) {
+			if (getCollisionBoxesInRange(box.currentX - 20, box.currentY * scale, 0, scale, tileSize, 6).isEmpty()) {
 				canGoMinus = true;
 			}
-			if (getCollisionBoxesInRange(box.currentX + 20, box.currentY * scale, 0, scale, tileSize).isEmpty()) {
+			if (getCollisionBoxesInRange(box.currentX + 20, box.currentY * scale, 0, scale, tileSize, 6).isEmpty()) {
 				canGoPlus = true;
 			}
 

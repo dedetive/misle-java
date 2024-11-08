@@ -360,8 +360,8 @@ public class GamePanel extends JPanel implements Runnable {
 	 * @param objectWidth double - The width of the object, in pixels.
 	 * @param objectHeight double - The height of the object, in pixels.
  	 */
-	public static boolean isPixelOccupied(double pixelX, double pixelY, double objectWidth, double objectHeight, double range) {
-		List<Box> nearbyCollisionBoxes = BoxesHandling.getCollisionBoxesInRange(player.pos.getX(), player.pos.getY(), range, scale, tileSize);
+	public static boolean isPixelOccupied(double pixelX, double pixelY, double objectWidth, double objectHeight, double range, int level) {
+		List<Box> nearbyCollisionBoxes = BoxesHandling.getCollisionBoxesInRange(pixelX, pixelY, range, scale, tileSize, level);
 		for (Box box : nearbyCollisionBoxes) {
 			if (box.getBoxScaleHorizontal() >= 1 && box.getBoxScaleVertical() >= 1) {
 				if (box.isPointColliding(pixelX, pixelY, scale, objectWidth, objectHeight) || // Up-left corner

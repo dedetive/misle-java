@@ -1,8 +1,13 @@
 package com.ded.misle.boxes;
 
 import javax.swing.Timer;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import static com.ded.misle.GamePanel.*;
+import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.boxes.BoxesHandling.addBox;
 
 public class BoxManipulation {
 
@@ -39,6 +44,37 @@ public class BoxManipulation {
 				if (count < frames) {
 					box.setCurrentX(box.getCurrentX() + dx);
 					box.setCurrentY(box.getCurrentY() + dy);
+					count++;
+				} else {
+					((Timer) evt.getSource()).stop();  // Stop the timer when done
+				}
+			}
+		});
+		timer.start();
+	}
+
+	/**
+	 *
+	 * @param box the box to b
+	 * @param x how many pixels in the x axis
+	 * @param y how many pixels in the y axis
+	 * @param delay how long it takes in milliseconds for the box to be fully moved
+	 * @return final position
+	 */
+	public static void moveCollisionBox(Box box, double x, double y, double delay) {
+		int frames = (int)(delay / 1000 * 60);
+		double dx = x / (double) frames;
+		double dy = y / (double) frames;
+
+		Timer timer = new Timer(1000 / 60, new ActionListener() {
+			int count = 0;
+			public void actionPerformed(ActionEvent evt) {
+				if (count < frames) {
+					System.out.println(player.pos.getX() + ", " + player.pos.getY());
+					if (!isPixelOccupied((box.getCurrentX() + dx) * scale, (box.getCurrentY() + dy) * scale, box.getBoxScaleHorizontal() * tileSize, box.getBoxScaleVertical() * tileSize, tileSize, 14)) {
+						box.setCurrentX(box.getCurrentX() + dx);
+						box.setCurrentY(box.getCurrentY() + dy);
+					}
 					count++;
 				} else {
 					((Timer) evt.getSource()).stop();  // Stop the timer when done

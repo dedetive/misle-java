@@ -12,6 +12,7 @@ import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.GameRenderer.updateSelectedItemNamePosition;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.boxes.BoxManipulation.moveBox;
+import static com.ded.misle.boxes.BoxManipulation.moveCollisionBox;
 import static com.ded.misle.boxes.BoxesHandling.editBox;
 import static com.ded.misle.boxes.BoxesHandling.editLastBox;
 import static java.lang.System.currentTimeMillis;
@@ -223,22 +224,23 @@ public class Inventory {
 		editBox(droppedItem, "collectible", "false");
 		removeItem(row, col, quantity);
 		updateSelectedItemNamePosition();
+		double dropSpeed = player.attr.getPlayerSpeedModifier()  * player.attr.getPlayerEnvironmentSpeedModifier() * 20 * 2.25;
 		switch (player.stats.getWalkingDirection()) {
 			case "up" -> {
-				moveBox(droppedItem, 0, -player.attr.getPlayerSpeed() * 20 * 1.5, 300);
-				moveBox(droppedItem, 0, -player.attr.getPlayerSpeed() * 20 * 1.5 / 2, 50);
+				moveCollisionBox(droppedItem, 0, -dropSpeed, 300);
+				moveCollisionBox(droppedItem, 0, -dropSpeed / 2, 50);
 			}
 			case "down" -> {
-				moveBox(droppedItem, 0, player.attr.getPlayerSpeed() * 20 * 1.5, 300);
-				moveBox(droppedItem, 0, player.attr.getPlayerSpeed() * 20 * 1.5 / 2, 50);
+				moveCollisionBox(droppedItem, 0, dropSpeed, 300);
+				moveCollisionBox(droppedItem, 0, dropSpeed / 2, 50);
 			}
 			case "left" -> {
-				moveBox(droppedItem, -player.attr.getPlayerSpeed() * 20 * 1.5, 0, 300);
-				moveBox(droppedItem, -player.attr.getPlayerSpeed() * 20 * 1.5 / 2, 0, 50);
+				moveCollisionBox(droppedItem, -dropSpeed, 0, 300);
+				moveCollisionBox(droppedItem, -dropSpeed / 2, 0, 50);
 			}
 			case "right" -> {
-				moveBox(droppedItem, player.attr.getPlayerSpeed() * 20 * 1.5, 0, 300);
-				moveBox(droppedItem, player.attr.getPlayerSpeed() * 20 * 1.5 / 2, 0, 50);
+				moveCollisionBox(droppedItem, dropSpeed, 0, 300);
+				moveCollisionBox(droppedItem, dropSpeed / 2, 0, 50);
 			}
 			case null, default -> {
 			}

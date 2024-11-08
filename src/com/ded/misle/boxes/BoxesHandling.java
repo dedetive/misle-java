@@ -24,10 +24,12 @@ public class BoxesHandling {
 	 */
 	public static void addBox(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect) {
 		boxes.add(new Box(x, y, color, texture, hasCollision, boxScaleHorizontal, boxScaleVertical, effect));
+		addBoxToCache(boxes.getLast());
 	}
 
 	public static void addBox(double x, double y) {
 		boxes.add(new Box(x, y));
+		addBoxToCache(boxes.getLast());
 	}
 
 	public static void addBox(double x, double y, String preset) {
@@ -36,6 +38,7 @@ public class BoxesHandling {
 		if (checkIfPresetHasSides(preset)) {
 			editLastBox("texture", preset + "0");
 		}
+		addBoxToCache(boxes.getLast());
 	}
 
 	public static Box addBoxItem(double x, double y, int id, int count) {
@@ -367,9 +370,9 @@ public class BoxesHandling {
 
 		// END BOX CACHING
 
-	public static List<Box> getCollisionBoxesInRange(double playerX, double playerY, double range, double scale, int tileSize) {
+	public static List<Box> getCollisionBoxesInRange(double playerX, double playerY, double range, double scale, int tileSize, int level) {
     	List<Box> boxesInRange = new ArrayList<>();
-    	for (Box box : getCachedBoxes(10)) {
+    	for (Box box : getCachedBoxes(level)) {
     			if (!box.getHasCollision()) {
     				continue;
     			}
