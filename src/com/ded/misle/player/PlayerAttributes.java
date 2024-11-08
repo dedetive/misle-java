@@ -28,6 +28,7 @@ public class PlayerAttributes {
 	private double environmentSpeedModifier;
 	private double regenerationQuality;
 	private double regenerationRate;
+	private boolean isInvulnerable;
 
 	// XP
 
@@ -110,6 +111,10 @@ public class PlayerAttributes {
 	}
 
 	// HP, DAMAGE AND HEALS
+	
+	public boolean getIsInvulnerable() { return isInvulnerable; }
+
+	public void setIsInvulnerable(boolean isInvulnerable) { this.isInvulnerable = isInvulnerable; }
 
 	public double getPlayerHP() {
 		return hp;
@@ -226,12 +231,14 @@ public class PlayerAttributes {
 		} else if (isAbsolute) {
 			// Absolute: defense effects are ignored
 			theoreticalDamage = Math.min(damage, this.hp);
-		} else if (isPostMortem) {
+		} else if (isPostMortem && !getIsInvulnerable()) {
 			// Post-mortem: damage will be dealt past 0 into the negatives
 			theoreticalDamage = defenseCalculation;
-		} else {
+		} else if (!getIsInvulnerable()) {
 			// Normal: defense and item effects take place normally
 			theoreticalDamage = Math.min(defenseCalculation, this.hp);
+		} else {
+			theoreticalDamage = 0;
 		}
 
 		return theoreticalDamage;
