@@ -549,7 +549,7 @@ public class GameRenderer {
 			long currentTime = System.currentTimeMillis();
 			if (currentTime - itemNameDisplayStartTime < 5000) {
 				g2d.setFont(ubuntuFont35);
-				g2d.setColor(Color.WHITE);
+				g2d.setColor(player.inv.getSelectedItem().getNameColor());
 				FontMetrics fm = g2d.getFontMetrics();
 				int textWidth = fm.stringWidth(selectedItemName);
 
@@ -701,13 +701,21 @@ public class GameRenderer {
 		FontMetrics fm = g2d.getFontMetrics();
 		String textToDisplay = "";
 		if (hoveredItem.getCount() > 1) {
-			textToDisplay = hoveredItem.getDisplayName() + " (" + Integer.toString(hoveredItem.getCount()) + "x)";
+			textToDisplay = hoveredItem.getDisplayName() + " (" + hoveredItem.getCount() + "x)";
 		} else {
 			textToDisplay = hoveredItem.getDisplayName();
 		}
 
-		int textX = (int) (tooltipX + 20 * scale / 3.75);
-		int textY = (int) (tooltipY + 50 * scale / 3.75);
+		int textX = (int) (tooltipX + 15 * scale / 3.75);
+		int textY = (int) (tooltipY + 40 * scale / 3.75);
+
+		g2d.drawString(textToDisplay, textX, textY);
+
+		// Draw item description
+
+		g2d.setColor(Color.decode("#E0DE9B"));
+		textToDisplay = hoveredItem.getDisplayType();
+		textY = (int) (tooltipY + 80 * scale / 3.75);
 
 		g2d.drawString(textToDisplay, textX, textY);
 	}

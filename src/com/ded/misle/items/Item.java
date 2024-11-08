@@ -23,12 +23,13 @@ public class Item {
 	private final int countLimit;
 	private final String rarity;
 	private final String type;
+	private final String displayType;
 	private int resourceID;
 	private final Map<String, Object> attributes; // Holds dynamic attributes
 	private int count;
 	private long timeToDelay;
 	private boolean active;
-	private Color nameColor;
+	private final Color nameColor;
 
 	// Constructor that takes only ID and sets default count to 1
 	public Item(int id) throws Exception {
@@ -44,6 +45,7 @@ public class Item {
 			this.countLimit = itemDetails.countLimit();
 			this.rarity = itemDetails.getRarity();
 			this.type = itemDetails.getType();
+			this.displayType = LanguageManager.getText("TYPE_" + itemDetails.getType());
 			this.resourceID = itemDetails.getResourceID();
 			this.attributes = itemDetails.getAttributes();
 			this.timeToDelay = currentTimeMillis();
@@ -70,6 +72,7 @@ public class Item {
 	public int getCountLimit() { return countLimit; }
 	public String getRarity() { return rarity; }
 	public String getType() { return type; }
+	public String getDisplayType() { return displayType; }
 	public Map<String, Object> getAttributes() { return attributes; }
 	public int getCount() { return count; }
 	public long getTimeToDelay() { return timeToDelay; }
