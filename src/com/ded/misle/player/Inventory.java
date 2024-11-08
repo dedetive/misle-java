@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
 
+import static com.ded.misle.AudioPlayer.playThis;
 import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.GameRenderer.updateSelectedItemNamePosition;
 import static com.ded.misle.Launcher.scale;
@@ -222,6 +223,7 @@ public class Inventory {
 	public void dropItem(int row, int col, int quantity) {
 		Box droppedItem = BoxesHandling.addBoxItem(player.pos.getX() / scale, player.pos.getY() / scale, getItem(row, col).getId(), quantity);
 		editBox(droppedItem, "collectible", "false");
+		playThis("dropItem");
 		removeItem(row, col, quantity);
 		updateSelectedItemNamePosition();
 		double dropSpeed = player.attr.getPlayerSpeedModifier()  * player.attr.getPlayerEnvironmentSpeedModifier() * 20 * 2.25;

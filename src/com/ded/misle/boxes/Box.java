@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.ded.misle.AudioPlayer.playThis;
 import static com.ded.misle.ChangeSettings.getPath;
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
@@ -490,6 +491,7 @@ public class Box {
 		double totalDistance = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
 
 		if (totalDistance < 30) {
+			playThis("collectItem");
 			player.inv.addItem(createItem(Integer.parseInt(box.effect[1]), Integer.parseInt(box.effect[2])));
 			GameRenderer.updateSelectedItemNamePosition();
 			deleteBox(box);

@@ -10,6 +10,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/images/items" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/images/boxes" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/lang" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/audio" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/out/production/Misle/com/ded/misle" />
       <excludeFolder url="file://$MODULE_DIR$/src/out" />
     </content>

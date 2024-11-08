@@ -4,7 +4,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
 
 /**
  * This is for changing settings (use changeThis()) and for getting the path of the game (use getPath())
