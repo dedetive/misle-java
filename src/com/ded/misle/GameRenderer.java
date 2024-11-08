@@ -386,7 +386,7 @@ public class GameRenderer {
 		}
 	}
 
-	public static void renderPlayingGame(Graphics g, JPanel panel) {
+	public static void renderPlayingGame(Graphics g, JPanel panel, int hoveredSlot) {
 		Graphics2D g2d = (Graphics2D) g;
 		double scaleByScreenSize = scale / 3.75;
 
@@ -424,8 +424,11 @@ public class GameRenderer {
 
 		if (gameState == GamePanel.GameState.INVENTORY) {
 			renderInventoryMenu(g, panel);
+		} else {
+			if (hoveredSlot > -1 && player.inv.getItem(0, hoveredSlot) != null) {
+				drawHoveredItemTooltip(g, hoveredSlot);
+			}
 		}
-
 		g2d.dispose();
 	}
 
@@ -641,5 +644,71 @@ public class GameRenderer {
 
 		// Restore the original transform to avoid affecting other drawings
 		g2d.setTransform(originalTransform);
+	}
+
+	public static void drawHoveredItemTooltip(Graphics g, int hoveredSlot) {
+		Graphics2D g2d = (Graphics2D) g;
+
+		int inventoryBarWidth = (int) (120 * scale);
+		int inventoryBarHeight = (int) (20 * scale);
+		int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
+		int inventoryBarY = (int) (screenHeight - inventoryBarHeight - 60);
+
+		// Slots info
+
+		int slotWidth = (int) (30 * scale);
+		int slotHeight = (int) (30 * scale);
+		int slotSpacing = (int) (3 * scale);
+
+		int totalSlotsWidth = 7 * slotWidth + (6 * slotSpacing);
+		int slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
+
+		int slotX = slotStartX + hoveredSlot * (slotWidth + slotSpacing);
+		int slotY = inventoryBarY + (inventoryBarHeight - slotHeight) / 2;
+
+		int tooltipWidth = slotWidth * 4;
+		int tooltipHeight = slotHeight * 3;
+		int tooltipX = slotX - (3 * slotWidth / 2);
+		int tooltipY = slotY - (7 * slotHeight / 2);
+
+		// Main rounded corner tooltip
+		g2d.setColor(new Color(84, 84, 84, 190));
+		g2d.fillRoundRect(tooltipX, tooltipY, tooltipWidth, tooltipHeight, 15, 15);
+
+		// Triangle stuff
+
+		int triangleBase = slotWidth;
+		int triangleHeight = slotHeight / 2;
+
+		int[] xPoints = {
+			slotX + slotWidth / 2 - triangleBase / 2,  // Left corner of the base
+			slotX + slotWidth / 2 + triangleBase / 2,  // Right corner of the base
+			slotX + slotWidth / 2                     // Tip of the triangle
+		};
+		int[] yPoints = {
+			tooltipY + tooltipHeight,                 // Bottom edge of the tooltip
+			tooltipY + tooltipHeight,                 // Bottom edge of the tooltip
+			tooltipY + tooltipHeight + triangleHeight // Tip of the triangle
+		};
+
+		g2d.fillPolygon(xPoints, yPoints, 3);
+
+		// Draw item name
+
+		Item hoveredItem = player.inv.getItem(0, hoveredSlot);
+		g2d.setFont(basicFont40);
+		g2d.setColor(hoveredItem.getNameColor());
+		FontMetrics fm = g2d.getFontMetrics();
+		String textToDisplay = "";
+		if (hoveredItem.getCount() > 1) {
+			textToDisplay = hoveredItem.getDisplayName() + " (" + Integer.toString(hoveredItem.getCount()) + "x)";
+		} else {
+			textToDisplay = hoveredItem.getDisplayName();
+		}
+
+		int textX = (int) (tooltipX + 20 * scale / 3.75);
+		int textY = (int) (tooltipY + 50 * scale / 3.75);
+
+		g2d.drawString(textToDisplay, textX, textY);
 	}
 }

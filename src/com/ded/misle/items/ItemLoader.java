@@ -1,10 +1,12 @@
 package com.ded.misle.items;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.nio.file.Files;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.List;
 
 import static com.ded.misle.ChangeSettings.getPath;
 
@@ -37,6 +39,7 @@ public class ItemLoader {
 			String rarity = null;
 			String type = null;
 			int resourceID = 0;
+			Color nameColor = Color.WHITE;
 			Map<String, Integer> bundleWeights = new HashMap<>();
 			Map<String, Object> attributes = new HashMap<>();
 
@@ -74,6 +77,8 @@ public class ItemLoader {
 							bundleWeights.put(bundleName, weight);
 						}
 						break;
+					case "nameColor":
+						nameColor = Color.decode(value);
 					default:
 						// Parse other attributes as dynamic fields
 						try {
@@ -86,7 +91,7 @@ public class ItemLoader {
 			}
 
 			if (name != null && type != null) {
-				items.add(new ItemData(itemId, name, countLimit, rarity, type, resourceID, attributes, bundleWeights)); // Store ItemData instead
+				items.add(new ItemData(itemId, name, countLimit, rarity, type, resourceID, attributes, bundleWeights, nameColor)); // Store ItemData instead
 			}
 		}
 

@@ -3,6 +3,7 @@ package com.ded.misle.items;
 import com.ded.misle.LanguageManager;
 import com.ded.misle.boxes.Box;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 import java.util.Map;
@@ -27,6 +28,7 @@ public class Item {
 	private int count;
 	private long timeToDelay;
 	private boolean active;
+	private Color nameColor;
 
 	// Constructor that takes only ID and sets default count to 1
 	public Item(int id) throws Exception {
@@ -46,6 +48,7 @@ public class Item {
 			this.attributes = itemDetails.getAttributes();
 			this.timeToDelay = currentTimeMillis();
 			this.active = true;
+			this.nameColor = itemDetails.getNameColor();
 		} else {
 			throw new Exception("Item with ID " + id + " not found.");
 		}
@@ -72,6 +75,7 @@ public class Item {
 	public long getTimeToDelay() { return timeToDelay; }
 	public void setTimeToDelay(long timeToDelay) { this.timeToDelay = currentTimeMillis() + timeToDelay; }
 	public boolean isActive() { return active; }
+	public Color getNameColor() { return nameColor; }
 
 
 	public void setCount(int count) {

@@ -10,7 +10,8 @@
     "subtype": "melee",
     "kind": "claw",
     "attackDelay": 1.2,
-    "bundles": "mountain|100000005"
+    "bundles": "mountain|100000005",
+    "nameColor": "#F5B114"
   },
   {
     "id": 2,
@@ -24,7 +25,8 @@
     "subtype": "ranged",
     "kind": "slingshot",
     "attackDelay": 2,
-    "bundles": "mountain|100000005"
+    "bundles": "mountain|100000005",
+    "nameColor": "#F0CA0C"
   },
   {
     "id": 3,
@@ -37,7 +39,8 @@
     "subtype": "heal",
     "kind": "self",
     "potionDelay": 1.6,
-    "bundles": "mountain|800000015"
+    "bundles": "mountain|800000015",
+    "nameColor": "#FF6969"
   },
   {
     "id": 4,
@@ -49,7 +52,8 @@
     "type": "potion",
     "subtype": "entropy",
     "potionDelay": 1.6,
-    "kind": "self"
+    "kind": "self",
+    "nameColor": "0x6BC6F5"
   },
   {
     "id": 5,
@@ -60,7 +64,8 @@
     "type": "weapon",
     "subtype": "shield",
     "kind": "wooden",
-    "bundles": "mountainDISABLED|100000005"
+    "bundles": "mountainDISABLED|100000005",
+    "nameColor": "0xFFFFFF"
   },
   {
     "id": -1,
@@ -70,6 +75,7 @@
     "rarity": "",
     "type": "",
     "subtype": "",
-    "kind": ""
+    "kind": "",
+    "nameColor": "0xFFFFFF"
   }
 ]

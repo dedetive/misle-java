@@ -1,5 +1,6 @@
 package com.ded.misle.items;
 
+import java.awt.*;
 import java.util.Map;
 
 public class ItemData {
@@ -11,8 +12,9 @@ public class ItemData {
 	private final int resourceID;
 	private final Map<String, Object> attributes;
 	private final Map<String, Integer> bundles;
+	private final Color nameColor;
 
-	public ItemData(int id, String name, int countLimit, String rarity, String type, int resourceID, Map<String, Object> attributes, Map<String, Integer> bundles) {
+	public ItemData(int id, String name, int countLimit, String rarity, String type, int resourceID, Map<String, Object> attributes, Map<String, Integer> bundles, Color nameColor) {
 		this.id = id;
 		this.name = name;
 		this.countLimit = countLimit;
@@ -21,6 +23,7 @@ public class ItemData {
 		this.resourceID = resourceID;
 		this.attributes = attributes;
 		this.bundles = bundles;
+		this.nameColor = nameColor;
 	}
 
 	public int getId() { return id; }
@@ -31,4 +34,5 @@ public class ItemData {
 	public int getResourceID() { return resourceID; }
 	public Map<String, Object> getAttributes() { return attributes; }
 	public Map<String, Integer> getBundles() { return bundles; }
+	public Color getNameColor() { return nameColor; }
 }

@@ -24,7 +24,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private static volatile boolean running = true;
 	private JLabel fpsLabel;
 	KeyHandler keyH = new KeyHandler();
-	MouseHandler mouseHandler;
+	public MouseHandler mouseHandler;
 	Thread gameThread;
 
 	// TILES SIZE
@@ -205,6 +205,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 				GameRenderer.clearClickables();
 				GameRenderer.updateFontSizes();
+				MouseHandler.updateVariableScales();
 
 				previousWidth = detectedWidth;
 				previousHeight = detectedHeight;
@@ -400,7 +401,7 @@ public class GamePanel extends JPanel implements Runnable {
 		switch (gameState) {
 			case GameState.INVENTORY:
 			case GameState.PLAYING:
-				renderPlayingGame(g, this);
+				renderPlayingGame(g, this, mouseHandler.getHoveredSlot());
 				break;
 			case GameState.MAIN_MENU:
 				renderMainMenu(g, this);
