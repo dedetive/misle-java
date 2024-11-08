@@ -360,7 +360,7 @@ public class GamePanel extends JPanel implements Runnable {
 	 * @param objectWidth double - The width of the object, in pixels.
 	 * @param objectHeight double - The height of the object, in pixels.
  	 */
-	public static boolean isPixelOccupied(double pixelX, double pixelY, double objectWidth, double objectHeight, double range, int level) {
+	public static boolean isPixelOccupied(double pixelX, double pixelY, double objectWidth, double objectHeight, double range, int level, boolean isPlayer) {
 		List<Box> nearbyCollisionBoxes = BoxesHandling.getCollisionBoxesInRange(pixelX, pixelY, range, scale, tileSize, level);
 		for (Box box : nearbyCollisionBoxes) {
 			if (box.getBoxScaleHorizontal() >= 1 && box.getBoxScaleVertical() >= 1) {
@@ -369,7 +369,7 @@ public class GamePanel extends JPanel implements Runnable {
 					(box.isPointColliding(pixelX, pixelY + objectHeight, scale, objectWidth, objectHeight)) || // Bottom-left corner
 					(box.isPointColliding(pixelX + objectWidth, pixelY + objectHeight, scale, objectWidth, objectHeight)) // Bottom-right corner
 				) {
-					if (!box.getEffect().isEmpty()) {
+					if (isPlayer && !box.getEffect().isEmpty()) {
 						Box.handleEffect(box);
 					}
 					return true;
@@ -382,7 +382,7 @@ public class GamePanel extends JPanel implements Runnable {
 						(box.isPointColliding(pixelX + objectWidth, pixelY + i * objectHeight / inverseBoxScale, scale, objectWidth, objectHeight)) || // Right edge
 						(box.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY + objectHeight, scale, objectWidth, objectHeight)) // Bottom edge
 					) {
-						if (!box.getEffect().isEmpty()) {
+						if (isPlayer && !box.getEffect().isEmpty()) {
 							Box.handleEffect(box);
 						}
 						return true;
