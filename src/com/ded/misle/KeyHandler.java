@@ -49,7 +49,7 @@ public class KeyHandler implements KeyListener {
 	int KeyInventory = KeyEvent.VK_E;
 	int KeyDrop = KeyEvent.VK_Q;
 	int KeyCtrl = KeyEvent.VK_CONTROL;
-	int KeyDodge = KeyEvent.VK_Z;
+	int KeyDodge = KeyEvent.VK_C;
 	int Key1 = KeyEvent.VK_1;
 	int Key2 = KeyEvent.VK_2;
 	int Key3 = KeyEvent.VK_3;
