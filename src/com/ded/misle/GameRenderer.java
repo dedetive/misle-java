@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class GameRenderer {
@@ -38,6 +39,10 @@ public class GameRenderer {
 	private static String selectedItemName;
 	private static Point selectedItemNamePosition;
 	private static long itemNameDisplayStartTime;
+
+	private static List<String> floatingText = new ArrayList<>();
+	private static List<Point> floatingTextPosition = new ArrayList<>();
+	private static List<Color> floatingTextColor = new ArrayList<>();
 
 	private static Font comfortaaFont96 = FontManager.loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
 	private static Font ubuntuFont35 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (35 * scale / 3.75));
@@ -400,8 +405,6 @@ public class GameRenderer {
 		int playerScreenX = (int) (player.pos.getX() - player.pos.getCameraOffsetX());
 		int playerScreenY = (int) (player.pos.getY() - player.pos.getCameraOffsetY());
 
-		drawUIElements(g2d, playerScreenX, playerScreenY);
-
 		// Draw the player
 		g2d.setColor(Color.WHITE);
 		Rectangle playerRect = new Rectangle(playerScreenX, playerScreenY, (int) player.attr.getPlayerWidth(), (int) player.attr.getPlayerHeight());
@@ -423,6 +426,12 @@ public class GameRenderer {
 			g2d.drawImage(selectedItem.getIcon(), (int) (playerScreenX + player.attr.getPlayerWidth() / 2), playerScreenY, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), null);
 		}
 
+		drawUIElements(g2d, playerScreenX, playerScreenY);
+
+		if (floatingText != null) {
+			drawFloatingText(g2d);
+		}
+
 		if (gameState == GamePanel.GameState.INVENTORY) {
 			renderInventoryMenu(g, panel);
 		} else {
@@ -430,6 +439,7 @@ public class GameRenderer {
 				drawHoveredItemTooltip(g, hoveredSlot);
 			}
 		}
+
 		g2d.dispose();
 	}
 
@@ -771,5 +781,42 @@ public class GameRenderer {
 		lines.add(line.toString().trim());
 
 		return lines.toArray(new String[0]);
+	}
+
+	public static void createFloatingText(String textToDisplay, Color color, double x, double y, boolean movesUp) {
+		floatingText.add(textToDisplay);
+		Point point = new Point((int) x, (int) y);
+		floatingTextPosition.add(point);
+		floatingTextColor.add(color);
+
+		AtomicInteger index = new AtomicInteger(floatingTextPosition.size() - 1);
+		Timer movingUp = new Timer(200, e -> {
+			if (index.get() != -1) {
+				Point newPoint = new Point(floatingTextPosition.get(index.get()).x, (floatingTextPosition.get(index.get()).y - 1));
+				floatingTextPosition.set(index.get(), newPoint);
+			}
+		});
+		if (movesUp) {
+			movingUp.setRepeats(true);
+			movingUp.start();
+		}
+
+		Timer timer = new Timer(2500, l -> {
+			index.addAndGet(-1);
+			movingUp.stop();
+			floatingText.removeFirst();
+			floatingTextPosition.removeFirst();
+			floatingTextColor.removeFirst();
+		});
+		timer.setRepeats(false);
+		timer.start();
+	}
+
+	private static void drawFloatingText(Graphics2D g2d) {
+		for (int i = 0; i < floatingText.size(); i++) {
+			g2d.setColor(floatingTextColor.get(i));
+			g2d.setFont(basicFont40);
+			g2d.drawString(floatingText.get(i), (int) (floatingTextPosition.get(i).x * scale), (int) (floatingTextPosition.get(i).y * scale));
+		}
 	}
 }

@@ -10,7 +10,7 @@ import java.util.Objects;
 
 import static com.ded.misle.AudioPlayer.playThis;
 import static com.ded.misle.GamePanel.player;
-import static com.ded.misle.GameRenderer.updateSelectedItemNamePosition;
+import static com.ded.misle.GameRenderer.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.boxes.BoxManipulation.*;
 import static com.ded.misle.boxes.BoxesHandling.editBox;
@@ -195,9 +195,15 @@ public class Inventory {
 				if (currentTime > getSelectedItem().getTimeToDelay()) {
 					getSelectedItem().setTimeToDelay((long) (potionDelay * 1000)); // Handle delay
 
+					int playerScreenX = (int) ((player.pos.getX() - player.pos.getCameraOffsetX()) / scale);
+					int playerScreenY = (int) ((player.pos.getY() - player.pos.getCameraOffsetY()) / scale);
+					int randomPosX = (int) ((Math.random() * (40 + 40)) - 40);
+					int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
+
 					switch ((String) getSelectedItem().getAttributes().get("subtype")) {
 						case "heal":
 							player.attr.receiveHeal(Integer.parseInt(getSelectedItem().getAttributes().get("healingAmount").toString()), "normal");
+							createFloatingText("+ " + getSelectedItem().getAttributes().get("healingAmount"), Color.decode("#DE4040"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
 							getSelectedItem().setCount(getSelectedItem().getCount() - 1);
 							if (!getSelectedItem().isActive()) {
 								removeItem(0, getSelectedSlot());
