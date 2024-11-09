@@ -30,6 +30,7 @@ public class KeyHandler implements KeyListener {
 		player.keys.keyPressed.put("drop", false);
 		player.keys.keyPressed.put("ctrl", false);
 		player.keys.keyPressed.put("dodge", false);
+		player.keys.keyPressed.put("use", false);
 		player.keys.keyPressed.put("1", false);
 		player.keys.keyPressed.put("2", false);
 		player.keys.keyPressed.put("3", false);
@@ -50,6 +51,7 @@ public class KeyHandler implements KeyListener {
 	int KeyDrop = KeyEvent.VK_Q;
 	int KeyCtrl = KeyEvent.VK_CONTROL;
 	int KeyDodge = KeyEvent.VK_C;
+	int KeyUse = KeyEvent.VK_Z;
 	int Key1 = KeyEvent.VK_1;
 	int Key2 = KeyEvent.VK_2;
 	int Key3 = KeyEvent.VK_3;
@@ -158,7 +160,10 @@ public class KeyHandler implements KeyListener {
 			player.keys.keyPressed.put("ctrl", false);
 		}
 		if (code == KeyDodge) {
-			player.keys.keyPressed.put("dodge", true);
+			handleCooldownPress("dodge");
+		}
+		if (code == KeyUse) {
+			handleCooldownPress("use");
 		}
 	}
 
@@ -239,7 +244,6 @@ public class KeyHandler implements KeyListener {
 				}
 			}
 			if (player.keys.keyPressed.get("dodge")) {
-				System.out.println("dodging");
 				int delay = 100;
 				player.pos.delayedRotate(-360, delay * 5);
 				player.attr.setIsInvulnerable(true);
@@ -250,6 +254,10 @@ public class KeyHandler implements KeyListener {
 				timer.start();
 
 				player.keys.keyPressed.put("dodge", false);
+			}
+			if (player.keys.keyPressed.get("use")) {
+				player.inv.useItem();
+				player.keys.keyPressed.put("use", false);
 			}
 
 			// MOVING

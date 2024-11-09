@@ -13,6 +13,7 @@ public class PlayerKeys {
 		this.setKeyMaxCooldown("debug1", 150);
 		this.setKeyMaxCooldown("debug2", 150);
 		this.setKeyMaxCooldown("dodge", 1000);
+		this.setKeyMaxCooldown("use", 100);
 	}
 
 	public HashMap<String, Boolean> getKeyPressed() {
