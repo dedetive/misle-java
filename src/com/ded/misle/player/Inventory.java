@@ -204,6 +204,15 @@ public class Inventory {
 							}
 							break;
 					}
+					switch ((String) getSelectedItem().getAttributes().get("size")) {
+						case "small":
+							playThis("consumeSmallPot");
+							break;
+						case "medium":
+							playThis("consumeMediumPotion");
+							break;
+					}
+
 					return true;
 				}
 			}

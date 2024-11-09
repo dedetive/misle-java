@@ -38,6 +38,7 @@
     "type": "potion",
     "subtype": "heal",
     "kind": "self",
+    "size": "small",
     "potionDelay": 1.6,
     "bundles": "mountain|800000015",
     "nameColor": "#FF6969"
@@ -51,6 +52,7 @@
     "entropyRestore": 15,
     "type": "potion",
     "subtype": "entropy",
+    "size": "small",
     "potionDelay": 1.6,
     "kind": "self",
     "bundles": "mountain|800000015",
