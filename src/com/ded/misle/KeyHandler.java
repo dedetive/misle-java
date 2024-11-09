@@ -1,14 +1,11 @@
 package com.ded.misle;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.GameRenderer.pauseGame;
-import static com.ded.misle.boxes.BoxesHandling.storeCachedBoxes;
-import static com.ded.misle.items.Item.createDroppedItem;
 import static com.ded.misle.items.Item.createItem;
 
 public class KeyHandler implements KeyListener {
@@ -211,27 +208,27 @@ public class KeyHandler implements KeyListener {
 			double[] willMovePlayer = {0, 0};
 			if (player.keys.keyPressed.get("up")) {
 				if (!player.keys.keyPressed.get("left") || !player.keys.keyPressed.get("right")) {
-					willMovePlayer[1] -= player.attr.getPlayerSpeed();
+					willMovePlayer[1] -= player.attr.getSpeed();
 				} else {
-					willMovePlayer[1] -= (player.attr.getPlayerSpeed() * Math.sqrt(2) / 3);
+					willMovePlayer[1] -= (player.attr.getSpeed() * Math.sqrt(2) / 3);
 				}
 			}
 			if (player.keys.keyPressed.get("down")) {
 				if (!player.keys.keyPressed.get("left") || !player.keys.keyPressed.get("right")) {
-					willMovePlayer[1] += player.attr.getPlayerSpeed();
+					willMovePlayer[1] += player.attr.getSpeed();
 				} else {
-					willMovePlayer[1] += player.attr.getPlayerSpeed() * Math.sqrt(2) / 3;
+					willMovePlayer[1] += player.attr.getSpeed() * Math.sqrt(2) / 3;
 				}
 			}
 			if (player.keys.keyPressed.get("left")) {
 				if (!player.keys.keyPressed.get("up") || !player.keys.keyPressed.get("down")) {
-					willMovePlayer[0] -= player.attr.getPlayerSpeed();
+					willMovePlayer[0] -= player.attr.getSpeed();
 				} else {
-					willMovePlayer[0] -= player.attr.getPlayerSpeed() * Math.sqrt(2) / 3;
+					willMovePlayer[0] -= player.attr.getSpeed() * Math.sqrt(2) / 3;
 				}
 			}
 			if (player.keys.keyPressed.get("right")) {
-				willMovePlayer[0] += player.attr.getPlayerSpeed();
+				willMovePlayer[0] += player.attr.getSpeed();
 			}
 			if (player.keys.keyPressed.get("drop")) {
 				if (player.inv.hasHeldItem()) {
@@ -263,12 +260,12 @@ public class KeyHandler implements KeyListener {
 			// MOVING
 
 			if (!player.attr.isDead()) {
-				double range = (tileSize + 1) * Math.max(1, player.attr.getPlayerSpeed());
+				double range = (tileSize + 1) * Math.max(1, player.attr.getSpeed());
 				if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
-					if (!isPixelOccupied((player.pos.getX() + willMovePlayer[0]), player.pos.getY(), player.attr.getPlayerWidth(), player.attr.getPlayerHeight(), range, 12, true)) {
+					if (!isPixelOccupied((player.pos.getX() + willMovePlayer[0]), player.pos.getY(), player.attr.getWidth(), player.attr.getHeight(), range, 12, true)) {
 						movePlayer(willMovePlayer[0], 0);
 					}
-					if (!isPixelOccupied(player.pos.getX(), (player.pos.getY() + willMovePlayer[1]), player.attr.getPlayerWidth(), player.attr.getPlayerHeight(), range, 12, true)) {
+					if (!isPixelOccupied(player.pos.getX(), (player.pos.getY() + willMovePlayer[1]), player.attr.getWidth(), player.attr.getHeight(), range, 12, true)) {
 						movePlayer(0, willMovePlayer[1]);
 					}
 				}

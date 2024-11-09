@@ -6,7 +6,7 @@ import com.ded.misle.items.Item;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Objects;
+import java.text.DecimalFormat;
 
 import static com.ded.misle.AudioPlayer.playThis;
 import static com.ded.misle.GamePanel.player;
@@ -199,11 +199,27 @@ public class Inventory {
 					int playerScreenY = (int) ((player.pos.getY() - player.pos.getCameraOffsetY()) / scale);
 					int randomPosX = (int) ((Math.random() * (40 + 40)) - 40);
 					int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
+					DecimalFormat df = new DecimalFormat("#.##");
 
 					switch ((String) getSelectedItem().getAttributes().get("subtype")) {
 						case "heal":
+
+							double healAmountValue = Double.parseDouble(Integer.toString((Integer) getSelectedItem().getAttributes().get("healingAmount")));
+							String formattedHealAmount = df.format(player.attr.calculateHeal(healAmountValue, "normal"));
+
+							createFloatingText("+" + formattedHealAmount, Color.decode("#DE4040"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
 							player.attr.receiveHeal(Integer.parseInt(getSelectedItem().getAttributes().get("healingAmount").toString()), "normal");
-							createFloatingText("+ " + getSelectedItem().getAttributes().get("healingAmount"), Color.decode("#DE4040"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+							getSelectedItem().setCount(getSelectedItem().getCount() - 1);
+							if (!getSelectedItem().isActive()) {
+								removeItem(0, getSelectedSlot());
+							}
+							break;
+						case "entropy":
+							double entropyAmountValue = Double.parseDouble(Integer.toString((Integer) getSelectedItem().getAttributes().get("entropyRestore")));
+							String formattedEntropyAmount = df.format(player.attr.calculateEntropyGain(entropyAmountValue));
+
+							createFloatingText("+" + formattedEntropyAmount, Color.decode("#A0A0FF"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+							player.attr.addEntropy(Integer.parseInt(getSelectedItem().getAttributes().get("entropyRestore").toString()));
 							getSelectedItem().setCount(getSelectedItem().getCount() - 1);
 							if (!getSelectedItem().isActive()) {
 								removeItem(0, getSelectedSlot());
@@ -240,7 +256,7 @@ public class Inventory {
 		playThis("dropItem");
 		removeItem(row, col, quantity);
 		updateSelectedItemNamePosition();
-		double dropSpeed = player.attr.getPlayerSpeedModifier()  * player.attr.getPlayerEnvironmentSpeedModifier() * 20 * 2.25;
+		double dropSpeed = player.attr.getSpeedModifier()  * player.attr.getEnvironmentSpeedModifier() * 20 * 2.25;
 		switch (player.stats.getWalkingDirection()) {
 			case "up" -> {
 				moveCollisionBox(droppedItem, 0, -dropSpeed, 300);

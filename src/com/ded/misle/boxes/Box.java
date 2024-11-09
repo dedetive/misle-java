@@ -404,7 +404,7 @@ public class Box {
 		if (currentTime - box.getLastEffectTime() >= cooldownDuration) {
 			box.setLastEffectTime(currentTime); // Update the last damage time
 			player.attr.takeDamage(box.getEffectValue(), box.getEffectReason(), box.getEffectArgs());
-//			System.out.println(box.getEffectValue() + " " + box.getEffectReason() + " damage dealt! Now at " + player.attr.getPlayerHP() + " HP.");
+//			System.out.println(box.getEffectValue() + " " + box.getEffectReason() + " damage dealt! Now at " + player.attr.getHP() + " HP.");
 		}
 	}
 
@@ -415,12 +415,12 @@ public class Box {
 		if (currentTime - box.getLastEffectTime() >= cooldownDuration) {
 			box.setLastEffectTime(currentTime);
 			player.attr.receiveHeal(box.getEffectValue(), box.getEffectReason());
-//			System.out.println(box.getEffectValue() + " " + box.getEffectReason() + " heal received! Now at " + player.attr.getPlayerHP() + " HP.");
+//			System.out.println(box.getEffectValue() + " " + box.getEffectReason() + " heal received! Now at " + player.attr.getHP() + " HP.");
 		}
 	}
 
 	private static void handleBoxVelocity(Box box) {
-		player.attr.setPlayerEnvironmentSpeedModifier(box.getEffectValue());
+		player.attr.setEnvironmentSpeedModifier(box.getEffectValue());
 		player.attr.setLastVelocityBox(box);
 	}
 

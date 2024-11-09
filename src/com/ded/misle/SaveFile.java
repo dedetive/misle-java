@@ -34,7 +34,7 @@ public class SaveFile {
 				int maxHPHigh = loadThis("green", 30, 127);
 				int maxHPLow = loadThis("red", 99, 1);
 				double playerMaxHP = 255 * 255 * maxHPHighest + 255 * maxHPHigh + maxHPLow;
-				player.attr.setPlayerMaxHP(playerMaxHP);
+				player.attr.setMaxHP(playerMaxHP);
 
 				// Load spawnpoint
 
@@ -114,9 +114,9 @@ public class SaveFile {
 
 		// Max HP
 
-		int maxHPHighest = ((int) player.attr.getPlayerMaxHP() / (255 * 255)) % 255;
-		int maxHPHigh = ((int) player.attr.getPlayerMaxHP() / 255) % 255;
-		int maxHPLow = (int) player.attr.getPlayerMaxHP() % 255;
+		int maxHPHighest = ((int) player.attr.getMaxHP() / (255 * 255)) % 255;
+		int maxHPHigh = ((int) player.attr.getMaxHP() / 255) % 255;
+		int maxHPLow = (int) player.attr.getMaxHP() % 255;
 		brandIntoSaveFile(maxHPHighest, "blue", 82, 10);
 		brandIntoSaveFile(maxHPHigh, "green", 30, 127);
 		brandIntoSaveFile(maxHPLow, "red", 99, 1);

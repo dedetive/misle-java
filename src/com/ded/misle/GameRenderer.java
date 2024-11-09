@@ -407,7 +407,7 @@ public class GameRenderer {
 
 		// Draw the player
 		g2d.setColor(Color.WHITE);
-		Rectangle playerRect = new Rectangle(playerScreenX, playerScreenY, (int) player.attr.getPlayerWidth(), (int) player.attr.getPlayerHeight());
+		Rectangle playerRect = new Rectangle(playerScreenX, playerScreenY, (int) player.attr.getWidth(), (int) player.attr.getHeight());
 		drawRotatedRect(g2d, playerRect, player.pos.getRotation());
 
 		// Draw selected item on top of player
@@ -416,14 +416,14 @@ public class GameRenderer {
 			Item selectedItem = player.inv.getSelectedItem();
 
 			if (selectedItem.getCountLimit() >= 16 && selectedItem.getCount() > selectedItem.getCountLimit() / 3) {
-				drawRotatedImage(g2d, selectedItem.getIcon(), playerScreenX + player.attr.getPlayerWidth() / 2 + 12 * scaleByScreenSize, playerScreenY + 15 * scaleByScreenSize, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), 35);
+				drawRotatedImage(g2d, selectedItem.getIcon(), playerScreenX + player.attr.getWidth() / 2 + 12 * scaleByScreenSize, playerScreenY + 15 * scaleByScreenSize, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), 35);
 			}
 
 			if (selectedItem.getCountLimit() >= 100 && selectedItem.getCount() > 2 * selectedItem.getCountLimit() / 3) {
-				drawRotatedImage(g2d, selectedItem.getIcon(), playerScreenX + player.attr.getPlayerWidth() / 2 - 12 * scaleByScreenSize, playerScreenY + 15 * scaleByScreenSize, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), -35);
+				drawRotatedImage(g2d, selectedItem.getIcon(), playerScreenX + player.attr.getWidth() / 2 - 12 * scaleByScreenSize, playerScreenY + 15 * scaleByScreenSize, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), -35);
 			}
 
-			g2d.drawImage(selectedItem.getIcon(), (int) (playerScreenX + player.attr.getPlayerWidth() / 2), playerScreenY, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), null);
+			g2d.drawImage(selectedItem.getIcon(), (int) (playerScreenX + player.attr.getWidth() / 2), playerScreenY, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), null);
 		}
 
 		drawUIElements(g2d, playerScreenX, playerScreenY);
@@ -452,11 +452,11 @@ public class GameRenderer {
 	private static void drawHealthBar(Graphics2D g2d, int playerScreenX, int playerScreenY) {
 		int healthBarWidth = (int) (50 * scale); // Width of the health bar
 		int healthBarHeight = (int) (10 * scale); // Height of the health bar
-		int healthBarX = (int) (playerScreenX - player.attr.getPlayerWidth() / 2 - 2 * scale); // Position it above the player
+		int healthBarX = (int) (playerScreenX - player.attr.getWidth() / 2 - 2 * scale); // Position it above the player
 		int healthBarY = playerScreenY - healthBarHeight - 5; // Offset slightly above the player rectangle
 
 		// Calculate the percentage of health remaining
-		double healthPercentage = Math.min((double) player.attr.getPlayerHP() / player.attr.getPlayerMaxHP(), 1);
+		double healthPercentage = Math.min((double) player.attr.getHP() / player.attr.getMaxHP(), 1);
 
 		// Draw the background of the health bar (gray)
 		g2d.setColor(Color.GRAY);
@@ -467,7 +467,7 @@ public class GameRenderer {
 		g2d.fillRect(healthBarX, healthBarY, (int) (healthBarWidth * healthPercentage), healthBarHeight);
 
 		// Draw locked HP, if any
-		double lockedHPPercentage = Math.min(player.attr.getPlayerLockedHP() / player.attr.getPlayerMaxHP(), 1);
+		double lockedHPPercentage = Math.min(player.attr.getLockedHP() / player.attr.getMaxHP(), 1);
 
 		g2d.setColor(Color.DARK_GRAY);
 		g2d.fillRect(healthBarX, healthBarY, (int) (healthBarWidth * lockedHPPercentage), healthBarHeight);

@@ -12,7 +12,6 @@ import java.util.List;
 import static com.ded.misle.GameRenderer.*;
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.SaveFile.saveEverything;
-import static com.ded.misle.boxes.BoxesHandling.editBox;
 
 /**
  * This is for loading and altering how the window behaves. Only do this once, otherwise new screens are created.
@@ -194,9 +193,9 @@ public class GamePanel extends JPanel implements Runnable {
 				GamePanel.screenHeight = Math.min(detectedHeight, screenHeight);
 
 				tileSize = (int) (originalTileSize * scale) / 3;
-				player.attr.setPlayerSpeedModifier(player.attr.getPlayerSpeedModifier());
-				player.attr.setPlayerWidth(tileSize);
-				player.attr.setPlayerHeight(tileSize);
+				player.attr.setSpeedModifier(player.attr.getSpeedModifier());
+				player.attr.setWidth(tileSize);
+				player.attr.setHeight(tileSize);
 				worldWidth = originalWorldWidth * scale;
 				worldHeight = originalWorldHeight * scale;
 
@@ -302,8 +301,8 @@ public class GamePanel extends JPanel implements Runnable {
 		long currentTime = System.currentTimeMillis();
 
 		// Update the camera offset to center the player in the view
-		player.pos.setCameraOffsetX(player.pos.getX() - screenWidth / 2 + player.attr.getPlayerWidth() / 2);
-		player.pos.setCameraOffsetY(player.pos.getY() - screenHeight / 2 + player.attr.getPlayerHeight() / 2);
+		player.pos.setCameraOffsetX(player.pos.getX() - screenWidth / 2 + player.attr.getWidth() / 2);
+		player.pos.setCameraOffsetY(player.pos.getY() - screenHeight / 2 + player.attr.getHeight() / 2);
 
 		player.pos.setCameraOffsetX(Math.max(0, Math.min(player.pos.getCameraOffsetX(), worldWidth - screenWidth)));
 		player.pos.setCameraOffsetY(Math.max(0, Math.min(player.pos.getCameraOffsetY(), worldHeight - screenHeight)));
@@ -335,7 +334,7 @@ public class GamePanel extends JPanel implements Runnable {
 		player.stats.increaseDistance(x, y);
 
 		if (player.attr.getLastVelocityBox() != null) {
-			player.attr.setPlayerEnvironmentSpeedModifier(1.0); // Reset to default speed
+			player.attr.setEnvironmentSpeedModifier(1.0); // Reset to default speed
 			player.attr.setLastVelocityBox(null); // Clear the last velocity box
 		}
 
