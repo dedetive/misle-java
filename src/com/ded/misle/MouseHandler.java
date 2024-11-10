@@ -11,6 +11,8 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 	private static int slotWidth;
 	private static int slotHeight;
+	private static final int[] barSlotX = new int[7];
+	private static final int[] barSlotY = new int[7];
 	private static final int[] slotX = new int[7];
 	private static final int[] slotY = new int[7];
 	private static int inventoryBarWidth;
@@ -20,28 +22,18 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 	private static int slotSpacing;
 	private static int totalSlotsWidth;
 	private static int slotStartX;
-	private int hoveredSlot = -1;
+	private static int slotSize;
+	private static int gridWidth;
+	private static int gridHeight;
+	private static int gridX;
+	private static int gridY;
+	private int hoveredBarSlot = -1;
+	private int[] hoveredSlot = new int[]{-1, -1};
 
 	static {
-		int inventoryBarWidth = (int) (120 * scale);
-		int inventoryBarHeight = (int) (20 * scale);
-		int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
-		int inventoryBarY = (int) (screenHeight - inventoryBarHeight - 60);
 
-		slotWidth = (int) (30 * scale);
-		slotHeight = (int) (30 * scale);
-		int slotSpacing = (int) (3 * scale);
+		// PLAYING
 
-		int totalSlotsWidth = 7 * slotWidth + (6 * slotSpacing);
-		int slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
-
-		for (int i = 0; i < 7; i++) {
-			slotX[i] = slotStartX + i * (slotWidth + slotSpacing);
-			slotY[i] = inventoryBarY + (inventoryBarHeight - slotHeight) / 2;
-		}
-	}
-
-	public static void updateVariableScales() {
 		inventoryBarWidth = (int) (120 * scale);
 		inventoryBarHeight = (int) (20 * scale);
 		inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
@@ -55,8 +47,68 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 		slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
 
 		for (int i = 0; i < 7; i++) {
-			slotX[i] = slotStartX + i * (slotWidth + slotSpacing);
-			slotY[i] = inventoryBarY + (inventoryBarHeight - slotHeight) / 2;
+			barSlotX[i] = slotStartX + i * (slotWidth + slotSpacing);
+			barSlotY[i] = inventoryBarY + (inventoryBarHeight - slotHeight) / 2;
+		}
+
+		// INVENTORY
+
+		slotSize = (int) (30 * scale);
+		slotSpacing = (int) (3 * scale);
+
+		gridWidth = 7 * slotSize + 6 * slotSpacing;
+		gridHeight = 4 * slotSize + 3 * slotSpacing;
+
+		gridX = (int) ((screenWidth - gridWidth) / 2);
+		gridY = (int) ((screenHeight - gridHeight) / 2);
+
+		for (int j = 0; j < 4; j++) {
+			for (int i = 0; i < 7; i++) {
+				slotX[i] = gridX + i * (slotSize + slotSpacing);
+				slotY[j] = gridY + j * (slotSize + slotSpacing);
+			}
+		}
+	}
+
+	public static void updateVariableScales() {
+
+		// PLAYING
+
+		inventoryBarWidth = (int) (120 * scale);
+		inventoryBarHeight = (int) (20 * scale);
+		inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
+		inventoryBarY = (int) (screenHeight - inventoryBarHeight - 60);
+
+		slotWidth = (int) (30 * scale);
+		slotHeight = (int) (30 * scale);
+		slotSpacing = (int) (3 * scale);
+
+		totalSlotsWidth = 7 * slotWidth + (6 * slotSpacing);
+		slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
+
+		for (int i = 0; i < 7; i++) {
+			barSlotX[i] = slotStartX + i * (slotWidth + slotSpacing);
+			barSlotY[i] = inventoryBarY + (inventoryBarHeight - slotHeight) / 2;
+		}
+
+		// INVENTORY
+
+		slotSize = (int) (30 * scale);
+		slotSpacing = (int) (3 * scale);
+
+		gridWidth = 7 * slotSize + 6 * slotSpacing;
+		gridHeight = 4 * slotSize + 3 * slotSpacing;
+
+		gridX = (int) ((screenWidth - gridWidth) / 2);
+		gridY = (int) ((screenHeight - gridHeight) / 2);
+
+		int[] rowOrder = {1, 2, 3, 0};
+
+		for (int j = 0; j < 4; j++) {
+			for (int i = 0; i < 7; i++) {
+				slotX[i] = gridX + i * (slotSize + slotSpacing);
+				slotY[rowOrder[j]] = gridY + j * (slotSize + slotSpacing);
+			}
 		}
 	}
 
@@ -84,6 +136,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 	public void mouseMoved(MouseEvent e) {
 		mouseX = e.getX();
 		mouseY = e.getY();
+		updateHoveredBarSlot();
 		updateHoveredSlot();
 	}
 
@@ -91,6 +144,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 	public void mouseDragged(MouseEvent e) {
 		mouseX = e.getX();
 		mouseY = e.getY();
+		updateHoveredBarSlot();
 		updateHoveredSlot();
 	}
 
@@ -115,13 +169,14 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 					// Checking if where clicked is inside one of the inventory slots
 					for (int i = 0; i < 7; i++) {
 						// Check if the mouse position is within this slot's boundaries
-						if (mouseX >= slotX[i] && mouseX <= slotX[i] + slotWidth &&
-								mouseY >= slotY[i] && mouseY <= slotY[i] + slotHeight) {
+						if (mouseX >= barSlotX[i] && mouseX <= barSlotX[i] + slotWidth &&
+								mouseY >= barSlotY[i] && mouseY <= barSlotY[i] + slotHeight) {
 							player.inv.setSelectedSlot(i); // Select the slot
 							foundWhereClicked = true;
 							break; // Exit the loop once the correct slot is found
 						}
-					} if (!foundWhereClicked) {
+					}
+					if (!foundWhereClicked) {
 						player.inv.useItem();
 					}
 				}
@@ -134,22 +189,47 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 		}
 	}
 
-	@Override public void mouseClicked(MouseEvent e) {}
-	@Override public void mouseEntered(MouseEvent e) {}
-	@Override public void mouseExited(MouseEvent e) {}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+	}
 
-	private void updateHoveredSlot() {
-		hoveredSlot = -1; // Reset hovered slot
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+	}
+
+	private void updateHoveredBarSlot() {
+		hoveredBarSlot = -1; // Reset hovered slot
 		for (int i = 0; i < 7; i++) {
-			if (mouseX >= slotX[i] && mouseX <= slotX[i] + slotWidth &&
-					mouseY >= slotY[i] && mouseY <= slotY[i] + slotHeight) {
-				hoveredSlot = i; // Set the hovered slot index
+			if (mouseX >= barSlotX[i] && mouseX <= barSlotX[i] + slotWidth &&
+					mouseY >= barSlotY[i] && mouseY <= barSlotY[i] + slotHeight) {
+				hoveredBarSlot = i; // Set the hovered slot index
 				break;
 			}
 		}
 	}
 
-	public int getHoveredSlot() {
+	public int getHoveredBarSlot() {
+		return hoveredBarSlot;
+	}
+
+	public void updateHoveredSlot() {
+		hoveredSlot = new int[]{-1, -1};
+		for (int j = 0; j < 4; j++) {
+			for (int i = 0; i < 7; i++) {
+				if (mouseX >= slotX[i] && mouseX <= slotX[i] + slotWidth &&
+						mouseY >= slotY[j] && mouseY <= slotY[j] + slotHeight) {
+					hoveredSlot = new int[]{j, i}; // Set the hovered slot index
+					break;
+				}
+			}
+		}
+	}
+
+	public int[] getHoveredSlot() {
 		return hoveredSlot;
 	}
 }

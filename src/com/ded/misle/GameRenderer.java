@@ -391,7 +391,7 @@ public class GameRenderer {
 		}
 	}
 
-	public static void renderPlayingGame(Graphics g, JPanel panel, int hoveredSlot) {
+	public static void renderPlayingGame(Graphics g, JPanel panel, int[] hoveredSlot) {
 		Graphics2D g2d = (Graphics2D) g;
 		double scaleByScreenSize = scale / 3.75;
 
@@ -434,9 +434,12 @@ public class GameRenderer {
 
 		if (gameState == GamePanel.GameState.INVENTORY) {
 			renderInventoryMenu(g, panel);
+			if (hoveredSlot[0] > -1 && hoveredSlot[1] > -1 && player.inv.getItem(hoveredSlot[0], hoveredSlot[1]) != null) {
+				drawHoveredItemTooltip(g, new int[]{hoveredSlot[0], hoveredSlot[1]});
+			}
 		} else {
-			if (hoveredSlot > -1 && player.inv.getItem(0, hoveredSlot) != null) {
-				drawHoveredItemTooltip(g, hoveredSlot);
+			if (hoveredSlot[0] > -1 && hoveredSlot[1] > -1 && player.inv.getItem(0, hoveredSlot[1]) != null) {
+				drawHoveredItemTooltip(g, new int[]{-1, hoveredSlot[1]});
 			}
 		}
 
@@ -678,27 +681,50 @@ public class GameRenderer {
 		g2d.setTransform(originalTransform);
 	}
 
-	public static void drawHoveredItemTooltip(Graphics g, int hoveredSlot) {
+	public static void drawHoveredItemTooltip(Graphics g, int[] hoveredSlot) {
 		Graphics2D g2d = (Graphics2D) g;
 
-		// Base settings
-		int inventoryBarWidth = (int) (120 * scale);
-		int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
-		int inventoryBarY = (int) (screenHeight - 20 * scale - 60);
-
+		int slotX = 0;
+		int slotY = 0;
 		int slotWidth = (int) (30 * scale);
 		int slotHeight = (int) (30 * scale);
 		int slotSpacing = (int) (3 * scale);
-		int slotStartX = inventoryBarX + (inventoryBarWidth - (7 * slotWidth + 6 * slotSpacing)) / 2;
-		int slotX = slotStartX + hoveredSlot * (slotWidth + slotSpacing);
-		int slotY = (int) (inventoryBarY + (20 * scale - slotHeight) / 2);
 
-		if (hoveredSlot != player.inv.getSelectedSlot()) {
+		if (hoveredSlot[0] == -1) {
+			// If playing
+			int inventoryBarWidth = (int) (120 * scale);
+			int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
+			int inventoryBarY = (int) (screenHeight - 20 * scale - 60);
+
+			int slotStartX = inventoryBarX + (inventoryBarWidth - (7 * slotWidth + 6 * slotSpacing)) / 2;
+			slotX = slotStartX + hoveredSlot[1] * (slotWidth + slotSpacing);
+			slotY = (int) (inventoryBarY + (20 * scale - slotHeight) / 2);
+			hoveredSlot[0] = 0;
+		} else {
+			// If in inventory menu
+
+			int gridWidth = 7 * slotWidth + 6 * slotSpacing;
+			int gridHeight = 4 * slotHeight + 3 * slotSpacing;
+
+			int gridX = (int) ((screenWidth - gridWidth) / 2);
+			int gridY = (int) ((screenHeight - gridHeight) / 2);
+
+			int[] rowOrder = {3, 0, 1, 2};
+
+			for (int j = 0; j < 4; j++) {
+				for (int i = 0; i < 7; i++) {
+					slotX = gridX + hoveredSlot[1] * (slotWidth + slotSpacing);
+					slotY = gridY + rowOrder[hoveredSlot[0]] * (slotHeight + slotSpacing);
+				}
+			}
+		}
+
+		if (gameState == GameState.INVENTORY || (hoveredSlot[1] != player.inv.getSelectedSlot() && gameState == GameState.PLAYING)) {
 			drawSelectedSlotOverlay(g2d, slotX, slotY, slotWidth, slotHeight);
 		}
 
 		// Get item details
-		Item hoveredItem = player.inv.getItem(0, hoveredSlot);
+		Item hoveredItem = player.inv.getItem(hoveredSlot[0], hoveredSlot[1]);
 		String itemName = hoveredItem.getDisplayName();
 		String itemCount = "";
 		if (hoveredItem.getCount() > 1) {
