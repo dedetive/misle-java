@@ -520,10 +520,14 @@ public class GameRenderer {
 			}
 
 			if (i == selectedSlot) {
-				g2d.setColor(new Color(255, 255, 255, 100)); // Semi-transparent overlay
-				g2d.fillRect(slotX, slotY, slotWidth, slotHeight);
+				drawSelectedSlotOverlay(g2d, slotX, slotY, slotWidth, slotHeight);
 			}
 		}
+	}
+
+	private static void drawSelectedSlotOverlay(Graphics2D g2d, int slotX, int slotY, int slotWidth, int slotHeight) {
+		g2d.setColor(new Color(255, 255, 255, 100)); // Semi-transparent overlay
+		g2d.fillRect(slotX, slotY, slotWidth, slotHeight);
 	}
 
 	public static void updateSelectedItemNamePosition() {
@@ -688,6 +692,10 @@ public class GameRenderer {
 		int slotStartX = inventoryBarX + (inventoryBarWidth - (7 * slotWidth + 6 * slotSpacing)) / 2;
 		int slotX = slotStartX + hoveredSlot * (slotWidth + slotSpacing);
 		int slotY = (int) (inventoryBarY + (20 * scale - slotHeight) / 2);
+
+		if (hoveredSlot != player.inv.getSelectedSlot()) {
+			drawSelectedSlotOverlay(g2d, slotX, slotY, slotWidth, slotHeight);
+		}
 
 		// Get item details
 		Item hoveredItem = player.inv.getItem(0, hoveredSlot);
