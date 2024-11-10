@@ -203,12 +203,14 @@ public class Inventory {
 
 					switch ((String) getSelectedItem().getAttributes().get("subtype")) {
 						case "heal":
-
 							double healAmountValue = Double.parseDouble(Integer.toString((Integer) getSelectedItem().getAttributes().get("healingAmount")));
+							if (healAmountValue == -1) {
+								healAmountValue = player.attr.getMaxHP();
+							}
 							String formattedHealAmount = df.format(player.attr.calculateHeal(healAmountValue, "normal"));
 
 							createFloatingText("+" + formattedHealAmount, Color.decode("#DE4040"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
-							player.attr.receiveHeal(Integer.parseInt(getSelectedItem().getAttributes().get("healingAmount").toString()), "normal");
+							player.attr.receiveHeal(healAmountValue, "normal");
 							getSelectedItem().setCount(getSelectedItem().getCount() - 1);
 							if (!getSelectedItem().isActive()) {
 								removeItem(0, getSelectedSlot());
@@ -233,6 +235,12 @@ public class Inventory {
 						case "medium":
 							playThis("consumeMediumPotion");
 							break;
+//						case "big":
+//							playThis("consumeBigPotion");
+//							break;
+//						case "huge":
+//							playThis("consumeHugePotion");
+//							break;
 					}
 
 					return true;
