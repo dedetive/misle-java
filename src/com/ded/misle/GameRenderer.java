@@ -40,9 +40,11 @@ public class GameRenderer {
 	private static Point selectedItemNamePosition;
 	private static long itemNameDisplayStartTime;
 
-	private static List<String> floatingText = new ArrayList<>();
-	private static List<Point> floatingTextPosition = new ArrayList<>();
-	private static List<Color> floatingTextColor = new ArrayList<>();
+	private static final List<String> floatingText = new ArrayList<>();
+	private static final List<Point> floatingTextPosition = new ArrayList<>();
+	private static final List<Color> floatingTextColor = new ArrayList<>();
+
+	private static double isFacingRight;
 
 	private static Font comfortaaFont96 = FontManager.loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
 	private static Font ubuntuFont35 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (35 * scale / 3.75));
@@ -73,7 +75,7 @@ public class GameRenderer {
 		addClickable(button, action, panel);
 	}
 
-	private static List<Object[]> clickables = new ArrayList<>();
+	private static final List<Object[]> clickables = new ArrayList<>();
 	private static boolean mouseListenerAdded = false;
 
 	private static void addClickable(Rectangle button, Runnable action, JPanel panel) {
@@ -410,21 +412,7 @@ public class GameRenderer {
 		Rectangle playerRect = new Rectangle(playerScreenX, playerScreenY, (int) player.attr.getWidth(), (int) player.attr.getHeight());
 		drawRotatedRect(g2d, playerRect, player.pos.getRotation());
 
-		// Draw selected item on top of player
-
-		if (player.inv.hasHeldItem()) {
-			Item selectedItem = player.inv.getSelectedItem();
-
-			if (selectedItem.getCountLimit() >= 16 && selectedItem.getCount() > selectedItem.getCountLimit() / 3) {
-				drawRotatedImage(g2d, selectedItem.getIcon(), playerScreenX + player.attr.getWidth() / 2 + 12 * scaleByScreenSize, playerScreenY + 15 * scaleByScreenSize, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), 35);
-			}
-
-			if (selectedItem.getCountLimit() >= 100 && selectedItem.getCount() > 2 * selectedItem.getCountLimit() / 3) {
-				drawRotatedImage(g2d, selectedItem.getIcon(), playerScreenX + player.attr.getWidth() / 2 - 12 * scaleByScreenSize, playerScreenY + 15 * scaleByScreenSize, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), -35);
-			}
-
-			g2d.drawImage(selectedItem.getIcon(), (int) (playerScreenX + player.attr.getWidth() / 2), playerScreenY, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), null);
-		}
+		drawHandItem(g2d, playerScreenX, playerScreenY, scaleByScreenSize);
 
 		drawUIElements(g2d, playerScreenX, playerScreenY);
 
@@ -444,6 +432,35 @@ public class GameRenderer {
 		}
 
 		g2d.dispose();
+	}
+
+	private static void drawHandItem(Graphics2D g2d, double playerScreenX, double playerScreenY, double scaleByScreenSize) {
+		if (player.inv.hasHeldItem()) {
+
+			boolean mirror = false;
+			if (player.stats.getWalkingDirection().equals("right")) {
+				isFacingRight = 0.5;
+			} else if (player.stats.getWalkingDirection().equals("left")) {
+				isFacingRight = -1;
+				mirror = true;
+			}
+
+			double distance = playerScreenX + (player.attr.getWidth() / 2) * 2 * isFacingRight * scaleByScreenSize;
+
+			Item selectedItem = player.inv.getSelectedItem();
+
+			if (selectedItem.getCountLimit() >= 16 && selectedItem.getCount() > selectedItem.getCountLimit() / 3) {
+				double pos = 12 * isFacingRight * scaleByScreenSize;
+				drawRotatedImage(g2d, selectedItem.getIcon(), distance + pos, playerScreenY + 15 * scaleByScreenSize, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), 35, mirror);
+			}
+
+			if (selectedItem.getCountLimit() >= 100 && selectedItem.getCount() > 2 * selectedItem.getCountLimit() / 3) {
+				double pos = -12 * isFacingRight * scaleByScreenSize;
+				drawRotatedImage(g2d, selectedItem.getIcon(), distance + pos, playerScreenY + 15 * scaleByScreenSize, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), -35, mirror);
+			}
+
+			drawRotatedImage(g2d, selectedItem.getIcon(), (int) distance, playerScreenY, (int) (100 * scaleByScreenSize), (int) (100 * scaleByScreenSize), 0, mirror);
+		}
 	}
 
 	private static void drawUIElements(Graphics2D g2d, int playerScreenX, int playerScreenY) {
@@ -663,6 +680,33 @@ public class GameRenderer {
 		// Restore the original transform to avoid affecting other drawings
 		g2d.setTransform(originalTransform);
 	}
+	public static void drawRotatedImage(Graphics2D g2d, Image image, double x, double y, int width, int height, double angle, boolean mirror) {
+		// Calculate the rotation center based on the desired width and height
+		double centerX = x + width / 2.0;
+		double centerY = y + height / 2.0;
+
+		// Save the original transform
+		AffineTransform originalTransform = g2d.getTransform();
+
+		// Apply rotation around the calculated center
+		g2d.rotate(Math.toRadians(angle), centerX, centerY);
+
+		// Apply mirroring if needed
+		if (mirror) {
+			// Translate to the center of the image, apply scaling to flip horizontally, then translate back
+			g2d.translate(x + width, y); // Move to the right edge of the image
+			g2d.scale(-1, 1);           // Flip horizontally
+			g2d.translate(-x, -y);       // Move back to the original position
+		}
+
+		// Draw the scaled and rotated (and possibly mirrored) image at the specified position
+		g2d.drawImage(image, (int) x, (int) y, width, height, null);
+
+		// Restore the original transform to avoid affecting other drawings
+		g2d.setTransform(originalTransform);
+	}
+
+
 
 	public static void drawRotatedRect(Graphics2D g2d, Rectangle rectangle, double angle) {
 		double centerX = rectangle.x + rectangle.width / 2.0;

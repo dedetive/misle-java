@@ -29,7 +29,7 @@ public class PlayerStats {
 		this.distanceDown = 0;
 		this.distanceLeft = 0;
 		this.distanceRight = 0;
-		this.walkingDirection = "none";
+		this.walkingDirection = "";
 	}
 
 	/**
