@@ -19,5 +19,7 @@ public class Player {
 	public void unloadPlayer() {
 		this.keys.resetAllCooldowns();
 		this.attr.unloadAttributes();
+		this.inv.destroyGrabbedItem();
+		this.inv.destroyTempItem();
 	}
 }

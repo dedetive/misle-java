@@ -323,8 +323,12 @@ public class Inventory {
 		this.tempItem = tempItem;
 	}
 
-	private void destroyTempItem() {
+	public void destroyTempItem() {
 		this.tempItem = null;
+	}
+
+	public void destroyGrabbedItem() {
+		this.draggedItem = null;
 	}
 
 	public void dropDraggedItem() {
