@@ -399,10 +399,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 		switch (gameState) {
 			case GameState.INVENTORY:
-				renderPlayingGame(g, this, mouseHandler.getHoveredSlot());
+				renderPlayingGame(g, this, mouseHandler);
 				break;
 			case GameState.PLAYING:
-				renderPlayingGame(g, this, new int[]{0, mouseHandler.getHoveredBarSlot()});
+				renderPlayingGame(g, this, mouseHandler);
 				break;
 			case GameState.MAIN_MENU:
 				renderMainMenu(g, this);

@@ -166,15 +166,9 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 				if (isMousePressed()) {
 					boolean foundWhereClicked = false;
 
-					// Checking if where clicked is inside one of the inventory slots
-					for (int i = 0; i < 7; i++) {
-						// Check if the mouse position is within this slot's boundaries
-						if (mouseX >= barSlotX[i] && mouseX <= barSlotX[i] + slotWidth &&
-								mouseY >= barSlotY[i] && mouseY <= barSlotY[i] + slotHeight) {
-							player.inv.setSelectedSlot(i); // Select the slot
-							foundWhereClicked = true;
-							break; // Exit the loop once the correct slot is found
-						}
+					if (getHoveredBarSlot() >= 0) {
+						player.inv.setSelectedSlot(getHoveredBarSlot()); // Select the slot
+						foundWhereClicked = true;
 					}
 					if (!foundWhereClicked) {
 						player.inv.useItem();
@@ -183,10 +177,17 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 				break;
 			case GamePanel.GameState.INVENTORY:
 				if (isMousePressed()) {
-
+					if (getHoveredSlot()[0] >= 0 && getHoveredSlot()[1] >= 0) {
+						if (player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]) != null) {
+							player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1]);
+						} else if (player.inv.getDraggedItem() != null && player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]) == null) {
+							player.inv.putDraggedItem(getHoveredSlot()[0], getHoveredSlot()[1]);
+						}
+					}
 				}
 				break;
 		}
+		isPressed = false;
 	}
 
 	@Override

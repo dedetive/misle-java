@@ -393,7 +393,7 @@ public class GameRenderer {
 		}
 	}
 
-	public static void renderPlayingGame(Graphics g, JPanel panel, int[] hoveredSlot) {
+	public static void renderPlayingGame(Graphics g, JPanel panel, MouseHandler mouseHandler) {
 		Graphics2D g2d = (Graphics2D) g;
 		double scaleByScreenSize = scale / 3.75;
 
@@ -422,12 +422,15 @@ public class GameRenderer {
 
 		if (gameState == GamePanel.GameState.INVENTORY) {
 			renderInventoryMenu(g, panel);
-			if (hoveredSlot[0] > -1 && hoveredSlot[1] > -1 && player.inv.getItem(hoveredSlot[0], hoveredSlot[1]) != null) {
-				drawHoveredItemTooltip(g, new int[]{hoveredSlot[0], hoveredSlot[1]});
+			if (mouseHandler.getHoveredSlot()[0] > -1 && mouseHandler.getHoveredSlot()[1] > -1 && player.inv.getItem(mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1]) != null) {
+				drawHoveredItemTooltip(g, new int[]{mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1]});
+			}
+			if (player.inv.getDraggedItem() != null) {
+				drawDraggedItem(g2d, mouseHandler);
 			}
 		} else {
-			if (hoveredSlot[0] > -1 && hoveredSlot[1] > -1 && player.inv.getItem(0, hoveredSlot[1]) != null) {
-				drawHoveredItemTooltip(g, new int[]{-1, hoveredSlot[1]});
+			if (mouseHandler.getHoveredBarSlot() > -1 && player.inv.getItem(0, mouseHandler.getHoveredBarSlot()) != null) {
+				drawHoveredItemTooltip(g, new int[]{-1, mouseHandler.getHoveredBarSlot()});
 			}
 		}
 
@@ -896,5 +899,13 @@ public class GameRenderer {
 			g2d.setFont(basicFont40);
 			g2d.drawString(floatingText.get(i), (int) (floatingTextPosition.get(i).x * scale), (int) (floatingTextPosition.get(i).y * scale));
 		}
+	}
+
+	public static void drawDraggedItem(Graphics2D g2d, MouseHandler mouseHandler) {
+		Item draggedItem = player.inv.getDraggedItem();
+
+		int slotSize = (int) (30 * scale);
+
+		g2d.drawImage(draggedItem.getIcon(), mouseHandler.getMouseX(), mouseHandler.getMouseY(), slotSize, slotSize, null);
 	}
 }

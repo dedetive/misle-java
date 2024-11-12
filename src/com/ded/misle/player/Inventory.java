@@ -14,7 +14,6 @@ import static com.ded.misle.GameRenderer.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.boxes.BoxManipulation.*;
 import static com.ded.misle.boxes.BoxesHandling.editBox;
-import static com.ded.misle.boxes.BoxesHandling.editLastBox;
 import static java.lang.System.currentTimeMillis;
 
 public class Inventory {
@@ -22,6 +21,8 @@ public class Inventory {
 	private final int rows = 4;
 	private final int cols = 7;
 	private int selectedSlot = 0;
+	private Item draggedItem;
+	private Item tempItem;
 
 	public Inventory() {
 		this.inventory = new Item[rows][cols];
@@ -291,5 +292,38 @@ public class Inventory {
 		});
 		timer.setRepeats(false);
 		timer.start();
+	}
+
+	public void initDraggingItem(int row, int col) {
+		if (getDraggedItem() == null) {
+			setDraggedItem(getItem(row, col));
+			removeItem(row, col);
+		} else { // SWAP
+			setTempItem(getItem(row, col));
+			bruteSetItem(getDraggedItem(), row, col);
+			setDraggedItem(tempItem);
+			destroyTempItem();
+		}
+	}
+
+	public void putDraggedItem(int row, int col) {
+		bruteSetItem(getDraggedItem(), row, col);
+		setDraggedItem(null);
+	}
+
+	private void setDraggedItem(Item draggedItem) {
+		this.draggedItem = draggedItem;
+	}
+
+	public Item getDraggedItem() {
+		return this.draggedItem;
+	}
+
+	private void setTempItem(Item tempItem) {
+		this.tempItem = tempItem;
+	}
+
+	private void destroyTempItem() {
+		this.tempItem = null;
 	}
 }
