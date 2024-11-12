@@ -45,6 +45,7 @@ public class GameRenderer {
 	private static final List<Color> floatingTextColor = new ArrayList<>();
 
 	private static double isFacingRight;
+	private static boolean mirror;
 
 	private static Font comfortaaFont96 = FontManager.loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
 	private static Font ubuntuFont35 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (35 * scale / 3.75));
@@ -440,9 +441,9 @@ public class GameRenderer {
 	private static void drawHandItem(Graphics2D g2d, double playerScreenX, double playerScreenY, double scaleByScreenSize) {
 		if (player.inv.hasHeldItem()) {
 
-			boolean mirror = false;
 			if (player.stats.getWalkingDirection().equals("right")) {
 				isFacingRight = 0.5;
+				mirror = false;
 			} else if (player.stats.getWalkingDirection().equals("left")) {
 				isFacingRight = -1;
 				mirror = true;

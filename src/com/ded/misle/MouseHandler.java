@@ -183,6 +183,10 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 						} else if (player.inv.getDraggedItem() != null && player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]) == null) {
 							player.inv.putDraggedItem(getHoveredSlot()[0], getHoveredSlot()[1]);
 						}
+					} else {
+						if (player.inv.getDraggedItem() != null) {
+							player.inv.dropDraggedItem();
+						}
 					}
 				}
 				break;

@@ -265,7 +265,7 @@ public class Inventory {
 		playThis("dropItem");
 		removeItem(row, col, quantity);
 		updateSelectedItemNamePosition();
-		double dropSpeed = player.attr.getSpeedModifier()  * player.attr.getEnvironmentSpeedModifier() * 20 * 2.25;
+		double dropSpeed = player.attr.getSpeedModifier() * player.attr.getEnvironmentSpeedModifier() * 20 * 2.25;
 		switch (player.stats.getWalkingDirection()) {
 			case "up" -> {
 				moveCollisionBox(droppedItem, 0, -dropSpeed, 300);
@@ -325,5 +325,40 @@ public class Inventory {
 
 	private void destroyTempItem() {
 		this.tempItem = null;
+	}
+
+	public void dropDraggedItem() {
+		Box droppedItem = BoxesHandling.addBoxItem(player.pos.getX() / scale, player.pos.getY() / scale, getDraggedItem().getId(), getDraggedItem().getCount());
+		editBox(droppedItem, "collectible", "false");
+		playThis("dropItem");
+		setDraggedItem(null);
+		updateSelectedItemNamePosition();
+		double dropSpeed = player.attr.getSpeedModifier() * player.attr.getEnvironmentSpeedModifier() * 20 * 2.25;
+		switch (player.stats.getWalkingDirection()) {
+			case "up" -> {
+				moveCollisionBox(droppedItem, 0, -dropSpeed, 300);
+				moveCollisionBox(droppedItem, 0, -dropSpeed / 2, 50);
+			}
+			case "down" -> {
+				moveCollisionBox(droppedItem, 0, dropSpeed, 300);
+				moveCollisionBox(droppedItem, 0, dropSpeed / 2, 50);
+			}
+			case "left" -> {
+				moveCollisionBox(droppedItem, -dropSpeed, 0, 300);
+				moveCollisionBox(droppedItem, -dropSpeed / 2, 0, 50);
+			}
+			case "right" -> {
+				moveCollisionBox(droppedItem, dropSpeed, 0, 300);
+				moveCollisionBox(droppedItem, dropSpeed / 2, 0, 50);
+			}
+			case null, default -> {
+			}
+		}
+		delayedRotateBox(droppedItem, 360, 250);
+		Timer timer = new Timer(1500, e -> {
+			editBox(droppedItem, "collectible", "true");
+		});
+		timer.setRepeats(false);
+		timer.start();
 	}
 }
