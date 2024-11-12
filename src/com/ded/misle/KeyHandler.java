@@ -175,7 +175,7 @@ public class KeyHandler implements KeyListener {
 		}
 	}
 
-	public void updateKeys() {
+	public void updateKeys(MouseHandler mouseHandler) {
 
 		// PLAYING EXCLUSIVE
 
@@ -275,10 +275,10 @@ public class KeyHandler implements KeyListener {
 		// EITHER PLAYING OR INVENTORY
 
 		if (player.keys.keyPressed.get("inventory")) {
-			if (gameState != GamePanel.GameState.PLAYING) {
-				gameState = GamePanel.GameState.PLAYING;
-			} else {
+			if (gameState == GamePanel.GameState.PLAYING) {
 				gameState = GamePanel.GameState.INVENTORY;
+			} else if (gameState == GamePanel.GameState.INVENTORY) {
+				gameState = GamePanel.GameState.PLAYING;
 			}
 			player.keys.keyPressed.put("inventory", false);
 		}
@@ -289,6 +289,17 @@ public class KeyHandler implements KeyListener {
 			if (player.keys.keyPressed.get("pause")) {
 				gameState = GamePanel.GameState.PLAYING;
 				player.keys.keyPressed.put("pause", false);
+			}
+
+			if (player.keys.keyPressed.get("drop")) {
+				if (mouseHandler.getHoveredSlot()[0] >= 0 && mouseHandler.getHoveredSlot()[1] >= 0 && player.inv.getItem(mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1]) != null) {
+					if (player.keys.keyPressed.get("ctrl")) {
+						player.inv.dropItem(mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1], player.inv.getItem(mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1]).getCount());
+					} else {
+						player.inv.dropItem(mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1], 1);
+					}
+					player.keys.keyPressed.put("drop", false);
+				}
 			}
 		}
 

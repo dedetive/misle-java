@@ -310,7 +310,7 @@ public class GamePanel extends JPanel implements Runnable {
 		player.attr.checkIfLevelUp();
 
 		player.attr.updateRegenerationHP(currentTime);
-		keyH.updateKeys();  // Check for player input and update position accordingly
+		keyH.updateKeys(mouseHandler);  // Check for player input and update position accordingly
 		mouseHandler.updateMouse();
 		}
 
