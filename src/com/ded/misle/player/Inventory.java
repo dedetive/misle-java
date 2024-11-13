@@ -173,6 +173,7 @@ public class Inventory {
 	public void setSelectedSlot(int selectedSlot) {
 		this.selectedSlot = selectedSlot;
 		updateSelectedItemNamePosition();
+		getSelectedItem().resetAnimation();
 	}
 
 	public Item getSelectedItem() {
@@ -259,6 +260,41 @@ public class Inventory {
 									case "claw":
 										// Weapon goes upward for a bit and then swings downwards
 										// Deals area damage
+
+										// PREPARATION (move claw up and swing back)
+
+										Item selectedItem = getSelectedItem();
+
+										getSelectedItem().delayedRotateAnimationRotation(-75, 180);
+										getSelectedItem().delayedChangeAnimationBulk(0.175, 180);
+										getSelectedItem().delayedMoveAnimationY(-30, 70);
+										getSelectedItem().delayedMoveAnimationX(15, 70);
+
+										// ATTACK (swing forward)
+
+										Timer attack = new Timer(215, evt -> {
+											if (getSelectedItem() != selectedItem) {
+												return;
+											}
+											getSelectedItem().delayedRotateAnimationRotation(150, 60);
+											getSelectedItem().delayedChangeAnimationBulk(-0.175, 120);
+
+											// RETURN TO ORIGINAL POSITION
+
+											Timer anotherTimer = new Timer(60, event -> {
+												if (getSelectedItem() != selectedItem) {
+													return;
+												}
+
+												getSelectedItem().delayedRotateAnimationRotation(-75, 70);
+												getSelectedItem().delayedMoveAnimationY(30, 30);
+												getSelectedItem().delayedMoveAnimationX(-15, 30);
+											});
+											anotherTimer.setRepeats(false);
+											anotherTimer.start();
+										});
+										attack.setRepeats(false);
+										attack.start();
 								}
 								break;
 							case "ranged": // do ranged stuff (hold weapon to increase accuracy and damage and then

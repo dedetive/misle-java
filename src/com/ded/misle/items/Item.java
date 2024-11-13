@@ -4,10 +4,13 @@ import com.ded.misle.LanguageManager;
 import com.ded.misle.boxes.Box;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 import java.util.Map;
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.io.IOException;
 
 import static com.ded.misle.ChangeSettings.getPath;
@@ -30,6 +33,10 @@ public class Item {
 	private boolean active;
 	private final Color nameColor;
 	private final String displayEffect;
+	private double animationRotation;
+	private double animationX;
+	private double animationY;
+	private double animationBulk;
 
 	// Constructor that takes only ID and sets default count to 1
 	public Item(int id) throws Exception {
@@ -52,6 +59,10 @@ public class Item {
 			this.timeToDelay = currentTimeMillis();
 			this.active = true;
 			this.nameColor = itemDetails.getNameColor();
+			this.animationRotation = 0;
+			this.animationX = 0;
+			this.animationY = 0;
+			this.animationBulk = 1;
 		} else {
 			throw new Exception("Item with ID " + id + " not found.");
 		}
@@ -138,5 +149,118 @@ public class Item {
 
 	public static Box createDroppedItem(double x, double y, int id, int count) {
 		return addBoxItem(x, y, id, count);
+	}
+
+	// ANIMATION STUFF
+
+	public double getAnimationRotation() {
+		return this.animationRotation;
+	}
+
+	public void setAnimationRotation(double animationRotation) {
+		this.animationRotation = animationRotation;
+	}
+
+	public void delayedRotateAnimationRotation(double animationRotation, double delay) {
+		int frames = (int) (delay / 1000 * 60);
+		double dRotation = animationRotation / (double) frames;
+
+		Timer timer = new Timer(1000 / 60, new ActionListener() {
+			int count = 0;
+			public void actionPerformed(ActionEvent evt) {
+				if (count < frames) {
+					setAnimationRotation(getAnimationRotation() + dRotation);
+					count++;
+				} else {
+					((Timer) evt.getSource()).stop();  // Stop the timer when done
+				}
+			}
+		});
+		timer.start();
+	}
+
+	public void setAnimationX(double animationX) {
+		this.animationX = animationX;
+	}
+
+	public void delayedMoveAnimationX(double animationX, double delay) {
+		int frames = (int) (delay / 1000 * 60);
+		double dx = animationX / (double) frames;
+
+		Timer timer = new Timer(1000 / 60, new ActionListener() {
+			int count = 0;
+			public void actionPerformed(ActionEvent evt) {
+				if (count < frames) {
+					setAnimationX(getAnimationX() + dx);
+					count++;
+				} else {
+					((Timer) evt.getSource()).stop();  // Stop the timer when done
+				}
+			}
+		});
+		timer.start();
+	}
+
+	public void setAnimationY(double animationY) {
+		this.animationY = animationY;
+	}
+
+	public void delayedMoveAnimationY(double animationY, double delay) {
+		int frames = (int) (delay / 1000 * 60);
+		double dy = animationY / (double) frames;
+
+		Timer timer = new Timer(1000 / 60, new ActionListener() {
+			int count = 0;
+			public void actionPerformed(ActionEvent evt) {
+				if (count < frames) {
+					setAnimationY(getAnimationY() + dy);
+					count++;
+				} else {
+					((Timer) evt.getSource()).stop();  // Stop the timer when done
+				}
+			}
+		});
+		timer.start();
+	}
+
+	public double getAnimationX() {
+		return this.animationX;
+	}
+
+	public double getAnimationY() {
+		return this.animationY;
+	}
+
+	public double getAnimationBulk() {
+		return this.animationBulk;
+	}
+
+	public void setAnimationBulk(double animationBulk) {
+		this.animationBulk = animationBulk;
+	}
+
+	public void delayedChangeAnimationBulk(double animationBulk, double delay) {
+		int frames = (int) (delay / 1000 * 60);
+		double dBulk = animationBulk / (double) frames;
+
+		Timer timer = new Timer(1000 / 60, new ActionListener() {
+			int count = 0;
+			public void actionPerformed(ActionEvent evt) {
+				if (count < frames) {
+					setAnimationBulk(getAnimationBulk() + dBulk);
+					count++;
+				} else {
+					((Timer) evt.getSource()).stop();  // Stop the timer when done
+				}
+			}
+		});
+		timer.start();
+	}
+
+	public void resetAnimation() {
+		this.animationRotation = 0;
+		this.animationX = 0;
+		this.animationY = 0;
+		this.animationBulk = 1;
 	}
 }

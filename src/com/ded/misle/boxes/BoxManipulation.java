@@ -88,6 +88,8 @@ public class BoxManipulation {
 				if (count < frames) {
 					box.setRotation(box.getRotation() + dangle);
 					count++;
+				} else {
+					((Timer) evt.getSource()).stop();  // Stop the timer when done
 				}
 			}
 		});
