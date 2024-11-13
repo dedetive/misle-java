@@ -281,7 +281,7 @@ public class Inventory {
 
 											// RETURN TO ORIGINAL POSITION
 
-											Timer anotherTimer = new Timer(60, event -> {
+											Timer returnOriginalPos = new Timer(60, event -> {
 												if (getSelectedItem() != selectedItem) {
 													return;
 												}
@@ -290,8 +290,8 @@ public class Inventory {
 												getSelectedItem().delayedMoveAnimationY(30, 30);
 												getSelectedItem().delayedMoveAnimationX(-15, 30);
 											});
-											anotherTimer.setRepeats(false);
-											anotherTimer.start();
+											returnOriginalPos.setRepeats(false);
+											returnOriginalPos.start();
 										});
 										attack.setRepeats(false);
 										attack.start();
