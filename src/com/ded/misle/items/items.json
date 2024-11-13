@@ -10,6 +10,7 @@
     "subtype": "melee",
     "kind": "claw",
     "attackDelay": 1.2,
+    "range": 15,
     "bundles": "mountain|100000035",
     "nameColor": "#F5B114"
   },

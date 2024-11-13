@@ -189,63 +189,83 @@ public class Inventory {
 	public boolean useItem() {
 		if (getSelectedItem() != null) { // Ensure something is selected
 			String type = getSelectedItem().getType();
+			long currentTime = currentTimeMillis();
 
-			if (type.equals("potion")) {
-				double potionDelay = Double.parseDouble(getSelectedItem().getAttributes().get("potionDelay").toString());
-				long currentTime = currentTimeMillis();
-				if (currentTime > getSelectedItem().getTimeToDelay()) {
-					getSelectedItem().setTimeToDelay((long) (potionDelay * 1000)); // Handle delay
+			switch (type) {
+				case "potion":
+					double potionDelay = Double.parseDouble(getSelectedItem().getAttributes().get("potionDelay").toString());
+					if (currentTime > getSelectedItem().getTimeToDelay()) {
+						getSelectedItem().setTimeToDelay((long) (potionDelay * 1000)); // Handle delay
 
-					int playerScreenX = (int) ((player.pos.getX() - player.pos.getCameraOffsetX()) / scale);
-					int playerScreenY = (int) ((player.pos.getY() - player.pos.getCameraOffsetY()) / scale);
-					int randomPosX = (int) ((Math.random() * (40 + 40)) - 40);
-					int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
-					DecimalFormat df = new DecimalFormat("#.##");
+						int playerScreenX = (int) ((player.pos.getX() - player.pos.getCameraOffsetX()) / scale);
+						int playerScreenY = (int) ((player.pos.getY() - player.pos.getCameraOffsetY()) / scale);
+						int randomPosX = (int) ((Math.random() * (40 + 40)) - 40);
+						int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
+						DecimalFormat df = new DecimalFormat("#.##");
 
-					switch ((String) getSelectedItem().getAttributes().get("subtype")) {
-						case "heal":
-							double healAmountValue = Double.parseDouble(Integer.toString((Integer) getSelectedItem().getAttributes().get("healingAmount")));
-							if (healAmountValue == -1) {
-								healAmountValue = player.attr.getMaxHP();
-							}
-							String formattedHealAmount = df.format(player.attr.calculateHeal(healAmountValue, "normal"));
+						switch (getSelectedItem().getAttributes().get("subtype").toString()) {
+							case "heal":
+								double healAmountValue = Double.parseDouble(Integer.toString((Integer) getSelectedItem().getAttributes().get("healingAmount")));
+								if (healAmountValue == -1) {
+									healAmountValue = player.attr.getMaxHP();
+								}
+								String formattedHealAmount = df.format(player.attr.calculateHeal(healAmountValue, "normal"));
 
-							createFloatingText("+" + formattedHealAmount, Color.decode("#DE4040"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
-							player.attr.receiveHeal(healAmountValue, "normal");
-							getSelectedItem().setCount(getSelectedItem().getCount() - 1);
-							if (!getSelectedItem().isActive()) {
-								removeItem(0, getSelectedSlot());
-							}
-							break;
-						case "entropy":
-							double entropyAmountValue = Double.parseDouble(Integer.toString((Integer) getSelectedItem().getAttributes().get("entropyRestore")));
-							String formattedEntropyAmount = df.format(player.attr.calculateEntropyGain(entropyAmountValue));
+								createFloatingText("+" + formattedHealAmount, Color.decode("#DE4040"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+								player.attr.receiveHeal(healAmountValue, "normal");
+								getSelectedItem().setCount(getSelectedItem().getCount() - 1);
+								if (!getSelectedItem().isActive()) {
+									removeItem(0, getSelectedSlot());
+								}
+								break;
+							case "entropy":
+								double entropyAmountValue = Double.parseDouble(Integer.toString((Integer) getSelectedItem().getAttributes().get("entropyRestore")));
+								String formattedEntropyAmount = df.format(player.attr.calculateEntropyGain(entropyAmountValue));
 
-							createFloatingText("+" + formattedEntropyAmount, Color.decode("#A0A0FF"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
-							player.attr.addEntropy(Integer.parseInt(getSelectedItem().getAttributes().get("entropyRestore").toString()));
-							getSelectedItem().setCount(getSelectedItem().getCount() - 1);
-							if (!getSelectedItem().isActive()) {
-								removeItem(0, getSelectedSlot());
-							}
-							break;
+								createFloatingText("+" + formattedEntropyAmount, Color.decode("#A0A0FF"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+								player.attr.addEntropy(Integer.parseInt(getSelectedItem().getAttributes().get("entropyRestore").toString()));
+								getSelectedItem().setCount(getSelectedItem().getCount() - 1);
+								if (!getSelectedItem().isActive()) {
+									removeItem(0, getSelectedSlot());
+								}
+								break;
+						}
+						switch ((String) getSelectedItem().getAttributes().get("size")) {
+							case "small":
+								playThis("consumeSmallPot");
+								break;
+							case "medium":
+								playThis("consumeMediumPotion");
+								break;
+	//						case "big":
+	//							playThis("consumeBigPotion");
+	//							break;
+	//						case "huge":
+	//							playThis("consumeHugePotion");
+	//							break;
+						}
+
+						return true;
 					}
-					switch ((String) getSelectedItem().getAttributes().get("size")) {
-						case "small":
-							playThis("consumeSmallPot");
-							break;
-						case "medium":
-							playThis("consumeMediumPotion");
-							break;
-//						case "big":
-//							playThis("consumeBigPotion");
-//							break;
-//						case "huge":
-//							playThis("consumeHugePotion");
-//							break;
-					}
+					break;
+				case "weapon":
+					double attackDelay = Double.parseDouble(getSelectedItem().getAttributes().get("attackDelay").toString());
+					if (currentTime > getSelectedItem().getTimeToDelay()) {
+						getSelectedItem().setTimeToDelay((long) (attackDelay * 1000));
 
-					return true;
-				}
+						switch (getSelectedItem().getAttributes().get("subtype").toString()) {
+							case "melee": // do melee stuff (weapon animation based on kind and deal damage to HP-haver boxes in range)
+								switch (getSelectedItem().getAttributes().get("kind").toString()) {
+									case "claw":
+										// Weapon goes upward for a bit and then swings downwards
+										// Deals area damage
+								}
+								break;
+							case "ranged": // do ranged stuff (hold weapon to increase accuracy and damage and then
+								break;     // throw a box projectile to held direction
+						}
+					}
+					break;
 			}
 		}
 		return false;
