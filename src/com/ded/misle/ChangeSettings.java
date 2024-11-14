@@ -109,15 +109,14 @@ public class ChangeSettings {
 			case "screenSize":
 				defaultSetting = "medium";
 				break;
-			case "isFullscreen":
-				defaultSetting = "false";
-				break;
 			case "fullscreenMode":
 				defaultSetting = "windowed";
 				break;
 			case "frameRateCap":
 				defaultSetting = "60";
 				break;
+			case "isFullscreen":
+			case "levelDesigner":
 			case "displayFPS":
 				defaultSetting = "false";
 				break;

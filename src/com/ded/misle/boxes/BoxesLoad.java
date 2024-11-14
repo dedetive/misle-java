@@ -23,12 +23,6 @@ public class BoxesLoad {
 			editBox(getAllBoxes().get(getAllBoxes().size() - 5), "texture", "wallDefault.ASD");
 			editBox(getAllBoxes().get(getAllBoxes().size() - 4), "texture", "wallDefault.AWD");
 
-			lineCoordinatedAddBox(31, 5.5, 5, 1, "wallDefault", "fill");
-			lineCoordinatedAddBox(30, 7.5, 1, 5, "wallDefault", "fill");
-
-			lineCoordinatedAddBox(31, 13.5, 5, 1, "wallDefault@Deco", "fill");
-			lineCoordinatedAddBox(36, 7.5, 1, 5, "wallDefault@Deco", "fill");
-
 			addBox(300, 230);
 			editLastBox("effect", "{damage, 10, 350, normal, {''}}");
 			editLastBox("hasCollision", "true");

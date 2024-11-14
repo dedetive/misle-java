@@ -161,7 +161,7 @@ public class Item {
 		this.animationRotation = animationRotation;
 	}
 
-	public void delayedRotateAnimationRotation(double animationRotation, double delay) {
+	public void delayedSetAnimationRotation(double animationRotation, double delay) {
 		int frames = (int) (delay / 1000 * 60);
 		double dRotation = animationRotation / (double) frames;
 

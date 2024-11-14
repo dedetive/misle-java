@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import static com.ded.misle.GamePanel.*;
+import static com.ded.misle.Launcher.levelDesigner;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.SaveFile.loadSaveFile;
 import static com.ded.misle.SaveFile.saveEverything;
@@ -118,7 +119,7 @@ public class GameRenderer {
 		previousMenu = currentMenu;
 		currentMenu = "PLAYING";
 		startTime = currentTimeMillis();
-		gameState = GamePanel.GameState.LOADING_MENU;
+		gameState = GameState.LOADING_MENU;
 
 		loadSaveFile();
 		loadBoxes();
@@ -128,7 +129,26 @@ public class GameRenderer {
 				storeCachedBoxes(i);
 			}
 			player.pos.reloadSpawnpoint();
-			gameState = GamePanel.GameState.PLAYING;
+			gameState = GameState.PLAYING;
+		});
+
+		timer.setRepeats(false); // Ensure the timer only runs once
+		timer.start();
+	}
+
+	private static void enterLevelDesigner() {
+		previousMenu = currentMenu;
+		currentMenu = "LEVEL_DESIGNER";
+		startTime = currentTimeMillis();
+		gameState = GameState.LOADING_MENU;
+
+		loadBoxes();
+
+		Timer timer = new Timer(LOADING_DURATION, e -> {
+			for (int i = 15; i > 0; i--) {
+				storeCachedBoxes(i);
+			}
+			gameState = GameState.LEVEL_DESIGNER;
 		});
 
 		timer.setRepeats(false); // Ensure the timer only runs once
@@ -219,7 +239,11 @@ public class GameRenderer {
 			int playButtonHeight = (int) (155 * scaleByScreenSize);
 			Rectangle playButton = new Rectangle(playButtonX, playButtonY, playButtonWidth, playButtonHeight);
 
-			createButton(playButton, LanguageManager.getText("main_menu_play"), GameRenderer::gameStart, panel, g2d, scaleByScreenSize);
+			if (!levelDesigner) {
+				createButton(playButton, LanguageManager.getText("main_menu_play"), GameRenderer::gameStart, panel, g2d, scaleByScreenSize);
+			} else {
+				createButton(playButton, LanguageManager.getText("main_menu_level_designer"), GameRenderer::enterLevelDesigner, panel, g2d, scaleByScreenSize);
+			}
 
 			// Quit button
 
@@ -665,6 +689,19 @@ public class GameRenderer {
 				}
 			}
 		}
+	}
+
+	public static void renderLevelDesigner(Graphics g, JPanel panel, MouseHandler mouseHandler) {
+		Graphics2D g2d = (Graphics2D) g;
+		double scaleByScreenSize = scale / 3.75;
+
+		// ANTI-ALIASING
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+		// Draw game components
+		BoxesHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), player.pos.getX(), player.pos.getY(), screenWidth, scale, tileSize);
+
+		g2d.dispose();
 	}
 
 	public static void drawRotatedImage(Graphics2D g2d, Image image, double x, double y, int width, int height, double angle) {

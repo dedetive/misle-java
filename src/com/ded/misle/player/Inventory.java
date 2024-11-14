@@ -265,7 +265,7 @@ public class Inventory {
 
 										Item selectedItem = getSelectedItem();
 
-										getSelectedItem().delayedRotateAnimationRotation(-75, 180);
+										getSelectedItem().delayedSetAnimationRotation(-75, 180);
 										getSelectedItem().delayedChangeAnimationBulk(0.175, 180);
 										getSelectedItem().delayedMoveAnimationY(-30, 70);
 										getSelectedItem().delayedMoveAnimationX(15, 70);
@@ -276,7 +276,7 @@ public class Inventory {
 											if (getSelectedItem() != selectedItem) {
 												return;
 											}
-											getSelectedItem().delayedRotateAnimationRotation(150, 60);
+											getSelectedItem().delayedSetAnimationRotation(150, 60);
 											getSelectedItem().delayedChangeAnimationBulk(-0.175, 120);
 
 											// RETURN TO ORIGINAL POSITION
@@ -286,7 +286,7 @@ public class Inventory {
 													return;
 												}
 
-												getSelectedItem().delayedRotateAnimationRotation(-75, 70);
+												getSelectedItem().delayedSetAnimationRotation(-75, 70);
 												getSelectedItem().delayedMoveAnimationY(30, 30);
 												getSelectedItem().delayedMoveAnimationX(-15, 30);
 											});

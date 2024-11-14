@@ -52,10 +52,10 @@ public class GamePanel extends JPanel implements Runnable {
 		OPTIONS_MENU,
 		PAUSE_MENU,
 		LOADING_MENU,
+		LEVEL_DESIGNER
 	}
 
-	public static GameState gameState = GameState.MAIN_MENU; // Start in PLAYING by default
-
+	public static GameState gameState = GameState.MAIN_MENU; // Start in MAIN_MENU by default
 
 	// CAMERA WORLD BOUNDARIES
 
@@ -260,12 +260,25 @@ public class GamePanel extends JPanel implements Runnable {
 
 			// Process updates and rendering while delta is >= 1
 			while (delta >= 1) {
-				if (gameState == GameState.PLAYING || gameState == GameState.INVENTORY) {
-					updateGame(); // Only update if in the playing state
-				} else if (gameState == GameState.PAUSE_MENU) {
-					if (player.keys.keyPressed.get("pause")) {
-						softGameStart();
-						player.keys.keyPressed.put("pause", false);
+				switch (gameState) {
+					case PLAYING, INVENTORY -> updateGame(); // Only update if in the playing state
+					case PAUSE_MENU -> {
+						if (player.keys.keyPressed.get("pause")) {
+							softGameStart();
+							player.keys.keyPressed.put("pause", false);
+						}
+					}
+					case LEVEL_DESIGNER -> {
+						player.pos.setCameraOffsetX(player.pos.getX() - screenWidth / 2 + player.attr.getWidth() / 2);
+						player.pos.setCameraOffsetY(player.pos.getY() - screenHeight / 2 + player.attr.getHeight() / 2);
+
+						player.pos.setCameraOffsetX(Math.max(0, Math.min(player.pos.getCameraOffsetX(), worldWidth - screenWidth)));
+						player.pos.setCameraOffsetY(Math.max(0, Math.min(player.pos.getCameraOffsetY(), worldHeight - screenHeight)));
+
+						keyH.updateKeys(mouseHandler);  // Check for player input and update position accordingly
+						mouseHandler.updateMouse();
+					}
+					case null, default -> {
 					}
 				}
 				delta--;
@@ -399,8 +412,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 		switch (gameState) {
 			case GameState.INVENTORY:
-				renderPlayingGame(g, this, mouseHandler);
-				break;
 			case GameState.PLAYING:
 				renderPlayingGame(g, this, mouseHandler);
 				break;
@@ -415,6 +426,9 @@ public class GamePanel extends JPanel implements Runnable {
 				break;
 			case GameState.LOADING_MENU:
 				renderLoadingMenu(g, this);
+				break;
+			case GameState.LEVEL_DESIGNER:
+				renderLevelDesigner(g, this, mouseHandler);
 				break;
 		}
 	}
