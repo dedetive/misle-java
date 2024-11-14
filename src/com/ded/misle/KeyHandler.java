@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.GameRenderer.pauseGame;
+import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.items.Item.createItem;
 
 public class KeyHandler implements KeyListener {
@@ -26,6 +27,7 @@ public class KeyHandler implements KeyListener {
 		player.keys.keyPressed.put("inventory", false);
 		player.keys.keyPressed.put("drop", false);
 		player.keys.keyPressed.put("ctrl", false);
+		player.keys.keyPressed.put("shift", false);
 		player.keys.keyPressed.put("dodge", false);
 		player.keys.keyPressed.put("use", false);
 		player.keys.keyPressed.put("1", false);
@@ -47,6 +49,7 @@ public class KeyHandler implements KeyListener {
 	int KeyInventory = KeyEvent.VK_E;
 	int KeyDrop = KeyEvent.VK_Q;
 	int KeyCtrl = KeyEvent.VK_CONTROL;
+	int KeyShift = KeyEvent.VK_SHIFT;
 	int KeyDodge = KeyEvent.VK_C;
 	int KeyUse = KeyEvent.VK_Z;
 	int Key1 = KeyEvent.VK_1;
@@ -56,6 +59,16 @@ public class KeyHandler implements KeyListener {
 	int Key5 = KeyEvent.VK_5;
 	int Key6 = KeyEvent.VK_6;
 	int Key7 = KeyEvent.VK_7;
+
+	static double baseDesignerSpeed = 1.67;
+	static double designerSpeed = baseDesignerSpeed * scale;
+	static {
+		updateDesignerSpeed();
+	}
+
+	public static void updateDesignerSpeed() {
+		designerSpeed = baseDesignerSpeed * scale;
+	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -97,6 +110,9 @@ public class KeyHandler implements KeyListener {
 		if (code == KeyCtrl) {
 			player.keys.keyPressed.put("ctrl", true);
 		}
+		if (code == KeyShift) {
+			player.keys.keyPressed.put("shift", true);
+		}
 		if (code == KeyDebug1) {
 			handleCooldownPress("debug1");
 		}
@@ -129,9 +145,6 @@ public class KeyHandler implements KeyListener {
 		if (code == Key7) {
 			player.keys.keyPressed.put("7", false);
 		}
-		if (code == KeyUp) {
-			player.keys.keyPressed.put("up", true);
-		}
 		if (code == KeyPause) {
 			player.keys.keyPressed.put("pause", true);
 		}
@@ -155,6 +168,9 @@ public class KeyHandler implements KeyListener {
 		}
 		if (code == KeyCtrl) {
 			player.keys.keyPressed.put("ctrl", false);
+		}
+		if (code == KeyShift) {
+			player.keys.keyPressed.put("shift", false);
 		}
 		if (code == KeyDodge) {
 			handleCooldownPress("dodge");
@@ -303,21 +319,74 @@ public class KeyHandler implements KeyListener {
 			}
 		}
 
+		// LEVEL DESIGNER EXCLUSIVE
+
+		if (gameState == GameState.LEVEL_DESIGNER) {
+			double[] willMovePlayer = {0, 0};
+
+			if (player.keys.keyPressed.get("debug1")) {
+				if (!player.keys.keyPressed.get("shift")) {
+					baseDesignerSpeed = Math.min(3, baseDesignerSpeed + 0.4);
+					updateDesignerSpeed();
+				} else {
+					baseDesignerSpeed = Math.max(0.4, baseDesignerSpeed - 0.4);
+					updateDesignerSpeed();
+				}
+				player.keys.keyPressed.put("debug1", false);
+			}
+
+			if (player.keys.keyPressed.get("up")) {
+				if (!player.keys.keyPressed.get("left") || !player.keys.keyPressed.get("right")) {
+					willMovePlayer[1] -= designerSpeed;
+				} else {
+					willMovePlayer[1] -= (designerSpeed * Math.sqrt(2) / 3);
+				}
+			}
+			if (player.keys.keyPressed.get("down")) {
+				if (!player.keys.keyPressed.get("left") || !player.keys.keyPressed.get("right")) {
+					willMovePlayer[1] += designerSpeed;
+				} else {
+					willMovePlayer[1] += designerSpeed * Math.sqrt(2) / 3;
+				}
+			}
+			if (player.keys.keyPressed.get("left")) {
+				if (!player.keys.keyPressed.get("up") || !player.keys.keyPressed.get("down")) {
+					willMovePlayer[0] -= designerSpeed;
+				} else {
+					willMovePlayer[0] -= designerSpeed * Math.sqrt(2) / 3;
+				}
+			}
+			if (player.keys.keyPressed.get("right")) {
+				willMovePlayer[0] += designerSpeed;
+			}
+
+			if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
+				movePlayer(willMovePlayer[0], willMovePlayer[1]);
+			}
+
+			if (player.keys.keyPressed.get("pause")) {
+				pauseGame();
+				player.keys.keyPressed.put("pause", false);
+			}
+		}
+
 		// DEBUG KEYS '[' AND ']'
 
-		if (player.keys.keyPressed.get("debug1")) {
+		if (gameState != GameState.LEVEL_DESIGNER) {
+			if (player.keys.keyPressed.get("debug1")) {
 
-			player.inv.addItem(createItem(1, 10));
-			player.inv.addItem(createItem(2, 12));
-			player.inv.addItem(createItem(3, 1200));
+				player.inv.addItem(createItem(1, 10));
+				player.inv.addItem(createItem(2, 12));
+				player.inv.addItem(createItem(3, 1200));
 
-			player.keys.keyPressed.put("debug1", false);
-		}
-		if (player.keys.keyPressed.get("debug2")) {
+				player.keys.keyPressed.put("debug1", false);
+			}
+			if (player.keys.keyPressed.get("debug2")) {
 
-			player.inv.clearInventory();
+				player.inv.clearInventory();
 
-			player.keys.keyPressed.put("debug2", false);
+				player.keys.keyPressed.put("debug2", false);
+			}
 		}
 	}
 }

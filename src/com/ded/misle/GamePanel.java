@@ -10,6 +10,7 @@ import java.awt.event.*;
 import java.util.List;
 
 import static com.ded.misle.GameRenderer.*;
+import static com.ded.misle.KeyHandler.updateDesignerSpeed;
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.SaveFile.saveEverything;
 
@@ -205,6 +206,9 @@ public class GamePanel extends JPanel implements Runnable {
 				GameRenderer.clearClickables();
 				GameRenderer.updateFontSizes();
 				MouseHandler.updateVariableScales();
+				if (levelDesigner) {
+					updateDesignerSpeed();
+				}
 
 				previousWidth = detectedWidth;
 				previousHeight = detectedHeight;
@@ -264,7 +268,11 @@ public class GamePanel extends JPanel implements Runnable {
 					case PLAYING, INVENTORY -> updateGame(); // Only update if in the playing state
 					case PAUSE_MENU -> {
 						if (player.keys.keyPressed.get("pause")) {
-							softGameStart();
+							if (!levelDesigner) {
+								softGameStart();
+							} else {
+								softEnterLevelDesigner();
+							}
 							player.keys.keyPressed.put("pause", false);
 						}
 					}
@@ -351,10 +359,12 @@ public class GamePanel extends JPanel implements Runnable {
 			player.attr.setLastVelocityBox(null); // Clear the last velocity box
 		}
 
-		List<Box> nearbyNonCollisionBoxes = ((BoxesHandling.getNonCollisionBoxesInRange(player.pos.getX(), player.pos.getY(), tileSize, scale, tileSize)));
-		for (Box box: nearbyNonCollisionBoxes) {
-			if (!box.getEffect().isEmpty()) {
-				Box.handleEffect(box);
+		if (!levelDesigner) {
+			List<Box> nearbyNonCollisionBoxes = ((BoxesHandling.getNonCollisionBoxesInRange(player.pos.getX(), player.pos.getY(), tileSize, scale, tileSize)));
+			for (Box box: nearbyNonCollisionBoxes) {
+				if (!box.getEffect().isEmpty()) {
+					Box.handleEffect(box);
+				}
 			}
 		}
 	}

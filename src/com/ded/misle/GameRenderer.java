@@ -161,6 +161,12 @@ public class GameRenderer {
 		gameState = GamePanel.GameState.PLAYING;
 	}
 
+	public static void softEnterLevelDesigner() {
+		previousMenu = currentMenu;
+		currentMenu = "LEVEL_DESIGNER";
+		gameState = GameState.LEVEL_DESIGNER;
+	}
+
 	public static void quitGame() {
 		GamePanel.quitGame();
 	}
