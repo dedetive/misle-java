@@ -195,6 +195,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 				// Scale based on the new dimensions
 				scale = (double) detectedWidth / 512;
+				gameScale = scale;
 				GamePanel.screenWidth = Math.min(detectedWidth, screenWidth);
 				GamePanel.screenHeight = Math.min(detectedHeight, screenHeight);
 

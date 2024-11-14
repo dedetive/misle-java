@@ -32,6 +32,7 @@ public class KeyHandler implements KeyListener {
 		player.keys.keyPressed.put("use", false);
 		player.keys.keyPressed.put("equal", false);
 		player.keys.keyPressed.put("minus", false);
+		player.keys.keyPressed.put("0", false);
 		player.keys.keyPressed.put("1", false);
 		player.keys.keyPressed.put("2", false);
 		player.keys.keyPressed.put("3", false);
@@ -56,6 +57,7 @@ public class KeyHandler implements KeyListener {
 	int KeyUse = KeyEvent.VK_Z;
 	int KeyEqual = KeyEvent.VK_EQUALS;
 	int KeyMinus = KeyEvent.VK_MINUS;
+	int Key0 = KeyEvent.VK_0;
 	int Key1 = KeyEvent.VK_1;
 	int Key2 = KeyEvent.VK_2;
 	int Key3 = KeyEvent.VK_3;
@@ -78,6 +80,9 @@ public class KeyHandler implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 
+		if (code == Key0) {
+			player.keys.keyPressed.put("0", true);
+		}
 		if (code == Key1) {
 			player.keys.keyPressed.put("1", true);
 		}
@@ -128,6 +133,9 @@ public class KeyHandler implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		int code = e.getKeyCode();
+		if (code == Key0) {
+			player.keys.keyPressed.put("0", false);
+		}
 		if (code == Key1) {
 			player.keys.keyPressed.put("1", false);
 		}
@@ -332,7 +340,8 @@ public class KeyHandler implements KeyListener {
 		// LEVEL DESIGNER EXCLUSIVE
 
 		if (gameState == GameState.LEVEL_DESIGNER) {
-			double[] willMovePlayer = {0, 0};
+
+			// Designer speed manipulation
 
 			if (player.keys.keyPressed.get("debug1")) {
 				if (!player.keys.keyPressed.get("shift")) {
@@ -344,6 +353,10 @@ public class KeyHandler implements KeyListener {
 				}
 				player.keys.keyPressed.put("debug1", false);
 			}
+
+			// Movement
+
+			double[] willMovePlayer = {0, 0};
 
 			if (player.keys.keyPressed.get("up")) {
 				if (!player.keys.keyPressed.get("left") || !player.keys.keyPressed.get("right")) {
@@ -374,10 +387,15 @@ public class KeyHandler implements KeyListener {
 				movePlayer(willMovePlayer[0], willMovePlayer[1]);
 			}
 
+			// Pause
+
 			if (player.keys.keyPressed.get("pause")) {
 				pauseGame();
 				player.keys.keyPressed.put("pause", false);
 			}
+
+			// Zooming
+
 			if (player.keys.keyPressed.get("equal")) {
 				gameScale = Math.min(8, gameScale + 0.25);
 				System.out.println(gameScale);
@@ -389,6 +407,9 @@ public class KeyHandler implements KeyListener {
 				System.out.println(gameScale);
 				updateTileSize();
 				player.keys.keyPressed.put("minus", false);
+			}
+			if (player.keys.keyPressed.get("0") && player.keys.keyPressed.get("ctrl")) {
+				gameScale = scale;
 			}
 
 		}
