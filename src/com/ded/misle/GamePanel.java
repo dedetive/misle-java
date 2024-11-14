@@ -30,11 +30,16 @@ public class GamePanel extends JPanel implements Runnable {
 	// TILES SIZE
 
 	static final int originalTileSize = 64; // 64x64 tiles
-	public static int tileSize = (int) (originalTileSize * scale) / 3;
+	public static double gameScale = scale;
+	public static int tileSize = (int) (originalTileSize * gameScale) / 3;
 	static final double maxScreenCol = 24; // Horizontal
 	static final double maxScreenRow = 13.5; // Vertical
 	static double screenWidth = maxScreenCol * tileSize;
 	static double screenHeight = maxScreenRow * tileSize;
+
+	public static void updateTileSize() {
+		tileSize = (int) (originalTileSize * gameScale) / 3;
+	}
 
 	// INITIALIZING PLAYER
 
@@ -126,7 +131,7 @@ public class GamePanel extends JPanel implements Runnable {
 			scale = (screenSize.getWidth() * 3) / (originalTileSize * maxScreenCol);
 			screenWidth = (int) screenSize.getWidth();
 			screenHeight = (int) screenSize.getHeight();
-			tileSize = (int) (originalTileSize * scale)/3;
+			updateTileSize();
 
 			if (!fullscreenMode.equals("exclusive")) {
 				window.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -193,7 +198,7 @@ public class GamePanel extends JPanel implements Runnable {
 				GamePanel.screenWidth = Math.min(detectedWidth, screenWidth);
 				GamePanel.screenHeight = Math.min(detectedHeight, screenHeight);
 
-				tileSize = (int) (originalTileSize * scale) / 3;
+				updateTileSize();
 				player.attr.setSpeedModifier(player.attr.getSpeedModifier());
 				player.attr.setWidth(tileSize);
 				player.attr.setHeight(tileSize);
@@ -354,12 +359,12 @@ public class GamePanel extends JPanel implements Runnable {
 		player.pos.setY(player.pos.getY() + y);
 		player.stats.increaseDistance(x, y);
 
-		if (player.attr.getLastVelocityBox() != null) {
-			player.attr.setEnvironmentSpeedModifier(1.0); // Reset to default speed
-			player.attr.setLastVelocityBox(null); // Clear the last velocity box
-		}
-
 		if (!levelDesigner) {
+			if (player.attr.getLastVelocityBox() != null) {
+				player.attr.setEnvironmentSpeedModifier(1.0); // Reset to default speed
+				player.attr.setLastVelocityBox(null); // Clear the last velocity box
+			}
+
 			List<Box> nearbyNonCollisionBoxes = ((BoxesHandling.getNonCollisionBoxesInRange(player.pos.getX(), player.pos.getY(), tileSize, scale, tileSize)));
 			for (Box box: nearbyNonCollisionBoxes) {
 				if (!box.getEffect().isEmpty()) {

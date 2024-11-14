@@ -7,6 +7,7 @@ import java.util.List;
 
 import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.GamePanel.tileSize;
+import static com.ded.misle.Launcher.levelDesigner;
 import static com.ded.misle.Launcher.scale;
 
 public class BoxesHandling {
@@ -286,10 +287,15 @@ public class BoxesHandling {
 	}
 
 	// Render boxes with camera offset, scale, and tileSize
-	public static void renderBoxes(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY, double playerX, double playerY, double range, double scale, int tileSize) {
-		List<Box> nearbyBoxes = getCachedBoxesInRange(11);
+	public static void renderBoxes(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY, double gameScale, int tileSize) {
+		List<Box> nearbyBoxes;
+		if (!levelDesigner) {
+			nearbyBoxes = getCachedBoxesInRange(11);
+		} else {
+			nearbyBoxes = getCachedBoxesInRange(12);
+		}
 		for (Box box : nearbyBoxes) {
-			box.draw(g2d, cameraOffsetX, cameraOffsetY, scale, tileSize, box.getBoxScaleHorizontal(), box.getBoxScaleVertical());
+			box.draw(g2d, cameraOffsetX, cameraOffsetY, gameScale, tileSize, box.getBoxScaleHorizontal(), box.getBoxScaleVertical());
 		}
 	}
 

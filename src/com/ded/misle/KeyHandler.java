@@ -30,6 +30,8 @@ public class KeyHandler implements KeyListener {
 		player.keys.keyPressed.put("shift", false);
 		player.keys.keyPressed.put("dodge", false);
 		player.keys.keyPressed.put("use", false);
+		player.keys.keyPressed.put("equal", false);
+		player.keys.keyPressed.put("minus", false);
 		player.keys.keyPressed.put("1", false);
 		player.keys.keyPressed.put("2", false);
 		player.keys.keyPressed.put("3", false);
@@ -52,6 +54,8 @@ public class KeyHandler implements KeyListener {
 	int KeyShift = KeyEvent.VK_SHIFT;
 	int KeyDodge = KeyEvent.VK_C;
 	int KeyUse = KeyEvent.VK_Z;
+	int KeyEqual = KeyEvent.VK_EQUALS;
+	int KeyMinus = KeyEvent.VK_MINUS;
 	int Key1 = KeyEvent.VK_1;
 	int Key2 = KeyEvent.VK_2;
 	int Key3 = KeyEvent.VK_3;
@@ -171,6 +175,12 @@ public class KeyHandler implements KeyListener {
 		}
 		if (code == KeyShift) {
 			player.keys.keyPressed.put("shift", false);
+		}
+		if (code == KeyEqual) {
+			player.keys.keyPressed.put("equal", true);
+		}
+		if (code == KeyMinus) {
+			player.keys.keyPressed.put("minus", true);
 		}
 		if (code == KeyDodge) {
 			handleCooldownPress("dodge");
@@ -368,6 +378,19 @@ public class KeyHandler implements KeyListener {
 				pauseGame();
 				player.keys.keyPressed.put("pause", false);
 			}
+			if (player.keys.keyPressed.get("equal")) {
+				gameScale = Math.min(8, gameScale + 0.25);
+				System.out.println(gameScale);
+				updateTileSize();
+				player.keys.keyPressed.put("equal", false);
+			}
+			if (player.keys.keyPressed.get("minus")) {
+				gameScale = Math.max(0.75, gameScale - 0.25);
+				System.out.println(gameScale);
+				updateTileSize();
+				player.keys.keyPressed.put("minus", false);
+			}
+
 		}
 
 		// DEBUG KEYS '[' AND ']'

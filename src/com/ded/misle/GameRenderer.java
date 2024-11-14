@@ -432,7 +432,7 @@ public class GameRenderer {
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		// Draw game components
-		BoxesHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), player.pos.getX(), player.pos.getY(), screenWidth, scale, tileSize);
+		BoxesHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), scale, tileSize);
 
 		// Player position adjustments
 		int playerScreenX = (int) (player.pos.getX() - player.pos.getCameraOffsetX());
@@ -699,13 +699,13 @@ public class GameRenderer {
 
 	public static void renderLevelDesigner(Graphics g, JPanel panel, MouseHandler mouseHandler) {
 		Graphics2D g2d = (Graphics2D) g;
-		double scaleByScreenSize = scale / 3.75;
+		double scaleByScreenSize = gameScale / 3.75;
 
 		// ANTI-ALIASING
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		// Draw game components
-		BoxesHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), player.pos.getX(), player.pos.getY(), screenWidth, scale, tileSize);
+		BoxesHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), gameScale, tileSize);
 
 		g2d.dispose();
 	}
