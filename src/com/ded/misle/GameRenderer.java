@@ -32,10 +32,12 @@ public class GameRenderer {
 	private static String previousMenu;
 	private static String currentMenu;
 
-	private static final String gameVersion = "v0.1.4-alpha";
+	private static final String gameVersion = "v0.1.5-alpha";
 
 	private static long startTime;
 	private static final int LOADING_DURATION = 500;
+
+	public static boolean levelDesignerGrid;
 
 	private static String selectedItemName;
 	private static Point selectedItemNamePosition;
@@ -697,19 +699,6 @@ public class GameRenderer {
 		}
 	}
 
-	public static void renderLevelDesigner(Graphics g, JPanel panel, MouseHandler mouseHandler) {
-		Graphics2D g2d = (Graphics2D) g;
-		double scaleByScreenSize = gameScale / 3.75;
-
-		// ANTI-ALIASING
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-		// Draw game components
-		BoxesHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), gameScale, tileSize);
-
-		g2d.dispose();
-	}
-
 	public static void drawRotatedImage(Graphics2D g2d, Image image, double x, double y, int width, int height, double angle) {
 		// Calculate the rotation center based on the desired width and height
 		double centerX = x + width / 2.0;
@@ -951,5 +940,31 @@ public class GameRenderer {
 		int slotSize = (int) (30 * scale);
 
 		g2d.drawImage(draggedItem.getIcon(), mouseHandler.getMouseX(), mouseHandler.getMouseY(), slotSize, slotSize, null);
+	}
+
+	public static void renderLevelDesigner(Graphics g, JPanel panel, MouseHandler mouseHandler) {
+		Graphics2D g2d = (Graphics2D) g;
+		double scaleByScreenSize = gameScale / 3.75;
+
+		// ANTI-ALIASING
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+		// Draw game components
+		BoxesHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), gameScale, tileSize);
+
+		if (levelDesignerGrid) {
+			int timesToRepeatHorizontal = panel.getWidth() / tileSize;
+			int timesToRepeatVertical = panel.getHeight() / tileSize;
+
+			g2d.setColor(Color.black);
+			for (int i = 1; i < timesToRepeatHorizontal; i++) {
+				g2d.drawLine(tileSize * i, 0, tileSize * i, panel.getHeight());
+			}
+			for (int j = 1; j < timesToRepeatVertical; j++) {
+				g2d.drawLine(0, tileSize * j, panel.getWidth(), tileSize * j);
+			}
+		}
+
+		g2d.dispose();
 	}
 }

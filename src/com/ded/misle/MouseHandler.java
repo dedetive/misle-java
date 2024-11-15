@@ -162,7 +162,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 	public void updateMouse() {
 		switch (gameState) {
-			case GamePanel.GameState.PLAYING:
+			case GameState.PLAYING:
 				if (isMousePressed()) {
 					boolean foundWhereClicked = false;
 
@@ -175,7 +175,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 					}
 				}
 				break;
-			case GamePanel.GameState.INVENTORY:
+			case GameState.INVENTORY:
 				if (isMousePressed()) {
 					if (getHoveredSlot()[0] >= 0 && getHoveredSlot()[1] >= 0) {
 						if (player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]) != null) {
@@ -188,6 +188,11 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 							player.inv.dropDraggedItem();
 						}
 					}
+				}
+				break;
+			case GameState.LEVEL_DESIGNER:
+				if (isMousePressed()) {
+					// detect box in click position
 				}
 				break;
 		}

@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import static com.ded.misle.GamePanel.*;
+import static com.ded.misle.GameRenderer.levelDesignerGrid;
 import static com.ded.misle.GameRenderer.pauseGame;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.items.Item.createItem;
@@ -30,9 +31,10 @@ public class KeyHandler implements KeyListener {
 		player.keys.keyPressed.put("shift", false);
 		player.keys.keyPressed.put("dodge", false);
 		player.keys.keyPressed.put("use", false);
-		player.keys.keyPressed.put("equal", false);
-		player.keys.keyPressed.put("minus", false);
-		player.keys.keyPressed.put("0", false);
+		player.keys.keyPressed.put("equal", false); // LEVEL DESIGNER EXCLUSIVE
+		player.keys.keyPressed.put("minus", false); // LEVEL DESIGNER EXCLUSIVE
+		player.keys.keyPressed.put("grid", false);  // LEVEL DESIGNER EXCLUSIVE
+		player.keys.keyPressed.put("0", false);     // LEVEL DESIGNER EXCLUSIVE
 		player.keys.keyPressed.put("1", false);
 		player.keys.keyPressed.put("2", false);
 		player.keys.keyPressed.put("3", false);
@@ -57,6 +59,7 @@ public class KeyHandler implements KeyListener {
 	int KeyUse = KeyEvent.VK_Z;
 	int KeyEqual = KeyEvent.VK_EQUALS;
 	int KeyMinus = KeyEvent.VK_MINUS;
+	int KeyGrid = KeyEvent.VK_G;
 	int Key0 = KeyEvent.VK_0;
 	int Key1 = KeyEvent.VK_1;
 	int Key2 = KeyEvent.VK_2;
@@ -189,6 +192,9 @@ public class KeyHandler implements KeyListener {
 		}
 		if (code == KeyMinus) {
 			player.keys.keyPressed.put("minus", true);
+		}
+		if (code == KeyGrid) {
+			player.keys.keyPressed.put("grid", true);
 		}
 		if (code == KeyDodge) {
 			handleCooldownPress("dodge");
@@ -398,20 +404,21 @@ public class KeyHandler implements KeyListener {
 
 			if (player.keys.keyPressed.get("equal")) {
 				gameScale = Math.min(8, gameScale + 0.25);
-				System.out.println(gameScale);
 				updateTileSize();
 				player.keys.keyPressed.put("equal", false);
 			}
 			if (player.keys.keyPressed.get("minus")) {
 				gameScale = Math.max(0.75, gameScale - 0.25);
-				System.out.println(gameScale);
 				updateTileSize();
 				player.keys.keyPressed.put("minus", false);
 			}
 			if (player.keys.keyPressed.get("0") && player.keys.keyPressed.get("ctrl")) {
 				gameScale = scale;
 			}
-
+			if (player.keys.keyPressed.get("grid")) {
+				levelDesignerGrid = !levelDesignerGrid;
+				player.keys.keyPressed.put("grid", false);
+			}
 		}
 
 		// DEBUG KEYS '[' AND ']'
