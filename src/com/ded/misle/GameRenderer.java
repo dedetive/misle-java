@@ -44,6 +44,8 @@ public class GameRenderer {
 	private static long itemNameDisplayStartTime;
 	private static double textShadow = 1 * scale;
 
+	private static final Color backgroundColor = new Color(76, 98, 76);
+
 	private static final List<String> floatingText = new ArrayList<>();
 	private static final List<Point> floatingTextPosition = new ArrayList<>();
 	private static final List<Color> floatingTextColor = new ArrayList<>();
@@ -100,7 +102,14 @@ public class GameRenderer {
 		int centerX = (int) ((screenWidth - textWidth) / 2);
 		int textY = (int) (182 * scaleByScreenSize);
 		g2d.setColor(Color.black);
-		g2d.drawString(titleText, (int) (centerX + textShadow * 2), (int) (textY + textShadow * 2));
+		g2d.drawString(titleText, (int) (centerX - textShadow), textY); // Left
+		g2d.drawString(titleText, (int) (centerX + textShadow), textY); // Right
+		g2d.drawString(titleText, centerX, (int) (textY - textShadow)); // Up
+		g2d.drawString(titleText, centerX, (int) (textY + textShadow)); // Down
+		g2d.drawString(titleText, (int) (centerX - textShadow), (int) (textY - textShadow)); // Left-up corner
+		g2d.drawString(titleText, (int) (centerX + textShadow), (int) (textY - textShadow)); // Right-up corner
+		g2d.drawString(titleText, (int) (centerX - textShadow), (int) (textY + textShadow)); // Left-down corner
+		g2d.drawString(titleText, (int) (centerX - textShadow), (int) (textY - textShadow)); // Right-down corner
 		g2d.setColor(new Color(233, 233, 233));
 		g2d.drawString(titleText, centerX, textY);
 	}
@@ -248,7 +257,7 @@ public class GameRenderer {
 
 			// BACKGROUND
 
-			g2d.setColor(new Color(48, 48, 48));
+			g2d.setColor(backgroundColor);
 			g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
 
 			// MENU ITSELF
@@ -314,7 +323,7 @@ public class GameRenderer {
 
 			// BACKGROUND
 
-			g2d.setColor(new Color(48, 48, 48));
+			g2d.setColor(backgroundColor);
 			g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
 
 			// MENU ITSELF
@@ -366,7 +375,7 @@ public class GameRenderer {
 
 			// BACKGROUND
 
-			g2d.setColor(new Color(48, 48, 48));
+			g2d.setColor(backgroundColor);
 			g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
 
 			// MENU ITSELF
@@ -396,7 +405,7 @@ public class GameRenderer {
 
 			// BACKGROUND
 
-			g2d.setColor(new Color(48, 48, 48));
+			g2d.setColor(backgroundColor);
 			g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
 
 			// MENU ITSELF
