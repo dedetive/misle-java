@@ -68,7 +68,10 @@ public class GameRenderer {
 	}
 
 	private static void createButton(Rectangle button, String text, Runnable action, JPanel panel, Graphics2D g2d, double scaleByScreenSize) {
+		// BUTTON
 		g2d.fillRoundRect(button.x, button.y, button.width, button.height, (int) (69 * scaleByScreenSize), (int) (69 * scaleByScreenSize));
+
+		// TEXT SHADOW
 		g2d.setFont(ubuntuFont44);
 		FontMetrics fm = g2d.getFontMetrics();
 		String buttonText = text;
@@ -77,11 +80,29 @@ public class GameRenderer {
 		int textX = button.x + (button.width - textWidth) / 2;
 		int textY = button.y + (button.height + textHeight) / 2 - fm.getDescent() + (int) (2 * scale);
 		g2d.setColor(Color.black);
-		g2d.drawString(buttonText, (int) (textX + textShadow), (int) (textY + textShadow));
+		g2d.drawString(buttonText, (int) (textX - textShadow), textY); // Left
+		g2d.drawString(buttonText, (int) (textX + textShadow), textY); // Right
+		g2d.drawString(buttonText, textX, (int) (textY - textShadow)); // Up
+		g2d.drawString(buttonText, textX, (int) (textY + textShadow)); // Down
+
+		// ACTUAL TEXT
 		g2d.setColor(new Color(225, 225, 225));
 		g2d.drawString(buttonText, textX, textY);
 
 		addClickable(button, action, panel);
+	}
+
+	private static void createTitle(String text, Graphics2D g2d, double scaleByScreenSize) {
+		g2d.setFont(comfortaaFont96);
+		FontMetrics fm = g2d.getFontMetrics();
+		String titleText = LanguageManager.getText(text);
+		int textWidth = fm.stringWidth(titleText);
+		int centerX = (int) ((screenWidth - textWidth) / 2);
+		int textY = (int) (182 * scaleByScreenSize);
+		g2d.setColor(Color.black);
+		g2d.drawString(titleText, (int) (centerX + textShadow * 2), (int) (textY + textShadow * 2));
+		g2d.setColor(new Color(233, 233, 233));
+		g2d.drawString(titleText, centerX, textY);
 	}
 
 	private static final List<Object[]> clickables = new ArrayList<>();
@@ -234,16 +255,7 @@ public class GameRenderer {
 
 			// Centering the title
 
-			g2d.setFont(comfortaaFont96);
-			FontMetrics fm = g2d.getFontMetrics();
-			String titleText = LanguageManager.getText("misle");
-			int textWidth = fm.stringWidth(titleText);
-			int centerX = (int) ((screenWidth - textWidth) / 2);
-			int textY = (int) (182 * scaleByScreenSize);
-			g2d.setColor(Color.black);
-			g2d.drawString(titleText, (int) (centerX + textShadow * 2), (int) (textY + textShadow * 2));
-			g2d.setColor(new Color(233, 233, 233));
-			g2d.drawString(titleText, centerX, textY);
+			createTitle("misle", g2d, scaleByScreenSize);
 
 			// Play button
 
@@ -307,16 +319,7 @@ public class GameRenderer {
 
 			// MENU ITSELF
 
-			g2d.setFont(comfortaaFont96);
-			FontMetrics fm = g2d.getFontMetrics();
-			String titleText = LanguageManager.getText("pause_menu_paused");
-			int textWidth = fm.stringWidth(titleText);
-			int centerX = (int) ((screenWidth - textWidth) / 2);
-			int textY = (int) (182 * scaleByScreenSize);
-			g2d.setColor(Color.black);
-			g2d.drawString(titleText, (int) (centerX + textShadow), (int) (textY + textShadow));
-			g2d.setColor(new Color(233, 233, 233));
-			g2d.drawString(titleText, centerX, textY);
+			createTitle("pause_menu_paused", g2d, scaleByScreenSize);
 
 			// Resume button
 
@@ -368,16 +371,7 @@ public class GameRenderer {
 
 			// MENU ITSELF
 
-			g2d.setFont(comfortaaFont96);
-			FontMetrics fm = g2d.getFontMetrics();
-			String titleText = LanguageManager.getText("options_menu_options");
-			int textWidth = fm.stringWidth(titleText);
-			int centerX = (int) ((screenWidth - textWidth) / 2);
-			int textY = (int) (182 * scaleByScreenSize);
-			g2d.setColor(Color.black);
-			g2d.drawString(titleText, (int) (centerX + textShadow), (int) (textY + textShadow));
-			g2d.setColor(new Color(233, 233, 233));
-			g2d.drawString(titleText, centerX, textY);
+			createTitle("options_menu_options", g2d, scaleByScreenSize);
 
 			// Go back button
 
@@ -407,16 +401,12 @@ public class GameRenderer {
 
 			// MENU ITSELF
 
+			createTitle("loading_menu_loading", g2d, scaleByScreenSize);
 			g2d.setFont(comfortaaFont96);
 			FontMetrics fm = g2d.getFontMetrics();
 			String titleText = LanguageManager.getText("loading_menu_loading");
-			int textWidth = fm.stringWidth(titleText);
-			int centerX = (int) ((screenWidth - textWidth) / 2);
+			fm.stringWidth(titleText);
 			int textY = (int) (182 * scaleByScreenSize);
-			g2d.setColor(Color.black);
-			g2d.drawString(titleText, (int) (centerX + textShadow), (int) (textY + textShadow));
-			g2d.setColor(new Color(233, 233, 233));
-			g2d.drawString(titleText, centerX, textY);
 
 			// Progress bar
 
@@ -433,8 +423,8 @@ public class GameRenderer {
 
 			g2d.setFont(ubuntuFont35);
 			FontMetrics percentageFm = g2d.getFontMetrics();
-			textWidth = percentageFm.stringWidth(percentage); // Use the new font metrics for percentage
-			centerX = (int) ((screenWidth - textWidth) / 2);
+			int textWidth = percentageFm.stringWidth(percentage); // Use the new font metrics for percentage
+			int centerX = (int) ((screenWidth - textWidth) / 2);
 			textY = (int) ((progressBarY) - 20 * scaleByScreenSize);
 			g2d.setColor(Color.black);
 			g2d.drawString(percentage, (int) (centerX + textShadow), (int) (textY + textShadow));
@@ -668,16 +658,7 @@ public class GameRenderer {
 		g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
 
 		// Inventory title
-		g2d.setFont(comfortaaFont96);
-		FontMetrics fm = g2d.getFontMetrics();
-		String titleText = LanguageManager.getText("inventory_menu_inventory");
-		int textWidth = fm.stringWidth(titleText);
-		int centerX = (int) ((screenWidth - textWidth) / 2);
-		int textY = (int) (182 * scaleByScreenSize);g2d.setColor(Color.black);
-		g2d.setColor(Color.black);
-		g2d.drawString(titleText, (int) (centerX + textShadow), (int) (textY + textShadow));
-		g2d.setColor(new Color(233, 233, 233));
-		g2d.drawString(titleText, centerX, textY);
+		createTitle("inventory_menu_inventory", g2d, scaleByScreenSize);
 
 		// Slot dimensions and spacing
 		int slotSize = (int) (30 * scale);
@@ -710,8 +691,8 @@ public class GameRenderer {
 					int itemCount = item.getCount();
 					if (itemCount > 1) {
 						g2d.setFont(itemCountFont);
-						fm = g2d.getFontMetrics();
-						textWidth = fm.stringWidth(Integer.toString(itemCount));
+						FontMetrics fm = g2d.getFontMetrics();
+						int textWidth = fm.stringWidth(Integer.toString(itemCount));
 						int textX = slotX - textWidth + slotSize;
 						int countY = slotY + slotSize;
 						g2d.setColor(Color.black);
