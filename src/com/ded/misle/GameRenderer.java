@@ -42,6 +42,7 @@ public class GameRenderer {
 	private static String selectedItemName;
 	private static Point selectedItemNamePosition;
 	private static long itemNameDisplayStartTime;
+	private static double textShadow = 1 * scale;
 
 	private static final List<String> floatingText = new ArrayList<>();
 	private static final List<Point> floatingTextPosition = new ArrayList<>();
@@ -62,11 +63,12 @@ public class GameRenderer {
 		basicFont40 = FontManager.loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));
 		itemCountFont = FontManager.loadFont("/fonts/Ubuntu-Regular.ttf", (float) (50 * scale / 3.75));
 		ubuntuFont44 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
+
+		textShadow = 1 * scale;
 	}
 
 	private static void createButton(Rectangle button, String text, Runnable action, JPanel panel, Graphics2D g2d, double scaleByScreenSize) {
 		g2d.fillRoundRect(button.x, button.y, button.width, button.height, (int) (69 * scaleByScreenSize), (int) (69 * scaleByScreenSize));
-		g2d.setColor(new Color(0, 0, 0));
 		g2d.setFont(ubuntuFont44);
 		FontMetrics fm = g2d.getFontMetrics();
 		String buttonText = text;
@@ -74,6 +76,9 @@ public class GameRenderer {
 		int textHeight = fm.getAscent();
 		int textX = button.x + (button.width - textWidth) / 2;
 		int textY = button.y + (button.height + textHeight) / 2 - fm.getDescent() + (int) (2 * scale);
+		g2d.setColor(Color.black);
+		g2d.drawString(buttonText, (int) (textX + textShadow), (int) (textY + textShadow));
+		g2d.setColor(new Color(225, 225, 225));
 		g2d.drawString(buttonText, textX, textY);
 
 		addClickable(button, action, panel);
@@ -229,13 +234,15 @@ public class GameRenderer {
 
 			// Centering the title
 
-			g2d.setColor(new Color(233, 233, 233));
 			g2d.setFont(comfortaaFont96);
 			FontMetrics fm = g2d.getFontMetrics();
 			String titleText = LanguageManager.getText("misle");
 			int textWidth = fm.stringWidth(titleText);
 			int centerX = (int) ((screenWidth - textWidth) / 2);
 			int textY = (int) (182 * scaleByScreenSize);
+			g2d.setColor(Color.black);
+			g2d.drawString(titleText, (int) (centerX + textShadow * 2), (int) (textY + textShadow * 2));
+			g2d.setColor(new Color(233, 233, 233));
 			g2d.drawString(titleText, centerX, textY);
 
 			// Play button
@@ -277,8 +284,10 @@ public class GameRenderer {
 
 			// Version
 
-			g2d.setColor(new Color(217, 217, 217));
 			g2d.setFont(basicFont40);
+			g2d.setColor(Color.black);
+			g2d.drawString(gameVersion, (int) (1640 * scaleByScreenSize + textShadow), (int) (1010* Math.pow(scaleByScreenSize, 1.04) + textShadow));
+			g2d.setColor(new Color(217, 217, 217));
 			g2d.drawString(gameVersion, (int) (1640 * scaleByScreenSize), (int) (1010* Math.pow(scaleByScreenSize, 1.04)));
 		}
 	}
@@ -298,13 +307,15 @@ public class GameRenderer {
 
 			// MENU ITSELF
 
-			g2d.setColor(new Color(233, 233, 233));
 			g2d.setFont(comfortaaFont96);
 			FontMetrics fm = g2d.getFontMetrics();
 			String titleText = LanguageManager.getText("pause_menu_paused");
 			int textWidth = fm.stringWidth(titleText);
 			int centerX = (int) ((screenWidth - textWidth) / 2);
 			int textY = (int) (182 * scaleByScreenSize);
+			g2d.setColor(Color.black);
+			g2d.drawString(titleText, (int) (centerX + textShadow), (int) (textY + textShadow));
+			g2d.setColor(new Color(233, 233, 233));
 			g2d.drawString(titleText, centerX, textY);
 
 			// Resume button
@@ -357,13 +368,15 @@ public class GameRenderer {
 
 			// MENU ITSELF
 
-			g2d.setColor(new Color(233, 233, 233));
 			g2d.setFont(comfortaaFont96);
 			FontMetrics fm = g2d.getFontMetrics();
 			String titleText = LanguageManager.getText("options_menu_options");
 			int textWidth = fm.stringWidth(titleText);
 			int centerX = (int) ((screenWidth - textWidth) / 2);
 			int textY = (int) (182 * scaleByScreenSize);
+			g2d.setColor(Color.black);
+			g2d.drawString(titleText, (int) (centerX + textShadow), (int) (textY + textShadow));
+			g2d.setColor(new Color(233, 233, 233));
 			g2d.drawString(titleText, centerX, textY);
 
 			// Go back button
@@ -394,13 +407,15 @@ public class GameRenderer {
 
 			// MENU ITSELF
 
-			g2d.setColor(new Color(233, 233, 233));
 			g2d.setFont(comfortaaFont96);
 			FontMetrics fm = g2d.getFontMetrics();
 			String titleText = LanguageManager.getText("loading_menu_loading");
 			int textWidth = fm.stringWidth(titleText);
 			int centerX = (int) ((screenWidth - textWidth) / 2);
 			int textY = (int) (182 * scaleByScreenSize);
+			g2d.setColor(Color.black);
+			g2d.drawString(titleText, (int) (centerX + textShadow), (int) (textY + textShadow));
+			g2d.setColor(new Color(233, 233, 233));
 			g2d.drawString(titleText, centerX, textY);
 
 			// Progress bar
@@ -416,12 +431,14 @@ public class GameRenderer {
 			g2d.setColor(new Color(100, 200, 100));
 			g2d.fillRect((int) (660 * scaleByScreenSize), progressBarY, progressBarWidth, progressBarHeight);
 
-			g2d.setColor(new Color(191, 191, 191));
 			g2d.setFont(ubuntuFont35);
 			FontMetrics percentageFm = g2d.getFontMetrics();
 			textWidth = percentageFm.stringWidth(percentage); // Use the new font metrics for percentage
 			centerX = (int) ((screenWidth - textWidth) / 2);
 			textY = (int) ((progressBarY) - 20 * scaleByScreenSize);
+			g2d.setColor(Color.black);
+			g2d.drawString(percentage, (int) (centerX + textShadow), (int) (textY + textShadow));
+			g2d.setColor(new Color(191, 191, 191));
 			g2d.drawString(percentage, centerX, textY);
 		}
 	}
@@ -566,11 +583,13 @@ public class GameRenderer {
 				int itemCount = item.getCount();
 				if (itemCount > 1) {
 					g2d.setFont(itemCountFont);
-					g2d.setColor(Color.white);
 					FontMetrics fm = g2d.getFontMetrics();
 					int textWidth = fm.stringWidth(Integer.toString(itemCount));
 					int textX = (int) (slotX - textWidth + slotWidth);
 					int textY = (int) (slotY + 8 * slotHeight / 9);
+					g2d.setColor(Color.black);
+					g2d.drawString(Integer.toString(itemCount), (int) (textX + textShadow), (int) (textY + textShadow));
+					g2d.setColor(Color.white);
 					g2d.drawString(Integer.toString(itemCount), textX, textY);
 				}
 			}
@@ -620,13 +639,15 @@ public class GameRenderer {
 			long currentTime = System.currentTimeMillis();
 			if (currentTime - itemNameDisplayStartTime < 5000) {
 				g2d.setFont(ubuntuFont35);
-				g2d.setColor(player.inv.getSelectedItem().getNameColor());
 				FontMetrics fm = g2d.getFontMetrics();
 				int textWidth = fm.stringWidth(selectedItemName);
 
 				int textX = selectedItemNamePosition.x - textWidth / 2;
 				int textY = selectedItemNamePosition.y;
 
+				g2d.setColor(Color.black);
+				g2d.drawString(selectedItemName, (int) (textX + textShadow), (int) (textY + textShadow));
+				g2d.setColor(player.inv.getSelectedItem().getNameColor());
 				g2d.drawString(selectedItemName, textX, textY);
 			} else {
 				// Clear the selected item name after 5 seconds
@@ -647,13 +668,15 @@ public class GameRenderer {
 		g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
 
 		// Inventory title
-		g2d.setColor(new Color(233, 233, 233));
 		g2d.setFont(comfortaaFont96);
 		FontMetrics fm = g2d.getFontMetrics();
 		String titleText = LanguageManager.getText("inventory_menu_inventory");
 		int textWidth = fm.stringWidth(titleText);
 		int centerX = (int) ((screenWidth - textWidth) / 2);
-		int textY = (int) (182 * scaleByScreenSize);
+		int textY = (int) (182 * scaleByScreenSize);g2d.setColor(Color.black);
+		g2d.setColor(Color.black);
+		g2d.drawString(titleText, (int) (centerX + textShadow), (int) (textY + textShadow));
+		g2d.setColor(new Color(233, 233, 233));
 		g2d.drawString(titleText, centerX, textY);
 
 		// Slot dimensions and spacing
@@ -687,11 +710,13 @@ public class GameRenderer {
 					int itemCount = item.getCount();
 					if (itemCount > 1) {
 						g2d.setFont(itemCountFont);
-						g2d.setColor(Color.white);
 						fm = g2d.getFontMetrics();
 						textWidth = fm.stringWidth(Integer.toString(itemCount));
 						int textX = slotX - textWidth + slotSize;
 						int countY = slotY + slotSize;
+						g2d.setColor(Color.black);
+						g2d.drawString(Integer.toString(itemCount), (int) (textX + textShadow), (int) (countY + textShadow));
+						g2d.setColor(Color.white);
 						g2d.drawString(Integer.toString(itemCount), textX, countY);
 					}
 				}
@@ -851,30 +876,46 @@ public class GameRenderer {
 		g2d.fillPolygon(xPoints, yPoints, 3);
 
 		// Draw text within tooltip
-		g2d.setColor(hoveredItem.getNameColor());
+
+		// Item name
+
 		int textX = tooltipX + 10;
 		int textY = tooltipY + lineHeight;
-
+		g2d.setColor(Color.black);
+		g2d.drawString(itemName, (int) (textX + textShadow), (int) (textY + textShadow));
 		g2d.setColor(hoveredItem.getNameColor());
 		g2d.drawString(itemName, textX, textY);
+
+		// Item count
 		int itemNameWidth = fm.stringWidth(itemName);
+		g2d.setColor(Color.black);
+		g2d.drawString(itemCount, (int) (textX + itemNameWidth + textShadow), (int) (textY + textShadow));
 		g2d.setColor(Color.decode("#FFFFFF"));
 		g2d.drawString(itemCount, textX + itemNameWidth, textY);
 
 		textY += lineHeight;
 
+		// Item type
+		g2d.setColor(Color.black);
+		g2d.drawString(itemType, (int) (textX + textShadow), (int) (textY + textShadow));
 		g2d.setColor(Color.decode("#E0DE9B"));
 		g2d.drawString(itemType, textX, textY);
 		textY += lineHeight;
 
-		g2d.setColor(Color.decode("#00A2FF"));
+		// Item effect
 		for (String line : wrappedEffect) {
+			g2d.setColor(Color.black);
+			g2d.drawString(line, (int) (textX + textShadow), (int) (textY + textShadow));
+			g2d.setColor(Color.decode("#00A2FF"));
 			g2d.drawString(line, textX, textY);
 			textY += lineHeight;
 		}
 
-		g2d.setColor(Color.decode("#A0A0A0"));
+		// Item description
 		for (String line : wrappedDescription) {
+			g2d.setColor(Color.black);
+			g2d.drawString(line, (int) (textX + textShadow), (int) (textY + textShadow));
+			g2d.setColor(Color.decode("#A0A0A0"));
 			g2d.drawString(line, textX, textY);
 			textY += lineHeight;
 		}
@@ -928,8 +969,10 @@ public class GameRenderer {
 
 	private static void drawFloatingText(Graphics2D g2d) {
 		for (int i = 0; i < floatingText.size(); i++) {
-			g2d.setColor(floatingTextColor.get(i));
 			g2d.setFont(basicFont40);
+			g2d.setColor(Color.black);
+			g2d.drawString(floatingText.get(i), (int) ((floatingTextPosition.get(i).x) * scale + textShadow), (int) ((floatingTextPosition.get(i).y) * scale + textShadow));
+			g2d.setColor(floatingTextColor.get(i));
 			g2d.drawString(floatingText.get(i), (int) (floatingTextPosition.get(i).x * scale), (int) (floatingTextPosition.get(i).y * scale));
 		}
 	}
