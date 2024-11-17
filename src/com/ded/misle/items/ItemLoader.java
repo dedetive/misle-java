@@ -95,6 +95,7 @@ public class ItemLoader {
 			}
 
 			if (name != null && type != null) {
+				countLimit = Math.max(countLimit, 1);
 				items.add(new ItemData(itemId, name, countLimit, rarity, type, resourceID, attributes, bundleWeights, bundleCount, nameColor)); // Store ItemData instead
 			}
 		}

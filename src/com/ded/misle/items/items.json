@@ -172,7 +172,7 @@
     "type": "",
     "subtype": "",
     "kind": "",
-    "bundles": "",
+    "bundles": "none|0|0",
     "nameColor": "#FFFFFF"
   }
 ]
