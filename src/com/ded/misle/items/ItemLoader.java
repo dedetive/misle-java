@@ -35,7 +35,7 @@ public class ItemLoader {
 			block = block.replace("{", "").replace("}", "").replace("\"", "");
 			int itemId = 0;
 			String name = null;
-			int countLimit = 0;
+			int countLimit = 1;
 			String rarity = null;
 			String type = null;
 			int resourceID = 0;
@@ -95,7 +95,6 @@ public class ItemLoader {
 			}
 
 			if (name != null && type != null) {
-				countLimit = Math.max(countLimit, 1);
 				items.add(new ItemData(itemId, name, countLimit, rarity, type, resourceID, attributes, bundleWeights, bundleCount, nameColor)); // Store ItemData instead
 			}
 		}
