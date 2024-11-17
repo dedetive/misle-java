@@ -293,6 +293,7 @@ public class GamePanel extends JPanel implements Runnable {
 						mouseHandler.updateMouse();
 					}
 					case null, default -> {
+						keyH.updateKeys(mouseHandler);
 					}
 				}
 				delta--;
