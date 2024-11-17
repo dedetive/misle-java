@@ -206,7 +206,7 @@ public class Inventory {
 
 						switch (getSelectedItem().getAttributes().get("subtype").toString()) {
 							case "heal":
-								double healAmountValue = Double.parseDouble(Integer.toString((Integer) getSelectedItem().getAttributes().get("healingAmount")));
+								double healAmountValue = Double.parseDouble(Integer.toString((Integer) getSelectedItem().getAttributes().get("heal")));
 								if (healAmountValue == -1) {
 									healAmountValue = player.attr.getMaxHP();
 								}
@@ -220,7 +220,7 @@ public class Inventory {
 								}
 								break;
 							case "entropy":
-								double entropyAmountValue = Double.parseDouble(Integer.toString((Integer) getSelectedItem().getAttributes().get("entropyRestore")));
+								double entropyAmountValue = Double.parseDouble(Integer.toString((Integer) getSelectedItem().getAttributes().get("entropy")));
 								String formattedEntropyAmount = df.format(player.attr.calculateEntropyGain(entropyAmountValue));
 
 								createFloatingText("+" + formattedEntropyAmount, Color.decode("#A0A0FF"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
