@@ -433,9 +433,9 @@ public class KeyHandler implements KeyListener {
 		if (gameState != GameState.LEVEL_DESIGNER) {
 			if (player.keys.keyPressed.get("debug1")) {
 
-				player.inv.addItem(createItem(1, 10));
-				player.inv.addItem(createItem(2, 12));
-				player.inv.addItem(createItem(3, 1200));
+				player.inv.addItem(createItem(1));
+				player.inv.addItem(createItem(2));
+				player.inv.addItem(createItem(3, 20));
 
 				player.keys.keyPressed.put("debug1", false);
 			}
