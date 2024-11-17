@@ -125,8 +125,6 @@ public class Item {
 		try {
 			return new Item(id, Count); // Attempt to create an Item
 		} catch (Exception e) {
-			// Handle the exception
-			System.err.println(e.getMessage());
 			return null; // or return a default Item
 		}
 	}
