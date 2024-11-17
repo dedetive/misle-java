@@ -1,5 +1,9 @@
 # Misle
 
+### About the game
+
+This is a game of a project I've had for over two years now. It used to be just a world I built for the sake of creating stories and writing a book. However, my writing hobby had died down and I couldn't keep up writing not nearly as much as I'd like, so I had the idea to create a game about it. The lore I have planned is huge, but I'm a new developer, so the lore may have to wait until I'm more used to writing code and not lexical words. Up until now, I've tried to make the systems work as intended and create new features, until I reach a point I can safely make the game itself. I'd like to thank eveyrone who cares and has read this far, as I wholeheartedly agree the community is crucial to the development of things. Thank you, and take care.
+
 ### Prerequisites
 
 - **Java Development Kit (JDK) version**: Requires JDK 21 or higher.
