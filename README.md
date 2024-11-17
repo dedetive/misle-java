@@ -25,8 +25,14 @@ Alternatively, you can use your preferred IDE with a compiler to run the code au
 ### Controls
 
 - **Arrow keys:** Move the player (white square).
-- **Escape key:** Pause and unpause the game.
-- **I:** Open inventory.
+- **Escape key:** Pause and unpause.
+- **E:** Open inventory.
+- **Z** or **left-click:** Use held item.
+- **Left-click in the inventory**: Move item around. Click again to fill empty slot with the selected item or swap with a filled slot. Click anywhere out of the inventory to drop held item.
+- **C:** Dodge (become immune to damage for a fraction of time).
+- **1-7** or **left-click an inventory bar slot:** Select slot.
+- **Q:** Drop held item or hovered item in inventory.
+- **Ctrl + Q:** Drop the entire held stack or hovered stack in inventory.
 - **\[** and **\]:** Test keys with functionality that varies by version; these can be customized in KeyHandler.java at the end of the updateKeys() method.
 
 ### Settings
