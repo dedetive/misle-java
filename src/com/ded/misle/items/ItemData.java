@@ -12,9 +12,10 @@ public class ItemData {
 	private final int resourceID;
 	private final Map<String, Object> attributes;
 	private final Map<String, Integer> bundles;
+	private final Map<String, Integer> bundleCount;
 	private final Color nameColor;
 
-	public ItemData(int id, String name, int countLimit, String rarity, String type, int resourceID, Map<String, Object> attributes, Map<String, Integer> bundles, Color nameColor) {
+	public ItemData(int id, String name, int countLimit, String rarity, String type, int resourceID, Map<String, Object> attributes, Map<String, Integer> bundles, Map<String, Integer> bundleCount, Color nameColor) {
 		this.id = id;
 		this.name = name;
 		this.countLimit = countLimit;
@@ -23,6 +24,7 @@ public class ItemData {
 		this.resourceID = resourceID;
 		this.attributes = attributes;
 		this.bundles = bundles;
+		this.bundleCount = bundleCount;
 		this.nameColor = nameColor;
 	}
 
@@ -34,5 +36,6 @@ public class ItemData {
 	public int getResourceID() { return resourceID; }
 	public Map<String, Object> getAttributes() { return attributes; }
 	public Map<String, Integer> getBundles() { return bundles; }
+	public Map<String, Integer> getBundleCount() { return bundleCount; }
 	public Color getNameColor() { return nameColor; }
 }

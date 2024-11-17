@@ -18,16 +18,16 @@ public class ChestTables {
 		int totalWeight = 0;
 		for (ItemData item : itemsInBundle) {
 			int weight = item.getBundles().get(chestType);  // get weight for specific bundle
-			totalWeight += weight % 100000000;
+			totalWeight += weight;
 			// Add each item as many times as its weight for easier random selection
-			for (int i = 0; i < weight % 100000000; i++) {
+			for (int i = 0; i < weight; i++) {
 				weightedItems.add(item);
 			}
 		}
 
 		// Select random item based on weight
 		int randomIndex = new Random().nextInt(weightedItems.size());
-		int maxCount = weightedItems.get(randomIndex).getBundles().get(chestType) / 100000000;
+		int maxCount = weightedItems.get(randomIndex).getBundleCount().get(chestType);
 		if (maxCount > 1) {
 			count = (int) ((Math.random() * (maxCount - 1)) + 1);
 		}

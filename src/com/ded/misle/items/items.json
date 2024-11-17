@@ -11,7 +11,7 @@
     "kind": "claw",
     "attackDelay": 1.2,
     "range": 15,
-    "bundles": "mountain|100000035",
+    "bundles": "mountain|1|35",
     "nameColor": "#F5B114"
   },
   {
@@ -26,7 +26,7 @@
     "subtype": "ranged",
     "kind": "slingshot",
     "attackDelay": 2,
-    "bundles": "mountain|100000035",
+    "bundles": "mountain|1|35",
     "nameColor": "#F0CA0C"
   },
   {
@@ -41,7 +41,7 @@
     "kind": "self",
     "size": "small",
     "potionDelay": 1.6,
-    "bundles": "mountain|800000075",
+    "bundles": "mountain|8|75",
     "nameColor": "#FF6969"
   },
   {
@@ -56,7 +56,7 @@
     "size": "small",
     "potionDelay": 1.6,
     "kind": "self",
-    "bundles": "mountain|600000075",
+    "bundles": "mountain|6|75",
     "nameColor": "#6BC6F5"
   },
   {
@@ -70,7 +70,7 @@
     "type": "weapon",
     "subtype": "shield",
     "kind": "wooden",
-    "bundles": "mountainDISABLED|100000005",
+    "bundles": "mountainDISABLED|1|5",
     "nameColor": "#FFFFFF"
   },
   {
@@ -85,7 +85,7 @@
     "kind": "self",
     "size": "medium",
     "potionDelay": 2,
-    "bundles": "mountain|400000024",
+    "bundles": "mountain|4|24",
     "nameColor": "#D40000"
   },
   {
@@ -100,7 +100,7 @@
     "kind": "self",
     "size": "big",
     "potionDelay": 2.5,
-    "bundles": "mountain|200000008",
+    "bundles": "mountain|2|8",
     "nameColor": "#C70202"
   },
   {
@@ -115,7 +115,7 @@
     "kind": "self",
     "size": "huge",
     "potionDelay": 1.6,
-    "bundles": "mountain|100000001",
+    "bundles": "mountain|1|1",
     "nameColor": "#8F0202"
   },
   {

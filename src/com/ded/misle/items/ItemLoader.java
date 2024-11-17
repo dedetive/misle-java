@@ -41,6 +41,8 @@ public class ItemLoader {
 			int resourceID = 0;
 			Color nameColor = Color.WHITE;
 			Map<String, Integer> bundleWeights = new HashMap<>();
+			Map<String, Integer> bundleCount = new HashMap<>();
+			int maxCount = 0;
 			Map<String, Object> attributes = new HashMap<>();
 
 			String[] pairs = block.split(",");
@@ -73,8 +75,10 @@ public class ItemLoader {
 						for (String entry : bundleEntries) {
 							String[] parts = entry.split("\\|");
 							String bundleName = parts[0];
-							int weight = Integer.parseInt(parts[1]);
+							maxCount = Integer.parseInt(parts[1]);
+							int weight = Integer.parseInt(parts[2]);
 							bundleWeights.put(bundleName, weight);
+							bundleCount.put(bundleName, maxCount);
 						}
 						break;
 					case "nameColor":
@@ -91,7 +95,7 @@ public class ItemLoader {
 			}
 
 			if (name != null && type != null) {
-				items.add(new ItemData(itemId, name, countLimit, rarity, type, resourceID, attributes, bundleWeights, nameColor)); // Store ItemData instead
+				items.add(new ItemData(itemId, name, countLimit, rarity, type, resourceID, attributes, bundleWeights, bundleCount, nameColor)); // Store ItemData instead
 			}
 		}
 
