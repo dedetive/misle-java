@@ -1,5 +1,9 @@
 # Misle
 
+### About the game
+
+This is a game of a project I've had for over two years now. It used to be just a world I built for the sake of creating stories and writing a book. However, my writing hobby had died down, and I couldn't keep up with writing as much as I'd like. So, I had the idea to create a game based on it. The lore I have planned is huge, but I'm a new developer, so the lore may have to wait until I'm more used to writing code and not lexical words. Up until now, I've tried to make the systems work as intended and create new features, until I reach a point I can safely make the game itself. I'd like to thank eveyrone who cares and has read this far, as I wholeheartedly agree the community is crucial to the development of things. Thank you, and take care.
+
 ### Prerequisites
 
 - **Java Development Kit (JDK) version**: Requires JDK 21 or higher.
@@ -25,8 +29,14 @@ Alternatively, you can use your preferred IDE with a compiler to run the code au
 ### Controls
 
 - **Arrow keys:** Move the player (white square).
-- **Escape key:** Pause and unpause the game.
-- **I:** Open inventory.
+- **Escape key:** Pause and unpause.
+- **E:** Open inventory.
+- **Z** or **left-click:** Use held item.
+- **Left-click in the inventory**: Move item around. Click again to fill the empty slot with the selected item or swap it with a filled slot. Click anywhere out of the inventory to drop held item.
+- **C:** Dodge (become immune to damage for a fraction of time).
+- **1-7** or **left-click an inventory bar slot:** Select slot.
+- **Q:** Drop held item or hovered item in inventory.
+- **Ctrl + Q:** Drop the entire held stack or hovered stack in inventory.
 - **\[** and **\]:** Test keys with functionality that varies by version; these can be customized in KeyHandler.java at the end of the updateKeys() method.
 
 ### Settings
@@ -107,7 +117,7 @@ Inside of the `src/com/ded/misle` directory, locate the folder `items` and reach
     }
 ```
 
-To add an item, create a new JSON entry by copy-pasting the default at the bottom of the file with ID -1 and editing the upper copy. Make sure to look at the previous ID and resourceID to increment to them instead of replacing an existing value. They should always increase by 1, unless you intend to create a mod to be compatible with updates and other mods. In which case, you should adopt big, specific numbers and make sure they hadn't been used.
+To add an item, create a new JSON entry by copy-pasting the default at the bottom of the file with ID -1 and editing the upper copy. Make sure to check the previous ID and resourceID and increment them, rather than replacing existing values. They should always increase by 1, unless you intend to create a mod to be compatible with updates and other mods. In which case, you should adopt big, specific numbers and make sure they hadn't been used.
 
 The dummy entry is:
 
@@ -126,8 +136,8 @@ The dummy entry is:
     }
 ```
 
-In addition to this, you also have to go to `resources/lang/` and choose the languages you wish to add support for this item. I acknowledge not everyone knows all these languages, so I'd recommend prioritizing adding it to English, as it fallbacks to English.
-Each item needs the following parameters added, all in snake_case except for the extra _DESC and _EFFECT:
+Additionally, you need to go to `resources/lang/` and choose the languages for which you want to add support for this item. I acknowledge not everyone knows all these languages, so I'd recommend prioritizing adding it to English, as it fallbacks to English.
+Each item requires the following parameters, all in snake_case except for the additional _DESC and _EFFECT:
 - "item_name" -> The name of the item in natural language.
 - "item_name_DESC" -> The description of the item shown in the tooltip.
 - "item_name_EFFECT" -> What the item does shown in the tooltip.
@@ -144,7 +154,7 @@ And finally, add the .png icon for the item in `resources/images/items/`. The na
     - rarity
     - type
 - Default Values:
-  - If optional fields are not specified, these defaults apply:
+  - If optional fields are not specified, the following defaults apply:
   - countLimit: Defaults to 1.
   - nameColor: Defaults to #FFFFFF (white).
 - Bundles Field:
@@ -157,7 +167,7 @@ And finally, add the .png icon for the item in `resources/images/items/`. The na
     - IDs and names are unique to avoid overwriting existing items.
     - resourceIDs are unique to prevent multiple items from sharing the same texture.
 - Rarity Values:
-  - Accepted values for rarity:
+  - The accepted values for rarity are:
     - F, E, D, C, B, A, S.
     - Invalid values default to F.
 - Translation names must follow snake_case naming convention.
@@ -193,10 +203,10 @@ And finally, add the .png icon for the item in `resources/images/items/`. The na
     ```
 3. Add icon:
    1. Save item's icon as `12.png` (based on its resourceID) in `resources/images/items/`.
-4. Add functionality to the item. This heavily depends on the item. In this case, a new section should be added in the Java file Inventory, to the method useItem(). As-is, the item would be just an empty image with no functionality.
+4. Add functionality to the item, which depends heavily on the item itself. In this case, a new section should be added in the Java file Inventory, to the method useItem(). As-is, the item would be just an empty image with no functionality.
 5. Testing item:
    1. Try and get it from a chest.
-   2. You can also go to KeyHandler class and, inside the debug keys section, remove the current functionality and add the following line:
+   2. You can also go to the KeyHandler class, and inside the debug keys section, remove the current functionality and add the following line:
     ```java
     if (player.keys.keyPressed.get("debug1")) {
         player.inv.addItem(createItem(12));
@@ -214,6 +224,6 @@ And finally, add the .png icon for the item in `resources/images/items/`. The na
 
 ### Known issues
 
-1. Currently, `ru_RU` (Russian) and `el_GR` (Greek) fonts in item tooltips are not working properly due to unsupported characters in the current font.
+1. Currently, the `ru_RU` (Russian) and `el_GR` (Greek) fonts in item tooltips do not work properly due to unsupported characters in the current font.
 
-> **Note:** Please report any issues you encounter during your game development.
+> **Note:** Please report any issues you encounter during your game development. Help would be greatly appreciated.
