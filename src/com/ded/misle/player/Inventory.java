@@ -173,7 +173,9 @@ public class Inventory {
 	public void setSelectedSlot(int selectedSlot) {
 		this.selectedSlot = selectedSlot;
 		updateSelectedItemNamePosition();
-		getSelectedItem().resetAnimation();
+		if (hasHeldItem()) {
+			getSelectedItem().resetAnimation();
+		}
 	}
 
 	public Item getSelectedItem() {
