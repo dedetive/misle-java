@@ -2,7 +2,7 @@
 
 ### About the game
 
-This is a game of a project I've had for over two years now. It used to be just a world I built for the sake of creating stories and writing a book. However, my writing hobby had died down, and I couldn't keep up with writing as much as I'd like. So, I had the idea to create a game based on it. The lore I have planned is huge, but I'm a new developer, so the lore may have to wait until I'm more used to writing code and not lexical words. Up until now, I've tried to make the systems work as intended and create new features, until I reach a point I can safely make the game itself. I'd like to thank eveyrone who cares and has read this far, as I wholeheartedly agree the community is crucial to the development of things. Thank you, and take care.
+This is a game of a project I've had for over two years now. It used to be just a world I built for the sake of creating stories and writing a book. However, my writing hobby had died down, and I couldn't keep up with writing as much as I'd like. Thus, I had the idea to create a game based on it. The lore I have planned is huge, but I'm a new developer, so the lore may have to wait until I become more experienced with coding instead of writing text. Up until now, I've tried to make the systems work as intended and create new features, until I reach a point I can safely make the game itself. I'd like to thank everyone who cares and has read this far, as I wholeheartedly agree the community is crucial to the development of things. Thank you, and take care.
 
 ### Prerequisites
 
@@ -136,7 +136,7 @@ The dummy entry is:
     }
 ```
 
-Additionally, you need to go to `resources/lang/` and choose the languages for which you want to add support for this item. I acknowledge not everyone knows all these languages, so I'd recommend prioritizing adding it to English, as it fallbacks to English.
+Additionally, you need to go to `resources/lang/` and choose the languages for which you want to add support for this item. I acknowledge not everyone knows all these languages, so I'd recommend prioritizing adding it to English, as it falls back to English.
 Each item requires the following parameters, all in snake_case except for the additional _DESC and _EFFECT:
 - "item_name" -> The name of the item in natural language.
 - "item_name_DESC" -> The description of the item shown in the tooltip.
@@ -206,7 +206,7 @@ And finally, add the .png icon for the item in `resources/images/items/`. The na
 4. Add functionality to the item, which depends heavily on the item itself. In this case, a new section should be added in the Java file Inventory, to the method useItem(). As-is, the item would be just an empty image with no functionality.
 5. Testing item:
    1. Try and get it from a chest.
-   2. You can also go to the KeyHandler class, and inside the debug keys section, remove the current functionality and add the following line:
+   2. You can also go to the KeyHandler class, and inside the debug keys section, comment out or remove the current functionality of the debug keys and add the following line:
     ```java
     if (player.keys.keyPressed.get("debug1")) {
         player.inv.addItem(createItem(12));
@@ -218,7 +218,7 @@ And finally, add the .png icon for the item in `resources/images/items/`. The na
    ```java
         player.inv.addItem(createItem(12, 3));
    ```
-   5. Make sure the item allows more than 1 count limit, otherwise your inventory might be filled with the item.
+   5. Make sure the item allows more than 1 count limit, otherwise your inventory might become cluttered with the item.
 
 
 
@@ -226,4 +226,4 @@ And finally, add the .png icon for the item in `resources/images/items/`. The na
 
 1. Currently, the `ru_RU` (Russian) and `el_GR` (Greek) fonts in item tooltips do not work properly due to unsupported characters in the current font.
 
-> **Note:** Please report any issues you encounter during your game development. Help would be greatly appreciated.
+> **Note:** Please report any issues you encounter during your game development. Your help would be greatly appreciated.
