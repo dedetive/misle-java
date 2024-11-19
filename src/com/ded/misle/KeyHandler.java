@@ -257,21 +257,21 @@ public class KeyHandler implements KeyListener {
 				if (!player.keys.keyPressed.get("left") || !player.keys.keyPressed.get("right")) {
 					willMovePlayer[1] -= player.attr.getSpeed();
 				} else {
-					willMovePlayer[1] -= (player.attr.getSpeed() * Math.sqrt(2) / 3);
+					willMovePlayer[1] -= Math.sqrt(player.attr.getSpeed());
 				}
 			}
 			if (player.keys.keyPressed.get("down")) {
 				if (!player.keys.keyPressed.get("left") || !player.keys.keyPressed.get("right")) {
 					willMovePlayer[1] += player.attr.getSpeed();
 				} else {
-					willMovePlayer[1] += player.attr.getSpeed() * Math.sqrt(2) / 3;
+					willMovePlayer[1] += Math.sqrt(player.attr.getSpeed());
 				}
 			}
 			if (player.keys.keyPressed.get("left")) {
 				if (!player.keys.keyPressed.get("up") || !player.keys.keyPressed.get("down")) {
 					willMovePlayer[0] -= player.attr.getSpeed();
 				} else {
-					willMovePlayer[0] -= player.attr.getSpeed() * Math.sqrt(2) / 3;
+					willMovePlayer[0] -= Math.sqrt(player.attr.getSpeed());
 				}
 			}
 			if (player.keys.keyPressed.get("right")) {
