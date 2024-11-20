@@ -4,15 +4,12 @@ import com.ded.misle.GameRenderer;
 import com.ded.misle.player.PlayerAttributes;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static com.ded.misle.AudioPlayer.playThis;
 import static com.ded.misle.ChangeSettings.getPath;
@@ -38,6 +35,7 @@ public class Box {
 	private String[] effect;
 	private long lastDamageTime = 0;
 	private double rotation = 0;
+	private static ArrayList<Box> selectedBoxes;
 
 	private BufferedImage cachedTexture1;
 	private String cachedTexture1Name;
@@ -503,6 +501,29 @@ public class Box {
 			player.inv.addItem(createItem(Integer.parseInt(box.effect[1]), Integer.parseInt(box.effect[2])));
 			GameRenderer.updateSelectedItemNamePosition();
 			deleteBox(box);
+		}
+	}
+
+	public void addSelectedBox() {
+		selectedBoxes.add(this);
+	}
+
+	public void replaceSelectedBox() {
+		clearSelectedBoxes();
+		selectedBoxes.add(this);
+	}
+
+	public void clearSelectedBoxes() {
+		selectedBoxes.clear();
+	}
+
+	public ArrayList<Box> getSelectedBoxes() {
+		return selectedBoxes;
+	}
+	
+	public void editSelectedBoxes(String key, String value) {
+		for (Box box : selectedBoxes) {
+			editBox(box, key, value);
 		}
 	}
 }
