@@ -114,6 +114,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 	private int mouseX, mouseY;
 	private boolean isPressed;
+	private boolean isReleased;
 
 	public MouseHandler() {
 		isPressed = false;
@@ -130,6 +131,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		isPressed = false;
+		isReleased = true;
 	}
 
 	@Override
@@ -193,10 +195,13 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 			case GameState.LEVEL_DESIGNER:
 				if (isMousePressed()) {
 					// detect box in click position
+				} else if (isReleased) {
+					// Get x, y game world coordinates of mouse click and select nearby boxes of that position
 				}
 				break;
 		}
 		isPressed = false;
+		isReleased = false;
 	}
 
 	@Override
