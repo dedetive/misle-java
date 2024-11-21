@@ -162,6 +162,19 @@
     "nameColor": "#8AFFFF"
   },
   {
+    "id": 12,
+    "resourceID": 12,
+    "name": "Copper Ring",
+    "countLimit": 1,
+    "rarity": "F",
+    "str": 1,
+    "def": 1,
+    "type": "armor",
+    "subtype": "ring",
+    "bundles": "mountain|1|28",
+    "nameColor": "#FF8D29"
+  },
+  {
     "id": -1,
     "resourceID": -1,
     "name": "",
