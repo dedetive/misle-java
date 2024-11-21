@@ -290,9 +290,9 @@ public class BoxesHandling {
 	public static void renderBoxes(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY, double gameScale, int tileSize) {
 		List<Box> nearbyBoxes;
 		if (!levelDesigner) {
-			nearbyBoxes = getCachedBoxesInRange(11);
+			nearbyBoxes = getCachedBoxesNearPlayer(11);
 		} else {
-			nearbyBoxes = getCachedBoxesInRange(12);
+			nearbyBoxes = getCachedBoxesNearPlayer(12);
 		}
 		for (Box box : nearbyBoxes) {
 			box.draw(g2d, cameraOffsetX, cameraOffsetY, gameScale, tileSize, box.getBoxScaleHorizontal(), box.getBoxScaleVertical());
@@ -355,7 +355,7 @@ public class BoxesHandling {
 		if (level >= maxLevel) {
 			cachedBoxes[maxLevel] = getBoxesInRange(player.pos.getX(), player.pos.getY(), Math.pow(2, level), scale, tileSize);
 		} else {
-			cachedBoxes[level] = getCachedBoxesInRange(level);
+			cachedBoxes[level] = getCachedBoxesNearPlayer(level);
 		}
 	}
 
@@ -371,7 +371,7 @@ public class BoxesHandling {
 		}
 	}
 
-	public static List<Box> getCachedBoxesInRange(int level) {
+	public static List<Box> getCachedBoxesNearPlayer(int level) {
 		List<Box> boxesInRange = new ArrayList<>();
 		double playerX = player.pos.getX();
 		double playerY = player.pos.getY();
@@ -382,6 +382,21 @@ public class BoxesHandling {
 
 			if (scaledX + tileSize * box.getBoxScaleHorizontal() / 1.5 >= playerX - range && scaledX <= playerX + range
 					&& scaledY + tileSize * box.getBoxScaleVertical() / 1.5 >= playerY - range && scaledY <= playerY + range) {
+				boxesInRange.add(box);
+			}
+		}
+		return boxesInRange;
+	}
+
+	public static List<Box> getCachedBoxesInRange(int x, int y, int level) {
+		List<Box> boxesInRange = new ArrayList<>();
+		double range = Math.pow(2, level);
+		for (Box box : cachedBoxes[level + 1]) {
+			double scaledX = box.getCurrentX() * scale;
+			double scaledY = box.getCurrentY() * scale;
+
+			if (scaledX + tileSize * box.getBoxScaleHorizontal() / 1.5 >= x - range && scaledX <= x + range
+					&& scaledY + tileSize * box.getBoxScaleVertical() / 1.5 >= y - range && scaledY <= y + range) {
 				boxesInRange.add(box);
 			}
 		}

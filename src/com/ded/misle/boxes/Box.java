@@ -172,6 +172,18 @@ public class Box {
 			}
 			GameRenderer.drawRotatedImage(g2d, this.getTexture(), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
 		}
+
+		try {
+			if (selectedBoxes.contains(this)) {
+				for (int i = 0; i <= 270; i += 90) {
+					System.out.println(i);
+					GameRenderer.drawRotatedImage(g2d, getTexture("wallDefaultOverlayW"), screenX, screenY,
+							(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), i + this.rotation);
+				}
+			}
+		} catch (NullPointerException e) {
+			// This just means selectedBoxes is empty
+		}
 	}
 
 	// COLLISION
@@ -505,25 +517,46 @@ public class Box {
 	}
 
 	public void addSelectedBox() {
-		selectedBoxes.add(this);
+		try {
+			selectedBoxes.add(this);
+		} catch (NullPointerException e) {
+			// This just means list is empty, so do nothing
+		}
 	}
 
 	public void replaceSelectedBox() {
-		clearSelectedBoxes();
-		selectedBoxes.add(this);
+		try {
+			clearSelectedBoxes();
+			selectedBoxes.add(this);
+		} catch (NullPointerException e) {
+			// This just means list is empty, so do nothing
+		}
 	}
 
-	public void clearSelectedBoxes() {
-		selectedBoxes.clear();
+	public static void clearSelectedBoxes() {
+		try {
+			selectedBoxes.clear();
+		} catch (NullPointerException e) {
+			// This just means list is empty, so do nothing
+		}
 	}
 
-	public ArrayList<Box> getSelectedBoxes() {
-		return selectedBoxes;
+	public static ArrayList<Box> getSelectedBoxes() {
+		try {
+			return selectedBoxes;
+		} catch (NullPointerException e) {
+			// This just means list is empty, so do nothing
+		}
+		return null;
 	}
 	
-	public void editSelectedBoxes(String key, String value) {
-		for (Box box : selectedBoxes) {
-			editBox(box, key, value);
+	public static void editSelectedBoxes(String key, String value) {
+		try {
+			for (Box box : selectedBoxes) {
+				editBox(box, key, value);
+			}
+		} catch (NullPointerException e) {
+			// This just means list is empty, so do nothing
 		}
 	}
 }

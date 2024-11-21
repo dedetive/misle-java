@@ -1,11 +1,15 @@
 package com.ded.misle;
 
+import com.ded.misle.boxes.Box;
+import com.ded.misle.boxes.BoxesHandling;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.boxes.Box.clearSelectedBoxes;
 
 public class MouseHandler implements MouseListener, MouseMotionListener {
 
@@ -197,6 +201,15 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 					// detect box in click position
 				} else if (isReleased) {
 					// Get x, y game world coordinates of mouse click and select nearby boxes of that position
+					int mouseGameX = (int) ((player.pos.getCameraOffsetX() + mouseX) / scale);
+					int mouseGameY = (int) ((player.pos.getCameraOffsetY() + mouseY) / scale);
+					clearSelectedBoxes();
+					System.out.println();
+					System.out.println("mouse: " + mouseGameX + ", " + mouseGameY);
+					for (Box box: BoxesHandling.getCachedBoxesInRange(mouseGameX, mouseGameY, 6)) {
+						box.addSelectedBox();
+						System.out.println("box: " + box.getCurrentX() * scale + ", " + box.getCurrentY() * scale);
+					}
 				}
 				break;
 		}
