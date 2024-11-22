@@ -64,6 +64,8 @@ Each setting uses the format:
 - **`language`** (default=`en_US`): Set the language for the game.
     - Options: `de_DE`, `el_GR`, `en_US`, `es_ES`, `mi_PM`, `pt_BR`, `ru_RU` (what these mean is explained below).
     - If the selected language file is missing keys, English is used as a fallback.
+ 
+- **`levelDesigner`** (default=`false`): Toggle Level Designer mode for game design (currently partially functional, with only movement available).
 
 Text in parentheses is ignored, and only the value after the " = " sign is used. These values can be of types like STRING, INTEGER, or BOOLEAN. However, since the options do not exist, default value would apply.
 
