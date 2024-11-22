@@ -18,16 +18,17 @@ public class BoxesLoad {
 
 
 	public static void loadBoxes() {
-		System.out.println(player.pos.getSpawnpoint());
-		System.out.println(roomIDToName(player.pos.getRoomID()));
+		System.out.println("Loading room: " + roomIDToName(player.pos.getRoomID()));
 		switch (roomIDToName(player.pos.getRoomID())) {
 			case "void" -> {
 				;
 			}
 			case "city_tuani" -> {
-				setWorldBorders(600, 600);
-				int grassAdded = lineAddScaledBox(0, 0, 29, 29,"fill", 1.98);
-				editLastBox("texture", "grass", grassAdded);
+				int worldWidth = 990;
+				int worldHeight = 1000;
+				setWorldBorders(worldWidth, worldHeight);
+				fillGrass(worldWidth, worldHeight);
+				lineAddBox(0, 0, worldWidth / 20 - 1, worldHeight / 20 - 2, "wallDefault@Deco", "hollow");
 			}
 			case null -> {}
 			default -> throw new IllegalStateException("Unexpected value: " + roomIDToName(player.pos.getRoomID()) + ", ID: " + player.pos.getRoomID());
@@ -45,6 +46,11 @@ public class BoxesLoad {
 			}
 		}
 		return null;
+	}
+
+	private static void fillGrass(int worldWidth, int worldHeight) {
+		int grassAdded = lineAddScaledBox(0, 0, (int) Math.floor((double) worldWidth / (1.98 * 20)), (int) Math.floor((double) worldHeight / (1.98 * 20)), "fill", 1.98);
+		editLastBox("texture", "grass", grassAdded);
 	}
 
 	public static void unloadBoxes() {

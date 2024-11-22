@@ -15,16 +15,17 @@ public class PlayerPosition {
 	private double y;
 	private double originalPlayerY;
 	private double cameraOffsetY;
-	private int spawnpointRoom = 1;
+	private int spawnpointRoom;
 	private String region = "";
 	private int roomID;
 	private double rotation;
 
 	public PlayerPosition() {
-		if (spawnpointRoom != 0) {
+		if (spawnpointRoom == 0) {
+			spawnpointRoom = 1;
 			reloadSpawnpoint();
 		} else {
-			setRoomID(1);
+			reloadSpawnpoint();
 		}
 		setCameraOffsetX(0);
 		setCameraOffsetY(0);
@@ -83,8 +84,12 @@ public class PlayerPosition {
 
 	public void reloadSpawnpoint() {
 		setRoomID(spawnpointRoom);
-//		setX(spawnpoint[0] * scale);
-//		setY(spawnpoint[1] * scale);
+		int[] spawnpointCoordinates = switch (spawnpointRoom) {
+			case 1 -> new int[]{40, 40};
+			default -> new int[]{0, 0};
+		};
+		setX(spawnpointCoordinates[0] * scale);
+		setY(spawnpointCoordinates[1] * scale);
 	}
 
 	public String getRegion() {
