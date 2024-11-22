@@ -41,7 +41,7 @@ public class SaveFile {
 				int spawnpointHigh = loadThis("red", 69, 42);
 				int spawnpointLow = loadThis("blue", 42, 69);
 				int spawnpoint = spawnpointHigh * 255 + spawnpointLow;
-				player.pos.setSpawnpoint(spawnpoint);
+				player.pos.setSpawnpoint(Math.max(spawnpoint, 1));
 				player.pos.reloadSpawnpoint();
 
 				// Load inventory
