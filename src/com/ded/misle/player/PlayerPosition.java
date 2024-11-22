@@ -1,11 +1,8 @@
 package com.ded.misle.player;
 
-import com.ded.misle.boxes.Box;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 
 import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
@@ -18,16 +15,16 @@ public class PlayerPosition {
 	private double y;
 	private double originalPlayerY;
 	private double cameraOffsetY;
-	private double[] spawnpoint = new double[2];
+	private int spawnpointRoom = 1;
 	private String region = "";
+	private int roomID;
 	private double rotation;
 
 	public PlayerPosition() {
-		if (!Arrays.equals(getSpawnpoint(), new double[]{0, 0})) {
+		if (spawnpointRoom != 0) {
 			reloadSpawnpoint();
 		} else {
-			setX(325);
-			setY(325);
+			setRoomID(1);
 		}
 		setCameraOffsetX(0);
 		setCameraOffsetY(0);
@@ -76,19 +73,18 @@ public class PlayerPosition {
 		this.cameraOffsetY = cameraOffsetY;
 	}
 
-	public double[] getSpawnpoint() {
-		return spawnpoint;
+	public int getSpawnpoint() {
+		return spawnpointRoom;
 	}
 
-	public void setSpawnpoint(double spawnpointX, double spawnpointY) {
-		this.spawnpoint = new double[]{spawnpointX, spawnpointY};
+	public void setSpawnpoint(int roomID) {
+		this.spawnpointRoom = roomID;
 	}
 
 	public void reloadSpawnpoint() {
-		if (spawnpoint != null && !Arrays.equals(spawnpoint, new double[]{0, 0})) {
-			setX(spawnpoint[0] * scale);
-			setY(spawnpoint[1] * scale);
-		}
+		setRoomID(spawnpointRoom);
+//		setX(spawnpoint[0] * scale);
+//		setY(spawnpoint[1] * scale);
 	}
 
 	public String getRegion() {
@@ -97,6 +93,14 @@ public class PlayerPosition {
 
 	public void setRegion(String region) {
 		this.region = region;
+	}
+
+	public int getRoomID() {
+		return roomID;
+	}
+
+	public void setRoomID(int roomID) {
+		this.roomID = roomID;
 	}
 
 	public double getRotation() {

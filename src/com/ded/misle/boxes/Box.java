@@ -435,9 +435,9 @@ public class Box {
 	}
 
 	private static void handleBoxCheckpoint(Box box) {
-		if ((Objects.equals(box.effect[1], "-1") || Integer.parseInt(box.effect[1]) > 0) && !Arrays.equals(player.pos.getSpawnpoint(), new double[]{box.getCurrentX(), box.getCurrentY()})) {
-			player.pos.setSpawnpoint(box.getCurrentX(), box.getCurrentY());
-			System.out.println("Saved spawnpoint as " + box.getCurrentX() + ", " + box.getCurrentY());
+		if ((Objects.equals(box.effect[1], "-1") || Integer.parseInt(box.effect[1]) > 0) && player.pos.getSpawnpoint() != player.pos.getRoomID()) {
+			player.pos.setSpawnpoint(player.pos.getRoomID());
+			System.out.println("Saved spawnpoint as room " + player.pos.getRoomID());
 			if (Integer.parseInt(box.effect[1]) > 0) {
 				box.effect[1] = String.valueOf(Integer.parseInt(box.effect[1]) - 1);
 			}

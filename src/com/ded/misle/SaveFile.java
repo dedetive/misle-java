@@ -38,15 +38,10 @@ public class SaveFile {
 
 				// Load spawnpoint
 
-				int spawnpointXHighest = loadThis("red", 42, 69);
-				int spawnpointXHigh = loadThis("red", 69, 42);
-				int spawnpointXLow = loadThis("blue", 42, 69);
-				int spawnpointYHighest = loadThis("blue", 69, 42);
-				int spawnpointYHigh = loadThis("green", 69, 42);
-				int spawnpointYLow = loadThis("green", 42,69);
-				double spawnpointX = spawnpointXHighest * 255 * 255 + spawnpointXHigh * 255 + spawnpointXLow;
-				double spawnpointY = spawnpointYHighest * 255 * 255 + spawnpointYHigh * 255 + spawnpointYLow;
-				player.pos.setSpawnpoint(spawnpointX, spawnpointY);
+				int spawnpointHigh = loadThis("red", 69, 42);
+				int spawnpointLow = loadThis("blue", 42, 69);
+				int spawnpoint = spawnpointHigh * 255 + spawnpointLow;
+				player.pos.setSpawnpoint(spawnpoint);
 				player.pos.reloadSpawnpoint();
 
 				// Load inventory
@@ -123,19 +118,11 @@ public class SaveFile {
 
 		// Spawnpoint
 
-		int spawnpointXHighest = ((int) player.pos.getSpawnpoint()[0] / (255 * 255)) % 255;
-		int spawnpointXHigh = ((int) player.pos.getSpawnpoint()[0] / 255) % 255;
-		int spawnpointXLow = (int) player.pos.getSpawnpoint()[0] % 255;
-		int spawnpointYHighest = ((int) player.pos.getSpawnpoint()[1] / (255 * 255)) % 255;
-		int spawnpointYHigh = ((int) player.pos.getSpawnpoint()[1] / 255) % 255;
-		int spawnpointYLow = (int) player.pos.getSpawnpoint()[1] % 255;
-		brandIntoSaveFile(spawnpointXHighest, "red", 42, 69);
-		brandIntoSaveFile(spawnpointXHigh, "red", 69, 42);
-		brandIntoSaveFile(spawnpointXLow, "blue", 42, 69);
-		brandIntoSaveFile(spawnpointYHighest, "blue", 69, 42);
-		brandIntoSaveFile(spawnpointYHigh, "green", 69, 42);
-		brandIntoSaveFile(spawnpointYLow, "green", 42, 69);
-		
+		int spawnpointHigh = (player.pos.getSpawnpoint() / 255) % 255;
+		int spawnpointLow =  player.pos.getSpawnpoint() % 255;
+		brandIntoSaveFile(spawnpointHigh, "red", 69, 42);
+		brandIntoSaveFile(spawnpointLow, "blue", 42, 69);
+
 		// Inventory
 
 		try {

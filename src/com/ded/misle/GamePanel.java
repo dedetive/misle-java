@@ -65,10 +65,17 @@ public class GamePanel extends JPanel implements Runnable {
 
 	// CAMERA WORLD BOUNDARIES
 
-	double originalWorldWidth = 25000000;
-	double originalWorldHeight = 25000000;
-	double worldWidth = originalWorldWidth * scale;
-	double worldHeight = originalWorldHeight * scale;
+	static double originalWorldWidth = 1;
+	static double originalWorldHeight = 1;
+	static double worldWidth = originalWorldWidth * scale;
+	static double worldHeight = originalWorldHeight * scale;
+
+	public static void setWorldBorders(int width, int height) {
+		originalWorldWidth = width;
+		originalWorldHeight = height;
+		worldWidth = originalWorldWidth * scale;
+		worldHeight = originalWorldHeight * scale;
+	}
 
 	public GamePanel() {
 		// Setting up the JFrame
