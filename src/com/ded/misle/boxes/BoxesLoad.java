@@ -61,7 +61,7 @@ public class BoxesLoad {
 	}
 
 	private static void fillGrass(int worldWidth, int worldHeight) {
-		double interval = 1.92;
+		double interval = 1.9;
 		int grassAdded = lineAddScaledBox(0, 0, (int) Math.floor((double) worldWidth / (interval * 20)), (int) Math.floor((double) worldHeight / (interval * 20)), "fill", interval);
 		editLastBox("texture", "grass", grassAdded);
 	}

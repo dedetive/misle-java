@@ -15,7 +15,7 @@ public class BoxesHandling {
 
 	private static final List<Box> boxes = new ArrayList<>();
 	private static final List<String> presetsWithSides = List.of(new String[]{"wallDefault"});
-	private static final double boxBaseSize = 20.675;
+	private static final double boxBaseSize = 20.9;
 	public static int maxLevel = 19;
 	private static List<Box>[] cachedBoxes = new ArrayList[maxLevel + 1];
 	public static enum LineAddBoxMode {
