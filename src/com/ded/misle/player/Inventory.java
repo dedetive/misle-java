@@ -206,6 +206,21 @@ public class Inventory {
 						int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
 						DecimalFormat df = new DecimalFormat("#.##");
 
+						switch ((String) getSelectedItem().getAttributes().get("size")) {
+							case "small":
+								playThis("consumeSmallPot");
+								break;
+							case "medium":
+								playThis("consumeMediumPotion");
+								break;
+							//						case "big":
+							//							playThis("consumeBigPotion");
+							//							break;
+							//						case "huge":
+							//							playThis("consumeHugePotion");
+							//							break;
+						}
+
 						switch (getSelectedItem().getAttributes().get("subtype").toString()) {
 							case "heal":
 								double healAmountValue = Double.parseDouble(Integer.toString((Integer) getSelectedItem().getAttributes().get("heal")));
@@ -235,20 +250,6 @@ public class Inventory {
 									removeItem(0, getSelectedSlot());
 								}
 								break;
-						}
-						switch ((String) getSelectedItem().getAttributes().get("size")) {
-							case "small":
-								playThis("consumeSmallPot");
-								break;
-							case "medium":
-								playThis("consumeMediumPotion");
-								break;
-	//						case "big":
-	//							playThis("consumeBigPotion");
-	//							break;
-	//						case "huge":
-	//							playThis("consumeHugePotion");
-	//							break;
 						}
 
 						return true;
