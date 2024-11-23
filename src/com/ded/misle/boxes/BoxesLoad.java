@@ -29,20 +29,23 @@ public class BoxesLoad {
 				int worldWidth = 1000;
 				int worldHeight = 990;
 				setupWorld(worldWidth, worldHeight);
-				System.out.println(lineAddBox(0, 0, worldWidth / 20 - 2, worldHeight / 20 - 2, "wallDefault@Deco", LineAddBoxMode.HOLLOW));
+				lineAddBox(0, 100, worldWidth / 20 - 2, 1, "wallDefault", LineAddBoxMode.HOLLOW);
+				int boxesAdded = lineAddBox(0, 100, 1, worldHeight / 20 - 7, "wallDefault", LineAddBoxMode.HOLLOW);
+				editBoxNegativeIndex("texture", "wallDefault.AW.S", boxesAdded);
+				boxesAdded = lineAddBox(worldWidth - 20, 100, 1, worldHeight / 20 - 7, "wallDefault", LineAddBoxMode.HOLLOW);
+				editBoxNegativeIndex("texture", "wallDefault.WD.A", boxesAdded);
+				boxesAdded = lineAddBox(0, worldHeight - 30, worldWidth / 20 - 2, 1, "wallDefault", LineAddBoxMode.HOLLOW);
+				editBoxNegativeIndex("texture", "wallDefault.AS.D", boxesAdded);
+				editLastBox("texture", "wallDefault.SD.W");
 
-				addBox(800, 160, "mountainChest");
-				addBox(160, 800, "mountainChest");
 
 				lineAddBox(300, 420, 7, 6, "wallDefault", LineAddBoxMode.HOLLOW);
 				deleteBox(3, 2);
 				editBoxNegativeIndex("texture", "wallDefault@Deco.AWD..@", 2);
 				editBoxNegativeIndex("texture", "wallDefault@Deco.ASD..@", 3);
 
-				int travelBoxesAdded = lineAddBox(440, 20, 6, 1, "travel", LineAddBoxMode.FILL);
-				editLastBox("texture", "solid", travelBoxesAdded);
-				editLastBox("color", "#DEDE40", travelBoxesAdded);
-				editLastBox("effect", "{travel, 2, 300, 410}", travelBoxesAdded);
+				int travelBoxesAdded = lineAddBox(440, 40, 6, 1, "travel", LineAddBoxMode.FILL);
+				editLastBox("effect", "{travel, 2, 300, 440}", travelBoxesAdded);
 
 				addBox(500, 540, "spawnpoint");
 			}
@@ -50,11 +53,14 @@ public class BoxesLoad {
 			case "cliff" -> {
 				setupWorld(1190, 490);
 				lineAddBox(0, 0, 1190 / 20 - 2, 500 / 20 - 2, "wallDefault@Deco", LineAddBoxMode.HOLLOW);
+				for (int i = 100; i < 106; i++) {
+					deleteBox(i);
+				}
+				editBoxNegativeIndex("texture", "wallDefault@Deco.AWS..@", 98);
+				editBoxNegativeIndex("texture", "wallDefault@Deco.WSD..@", 106);
 
-				int travelBoxesAdded = lineAddBox(240, 440, 6, 1, "travel", LineAddBoxMode.FILL);
-				editLastBox("texture", "solid", travelBoxesAdded);
-				editLastBox("color", "#DEDE40", travelBoxesAdded);
-				editLastBox("effect", "{travel, 1, 500, 45}", travelBoxesAdded);
+				int travelBoxesAdded = lineAddBox(250, 460, 6, 1, "travel", LineAddBoxMode.FILL);
+				editLastBox("effect", "{travel, 1, 500, 61}", travelBoxesAdded);
 			}
 
 			case null -> {}
@@ -77,7 +83,7 @@ public class BoxesLoad {
 
 	private static void fillGrass(int worldWidth, int worldHeight) {
 		double interval = 2.05;
-		int grassAdded = lineAddScaledBox(0, 0, (int) Math.floor((double) worldWidth / (interval * 20)), (int) Math.floor((double) worldHeight / (interval * 20)), "fill", interval);
+		int grassAdded = lineAddScaledBox(0, 0, (int) Math.ceil((double) worldWidth / (interval * 20)), (int) Math.ceil((double) worldHeight / (interval * 20)), "fill", interval);
 		editLastBox("texture", "grass", grassAdded);
 	}
 
