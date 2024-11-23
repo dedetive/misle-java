@@ -529,13 +529,14 @@ public class Box {
 	}
 
 	private void handleBoxTravel() {
-		// Show transition while new screen loads
+		gameState = GameState.AREA_TRANSITION;
 		int newRoomID = (int) getEffectValue();
 		player.pos.setRoomID(newRoomID);
 		player.pos.setX(scale * Double.parseDouble(this.effect[2]));
 		player.pos.setY(scale * Double.parseDouble(this.effect[3]));
 		unloadBoxes();
 		loadBoxes();
+		gameState = GameState.PLAYING;
 	}
 
 	public void addSelectedBox() {

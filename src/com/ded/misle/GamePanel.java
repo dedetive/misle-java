@@ -51,14 +51,15 @@ public class GamePanel extends JPanel implements Runnable {
 	// GAMESTATE
 
 	public enum GameState {
-		PLAYING,
 		DIALOG,
+		PLAYING,
 		INVENTORY,
 		MAIN_MENU,
-		OPTIONS_MENU,
 		PAUSE_MENU,
+		OPTIONS_MENU,
 		LOADING_MENU,
-		LEVEL_DESIGNER
+		LEVEL_DESIGNER,
+		AREA_TRANSITION
 	}
 
 	public static GameState gameState = GameState.MAIN_MENU; // Start in MAIN_MENU by default
