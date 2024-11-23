@@ -323,7 +323,7 @@ public class Inventory {
 
 	public void dropItem(int row, int col, int quantity) {
 		Box droppedItem = BoxesHandling.addBoxItem(player.pos.getX() / scale, player.pos.getY() / scale, getItem(row, col).getId(), quantity);
-		editBox(droppedItem, "collectible", "false");
+		editBox(droppedItem, BoxesHandling.EditBoxKeys.COLLECTIBLE, "false");
 		playThis("dropItem");
 		removeItem(row, col, quantity);
 		updateSelectedItemNamePosition();
@@ -350,7 +350,7 @@ public class Inventory {
 		}
 		delayedRotateBox(droppedItem, 360, 250);
 		Timer timer = new Timer(1500, e -> {
-			editBox(droppedItem, "collectible", "true");
+			editBox(droppedItem, BoxesHandling.EditBoxKeys.COLLECTIBLE, "true");
 		});
 		timer.setRepeats(false);
 		timer.start();
@@ -395,7 +395,7 @@ public class Inventory {
 
 	public void dropDraggedItem() {
 		Box droppedItem = BoxesHandling.addBoxItem(player.pos.getX() / scale, player.pos.getY() / scale, getDraggedItem().getId(), getDraggedItem().getCount());
-		editBox(droppedItem, "collectible", "false");
+		editBox(droppedItem, BoxesHandling.EditBoxKeys.COLLECTIBLE, "false");
 		playThis("dropItem");
 		setDraggedItem(null);
 		updateSelectedItemNamePosition();
@@ -422,7 +422,7 @@ public class Inventory {
 		}
 		delayedRotateBox(droppedItem, 360, 250);
 		Timer timer = new Timer(1500, e -> {
-			editBox(droppedItem, "collectible", "true");
+			editBox(droppedItem, BoxesHandling.EditBoxKeys.COLLECTIBLE, "true");
 		});
 		timer.setRepeats(false);
 		timer.start();

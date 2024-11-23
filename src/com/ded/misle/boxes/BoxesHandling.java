@@ -1,10 +1,8 @@
 package com.ded.misle.boxes;
 
-import javax.sound.sampled.Line;
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static com.ded.misle.GamePanel.player;
@@ -19,9 +17,22 @@ public class BoxesHandling {
 	private static final double boxBaseSize = 20.9;
 	public static int maxLevel = 19;
 	private static List<Box>[] cachedBoxes = new ArrayList[maxLevel + 1];
-	public static enum LineAddBoxMode {
+	public enum LineAddBoxModes {
 		HOLLOW,
 		FILL
+	}
+
+	public enum EditBoxKeys {
+		X,
+		Y,
+		COLOR,
+		TEXTURE,
+		HAS_COLLISION,
+		BOX_SCALE_HORIZONTAL,
+		BOX_SCALE_VERTICAL,
+		EFFECT,
+		COLLECTIBLE,
+		ROTATION
 	}
 
 	static {
@@ -59,28 +70,28 @@ public class BoxesHandling {
 		boxes.add(new Box(x, y));
 		loadPreset(boxes.getLast(), preset);
 		if (checkIfPresetHasSides(preset)) {
-			editLastBox("texture", preset + "0");
+			editLastBox(EditBoxKeys.TEXTURE, preset + "0");
 		}
 		addBoxToCache(boxes.getLast());
 	}
 
 	public static Box addBoxItem(double x, double y, int id, int count) {
 		boxes.add(new Box(x, y));
-		editLastBox("effect", "{item, " + id + ", " + count + ", true}");
-		editLastBox("texture", (".." + File.separator + "items" + File.separator + id));
+		editLastBox(EditBoxKeys.EFFECT, "{item, " + id + ", " + count + ", true}");
+		editLastBox(EditBoxKeys.TEXTURE, (".." + File.separator + "items" + File.separator + id));
 		addBoxToCache(boxes.getLast());
 		return boxes.getLast();
 	}
 
-	public static int lineCoordinatedAddBox(double startX, double startY, int boxesX, int boxesY, String preset, LineAddBoxMode mode) {
+	public static int lineCoordinatedAddBox(double startX, double startY, int boxesX, int boxesY, String preset, LineAddBoxModes mode) {
 		return lineAddBox(startX * boxBaseSize, startY * boxBaseSize, boxesX, boxesY, preset, mode);
 	}
 
-	public static int lineCoordinatedAddScaledBox(double startX, double startY, int boxesX, int boxesY, String preset, String mode, double scale) {
-		return lineAddScaledBox(startX * boxBaseSize, startY * boxBaseSize, boxesX, boxesY, mode, scale);
+	public static int lineCoordinatedAddScaledBox(double startX, double startY, int boxesX, int boxesY, String mode, double scale, String preset) {
+		return lineAddScaledBox(startX * boxBaseSize, startY * boxBaseSize, boxesX, boxesY, mode, scale, preset);
 	}
 
-	public static int lineAddBox(double startX, double startY, int boxesX, int boxesY, String preset, LineAddBoxMode mode) {
+	public static int lineAddBox(double startX, double startY, int boxesX, int boxesY, String preset, LineAddBoxModes mode) {
 		int Counter = 0;
 		for (int i = 0; i < boxesX; i++) {
 			for (int j = 0; j < boxesY; j++) {
@@ -126,7 +137,7 @@ public class BoxesHandling {
 									openSides = "";
 								}
 
-								editLastBox("texture", preset + openSides);
+								editLastBox(EditBoxKeys.TEXTURE, preset + openSides);
 							}
 
 							Counter++;
@@ -175,7 +186,7 @@ public class BoxesHandling {
 								openSides = "";
 							}
 
-							editLastBox("texture", preset + openSides);
+							editLastBox(EditBoxKeys.TEXTURE, preset + openSides);
 						}
 
 						Counter++;
@@ -186,7 +197,7 @@ public class BoxesHandling {
 		return Counter;
 	}
 
-	public static int lineAddScaledBox(double startX, double startY, int boxesX, int boxesY, String mode, double boxScale) {
+	public static int lineAddScaledBox(double startX, double startY, int boxesX, int boxesY, String mode, double boxScale, String preset) {
 		int Counter = 0;
 		for (int i = 0; i < boxesX; i++) {
 			for (int j = 0; j < boxesY; j++) {
@@ -195,8 +206,9 @@ public class BoxesHandling {
 						if ((i == 0 || i == boxesX - 1) || (j == 0 || j == boxesY - 1)) {
 							boxes.add(new Box(startX + i * boxBaseSize * boxScale, startY + j * boxBaseSize * boxScale));
 							addBoxToCache(boxes.getLast());
-							editLastBox("boxScaleHorizontal", String.valueOf(boxScale));
-							editLastBox("boxScaleVertical", String.valueOf(boxScale));
+							editLastBox(EditBoxKeys.BOX_SCALE_HORIZONTAL, String.valueOf(boxScale));
+							editLastBox(EditBoxKeys.BOX_SCALE_VERTICAL, String.valueOf(boxScale));
+							loadPreset(boxes.getLast(), preset);
 							Counter++;
 						}
 						break;
@@ -204,8 +216,9 @@ public class BoxesHandling {
 					default:
 						boxes.add(new Box(startX + i * boxBaseSize * (boxScale - 0.05), startY + j * boxBaseSize * (boxScale - 0.05)));
 						addBoxToCache(boxes.getLast());
-						editLastBox("boxScaleHorizontal", String.valueOf(boxScale));
-						editLastBox("boxScaleVertical", String.valueOf(boxScale));
+						editLastBox(EditBoxKeys.BOX_SCALE_HORIZONTAL, String.valueOf(boxScale));
+						editLastBox(EditBoxKeys.BOX_SCALE_VERTICAL, String.valueOf(boxScale));
+						loadPreset(boxes.getLast(), preset);
 						Counter++;
 						break;
 				}
@@ -224,65 +237,64 @@ public class BoxesHandling {
 	private static void loadPreset(Box box, String preset) {
 		switch (preset) {
 			case "spawnpoint":
-				editBox(box,"effect", "{spawnpoint, -1}");
-				editBox(box,"color", "0xF0F05A");
-				editBox(box,"texture", "spawnpoint");
+				editBox(box, EditBoxKeys.EFFECT, "{spawnpoint, -1}");
+				editBox(box, EditBoxKeys.TEXTURE, "spawnpoint");
 				break;
 			case "mountainChest":
-				editBox(box,"effect", "{chest, 3, mountain}");
-				editBox(box,"hasCollision", "true");
-				editBox(box,"texture", "chest");
+				editBox(box, EditBoxKeys.EFFECT, "{chest, 3, mountain}");
+				editBox(box, EditBoxKeys.HAS_COLLISION, "true");
+				editBox(box, EditBoxKeys.TEXTURE, "chest");
 				break;
 			case "wallDefault":
-				editBox(box,"hasCollision", "true");
-				editBox(box,"color", "0x606060");
-				editBox(box,"texture", "wallDefault");
+				editBox(box, EditBoxKeys.HAS_COLLISION, "true");
+				editBox(box, EditBoxKeys.TEXTURE, "wallDefault");
 				break;
 			case "grass":
-				editBox(box,"hasCollision", "false");
-				editBox(box,"color", "0x1EA81E");
+				editBox(box, EditBoxKeys.HAS_COLLISION, "false");
+				editBox(box, EditBoxKeys.COLOR, "0x1EA81E");
+				editBox(box, EditBoxKeys.TEXTURE, "grass");
 				break;
 			case "travel":
-				editBox(box,"hasCollision", "true");
-				editBox(box,"texture", "invisible");
+				editBox(box, EditBoxKeys.HAS_COLLISION, "true");
+				editBox(box, EditBoxKeys.TEXTURE, "invisible");
 				// Should also manually add room ID, X and Y positions
 				// Effect should look like: {travel, 1, 500, 20}
 				break;
 		}
 	}
 
-	public static void editBox(Box box, String key, String value) {
+	public static void editBox(Box box, EditBoxKeys key, String value) {
 		switch (key) {
-			case "x":
+			case X:
 				box.setCurrentX(Double.parseDouble(value));
 				break;
-			case "y":
+			case Y:
 				box.setCurrentY(Double.parseDouble(value));
 				break;
-			case "color":
+			case COLOR:
 				box.setColor(Color.decode(value));
 				break;
-			case "texture":
+			case TEXTURE:
 				box.setTexture(value);
 				break;
-			case "hasCollision":
+			case HAS_COLLISION:
 				box.setHasCollision(Boolean.parseBoolean(value));
 				break;
-			case "boxScaleHorizontal":
+			case BOX_SCALE_HORIZONTAL:
 				box.setBoxScaleHorizontal(Double.parseDouble(value));
 				break;
-			case "boxScaleVertical":
+			case BOX_SCALE_VERTICAL:
 				box.setBoxScaleVertical(Double.parseDouble(value));
 				break;
-			case "effect":
+			case EFFECT:
 				value = value.replaceAll("[{}]", "");
 				String[] effectArray = value.split(",\\s*");
 				box.setEffect(effectArray);
 				break;
-			case "collectible":
+			case COLLECTIBLE:
 				box.setEffectReason(value);
 				break;
-			case "rotation":
+			case ROTATION:
 				box.setRotation(Double.parseDouble(value));
 				break;
 
@@ -298,11 +310,11 @@ public class BoxesHandling {
 	 * @param key name of the parameter to be edited. The key can be either x, y, color, hasCollision, boxScaleHorizontal, boxScaleVertical and effect
 	 * @param value value to be changed to
 	 */
-	public static void editLastBox(String key, String value) {
+	public static void editLastBox(EditBoxKeys key, String value) {
 		editBox(boxes.getLast(), key, value);
 	}
 
-	public static void editLastBox(String key, String value, int boxCount) {
+	public static void editLastBox(EditBoxKeys key, String value, int boxCount) {
 		for (int i = 1; i < boxCount + 1; i++) {
 			editBox(boxes.get(boxes.size() - i), key, value);
 		}
@@ -313,7 +325,7 @@ public class BoxesHandling {
 	 * Edits the last X box, with X being the input negativeIndex. E.g.: If 1, edit the last box added.
 	 *
 	 */
-	public static void editBoxNegativeIndex(String key, String value, int negativeIndex) {
+	public static void editBoxNegativeIndex(EditBoxKeys key, String value, int negativeIndex) {
 		editBox(boxes.get(boxes.size() - negativeIndex), key, value);
 	}
 

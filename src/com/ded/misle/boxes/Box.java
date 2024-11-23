@@ -502,10 +502,10 @@ public class Box {
 		droppedItem = createDroppedItem(this.getCurrentX(), this.getCurrentY() - 10, id, count);
 		moveBox(droppedItem, multiplier * 20, 10, delay);
 
-		editLastBox("collectible", "false");
+		editLastBox(EditBoxKeys.COLLECTIBLE, "false");
 
 		Timer timer = new Timer((int) (delay * 1.5), e -> {
-			editBox(droppedItem, "collectible", "true");
+			editBox(droppedItem, EditBoxKeys.COLLECTIBLE, "true");
 			this.setTexture("chest");
 		});
 		timer.setRepeats(false);
@@ -572,7 +572,7 @@ public class Box {
 		return null;
 	}
 	
-	public static void editSelectedBoxes(String key, String value) {
+	public static void editSelectedBoxes(EditBoxKeys key, String value) {
 		try {
 			for (Box box : selectedBoxes) {
 				editBox(box, key, value);
