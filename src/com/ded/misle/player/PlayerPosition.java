@@ -89,7 +89,10 @@ public class PlayerPosition {
 	public void reloadSpawnpoint() {
 		setRoomID(spawnpointRoom);
 		int[] spawnpointCoordinates = switch (spawnpointRoom) {
-			case 1 -> new int[]{40, 40};
+
+			// These should be the positions the spawnpoints are located
+
+			case 1 -> new int[]{500, 540};
 			default -> new int[]{0, 0};
 		};
 		setX(spawnpointCoordinates[0] * scale);

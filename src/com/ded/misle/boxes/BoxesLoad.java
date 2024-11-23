@@ -33,6 +33,11 @@ public class BoxesLoad {
 
 				addBox(800, 160, "mountainChest");
 				addBox(160, 800, "mountainChest");
+
+				lineAddBox(300, 420, 7, 6, "wallDefault", "hollow");
+				deleteBox(3, 2);
+
+				addBox(500, 540, "spawnpoint");
 			}
 
 			case null -> {}
@@ -54,7 +59,7 @@ public class BoxesLoad {
 	}
 
 	private static void fillGrass(int worldWidth, int worldHeight) {
-		double interval = 1.96;
+		double interval = 1.92;
 		int grassAdded = lineAddScaledBox(0, 0, (int) Math.floor((double) worldWidth / (interval * 20)), (int) Math.floor((double) worldHeight / (interval * 20)), "fill", interval);
 		editLastBox("texture", "grass", grassAdded);
 	}

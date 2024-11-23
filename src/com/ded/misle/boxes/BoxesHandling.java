@@ -318,6 +318,27 @@ public class BoxesHandling {
 		return boxes.remove(box);
 	}
 
+	/**
+	 *
+	 * Removes the last X box, with X being the input boxNegativeIndex. E.g.: If 1, remove the last box added. If 7, removes the 7th most recent box added.
+	 *
+	 */
+	public static void deleteBox(int boxNegativeIndex) {
+		removeBoxFromCache(boxes.get(boxes.size() - boxNegativeIndex));
+		boxes.remove(boxes.get(boxes.size() - boxNegativeIndex));
+	}
+
+	/**
+	 *
+	 * Removes the last X box, with X being the input boxNegativeIndex, Count times. E.g.: If 1 and 2, remove the last and the second to last boxes added.
+	 *
+	 */
+	public static void deleteBox(int boxNegativeIndex, int Count) {
+		for (int i = 0; i < Count; i++) {
+			deleteBox(boxNegativeIndex);
+		}
+	}
+
 	public static Box getLastBox() {
 		return boxes.getLast();
 	}
