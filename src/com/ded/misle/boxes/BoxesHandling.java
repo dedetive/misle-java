@@ -296,6 +296,15 @@ public class BoxesHandling {
 		}
 	}
 
+	/**
+	 *
+	 * Edits the last X box, with X being the input negativeIndex. E.g.: If 1, edit the last box added.
+	 *
+	 */
+	public static void editBoxNegativeIndex(String key, String value, int negativeIndex) {
+		editBox(boxes.get(boxes.size() - negativeIndex), key, value);
+	}
+
 	// Render boxes with camera offset, scale, and tileSize
 	public static void renderBoxes(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY, double gameScale, int tileSize) {
 		List<Box> nearbyBoxes;
@@ -320,12 +329,11 @@ public class BoxesHandling {
 
 	/**
 	 *
-	 * Removes the last X box, with X being the input boxNegativeIndex. E.g.: If 1, remove the last box added. If 7, removes the 7th most recent box added.
+	 * Removes the last X box, with X being the input negativeIndex. E.g.: If 1, remove the last box added. If 7, removes the 7th most recent box added.
 	 *
 	 */
-	public static void deleteBox(int boxNegativeIndex) {
-		removeBoxFromCache(boxes.get(boxes.size() - boxNegativeIndex));
-		boxes.remove(boxes.get(boxes.size() - boxNegativeIndex));
+	public static void deleteBox(int negativeIndex) {
+		deleteBox(boxes.get(boxes.size() - negativeIndex));
 	}
 
 	/**

@@ -36,6 +36,8 @@ public class BoxesLoad {
 
 				lineAddBox(300, 420, 7, 6, "wallDefault", "hollow");
 				deleteBox(3, 2);
+				editBoxNegativeIndex("texture", "wallDefault@Deco.AWD..@", 2);
+				editBoxNegativeIndex("texture", "wallDefault@Deco.ASD..@", 3);
 
 				addBox(500, 540, "spawnpoint");
 			}
