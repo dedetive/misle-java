@@ -226,7 +226,7 @@ public class Inventory {
 								String formattedEntropyAmount = df.format(player.attr.calculateEntropyGain(entropyAmountValue));
 
 								createFloatingText("+" + formattedEntropyAmount, Color.decode("#A0A0FF"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
-								player.attr.addEntropy(Integer.parseInt(getSelectedItem().getAttributes().get("entropyRestore").toString()));
+								player.attr.addEntropy(Integer.parseInt(getSelectedItem().getAttributes().get("entropy").toString()));
 								getSelectedItem().setCount(getSelectedItem().getCount() - 1);
 								if (!getSelectedItem().isActive()) {
 									removeItem(0, getSelectedSlot());
