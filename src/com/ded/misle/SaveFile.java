@@ -7,12 +7,18 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
 
 import static com.ded.misle.ChangeSettings.getPath;
 import static com.ded.misle.GamePanel.player;
 
 public class SaveFile {
+
+	private static final Object fileLock = new Object();
 
 	// FILE PATH FOR .PNG
 	private static final Path filePath = getPath().resolve("savefile.png");
@@ -22,49 +28,54 @@ public class SaveFile {
 
 	static BufferedImage image = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB);
 
+	// VALUE POSITIONS
+
 	public static void loadSaveFile() {
-		boolean fileExists = checkIfSaveFileExists();
 
-		if (fileExists) {
-			try {
-				image = ImageIO.read(save);
+		synchronized (fileLock) {
+			boolean fileExists = checkIfSaveFileExists();
 
-				// Load maxHP
-				int maxHPHighest = loadThis("blue", 82, 10);
-				int maxHPHigh = loadThis("green", 30, 127);
-				int maxHPLow = loadThis("red", 99, 1);
-				double playerMaxHP = 255 * 255 * maxHPHighest + 255 * maxHPHigh + maxHPLow;
-				player.attr.setMaxHP(playerMaxHP);
+			if (fileExists) {
+				try {
+					image = ImageIO.read(save);
 
-				// Load spawnpoint
+					// Load maxHP
+					int maxHPHighest = loadThis("blue", 82, 10);
+					int maxHPHigh = loadThis("green", 30, 127);
+					int maxHPLow = loadThis("red", 99, 1);
+					double playerMaxHP = 255 * 255 * maxHPHighest + 255 * maxHPHigh + maxHPLow;
+					player.attr.setMaxHP(playerMaxHP);
 
-				int spawnpointHigh = loadThis("red", 69, 42);
-				int spawnpointLow = loadThis("blue", 42, 69);
-				int spawnpoint = spawnpointHigh * 255 + spawnpointLow;
-				player.pos.setSpawnpoint(Math.max(spawnpoint, 1));
-				player.pos.reloadSpawnpoint();
+					// Load spawnpoint
 
-				// Load inventory
+					int spawnpointHigh = loadThis("red", 69, 42);
+					int spawnpointLow = loadThis("blue", 42, 69);
+					int spawnpoint = spawnpointHigh * 255 + spawnpointLow;
+					player.pos.setSpawnpoint(Math.max(spawnpoint, 1));
+					player.pos.reloadSpawnpoint();
 
-				int[][][] tempInventory = new int[4][7][4];
-				for (int i = 0 ; i < 4 ; i++) {
-					for (int j = 0 ; j < 7 ; j++) {
-						tempInventory[i][j][0] = loadThis("red", i, j + 15);
-						tempInventory[i][j][1] = loadThis("green", i, j + 15);
+					// Load inventory
+
+					int[][][] tempInventory = new int[4][7][4];
+					for (int i = 0; i < 4; i++) {
+						for (int j = 0; j < 7; j++) {
+							tempInventory[i][j][0] = loadThis("red", i, j + 15);
+							tempInventory[i][j][1] = loadThis("green", i, j + 15);
 							// [i][j][0] = ID
-						tempInventory[i][j][0] = tempInventory[i][j][0] * 255 + tempInventory[i][j][1];
+							tempInventory[i][j][0] = tempInventory[i][j][0] * 255 + tempInventory[i][j][1];
 
-						tempInventory[i][j][2] = loadThis("blue", i, j + 15);
-						tempInventory[i][j][3] = loadThis("red", j + 15, i);
+							tempInventory[i][j][2] = loadThis("blue", i, j + 15);
+							tempInventory[i][j][3] = loadThis("red", j + 15, i);
 							// [i][j][1] = Count
-						tempInventory[i][j][1] = tempInventory[i][j][2] * 255 + tempInventory[i][j][3];
+							tempInventory[i][j][1] = tempInventory[i][j][2] * 255 + tempInventory[i][j][3];
 
-						player.inv.bruteSetItem(Item.createItem(tempInventory[i][j][0], tempInventory[i][j][1]), i, j);
+							player.inv.bruteSetItem(Item.createItem(tempInventory[i][j][0], tempInventory[i][j][1]), i, j);
+						}
 					}
-				}
 
-			} catch (IOException e) {
-				e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -77,84 +88,96 @@ public class SaveFile {
 	 * @return
 	 */
 	private static int loadThis(String color, int x, int y) {
-		try {
-			image = ImageIO.read(save);
-
-			if (x < 0 || x > 128 || y < 0 || y > 128) {
-				System.out.println("Invalid x or y position for loading from the save file: " + x + ", " + y);
-			}
-
-			Color pixel = new Color(image.getRGB(x, y));
-
-			switch (color.toLowerCase()) {
-				case "red":
-					return pixel.getRed();
-				case "green":
-					return pixel.getGreen();
-				case "blue":
-					return pixel.getBlue();
-				default:
-					System.out.println("Invalid color parameter for loading from the save file: " + color);
-					return 0;
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (x < 0 || x > 128 || y < 0 || y > 128) {
+			System.out.println("Invalid x or y position for loading from the save file: " + x + ", " + y);
 		}
 
-		return 0;
+		Color pixel = new Color(image.getRGB(x, y));
+
+		switch (color.toLowerCase()) {
+			case "red":
+				return pixel.getRed();
+			case "green":
+				return pixel.getGreen();
+			case "blue":
+				return pixel.getBlue();
+			default:
+				System.out.println("Invalid color parameter for loading from the save file: " + color);
+				return 0;
+		}
+
 	}
 
 
 	public static void saveEverything() {
 
-		// Max HP
+		synchronized (fileLock) {
 
-		int maxHPHighest = ((int) player.attr.getMaxHP() / (255 * 255)) % 255;
-		int maxHPHigh = ((int) player.attr.getMaxHP() / 255) % 255;
-		int maxHPLow = (int) player.attr.getMaxHP() % 255;
-		brandIntoSaveFile(maxHPHighest, "blue", 82, 10);
-		brandIntoSaveFile(maxHPHigh, "green", 30, 127);
-		brandIntoSaveFile(maxHPLow, "red", 99, 1);
+			// Max HP
 
-		// Spawnpoint
+			int maxHPHighest = ((int) player.attr.getMaxHP() / (255 * 255)) % 255;
+			int maxHPHigh = ((int) player.attr.getMaxHP() / 255) % 255;
+			int maxHPLow = (int) player.attr.getMaxHP() % 255;
+			brandIntoSaveFile(maxHPHighest, "blue", 82, 10);
+			brandIntoSaveFile(maxHPHigh, "green", 30, 127);
+			brandIntoSaveFile(maxHPLow, "red", 99, 1);
 
-		int spawnpointHigh = (player.pos.getSpawnpoint() / 255) % 255;
-		int spawnpointLow =  player.pos.getSpawnpoint() % 255;
-		brandIntoSaveFile(spawnpointHigh, "red", 69, 42);
-		brandIntoSaveFile(spawnpointLow, "blue", 42, 69);
+			// Spawnpoint
 
-		// Inventory
+			int spawnpointHigh = (player.pos.getSpawnpoint() / 255) % 255;
+			int spawnpointLow = player.pos.getSpawnpoint() % 255;
+			brandIntoSaveFile(spawnpointHigh, "red", 69, 42);
+			brandIntoSaveFile(spawnpointLow, "blue", 42, 69);
 
-		try {
-			int[][][] tempInventory = new int[4][7][4];
-			for (int i = 0 ; i < 4 ; i++) {
-				for (int j = 0 ; j < 7 ; j++) {
-					if (player.inv.getItem(i, j) == null) {
-						tempInventory[i][j][0] = 0;
-						tempInventory[i][j][1] = 0;
-						tempInventory[i][j][2] = 0;
-						tempInventory[i][j][3] = 0;
-					} else {
-						tempInventory[i][j][0] = (player.inv.getItem(i, j).getId() / 255) % 255;
-						tempInventory[i][j][1] = player.inv.getItem(i, j).getId() % 255;
-						tempInventory[i][j][2] = (player.inv.getItem(i, j).getCount() / 255) % 255;
-						tempInventory[i][j][3] = player.inv.getItem(i, j).getCount() % 255;
+			// Inventory
+
+			try {
+				int[][][] tempInventory = new int[4][7][4];
+				for (int i = 0; i < 4; i++) {
+					for (int j = 0; j < 7; j++) {
+						if (player.inv.getItem(i, j) == null) {
+							tempInventory[i][j][0] = 0;
+							tempInventory[i][j][1] = 0;
+							tempInventory[i][j][2] = 0;
+							tempInventory[i][j][3] = 0;
+						} else {
+							tempInventory[i][j][0] = (player.inv.getItem(i, j).getId() / 255) % 255;
+							tempInventory[i][j][1] = player.inv.getItem(i, j).getId() % 255;
+							tempInventory[i][j][2] = (player.inv.getItem(i, j).getCount() / 255) % 255;
+							tempInventory[i][j][3] = player.inv.getItem(i, j).getCount() % 255;
+						}
+						brandIntoSaveFile(tempInventory[i][j][0], "red", i, j + 15);
+						brandIntoSaveFile(tempInventory[i][j][1], "green", i, j + 15);
+						brandIntoSaveFile(tempInventory[i][j][2], "blue", i, j + 15);
+						brandIntoSaveFile(tempInventory[i][j][3], "red", j + 15, i);
 					}
-					brandIntoSaveFile(tempInventory[i][j][0], "red", i, j + 15);
-					brandIntoSaveFile(tempInventory[i][j][1], "green", i, j + 15);
-					brandIntoSaveFile(tempInventory[i][j][2], "blue", i, j + 15);
-					brandIntoSaveFile(tempInventory[i][j][3], "red", j + 15, i);
 				}
+			} catch (NullPointerException e) {
+				// If the game hadn't been started before quitting, this just means the inventory was not loaded yet.
 			}
-		} catch (NullPointerException e) {
-			// If the game hadn't been started before quitting, this just means the inventory was not loaded yet.
+
+			ImageWriter writer = ImageIO.getImageWritersByFormatName("png").next();
+			ImageWriteParam param = writer.getDefaultWriteParam();
+			param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+			param.setCompressionQuality(1.0f); // Maximum quality (lossless)
+			try (ImageOutputStream ios = ImageIO.createImageOutputStream(save)) {
+				writer.setOutput(ios);
+				writer.write(null, new IIOImage(image, null, null), param);
+				writer.dispose();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 
 	private static void brandIntoSaveFile(int value, String color, int x, int y) {
 
 		if (value > 255 || value < 0) {
-			throw new IllegalArgumentException("Value must be between 0 and 255. Value inserted: " + value);
+			throw new IllegalArgumentException("Save value must be between 0 and 255. Value inserted: " + value);
+		}
+
+		if (x < 0 || x >= 128 || y < 0 || y >= 128) {
+			throw new IllegalArgumentException("Invalid x or y position for save file: " + x + ", " + y + ", value: " + value);
 		}
 
 		Color previousValue = new Color(image.getRGB(x, y));
@@ -174,13 +197,6 @@ public class SaveFile {
 				break;
 			default:
 				System.out.println("Invalid color parameter for branding to the save file: " + color);
-		}
-
-
-		try {
-			ImageIO.write(image, "png", SaveFile.save);
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
