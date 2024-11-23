@@ -29,12 +29,12 @@ public class BoxesLoad {
 				int worldHeight = 1000;
 				setWorldBorders(worldWidth, worldHeight);
 				fillGrass(worldWidth, worldHeight);
-				lineAddBox(0, 0, worldWidth / 20 - 1, worldHeight / 20 - 2, "wallDefault@Deco", "hollow");
+				lineAddBox(0, 0, worldWidth / 20 - 1, worldHeight / 20 - 2, "wallDefault@Deco", LineAddBoxMode.HOLLOW);
 
 				addBox(800, 160, "mountainChest");
 				addBox(160, 800, "mountainChest");
 
-				lineAddBox(300, 420, 7, 6, "wallDefault", "hollow");
+				lineAddBox(300, 420, 7, 6, "wallDefault", LineAddBoxMode.HOLLOW);
 				deleteBox(3, 2);
 				editBoxNegativeIndex("texture", "wallDefault@Deco.AWD..@", 2);
 				editBoxNegativeIndex("texture", "wallDefault@Deco.ASD..@", 3);

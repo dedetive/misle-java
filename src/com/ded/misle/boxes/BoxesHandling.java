@@ -1,5 +1,6 @@
 package com.ded.misle.boxes;
 
+import javax.sound.sampled.Line;
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
@@ -17,6 +18,10 @@ public class BoxesHandling {
 	private static final double boxBaseSize = 20.675;
 	public static int maxLevel = 19;
 	private static List<Box>[] cachedBoxes = new ArrayList[maxLevel + 1];
+	public static enum LineAddBoxMode {
+		HOLLOW,
+		FILL
+	}
 
 	static {
 		for (int i = 0; i < cachedBoxes.length; i++) {
@@ -66,7 +71,7 @@ public class BoxesHandling {
 		return boxes.getLast();
 	}
 
-	public static int lineCoordinatedAddBox(double startX, double startY, int boxesX, int boxesY, String preset, String mode) {
+	public static int lineCoordinatedAddBox(double startX, double startY, int boxesX, int boxesY, String preset, LineAddBoxMode mode) {
 		return lineAddBox(startX * boxBaseSize, startY * boxBaseSize, boxesX, boxesY, preset, mode);
 	}
 
@@ -74,12 +79,12 @@ public class BoxesHandling {
 		return lineAddScaledBox(startX * boxBaseSize, startY * boxBaseSize, boxesX, boxesY, mode, scale);
 	}
 
-	public static int lineAddBox(double startX, double startY, int boxesX, int boxesY, String preset, String mode) {
+	public static int lineAddBox(double startX, double startY, int boxesX, int boxesY, String preset, LineAddBoxMode mode) {
 		int Counter = 0;
 		for (int i = 0; i < boxesX; i++) {
 			for (int j = 0; j < boxesY; j++) {
 				switch (mode) {
-					case "hollow":
+					case HOLLOW:
 						if ((i == 0 || i == boxesX - 1) || (j == 0 || j == boxesY - 1)) {
 							boxes.add(new Box(startX + i * boxBaseSize, startY + j * boxBaseSize));
 							addBoxToCache(boxes.getLast());
@@ -126,7 +131,7 @@ public class BoxesHandling {
 							Counter++;
 						}
 						break;
-					case "fill":
+					case FILL:
 					default:
 						boxes.add(new Box(startX + i * boxBaseSize, startY + j * boxBaseSize));
 						addBoxToCache(boxes.getLast());
