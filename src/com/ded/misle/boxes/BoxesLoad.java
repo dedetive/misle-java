@@ -14,6 +14,7 @@ public class BoxesLoad {
 	static {
 		room.put("void", 0);
 		room.put("city_tuani", 1);
+		room.put("cliff", 2);
 	}
 
 
@@ -25,11 +26,10 @@ public class BoxesLoad {
 			}
 
 			case "city_tuani" -> {
-				int worldWidth = 990;
-				int worldHeight = 1000;
-				setWorldBorders(worldWidth, worldHeight);
-				fillGrass(worldWidth, worldHeight);
-				lineAddBox(0, 0, worldWidth / 20 - 1, worldHeight / 20 - 2, "wallDefault@Deco", LineAddBoxMode.HOLLOW);
+				int worldWidth = 1000;
+				int worldHeight = 990;
+				setupWorld(worldWidth, worldHeight);
+				System.out.println(lineAddBox(0, 0, worldWidth / 20 - 2, worldHeight / 20 - 2, "wallDefault@Deco", LineAddBoxMode.HOLLOW));
 
 				addBox(800, 160, "mountainChest");
 				addBox(160, 800, "mountainChest");
@@ -39,7 +39,22 @@ public class BoxesLoad {
 				editBoxNegativeIndex("texture", "wallDefault@Deco.AWD..@", 2);
 				editBoxNegativeIndex("texture", "wallDefault@Deco.ASD..@", 3);
 
+				int travelBoxesAdded = lineAddBox(440, 20, 6, 1, "travel", LineAddBoxMode.FILL);
+				editLastBox("texture", "solid", travelBoxesAdded);
+				editLastBox("color", "#DEDE40", travelBoxesAdded);
+				editLastBox("effect", "{travel, 2, 300, 410}", travelBoxesAdded);
+
 				addBox(500, 540, "spawnpoint");
+			}
+
+			case "cliff" -> {
+				setupWorld(1190, 490);
+				lineAddBox(0, 0, 1190 / 20 - 2, 500 / 20 - 2, "wallDefault@Deco", LineAddBoxMode.HOLLOW);
+
+				int travelBoxesAdded = lineAddBox(240, 440, 6, 1, "travel", LineAddBoxMode.FILL);
+				editLastBox("texture", "solid", travelBoxesAdded);
+				editLastBox("color", "#DEDE40", travelBoxesAdded);
+				editLastBox("effect", "{travel, 1, 500, 45}", travelBoxesAdded);
 			}
 
 			case null -> {}
@@ -61,9 +76,14 @@ public class BoxesLoad {
 	}
 
 	private static void fillGrass(int worldWidth, int worldHeight) {
-		double interval = 1.9;
+		double interval = 2.05;
 		int grassAdded = lineAddScaledBox(0, 0, (int) Math.floor((double) worldWidth / (interval * 20)), (int) Math.floor((double) worldHeight / (interval * 20)), "fill", interval);
 		editLastBox("texture", "grass", grassAdded);
+	}
+
+	private static void setupWorld(int worldWidth, int worldHeight) {
+		setWorldBorders(worldWidth, worldHeight);
+		fillGrass(worldWidth, worldHeight);
 	}
 
 	public static void unloadBoxes() {

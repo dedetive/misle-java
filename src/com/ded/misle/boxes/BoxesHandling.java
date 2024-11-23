@@ -4,6 +4,7 @@ import javax.sound.sampled.Line;
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.ded.misle.GamePanel.player;
@@ -201,7 +202,7 @@ public class BoxesHandling {
 						break;
 					case "fill":
 					default:
-						boxes.add(new Box(startX + i * boxBaseSize * boxScale, startY + j * boxBaseSize * boxScale));
+						boxes.add(new Box(startX + i * boxBaseSize * (boxScale - 0.05), startY + j * boxBaseSize * (boxScale - 0.05)));
 						addBoxToCache(boxes.getLast());
 						editLastBox("boxScaleHorizontal", String.valueOf(boxScale));
 						editLastBox("boxScaleVertical", String.valueOf(boxScale));
@@ -240,6 +241,12 @@ public class BoxesHandling {
 			case "grass":
 				editBox(box,"hasCollision", "false");
 				editBox(box,"color", "0x1EA81E");
+				break;
+			case "travel":
+				editBox(box,"hasCollision", "true");
+				editBox(box,"texture", "invisible");
+				// Should also manually add room ID, X and Y positions
+				// Effect should look like: {travel, 1, 500, 20}
 				break;
 		}
 	}
@@ -357,6 +364,9 @@ public class BoxesHandling {
 	}
 
 	public static void clearAllBoxes() {
+		for (Box box : boxes) {
+			removeBoxFromCache(box);
+		}
 		boxes.clear();
 	}
 

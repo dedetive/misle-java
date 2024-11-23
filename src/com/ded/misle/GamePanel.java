@@ -377,7 +377,7 @@ public class GamePanel extends JPanel implements Runnable {
 			List<Box> nearbyNonCollisionBoxes = ((BoxesHandling.getNonCollisionBoxesInRange(player.pos.getX(), player.pos.getY(), tileSize, scale, tileSize)));
 			for (Box box: nearbyNonCollisionBoxes) {
 				if (!box.getEffect().isEmpty()) {
-					Box.handleEffect(box);
+					box.handleEffect();
 				}
 			}
 		}
@@ -407,7 +407,7 @@ public class GamePanel extends JPanel implements Runnable {
 					(box.isPointColliding(pixelX + objectWidth, pixelY + objectHeight, scale, objectWidth, objectHeight)) // Bottom-right corner
 				) {
 					if (isPlayer && !box.getEffect().isEmpty()) {
-						Box.handleEffect(box);
+						box.handleEffect();
 					}
 					return true;
 				}
@@ -420,7 +420,7 @@ public class GamePanel extends JPanel implements Runnable {
 						(box.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY + objectHeight, scale, objectWidth, objectHeight)) // Bottom edge
 					) {
 						if (isPlayer && !box.getEffect().isEmpty()) {
-							Box.handleEffect(box);
+							box.handleEffect();
 						}
 						return true;
 					}

@@ -17,6 +17,8 @@ import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.boxes.BoxesHandling.*;
+import static com.ded.misle.boxes.BoxesLoad.loadBoxes;
+import static com.ded.misle.boxes.BoxesLoad.unloadBoxes;
 import static com.ded.misle.chests.ChestTables.getChestDropID;
 import static com.ded.misle.items.Item.createDroppedItem;
 import static com.ded.misle.items.Item.createItem;
@@ -113,6 +115,8 @@ public class Box {
 			g2d.setColor(color);
 			Rectangle solidBox = new Rectangle(screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical));
 			GameRenderer.drawRotatedRect(g2d, solidBox, this.rotation);
+		} else if (texture.equals("invisible")) {
+			;
 		} else if (BoxesHandling.checkIfPresetHasSides(texture.split("\\.")[0])) {
 			// Split texture once and reuse the result
 			String[] textureParts = texture.split("\\.");
@@ -284,21 +288,28 @@ public class Box {
 	}
 
 	public double getEffectValue() {
-		return switch (getEffect()) {
-			case "damage" -> Double.parseDouble(effect[1]);
-			case "velocity" -> Double.parseDouble(effect[1]);
-			case "heal" -> Double.parseDouble(effect[1]);
-			default -> 0;
-		};
+		switch (getEffect()) {
+			case "damage":
+			case "velocity":
+			case "heal":
+				return Double.parseDouble(effect[1]);
+			case "travel":
+				return Integer.parseInt(effect[1]);
+			default:
+				return 0;
+		}
 	}
 
 	public double getEffectRate() {
-		return switch (getEffect()) {
-			case "damage" -> Double.parseDouble(effect[2]);
-			case "heal" -> Double.parseDouble(effect[2]);
-			case "chest" -> 1000 * Double.parseDouble(effect[1]);
-			default -> 0;
-		};
+		switch (getEffect()) {
+			case "damage":
+			case "heal":
+				return Double.parseDouble(effect[2]);
+			case "chest":
+				return 1000 * Double.parseDouble(effect[1]);
+			default:
+				return 0;
+		}
 	}
 
 	public void setEffect(String effect) {
@@ -309,14 +320,15 @@ public class Box {
 		this.effect = effect;
 	}
 
-	public static void handleEffect(Box box) {
-		switch (box.effect[0]) {
-			case "damage" -> handleBoxDamageCooldown(box);
-			case "heal" -> handleBoxHealCooldown(box);
-			case "velocity" -> handleBoxVelocity(box);
-			case "spawnpoint" -> handleBoxCheckpoint(box);
-			case "chest" -> handleBoxChest(box);
-			case "item" -> handleBoxItemCollectible(box);
+	public void handleEffect() {
+		switch (this.effect[0]) {
+			case "damage" -> this.handleBoxDamageCooldown();
+			case "heal" -> this.handleBoxHealCooldown();
+			case "velocity" -> this.handleBoxVelocity();
+			case "spawnpoint" -> this.handleBoxSpawnpoint();
+			case "chest" -> this.handleBoxChest();
+			case "item" -> this.handleBoxItemCollectible();
+			case "travel" -> handleBoxTravel();
 		}
 	}
 
@@ -406,63 +418,63 @@ public class Box {
 
 	// EFFECT HANDLING
 
-	private static void handleBoxDamageCooldown(Box box) {
+	private void handleBoxDamageCooldown() {
 		long currentTime = currentTimeMillis();
-		long cooldownDuration = (long) box.getEffectRate(); // Use the box's damage rate for cooldown
+		long cooldownDuration = (long) this.getEffectRate(); // Use the box's damage rate for cooldown
 
 		// Check if enough time has passed since the last damage was dealt
-		if (currentTime - box.getLastEffectTime() >= cooldownDuration) {
-			box.setLastEffectTime(currentTime); // Update the last damage time
-			player.attr.takeDamage(box.getEffectValue(), box.getEffectReason(), box.getEffectArgs());
+		if (currentTime - this.getLastEffectTime() >= cooldownDuration) {
+			this.setLastEffectTime(currentTime); // Update the last damage time
+			player.attr.takeDamage(this.getEffectValue(), this.getEffectReason(), this.getEffectArgs());
 //			System.out.println(box.getEffectValue() + " " + box.getEffectReason() + " damage dealt! Now at " + player.attr.getHP() + " HP.");
 		}
 	}
 
-	private static void handleBoxHealCooldown(Box box) {
+	private void handleBoxHealCooldown() {
 		long currentTime = currentTimeMillis();
-		long cooldownDuration = (long) box.getEffectRate();
+		long cooldownDuration = (long) this.getEffectRate();
 
-		if (currentTime - box.getLastEffectTime() >= cooldownDuration) {
-			box.setLastEffectTime(currentTime);
-			player.attr.receiveHeal(box.getEffectValue(), box.getEffectReason());
+		if (currentTime - this.getLastEffectTime() >= cooldownDuration) {
+			this.setLastEffectTime(currentTime);
+			player.attr.receiveHeal(this.getEffectValue(), this.getEffectReason());
 //			System.out.println(box.getEffectValue() + " " + box.getEffectReason() + " heal received! Now at " + player.attr.getHP() + " HP.");
 		}
 	}
 
-	private static void handleBoxVelocity(Box box) {
-		player.attr.setEnvironmentSpeedModifier(box.getEffectValue());
-		player.attr.setLastVelocityBox(box);
+	private void handleBoxVelocity() {
+		player.attr.setEnvironmentSpeedModifier(this.getEffectValue());
+		player.attr.setLastVelocityBox(this);
 	}
 
-	private static void handleBoxCheckpoint(Box box) {
-		if ((Objects.equals(box.effect[1], "-1") || Integer.parseInt(box.effect[1]) > 0) && player.pos.getSpawnpoint() != player.pos.getRoomID()) {
+	private void handleBoxSpawnpoint() {
+		if ((Objects.equals(this.effect[1], "-1") || Integer.parseInt(this.effect[1]) > 0) && player.pos.getSpawnpoint() != player.pos.getRoomID()) {
 			player.pos.setSpawnpoint(player.pos.getRoomID());
 			System.out.println("Saved spawnpoint as room " + player.pos.getRoomID());
-			if (Integer.parseInt(box.effect[1]) > 0) {
-				box.effect[1] = String.valueOf(Integer.parseInt(box.effect[1]) - 1);
+			if (Integer.parseInt(this.effect[1]) > 0) {
+				this.effect[1] = String.valueOf(Integer.parseInt(this.effect[1]) - 1);
 			}
 		}
 	}
 
-	private static void handleBoxChest(Box box) {
+	private void handleBoxChest() {
 		long currentTime = currentTimeMillis();
-		long cooldownDuration = (long) box.getEffectRate();
+		long cooldownDuration = (long) this.getEffectRate();
 
-		if (currentTime - box.getLastEffectTime() >= cooldownDuration) {
-			box.setLastEffectTime(currentTime);
-			int[] results = getChestDropID(box.effect[2]);
+		if (currentTime - this.getLastEffectTime() >= cooldownDuration) {
+			this.setLastEffectTime(currentTime);
+			int[] results = getChestDropID(this.effect[2]);
 			int id = results[0];
 			int count = results[1];
 			boolean canGoMinus = false;
 			boolean canGoPlus = false;
-			if (getCollisionBoxesInRange(box.currentX - 20, box.currentY * scale, 0, scale, tileSize, 6).isEmpty()) {
+			if (getCollisionBoxesInRange(this.currentX - 20, this.currentY * scale, 0, scale, tileSize, 6).isEmpty()) {
 				canGoMinus = true;
 			}
-			if (getCollisionBoxesInRange(box.currentX + 20, box.currentY * scale, 0, scale, tileSize, 6).isEmpty()) {
+			if (getCollisionBoxesInRange(this.currentX + 20, this.currentY * scale, 0, scale, tileSize, 6).isEmpty()) {
 				canGoPlus = true;
 			}
 
-			box.boxSpawnItem(canGoMinus, canGoPlus, id, count);
+			this.boxSpawnItem(canGoMinus, canGoPlus, id, count);
 		}
 	}
 
@@ -500,20 +512,30 @@ public class Box {
 		timer.start();
 	}
 
-	private static void handleBoxItemCollectible(Box box) {
-		if (box.getEffectReason().equals("false")) {
+	private void handleBoxItemCollectible() {
+		if (this.getEffectReason().equals("false")) {
 			return;
 		}
-		double xDistance = Math.abs(box.getCurrentX() - player.pos.getX() / scale);
-		double yDistance = Math.abs(box.getCurrentY() - player.pos.getY() / scale);
+		double xDistance = Math.abs(this.getCurrentX() - player.pos.getX() / scale);
+		double yDistance = Math.abs(this.getCurrentY() - player.pos.getY() / scale);
 		double totalDistance = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
 
 		if (totalDistance < 30) {
 			playThis("collectItem");
-			player.inv.addItem(createItem(Integer.parseInt(box.effect[1]), Integer.parseInt(box.effect[2])));
+			player.inv.addItem(createItem(Integer.parseInt(this.effect[1]), Integer.parseInt(this.effect[2])));
 			GameRenderer.updateSelectedItemNamePosition();
-			deleteBox(box);
+			deleteBox(this);
 		}
+	}
+
+	private void handleBoxTravel() {
+		// Show transition while new screen loads
+		int newRoomID = (int) getEffectValue();
+		player.pos.setRoomID(newRoomID);
+		player.pos.setX(scale * Double.parseDouble(this.effect[2]));
+		player.pos.setY(scale * Double.parseDouble(this.effect[3]));
+		unloadBoxes();
+		loadBoxes();
 	}
 
 	public void addSelectedBox() {
