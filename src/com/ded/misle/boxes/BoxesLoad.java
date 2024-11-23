@@ -30,6 +30,9 @@ public class BoxesLoad {
 				setWorldBorders(worldWidth, worldHeight);
 				fillGrass(worldWidth, worldHeight);
 				lineAddBox(0, 0, worldWidth / 20 - 1, worldHeight / 20 - 2, "wallDefault@Deco", "hollow");
+
+				addBox(800, 160, "mountainChest");
+				addBox(160, 800, "mountainChest");
 			}
 
 			case null -> {}
@@ -51,7 +54,8 @@ public class BoxesLoad {
 	}
 
 	private static void fillGrass(int worldWidth, int worldHeight) {
-		int grassAdded = lineAddScaledBox(0, 0, (int) Math.floor((double) worldWidth / (1.98 * 20)), (int) Math.floor((double) worldHeight / (1.98 * 20)), "fill", 1.98);
+		double interval = 1.96;
+		int grassAdded = lineAddScaledBox(0, 0, (int) Math.floor((double) worldWidth / (interval * 20)), (int) Math.floor((double) worldHeight / (interval * 20)), "fill", interval);
 		editLastBox("texture", "grass", grassAdded);
 	}
 

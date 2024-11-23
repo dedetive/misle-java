@@ -39,6 +39,16 @@ public class BoxesHandling {
 		addBoxToCache(boxes.getLast());
 	}
 
+	/**
+	 *
+	 * Valid presets are:<br>
+	 * - spawnpoint<br>
+	 * - mountainChest<br>
+	 * - wallDefault<br>
+	 * - wallDefault@Deco<br>
+	 * - grass
+	 *
+	 */
 	public static void addBox(double x, double y, String preset) {
 		boxes.add(new Box(x, y));
 		loadPreset(boxes.getLast(), preset);
