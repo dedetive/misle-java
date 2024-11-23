@@ -1000,4 +1000,24 @@ public class GameRenderer {
 
 		g2d.dispose();
 	}
+
+	public static void renderAreaTransition(Graphics g, JPanel panel) {
+		Graphics2D g2d = (Graphics2D) g;
+
+		double scaleByScreenSize = scale / 3.75;
+
+		// BACKGROUND
+
+		g2d.setColor(backgroundColor);
+		g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
+
+		// MENU ITSELF
+
+		createTitle("loading_menu_loading", g2d, scaleByScreenSize);
+		g2d.setFont(comfortaaFont96);
+		FontMetrics fm = g2d.getFontMetrics();
+		String titleText = LanguageManager.getText("loading_menu_loading");
+		fm.stringWidth(titleText);
+		int textY = (int) (182 * scaleByScreenSize);
+	}
 }

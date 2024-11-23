@@ -536,7 +536,12 @@ public class Box {
 		player.pos.setY(scale * Double.parseDouble(this.effect[3]));
 		unloadBoxes();
 		loadBoxes();
-		gameState = GameState.PLAYING;
+
+		Timer timer = new Timer(1, e -> {
+			gameState = GameState.PLAYING;
+		});
+		timer.setRepeats(false);
+		timer.start();
 	}
 
 	public void addSelectedBox() {

@@ -455,6 +455,9 @@ public class GamePanel extends JPanel implements Runnable {
 			case GameState.LEVEL_DESIGNER:
 				renderLevelDesigner(g, this, mouseHandler);
 				break;
+			case GameState.AREA_TRANSITION:
+				renderAreaTransition(g, this);
+				break;
 		}
 	}
 
