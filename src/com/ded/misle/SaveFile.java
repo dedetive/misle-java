@@ -30,7 +30,7 @@ public class SaveFile {
 
 	// COLORS
 
-	public enum pixelColor { RED, GREEN, BLUE }
+	public enum PixelColor { RED, GREEN, BLUE }
 
 	public static void loadSaveFile() {
 
@@ -42,16 +42,16 @@ public class SaveFile {
 					image = ImageIO.read(save);
 
 					// Load maxHP
-					int maxHPHighest = loadThis(pixelColor.BLUE, 82, 10);
-					int maxHPHigh = loadThis(pixelColor.GREEN, 30, 127);
-					int maxHPLow = loadThis(pixelColor.RED, 99, 1);
+					int maxHPHighest = loadThis(PixelColor.BLUE, 82, 10);
+					int maxHPHigh = loadThis(PixelColor.GREEN, 30, 127);
+					int maxHPLow = loadThis(PixelColor.RED, 99, 1);
 					double playerMaxHP = 255 * 255 * maxHPHighest + 255 * maxHPHigh + maxHPLow;
 					player.attr.setMaxHP(playerMaxHP);
 
 					// Load spawnpoint
 
-					int spawnpointHigh = loadThis(pixelColor.RED, 69, 42);
-					int spawnpointLow = loadThis(pixelColor.BLUE, 42, 69);
+					int spawnpointHigh = loadThis(PixelColor.RED, 69, 42);
+					int spawnpointLow = loadThis(PixelColor.BLUE, 42, 69);
 					int spawnpoint = spawnpointHigh * 255 + spawnpointLow;
 					player.pos.setSpawnpoint(Math.max(spawnpoint, 1));
 					player.pos.reloadSpawnpoint();
@@ -61,13 +61,13 @@ public class SaveFile {
 					int[][][] tempInventory = new int[4][7][4];
 					for (int i = 0; i < 4; i++) {
 						for (int j = 0; j < 7; j++) {
-							tempInventory[i][j][0] = loadThis(pixelColor.RED, i, j + 15);
-							tempInventory[i][j][1] = loadThis(pixelColor.GREEN, i, j + 15);
+							tempInventory[i][j][0] = loadThis(PixelColor.RED, i, j + 15);
+							tempInventory[i][j][1] = loadThis(PixelColor.GREEN, i, j + 15);
 							// [i][j][0] = ID
 							tempInventory[i][j][0] = tempInventory[i][j][0] * 255 + tempInventory[i][j][1];
 
-							tempInventory[i][j][2] = loadThis(pixelColor.BLUE, i, j + 15);
-							tempInventory[i][j][3] = loadThis(pixelColor.RED, j + 15, i);
+							tempInventory[i][j][2] = loadThis(PixelColor.BLUE, i, j + 15);
+							tempInventory[i][j][3] = loadThis(PixelColor.RED, j + 15, i);
 							// [i][j][1] = Count
 							tempInventory[i][j][1] = tempInventory[i][j][2] * 255 + tempInventory[i][j][3];
 
@@ -89,7 +89,7 @@ public class SaveFile {
 	 * @param y y position of the pixel
 	 * @return
 	 */
-	private static int loadThis(pixelColor color, int x, int y) {
+	private static int loadThis(PixelColor color, int x, int y) {
 		if (x < 0 || x > 128 || y < 0 || y > 128) {
 			System.out.println("Invalid x or y position for loading from the save file: " + x + ", " + y);
 		}
@@ -97,11 +97,11 @@ public class SaveFile {
 		Color pixel = new Color(image.getRGB(x, y));
 
 		switch (color) {
-			case pixelColor.RED:
+			case PixelColor.RED:
 				return pixel.getRed();
-			case pixelColor.GREEN:
+			case PixelColor.GREEN:
 				return pixel.getGreen();
-			case pixelColor.BLUE:
+			case PixelColor.BLUE:
 				return pixel.getBlue();
 			default:
 				System.out.println("Invalid color parameter for loading from the save file: " + color);
@@ -120,16 +120,16 @@ public class SaveFile {
 			int maxHPHighest = ((int) player.attr.getMaxHP() / (255 * 255)) % 255;
 			int maxHPHigh = ((int) player.attr.getMaxHP() / 255) % 255;
 			int maxHPLow = (int) player.attr.getMaxHP() % 255;
-			brandIntoSaveFile(maxHPHighest, pixelColor.BLUE, 82, 10);
-			brandIntoSaveFile(maxHPHigh, pixelColor.GREEN, 30, 127);
-			brandIntoSaveFile(maxHPLow, pixelColor.RED, 99, 1);
+			brandIntoSaveFile(maxHPHighest, PixelColor.BLUE, 82, 10);
+			brandIntoSaveFile(maxHPHigh, PixelColor.GREEN, 30, 127);
+			brandIntoSaveFile(maxHPLow, PixelColor.RED, 99, 1);
 
 			// Spawnpoint
 
 			int spawnpointHigh = (player.pos.getSpawnpoint() / 255) % 255;
 			int spawnpointLow = player.pos.getSpawnpoint() % 255;
-			brandIntoSaveFile(spawnpointHigh, pixelColor.RED, 69, 42);
-			brandIntoSaveFile(spawnpointLow, pixelColor.BLUE, 42, 69);
+			brandIntoSaveFile(spawnpointHigh, PixelColor.RED, 69, 42);
+			brandIntoSaveFile(spawnpointLow, PixelColor.BLUE, 42, 69);
 
 			// Inventory
 
@@ -148,10 +148,10 @@ public class SaveFile {
 							tempInventory[i][j][2] = (player.inv.getItem(i, j).getCount() / 255) % 255;
 							tempInventory[i][j][3] = player.inv.getItem(i, j).getCount() % 255;
 						}
-						brandIntoSaveFile(tempInventory[i][j][0], pixelColor.RED, i, j + 15);
-						brandIntoSaveFile(tempInventory[i][j][1], pixelColor.GREEN, i, j + 15);
-						brandIntoSaveFile(tempInventory[i][j][2], pixelColor.BLUE, i, j + 15);
-						brandIntoSaveFile(tempInventory[i][j][3], pixelColor.RED, j + 15, i);
+						brandIntoSaveFile(tempInventory[i][j][0], PixelColor.RED, i, j + 15);
+						brandIntoSaveFile(tempInventory[i][j][1], PixelColor.GREEN, i, j + 15);
+						brandIntoSaveFile(tempInventory[i][j][2], PixelColor.BLUE, i, j + 15);
+						brandIntoSaveFile(tempInventory[i][j][3], PixelColor.RED, j + 15, i);
 					}
 				}
 			} catch (NullPointerException e) {
@@ -172,7 +172,7 @@ public class SaveFile {
 		}
 	}
 
-	private static void brandIntoSaveFile(int value, pixelColor color, int x, int y) {
+	private static void brandIntoSaveFile(int value, PixelColor color, int x, int y) {
 
 		if (value > 255 || value < 0) {
 			throw new IllegalArgumentException("Save value must be between 0 and 255. Value inserted: " + value);
@@ -188,13 +188,13 @@ public class SaveFile {
 		int blue = previousValue.getBlue();
 
 		switch (color) {
-			case pixelColor.RED:
+			case PixelColor.RED:
 				image.setRGB(x, y, new Color(value, green, blue).getRGB());
 				break;
-			case pixelColor.GREEN:
+			case PixelColor.GREEN:
 				image.setRGB(x, y, new Color(red, value, blue).getRGB());
 				break;
-			case pixelColor.BLUE:
+			case PixelColor.BLUE:
 				image.setRGB(x, y, new Color(red, green, value).getRGB());
 				break;
 			default:

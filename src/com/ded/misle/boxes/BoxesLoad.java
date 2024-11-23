@@ -23,6 +23,7 @@ public class BoxesLoad {
 			case "void" -> {
 				;
 			}
+
 			case "city_tuani" -> {
 				int worldWidth = 990;
 				int worldHeight = 1000;
@@ -30,6 +31,7 @@ public class BoxesLoad {
 				fillGrass(worldWidth, worldHeight);
 				lineAddBox(0, 0, worldWidth / 20 - 1, worldHeight / 20 - 2, "wallDefault@Deco", "hollow");
 			}
+
 			case null -> {}
 			default -> throw new IllegalStateException("Unexpected value: " + roomIDToName(player.pos.getRoomID()) + ", ID: " + player.pos.getRoomID());
 		}

@@ -16,9 +16,13 @@ public class PlayerPosition {
 	private double originalPlayerY;
 	private double cameraOffsetY;
 	private int spawnpointRoom;
-	private String region = "";
+	private Region region = Region.VOID;
 	private int roomID;
 	private double rotation;
+	public enum Region {
+		VOID,
+		CHAIN_OF_LIES
+	}
 
 	public PlayerPosition() {
 		if (spawnpointRoom == 0) {
@@ -29,7 +33,7 @@ public class PlayerPosition {
 		}
 		setCameraOffsetX(0);
 		setCameraOffsetY(0);
-		setRegion("Chain of Lies");
+		setRegion(Region.CHAIN_OF_LIES);
 	}
 
 	public double getX() {
@@ -92,11 +96,11 @@ public class PlayerPosition {
 		setY(spawnpointCoordinates[1] * scale);
 	}
 
-	public String getRegion() {
+	public Region getRegion() {
 		return region;
 	}
 
-	public void setRegion(String region) {
+	public void setRegion(Region region) {
 		this.region = region;
 	}
 
