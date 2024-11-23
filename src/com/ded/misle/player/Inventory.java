@@ -223,10 +223,13 @@ public class Inventory {
 								break;
 							case "entropy":
 								double entropyAmountValue = Double.parseDouble(Integer.toString((Integer) getSelectedItem().getAttributes().get("entropy")));
+								if (entropyAmountValue == -1) {
+									entropyAmountValue = player.attr.getMaxEntropy();
+								}
 								String formattedEntropyAmount = df.format(player.attr.calculateEntropyGain(entropyAmountValue));
 
 								createFloatingText("+" + formattedEntropyAmount, Color.decode("#A0A0FF"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
-								player.attr.addEntropy(Integer.parseInt(getSelectedItem().getAttributes().get("entropy").toString()));
+								player.attr.addEntropy(entropyAmountValue);
 								getSelectedItem().setCount(getSelectedItem().getCount() - 1);
 								if (!getSelectedItem().isActive()) {
 									removeItem(0, getSelectedSlot());
