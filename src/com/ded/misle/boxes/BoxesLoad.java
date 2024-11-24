@@ -89,7 +89,7 @@ public class BoxesLoad {
 				}
 				addBox(((double) 1190 / 20 - 23) * 20 + 20, 60, "mountainChest");
 				// Right column
-				lineAddBox(1170, 133, 1, 500 / 20 - 12, "wallDefault", FILL);
+				lineAddBox(1170, -7, 1, 500 / 20 - 5, "wallDefault", FILL);
 				editLastBox(TEXTURE, "wallDefault", 1);
 
 				int travelBoxesAdded = lineAddBox(250, 460, 6, 1, "travel", FILL);
