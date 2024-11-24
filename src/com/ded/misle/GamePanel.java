@@ -208,7 +208,7 @@ public class GamePanel extends JPanel implements Runnable {
 				GamePanel.screenHeight = Math.min(detectedHeight, screenHeight);
 
 				updateTileSize();
-				player.attr.setSpeedModifier(player.attr.getSpeedModifier());
+				player.attr.updateSpeed();
 				player.attr.setWidth(tileSize);
 				player.attr.setHeight(tileSize);
 				worldWidth = originalWorldWidth * scale;

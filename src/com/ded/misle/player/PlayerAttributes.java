@@ -4,6 +4,7 @@ import com.ded.misle.boxes.Box;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
 
 import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.GamePanel.tileSize;
@@ -37,6 +38,14 @@ public class PlayerAttributes {
 	private double xp;
 	private double XPtoLevelUp;
 	private int level = 1;
+	private int levelUpPoints;
+	public static enum LevelUpPointsUsage {
+		MAX_HP,
+		MAX_ENTROPY,
+		DEFENSE,
+		REGENERATION,
+		SPEED
+	}
 
 	// ETC
 
@@ -394,10 +403,10 @@ public class PlayerAttributes {
 
 	public void updateRegenerationHP(long currentTime) {
 		// Calculate the interval for healing 1 HP, based on the existing regeneration rate and quality
-		double regenerationInterval = ((2500L / regenerationRate) / 10 / regenerationQuality);
+		double regenerationInterval = (250L / regenerationRate);
 
 		if (lastHitMillis + 2500 < currentTime && lastRegenerationMillis + regenerationInterval < currentTime && !this.isDead) {
-			receiveHeal(1, "normal");
+			receiveHeal(getRegenerationQuality(), "normal");
 			lastRegenerationMillis = currentTime;
 		}
 	}
@@ -472,6 +481,13 @@ public class PlayerAttributes {
 		this.level++;
 		updateXPtoLevelUp();
 		System.out.println("Leveled up! Now at level " + this.level + ".");
+		if (level % 10 == 0) {
+			addLevelUpPoints(5);
+		} else if (level % 5 == 0) {
+			addLevelUpPoints(3);
+		} else {
+			addLevelUpPoints(2);
+		}
 	}
 
 	public double getXP() {
@@ -485,6 +501,36 @@ public class PlayerAttributes {
 	public void addXP(double xp) {
 		this.xp += xp;
 	}
+
+	public void addLevelUpPoints(int levelUpPoints) {
+		this.levelUpPoints += levelUpPoints;
+	}
+
+	public int getLevelUpPoints() {
+		return levelUpPoints;
+	}
+
+	public void useLevelUpPoints(LevelUpPointsUsage levelUpPointsUsage, int levelUpPoints) {
+		switch (levelUpPointsUsage) {
+			case MAX_HP -> {
+				setMaxHP(getMaxHP() + levelUpPoints * 5 + 2 * Math.floor((double) levelUpPoints / 5));
+			}
+			case MAX_ENTROPY -> {
+				setMaxEntropy(getMaxEntropy() + levelUpPoints * 3 + Math.floor((double) levelUpPoints / 5));
+			}
+			case DEFENSE -> {
+				setDefense(getDefense() + levelUpPoints + Math.floor((double) levelUpPoints / 5));
+			}
+			case REGENERATION -> {
+				setRegenerationQuality(getRegenerationQuality() + 0.5 * levelUpPoints + 0.5 * Math.floor((double) levelUpPoints / 5));
+			}
+			case SPEED -> {
+				setSpeedModifier(getSpeedModifier() + 0.25 * levelUpPoints + 0.25 * Math.floor((double) levelUpPoints / 5));
+			}
+		}
+	}
+
+	// END XP
 
 	public void unloadAttributes() {
 		this.setSpeedModifier(1);
