@@ -71,12 +71,12 @@ Text in parentheses is ignored, and only the value after the " = " sign is used.
 
 At the language section, those parameters are the region codes, which translate to:
 - de_DE: Deutsch / German
-- el_GR: Ελληνικά / Greek
+- el_GR: Ελληνικά / Greek (Currently non-functional due to font issues)
 - en_US: English / U.S. English
 - es_ES: Español / Spanish
-- mi_PM: \[---------\]
+- mi_PM: \[---------\] (Currently non-functional due to translation issues, crashes the game)
 - pt_BR: Português / Brazilian Portuguese
-- ru_RU: Русский / Russian
+- ru_RU: Русский / Russian (Currently non-functional due to font issues)
 
 > **Note:** The `displayFPS` function currently does not work and was only available in initial tests, but it will be reimplemented later.
 
@@ -87,7 +87,7 @@ screenSize = big
 isFullscreen = false
 fullscreenMode = exclusive
 frameRateCap = 120
-language = mi_PM
+language = en_US
 ```
 
 ### How-to of adding new items
@@ -227,5 +227,6 @@ And finally, add the .png icon for the item in `resources/images/items/`. The na
 ### Known issues
 
 1. Currently, the `ru_RU` (Russian) and `el_GR` (Greek) fonts in item tooltips do not work properly due to unsupported characters in the current font.
+2. It crashes when trying to play the game with the language `mi_PM` due to lack of translation.
 
 > **Note:** Please report any issues you encounter during your game development. Your help would be greatly appreciated.
