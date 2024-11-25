@@ -35,16 +35,16 @@ public class SaveFile {
 	public enum PixelData {
 
 		/**
-		 * PIXELS IN USE:
-		 * X   Y
-		 * 4, 15 RGB
-		 * 5, 15 RGB
-		 * 30, 127 RG
-		 * 42, 69 B
-		 * 69, 42 R
-		 * 82, 10 B
-		 * 99, 1 R
-		 **/
+		  PIXELS IN USE:
+		  X   Y
+		  4, 15 RGB
+		  5, 15 RGB
+		  30, 127 RG
+		  42, 69 B
+		  69, 42 R
+		  82, 10 B
+		  99, 1 R
+		 */
 
 		 /**
 		 * Additional pixels based on inventory (X, Y coordinates for each pixel set in inventory):
@@ -196,17 +196,15 @@ public class SaveFile {
 
 		Color pixel = new Color(image.getRGB(x, y));
 
-		switch (color) {
-			case PixelColor.RED:
-				return pixel.getRed();
-			case PixelColor.GREEN:
-				return pixel.getGreen();
-			case PixelColor.BLUE:
-				return pixel.getBlue();
-			default:
+		return switch (color) {
+			case PixelColor.RED -> pixel.getRed();
+			case PixelColor.GREEN -> pixel.getGreen();
+			case PixelColor.BLUE -> pixel.getBlue();
+			default -> {
 				System.out.println("Invalid color parameter for loading from the save file: " + color);
-				return 0;
-		}
+				yield 0;
+			}
+		};
 	}
 
 	public static void saveEverything() {
@@ -216,40 +214,28 @@ public class SaveFile {
 			// Max HP
 
 			int playerMaxHP = (int) player.attr.getMaxHP();
-			int maxHPHighest = getHighest(playerMaxHP);
-			int maxHPHigh = getHigh(playerMaxHP);
-			int maxHPLow = getLow(playerMaxHP);
-			brandIntoSaveFile(maxHPHighest, PixelData.MAX_HP_HIGHEST);
-			brandIntoSaveFile(maxHPHigh, PixelData.MAX_HP_HIGH);
-			brandIntoSaveFile(maxHPLow, PixelData.MAX_HP_LOW);
+			brandIntoSaveFile(getHighest(playerMaxHP), PixelData.MAX_HP_HIGHEST);
+			brandIntoSaveFile(getHigh(playerMaxHP), PixelData.MAX_HP_HIGH);
+			brandIntoSaveFile(getLow(playerMaxHP), PixelData.MAX_HP_LOW);
 
 			// Spawnpoint
 
 			int playerSpawnpoint = player.pos.getSpawnpoint();
-			int spawnpointHigh = getHigh(playerSpawnpoint);
-			int spawnpointLow = getLow(playerSpawnpoint);
-			brandIntoSaveFile(spawnpointHigh, PixelData.SPAWNPOINT_HIGH);
-			brandIntoSaveFile(spawnpointLow, PixelData.SPAWNPOINT_LOW);
+			brandIntoSaveFile(getHigh(playerSpawnpoint), PixelData.SPAWNPOINT_HIGH);
+			brandIntoSaveFile(getLow(playerSpawnpoint), PixelData.SPAWNPOINT_LOW);
 
 			int playerLevel = player.attr.getLevel();
-			int levelHigh = getHigh(playerLevel);
-			int levelLow = getLow(playerLevel);
-			brandIntoSaveFile(levelHigh, PixelData.LEVEL_HIGH);
-			brandIntoSaveFile(levelLow, PixelData.LEVEL_LOW);
+			brandIntoSaveFile(getHigh(playerLevel), PixelData.LEVEL_HIGH);
+			brandIntoSaveFile(getLow(playerLevel), PixelData.LEVEL_LOW);
 
 			int playerLevelUpPoints = player.attr.getLevelUpPoints();
-			int levelPointsHigh = getHigh(playerLevelUpPoints);
-			int levelPointsLow = getLow(playerLevelUpPoints);
-			brandIntoSaveFile(levelPointsHigh, PixelData.LEVEL_POINTS_HIGH);
-			brandIntoSaveFile(levelPointsLow, PixelData.LEVEL_POINTS_LOW);
+			brandIntoSaveFile(getHigh(playerLevelUpPoints), PixelData.LEVEL_POINTS_HIGH);
+			brandIntoSaveFile(getLow(playerLevelUpPoints), PixelData.LEVEL_POINTS_LOW);
 
 			int playerXP = (int) player.attr.getXP();
-			int XPHighest = getHighest(playerXP);
-			int XPHigh = getHigh(playerXP);
-			int XPLow = getLow(playerXP);
-			brandIntoSaveFile(XPHighest, PixelData.XP_HIGHEST);
-			brandIntoSaveFile(XPHigh, PixelData.XP_HIGH);
-			brandIntoSaveFile(XPHigh, PixelData.XP_LOW);
+			brandIntoSaveFile(getHighest(playerXP), PixelData.XP_HIGHEST);
+			brandIntoSaveFile(getHigh(playerXP), PixelData.XP_HIGH);
+			brandIntoSaveFile(getLow(playerXP), PixelData.XP_LOW);
 
 			// Inventory
 
@@ -308,17 +294,10 @@ public class SaveFile {
 		int blue = previousValue.getBlue();
 
 		switch (color) {
-			case PixelColor.RED:
-				image.setRGB(x, y, new Color(value, green, blue).getRGB());
-				break;
-			case PixelColor.GREEN:
-				image.setRGB(x, y, new Color(red, value, blue).getRGB());
-				break;
-			case PixelColor.BLUE:
-				image.setRGB(x, y, new Color(red, green, value).getRGB());
-				break;
-			default:
-				System.out.println("Invalid color parameter for branding to the save file: " + color);
+			case PixelColor.RED -> image.setRGB(x, y, new Color(value, green, blue).getRGB());
+			case PixelColor.GREEN -> image.setRGB(x, y, new Color(red, value, blue).getRGB());
+			case PixelColor.BLUE -> image.setRGB(x, y, new Color(red, green, value).getRGB());
+			default -> System.out.println("Invalid color parameter for branding to the save file: " + color);
 		}
 	}
 
