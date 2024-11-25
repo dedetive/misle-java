@@ -161,8 +161,20 @@ public class SaveFile {
 
 					// Load level stats (Max HP, max entropy, defense, regeneration quality and speed)
 
-					double playerMaxHP = loadAttribute(PixelData.MAX_HP_HIGHEST, PixelData.MAX_HP_HIGH, PixelData.MAX_HP_LOW);
+					int playerMaxHP = loadAttribute(PixelData.MAX_HP_HIGHEST, PixelData.MAX_HP_HIGH, PixelData.MAX_HP_LOW);
 					player.attr.setLevelStat(PlayerAttributes.LevelStat.MAX_HP, playerMaxHP);
+
+					int playerMaxEntropy = loadAttribute(PixelData.MAX_ENTROPY_HIGHEST, PixelData.MAX_ENTROPY_HIGH, PixelData.MAX_ENTROPY_LOW);
+					player.attr.setLevelStat(PlayerAttributes.LevelStat.MAX_ENTROPY, playerMaxEntropy);
+
+					int playerDefense = loadAttribute(PixelData.DEFENSE_HIGHEST, PixelData.DEFENSE_HIGH, PixelData.DEFENSE_LOW);
+					player.attr.setLevelStat(PlayerAttributes.LevelStat.DEFENSE, playerDefense);
+
+					int playerRegenerationQuality = loadAttribute(PixelData.REGENERATION_QUALITY_HIGHEST, PixelData.REGENERATION_QUALITY_HIGH, PixelData.REGENERATION_QUALITY_LOW);
+					player.attr.setLevelStat(PlayerAttributes.LevelStat.REGENERATION_QUALITY, playerRegenerationQuality);
+
+					int playerSpeed = loadAttribute(PixelData.SPEED_HIGHEST, PixelData.SPEED_HIGH, PixelData.SPEED_LOW);
+					player.attr.setLevelStat(PlayerAttributes.LevelStat.SPEED, playerSpeed);
 
 					// Load inventory
 
