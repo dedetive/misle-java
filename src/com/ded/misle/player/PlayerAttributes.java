@@ -4,7 +4,6 @@ import com.ded.misle.boxes.Box;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
 
 import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.GamePanel.tileSize;
@@ -47,6 +46,30 @@ public class PlayerAttributes {
 		SPEED
 	}
 
+	// Level attributes
+
+	double levelMaxHP;
+	double levelMaxEntropy;
+	double levelDefense;
+	double levelRegenerationQuality;
+	double levelSpeed;
+
+	public enum LevelStat {
+		MAX_HP,
+		MAX_ENTROPY,
+		DEFENSE,
+		REGENERATION_QUALITY,
+		SPEED
+	}
+	public enum Stat {
+		MAX_HP,
+		MAX_ENTROPY,
+		DEFENSE,
+		REGENERATION_QUALITY,
+		SPEED,
+		ALL
+	}
+
 	// ETC
 
 	private long lastRegenerationMillis;
@@ -57,23 +80,14 @@ public class PlayerAttributes {
 	public PlayerAttributes() {
 			this.setSpeedModifier(1);
 			this.setEnvironmentSpeedModifier(1);
+			this.updateStat(Stat.ALL);
 			this.setWidth(tileSize);
 			this.setHeight(tileSize);
-			this.setMaxHP(100);
-			this.setMaxEntropy(100);
-			this.reduceEntropy(100);
-			this.setRegenerationQuality(1);
-			this.setRegenerationRate(1);
-			this.setDefense(0);
 			this.setHP(getMaxHP());
 			this.updateXPtoLevelUp();
 	}
 
 	// PLAYER SPEED
-
-	public void updateSpeed() {
-		this.playerSpeed = this.playerSpeedModifier * (scale * 2 + 0.166) / 3 * this.environmentSpeedModifier;
-	}
 
 	public double getSpeed() {
 		return playerSpeed;
@@ -87,14 +101,15 @@ public class PlayerAttributes {
 		return this.environmentSpeedModifier;
 	}
 
-	public void setEnvironmentSpeedModifier(double environmentSpeedModifier) {
+	public void setEnvironmentSpeedModifier(double environmentSpeedModifier)
+	{
 		this.environmentSpeedModifier = Math.max(environmentSpeedModifier, 0.025);
-		updateSpeed();
+		updateStat(Stat.SPEED);
 	}
 
 	public void setSpeedModifier(double playerSpeedModifier) {
 		this.playerSpeedModifier = playerSpeedModifier;
-		updateSpeed();
+		updateStat(Stat.SPEED);
 	}
 
 	public Box getLastVelocityBox() {
@@ -124,7 +139,7 @@ public class PlayerAttributes {
 	}
 
 	// HP, DAMAGE AND HEALS
-	
+
 	public boolean getIsInvulnerable() { return isInvulnerable; }
 
 	public void setIsInvulnerable(boolean isInvulnerable) { this.isInvulnerable = isInvulnerable; }
@@ -139,11 +154,6 @@ public class PlayerAttributes {
 	}
 
 	public double getMaxHP() {
-		return maxHP;
-	}
-
-	public double setMaxHP(double maxHP) {
-		this.maxHP = maxHP;
 		return maxHP;
 	}
 
@@ -171,11 +181,6 @@ public class PlayerAttributes {
 
 	public void fillEntropy() {
 		this.entropy = this.maxEntropy;
-	}
-
-	public double setMaxEntropy(double maxEntropy) {
-		this.maxEntropy = maxEntropy;
-		return maxEntropy;
 	}
 
 	public double getLockedHP() {
@@ -248,7 +253,6 @@ public class PlayerAttributes {
 
 		return damageToReceive;
 	}
-
 
 	/**
 	 *
@@ -395,10 +399,6 @@ public class PlayerAttributes {
 		return defense;
 	}
 
-	public void setDefense(double defense) {
-		this.defense = defense;
-	}
-
 	// REGENERATION
 
 	public void updateRegenerationHP(long currentTime) {
@@ -410,7 +410,6 @@ public class PlayerAttributes {
 			lastRegenerationMillis = currentTime;
 		}
 	}
-
 
 	public double getRegenerationQuality() {
 		return regenerationQuality;
@@ -517,19 +516,62 @@ public class PlayerAttributes {
 	public void useLevelUpPoints(LevelUpPointsUsage levelUpPointsUsage, int levelUpPoints) {
 		switch (levelUpPointsUsage) {
 			case MAX_HP -> {
-				setMaxHP(getMaxHP() + levelUpPoints * 5 + 2 * Math.floor((double) levelUpPoints / 5));
+				setLevelStat(LevelStat.MAX_HP,levelMaxHP + levelUpPoints * 5 + 2 * Math.floor((double) levelUpPoints / 5));
 			}
 			case MAX_ENTROPY -> {
-				setMaxEntropy(getMaxEntropy() + levelUpPoints * 3 + Math.floor((double) levelUpPoints / 5));
+				setLevelStat(LevelStat.MAX_ENTROPY,levelMaxEntropy + levelUpPoints * 3 + Math.floor((double) levelUpPoints / 5));
 			}
 			case DEFENSE -> {
-				setDefense(getDefense() + levelUpPoints + Math.floor((double) levelUpPoints / 5));
+				setLevelStat(LevelStat.DEFENSE,levelDefense + levelUpPoints + Math.floor((double) levelUpPoints / 5));
 			}
 			case REGENERATION -> {
-				setRegenerationQuality(getRegenerationQuality() + 0.5 * levelUpPoints + 0.5 * Math.floor((double) levelUpPoints / 5));
+				setLevelStat(LevelStat.REGENERATION_QUALITY,levelRegenerationQuality + 0.5 * levelUpPoints + 0.5 * Math.floor((double) levelUpPoints / 5));
 			}
 			case SPEED -> {
-				setSpeedModifier(getSpeedModifier() + 0.25 * levelUpPoints + 0.25 * Math.floor((double) levelUpPoints / 5));
+				setLevelStat(LevelStat.SPEED,levelSpeed + 0.25 * levelUpPoints + 0.25 * Math.floor((double) levelUpPoints / 5));
+			}
+		}
+	}
+
+	public void setLevelStat(LevelStat levelStat, double amount) {
+		switch (levelStat) {
+			case MAX_HP -> {
+				this.levelMaxHP = amount;
+				updateStat(Stat.MAX_HP);
+			}
+			case MAX_ENTROPY -> {
+				this.levelMaxEntropy = amount;
+				updateStat(Stat.MAX_ENTROPY);
+			}
+			case DEFENSE -> {
+				this.levelDefense = amount;
+				updateStat(Stat.DEFENSE);
+			}
+			case REGENERATION_QUALITY -> {
+				this.levelRegenerationQuality = amount;
+				updateStat(Stat.REGENERATION_QUALITY);
+			}
+			case SPEED -> {
+				this.levelSpeed = amount;
+				updateStat(Stat.SPEED);
+			}
+		}
+	}
+
+	public void updateStat(Stat stat) {
+		switch (stat) {
+			case MAX_HP -> this.maxHP = 100 + levelMaxHP;
+			case MAX_ENTROPY -> this.maxEntropy = 80 + levelMaxEntropy;
+			case DEFENSE -> this.defense = levelDefense;
+			case REGENERATION_QUALITY -> this.regenerationQuality = 1 + levelRegenerationQuality;
+			case SPEED -> this.playerSpeed = this.playerSpeedModifier * (scale * 2 + 0.166) / 3 * this.environmentSpeedModifier + Math.log10(this.levelSpeed);
+			case ALL -> {
+				for (Stat argument : Stat.values()) {
+					if (argument == Stat.ALL) {
+						continue;
+					}
+					updateStat(argument);
+				}
 			}
 		}
 	}
@@ -541,13 +583,11 @@ public class PlayerAttributes {
 		this.setEnvironmentSpeedModifier(1);
 		this.setWidth(tileSize);
 		this.setHeight(tileSize);
-		this.setMaxHP(100);
+		this.updateStat(Stat.ALL);
 		this.setHP(getMaxHP());
-		this.setMaxEntropy(0);
 		this.fillEntropy();
 		this.setRegenerationQuality(1);
 		this.setRegenerationRate(1);
-		this.setDefense(0);
 		this.updateXPtoLevelUp();
 		isDead = false;
 		unlockHP(lockedHP);
