@@ -126,6 +126,7 @@ public class SaveFile {
 					image = ImageIO.read(save);
 
 					// Load maxHP
+
 					int maxHPHighest = loadThis(PixelData.MAX_HP_HIGHEST);
 					int maxHPHigh = loadThis(PixelData.MAX_HP_HIGH);
 					int maxHPLow = loadThis(PixelData.MAX_HP_LOW);
@@ -139,6 +140,24 @@ public class SaveFile {
 					int spawnpoint = spawnpointHigh * 255 + spawnpointLow;
 					player.pos.setSpawnpoint(Math.max(spawnpoint, 1));
 					player.pos.reloadSpawnpoint();
+
+					// Load Level and XP related
+
+					int levelHigh = loadThis(PixelData.LEVEL_HIGH);
+					int levelLow = loadThis(PixelData.LEVEL_LOW);
+					int level = levelHigh * 255 + levelLow;
+					player.attr.setLevel(level);
+
+					int levelPointsHigh = loadThis(PixelData.LEVEL_POINTS_HIGH);
+					int levelPointsLow = loadThis(PixelData.LEVEL_POINTS_LOW);
+					int levelPoints = levelPointsHigh * 255 + levelPointsLow;
+					player.attr.addLevelUpPoints(levelPoints);
+
+					int XPHighest = loadThis(PixelData.XP_HIGHEST);
+					int XPHigh = loadThis(PixelData.XP_HIGH);
+					int XPLow = loadThis(PixelData.XP_LOW);
+					int XP = XPHighest * 255 * 255 + XPHigh * 255 + XPLow;
+					player.attr.setXP(XP);
 
 					// Load inventory
 
