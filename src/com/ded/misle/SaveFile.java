@@ -33,11 +33,77 @@ public class SaveFile {
 	public enum PixelColor { RED, GREEN, BLUE }
 
 	public enum PixelData {
+
+		/**
+		 * PIXELS IN USE:
+		 * X   Y
+		 * 4, 15 RGB
+		 * 5, 15 RGB
+		 * 30, 127 RG
+		 * 42, 69 B
+		 * 69, 42 R
+		 * 82, 10 B
+		 * 99, 1 R
+		 **/
+
+		 /**
+		 * Additional pixels based on inventory (X, Y coordinates for each pixel set in inventory):
+	     * X  Y
+		 * 0, 15 R
+		 * 1, 15 G
+		 * 2, 15 B
+		 * 3, 15 R
+		 * 0, 16 G
+		 * 1, 16 B
+		 * 2, 16 R
+		 * 3, 16 G
+		 * 0, 17 B
+		 * 1, 17 R
+		 * 2, 17 G
+		 * 3, 17 B
+		 * 0, 18 R
+		 * 1, 18 G
+		 * 2, 18 B
+		 * 3, 18 R
+		 * 0, 19 G
+		 * 1, 19 B
+		 * 2, 19 R
+		 * 3, 19 G
+		 * 0, 20 B
+		 * 1, 20 R
+		 * 2, 20 G
+		 * 3, 20 B
+		 * 0, 21 R
+		 * 1, 21 G
+		 * 2, 21 B
+		 * 3, 21 R
+		 * 0, 22 G
+		 * 1, 22 B
+		 * 2, 22 R
+		 * 3, 22 G
+		 * 0, 23 B
+		 * 1, 23 R
+		 * 2, 23 G
+		 * 3, 23 B
+		 * 0, 24 R
+		 * 1, 24 G
+		 * 2, 24 B
+		 * 3, 24 R
+		 *
+		 */
+
 		MAX_HP_HIGHEST(PixelColor.BLUE, 82, 10),
 		MAX_HP_HIGH(PixelColor.GREEN, 30, 127),
 		MAX_HP_LOW(PixelColor.RED, 99, 1),
 		SPAWNPOINT_HIGH(PixelColor.RED, 69, 42),
-		SPAWNPOINT_LOW(PixelColor.BLUE, 42, 69);
+		SPAWNPOINT_LOW(PixelColor.BLUE, 42, 69),
+		LEVEL_HIGH(PixelColor.RED, 4, 15),
+		LEVEL_LOW(PixelColor.BLUE, 4, 15),
+		LEVEL_POINTS_HIGH(PixelColor.GREEN, 4, 15),
+		LEVEL_POINTS_LOW(PixelColor.RED, 5, 15),
+		XP_HIGHEST(PixelColor.GREEN, 5, 15),
+		XP_HIGH(PixelColor.BLUE, 5, 15),
+		XP_LOW(PixelColor.RED, 30, 127);
 
 		private final PixelColor color;
 		private final int x;
@@ -130,19 +196,41 @@ public class SaveFile {
 
 			// Max HP
 
-			int maxHPHighest = ((int) player.attr.getMaxHP() / (255 * 255)) % 255;
-			int maxHPHigh = ((int) player.attr.getMaxHP() / 255) % 255;
-			int maxHPLow = (int) player.attr.getMaxHP() % 255;
+			int playerMaxHP = (int) player.attr.getMaxHP();
+			int maxHPHighest = getHighest(playerMaxHP);
+			int maxHPHigh = getHigh(playerMaxHP);
+			int maxHPLow = getLow(playerMaxHP);
 			brandIntoSaveFile(maxHPHighest, PixelData.MAX_HP_HIGHEST);
 			brandIntoSaveFile(maxHPHigh, PixelData.MAX_HP_HIGH);
 			brandIntoSaveFile(maxHPLow, PixelData.MAX_HP_LOW);
 
 			// Spawnpoint
 
-			int spawnpointHigh = (player.pos.getSpawnpoint() / 255) % 255;
-			int spawnpointLow = player.pos.getSpawnpoint() % 255;
+			int playerSpawnpoint = player.pos.getSpawnpoint();
+			int spawnpointHigh = getHigh(playerSpawnpoint);
+			int spawnpointLow = getLow(playerSpawnpoint);
 			brandIntoSaveFile(spawnpointHigh, PixelData.SPAWNPOINT_HIGH);
 			brandIntoSaveFile(spawnpointLow, PixelData.SPAWNPOINT_LOW);
+
+			int playerLevel = player.attr.getLevel();
+			int levelHigh = getHigh(playerLevel);
+			int levelLow = getLow(playerLevel);
+			brandIntoSaveFile(levelHigh, PixelData.LEVEL_HIGH);
+			brandIntoSaveFile(levelLow, PixelData.LEVEL_LOW);
+
+			int playerLevelUpPoints = player.attr.getLevelUpPoints();
+			int levelPointsHigh = getHigh(playerLevelUpPoints);
+			int levelPointsLow = getLow(playerLevelUpPoints);
+			brandIntoSaveFile(levelPointsHigh, PixelData.LEVEL_POINTS_HIGH);
+			brandIntoSaveFile(levelPointsLow, PixelData.LEVEL_POINTS_LOW);
+
+			int playerXP = (int) player.attr.getXP();
+			int XPHighest = getHighest(playerXP);
+			int XPHigh = getHigh(playerXP);
+			int XPLow = getLow(playerXP);
+			brandIntoSaveFile(XPHighest, PixelData.XP_HIGHEST);
+			brandIntoSaveFile(XPHigh, PixelData.XP_HIGH);
+			brandIntoSaveFile(XPHigh, PixelData.XP_LOW);
 
 			// Inventory
 
@@ -156,10 +244,10 @@ public class SaveFile {
 							tempInventory[i][j][2] = 0;
 							tempInventory[i][j][3] = 0;
 						} else {
-							tempInventory[i][j][0] = (player.inv.getItem(i, j).getId() / 255) % 255;
-							tempInventory[i][j][1] = player.inv.getItem(i, j).getId() % 255;
-							tempInventory[i][j][2] = (player.inv.getItem(i, j).getCount() / 255) % 255;
-							tempInventory[i][j][3] = player.inv.getItem(i, j).getCount() % 255;
+							tempInventory[i][j][0] = getHigh((player.inv.getItem(i, j).getId()));       // HIGH ID
+							tempInventory[i][j][1] = getLow(player.inv.getItem(i, j).getId());          // LOW ID
+							tempInventory[i][j][2] = getHigh((player.inv.getItem(i, j).getCount()));    // HIGH COUNT
+							tempInventory[i][j][3] = getLow(player.inv.getItem(i, j).getCount());       // LOW COUNT
 						}
 						brandIntoSaveFile(tempInventory[i][j][0], PixelColor.RED, i, j + 15);
 						brandIntoSaveFile(tempInventory[i][j][1], PixelColor.GREEN, i, j + 15);
@@ -238,5 +326,17 @@ public class SaveFile {
 			System.out.println("Save file found: " + SaveFile.filePath);
 			return true;
 		}
+	}
+
+	private static int getHighest(int value) {
+		return (value / (255 * 255)) % 255;
+	}
+
+	private static int getHigh(int value) {
+		return (value / 255) % 255;
+	}
+
+	private static int getLow(int value) {
+		return value % 255;
 	}
 }
