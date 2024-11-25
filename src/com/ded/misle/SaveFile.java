@@ -32,6 +32,24 @@ public class SaveFile {
 
 	public enum PixelColor { RED, GREEN, BLUE }
 
+	public enum PixelData {
+		MAX_HP_HIGHEST(PixelColor.BLUE, 82, 10),
+		MAX_HP_HIGH(PixelColor.GREEN, 30, 127),
+		MAX_HP_LOW(PixelColor.RED, 99, 1),
+		SPAWNPOINT_HIGH(PixelColor.RED, 69, 42),
+		SPAWNPOINT_LOW(PixelColor.BLUE, 42, 69);
+
+		private final PixelColor color;
+		private final int x;
+		private final int y;
+
+		PixelData(PixelColor color, int x, int y) {
+			this.color = color;
+			this.x = x;
+			this.y = y;
+		}
+	}
+
 	public static void loadSaveFile() {
 
 		synchronized (fileLock) {
@@ -42,16 +60,16 @@ public class SaveFile {
 					image = ImageIO.read(save);
 
 					// Load maxHP
-					int maxHPHighest = loadThis(PixelColor.BLUE, 82, 10);
-					int maxHPHigh = loadThis(PixelColor.GREEN, 30, 127);
-					int maxHPLow = loadThis(PixelColor.RED, 99, 1);
+					int maxHPHighest = loadThis(PixelData.MAX_HP_HIGHEST);
+					int maxHPHigh = loadThis(PixelData.MAX_HP_HIGH);
+					int maxHPLow = loadThis(PixelData.MAX_HP_LOW);
 					double playerMaxHP = 255 * 255 * maxHPHighest + 255 * maxHPHigh + maxHPLow;
 					player.attr.setMaxHP(playerMaxHP);
 
 					// Load spawnpoint
 
-					int spawnpointHigh = loadThis(PixelColor.RED, 69, 42);
-					int spawnpointLow = loadThis(PixelColor.BLUE, 42, 69);
+					int spawnpointHigh = loadThis(PixelData.SPAWNPOINT_HIGH);
+					int spawnpointLow = loadThis(PixelData.SPAWNPOINT_LOW);
 					int spawnpoint = spawnpointHigh * 255 + spawnpointLow;
 					player.pos.setSpawnpoint(Math.max(spawnpoint, 1));
 					player.pos.reloadSpawnpoint();
@@ -82,13 +100,10 @@ public class SaveFile {
 		}
 	}
 
-	/**
-	 *
-	 * @param color either red, green or blue of the pixel
-	 * @param x x position of the pixel
-	 * @param y y position of the pixel
-	 * @return
-	 */
+	private static int loadThis(PixelData pixelData) {
+		return loadThis(pixelData.color, pixelData.x, pixelData.y);
+	}
+
 	private static int loadThis(PixelColor color, int x, int y) {
 		if (x < 0 || x > 128 || y < 0 || y > 128) {
 			System.out.println("Invalid x or y position for loading from the save file: " + x + ", " + y);
@@ -107,9 +122,7 @@ public class SaveFile {
 				System.out.println("Invalid color parameter for loading from the save file: " + color);
 				return 0;
 		}
-
 	}
-
 
 	public static void saveEverything() {
 
@@ -120,16 +133,16 @@ public class SaveFile {
 			int maxHPHighest = ((int) player.attr.getMaxHP() / (255 * 255)) % 255;
 			int maxHPHigh = ((int) player.attr.getMaxHP() / 255) % 255;
 			int maxHPLow = (int) player.attr.getMaxHP() % 255;
-			brandIntoSaveFile(maxHPHighest, PixelColor.BLUE, 82, 10);
-			brandIntoSaveFile(maxHPHigh, PixelColor.GREEN, 30, 127);
-			brandIntoSaveFile(maxHPLow, PixelColor.RED, 99, 1);
+			brandIntoSaveFile(maxHPHighest, PixelData.MAX_HP_HIGHEST);
+			brandIntoSaveFile(maxHPHigh, PixelData.MAX_HP_HIGH);
+			brandIntoSaveFile(maxHPLow, PixelData.MAX_HP_LOW);
 
 			// Spawnpoint
 
 			int spawnpointHigh = (player.pos.getSpawnpoint() / 255) % 255;
 			int spawnpointLow = player.pos.getSpawnpoint() % 255;
-			brandIntoSaveFile(spawnpointHigh, PixelColor.RED, 69, 42);
-			brandIntoSaveFile(spawnpointLow, PixelColor.BLUE, 42, 69);
+			brandIntoSaveFile(spawnpointHigh, PixelData.SPAWNPOINT_HIGH);
+			brandIntoSaveFile(spawnpointLow, PixelData.SPAWNPOINT_LOW);
 
 			// Inventory
 
@@ -200,6 +213,10 @@ public class SaveFile {
 			default:
 				System.out.println("Invalid color parameter for branding to the save file: " + color);
 		}
+	}
+
+	private static void brandIntoSaveFile(int value, PixelData pixelData) {
+		brandIntoSaveFile(value, pixelData.color, pixelData.x, pixelData.y);
 	}
 
 	private static boolean checkIfSaveFileExists() {
