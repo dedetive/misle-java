@@ -3,6 +3,7 @@ package com.ded.misle;
 import com.ded.misle.boxes.Box;
 import com.ded.misle.boxes.BoxesHandling;
 import com.ded.misle.player.Player;
+import com.ded.misle.player.PlayerAttributes;
 
 import javax.swing.*;
 import java.awt.*;
@@ -208,7 +209,7 @@ public class GamePanel extends JPanel implements Runnable {
 				GamePanel.screenHeight = Math.min(detectedHeight, screenHeight);
 
 				updateTileSize();
-				player.attr.updateSpeed();
+				player.attr.updateStat(PlayerAttributes.Stat.SPEED);
 				player.attr.setWidth(tileSize);
 				player.attr.setHeight(tileSize);
 				worldWidth = originalWorldWidth * scale;

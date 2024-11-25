@@ -1,6 +1,7 @@
 package com.ded.misle;
 
 import com.ded.misle.items.Item;
+import com.ded.misle.player.PlayerAttributes;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -131,7 +132,7 @@ public class SaveFile {
 					int maxHPHigh = loadThis(PixelData.MAX_HP_HIGH);
 					int maxHPLow = loadThis(PixelData.MAX_HP_LOW);
 					double playerMaxHP = 255 * 255 * maxHPHighest + 255 * maxHPHigh + maxHPLow;
-					player.attr.setMaxHP(playerMaxHP);
+					player.attr.setLevelStat(PlayerAttributes.LevelStat.MAX_HP, playerMaxHP);
 
 					// Load spawnpoint
 
@@ -213,7 +214,7 @@ public class SaveFile {
 
 			// Max HP
 
-			int playerMaxHP = (int) player.attr.getMaxHP();
+			int playerMaxHP = (int) player.attr.getLevelStat(PlayerAttributes.LevelStat.MAX_HP);
 			brandIntoSaveFile(getHighest(playerMaxHP), PixelData.MAX_HP_HIGHEST);
 			brandIntoSaveFile(getHigh(playerMaxHP), PixelData.MAX_HP_HIGH);
 			brandIntoSaveFile(getLow(playerMaxHP), PixelData.MAX_HP_LOW);

@@ -576,6 +576,17 @@ public class PlayerAttributes {
 		}
 	}
 
+	public double getLevelStat(LevelStat stat) {
+		return switch (stat) {
+			case MAX_HP -> this.levelMaxHP;
+			case MAX_ENTROPY -> this.levelMaxEntropy;
+			case DEFENSE -> this.levelDefense;
+			case REGENERATION_QUALITY -> this.levelRegenerationQuality;
+			case SPEED -> this.playerSpeed;
+			default -> 0;
+		};
+	}
+
 	// END XP
 
 	public void unloadAttributes() {
