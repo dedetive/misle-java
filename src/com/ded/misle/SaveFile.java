@@ -44,6 +44,9 @@ public class SaveFile {
 		  42, 69 B
 		  69, 42 R
 		  70, 70 RGB
+		  70, 71 RGB
+		  71, 70 RGB
+		  71, 71 RGB
 		  82, 10 B
 		  99, 1 R
 		 */
@@ -108,7 +111,16 @@ public class SaveFile {
 		MAX_HP_LOW(PixelColor.RED, 99, 1),
 		MAX_ENTROPY_HIGHEST(PixelColor.RED, 70, 70),
 		MAX_ENTROPY_HIGH(PixelColor.GREEN, 70, 70),
-		MAX_ENTROPY_LOW(PixelColor.BLUE, 70, 70),;
+		MAX_ENTROPY_LOW(PixelColor.BLUE, 70, 70),
+		DEFENSE_HIGHEST(PixelColor.RED, 71, 70),
+		DEFENSE_HIGH(PixelColor.GREEN, 71, 70),
+		DEFENSE_LOW(PixelColor.BLUE, 71, 70),
+		REGENERATION_QUALITY_HIGHEST(PixelColor.RED, 71, 71),
+		REGENERATION_QUALITY_HIGH(PixelColor.GREEN, 71, 71),
+		REGENERATION_QUALITY_LOW(PixelColor.BLUE, 71, 71),
+		SPEED_HIGHEST(PixelColor.RED, 70, 71),
+		SPEED_HIGH(PixelColor.GREEN, 70, 71),
+		SPEED_LOW(PixelColor.BLUE, 70, 71);
 
 		private final PixelColor color;
 		private final int x;
@@ -234,11 +246,20 @@ public class SaveFile {
 
 			// Level Stats (Max HP, max entropy, defense, regeneration quality and speed)
 
-			int playerMaxHP = (int) player.attr.getLevelStat(PlayerAttributes.LevelStat.MAX_HP);
-			brandValue(playerMaxHP, PixelData.MAX_HP_HIGHEST, PixelData.MAX_HP_HIGH, PixelData.MAX_HP_LOW);
+			int playerLevelMaxHP = (int) player.attr.getLevelStat(PlayerAttributes.LevelStat.MAX_HP);
+			brandValue(playerLevelMaxHP, PixelData.MAX_HP_HIGHEST, PixelData.MAX_HP_HIGH, PixelData.MAX_HP_LOW);
 
-			int playerMaxEntropy = (int) player.attr.getLevelStat(PlayerAttributes.LevelStat.MAX_ENTROPY);
-			brandValue(playerMaxEntropy, PixelData.MAX_ENTROPY_HIGHEST, PixelData.MAX_ENTROPY_HIGH, PixelData.MAX_ENTROPY_LOW);
+			int playerLevelMaxEntropy = (int) player.attr.getLevelStat(PlayerAttributes.LevelStat.MAX_ENTROPY);
+			brandValue(playerLevelMaxEntropy, PixelData.MAX_ENTROPY_HIGHEST, PixelData.MAX_ENTROPY_HIGH, PixelData.MAX_ENTROPY_LOW);
+
+			int playerLevelDefense = (int) player.attr.getLevelStat(PlayerAttributes.LevelStat.DEFENSE);
+			brandValue(playerLevelDefense, PixelData.DEFENSE_HIGHEST, PixelData.DEFENSE_HIGH, PixelData.DEFENSE_LOW);
+
+			int playerLevelRegenerationQuality = (int) player.attr.getLevelStat(PlayerAttributes.LevelStat.REGENERATION_QUALITY);
+			brandValue(playerLevelRegenerationQuality, PixelData.REGENERATION_QUALITY_HIGHEST, PixelData.REGENERATION_QUALITY_HIGH, PixelData.REGENERATION_QUALITY_LOW);
+
+			int playerLevelSpeed = (int) player.attr.getLevelStat(PlayerAttributes.LevelStat.SPEED);
+			brandValue(playerLevelSpeed, PixelData.SPEED_HIGHEST, PixelData.SPEED_HIGH, PixelData.SPEED_LOW);
 
 			// Inventory
 
