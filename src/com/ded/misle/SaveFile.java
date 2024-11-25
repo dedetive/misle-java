@@ -43,6 +43,7 @@ public class SaveFile {
 		  30, 127 RG
 		  42, 69 B
 		  69, 42 R
+		  70, 70 RGB
 		  82, 10 B
 		  99, 1 R
 		 */
@@ -93,9 +94,6 @@ public class SaveFile {
 		 *
 		 */
 
-		MAX_HP_HIGHEST(PixelColor.BLUE, 82, 10),
-		MAX_HP_HIGH(PixelColor.GREEN, 30, 127),
-		MAX_HP_LOW(PixelColor.RED, 99, 1),
 		SPAWNPOINT_HIGH(PixelColor.RED, 69, 42),
 		SPAWNPOINT_LOW(PixelColor.BLUE, 42, 69),
 		LEVEL_HIGH(PixelColor.RED, 4, 15),
@@ -104,7 +102,13 @@ public class SaveFile {
 		LEVEL_POINTS_LOW(PixelColor.RED, 5, 15),
 		XP_HIGHEST(PixelColor.GREEN, 5, 15),
 		XP_HIGH(PixelColor.BLUE, 5, 15),
-		XP_LOW(PixelColor.RED, 30, 127);
+		XP_LOW(PixelColor.RED, 30, 127),
+		MAX_HP_HIGHEST(PixelColor.BLUE, 82, 10),
+		MAX_HP_HIGH(PixelColor.GREEN, 30, 127),
+		MAX_HP_LOW(PixelColor.RED, 99, 1),
+		MAX_ENTROPY_HIGHEST(PixelColor.RED, 70, 70),
+		MAX_ENTROPY_HIGH(PixelColor.GREEN, 70, 70),
+		MAX_ENTROPY_LOW(PixelColor.BLUE, 70, 70),;
 
 		private final PixelColor color;
 		private final int x;
@@ -212,31 +216,29 @@ public class SaveFile {
 
 		synchronized (fileLock) {
 
-			// Max HP
-
-			int playerMaxHP = (int) player.attr.getLevelStat(PlayerAttributes.LevelStat.MAX_HP);
-			brandIntoSaveFile(getHighest(playerMaxHP), PixelData.MAX_HP_HIGHEST);
-			brandIntoSaveFile(getHigh(playerMaxHP), PixelData.MAX_HP_HIGH);
-			brandIntoSaveFile(getLow(playerMaxHP), PixelData.MAX_HP_LOW);
-
 			// Spawnpoint
 
 			int playerSpawnpoint = player.pos.getSpawnpoint();
-			brandIntoSaveFile(getHigh(playerSpawnpoint), PixelData.SPAWNPOINT_HIGH);
-			brandIntoSaveFile(getLow(playerSpawnpoint), PixelData.SPAWNPOINT_LOW);
+			brandValue(playerSpawnpoint, PixelData.SPAWNPOINT_HIGH, PixelData.SPAWNPOINT_LOW);
+
+			// Level related stuff
 
 			int playerLevel = player.attr.getLevel();
-			brandIntoSaveFile(getHigh(playerLevel), PixelData.LEVEL_HIGH);
-			brandIntoSaveFile(getLow(playerLevel), PixelData.LEVEL_LOW);
+			brandValue(playerLevel, PixelData.LEVEL_HIGH, PixelData.LEVEL_LOW);
 
 			int playerLevelUpPoints = player.attr.getLevelUpPoints();
-			brandIntoSaveFile(getHigh(playerLevelUpPoints), PixelData.LEVEL_POINTS_HIGH);
-			brandIntoSaveFile(getLow(playerLevelUpPoints), PixelData.LEVEL_POINTS_LOW);
+			brandValue(playerLevelUpPoints, PixelData.LEVEL_POINTS_HIGH, PixelData.LEVEL_POINTS_LOW);
 
 			int playerXP = (int) player.attr.getXP();
-			brandIntoSaveFile(getHighest(playerXP), PixelData.XP_HIGHEST);
-			brandIntoSaveFile(getHigh(playerXP), PixelData.XP_HIGH);
-			brandIntoSaveFile(getLow(playerXP), PixelData.XP_LOW);
+			brandValue(playerXP, PixelData.XP_HIGHEST, PixelData.XP_HIGH, PixelData.XP_LOW);
+
+			// Level Stats (Max HP, max entropy, defense, regeneration quality and speed)
+
+			int playerMaxHP = (int) player.attr.getLevelStat(PlayerAttributes.LevelStat.MAX_HP);
+			brandValue(playerMaxHP, PixelData.MAX_HP_HIGHEST, PixelData.MAX_HP_HIGH, PixelData.MAX_HP_LOW);
+
+			int playerMaxEntropy = (int) player.attr.getLevelStat(PlayerAttributes.LevelStat.MAX_ENTROPY);
+			brandValue(playerMaxEntropy, PixelData.MAX_ENTROPY_HIGHEST, PixelData.MAX_ENTROPY_HIGH, PixelData.MAX_ENTROPY_LOW);
 
 			// Inventory
 
@@ -304,6 +306,21 @@ public class SaveFile {
 
 	private static void brandIntoSaveFile(int value, PixelData pixelData) {
 		brandIntoSaveFile(value, pixelData.color, pixelData.x, pixelData.y);
+	}
+
+	private static void brandValue(int value, PixelData highest, PixelData high, PixelData low) {
+		brandIntoSaveFile(getHighest(value), highest);
+		brandIntoSaveFile(getHigh(value), high);
+		brandIntoSaveFile(getLow(value), low);
+	}
+
+	private static void brandValue(int value, PixelData high, PixelData low) {
+		brandIntoSaveFile(getHigh(value), high);
+		brandIntoSaveFile(getLow(value), low);
+	}
+
+	private static void brandValue(int value, PixelData low) {
+		brandIntoSaveFile(getLow(value), low);
 	}
 
 	private static boolean checkIfSaveFileExists() {

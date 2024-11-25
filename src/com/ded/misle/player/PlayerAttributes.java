@@ -583,7 +583,6 @@ public class PlayerAttributes {
 			case DEFENSE -> this.levelDefense;
 			case REGENERATION_QUALITY -> this.levelRegenerationQuality;
 			case SPEED -> this.playerSpeed;
-			default -> 0;
 		};
 	}
 
