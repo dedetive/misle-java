@@ -564,7 +564,7 @@ public class PlayerAttributes {
 			case MAX_ENTROPY -> this.maxEntropy = 80 + levelMaxEntropy;
 			case DEFENSE -> this.defense = levelDefense;
 			case REGENERATION_QUALITY -> this.regenerationQuality = 1 + levelRegenerationQuality;
-			case SPEED -> this.playerSpeed = this.playerSpeedModifier * (scale * 2 + 0.166) / 3 * this.environmentSpeedModifier + Math.log10(this.levelSpeed);
+			case SPEED -> this.playerSpeed = this.playerSpeedModifier * (scale * 2 + 0.166) / 3 * this.environmentSpeedModifier + Math.log10(1 + this.levelSpeed);
 			case ALL -> {
 				for (Stat argument : Stat.values()) {
 					if (argument == Stat.ALL) {
