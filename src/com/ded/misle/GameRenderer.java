@@ -53,6 +53,15 @@ public class GameRenderer {
 	private static double isFacingRight;
 	private static boolean mirror;
 
+	private static float fadingProgress;
+	private enum FadingState {
+		FADING_IN,
+		FADING_OUT,
+		FADED,
+		UNFADED
+	}
+	private static FadingState isFading = FadingState.UNFADED;
+
 	private static Font comfortaaFont96 = FontManager.loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
 	private static Font ubuntuFont35 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (35 * scale / 3.75));
 	private static Font basicFont40 = FontManager.loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));
@@ -480,6 +489,23 @@ public class GameRenderer {
 		} else {
 			if (mouseHandler.getHoveredBarSlot() > -1 && player.inv.getItem(0, mouseHandler.getHoveredBarSlot()) != null) {
 				drawHoveredItemTooltip(g, new int[]{-1, mouseHandler.getHoveredBarSlot()});
+			}
+		}
+
+		if (isFading == FadingState.FADING_IN || isFading == FadingState.FADED) {
+			fadingProgress = Math.min(fadingProgress + 0.01F, 1F);
+			g2d.setColor(new Color(0, 0, 0, fadingProgress));
+			g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
+			if (fadingProgress == 1F) {
+				isFading = FadingState.FADED;
+			}
+		} else if (isFading == FadingState.FADING_OUT
+		) {
+			fadingProgress = Math.max(fadingProgress - 0.02F, 0F);
+			g2d.setColor(new Color(0, 0, 0, fadingProgress));
+			g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
+			if (fadingProgress == 0F) {
+				isFading = FadingState.UNFADED;
 			}
 		}
 
@@ -1001,23 +1027,15 @@ public class GameRenderer {
 		g2d.dispose();
 	}
 
-	public static void renderAreaTransition(Graphics g, JPanel panel) {
-		Graphics2D g2d = (Graphics2D) g;
+	public static void fadeIn() {
+		if (isFading == FadingState.UNFADED || isFading == FadingState.FADING_OUT) {
+			isFading = FadingState.FADING_IN;
+		}
+	}
 
-		double scaleByScreenSize = scale / 3.75;
-
-		// BACKGROUND
-
-		g2d.setColor(backgroundColor);
-		g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
-
-		// MENU ITSELF
-
-		createTitle("loading_menu_loading", g2d, scaleByScreenSize);
-		g2d.setFont(comfortaaFont96);
-		FontMetrics fm = g2d.getFontMetrics();
-		String titleText = LanguageManager.getText("loading_menu_loading");
-		fm.stringWidth(titleText);
-		int textY = (int) (182 * scaleByScreenSize);
+	public static void fadeOut() {
+		if (isFading== FadingState.FADED || isFading == FadingState.FADING_IN) {
+			isFading = FadingState.FADING_OUT;
+		}
 	}
 }

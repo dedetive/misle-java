@@ -60,7 +60,7 @@ public class GamePanel extends JPanel implements Runnable {
 		OPTIONS_MENU,
 		LOADING_MENU,
 		LEVEL_DESIGNER,
-		AREA_TRANSITION
+		FROZEN_PLAYING
 	}
 
 	public static GameState gameState = GameState.MAIN_MENU; // Start in MAIN_MENU by default
@@ -439,6 +439,7 @@ public class GamePanel extends JPanel implements Runnable {
 		switch (gameState) {
 			case GameState.INVENTORY:
 			case GameState.PLAYING:
+			case GameState.FROZEN_PLAYING:
 				renderPlayingGame(g, this, mouseHandler);
 				break;
 			case GameState.MAIN_MENU:
@@ -455,9 +456,6 @@ public class GamePanel extends JPanel implements Runnable {
 				break;
 			case GameState.LEVEL_DESIGNER:
 				renderLevelDesigner(g, this, mouseHandler);
-				break;
-			case GameState.AREA_TRANSITION:
-				renderAreaTransition(g, this);
 				break;
 		}
 	}

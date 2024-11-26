@@ -216,6 +216,7 @@ public class KeyHandler implements KeyListener {
 	}
 
 	public void updateKeys(MouseHandler mouseHandler) {
+
 		// GLOBAL
 
 		if (player.keys.keyPressed.get("ctrl") && player.keys.keyPressed.get("shift") && player.keys.keyPressed.get("minus")) {

@@ -14,6 +14,8 @@ import java.util.*;
 import static com.ded.misle.AudioPlayer.playThis;
 import static com.ded.misle.ChangeSettings.getPath;
 import static com.ded.misle.GamePanel.*;
+import static com.ded.misle.GameRenderer.fadeIn;
+import static com.ded.misle.GameRenderer.fadeOut;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.boxes.BoxesHandling.*;
@@ -529,19 +531,25 @@ public class Box {
 	}
 
 	private void handleBoxTravel() {
-		gameState = GameState.AREA_TRANSITION;
-		int newRoomID = (int) getEffectValue();
-		player.pos.setRoomID(newRoomID);
-		player.pos.setX(scale * Double.parseDouble(this.effect[2]));
-		player.pos.setY(scale * Double.parseDouble(this.effect[3]));
-		unloadBoxes();
-		loadBoxes();
+		fadeIn();
+		gameState = GameState.FROZEN_PLAYING;
+		Timer fadingIn = new Timer(750, e -> {
+			int newRoomID = (int) getEffectValue();
+			player.pos.setRoomID(newRoomID);
+			player.pos.setX(scale * Double.parseDouble(this.effect[2]));
+			player.pos.setY(scale * Double.parseDouble(this.effect[3]));
+			unloadBoxes();
+			loadBoxes();
 
-		Timer timer = new Timer(1, e -> {
-			gameState = GameState.PLAYING;
+			Timer loadWait = new Timer(200, evt -> {
+				fadeOut();
+				gameState = GameState.PLAYING;
+			});
+			loadWait.setRepeats(false);
+			loadWait.start();
 		});
-		timer.setRepeats(false);
-		timer.start();
+		fadingIn.setRepeats(false);
+		fadingIn.start();
 	}
 
 	public void addSelectedBox() {
