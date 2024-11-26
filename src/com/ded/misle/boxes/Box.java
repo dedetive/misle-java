@@ -604,6 +604,12 @@ public class Box {
 
 	public void setHP(double HP) {
 		this.HP = HP;
+		checkIfDead();
+	}
+
+	public void damageBox(double damage) {
+		this.HP -= Math.max(damage, 0);
+		checkIfDead();
 	}
 
 	public void setMaxHP(double maxHP) {
