@@ -46,8 +46,8 @@ public class BoxesHandling {
 	 *  ...
 	 *
 	 */
-	public static void addBox(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation) {
-		boxes.add(new Box(x, y, color, texture, hasCollision, boxScaleHorizontal, boxScaleVertical, effect, rotation));
+	public static void addBox(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, double maxHP, double HP) {
+		boxes.add(new Box(x, y, color, texture, hasCollision, boxScaleHorizontal, boxScaleVertical, effect, rotation, maxHP, HP));
 		addBoxToCache(boxes.getLast());
 	}
 

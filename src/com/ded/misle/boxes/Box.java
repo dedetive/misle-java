@@ -40,6 +40,8 @@ public class Box {
 	private long lastDamageTime = 0;
 	private double rotation = 0;
 	private static ArrayList<Box> selectedBoxes;
+	private double maxHP;
+	private double HP;
 
 	private BufferedImage cachedTexture1;
 	private String cachedTexture1Name;
@@ -74,7 +76,7 @@ public class Box {
 	 * @param boxScaleVertical how many tilesizes is the box in the y axis
 	 * @param effect first value is the type of effect. See above for a list of effects. Set "" if none
 	 */
-	public Box(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation) {
+	public Box(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, double maxHP, double HP) {
 		this.originalX = x;
 		this.originalY = y;
 		this.currentX = this.originalX;
@@ -86,6 +88,8 @@ public class Box {
 		this.boxScaleVertical = boxScaleVertical;
 		this.effect = effect;
 		this.rotation = rotation;
+		this.maxHP = maxHP;
+		this.HP = HP;
 	}
 
 	public Box(double x, double y) {
@@ -100,6 +104,8 @@ public class Box {
 		this.boxScaleVertical = 1;
 		this.effect = new String[]{""};
 		this.rotation = 0;
+		this.maxHP = -1;
+		this.HP = -1;
 	}
 
 	// Method to render the box with the current tileSize and scale the position
@@ -594,5 +600,29 @@ public class Box {
 		} catch (NullPointerException e) {
 			// This just means list is empty, so do nothing
 		}
+	}
+
+	public void setHP(double HP) {
+		this.HP = HP;
+	}
+
+	public void setMaxHP(double maxHP) {
+		this.maxHP = maxHP;
+	}
+
+	public double getHP(double HP) {
+		return HP;
+	}
+
+	public double getMaxHP() {
+		return maxHP;
+	}
+
+	public boolean checkIfDead() {
+		if (this.HP == 0) {
+			deleteBox(this);
+			return true;
+		}
+		return false;
 	}
 }
