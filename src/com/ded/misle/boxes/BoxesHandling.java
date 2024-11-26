@@ -32,7 +32,8 @@ public class BoxesHandling {
 		BOX_SCALE_VERTICAL,
 		EFFECT,
 		COLLECTIBLE,
-		ROTATION
+		ROTATION,
+		MAX_HP
 	}
 
 	static {
@@ -297,7 +298,9 @@ public class BoxesHandling {
 			case ROTATION:
 				box.setRotation(Double.parseDouble(value));
 				break;
-
+			case MAX_HP:
+				box.setMaxHP(Double.parseDouble(value));
+				box.setHP(Double.parseDouble(value));
 		}
 	}
 

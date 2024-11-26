@@ -13,6 +13,7 @@ import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.GameRenderer.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.boxes.BoxManipulation.*;
+import static com.ded.misle.boxes.BoxesHandling.addBox;
 import static com.ded.misle.boxes.BoxesHandling.editBox;
 import static java.lang.System.currentTimeMillis;
 

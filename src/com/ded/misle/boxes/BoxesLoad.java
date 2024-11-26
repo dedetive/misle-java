@@ -50,10 +50,15 @@ public class BoxesLoad {
 				editLastBox(TEXTURE, "wallDefault.SD.W"); // Intersection fix
 
 				// "House"
-				lineAddBox(300, 420, 7, 6, "wallDefault", HOLLOW);
-				deleteBox(3, 2);
-				editBoxNegativeIndex(TEXTURE, "wallDefault@Deco.AWD..@", 2);
-				editBoxNegativeIndex(TEXTURE, "wallDefault@Deco.ASD..@", 3);
+				lineAddBox(300, 420, 7, 7, "wallDefault", HOLLOW);
+				deleteBox(4);
+				editBoxNegativeIndex(TEXTURE, "wallDefault@Deco.AWD..@", 3);
+				editBoxNegativeIndex(TEXTURE, "wallDefault@Deco.ASD..@", 4);
+
+				addBox(360, 480);
+				editLastBox(EditBoxKeys.COLOR, "#A02020");
+				editLastBox(HAS_COLLISION, "true");
+				editLastBox(MAX_HP, "20");
 
 				// For travelling to cliff
 				int travelBoxesAdded = lineAddBox(440, 10, 6, 1, "travel", FILL);
