@@ -15,6 +15,8 @@ import static com.ded.misle.SaveFile.saveEverything;
 import static com.ded.misle.boxes.BoxesHandling.storeCachedBoxes;
 import static com.ded.misle.boxes.BoxesLoad.loadBoxes;
 import static com.ded.misle.boxes.BoxesLoad.unloadBoxes;
+import static com.ded.misle.player.PlayerStats.Direction.LEFT;
+import static com.ded.misle.player.PlayerStats.Direction.RIGHT;
 import static java.lang.System.currentTimeMillis;
 
 import java.awt.Rectangle;
@@ -515,10 +517,10 @@ public class GameRenderer {
 	private static void drawHandItem(Graphics2D g2d, double playerScreenX, double playerScreenY, double scaleByScreenSize) {
 		if (player.inv.hasHeldItem()) {
 
-			if (player.stats.getWalkingDirection().equals("right")) {
+			if (player.stats.getWalkingDirection() == RIGHT) {
 				isFacingRight = 0.5;
 				mirror = false;
-			} else if (player.stats.getWalkingDirection().equals("left")) {
+			} else if (player.stats.getWalkingDirection() == LEFT) {
 				isFacingRight = -1;
 				mirror = true;
 			}

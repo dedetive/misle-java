@@ -330,19 +330,19 @@ public class Inventory {
 		updateSelectedItemNamePosition();
 		double dropSpeed = player.attr.getSpeedModifier() * player.attr.getEnvironmentSpeedModifier() * 20 * 2.25;
 		switch (player.stats.getWalkingDirection()) {
-			case "up" -> {
+			case PlayerStats.Direction.UP -> {
 				moveCollisionBox(droppedItem, 0, -dropSpeed, 300);
 				moveCollisionBox(droppedItem, 0, -dropSpeed / 2, 50);
 			}
-			case "down" -> {
+			case PlayerStats.Direction.DOWN -> {
 				moveCollisionBox(droppedItem, 0, dropSpeed, 300);
 				moveCollisionBox(droppedItem, 0, dropSpeed / 2, 50);
 			}
-			case "left" -> {
+			case PlayerStats.Direction.LEFT -> {
 				moveCollisionBox(droppedItem, -dropSpeed, 0, 300);
 				moveCollisionBox(droppedItem, -dropSpeed / 2, 0, 50);
 			}
-			case "right" -> {
+			case PlayerStats.Direction.RIGHT -> {
 				moveCollisionBox(droppedItem, dropSpeed, 0, 300);
 				moveCollisionBox(droppedItem, dropSpeed / 2, 0, 50);
 			}
@@ -402,19 +402,19 @@ public class Inventory {
 		updateSelectedItemNamePosition();
 		double dropSpeed = player.attr.getSpeedModifier() * player.attr.getEnvironmentSpeedModifier() * 20 * 2.25;
 		switch (player.stats.getWalkingDirection()) {
-			case "up" -> {
+			case UP -> {
 				moveCollisionBox(droppedItem, 0, -dropSpeed, 300);
 				moveCollisionBox(droppedItem, 0, -dropSpeed / 2, 50);
 			}
-			case "down" -> {
+			case DOWN -> {
 				moveCollisionBox(droppedItem, 0, dropSpeed, 300);
 				moveCollisionBox(droppedItem, 0, dropSpeed / 2, 50);
 			}
-			case "left" -> {
+			case LEFT -> {
 				moveCollisionBox(droppedItem, -dropSpeed, 0, 300);
 				moveCollisionBox(droppedItem, -dropSpeed / 2, 0, 50);
 			}
-			case "right" -> {
+			case RIGHT -> {
 				moveCollisionBox(droppedItem, dropSpeed, 0, 300);
 				moveCollisionBox(droppedItem, dropSpeed / 2, 0, 50);
 			}

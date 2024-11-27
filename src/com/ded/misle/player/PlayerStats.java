@@ -16,7 +16,13 @@ public class PlayerStats {
 	double distanceDown;
 	double distanceLeft;
 	double distanceRight;
-	String walkingDirection;
+	Direction walkingDirection;
+	public enum Direction {
+		UP,
+		DOWN,
+		LEFT,
+		RIGHT
+	}
 
 	public PlayerStats() {
 		this.totalSteps = 0;
@@ -29,27 +35,27 @@ public class PlayerStats {
 		this.distanceDown = 0;
 		this.distanceLeft = 0;
 		this.distanceRight = 0;
-		this.walkingDirection = "";
+		this.walkingDirection = Direction.RIGHT;
 	}
 
 	/**
 	 * @return a list containing, as the index 0, the number associated with the highest value and,
 	 * as index 1, the most travelled distance (as in 'up', 'down', 'left', 'right').
 	 */
-	public List<String> getMostDistanceTravelled() {
-		HashMap<String, Double> mostTravelled = new HashMap<>();
-		mostTravelled.put("up", getDistanceUp());
-		mostTravelled.put("down", getDistanceDown());
-		mostTravelled.put("left", getDistanceLeft());
-		mostTravelled.put("right", getDistanceRight());
+	public List<Direction> getMostDistanceTravelled() {
+		HashMap<Direction, Double> mostTravelled = new HashMap<>();
+		mostTravelled.put(Direction.UP, getDistanceUp());
+		mostTravelled.put(Direction.DOWN, getDistanceDown());
+		mostTravelled.put(Direction.LEFT, getDistanceLeft());
+		mostTravelled.put(Direction.RIGHT, getDistanceRight());
 		Double highestValue = Collections.max(mostTravelled.values());
-		List<String> mostDistanceTravelled = new ArrayList<>();
-		for (Map.Entry<String, Double> entry : mostTravelled.entrySet()) {
+		List<Direction> mostDistanceTravelled = new ArrayList<>();
+		for (Map.Entry<Direction, Double> entry : mostTravelled.entrySet()) {
 			if (entry.getValue() >= highestValue) {
 				mostDistanceTravelled.add(entry.getKey());
 			}
 		}
-		mostDistanceTravelled.add(highestValue.toString());
+		mostDistanceTravelled.add(Direction.valueOf(highestValue.toString()));
 
 		return mostDistanceTravelled;
 	}
@@ -58,17 +64,17 @@ public class PlayerStats {
 	 * @return a list containing, as the index 0, the number associated with the lowest value and,
 	 * as index 1, the least travelled distance (as in 'up', 'down', 'left', 'right').
 	 */
-	public List<String> getLeastDistanceTravelled() {
-		HashMap<String, Double> leastTravelled = new HashMap<>();
-		leastTravelled.put("up", getDistanceUp());
-		leastTravelled.put("down", getDistanceDown());
-		leastTravelled.put("left", getDistanceLeft());
-		leastTravelled.put("right", getDistanceRight());
+	public List<Direction> getLeastDistanceTravelled() {
+		HashMap<Direction, Double> leastTravelled = new HashMap<>();
+		leastTravelled.put(Direction.UP, getDistanceUp());
+		leastTravelled.put(Direction.DOWN, getDistanceDown());
+		leastTravelled.put(Direction.LEFT, getDistanceLeft());
+		leastTravelled.put(Direction.RIGHT, getDistanceRight());
 		Double lowestValue = Collections.min(leastTravelled.values());
-		List<String> leastDistanceTravelled = new ArrayList<>();
-		leastDistanceTravelled.add(lowestValue.toString());
+		List<Direction> leastDistanceTravelled = new ArrayList<>();
+		leastDistanceTravelled.add(Direction.valueOf(lowestValue.toString()));
 
-		for (Map.Entry<String, Double> entry : leastTravelled.entrySet()) {
+		for (Map.Entry<Direction, Double> entry : leastTravelled.entrySet()) {
 			if (entry.getValue() <= lowestValue) {
 				leastDistanceTravelled.add(entry.getKey());
 			}
@@ -155,28 +161,28 @@ public class PlayerStats {
 	public void increaseDistanceUp(double distance) {
 		distanceUp += distance;
 		incrementTotalDistance();
-		walkingDirection = "up";
+		walkingDirection = Direction.UP;
 		incrementStepsUp();
 	}
 
 	public void increaseDistanceDown(double distance) {
 		distanceDown += distance;
 		incrementTotalDistance();
-		walkingDirection = "down";
+		walkingDirection = Direction.DOWN;
 		incrementStepsDown();
 	}
 
 	public void increaseDistanceLeft(double distance) {
 		distanceLeft += distance;
 		incrementTotalDistance();
-		walkingDirection = "left";
+		walkingDirection = Direction.LEFT;
 		incrementStepsLeft();
 	}
 
 	public void increaseDistanceRight(double distance) {
 		distanceRight += distance;
 		incrementTotalDistance();
-		walkingDirection = "right";
+		walkingDirection = Direction.RIGHT;
 		incrementStepsRight();
 	}
 
@@ -193,7 +199,7 @@ public class PlayerStats {
 		}
 	}
 
-	public String getWalkingDirection() {
+	public Direction getWalkingDirection() {
 		return walkingDirection;
 	}
 }
