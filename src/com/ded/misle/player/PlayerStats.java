@@ -21,7 +21,8 @@ public class PlayerStats {
 		UP,
 		DOWN,
 		LEFT,
-		RIGHT
+		RIGHT,
+		TOTAL
 	}
 
 	public PlayerStats() {
@@ -44,10 +45,10 @@ public class PlayerStats {
 	 */
 	public List<Direction> getMostDistanceTravelled() {
 		HashMap<Direction, Double> mostTravelled = new HashMap<>();
-		mostTravelled.put(Direction.UP, getDistanceUp());
-		mostTravelled.put(Direction.DOWN, getDistanceDown());
-		mostTravelled.put(Direction.LEFT, getDistanceLeft());
-		mostTravelled.put(Direction.RIGHT, getDistanceRight());
+		mostTravelled.put(Direction.UP, getDistance(Direction.UP));
+		mostTravelled.put(Direction.DOWN, getDistance(Direction.DOWN));
+		mostTravelled.put(Direction.LEFT, getDistance(Direction.LEFT));
+		mostTravelled.put(Direction.RIGHT, getDistance(Direction.RIGHT));
 		Double highestValue = Collections.max(mostTravelled.values());
 		List<Direction> mostDistanceTravelled = new ArrayList<>();
 		for (Map.Entry<Direction, Double> entry : mostTravelled.entrySet()) {
@@ -66,10 +67,10 @@ public class PlayerStats {
 	 */
 	public List<Direction> getLeastDistanceTravelled() {
 		HashMap<Direction, Double> leastTravelled = new HashMap<>();
-		leastTravelled.put(Direction.UP, getDistanceUp());
-		leastTravelled.put(Direction.DOWN, getDistanceDown());
-		leastTravelled.put(Direction.LEFT, getDistanceLeft());
-		leastTravelled.put(Direction.RIGHT, getDistanceRight());
+		leastTravelled.put(Direction.UP, getDistance(Direction.UP));
+		leastTravelled.put(Direction.DOWN, getDistance(Direction.DOWN));
+		leastTravelled.put(Direction.LEFT, getDistance(Direction.LEFT));
+		leastTravelled.put(Direction.RIGHT, getDistance(Direction.RIGHT));
 		Double lowestValue = Collections.min(leastTravelled.values());
 		List<Direction> leastDistanceTravelled = new ArrayList<>();
 		leastDistanceTravelled.add(Direction.valueOf(lowestValue.toString()));
@@ -83,24 +84,24 @@ public class PlayerStats {
 		return leastDistanceTravelled;
 	}
 
-	public int getTotalSteps() {
-		return totalSteps;
+	public int getSteps(Direction direction) {
+		return switch (direction) {
+			case UP -> stepsUp;
+			case DOWN -> stepsDown;
+			case LEFT -> stepsLeft;
+			case RIGHT -> stepsRight;
+			case TOTAL -> totalSteps;
+		};
 	}
 
-	public int getStepsUp() {
-		return stepsUp;
-	}
-
-	public int getStepsDown() {
-		return stepsDown;
-	}
-
-	public int getStepsLeft() {
-		return stepsLeft;
-	}
-
-	public int getStepsRight() {
-		return stepsRight;
+	public double getDistance(Direction direction) {
+		return switch (direction) {
+			case UP -> distanceUp;
+			case DOWN -> distanceDown;
+			case LEFT -> distanceLeft;
+			case RIGHT -> distanceRight;
+			case TOTAL -> totalDistance;
+		};
 	}
 
 	public void incrementTotalDistance() {
@@ -136,26 +137,6 @@ public class PlayerStats {
 	public void incrementStepsRight() {
 		stepsRight++;
 		incrementTotalSteps();
-	}
-
-	public double getTotalDistance() {
-		return totalDistance;
-	}
-
-	public double getDistanceUp() {
-		return distanceUp;
-	}
-
-	public double getDistanceDown() {
-		return distanceDown;
-	}
-
-	public double getDistanceLeft() {
-		return distanceLeft;
-	}
-
-	public double getDistanceRight() {
-		return distanceRight;
 	}
 
 	public void increaseDistanceUp(double distance) {
