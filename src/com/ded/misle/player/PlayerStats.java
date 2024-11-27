@@ -104,8 +104,26 @@ public class PlayerStats {
 		};
 	}
 
-	public void incrementTotalDistance() {
-		totalDistance++;
+	public void incrementDistance(Direction direction, double distance) {
+		totalDistance += distance;
+		walkingDirection = direction;
+		incrementSteps(direction);
+		switch (direction) {
+			case UP -> distanceUp += distance;
+			case DOWN -> distanceDown += distance;
+			case LEFT -> distanceLeft += distance;
+			case RIGHT -> distanceRight += distance;
+		}
+	}
+
+	private void incrementSteps(Direction direction) {
+		incrementTotalSteps();
+		switch (direction) {
+			case UP -> stepsUp++;
+			case DOWN -> stepsDown++;
+			case LEFT -> stepsLeft++;
+			case RIGHT -> stepsRight++;
+		}
 	}
 
 	public void incrementTotalSteps() {
@@ -119,64 +137,16 @@ public class PlayerStats {
 		totalSteps++;
 	}
 
-	public void incrementStepsUp() {
-		stepsUp++;
-		incrementTotalSteps();
-	}
-
-	public void incrementStepsDown() {
-		stepsDown++;
-		incrementTotalSteps();
-	}
-
-	public void incrementStepsLeft() {
-		stepsLeft++;
-		incrementTotalSteps();
-	}
-
-	public void incrementStepsRight() {
-		stepsRight++;
-		incrementTotalSteps();
-	}
-
-	public void increaseDistanceUp(double distance) {
-		distanceUp += distance;
-		incrementTotalDistance();
-		walkingDirection = Direction.UP;
-		incrementStepsUp();
-	}
-
-	public void increaseDistanceDown(double distance) {
-		distanceDown += distance;
-		incrementTotalDistance();
-		walkingDirection = Direction.DOWN;
-		incrementStepsDown();
-	}
-
-	public void increaseDistanceLeft(double distance) {
-		distanceLeft += distance;
-		incrementTotalDistance();
-		walkingDirection = Direction.LEFT;
-		incrementStepsLeft();
-	}
-
-	public void increaseDistanceRight(double distance) {
-		distanceRight += distance;
-		incrementTotalDistance();
-		walkingDirection = Direction.RIGHT;
-		incrementStepsRight();
-	}
-
 	public void increaseDistance(double x, double y) {
 		if (x > 0) {
-			increaseDistanceRight(x);
+			incrementDistance(Direction.RIGHT, x);
 		} else if (x < 0) {
-			increaseDistanceLeft(-x);
+			incrementDistance(Direction.LEFT,-x);
 		}
 		if (y > 0) {
-			increaseDistanceDown(y);
+			incrementDistance(Direction.DOWN,y);
 		} else if (y < 0) {
-			increaseDistanceUp(-y);
+			incrementDistance(Direction.UP,-y);
 		}
 	}
 
