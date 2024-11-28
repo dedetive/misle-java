@@ -117,24 +117,31 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 	}
 
 	private int mouseX, mouseY;
-	private boolean isPressed;
+	private boolean isLeftPressed;
+	private boolean isRightPressed;
 	private boolean isReleased;
 
 	public MouseHandler() {
-		isPressed = false;
+		isLeftPressed = false;
+		isRightPressed = false;
 		// For initializing variables
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		isPressed = true;
+		switch (e.getButton()) {
+			case MouseEvent.BUTTON1 -> isLeftPressed = true;
+			case MouseEvent.BUTTON3 -> isRightPressed = true;
+		}
+
 		mouseX = e.getX();
 		mouseY = e.getY();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		isPressed = false;
+		isLeftPressed = false;
+		isRightPressed = false;
 		isReleased = true;
 	}
 
@@ -162,14 +169,22 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 		return mouseY;
 	}
 
-	public boolean isMousePressed() {
-		return isPressed;
+	public boolean isAnyPressed() {
+		return isLeftPressed || isRightPressed;
+	}
+
+	public boolean isLeftPressed() {
+		return isLeftPressed;
+	}
+
+	public boolean isRightPressed() {
+		return isRightPressed;
 	}
 
 	public void updateMouse() {
 		switch (gameState) {
 			case GameState.PLAYING:
-				if (isMousePressed()) {
+				if (isAnyPressed()) {
 					boolean foundWhereClicked = false;
 
 					if (getHoveredBarSlot() >= 0) {
@@ -182,22 +197,20 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 				}
 				break;
 			case GameState.INVENTORY:
-				if (isMousePressed()) {
-					if (getHoveredSlot()[0] >= 0 && getHoveredSlot()[1] >= 0) {
-						if (player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]) != null) {
+				if (isAnyPressed()) {
+					if (getHoveredSlot()[0] >= 0 && getHoveredSlot()[1] >= 0) { // If pressed a slot
+						if (player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]) != null) { // If slot is occupied, grab the item or swap
 							player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1]);
 						} else if (player.inv.getDraggedItem() != null && player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]) == null) {
-							player.inv.putDraggedItem(getHoveredSlot()[0], getHoveredSlot()[1]);
+							player.inv.putDraggedItem(getHoveredSlot()[0], getHoveredSlot()[1]); // Place item into slot if it's empty and has dragged item
 						}
-					} else {
-						if (player.inv.getDraggedItem() != null) {
-							player.inv.dropDraggedItem();
-						}
+					} else if (player.inv.getDraggedItem() != null) {// If not pressed a slot, drop item
+						player.inv.dropDraggedItem();
 					}
 				}
 				break;
 			case GameState.LEVEL_DESIGNER:
-				if (isMousePressed()) {
+				if (isLeftPressed()) {
 					// detect box in click position
 				} else if (isReleased) {
 					// Get x, y game world coordinates of mouse click and select nearby boxes of that position
@@ -213,7 +226,8 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 				}
 				break;
 		}
-		isPressed = false;
+		isLeftPressed = false;
+		isRightPressed = false;
 		isReleased = false;
 	}
 
