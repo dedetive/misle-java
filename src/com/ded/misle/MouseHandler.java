@@ -2,6 +2,7 @@ package com.ded.misle;
 
 import com.ded.misle.boxes.Box;
 import com.ded.misle.boxes.BoxesHandling;
+import com.ded.misle.items.Item;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -197,27 +198,31 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 				}
 				break;
 			case GameState.INVENTORY:
+				Item draggedItem = player.inv.getDraggedItem();
 				if (isLeftPressed() || (isRightPressed() && !hasGrabbedItem())) {
-					if (!isSlotValid()) { // Drop outside
-						if (hasGrabbedItem()) player.inv.dropDraggedItem(player.inv.getDraggedItem().getCount()); // If not pressed a slot, drop item
+					if (!isSlotValid()) {
+						// If not pressed a slot, drop item
+						if (hasGrabbedItem()) player.inv.dropDraggedItem(draggedItem.getCount());
 					} else {
 						if (isSlotOccupied()) {
-							if (hasGrabbedItem()) player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], player.inv.getDraggedItem().getCount());
-							else player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], -1);  // Grab item
-						} else if (hasGrabbedItem() && !isSlotOccupied()) {      // Place item into slot if it's empty and has dragged item
-							player.inv.putDraggedItem(getHoveredSlot()[0], getHoveredSlot()[1], player.inv.getDraggedItem().getCount());
+							if (hasGrabbedItem()) player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], draggedItem.getCount());
+							// Grab item
+							else player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], -1);
+							// Place item into slot if it's empty and has dragged item
+						} else if (hasGrabbedItem()) {
+							player.inv.putDraggedItem(getHoveredSlot()[0], getHoveredSlot()[1], draggedItem.getCount());
 						}
 					}
 				}
 				else if (isRightPressed() && hasGrabbedItem()) {
-					if (!isSlotValid()) { // Drop outside
-						if (hasGrabbedItem()) player.inv.dropDraggedItem(1);
-					} else {
-						if (isSlotOccupied()) { // Swap
+					// Drop outside
+					if (!isSlotValid()) { player.inv.dropDraggedItem(1);
+					} else if (isSlotOccupied()) {
+							// Swap
 							player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], 1);
-						} else {                // Put one into slot
+						} else {
+							// Put one into slot
 							player.inv.putDraggedItem(getHoveredSlot()[0], getHoveredSlot()[1], 1);
-						}
 					}
 				}
 				break;
