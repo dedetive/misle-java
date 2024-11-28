@@ -361,11 +361,22 @@ public class Inventory {
 		timer.start();
 	}
 
-	public void initDraggingItem(int row, int col) {
-		if (getDraggedItem() == null) {
+	public void initDraggingItem(int row, int col, int count) {
+		if (getDraggedItem() == null) { // If no item, start grabbing
 			setDraggedItem(getItem(row, col));
 			removeItem(row, col);
-		} else { // SWAP
+		} else if (getDraggedItem().getId() == getItem(row, col).getId()) { // If same item, add count
+			int itemCount = getItem(row, col).getCount();
+			int draggedCount = getDraggedItem().getCount();
+			if (itemCount + count <= draggedItem.getCountLimit()) { // Less than limit, add all to it
+				getItem(row, col).setCount(itemCount + count);
+				draggedItem.setCount(draggedCount - count);
+				if (draggedItem.getCount() <= 0) destroyGrabbedItem();
+			} else {                                                       // More than limit, add some and keep some
+				getItem(row, col).setCount(draggedItem.getCountLimit());
+				draggedItem.setCount(draggedCount - count);
+			}
+		} else { // If any other item, swap
 			setTempItem(getItem(row, col));
 			bruteSetItem(getDraggedItem(), row, col);
 			setDraggedItem(tempItem);

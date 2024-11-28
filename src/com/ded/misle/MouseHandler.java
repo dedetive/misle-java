@@ -198,23 +198,24 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 				break;
 			case GameState.INVENTORY:
 				if (isLeftPressed() || (isRightPressed() && !hasGrabbedItem())) {
-					if (!isSlotValid()) {
+					if (!isSlotValid()) { // Drop outside
 						if (hasGrabbedItem()) player.inv.dropDraggedItem(player.inv.getDraggedItem().getCount()); // If not pressed a slot, drop item
 					} else {
 						if (isSlotOccupied()) {
-							player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1]);  // Grab item
+							if (hasGrabbedItem()) player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], player.inv.getDraggedItem().getCount());
+							else player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], -1);  // Grab item
 						} else if (hasGrabbedItem() && !isSlotOccupied()) {      // Place item into slot if it's empty and has dragged item
 							player.inv.putDraggedItem(getHoveredSlot()[0], getHoveredSlot()[1], player.inv.getDraggedItem().getCount());
 						}
 					}
 				}
 				else if (isRightPressed() && hasGrabbedItem()) {
-					if (!isSlotValid()) {
+					if (!isSlotValid()) { // Drop outside
 						if (hasGrabbedItem()) player.inv.dropDraggedItem(1);
 					} else {
-						if (isSlotOccupied()) {
-							player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1]);
-						} else {
+						if (isSlotOccupied()) { // Swap
+							player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], 1);
+						} else {                // Put one into slot
 							player.inv.putDraggedItem(getHoveredSlot()[0], getHoveredSlot()[1], 1);
 						}
 					}
