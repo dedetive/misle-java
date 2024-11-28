@@ -94,11 +94,13 @@ public class Item {
 	public Color getNameColor() { return nameColor; }
 
 
-	public void setCount(int count) {
+	public boolean setCount(int count) {
 		this.count = Math.min(count, countLimit);
-		if (this.count == 0) {
+		if (this.count <= 0) {
 			removeItem();
+			return true;
 		}
+		return false;
 	}
 
 	public void removeItem() {

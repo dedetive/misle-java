@@ -373,9 +373,13 @@ public class Inventory {
 		}
 	}
 
-	public void putDraggedItem(int row, int col) {
-		bruteSetItem(getDraggedItem(), row, col);
-		setDraggedItem(null);
+	public void putDraggedItem(int row, int col, int count) {
+		setTempItem(getDraggedItem());
+		tempItem.setCount(count);
+		bruteSetItem(tempItem, row, col);
+		draggedItem.setCount(draggedItem.getCount() - count);
+		if (draggedItem.getCount() == 0) destroyGrabbedItem();
+		destroyTempItem();
 	}
 
 	private void setDraggedItem(Item draggedItem) {
@@ -387,7 +391,11 @@ public class Inventory {
 	}
 
 	private void setTempItem(Item tempItem) {
-		this.tempItem = tempItem;
+		try {
+			this.tempItem = new Item(tempItem.getId(), tempItem.getCount());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void destroyTempItem() {
@@ -402,7 +410,7 @@ public class Inventory {
 		Box droppedItem = BoxesHandling.addBoxItem(player.pos.getX() / scale, player.pos.getY() / scale, getDraggedItem().getId(), getDraggedItem().getCount());
 		editBox(droppedItem, BoxesHandling.EditBoxKeys.COLLECTIBLE, "false");
 		playThis("dropItem");
-		setDraggedItem(null);
+		destroyGrabbedItem();
 		updateSelectedItemNamePosition();
 		double dropSpeed = player.attr.getSpeedModifier() * player.attr.getEnvironmentSpeedModifier() * 20 * 2.25;
 		switch (player.stats.getWalkingDirection()) {

@@ -197,15 +197,24 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 				}
 				break;
 			case GameState.INVENTORY:
-				if (isAnyPressed()) {
-					if (getHoveredSlot()[0] >= 0 && getHoveredSlot()[1] >= 0) { // If pressed a slot
-						if (player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]) != null) { // If slot is occupied, grab the item or swap
-							player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1]);
-						} else if (player.inv.getDraggedItem() != null && player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]) == null) {
-							player.inv.putDraggedItem(getHoveredSlot()[0], getHoveredSlot()[1]); // Place item into slot if it's empty and has dragged item
+				if (isLeftPressed() || (isRightPressed() && !hasGrabbedItem())) {
+					if (!isSlotValid()) {
+						if (hasGrabbedItem()) player.inv.dropDraggedItem(); // If not pressed a slot, drop item
+					} else {
+						if (isSlotOccupied()) {
+							player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1]);  // Grab item
+						} else if (hasGrabbedItem() && !isSlotOccupied()) {      // Place item into slot if it's empty and has dragged item
+							player.inv.putDraggedItem(getHoveredSlot()[0], getHoveredSlot()[1], player.inv.getDraggedItem().getCount());
 						}
-					} else if (player.inv.getDraggedItem() != null) {// If not pressed a slot, drop item
-						player.inv.dropDraggedItem();
+					}
+				}
+				else if (isRightPressed() && hasGrabbedItem()) {
+					if (isSlotValid()) {
+						if (isSlotOccupied()) {
+							player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1]);
+						} else {
+							player.inv.putDraggedItem(getHoveredSlot()[0], getHoveredSlot()[1], 1);
+						}
 					}
 				}
 				break;
@@ -273,5 +282,17 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 	public int[] getHoveredSlot() {
 		return hoveredSlot;
+	}
+	
+	private boolean isSlotOccupied() {
+		return player.inv.getItem(hoveredSlot[0], hoveredSlot[1]) != null;
+	}
+
+	private boolean isSlotValid() {
+		return getHoveredSlot()[0] >= 0 && getHoveredSlot()[1] >= 0;
+	}
+
+	private boolean hasGrabbedItem() {
+		return player.inv.getDraggedItem() != null;
 	}
 }
