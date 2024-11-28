@@ -199,7 +199,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 			case GameState.INVENTORY:
 				if (isLeftPressed() || (isRightPressed() && !hasGrabbedItem())) {
 					if (!isSlotValid()) {
-						if (hasGrabbedItem()) player.inv.dropDraggedItem(); // If not pressed a slot, drop item
+						if (hasGrabbedItem()) player.inv.dropDraggedItem(player.inv.getDraggedItem().getCount()); // If not pressed a slot, drop item
 					} else {
 						if (isSlotOccupied()) {
 							player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1]);  // Grab item
@@ -209,7 +209,9 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 					}
 				}
 				else if (isRightPressed() && hasGrabbedItem()) {
-					if (isSlotValid()) {
+					if (!isSlotValid()) {
+						if (hasGrabbedItem()) player.inv.dropDraggedItem(1);
+					} else {
 						if (isSlotOccupied()) {
 							player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1]);
 						} else {
