@@ -229,13 +229,17 @@ public class Inventory {
 									healAmountValue = player.attr.getMaxHP();
 								}
 								String formattedHealAmount = df.format(player.attr.calculateHeal(healAmountValue, "normal"));
-
 								createFloatingText("+" + formattedHealAmount, Color.decode("#DE4040"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
 								player.attr.receiveHeal(healAmountValue, "normal");
-								getSelectedItem().setCount(getSelectedItem().getCount() - 1);
-								if (!getSelectedItem().isActive()) {
-									removeItem(0, getSelectedSlot());
-								}
+
+								Timer delayToRemove = new Timer(30, e -> {
+									getSelectedItem().setCount(getSelectedItem().getCount() - 1);
+									if (!getSelectedItem().isActive()) {
+										removeItem(0, getSelectedSlot());
+									}
+								});
+								delayToRemove.setRepeats(false);
+								delayToRemove.start();
 								break;
 							case "entropy":
 								double entropyAmountValue = Double.parseDouble(Integer.toString((Integer) getSelectedItem().getAttributes().get("entropy")));
@@ -326,8 +330,8 @@ public class Inventory {
 		Box droppedItem = BoxesHandling.addBoxItem(player.pos.getX() / scale, player.pos.getY() / scale, getItem(row, col).getId(), quantity);
 		editBox(droppedItem, BoxesHandling.EditBoxKeys.COLLECTIBLE, "false");
 		playThis("dropItem");
-		updateSelectedItemNamePosition();
 		removeItem(row, col, quantity);
+		updateSelectedItemNamePosition();
 		double dropSpeed = player.attr.getSpeedModifier() * player.attr.getEnvironmentSpeedModifier() * 20 * 2.25;
 		switch (player.stats.getWalkingDirection()) {
 			case PlayerStats.Direction.UP -> {

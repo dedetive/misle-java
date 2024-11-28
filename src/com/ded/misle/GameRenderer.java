@@ -663,21 +663,27 @@ public class GameRenderer {
 	public static void drawSelectedItemName(Graphics2D g2d) {
 		if (selectedItemName != null && selectedItemNamePosition != null) {
 			// Check if the current time is within 5 seconds of the start time
-			long currentTime = System.currentTimeMillis();
-			if (currentTime - itemNameDisplayStartTime < 5000) {
-				g2d.setFont(ubuntuFont35);
-				FontMetrics fm = g2d.getFontMetrics();
-				int textWidth = fm.stringWidth(selectedItemName);
+			try {
+				long currentTime = System.currentTimeMillis();
+				if (currentTime - itemNameDisplayStartTime < 5000) {
+					g2d.setFont(ubuntuFont35);
+					FontMetrics fm = g2d.getFontMetrics();
+					int textWidth = fm.stringWidth(selectedItemName);
 
-				int textX = selectedItemNamePosition.x - textWidth / 2;
-				int textY = selectedItemNamePosition.y;
+					int textX = selectedItemNamePosition.x - textWidth / 2;
+					int textY = selectedItemNamePosition.y;
 
-				g2d.setColor(Color.black);
-				g2d.drawString(selectedItemName, (int) (textX + textShadow), (int) (textY + textShadow));
-				g2d.setColor(player.inv.getSelectedItem().getNameColor());
-				g2d.drawString(selectedItemName, textX, textY);
-			} else {
-				// Clear the selected item name after 5 seconds
+					g2d.setColor(Color.black);
+					g2d.drawString(selectedItemName, (int) (textX + textShadow), (int) (textY + textShadow));
+					g2d.setColor(player.inv.getSelectedItem().getNameColor());
+					g2d.drawString(selectedItemName, textX, textY);
+				} else {
+					// Clear the selected item name after 5 seconds
+					selectedItemName = null;
+					selectedItemNamePosition = null;
+				}
+			} catch (NullPointerException e) {
+				System.out.println("Selected item not found!");
 				selectedItemName = null;
 				selectedItemNamePosition = null;
 			}
@@ -962,27 +968,32 @@ public class GameRenderer {
 		floatingTextPosition.add(point);
 		floatingTextColor.add(color);
 
-		AtomicInteger index = new AtomicInteger(floatingTextPosition.size() - 1);
-		Timer movingUp = new Timer(200, e -> {
-			if (index.get() != -1) {
-				Point newPoint = new Point(floatingTextPosition.get(index.get()).x, (floatingTextPosition.get(index.get()).y - 1));
-				floatingTextPosition.set(index.get(), newPoint);
-			}
-		});
-		if (movesUp) {
-			movingUp.setRepeats(true);
-			movingUp.start();
-		}
+		try {
 
-		Timer timer = new Timer(2500, l -> {
-			index.addAndGet(-1);
-			movingUp.stop();
-			floatingText.removeFirst();
-			floatingTextPosition.removeFirst();
-			floatingTextColor.removeFirst();
-		});
-		timer.setRepeats(false);
-		timer.start();
+			AtomicInteger index = new AtomicInteger(floatingTextPosition.size() - 1);
+			Timer movingUp = new Timer(200, e -> {
+				if (index.get() != -1) {
+					Point newPoint = new Point(floatingTextPosition.get(index.get()).x, (floatingTextPosition.get(index.get()).y - 1));
+					floatingTextPosition.set(index.get(), newPoint);
+				}
+			});
+			if (movesUp) {
+				movingUp.setRepeats(true);
+				movingUp.start();
+			}
+
+			Timer timer = new Timer(2500, l -> {
+				index.addAndGet(-1);
+				movingUp.stop();
+				floatingText.removeFirst();
+				floatingTextPosition.removeFirst();
+				floatingTextColor.removeFirst();
+			});
+			timer.setRepeats(false);
+			timer.start();
+		} catch (IndexOutOfBoundsException e) {
+			// This would mean floatingText was removed, so stop
+		}
 	}
 
 	private static void drawFloatingText(Graphics2D g2d) {
