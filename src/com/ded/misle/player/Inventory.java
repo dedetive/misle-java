@@ -326,8 +326,8 @@ public class Inventory {
 		Box droppedItem = BoxesHandling.addBoxItem(player.pos.getX() / scale, player.pos.getY() / scale, getItem(row, col).getId(), quantity);
 		editBox(droppedItem, BoxesHandling.EditBoxKeys.COLLECTIBLE, "false");
 		playThis("dropItem");
-		removeItem(row, col, quantity);
 		updateSelectedItemNamePosition();
+		removeItem(row, col, quantity);
 		double dropSpeed = player.attr.getSpeedModifier() * player.attr.getEnvironmentSpeedModifier() * 20 * 2.25;
 		switch (player.stats.getWalkingDirection()) {
 			case PlayerStats.Direction.UP -> {
