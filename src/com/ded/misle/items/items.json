@@ -10,7 +10,6 @@
     "kind": "claw",
     "attackDelay": 1.2,
     "range": 15,
-    "bundles": "mountain|1|35",
     "nameColor": "#F5B114"
   },
   {
@@ -24,7 +23,6 @@
     "subtype": "ranged",
     "kind": "slingshot",
     "attackDelay": 2,
-    "bundles": "mountain|1|35",
     "nameColor": "#F0CA0C"
   },
   {
@@ -68,7 +66,6 @@
     "type": "weapon",
     "subtype": "shield",
     "kind": "wooden",
-    "bundles": "mountainDISABLED|1|5",
     "nameColor": "#FFFFFF"
   },
   {
@@ -171,7 +168,6 @@
     "def": 1,
     "type": "armor",
     "subtype": "ring",
-    "bundles": "mountain|1|28",
     "nameColor": "#FF8D29"
   },
   {
