@@ -468,9 +468,9 @@ public class GameRenderer {
 		int playerScreenY = (int) (player.pos.getY() - player.pos.getCameraOffsetY());
 
 		// Draw the player
-		g2d.setColor(Color.WHITE);
-		Rectangle playerRect = new Rectangle(playerScreenX, playerScreenY, (int) player.attr.getWidth(), (int) player.attr.getHeight());
-		drawRotatedRect(g2d, playerRect, player.pos.getRotation());
+//		g2d.setColor(Color.WHITE);
+//		Rectangle playerRect = new Rectangle(playerScreenX, playerScreenY, (int) player.attr.getWidth(), (int) player.attr.getHeight());
+//		drawRotatedRect(g2d, playerRect, player.pos.getRotation());
 
 		drawHandItem(g2d, playerScreenX, playerScreenY, scaleByScreenSize);
 

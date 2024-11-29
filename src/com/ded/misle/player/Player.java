@@ -1,6 +1,10 @@
 package com.ded.misle.player;
 
-public class Player {
+import com.ded.misle.boxes.Box;
+
+import static com.ded.misle.boxes.BoxesHandling.addBoxToCache;
+
+public class Player extends Box {
 
 	public final PlayerKeys keys;
 	public final PlayerPosition pos;
@@ -14,6 +18,7 @@ public class Player {
 		this.attr = new PlayerAttributes();
 		this.stats = new PlayerStats();
 		this.inv = new Inventory();
+		addBoxToCache(this);
 	}
 
 	public void unloadPlayer() {

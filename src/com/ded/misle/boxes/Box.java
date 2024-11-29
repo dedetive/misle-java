@@ -30,8 +30,6 @@ import static com.ded.misle.items.Item.createItem;
 import static java.lang.System.currentTimeMillis;
 
 public class Box {
-	private final double originalX; // The original world position (unscaled)
-	private final double originalY; // The original world position (unscaled)
 	private double currentX; // The current world position (unscaled)
 	private double currentY; // The current world position (unscaled)
 	private Color color;
@@ -81,10 +79,8 @@ public class Box {
 	 * @param effect first value is the type of effect. See above for a list of effects. Set "" if none
 	 */
 	public Box(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, double maxHP, double HP, Physics.ObjectType objectType) {
-		this.originalX = x;
-		this.originalY = y;
-		this.currentX = this.originalX;
-		this.currentY = this.originalY;
+		this.currentX = x;
+		this.currentY = y;
 		this.color = color;
 		this.texture = texture;
 		this.hasCollision = hasCollision;
@@ -98,10 +94,8 @@ public class Box {
 	}
 
 	public Box(double x, double y) {
-		this.originalX = x;
-		this.originalY = y;
-		this.currentX = this.originalX;
-		this.currentY = this.originalY;
+		this.currentX = x;
+		this.currentY = y;
 		this.color = new Color(255, 255, 255);
 		this.texture = "solid";
 		this.hasCollision = false;
@@ -112,6 +106,14 @@ public class Box {
 		this.maxHP = -1;
 		this.HP = -1;
 		this.objectType = BOX;
+	}
+
+	// For player creation
+	public Box() {
+		this.setTexture("solid");
+		this.setColor(new Color(255, 255, 255));
+		this.setObjectType(Physics.ObjectType.PLAYER);
+		this.hasCollision = true;
 	}
 
 	// Method to render the box with the current tileSize and scale the position
@@ -218,20 +220,6 @@ public class Box {
 	}
 
 	// BOX POSITION AND SCALING
-
-	/**
-	 * Is unscaled.
-	 */
-	public double getOriginalX() {
-        return originalX;
-	}
-
-	/**
-	 * Is unscaled.
-	 */
-    public double getOriginalY() {
-      return originalY;
-    }
 
 	/**
 	 * Is unscaled.
