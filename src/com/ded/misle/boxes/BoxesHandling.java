@@ -16,7 +16,7 @@ public class BoxesHandling {
 	private static final List<String> presetsWithSides = List.of(new String[]{"wallDefault"});
 	private static final double boxBaseSize = 20.9;
 	public static int maxLevel = 19;
-	private static List<Box>[] cachedBoxes = new ArrayList[maxLevel + 1];
+	private static final List<Box>[] cachedBoxes = new ArrayList[maxLevel + 1];
 	public enum LineAddBoxModes {
 		HOLLOW,
 		FILL
@@ -394,15 +394,10 @@ public class BoxesHandling {
 	 * DEPRECATED. Use getCachedBoxes() instead.
 	 *
 	 */
-	public static List<Box> getBoxesInRange(double playerX, double playerY, double range, double scale, int tileSize) {
+	public static List<Box> getBoxesInRange(double playerX, double playerY, double range) {
     	List<Box> boxesInRange = new ArrayList<>();
     	for (Box box : boxes) {
-        	double scaledX = box.getCurrentX() * scale;
-        	double scaledY = box.getCurrentY() * scale;
-
-        	// Calculate bounding box range based on the player's position
-		    if (scaledX + tileSize * box.getBoxScaleHorizontal() / 1.5 >= playerX - range && scaledX <= playerX + range
-				    && scaledY + tileSize * box.getBoxScaleVertical() / 1.5 >= playerY - range && scaledY <= playerY + range) {
+		    if (checkIfBoxInRange(box, playerX, playerY, range)) {
 			    boxesInRange.add(box);
 		    }
     	}
@@ -422,7 +417,7 @@ public class BoxesHandling {
 
 	public static void storeCachedBoxes(int level) {
 		if (level >= maxLevel) {
-			cachedBoxes[maxLevel] = getBoxesInRange(player.pos.getX(), player.pos.getY(), Math.pow(2, level), scale, tileSize);
+			cachedBoxes[maxLevel] = getBoxesInRange(player.pos.getX(), player.pos.getY(), Math.pow(2, level));
 		} else {
 			cachedBoxes[level] = getCachedBoxesNearPlayer(level);
 		}
@@ -446,11 +441,7 @@ public class BoxesHandling {
 		double playerY = player.pos.getY();
 		double range = Math.pow(2, level);
 		for (Box box : cachedBoxes[level + 1]) {
-			double scaledX = box.getCurrentX() * scale;
-			double scaledY = box.getCurrentY() * scale;
-
-			if (scaledX + tileSize * box.getBoxScaleHorizontal() / 1.5 >= playerX - range && scaledX <= playerX + range
-					&& scaledY + tileSize * box.getBoxScaleVertical() / 1.5 >= playerY - range && scaledY <= playerY + range) {
+			if (checkIfBoxInRange(box, playerX, playerY, range)) {
 				boxesInRange.add(box);
 			}
 		}
@@ -461,11 +452,7 @@ public class BoxesHandling {
 		List<Box> boxesInRange = new ArrayList<>();
 		double range = Math.pow(2, level);
 		for (Box box : cachedBoxes[level + 1]) {
-			double scaledX = box.getCurrentX() * scale;
-			double scaledY = box.getCurrentY() * scale;
-
-			if (scaledX + tileSize * box.getBoxScaleHorizontal() / 1.5 >= x - range && scaledX <= x + range
-					&& scaledY + tileSize * box.getBoxScaleVertical() / 1.5 >= y - range && scaledY <= y + range) {
+			if (checkIfBoxInRange(box, x, y, range)) {
 				boxesInRange.add(box);
 			}
 		}
@@ -474,38 +461,40 @@ public class BoxesHandling {
 
 		// END BOX CACHING
 
-	public static List<Box> getCollisionBoxesInRange(double playerX, double playerY, double range, double scale, int tileSize, int level) {
+	public static List<Box> getCollisionBoxesInRange(double playerX, double playerY, double range, int level) {
     	List<Box> boxesInRange = new ArrayList<>();
     	for (Box box : getCachedBoxes(level)) {
-    			if (!box.getHasCollision()) {
-    				continue;
-    			}
-        	double scaledX = box.getCurrentX() * scale;
-        	double scaledY = box.getCurrentY() * scale;
+            if (!box.getHasCollision()) {
+                continue;
+            }
 
-        	// Calculate bounding box range based on the player's position
-		    if (scaledX + tileSize * box.getBoxScaleHorizontal() / 1.5 >= playerX - range && scaledX <= playerX + range
-				    && scaledY + tileSize * box.getBoxScaleVertical() / 1.5 >= playerY - range && scaledY <= playerY + range) {
+		    if (checkIfBoxInRange(box, playerX, playerY, range)) {
 			    boxesInRange.add(box);
 		    }
     	}
     	return boxesInRange;
 	}
 
-	public static List<Box> getNonCollisionBoxesInRange(double playerX, double playerY, double range, double scale, int tileSize) {
+	public static List<Box> getNonCollisionBoxesInRange(double playerX, double playerY, double range) {
 		List<Box> boxesInRange = new ArrayList<>();
 		for (Box box : getCachedBoxes(9)) {
 			if (box.getHasCollision()) {
 				continue;
 			}
-			double scaledX = box.getCurrentX() * scale;
-			double scaledY = box.getCurrentY() * scale;
-			// Calculate bounding box range based on the player's position
-			if (scaledX + tileSize * box.getBoxScaleHorizontal() / 1.5 >= playerX - range && scaledX <= playerX + range
-					&& scaledY + tileSize * box.getBoxScaleVertical() / 1.5 >= playerY - range && scaledY <= playerY + range) {
+
+			if (checkIfBoxInRange(box, playerX, playerY, range)) {
 				boxesInRange.add(box);
 			}
 		}
 		return boxesInRange;
+	}
+
+	public static boolean checkIfBoxInRange(Box box, double playerX, double playerY, double range) {
+		double scaledX = box.getCurrentX() * scale;
+		double scaledY = box.getCurrentY() * scale;
+
+		// Calculate bounding box range based on the player's position
+		return scaledX + tileSize * box.getBoxScaleHorizontal() / 1.5 >= playerX - range && scaledX <= playerX + range
+				&& scaledY + tileSize * box.getBoxScaleVertical() / 1.5 >= playerY - range && scaledY <= playerY + range;
 	}
 }

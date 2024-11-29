@@ -30,7 +30,7 @@ public class Physics {
 				GamePanel.player.attr.setLastVelocityBox(null); // Clear the last velocity box
 			}
 
-			List<Box> nearbyNonCollisionBoxes = ((BoxesHandling.getNonCollisionBoxesInRange(GamePanel.player.pos.getX(), GamePanel.player.pos.getY(), GamePanel.tileSize, scale, GamePanel.tileSize)));
+			List<Box> nearbyNonCollisionBoxes = ((BoxesHandling.getNonCollisionBoxesInRange(GamePanel.player.pos.getX(), GamePanel.player.pos.getY(), GamePanel.tileSize)));
 			for (Box box: nearbyNonCollisionBoxes) {
 				if (!box.getEffect().isEmpty()) {
 					box.handleEffect();
@@ -54,7 +54,7 @@ public class Physics {
 	 * @param objectHeight double - The height of the object, in pixels.
  	 */
 	public static boolean isPixelOccupied(double pixelX, double pixelY, double objectWidth, double objectHeight, double range, int level, boolean isPlayer) {
-		List<Box> nearbyCollisionBoxes = BoxesHandling.getCollisionBoxesInRange(pixelX, pixelY, range, scale, GamePanel.tileSize, level);
+		List<Box> nearbyCollisionBoxes = BoxesHandling.getCollisionBoxesInRange(pixelX, pixelY, range, level);
 		for (Box box : nearbyCollisionBoxes) {
 			if (box.getBoxScaleHorizontal() >= 1 && box.getBoxScaleVertical() >= 1) {
 				if (box.isPointColliding(pixelX, pixelY, scale, objectWidth, objectHeight) || // Up-left corner
