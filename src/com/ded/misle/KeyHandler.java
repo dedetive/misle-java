@@ -310,11 +310,11 @@ public class KeyHandler implements KeyListener {
 			if (!player.attr.isDead()) {
 				double range = (tileSize + 1) * Math.max(1, player.attr.getSpeed());
 				if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
-					if (!isPixelOccupied((player.pos.getX() + willMovePlayer[0]), player.pos.getY(), player.attr.getWidth(), player.attr.getHeight(), range, 12, true)) {
-						movePlayer(willMovePlayer[0], 0);
+					if (!Physics.isPixelOccupied((player.pos.getX() + willMovePlayer[0]), player.pos.getY(), player.attr.getWidth(), player.attr.getHeight(), range, 12, true)) {
+						Physics.movePlayer(willMovePlayer[0], 0);
 					}
-					if (!isPixelOccupied(player.pos.getX(), (player.pos.getY() + willMovePlayer[1]), player.attr.getWidth(), player.attr.getHeight(), range, 12, true)) {
-						movePlayer(0, willMovePlayer[1]);
+					if (!Physics.isPixelOccupied(player.pos.getX(), (player.pos.getY() + willMovePlayer[1]), player.attr.getWidth(), player.attr.getHeight(), range, 12, true)) {
+						Physics.movePlayer(0, willMovePlayer[1]);
 					}
 				}
 			}
@@ -398,7 +398,7 @@ public class KeyHandler implements KeyListener {
 			}
 
 			if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
-				movePlayer(willMovePlayer[0], willMovePlayer[1]);
+				Physics.movePlayer(willMovePlayer[0], willMovePlayer[1]);
 			}
 
 			// Pause
