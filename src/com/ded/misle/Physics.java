@@ -7,8 +7,16 @@ import java.util.List;
 
 import static com.ded.misle.Launcher.levelDesigner;
 import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.Physics.ObjectType.PLAYER;
 
 public class Physics {
+
+	public enum ObjectType {
+		PLAYER,
+		BOX,
+		HP_BOX
+	}
+
 	/**
 	 * This moves the player by x, oftentimes being the playerSpeed, or by y.
 	 * Set the other as 0, unless you intend to move the player diagonally.
@@ -33,7 +41,7 @@ public class Physics {
 			List<Box> nearbyNonCollisionBoxes = ((BoxesHandling.getNonCollisionBoxesInRange(GamePanel.player.pos.getX(), GamePanel.player.pos.getY(), GamePanel.tileSize)));
 			for (Box box: nearbyNonCollisionBoxes) {
 				if (!box.getEffect().isEmpty()) {
-					box.handleEffect();
+					box.handleEffect(PLAYER);
 				}
 			}
 		}
@@ -53,7 +61,7 @@ public class Physics {
 	 * @param objectWidth double - The width of the object, in pixels.
 	 * @param objectHeight double - The height of the object, in pixels.
  	 */
-	public static boolean isPixelOccupied(double pixelX, double pixelY, double objectWidth, double objectHeight, double range, int level, boolean isPlayer) {
+	public static boolean isPixelOccupied(double pixelX, double pixelY, double objectWidth, double objectHeight, double range, int level, ObjectType objectType) {
 		List<Box> nearbyCollisionBoxes = BoxesHandling.getCollisionBoxesInRange(pixelX, pixelY, range, level);
 		for (Box box : nearbyCollisionBoxes) {
 			if (box.getBoxScaleHorizontal() >= 1 && box.getBoxScaleVertical() >= 1) {
@@ -62,8 +70,8 @@ public class Physics {
 					(box.isPointColliding(pixelX, pixelY + objectHeight, scale, objectWidth, objectHeight)) || // Bottom-left corner
 					(box.isPointColliding(pixelX + objectWidth, pixelY + objectHeight, scale, objectWidth, objectHeight)) // Bottom-right corner
 				) {
-					if (isPlayer && !box.getEffect().isEmpty()) {
-						box.handleEffect();
+					if (objectType != ObjectType.BOX && !box.getEffect().isEmpty()) {
+						box.handleEffect(objectType);
 					}
 					return true;
 				}
@@ -75,8 +83,8 @@ public class Physics {
 						(box.isPointColliding(pixelX + objectWidth, pixelY + i * objectHeight / inverseBoxScale, scale, objectWidth, objectHeight)) || // Right edge
 						(box.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY + objectHeight, scale, objectWidth, objectHeight)) // Bottom edge
 					) {
-						if (isPlayer && !box.getEffect().isEmpty()) {
-							box.handleEffect();
+						if (objectType != ObjectType.BOX && !box.getEffect().isEmpty()) {
+							box.handleEffect(objectType);
 						}
 						return true;
 					}

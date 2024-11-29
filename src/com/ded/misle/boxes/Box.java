@@ -1,6 +1,7 @@
 package com.ded.misle.boxes;
 
 import com.ded.misle.GameRenderer;
+import com.ded.misle.Physics;
 import com.ded.misle.player.PlayerAttributes;
 
 import javax.imageio.ImageIO;
@@ -17,6 +18,8 @@ import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.GameRenderer.fadeIn;
 import static com.ded.misle.GameRenderer.fadeOut;
 import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.Physics.ObjectType.BOX;
+import static com.ded.misle.Physics.ObjectType.HP_BOX;
 import static com.ded.misle.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.boxes.BoxesHandling.*;
 import static com.ded.misle.boxes.BoxesLoad.loadBoxes;
@@ -42,6 +45,7 @@ public class Box {
 	private static ArrayList<Box> selectedBoxes;
 	private double maxHP;
 	private double HP;
+	private Physics.ObjectType objectType;
 
 	private BufferedImage cachedTexture1;
 	private String cachedTexture1Name;
@@ -76,7 +80,7 @@ public class Box {
 	 * @param boxScaleVertical how many tilesizes is the box in the y axis
 	 * @param effect first value is the type of effect. See above for a list of effects. Set "" if none
 	 */
-	public Box(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, double maxHP, double HP) {
+	public Box(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, double maxHP, double HP, Physics.ObjectType objectType) {
 		this.originalX = x;
 		this.originalY = y;
 		this.currentX = this.originalX;
@@ -90,6 +94,7 @@ public class Box {
 		this.rotation = rotation;
 		this.maxHP = maxHP;
 		this.HP = HP;
+		this.objectType = objectType;
 	}
 
 	public Box(double x, double y) {
@@ -106,6 +111,7 @@ public class Box {
 		this.rotation = 0;
 		this.maxHP = -1;
 		this.HP = -1;
+		this.objectType = BOX;
 	}
 
 	// Method to render the box with the current tileSize and scale the position
@@ -328,7 +334,7 @@ public class Box {
 		this.effect = effect;
 	}
 
-	public void handleEffect() {
+	public void handleEffect(Physics.ObjectType objectType) {
 		switch (this.effect[0]) {
 			case "damage" -> this.handleBoxDamageCooldown();
 			case "heal" -> this.handleBoxHealCooldown();
@@ -602,6 +608,8 @@ public class Box {
 		}
 	}
 
+	// HP
+
 	public void setHP(double HP) {
 		this.HP = HP;
 		checkIfDead();
@@ -614,9 +622,14 @@ public class Box {
 
 	public void setMaxHP(double maxHP) {
 		this.maxHP = maxHP;
+		if (maxHP == -1) {
+			setObjectType(BOX);
+		} else {
+			setObjectType(HP_BOX);
+		}
 	}
 
-	public double getHP(double HP) {
+	public double getHP() {
 		return HP;
 	}
 
@@ -630,5 +643,15 @@ public class Box {
 			return true;
 		}
 		return false;
+	}
+
+	// Object type (BOX, HP_BOX)
+
+	public Physics.ObjectType getObjectType() {
+		return objectType;
+	}
+
+	public void setObjectType(Physics.ObjectType objectType) {
+		this.objectType = objectType;
 	}
 }
