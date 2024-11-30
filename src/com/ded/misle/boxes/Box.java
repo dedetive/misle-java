@@ -30,8 +30,8 @@ import static com.ded.misle.items.Item.createItem;
 import static java.lang.System.currentTimeMillis;
 
 public class Box {
-	private double currentX; // The current world position (unscaled)
-	private double currentY; // The current world position (unscaled)
+	private double x; // The current world position (unscaled)
+	private double y; // The current world position (unscaled)
 	private Color color;
 	private String texture;
 	private boolean hasCollision;
@@ -79,8 +79,8 @@ public class Box {
 	 * @param effect first value is the type of effect. See above for a list of effects. Set "" if none
 	 */
 	public Box(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, double maxHP, double HP, Physics.ObjectType objectType) {
-		this.currentX = x;
-		this.currentY = y;
+		this.x = x;
+		this.y = y;
 		this.color = color;
 		this.texture = texture;
 		this.hasCollision = hasCollision;
@@ -94,8 +94,8 @@ public class Box {
 	}
 
 	public Box(double x, double y) {
-		this.currentX = x;
-		this.currentY = y;
+		this.x = x;
+		this.y = y;
 		this.color = new Color(255, 255, 255);
 		this.texture = "solid";
 		this.hasCollision = false;
@@ -119,8 +119,8 @@ public class Box {
 	// Method to render the box with the current tileSize and scale the position
 	public void draw(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY, double scale, int tileSize, double boxScaleHorizontal, double boxScaleVertical) {
 		// Scale the position based on the current scale
-		double scaledX = currentX * scale;
-		double scaledY = currentY * scale;
+		double scaledX = x * scale;
+		double scaledY = y * scale;
 
 		// Apply the camera offset to the scaled position
 		int screenX = (int) (scaledX - cameraOffsetX);
@@ -210,8 +210,8 @@ public class Box {
 
 	// Check if a point (e.g., player) is inside this box (adjusted for the new scale)
 	public boolean isPointColliding(double pointX, double pointY, double scale, double objectWidth, double objectHeight) {
-		double scaledX = currentX * scale;
-		double scaledY = currentY * scale;
+		double scaledX = x * scale;
+		double scaledY = y * scale;
 		return pointX >= scaledX && pointX <= scaledX + objectWidth * boxScaleHorizontal && pointY >= scaledY && pointY <= scaledY + objectHeight * boxScaleVertical;
 	}
 
@@ -224,29 +224,29 @@ public class Box {
 	/**
 	 * Is unscaled.
 	 */
-	public double getCurrentX() {
-		return currentX;
+	public double getX() {
+		return x;
 	}
 
 	/**
 	 * Is unscaled.
 	 */
-	public double getCurrentY() {
-		return currentY;
+	public double getY() {
+		return y;
 	}
 
 	/**
 	 * Is unscaled.
 	 */
-	public void setCurrentX(double x) {
-		this.currentX = x;
+	public void setX(double x) {
+		this.x = x;
 	}
 
 	/**
 	 * Is unscaled.
 	 */
-	public void setCurrentY(double y) {
-		this.currentY = y;
+	public void setY(double y) {
+		this.y = y;
 	}
 
 	public double getBoxScaleHorizontal() {
@@ -469,10 +469,10 @@ public class Box {
 			int count = results[1];
 			boolean canGoMinus = false;
 			boolean canGoPlus = false;
-			if (getCollisionBoxesInRange(this.currentX - 20, this.currentY * scale, 0, 6).isEmpty()) {
+			if (getCollisionBoxesInRange(this.x - 20, this.y * scale, 0, 6).isEmpty()) {
 				canGoMinus = true;
 			}
-			if (getCollisionBoxesInRange(this.currentX + 20, this.currentY * scale, 0, 6).isEmpty()) {
+			if (getCollisionBoxesInRange(this.x + 20, this.y * scale, 0, 6).isEmpty()) {
 				canGoPlus = true;
 			}
 
@@ -501,7 +501,7 @@ public class Box {
 
 		this.setTexture("chestOpen");
 
-		droppedItem = createDroppedItem(this.getCurrentX(), this.getCurrentY() - 10, id, count);
+		droppedItem = createDroppedItem(this.getX(), this.getY() - 10, id, count);
 		moveBox(droppedItem, multiplier * 20, 10, delay);
 
 		editLastBox(EditBoxKeys.COLLECTIBLE, "false");
@@ -518,8 +518,8 @@ public class Box {
 		if (this.getEffectReason().equals("false")) {
 			return;
 		}
-		double xDistance = Math.abs(this.getCurrentX() - player.pos.getX() / scale);
-		double yDistance = Math.abs(this.getCurrentY() - player.pos.getY() / scale);
+		double xDistance = Math.abs(this.getX() - player.getX() / scale);
+		double yDistance = Math.abs(this.getY() - player.getY() / scale);
 		double totalDistance = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
 
 		if (totalDistance < 30) {
@@ -536,8 +536,8 @@ public class Box {
 		Timer fadingIn = new Timer(750, e -> {
 			int newRoomID = (int) getEffectValue();
 			player.pos.setRoomID(newRoomID);
-			player.pos.setX(scale * Double.parseDouble(this.effect[2]));
-			player.pos.setY(scale * Double.parseDouble(this.effect[3]));
+			player.setX(scale * Double.parseDouble(this.effect[2]));
+			player.setY(scale * Double.parseDouble(this.effect[3]));
 			unloadBoxes();
 			loadBoxes();
 

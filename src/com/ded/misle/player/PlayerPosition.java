@@ -25,28 +25,17 @@ public class PlayerPosition {
 	}
 
 	public PlayerPosition() {
-		if (spawnpointRoom == 0) {
-			spawnpointRoom = 1;
-			reloadSpawnpoint();
-		} else {
-			reloadSpawnpoint();
+		if (player != null) {
+			if (spawnpointRoom == 0) {
+				spawnpointRoom = 1;
+				reloadSpawnpoint();
+			} else {
+				reloadSpawnpoint();
+			}
 		}
 		setCameraOffsetX(0);
 		setCameraOffsetY(0);
 		setRegion(Region.CHAIN_OF_LIES);
-	}
-
-	public double getX() {
-		return x;
-	}
-
-	public void setX(double x) {
-		this.x = x;
-		this.originalPlayerX = x / scale;
-	}
-
-	public double getOriginalPlayerX() {
-		return originalPlayerX;
 	}
 
 	public double getCameraOffsetX() {
@@ -55,19 +44,6 @@ public class PlayerPosition {
 
 	public void setCameraOffsetX(double cameraOffsetX) {
 		this.cameraOffsetX = cameraOffsetX;
-	}
-
-	public double getY() {
-		return y;
-	}
-
-	public void setY(double y) {
-		this.y = y;
-		this.originalPlayerY = y / scale;
-	}
-
-	public double getOriginalPlayerY() {
-		return originalPlayerY;
 	}
 
 	public double getCameraOffsetY() {
@@ -95,8 +71,8 @@ public class PlayerPosition {
 			case 1 -> new int[]{500, 540};
 			default -> new int[]{0, 0};
 		};
-		setX(spawnpointCoordinates[0] * scale);
-		setY(spawnpointCoordinates[1] * scale);
+		player.setX(spawnpointCoordinates[0] * scale);
+		player.setY(spawnpointCoordinates[1] * scale);
 	}
 
 	public Region getRegion() {

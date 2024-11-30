@@ -269,10 +269,10 @@ public class BoxesHandling {
 	public static void editBox(Box box, EditBoxKeys key, String value) {
 		switch (key) {
 			case X:
-				box.setCurrentX(Double.parseDouble(value));
+				box.setX(Double.parseDouble(value));
 				break;
 			case Y:
-				box.setCurrentY(Double.parseDouble(value));
+				box.setY(Double.parseDouble(value));
 				break;
 			case COLOR:
 				box.setColor(Color.decode(value));
@@ -419,7 +419,7 @@ public class BoxesHandling {
 
 	public static void storeCachedBoxes(int level) {
 		if (level >= maxLevel) {
-			cachedBoxes[maxLevel] = getBoxesInRange(player.pos.getX(), player.pos.getY(), Math.pow(2, level));
+			cachedBoxes[maxLevel] = getBoxesInRange(player.getX(), player.getY(), Math.pow(2, level));
 		} else {
 			cachedBoxes[level] = getCachedBoxesNearPlayer(level);
 		}
@@ -439,8 +439,8 @@ public class BoxesHandling {
 
 	public static List<Box> getCachedBoxesNearPlayer(int level) {
 		List<Box> boxesInRange = new ArrayList<>();
-		double playerX = player.pos.getX();
-		double playerY = player.pos.getY();
+		double playerX = player.getX();
+		double playerY = player.getY();
 		double range = Math.pow(2, level);
 		for (Box box : cachedBoxes[level + 1]) {
 			if (checkIfBoxInRange(box, playerX, playerY, range)) {
@@ -500,8 +500,8 @@ public class BoxesHandling {
 	}
 
 	public static boolean checkIfBoxInRange(Box box, double x, double y, double range) {
-		double scaledX = box.getCurrentX() * scale;
-		double scaledY = box.getCurrentY() * scale;
+		double scaledX = box.getX() * scale;
+		double scaledY = box.getY() * scale;
 
 		// Calculate bounding box range based on the player's position
 		return scaledX + tileSize * box.getBoxScaleHorizontal() / 1.5 >= x - range && scaledX <= x + range

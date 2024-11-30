@@ -464,13 +464,13 @@ public class GameRenderer {
 		BoxesHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), scale, tileSize);
 
 		// Player position adjustments
-		int playerScreenX = (int) (player.pos.getX() - player.pos.getCameraOffsetX());
-		int playerScreenY = (int) (player.pos.getY() - player.pos.getCameraOffsetY());
+		int playerScreenX = (int) (player.getX() - player.pos.getCameraOffsetX());
+		int playerScreenY = (int) (player.getY() - player.pos.getCameraOffsetY());
 
-		// Draw the player
-//		g2d.setColor(Color.WHITE);
-//		Rectangle playerRect = new Rectangle(playerScreenX, playerScreenY, (int) player.attr.getWidth(), (int) player.attr.getHeight());
-//		drawRotatedRect(g2d, playerRect, player.pos.getRotation());
+		// Draw the player above every box
+		g2d.setColor(Color.WHITE);
+		Rectangle playerRect = new Rectangle(playerScreenX, playerScreenY, (int) player.attr.getWidth(), (int) player.attr.getHeight());
+		drawRotatedRect(g2d, playerRect, player.pos.getRotation());
 
 		drawHandItem(g2d, playerScreenX, playerScreenY, scaleByScreenSize);
 

@@ -201,8 +201,8 @@ public class Inventory {
 					if (currentTime > getSelectedItem().getTimeToDelay()) {
 						getSelectedItem().setTimeToDelay((long) (potionDelay * 1000)); // Handle delay
 
-						int playerScreenX = (int) ((player.pos.getX() - player.pos.getCameraOffsetX()) / scale);
-						int playerScreenY = (int) ((player.pos.getY() - player.pos.getCameraOffsetY()) / scale);
+						int playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()) / scale);
+						int playerScreenY = (int) ((player.getY() - player.pos.getCameraOffsetY()) / scale);
 						int randomPosX = (int) ((Math.random() * (40 + 40)) - 40);
 						int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
 						DecimalFormat df = new DecimalFormat("#.##");
@@ -327,7 +327,7 @@ public class Inventory {
 	}
 
 	public void dropItem(int row, int col, int quantity) {
-		Box droppedItem = BoxesHandling.addBoxItem(player.pos.getX() / scale, player.pos.getY() / scale, getItem(row, col).getId(), quantity);
+		Box droppedItem = BoxesHandling.addBoxItem(player.getX() / scale, player.getY() / scale, getItem(row, col).getId(), quantity);
 		editBox(droppedItem, BoxesHandling.EditBoxKeys.COLLECTIBLE, "false");
 		playThis("dropItem");
 		removeItem(row, col, quantity);
@@ -418,7 +418,7 @@ public class Inventory {
 	}
 
 	public void dropDraggedItem(int count) {
-		Box droppedItem = BoxesHandling.addBoxItem(player.pos.getX() / scale, player.pos.getY() / scale, getDraggedItem().getId(), count);
+		Box droppedItem = BoxesHandling.addBoxItem(player.getX() / scale, player.getY() / scale, getDraggedItem().getId(), count);
 		editBox(droppedItem, BoxesHandling.EditBoxKeys.COLLECTIBLE, "false");
 		playThis("dropItem");
 		setTempItem(getDraggedItem());

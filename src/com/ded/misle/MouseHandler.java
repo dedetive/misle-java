@@ -238,7 +238,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 					System.out.println("mouse: " + mouseGameX + ", " + mouseGameY);
 					for (Box box: BoxesHandling.getCachedBoxesInRange(mouseGameX, mouseGameY, 6)) {
 						box.addSelectedBox();
-						System.out.println("box: " + box.getCurrentX() * scale + ", " + box.getCurrentY() * scale);
+						System.out.println("box: " + box.getX() * scale + ", " + box.getY() * scale);
 					}
 				}
 				break;

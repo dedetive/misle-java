@@ -200,6 +200,7 @@ public class GamePanel extends JPanel implements Runnable {
 				window.setSize(detectedWidth, detectedHeight);
 
 				// Scale based on the new dimensions
+				double previousScale = scale;
 				scale = (double) detectedWidth / 512;
 				gameScale = scale;
 				GamePanel.screenWidth = Math.min(detectedWidth, screenWidth);
@@ -212,8 +213,8 @@ public class GamePanel extends JPanel implements Runnable {
 				worldWidth = originalWorldWidth * scale;
 				worldHeight = originalWorldHeight * scale;
 
-				player.pos.setX(player.pos.getOriginalPlayerX() * scale);
-				player.pos.setY(player.pos.getOriginalPlayerY() * scale);
+				player.setX(player.getX() * scale / previousScale);
+				player.setY(player.getY() * scale / previousScale);
 
 				GameRenderer.clearClickables();
 				GameRenderer.updateFontSizes();
@@ -289,8 +290,8 @@ public class GamePanel extends JPanel implements Runnable {
 						}
 					}
 					case LEVEL_DESIGNER -> {
-						player.pos.setCameraOffsetX(player.pos.getX() - screenWidth / 2 + player.attr.getWidth() / 2);
-						player.pos.setCameraOffsetY(player.pos.getY() - screenHeight / 2 + player.attr.getHeight() / 2);
+						player.pos.setCameraOffsetX(player.getX() - screenWidth / 2 + player.attr.getWidth() / 2);
+						player.pos.setCameraOffsetY(player.getY() - screenHeight / 2 + player.attr.getHeight() / 2);
 
 						player.pos.setCameraOffsetX(Math.max(0, Math.min(player.pos.getCameraOffsetX(), worldWidth - screenWidth)));
 						player.pos.setCameraOffsetY(Math.max(0, Math.min(player.pos.getCameraOffsetY(), worldHeight - screenHeight)));
@@ -335,8 +336,8 @@ public class GamePanel extends JPanel implements Runnable {
 		long currentTime = System.currentTimeMillis();
 
 		// Update the camera offset to center the player in the view
-		player.pos.setCameraOffsetX(player.pos.getX() - screenWidth / 2 + player.attr.getWidth() / 2);
-		player.pos.setCameraOffsetY(player.pos.getY() - screenHeight / 2 + player.attr.getHeight() / 2);
+		player.pos.setCameraOffsetX(player.getX() - screenWidth / 2 + player.attr.getWidth() / 2);
+		player.pos.setCameraOffsetY(player.getY() - screenHeight / 2 + player.attr.getHeight() / 2);
 
 		player.pos.setCameraOffsetX(Math.max(0, Math.min(player.pos.getCameraOffsetX(), worldWidth - screenWidth)));
 		player.pos.setCameraOffsetY(Math.max(0, Math.min(player.pos.getCameraOffsetY(), worldHeight - screenHeight)));

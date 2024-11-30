@@ -28,8 +28,8 @@ public class Physics {
 	 * @param y double - How many pixels in y direction (this is not based on scale).
 	 */
 	public static void movePlayer(double x, double y) {
-		GamePanel.player.pos.setX(GamePanel.player.pos.getX() + x);
-		GamePanel.player.pos.setY(GamePanel.player.pos.getY() + y);
+		GamePanel.player.setX(GamePanel.player.getX() + x);
+		GamePanel.player.setY(GamePanel.player.getY() + y);
 		GamePanel.player.stats.increaseDistance(x, y);
 
 		if (!levelDesigner) {
@@ -38,7 +38,7 @@ public class Physics {
 				GamePanel.player.attr.setLastVelocityBox(null); // Clear the last velocity box
 			}
 
-			List<Box> nearbyNonCollisionBoxes = ((BoxesHandling.getNonCollisionBoxesInRange(GamePanel.player.pos.getX(), GamePanel.player.pos.getY(), GamePanel.tileSize)));
+			List<Box> nearbyNonCollisionBoxes = ((BoxesHandling.getNonCollisionBoxesInRange(GamePanel.player.getX(), GamePanel.player.getY(), GamePanel.tileSize)));
 			for (Box box: nearbyNonCollisionBoxes) {
 				if (!box.getEffect().isEmpty()) {
 					box.handleEffect(PLAYER);

@@ -19,10 +19,10 @@ public class BoxManipulation {
 	 * @return new position
 	 */
 	public static double[] teleportBox(Box box, double x, double y) {
-		box.setCurrentX(x);
-		box.setCurrentY(y);
+		box.setX(x);
+		box.setY(y);
 
-		return new double[]{box.getCurrentX(), box.getCurrentY()};
+		return new double[]{box.getX(), box.getY()};
 	}
 
 	/**
@@ -41,8 +41,8 @@ public class BoxManipulation {
 			int count = 0;
 			public void actionPerformed(ActionEvent evt) {
 				if (count < frames) {
-					box.setCurrentX(box.getCurrentX() + dx);
-					box.setCurrentY(box.getCurrentY() + dy);
+					box.setX(box.getX() + dx);
+					box.setY(box.getY() + dy);
 					count++;
 				} else {
 					((Timer) evt.getSource()).stop();  // Stop the timer when done
@@ -68,9 +68,9 @@ public class BoxManipulation {
 			int count = 0;
 			public void actionPerformed(ActionEvent evt) {
 				if (count < frames) {
-					if (!Physics.isPixelOccupied((box.getCurrentX() + dx) * scale, (box.getCurrentY() + dy) * scale, box.getBoxScaleHorizontal() * tileSize, box.getBoxScaleVertical() * tileSize, tileSize, 11, Physics.ObjectType.BOX)) {
-						box.setCurrentX(box.getCurrentX() + dx);
-						box.setCurrentY(box.getCurrentY() + dy);
+					if (!Physics.isPixelOccupied((box.getX() + dx) * scale, (box.getY() + dy) * scale, box.getBoxScaleHorizontal() * tileSize, box.getBoxScaleVertical() * tileSize, tileSize, 11, Physics.ObjectType.BOX)) {
+						box.setX(box.getX() + dx);
+						box.setY(box.getY() + dy);
 					}
 					count++;
 				} else {
