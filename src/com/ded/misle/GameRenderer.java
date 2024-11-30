@@ -517,10 +517,10 @@ public class GameRenderer {
 	private static void drawHandItem(Graphics2D g2d, double playerScreenX, double playerScreenY, double scaleByScreenSize) {
 		if (player.inv.hasHeldItem()) {
 
-			if (player.stats.getWalkingDirection() == RIGHT) {
+			if (player.stats.getHorizontalDirection() == RIGHT) {
 				isFacingRight = 0.5;
 				mirror = false;
-			} else if (player.stats.getWalkingDirection() == LEFT) {
+			} else if (player.stats.getHorizontalDirection() == LEFT) {
 				isFacingRight = -1;
 				mirror = true;
 			}

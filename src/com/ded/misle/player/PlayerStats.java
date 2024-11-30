@@ -17,6 +17,8 @@ public class PlayerStats {
 	double distanceLeft;
 	double distanceRight;
 	Direction walkingDirection;
+	Direction horizontalDirection;
+	Direction verticalDirection;
 	public enum Direction {
 		UP,
 		DOWN,
@@ -37,6 +39,8 @@ public class PlayerStats {
 		this.distanceLeft = 0;
 		this.distanceRight = 0;
 		this.walkingDirection = Direction.RIGHT;
+		this.horizontalDirection = Direction.RIGHT;
+		this.verticalDirection = Direction.UP;
 	}
 
 	/**
@@ -109,10 +113,22 @@ public class PlayerStats {
 		walkingDirection = direction;
 		incrementSteps(direction);
 		switch (direction) {
-			case UP -> distanceUp += distance;
-			case DOWN -> distanceDown += distance;
-			case LEFT -> distanceLeft += distance;
-			case RIGHT -> distanceRight += distance;
+			case UP -> {
+				distanceUp += distance;
+				verticalDirection = Direction.UP;
+			}
+			case DOWN -> {
+				distanceDown += distance;
+				verticalDirection = Direction.DOWN;
+			}
+			case LEFT -> {
+				distanceLeft += distance;
+				horizontalDirection = Direction.LEFT;
+			}
+			case RIGHT -> {
+				distanceRight += distance;
+				horizontalDirection = Direction.RIGHT;
+			}
 		}
 	}
 
@@ -152,5 +168,13 @@ public class PlayerStats {
 
 	public Direction getWalkingDirection() {
 		return walkingDirection;
+	}
+
+	public Direction getHorizontalDirection() {
+		return horizontalDirection;
+	}
+
+	public Direction getVerticalDirection() {
+		return verticalDirection;
 	}
 }
