@@ -177,4 +177,24 @@ public class PlayerStats {
 	public Direction getVerticalDirection() {
 		return verticalDirection;
 	}
+
+	public void setDistance(Direction direction, double distance) {
+		switch (direction) {
+			case UP -> distanceUp = distance;
+			case DOWN -> distanceDown = distance;
+			case LEFT -> distanceLeft = distance;
+			case RIGHT -> distanceRight = distance;
+			case TOTAL -> totalDistance = distance;
+		}
+	}
+
+	public void setSteps(Direction direction, int steps) {
+		switch (direction) {
+			case UP -> stepsUp = steps;
+			case DOWN -> stepsDown = steps;
+			case LEFT -> stepsLeft = steps;
+			case RIGHT -> stepsRight = steps;
+			case TOTAL -> totalSteps = steps;
+		}
+	}
 }

@@ -2,6 +2,7 @@ package com.ded.misle;
 
 import com.ded.misle.items.Item;
 import com.ded.misle.player.PlayerAttributes;
+import com.ded.misle.player.PlayerStats;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -49,6 +50,17 @@ public class SaveFile {
 		  71, 71 RGB
 		  82, 10 B
 		  99, 1 R
+		  117, 63 RGB
+		  117, 64 RGB
+		  117, 65 RGB
+		  118, 63 RGB
+		  118, 64 RGB
+		  118, 65 RGB
+		  118, 66 RGB
+		  119, 63 RGB
+		  119, 64 RGB
+		  119, 65 RGB
+
 		 */
 
 		 /**
@@ -97,30 +109,60 @@ public class SaveFile {
 		 *
 		 */
 
-		SPAWNPOINT_HIGH(PixelColor.RED, 69, 42),
-		SPAWNPOINT_LOW(PixelColor.BLUE, 42, 69),
-		LEVEL_HIGH(PixelColor.RED, 4, 15),
-		LEVEL_LOW(PixelColor.BLUE, 4, 15),
-		LEVEL_POINTS_HIGH(PixelColor.GREEN, 4, 15),
-		LEVEL_POINTS_LOW(PixelColor.RED, 5, 15),
-		XP_HIGHEST(PixelColor.GREEN, 5, 15),
-		XP_HIGH(PixelColor.BLUE, 5, 15),
-		XP_LOW(PixelColor.RED, 30, 127),
-		MAX_HP_HIGHEST(PixelColor.BLUE, 82, 10),
-		MAX_HP_HIGH(PixelColor.GREEN, 30, 127),
-		MAX_HP_LOW(PixelColor.RED, 99, 1),
-		MAX_ENTROPY_HIGHEST(PixelColor.RED, 70, 70),
-		MAX_ENTROPY_HIGH(PixelColor.GREEN, 70, 70),
-		MAX_ENTROPY_LOW(PixelColor.BLUE, 70, 70),
-		DEFENSE_HIGHEST(PixelColor.RED, 71, 70),
-		DEFENSE_HIGH(PixelColor.GREEN, 71, 70),
-		DEFENSE_LOW(PixelColor.BLUE, 71, 70),
-		REGENERATION_QUALITY_HIGHEST(PixelColor.RED, 71, 71),
-		REGENERATION_QUALITY_HIGH(PixelColor.GREEN, 71, 71),
-		REGENERATION_QUALITY_LOW(PixelColor.BLUE, 71, 71),
-		SPEED_HIGHEST(PixelColor.RED, 70, 71),
-		SPEED_HIGH(PixelColor.GREEN, 70, 71),
-		SPEED_LOW(PixelColor.BLUE, 70, 71);
+		SPAWNPOINT_M(PixelColor.RED, 69, 42),
+		SPAWNPOINT_L(PixelColor.BLUE, 42, 69),
+		LEVEL_M(PixelColor.RED, 4, 15),
+		LEVEL_L(PixelColor.BLUE, 4, 15),
+		LEVEL_POINTS_M(PixelColor.GREEN, 4, 15),
+		LEVEL_POINTS_L(PixelColor.RED, 5, 15),
+		XP_H(PixelColor.GREEN, 5, 15),
+		XP_M(PixelColor.BLUE, 5, 15),
+		XP_L(PixelColor.RED, 30, 127),
+		MAX_HP_H(PixelColor.BLUE, 82, 10),
+		MAX_HP_M(PixelColor.GREEN, 30, 127),
+		MAX_HP_L(PixelColor.RED, 99, 1),
+		MAX_ENTROPY_H(PixelColor.RED, 70, 70),
+		MAX_ENTROPY_M(PixelColor.GREEN, 70, 70),
+		MAX_ENTROPY_L(PixelColor.BLUE, 70, 70),
+		DEFENSE_H(PixelColor.RED, 71, 70),
+		DEFENSE_M(PixelColor.GREEN, 71, 70),
+		DEFENSE_L(PixelColor.BLUE, 71, 70),
+		REGENERATION_QUALITY_H(PixelColor.RED, 71, 71),
+		REGENERATION_QUALITY_M(PixelColor.GREEN, 71, 71),
+		REGENERATION_QUALITY_L(PixelColor.BLUE, 71, 71),
+		SPEED_H(PixelColor.RED, 70, 71),
+		SPEED_M(PixelColor.GREEN, 70, 71),
+		SPEED_L(PixelColor.BLUE, 70, 71),
+		TOTAL_DISTANCE_H(PixelColor.RED, 117, 63),
+		TOTAL_DISTANCE_M(PixelColor.RED,118, 63),
+		TOTAL_DISTANCE_L(PixelColor.RED,119, 63),
+		DISTANCE_UP_H(PixelColor.RED, 117, 64),
+		DISTANCE_UP_M(PixelColor.RED, 118, 64),
+		DISTANCE_UP_L(PixelColor.RED, 119, 64),
+		DISTANCE_DOWN_H(PixelColor.RED, 117, 65),
+		DISTANCE_DOWN_M(PixelColor.RED, 118, 65),
+		DISTANCE_DOWN_L(PixelColor.RED, 119, 65),
+		DISTANCE_LEFT_H(PixelColor.GREEN, 117, 63),
+		DISTANCE_LEFT_M(PixelColor.GREEN, 118, 63),
+		DISTANCE_LEFT_L(PixelColor.GREEN, 119, 63),
+		DISTANCE_RIGHT_H(PixelColor.GREEN, 117, 64),
+		DISTANCE_RIGHT_M(PixelColor.GREEN, 118, 64),
+		DISTANCE_RIGHT_L(PixelColor.GREEN, 119, 64),
+		TOTAL_STEPS_H(PixelColor.GREEN, 117, 65),
+		TOTAL_STEPS_M(PixelColor.GREEN, 118, 65),
+		TOTAL_STEPS_L(PixelColor.GREEN, 119, 65),
+		STEPS_UP_H(PixelColor.BLUE, 117, 63),
+		STEPS_UP_M(PixelColor.BLUE, 118, 63),
+		STEPS_UP_L(PixelColor.BLUE, 119, 63),
+		STEPS_DOWN_H(PixelColor.BLUE, 117, 64),
+		STEPS_DOWN_M(PixelColor.BLUE, 118, 64),
+		STEPS_DOWN_L(PixelColor.BLUE, 119, 64),
+		STEPS_LEFT_H(PixelColor.BLUE, 117, 65),
+		STEPS_LEFT_M(PixelColor.BLUE, 118, 65),
+		STEPS_LEFT_L(PixelColor.BLUE, 119, 65),
+		STEPS_RIGHT_H(PixelColor.BLUE, 118, 66),
+		STEPS_RIGHT_M(PixelColor.RED, 118, 66),
+		STEPS_RIGHT_L(PixelColor.GREEN, 118, 66);
 
 		private final PixelColor color;
 		private final int x;
@@ -144,37 +186,51 @@ public class SaveFile {
 
 					// Load spawnpoint
 
-					int spawnpoint = loadAttribute(PixelData.SPAWNPOINT_HIGH, PixelData.SPAWNPOINT_LOW);
+					int spawnpoint = loadAttribute(PixelData.SPAWNPOINT_M, PixelData.SPAWNPOINT_L);
 					player.pos.setSpawnpoint(Math.max(spawnpoint, 1));
 					player.pos.reloadSpawnpoint();
 
 					// Load Level and XP related
 
-					int level = loadAttribute(PixelData.LEVEL_HIGH, PixelData.LEVEL_LOW);
+					int level = loadAttribute(PixelData.LEVEL_M, PixelData.LEVEL_L);
 					player.attr.setLevel(level);
 
-					int levelPoints = loadAttribute(PixelData.LEVEL_POINTS_HIGH, PixelData.LEVEL_POINTS_LOW);
+					int levelPoints = loadAttribute(PixelData.LEVEL_POINTS_M, PixelData.LEVEL_POINTS_L);
 					player.attr.addLevelUpPoints(levelPoints);
 
-					int XP = loadAttribute(PixelData.XP_HIGHEST, PixelData.XP_HIGH, PixelData.XP_LOW);
+					int XP = loadAttribute(PixelData.XP_H, PixelData.XP_M, PixelData.XP_L);
 					player.attr.setXP(XP);
 
 					// Load level stats (Max HP, max entropy, defense, regeneration quality and speed)
 
-					int playerMaxHP = loadAttribute(PixelData.MAX_HP_HIGHEST, PixelData.MAX_HP_HIGH, PixelData.MAX_HP_LOW);
+					int playerMaxHP = loadAttribute(PixelData.MAX_HP_H, PixelData.MAX_HP_M, PixelData.MAX_HP_L);
 					player.attr.setLevelStat(PlayerAttributes.LevelStat.MAX_HP, playerMaxHP);
 
-					int playerMaxEntropy = loadAttribute(PixelData.MAX_ENTROPY_HIGHEST, PixelData.MAX_ENTROPY_HIGH, PixelData.MAX_ENTROPY_LOW);
+					int playerMaxEntropy = loadAttribute(PixelData.MAX_ENTROPY_H, PixelData.MAX_ENTROPY_M, PixelData.MAX_ENTROPY_L);
 					player.attr.setLevelStat(PlayerAttributes.LevelStat.MAX_ENTROPY, playerMaxEntropy);
 
-					int playerDefense = loadAttribute(PixelData.DEFENSE_HIGHEST, PixelData.DEFENSE_HIGH, PixelData.DEFENSE_LOW);
+					int playerDefense = loadAttribute(PixelData.DEFENSE_H, PixelData.DEFENSE_M, PixelData.DEFENSE_L);
 					player.attr.setLevelStat(PlayerAttributes.LevelStat.DEFENSE, playerDefense);
 
-					int playerRegenerationQuality = loadAttribute(PixelData.REGENERATION_QUALITY_HIGHEST, PixelData.REGENERATION_QUALITY_HIGH, PixelData.REGENERATION_QUALITY_LOW);
+					int playerRegenerationQuality = loadAttribute(PixelData.REGENERATION_QUALITY_H, PixelData.REGENERATION_QUALITY_M, PixelData.REGENERATION_QUALITY_L);
 					player.attr.setLevelStat(PlayerAttributes.LevelStat.REGENERATION_QUALITY, playerRegenerationQuality);
 
-					int playerSpeed = loadAttribute(PixelData.SPEED_HIGHEST, PixelData.SPEED_HIGH, PixelData.SPEED_LOW);
+					int playerSpeed = loadAttribute(PixelData.SPEED_M, PixelData.SPEED_M, PixelData.SPEED_L);
 					player.attr.setLevelStat(PlayerAttributes.LevelStat.SPEED, playerSpeed);
+
+					// Statistics
+
+					player.stats.setDistance(PlayerStats.Direction.TOTAL, loadAttribute(PixelData.TOTAL_DISTANCE_H, PixelData.TOTAL_DISTANCE_M, PixelData.TOTAL_DISTANCE_L));
+					player.stats.setDistance(PlayerStats.Direction.UP, loadAttribute(PixelData.DISTANCE_UP_H, PixelData.DISTANCE_UP_M, PixelData.DISTANCE_UP_L));
+					player.stats.setDistance(PlayerStats.Direction.DOWN, loadAttribute(PixelData.DISTANCE_DOWN_H, PixelData.DISTANCE_DOWN_M, PixelData.DISTANCE_DOWN_L));
+					player.stats.setDistance(PlayerStats.Direction.LEFT, loadAttribute(PixelData.DISTANCE_LEFT_H, PixelData.DISTANCE_LEFT_M, PixelData.DISTANCE_LEFT_L));
+					player.stats.setDistance(PlayerStats.Direction.RIGHT, loadAttribute(PixelData.DISTANCE_RIGHT_H, PixelData.DISTANCE_RIGHT_M, PixelData.DISTANCE_RIGHT_L));
+
+					player.stats.setSteps(PlayerStats.Direction.TOTAL, loadAttribute(PixelData.TOTAL_STEPS_H, PixelData.TOTAL_STEPS_M, PixelData.TOTAL_STEPS_L));
+					player.stats.setSteps(PlayerStats.Direction.UP, loadAttribute(PixelData.STEPS_UP_H, PixelData.STEPS_UP_M, PixelData.STEPS_UP_L));
+					player.stats.setSteps(PlayerStats.Direction.DOWN, loadAttribute(PixelData.STEPS_DOWN_H, PixelData.STEPS_DOWN_M, PixelData.STEPS_DOWN_L));
+					player.stats.setSteps(PlayerStats.Direction.LEFT, loadAttribute(PixelData.STEPS_LEFT_H, PixelData.STEPS_LEFT_M, PixelData.STEPS_LEFT_L));
+					player.stats.setSteps(PlayerStats.Direction.RIGHT, loadAttribute(PixelData.STEPS_RIGHT_H, PixelData.STEPS_RIGHT_M, PixelData.STEPS_RIGHT_L));
 
 					// Load inventory
 
@@ -248,35 +304,60 @@ public class SaveFile {
 			// Spawnpoint
 
 			int playerSpawnpoint = player.pos.getSpawnpoint();
-			brandValue(playerSpawnpoint, PixelData.SPAWNPOINT_HIGH, PixelData.SPAWNPOINT_LOW);
+			brandValue(playerSpawnpoint, PixelData.SPAWNPOINT_M, PixelData.SPAWNPOINT_L);
 
 			// Level related stuff
 
 			int playerLevel = player.attr.getLevel();
-			brandValue(playerLevel, PixelData.LEVEL_HIGH, PixelData.LEVEL_LOW);
+			brandValue(playerLevel, PixelData.LEVEL_M, PixelData.LEVEL_L);
 
 			int playerLevelUpPoints = player.attr.getLevelUpPoints();
-			brandValue(playerLevelUpPoints, PixelData.LEVEL_POINTS_HIGH, PixelData.LEVEL_POINTS_LOW);
+			brandValue(playerLevelUpPoints, PixelData.LEVEL_POINTS_M, PixelData.LEVEL_POINTS_L);
 
 			int playerXP = (int) player.attr.getXP();
-			brandValue(playerXP, PixelData.XP_HIGHEST, PixelData.XP_HIGH, PixelData.XP_LOW);
+			brandValue(playerXP, PixelData.XP_H, PixelData.XP_M, PixelData.XP_L);
 
 			// Level Stats (Max HP, max entropy, defense, regeneration quality and speed)
 
 			int playerLevelMaxHP = (int) player.attr.getLevelStat(PlayerAttributes.LevelStat.MAX_HP);
-			brandValue(playerLevelMaxHP, PixelData.MAX_HP_HIGHEST, PixelData.MAX_HP_HIGH, PixelData.MAX_HP_LOW);
+			brandValue(playerLevelMaxHP, PixelData.MAX_HP_H, PixelData.MAX_HP_M, PixelData.MAX_HP_L);
 
 			int playerLevelMaxEntropy = (int) player.attr.getLevelStat(PlayerAttributes.LevelStat.MAX_ENTROPY);
-			brandValue(playerLevelMaxEntropy, PixelData.MAX_ENTROPY_HIGHEST, PixelData.MAX_ENTROPY_HIGH, PixelData.MAX_ENTROPY_LOW);
+			brandValue(playerLevelMaxEntropy, PixelData.MAX_ENTROPY_H, PixelData.MAX_ENTROPY_M, PixelData.MAX_ENTROPY_L);
 
 			int playerLevelDefense = (int) player.attr.getLevelStat(PlayerAttributes.LevelStat.DEFENSE);
-			brandValue(playerLevelDefense, PixelData.DEFENSE_HIGHEST, PixelData.DEFENSE_HIGH, PixelData.DEFENSE_LOW);
+			brandValue(playerLevelDefense, PixelData.DEFENSE_H, PixelData.DEFENSE_M, PixelData.DEFENSE_L);
 
 			int playerLevelRegenerationQuality = (int) player.attr.getLevelStat(PlayerAttributes.LevelStat.REGENERATION_QUALITY);
-			brandValue(playerLevelRegenerationQuality, PixelData.REGENERATION_QUALITY_HIGHEST, PixelData.REGENERATION_QUALITY_HIGH, PixelData.REGENERATION_QUALITY_LOW);
+			brandValue(playerLevelRegenerationQuality, PixelData.REGENERATION_QUALITY_H, PixelData.REGENERATION_QUALITY_M, PixelData.REGENERATION_QUALITY_L);
 
 			int playerLevelSpeed = (int) player.attr.getLevelStat(PlayerAttributes.LevelStat.SPEED);
-			brandValue(playerLevelSpeed, PixelData.SPEED_HIGHEST, PixelData.SPEED_HIGH, PixelData.SPEED_LOW);
+			brandValue(playerLevelSpeed, PixelData.SPEED_H, PixelData.SPEED_M, PixelData.SPEED_L);
+
+			// Statistics
+
+			int totalSteps = player.stats.getSteps(PlayerStats.Direction.TOTAL);
+			brandValue(totalSteps, PixelData.TOTAL_STEPS_H, PixelData.TOTAL_STEPS_M, PixelData.TOTAL_STEPS_L);
+			int stepsUp = player.stats.getSteps(PlayerStats.Direction.UP);
+			brandValue(stepsUp, PixelData.STEPS_UP_H, PixelData.STEPS_UP_M, PixelData.STEPS_UP_L);
+			int stepsDown = player.stats.getSteps(PlayerStats.Direction.DOWN);
+			brandValue(stepsDown, PixelData.STEPS_DOWN_H, PixelData.STEPS_DOWN_M, PixelData.STEPS_DOWN_L);
+			int stepsLeft = player.stats.getSteps(PlayerStats.Direction.LEFT);
+			brandValue(stepsLeft, PixelData.STEPS_LEFT_H, PixelData.STEPS_LEFT_M, PixelData.STEPS_LEFT_L);
+			int stepsRight = player.stats.getSteps(PlayerStats.Direction.RIGHT);
+			brandValue(stepsRight, PixelData.STEPS_RIGHT_H, PixelData.STEPS_RIGHT_M, PixelData.STEPS_RIGHT_L);
+
+			int totalDistance = (int) player.stats.getDistance(PlayerStats.Direction.TOTAL);
+			brandValue(totalDistance, PixelData.TOTAL_DISTANCE_H, PixelData.TOTAL_DISTANCE_M, PixelData.TOTAL_DISTANCE_L);
+			int distanceUp = (int) player.stats.getDistance(PlayerStats.Direction.UP);
+			brandValue(distanceUp, PixelData.DISTANCE_UP_H, PixelData.DISTANCE_UP_M, PixelData.DISTANCE_UP_L);
+			int distanceDown = (int) player.stats.getDistance(PlayerStats.Direction.DOWN);
+			brandValue(distanceDown, PixelData.DISTANCE_DOWN_H, PixelData.DISTANCE_DOWN_M, PixelData.DISTANCE_DOWN_L);
+			int distanceLeft = (int) player.stats.getDistance(PlayerStats.Direction.LEFT);
+			brandValue(distanceLeft, PixelData.DISTANCE_LEFT_H, PixelData.DISTANCE_LEFT_M, PixelData.DISTANCE_LEFT_L);
+			int distanceRight = (int) player.stats.getDistance(PlayerStats.Direction.RIGHT);
+			brandValue(distanceRight, PixelData.DISTANCE_RIGHT_H, PixelData.DISTANCE_RIGHT_M, PixelData.DISTANCE_RIGHT_L);
+
 
 			// Inventory
 
