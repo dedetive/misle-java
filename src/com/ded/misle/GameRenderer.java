@@ -2,6 +2,7 @@ package com.ded.misle;
 
 import com.ded.misle.boxes.BoxesHandling;
 import com.ded.misle.items.Item;
+import com.ded.misle.player.PlayerStats;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -179,6 +180,10 @@ public class GameRenderer {
 			player.stats.resetStartTimestamp();
 			player.pos.reloadSpawnpoint();
 			gameState = GameState.PLAYING;
+			System.out.println("Millis: " + player.stats.getTotalPlaytime(PlayerStats.PlaytimeMode.MILLIS));
+			System.out.println("Seconds: " + player.stats.getTotalPlaytime(PlayerStats.PlaytimeMode.SECONDS));
+			System.out.println("Minutes: " + player.stats.getTotalPlaytime(PlayerStats.PlaytimeMode.MINUTES));
+			System.out.println("Hours: " + player.stats.getTotalPlaytime(PlayerStats.PlaytimeMode.HOURS));
 		});
 
 		timer.setRepeats(false); // Ensure the timer only runs once

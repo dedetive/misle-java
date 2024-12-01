@@ -28,6 +28,12 @@ public class PlayerStats {
 		RIGHT,
 		TOTAL
 	}
+	public enum PlaytimeMode {
+		MILLIS,
+		SECONDS,
+		MINUTES,
+		HOURS
+	}
 
 	public PlayerStats() {
 		startTimestamp = System.currentTimeMillis();
@@ -209,15 +215,26 @@ public class PlayerStats {
 		startTimestamp = System.currentTimeMillis();
 	}
 
-	public long getCurrentPlaytime() {
-		return System.currentTimeMillis() - startTimestamp;
+	public long getCurrentPlaytime(PlaytimeMode playtimeMode) {
+		long millisPlaytime = System.currentTimeMillis() - startTimestamp;
+		return switch (playtimeMode) {
+			case MILLIS -> millisPlaytime;
+            case SECONDS -> millisPlaytime / 1000;
+            case MINUTES -> millisPlaytime / (60 * 1000);
+            case HOURS -> millisPlaytime / (60 * 60 * 1000);
+        };
 	}
 
 	public void setTotalPlaytime(long playtime) {
 		this.totalPlaytime = playtime;
 	}
 
-	public long getTotalPlaytime() {
-		return totalPlaytime;
+	public long getTotalPlaytime(PlaytimeMode playtimeMode) {
+		return switch (playtimeMode) {
+			case MILLIS -> totalPlaytime;
+			case SECONDS -> totalPlaytime / 1000;
+			case MINUTES -> totalPlaytime / (60 * 1000);
+			case HOURS -> totalPlaytime / (60 * 60 * 1000);
+		};
 	}
 }

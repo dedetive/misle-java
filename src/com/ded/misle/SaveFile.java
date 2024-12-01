@@ -373,8 +373,8 @@ public class SaveFile {
 			int distanceRight = (int) player.stats.getDistance(PlayerStats.Direction.RIGHT);
 			brandValue(distanceRight, PixelData.DISTANCE_RIGHT_H, PixelData.DISTANCE_RIGHT_M, PixelData.DISTANCE_RIGHT_L);
 
-			long previousPlaytime = player.stats.getTotalPlaytime();
-			long currentPlaytime = player.stats.getCurrentPlaytime();
+			long previousPlaytime = player.stats.getTotalPlaytime(PlayerStats.PlaytimeMode.MILLIS);
+			long currentPlaytime = player.stats.getCurrentPlaytime(PlayerStats.PlaytimeMode.MILLIS);
 			long totalPlaytime = previousPlaytime + currentPlaytime;
 			brandValue(totalPlaytime, PixelData.TOTAL_PLAYTIME_E, PixelData.TOTAL_PLAYTIME_H, PixelData.TOTAL_PLAYTIME_M, PixelData.TOTAL_PLAYTIME_L);
 
