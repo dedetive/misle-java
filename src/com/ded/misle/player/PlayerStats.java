@@ -6,6 +6,8 @@ import static com.ded.misle.boxes.BoxesHandling.*;
 
 public class PlayerStats {
 
+	long startTimestamp;
+	long totalPlaytime;
 	int totalSteps;
 	int stepsUp;
 	int stepsDown;
@@ -28,6 +30,7 @@ public class PlayerStats {
 	}
 
 	public PlayerStats() {
+		startTimestamp = System.currentTimeMillis();
 		this.totalSteps = 0;
 		this.stepsUp = 0;
 		this.stepsDown = 0;
@@ -196,5 +199,21 @@ public class PlayerStats {
 			case RIGHT -> stepsRight = steps;
 			case TOTAL -> totalSteps = steps;
 		}
+	}
+
+	public long getStartTimestamp() {
+		return startTimestamp;
+	}
+
+	public long getCurrentPlaytime() {
+		return System.currentTimeMillis() - startTimestamp;
+	}
+
+	public void setTotalPlaytime(long playtime) {
+		this.totalPlaytime = playtime;
+	}
+
+	public long getTotalPlaytime() {
+		return totalPlaytime;
 	}
 }
