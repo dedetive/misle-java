@@ -205,6 +205,10 @@ public class PlayerStats {
 		return startTimestamp;
 	}
 
+	public void resetStartTimestamp() {
+		startTimestamp = System.currentTimeMillis();
+	}
+
 	public long getCurrentPlaytime() {
 		return System.currentTimeMillis() - startTimestamp;
 	}

@@ -41,6 +41,8 @@ public class SaveFile {
 		  X   Y
 		  4, 15 RGB
 		  5, 15 RGB
+		  9, 38 RGB
+		  8, 38 G
 		  30, 127 RG
 		  42, 69 B
 		  69, 42 R
@@ -60,7 +62,6 @@ public class SaveFile {
 		  119, 63 RGB
 		  119, 64 RGB
 		  119, 65 RGB
-
 		 */
 
 		 /**
@@ -162,7 +163,11 @@ public class SaveFile {
 		STEPS_LEFT_L(PixelColor.BLUE, 119, 65),
 		STEPS_RIGHT_H(PixelColor.BLUE, 118, 66),
 		STEPS_RIGHT_M(PixelColor.RED, 118, 66),
-		STEPS_RIGHT_L(PixelColor.GREEN, 118, 66);
+		STEPS_RIGHT_L(PixelColor.GREEN, 118, 66),
+		TOTAL_PLAYTIME_E(PixelColor.RED, 9, 38),
+		TOTAL_PLAYTIME_H(PixelColor.GREEN, 9, 38),
+		TOTAL_PLAYTIME_M(PixelColor.GREEN, 8, 38),
+		TOTAL_PLAYTIME_L(PixelColor.BLUE, 9, 38);
 
 		private final PixelColor color;
 		private final int x;
@@ -232,6 +237,8 @@ public class SaveFile {
 					player.stats.setSteps(PlayerStats.Direction.LEFT, loadAttribute(PixelData.STEPS_LEFT_H, PixelData.STEPS_LEFT_M, PixelData.STEPS_LEFT_L));
 					player.stats.setSteps(PlayerStats.Direction.RIGHT, loadAttribute(PixelData.STEPS_RIGHT_H, PixelData.STEPS_RIGHT_M, PixelData.STEPS_RIGHT_L));
 
+					player.stats.setTotalPlaytime(loadAttribute(PixelData.TOTAL_PLAYTIME_E, PixelData.TOTAL_PLAYTIME_H, PixelData.TOTAL_PLAYTIME_M, PixelData.TOTAL_PLAYTIME_L));
+
 					// Load inventory
 
 					int[][][] tempInventory = new int[4][7][4];
@@ -258,17 +265,25 @@ public class SaveFile {
 		}
 	}
 
-	private static int loadAttribute(PixelData highest, PixelData high, PixelData low) {
-		int highestValue = loadThis(highest);
+	private static int loadAttribute(PixelData extreme, PixelData high, PixelData medium, PixelData low) {
+		int extremeValue = loadThis(extreme);
 		int highValue = loadThis(high);
+		int mediumValue = loadThis(medium);
 		int lowValue = loadThis(low);
-		return highestValue * 255 * 255 + highValue * 255 + lowValue;
+		return extremeValue * 255 * 255 * 255 + highValue * 255 * 255 + mediumValue * 255 + lowValue;
 	}
 
-	private static int loadAttribute(PixelData high, PixelData low) {
+	private static int loadAttribute(PixelData high, PixelData medium, PixelData low) {
 		int highValue = loadThis(high);
+		int mediumValue = loadThis(medium);
 		int lowValue = loadThis(low);
-		return highValue * 255 + lowValue;
+		return highValue * 255 * 255 + mediumValue * 255 + lowValue;
+	}
+
+	private static int loadAttribute(PixelData medium, PixelData low) {
+		int mediumValue = loadThis(medium);
+		int lowValue = loadThis(low);
+		return mediumValue * 255 + lowValue;
 	}
 
 	private static int loadAttribute(PixelData low) {
@@ -358,6 +373,10 @@ public class SaveFile {
 			int distanceRight = (int) player.stats.getDistance(PlayerStats.Direction.RIGHT);
 			brandValue(distanceRight, PixelData.DISTANCE_RIGHT_H, PixelData.DISTANCE_RIGHT_M, PixelData.DISTANCE_RIGHT_L);
 
+			long previousPlaytime = player.stats.getTotalPlaytime();
+			long currentPlaytime = player.stats.getCurrentPlaytime();
+			long totalPlaytime = previousPlaytime + currentPlaytime;
+			brandValue(totalPlaytime, PixelData.TOTAL_PLAYTIME_E, PixelData.TOTAL_PLAYTIME_H, PixelData.TOTAL_PLAYTIME_M, PixelData.TOTAL_PLAYTIME_L);
 
 			// Inventory
 
@@ -371,9 +390,9 @@ public class SaveFile {
 							tempInventory[i][j][2] = 0;
 							tempInventory[i][j][3] = 0;
 						} else {
-							tempInventory[i][j][0] = getHigh((player.inv.getItem(i, j).getId()));       // HIGH ID
+							tempInventory[i][j][0] = getMedium((player.inv.getItem(i, j).getId()));       // HIGH ID
 							tempInventory[i][j][1] = getLow(player.inv.getItem(i, j).getId());          // LOW ID
-							tempInventory[i][j][2] = getHigh((player.inv.getItem(i, j).getCount()));    // HIGH COUNT
+							tempInventory[i][j][2] = getMedium((player.inv.getItem(i, j).getCount()));    // HIGH COUNT
 							tempInventory[i][j][3] = getLow(player.inv.getItem(i, j).getCount());       // LOW COUNT
 						}
 						brandIntoSaveFile(tempInventory[i][j][0], PixelColor.RED, i, j + 15);
@@ -427,14 +446,21 @@ public class SaveFile {
 		brandIntoSaveFile(value, pixelData.color, pixelData.x, pixelData.y);
 	}
 
-	private static void brandValue(int value, PixelData highest, PixelData high, PixelData low) {
-		brandIntoSaveFile(getHighest(value), highest);
+	private static void brandValue(long value, PixelData extreme, PixelData high, PixelData medium, PixelData low) {
+		brandIntoSaveFile(getExtreme(value), extreme);
 		brandIntoSaveFile(getHigh(value), high);
+		brandIntoSaveFile(getMedium(value), medium);
 		brandIntoSaveFile(getLow(value), low);
 	}
 
-	private static void brandValue(int value, PixelData high, PixelData low) {
+	private static void brandValue(long value, PixelData high, PixelData medium, PixelData low) {
 		brandIntoSaveFile(getHigh(value), high);
+		brandIntoSaveFile(getMedium(value), medium);
+		brandIntoSaveFile(getLow(value), low);
+	}
+
+	private static void brandValue(long value, PixelData medium, PixelData low) {
+		brandIntoSaveFile(getMedium(value), medium);
 		brandIntoSaveFile(getLow(value), low);
 	}
 
@@ -463,15 +489,19 @@ public class SaveFile {
 		}
 	}
 
-	private static int getHighest(int value) {
-		return (value / (255 * 255)) % 255;
+	private static int getExtreme(long value) {
+		return (int) ((value / (255 * 255 * 255)) % 255);
 	}
 
-	private static int getHigh(int value) {
-		return (value / 255) % 255;
+	private static int getHigh(long value) {
+		return (int) ((value / (255 * 255)) % 255);
 	}
 
-	private static int getLow(int value) {
-		return value % 255;
+	private static int getMedium(long value) {
+		return (int) ((value / 255) % 255);
+	}
+
+	private static int getLow(long value) {
+		return (int) (value % 255);
 	}
 }

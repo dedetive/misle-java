@@ -176,6 +176,7 @@ public class GameRenderer {
 			for (int i = 15; i > 0; i--) {
 				storeCachedBoxes(i);
 			}
+			player.stats.resetStartTimestamp();
 			player.pos.reloadSpawnpoint();
 			gameState = GameState.PLAYING;
 		});
