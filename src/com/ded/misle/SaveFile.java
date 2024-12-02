@@ -43,6 +43,7 @@ public class SaveFile {
 		  5, 15 RGB
 		  9, 38 RGB
 		  8, 38 G
+		  27, 27 RB
 		  30, 127 RG
 		  42, 69 B
 		  69, 42 R
@@ -167,7 +168,9 @@ public class SaveFile {
 		TOTAL_PLAYTIME_E(PixelColor.RED, 9, 38),
 		TOTAL_PLAYTIME_H(PixelColor.GREEN, 9, 38),
 		TOTAL_PLAYTIME_M(PixelColor.GREEN, 8, 38),
-		TOTAL_PLAYTIME_L(PixelColor.BLUE, 9, 38);
+		TOTAL_PLAYTIME_L(PixelColor.BLUE, 9, 38),
+		MAX_STACK_SIZE_MULTIPLIER_M(PixelColor.RED, 27, 27),
+		MAX_STACK_SIZE_MULTIPLIER_L(PixelColor.GREEN, 27, 27);
 
 		private final PixelColor color;
 		private final int x;
@@ -189,13 +192,13 @@ public class SaveFile {
 				try {
 					image = ImageIO.read(save);
 
-					// Load spawnpoint
+					// Spawnpoint
 
 					int spawnpoint = loadAttribute(PixelData.SPAWNPOINT_M, PixelData.SPAWNPOINT_L);
 					player.pos.setSpawnpoint(Math.max(spawnpoint, 1));
 					player.pos.reloadSpawnpoint();
 
-					// Load Level and XP related
+					// Level and XP related
 
 					int level = loadAttribute(PixelData.LEVEL_M, PixelData.LEVEL_L);
 					player.attr.setLevel(level);
@@ -206,7 +209,7 @@ public class SaveFile {
 					int XP = loadAttribute(PixelData.XP_H, PixelData.XP_M, PixelData.XP_L);
 					player.attr.setXP(XP);
 
-					// Load level stats (Max HP, max entropy, defense, regeneration quality and speed)
+					// Level stats (Max HP, max entropy, defense, regeneration quality and speed)
 
 					int playerMaxHP = loadAttribute(PixelData.MAX_HP_H, PixelData.MAX_HP_M, PixelData.MAX_HP_L);
 					player.attr.setLevelStat(PlayerAttributes.LevelStat.MAX_HP, playerMaxHP);
@@ -222,6 +225,10 @@ public class SaveFile {
 
 					int playerSpeed = loadAttribute(PixelData.SPEED_M, PixelData.SPEED_M, PixelData.SPEED_L);
 					player.attr.setLevelStat(PlayerAttributes.LevelStat.SPEED, playerSpeed);
+
+					// Max stack size
+
+					player.attr.setMaxStackSizeMulti(loadAttribute(PixelData.MAX_STACK_SIZE_MULTIPLIER_M, PixelData.MAX_STACK_SIZE_MULTIPLIER_L));
 
 					// Statistics
 
@@ -377,6 +384,9 @@ public class SaveFile {
 			long currentPlaytime = player.stats.getCurrentPlaytime(PlayerStats.PlaytimeMode.MILLIS);
 			long totalPlaytime = previousPlaytime + currentPlaytime;
 			brandValue(totalPlaytime, PixelData.TOTAL_PLAYTIME_E, PixelData.TOTAL_PLAYTIME_H, PixelData.TOTAL_PLAYTIME_M, PixelData.TOTAL_PLAYTIME_L);
+
+			int maxStackSizeMultiplier = (int) (1000 * player.attr.getMaxStackSizeMulti());
+			brandValue(maxStackSizeMultiplier, PixelData.MAX_STACK_SIZE_MULTIPLIER_M, PixelData.MAX_STACK_SIZE_MULTIPLIER_L);
 
 			// Inventory
 
