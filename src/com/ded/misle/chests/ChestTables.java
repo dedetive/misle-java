@@ -1,6 +1,7 @@
 package com.ded.misle.chests;
 
 import com.ded.misle.items.ItemData;
+import com.ded.misle.items.ItemGetter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import static com.ded.misle.items.ItemGetter.getParameterizedItems;
 
 public class ChestTables {
 	public static int[] getChestDropID(String chestType) {
-		List<ItemData> itemsInBundle = getParameterizedItems("bundle", chestType);
+		List<ItemData> itemsInBundle = getParameterizedItems(ItemGetter.ParameterKey.BUNDLE, chestType);
 		List<ItemData> weightedItems = new ArrayList<>();
 		int count = 1;
 

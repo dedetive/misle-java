@@ -7,8 +7,16 @@ import java.util.Objects;
 
 import static com.ded.misle.items.ItemLoader.loadItems;
 
+
 public class ItemGetter {
-	public static List<ItemData> getParameterizedItems(String key, String value) {
+
+	public enum ParameterKey {
+		ID,
+		RARITY,
+		BUNDLE
+	}
+
+	public static List<ItemData> getParameterizedItems(ParameterKey key, String value) {
 		List<ItemData> items = new ArrayList<>();
 		List<ItemData> allItems = new ArrayList<>();
 		try {
@@ -18,17 +26,17 @@ public class ItemGetter {
 		}
 		for (ItemData item : allItems) {
 			switch (key) {
-				case "id":
+				case ID:
 					if (Objects.equals(Integer.toString(item.getId()), value)) {
 						items.add(item);
 					}
 					break;
-				case "rarity":
+				case RARITY:
 					if (Objects.equals(item.getRarity(), value)) {
 						items.add(item);
 					}
 					break;
-				case "bundle":
+				case BUNDLE:
 					// Check if the item has the specified bundle key
 					if (item.getBundles().containsKey(value)) {
 						items.add(item);
