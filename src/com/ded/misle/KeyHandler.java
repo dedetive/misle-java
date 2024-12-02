@@ -46,30 +46,9 @@ public class KeyHandler implements KeyListener {
 	}
 
 	public KeyHandler() {
-		player.keys.keyPressed.put(PAUSE, false);
-		player.keys.keyPressed.put(UP, false);
-		player.keys.keyPressed.put(DOWN, false);
-		player.keys.keyPressed.put(LEFT, false);
-		player.keys.keyPressed.put(RIGHT, false);
-		player.keys.keyPressed.put(DEBUG1, false);
-		player.keys.keyPressed.put(DEBUG2, false);
-		player.keys.keyPressed.put(INVENTORY, false);
-		player.keys.keyPressed.put(DROP, false);
-		player.keys.keyPressed.put(CTRL, false);
-		player.keys.keyPressed.put(SHIFT, false);
-		player.keys.keyPressed.put(DODGE, false);
-		player.keys.keyPressed.put(USE, false);
-		player.keys.keyPressed.put(EQUAL, false); // LEVEL DESIGNER EXCLUSIVE
-		player.keys.keyPressed.put(MINUS, false); // LEVEL DESIGNER EXCLUSIVE
-		player.keys.keyPressed.put(GRID, false);  // LEVEL DESIGNER EXCLUSIVE
-		player.keys.keyPressed.put(NUM_0, false); // LEVEL DESIGNER EXCLUSIVE
-		player.keys.keyPressed.put(NUM_1, false);
-		player.keys.keyPressed.put(NUM_2, false);
-		player.keys.keyPressed.put(NUM_3, false);
-		player.keys.keyPressed.put(NUM_4, false);
-		player.keys.keyPressed.put(NUM_5, false);
-		player.keys.keyPressed.put(NUM_6, false);
-		player.keys.keyPressed.put(NUM_7, false);
+		for (Key key : Key.values()) {
+			player.keys.keyPressed.put(key, false);
+		}
 	}
 
 	int KeyPause = KeyEvent.VK_ESCAPE;
