@@ -3,6 +3,8 @@ package com.ded.misle.items;
 import java.awt.*;
 import java.util.Map;
 
+import static com.ded.misle.GamePanel.player;
+
 public class ItemData {
 	private final int id;
 	private final String name;
@@ -18,7 +20,11 @@ public class ItemData {
 	public ItemData(int id, String name, int countLimit, String rarity, String type, int resourceID, Map<String, Object> attributes, Map<String, Integer> bundles, Map<String, Integer> bundleCount, Color nameColor) {
 		this.id = id;
 		this.name = name;
-		this.countLimit = countLimit;
+		if (countLimit > 1) {
+			this.countLimit = (int) (countLimit * player.attr.getMaxStackSizeMulti());
+		} else {
+			this.countLimit = 1;
+		}
 		this.rarity = rarity;
 		this.type = type;
 		this.resourceID = resourceID;

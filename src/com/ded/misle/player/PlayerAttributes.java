@@ -8,6 +8,7 @@ import java.util.TimerTask;
 import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.GamePanel.tileSize;
 import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.items.Item.updateMaxStackSize;
 
 @SuppressWarnings("ConditionalExpressionWithIdenticalBranches")
 public class PlayerAttributes {
@@ -76,6 +77,7 @@ public class PlayerAttributes {
 	private long lastHitMillis;
 	private boolean isDead = false;
 	private Box lastVelocityBox = null;
+	private float maxStackSizeMulti;
 
 	public PlayerAttributes() {
 			this.setSpeedModifier(1);
@@ -587,6 +589,23 @@ public class PlayerAttributes {
 	}
 
 	// END XP
+
+	// COUNT LIMIT
+
+	public float getMaxStackSizeMulti() {
+		return maxStackSizeMulti;
+	}
+
+	public void setMaxStackSizeMulti(float maxStackSizeMulti) {
+		this.maxStackSizeMulti = maxStackSizeMulti;
+		try {
+			updateMaxStackSize();
+		} catch (NullPointerException e) {
+			System.out.println("Max stack multiplier attribute failed because could not read 'inv' as player is null");
+		}
+	}
+
+	// UNLOAD
 
 	public void unloadAttributes() {
 		this.setSpeedModifier(1);

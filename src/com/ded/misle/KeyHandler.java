@@ -434,15 +434,32 @@ public class KeyHandler implements KeyListener {
 		if (gameState != GameState.LEVEL_DESIGNER) {
 			if (player.keys.keyPressed.get("debug1")) {
 
-				player.inv.addItem(createItem(1));
-				player.inv.addItem(createItem(2));
-				player.inv.addItem(createItem(3, 20));
+				if (!player.keys.keyPressed.get("shift")) {
+
+					player.inv.addItem(createItem(3, 20));
+
+				} else {
+
+					player.attr.setMaxStackSizeMulti(player.attr.getMaxStackSizeMulti() + 0.125f);
+					System.out.println("Updated max stack size to " + player.attr.getMaxStackSizeMulti());
+
+				}
 
 				player.keys.keyPressed.put("debug1", false);
 			}
 			if (player.keys.keyPressed.get("debug2")) {
 
-				player.inv.clearInventory();
+				if (!player.keys.keyPressed.get("shift")) {
+
+					player.inv.clearInventory();
+
+				} else {
+
+					player.attr.setMaxStackSizeMulti(player.attr.getMaxStackSizeMulti() - 0.125f);
+					System.out.println("Updated max stack size to " + player.attr.getMaxStackSizeMulti());
+
+				}
+
 
 				player.keys.keyPressed.put("debug2", false);
 			}

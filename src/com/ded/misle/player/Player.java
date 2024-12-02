@@ -13,11 +13,11 @@ public class Player extends Box {
 	public final Inventory inv;
 
 	public Player() {
+		this.inv = new Inventory();
 		this.keys = new PlayerKeys();
 		this.pos = new PlayerPosition();
 		this.attr = new PlayerAttributes();
 		this.stats = new PlayerStats();
-		this.inv = new Inventory();
 		addBoxToCache(this);
 	}
 

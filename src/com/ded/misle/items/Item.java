@@ -14,6 +14,7 @@ import javax.swing.*;
 import java.io.IOException;
 
 import static com.ded.misle.ChangeSettings.getPath;
+import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.boxes.BoxesHandling.addBoxItem;
 import static java.lang.System.currentTimeMillis;
 
@@ -22,7 +23,7 @@ public class Item {
 	private final String name;
 	private String displayName;
 	private final String description;
-	private final int countLimit;
+	private int countLimit;
 	private final String rarity;
 	private final String type;
 	private final String displayType;
@@ -119,7 +120,7 @@ public class Item {
 		} catch (Exception e) {
 			// Handle the exception
 			System.err.println(e.getMessage());
-			return null; // or return a default Item
+			return null; // or return no Item whatsoever
 		}
 	}
 
@@ -262,5 +263,21 @@ public class Item {
 		this.animationX = 0;
 		this.animationY = 0;
 		this.animationBulk = 1;
+	}
+
+	// COUNT LIMIT
+
+	public static void updateMaxStackSize() {
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 7; j++) {
+				Item item = player.inv.getItem(i, j);
+				if (item != null && item.getCount() > 1) {
+					item.countLimit = (int) (item.countLimit * player.attr.getMaxStackSizeMulti());
+					if (item.getCount() > item.countLimit) {
+						item.setCount(item.countLimit);
+					}
+				}
+			}
+		}
 	}
 }
