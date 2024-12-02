@@ -112,12 +112,14 @@ public class KeyHandler implements KeyListener {
 		for (Key key : continuousInput) {
 			if (code == keyCodes.get(key)) {
 				player.keys.keyPressed.put(key, true);
+				return;
 			}
 		}
 
 		for (Key key : cooldownOnPress) {
 			if (code == keyCodes.get(key)) {
 				handleCooldownPress(key);
+				return;
 			}
 		}
 	}
@@ -129,18 +131,21 @@ public class KeyHandler implements KeyListener {
 		for (Key key : continuousInput) {
 			if (code == keyCodes.get(key)) {
 				player.keys.keyPressed.put(key, false);
+				return;
 			}
 		}
 
 		for (Key key : outputOnRelease) {
 			if (code == keyCodes.get(key)) {
 				player.keys.keyPressed.put(key, true);
+				return;
 			}
 		}
 
 		for (Key key : cooldownOnRelease) {
 			if (code == keyCodes.get(key)) {
 				handleCooldownPress(key);
+				return;
 			}
 		}
 	}
