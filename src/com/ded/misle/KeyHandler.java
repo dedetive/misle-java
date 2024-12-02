@@ -3,6 +3,7 @@ package com.ded.misle;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashMap;
 
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.GameRenderer.levelDesignerGrid;
@@ -10,6 +11,7 @@ import static com.ded.misle.GameRenderer.pauseGame;
 import static com.ded.misle.KeyHandler.Key.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.items.Item.createItem;
+import static java.awt.event.KeyEvent.*;
 
 public class KeyHandler implements KeyListener {
 
@@ -19,22 +21,37 @@ public class KeyHandler implements KeyListener {
 	}
 
 	public enum Key {
-		PAUSE,
-		UP,
-		DOWN,
-		LEFT,
-		RIGHT,
-		DEBUG1,
-		DEBUG2,
-		INVENTORY,
-		DROP,
-		CTRL,
-		SHIFT,
-		DODGE,
-		USE,
-		EQUAL,
-		MINUS,
-		GRID,
+		PAUSE(VK_ESCAPE),
+		UP(VK_UP),
+		DOWN(VK_DOWN),
+		LEFT(VK_LEFT),
+		RIGHT(VK_RIGHT),
+		DEBUG1(VK_OPEN_BRACKET),
+		DEBUG2(VK_CLOSE_BRACKET),
+		INVENTORY(VK_E),
+		DROP(VK_Q),
+		CTRL(VK_CONTROL),
+		SHIFT(VK_SHIFT),
+		DODGE(VK_C),
+		USE(VK_Z),
+		EQUAL(VK_EQUALS),
+		MINUS(VK_MINUS),
+		GRID(VK_G),
+		NUM_0(VK_0),
+		NUM_1(VK_1),
+		NUM_2(VK_2),
+		NUM_3(VK_3),
+		NUM_4(VK_4),
+		NUM_5(VK_5),
+		NUM_6(VK_6),
+		NUM_7(VK_7);
+
+		Key(int keyEvent) {
+			keyCodes.put(this, keyEvent);
+		}
+	}
+
+	Key[] continuousInput = new Key[]{
 		NUM_0,
 		NUM_1,
 		NUM_2,
@@ -42,39 +59,41 @@ public class KeyHandler implements KeyListener {
 		NUM_4,
 		NUM_5,
 		NUM_6,
-		NUM_7
-	}
+		NUM_7,
+		UP,
+		DOWN,
+		LEFT,
+		RIGHT,
+		CTRL,
+		SHIFT
+	};
+
+	Key[] outputOnRelease = new Key[] {
+		PAUSE,
+		INVENTORY,
+		DROP,
+		EQUAL,
+		MINUS,
+		GRID
+	};
+
+	Key[] cooldownOnPress = new Key[]{
+		DEBUG1,
+		DEBUG2
+	};
+
+	Key[] cooldownOnRelease = new Key[] {
+		DODGE,
+		USE
+	};
+
+	static HashMap<Key, Integer> keyCodes = new HashMap<>();
 
 	public KeyHandler() {
 		for (Key key : Key.values()) {
 			player.keys.keyPressed.put(key, false);
 		}
 	}
-
-	int KeyPause = KeyEvent.VK_ESCAPE;
-	int KeyUp = KeyEvent.VK_UP;
-	int KeyDown = KeyEvent.VK_DOWN;
-	int KeyLeft = KeyEvent.VK_LEFT;
-	int KeyRight = KeyEvent.VK_RIGHT;
-	int KeyDebug1 = KeyEvent.VK_OPEN_BRACKET;
-	int KeyDebug2 = KeyEvent.VK_CLOSE_BRACKET;
-	int KeyInventory = KeyEvent.VK_E;
-	int KeyDrop = KeyEvent.VK_Q;
-	int KeyCtrl = KeyEvent.VK_CONTROL;
-	int KeyShift = KeyEvent.VK_SHIFT;
-	int KeyDodge = KeyEvent.VK_C;
-	int KeyUse = KeyEvent.VK_Z;
-	int KeyEqual = KeyEvent.VK_EQUALS;
-	int KeyMinus = KeyEvent.VK_MINUS;
-	int KeyGrid = KeyEvent.VK_G;
-	int Key0 = KeyEvent.VK_0;
-	int Key1 = KeyEvent.VK_1;
-	int Key2 = KeyEvent.VK_2;
-	int Key3 = KeyEvent.VK_3;
-	int Key4 = KeyEvent.VK_4;
-	int Key5 = KeyEvent.VK_5;
-	int Key6 = KeyEvent.VK_6;
-	int Key7 = KeyEvent.VK_7;
 
 	static double baseDesignerSpeed = 1.67;
 	static double designerSpeed = baseDesignerSpeed * scale;
@@ -90,124 +109,39 @@ public class KeyHandler implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 
-		if (code == Key0) {
-			player.keys.keyPressed.put(NUM_0, true);
+		for (Key key : continuousInput) {
+			if (code == keyCodes.get(key)) {
+				player.keys.keyPressed.put(key, true);
+			}
 		}
-		if (code == Key1) {
-			player.keys.keyPressed.put(NUM_1, true);
-		}
-		if (code == Key2) {
-			player.keys.keyPressed.put(NUM_2, true);
-		}
-		if (code == Key3) {
-			player.keys.keyPressed.put(NUM_3, true);
-		}
-		if (code == Key4) {
-			player.keys.keyPressed.put(NUM_4, true);
-		}
-		if (code == Key5) {
-			player.keys.keyPressed.put(NUM_5, true);
-		}
-		if (code == Key6) {
-			player.keys.keyPressed.put(NUM_6, true);
-		}
-		if (code == Key7) {
-			player.keys.keyPressed.put(NUM_7, true);
-		}
-		if (code == KeyUp) {
-			player.keys.keyPressed.put(UP, true);
-		}
-		if (code == KeyDown) {
-			player.keys.keyPressed.put(DOWN, true);
-		}
-		if (code == KeyLeft) {
-			player.keys.keyPressed.put(LEFT, true);
-		}
-		if (code == KeyRight) {
-			player.keys.keyPressed.put(RIGHT, true);
-		}
-		if (code == KeyCtrl) {
-			player.keys.keyPressed.put(CTRL, true);
-		}
-		if (code == KeyShift) {
-			player.keys.keyPressed.put(SHIFT, true);
-		}
-		if (code == KeyDebug1) {
-			handleCooldownPress(DEBUG1);
-		}
-		if (code == KeyDebug2) {
-			handleCooldownPress(DEBUG2);
+
+		for (Key key : cooldownOnPress) {
+			if (code == keyCodes.get(key)) {
+				handleCooldownPress(key);
+			}
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		int code = e.getKeyCode();
-		if (code == Key0) {
-			player.keys.keyPressed.put(NUM_0, false);
+
+		for (Key key : continuousInput) {
+			if (code == keyCodes.get(key)) {
+				player.keys.keyPressed.put(key, false);
+			}
 		}
-		if (code == Key1) {
-			player.keys.keyPressed.put(NUM_1, false);
+
+		for (Key key : outputOnRelease) {
+			if (code == keyCodes.get(key)) {
+				player.keys.keyPressed.put(key, true);
+			}
 		}
-		if (code == Key2) {
-			player.keys.keyPressed.put(NUM_2, false);
-		}
-		if (code == Key3) {
-			player.keys.keyPressed.put(NUM_3, false);
-		}
-		if (code == Key4) {
-			player.keys.keyPressed.put(NUM_4, false);
-		}
-		if (code == Key5) {
-			player.keys.keyPressed.put(NUM_5, false);
-		}
-		if (code == Key6) {
-			player.keys.keyPressed.put(NUM_6, false);
-		}
-		if (code == Key7) {
-			player.keys.keyPressed.put(NUM_7, false);
-		}
-		if (code == KeyPause) {
-			player.keys.keyPressed.put(PAUSE, true);
-		}
-		if (code == KeyUp) {
-			player.keys.keyPressed.put(UP, false);
-		}
-		if (code == KeyDown) {
-			player.keys.keyPressed.put(DOWN, false);
-		}
-		if (code == KeyLeft) {
-			player.keys.keyPressed.put(LEFT, false);
-		}
-		if (code == KeyRight) {
-			player.keys.keyPressed.put(RIGHT, false);
-		}
-		if (code == KeyInventory) {
-			player.keys.keyPressed.put(INVENTORY, true);
-		}
-		if (code == KeyDrop) {
-			player.keys.keyPressed.put(DROP, true);
-		}
-		if (code == KeyCtrl) {
-			player.keys.keyPressed.put(CTRL, false);
-		}
-		if (code == KeyShift) {
-			player.keys.keyPressed.put(SHIFT, false);
-		}
-		if (code == KeyEqual) {
-			player.keys.keyPressed.put(EQUAL, true);
-		}
-		if (code == KeyMinus) {
-			player.keys.keyPressed.put(MINUS, true);
-		}
-		if (code == KeyGrid) {
-			player.keys.keyPressed.put(GRID, true);
-		}
-		if (code == KeyDodge) {
-			handleCooldownPress(DODGE);
-		}
-		if (code == KeyUse) {
-			handleCooldownPress(USE);
+
+		for (Key key : cooldownOnRelease) {
+			if (code == keyCodes.get(key)) {
+				handleCooldownPress(key);
+			}
 		}
 	}
 
