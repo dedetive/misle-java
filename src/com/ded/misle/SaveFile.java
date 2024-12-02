@@ -244,7 +244,7 @@ public class SaveFile {
 					player.stats.setSteps(PlayerStats.Direction.LEFT, loadAttribute(PixelData.STEPS_LEFT_H, PixelData.STEPS_LEFT_M, PixelData.STEPS_LEFT_L));
 					player.stats.setSteps(PlayerStats.Direction.RIGHT, loadAttribute(PixelData.STEPS_RIGHT_H, PixelData.STEPS_RIGHT_M, PixelData.STEPS_RIGHT_L));
 
-					player.stats.setTotalPlaytime(loadAttribute(PixelData.TOTAL_PLAYTIME_E, PixelData.TOTAL_PLAYTIME_H, PixelData.TOTAL_PLAYTIME_M, PixelData.TOTAL_PLAYTIME_L));
+					player.stats.setTotalPlaytime(loadAttribute(PixelData.TOTAL_PLAYTIME_E, PixelData.TOTAL_PLAYTIME_H, PixelData.TOTAL_PLAYTIME_M, PixelData.TOTAL_PLAYTIME_L) * 1000L);
 
 					// Load inventory
 
@@ -380,8 +380,8 @@ public class SaveFile {
 			int distanceRight = (int) player.stats.getDistance(PlayerStats.Direction.RIGHT);
 			brandValue(distanceRight, PixelData.DISTANCE_RIGHT_H, PixelData.DISTANCE_RIGHT_M, PixelData.DISTANCE_RIGHT_L);
 
-			long previousPlaytime = player.stats.getTotalPlaytime(PlayerStats.PlaytimeMode.MILLIS);
-			long currentPlaytime = player.stats.getCurrentPlaytime(PlayerStats.PlaytimeMode.MILLIS);
+			long previousPlaytime = player.stats.getTotalPlaytime(PlayerStats.PlaytimeMode.SECONDS);
+			long currentPlaytime = player.stats.getCurrentPlaytime(PlayerStats.PlaytimeMode.SECONDS);
 			long totalPlaytime = previousPlaytime + currentPlaytime;
 			brandValue(totalPlaytime, PixelData.TOTAL_PLAYTIME_E, PixelData.TOTAL_PLAYTIME_H, PixelData.TOTAL_PLAYTIME_M, PixelData.TOTAL_PLAYTIME_L);
 
