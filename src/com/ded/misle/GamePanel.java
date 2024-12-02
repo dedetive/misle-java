@@ -280,13 +280,13 @@ public class GamePanel extends JPanel implements Runnable {
 				switch (gameState) {
 					case PLAYING, INVENTORY -> updateGame(); // Only update if in the playing state
 					case PAUSE_MENU -> {
-						if (player.keys.keyPressed.get("pause")) {
+						if (player.keys.keyPressed.get(KeyHandler.Key.PAUSE)) {
 							if (!levelDesigner) {
 								softGameStart();
 							} else {
 								softEnterLevelDesigner();
 							}
-							player.keys.keyPressed.put("pause", false);
+							player.keys.keyPressed.put(KeyHandler.Key.PAUSE, false);
 						}
 					}
 					case LEVEL_DESIGNER -> {

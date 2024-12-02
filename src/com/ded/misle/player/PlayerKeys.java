@@ -1,26 +1,28 @@
 package com.ded.misle.player;
 
+import com.ded.misle.KeyHandler.Key;
+import static com.ded.misle.KeyHandler.Key.*;
 import java.util.HashMap;
 
 public class PlayerKeys {
 
-	public HashMap<String, Boolean> keyPressed;
-	private HashMap<String, Double> keyMaxCooldown = new HashMap<>();
-	private HashMap<String, Double> keyCurrentCooldown = new HashMap<>();
+	public HashMap<Key, Boolean> keyPressed;
+	private HashMap<Key, Double> keyMaxCooldown = new HashMap<>();
+	private HashMap<Key, Double> keyCurrentCooldown = new HashMap<>();
 
 	public PlayerKeys() {
 		this.keyPressed = new HashMap<>();
-		this.setKeyMaxCooldown("debug1", 150);
-		this.setKeyMaxCooldown("debug2", 150);
-		this.setKeyMaxCooldown("dodge", 1000);
-		this.setKeyMaxCooldown("use", 100);
+		this.setKeyMaxCooldown(DEBUG1, 150);
+		this.setKeyMaxCooldown(DEBUG2, 150);
+		this.setKeyMaxCooldown(DODGE, 1000);
+		this.setKeyMaxCooldown(USE, 100);
 	}
 
-	public HashMap<String, Boolean> getKeyPressed() {
+	public HashMap<Key, Boolean> getKeyPressed() {
 		return keyPressed;
 	}
 
-	public double getKeyMaxCooldown(String key) {
+	public double getKeyMaxCooldown(Key key) {
 		try {
 			return Math.max(keyMaxCooldown.get(key), 0);
 		} catch (NullPointerException e) {
@@ -28,11 +30,11 @@ public class PlayerKeys {
 		}
 	}
 
-	public void setKeyMaxCooldown(String key, double cooldownMS) {
+	public void setKeyMaxCooldown(Key key, double cooldownMS) {
 		this.keyMaxCooldown.put(key, Math.max(cooldownMS, 0));
 	}
 
-	public double getKeyCurrentCooldown(String key) {
+	public double getKeyCurrentCooldown(Key key) {
 		try {
 			return Math.max(keyCurrentCooldown.get(key), 0);
 		} catch (NullPointerException e) {
@@ -40,11 +42,11 @@ public class PlayerKeys {
 		}
 	}
 
-	public void setKeyCurrentCooldown(String key, double cooldownMS) {
+	public void setKeyCurrentCooldown(Key key, double cooldownMS) {
 		this.keyCurrentCooldown.put(key, Math.max(cooldownMS, 0));
 	}
 
-	public void fillKeyCurrentCooldown(String key) {
+	public void fillKeyCurrentCooldown(Key key) {
 		this.keyCurrentCooldown.put(key, System.currentTimeMillis() + getKeyMaxCooldown(key));
 	}
 
