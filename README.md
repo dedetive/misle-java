@@ -173,6 +173,9 @@ And finally, add the .png icon for the item in `resources/images/items/`. The na
     - F, E, D, C, B, A, S.
     - Invalid values default to F.
 - Translation names must follow snake_case naming convention.
+- Count limit:
+    - The field `countLimit` allows for variables, set in the `itemLoader` class. Current officially supported variables are `material` and `consumable`.
+    - When `countLimit` is set to 1 or isn't specified, max stack size multiplier does not have effect in it, never going above 1. If it's any number above 1, max stack size multiplier will take effect.
 
 #### Example:
 
@@ -228,6 +231,7 @@ And finally, add the .png icon for the item in `resources/images/items/`. The na
 
 1. Currently, the `ru_RU` (Russian) and `el_GR` (Greek) fonts in item tooltips do not work properly due to unsupported characters in the current font.
 2. It crashes when trying to play the game with the language `mi_PM` due to lack of translation.
-3. When opening the inventory seconds after a playing session has started, slots may be incorrectly placed related to the mouse. This is fixed by changing the window resolution.
+3. When opening the inventory seconds after a playing session has started, slots may be incorrectly placed related to the mouse. This can be temporarily fixed by changing the window resolution.
+4. As of the most recent commit, all languages besides `en_US` and `pt_BR` will lead to a crash, due to the lack of translation of the Goblin Ear item. This will be fixed ASAP.
 
-> **Note:** Please report any issues you encounter during your game development. Your help would be greatly appreciated.
+> **Note:** Please report any issues you encounter during your game development. Please contact me if you're interested in helping. I'm available on Discord by the username `dedetive`. Your help would be greatly appreciated.
