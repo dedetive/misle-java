@@ -17,6 +17,7 @@ import javax.imageio.stream.ImageOutputStream;
 
 import static com.ded.misle.ChangeSettings.getPath;
 import static com.ded.misle.GamePanel.player;
+import static com.ded.misle.SaveFile.PixelColor.*;
 
 public class SaveFile {
 
@@ -111,66 +112,66 @@ public class SaveFile {
 		 *
 		 */
 
-		SPAWNPOINT_M(PixelColor.RED, 69, 42),
-		SPAWNPOINT_L(PixelColor.BLUE, 42, 69),
-		LEVEL_M(PixelColor.RED, 4, 15),
-		LEVEL_L(PixelColor.BLUE, 4, 15),
-		LEVEL_POINTS_M(PixelColor.GREEN, 4, 15),
-		LEVEL_POINTS_L(PixelColor.RED, 5, 15),
-		XP_H(PixelColor.GREEN, 5, 15),
-		XP_M(PixelColor.BLUE, 5, 15),
-		XP_L(PixelColor.RED, 30, 127),
-		MAX_HP_H(PixelColor.BLUE, 82, 10),
-		MAX_HP_M(PixelColor.GREEN, 30, 127),
-		MAX_HP_L(PixelColor.RED, 99, 1),
-		MAX_ENTROPY_H(PixelColor.RED, 70, 70),
-		MAX_ENTROPY_M(PixelColor.GREEN, 70, 70),
-		MAX_ENTROPY_L(PixelColor.BLUE, 70, 70),
-		DEFENSE_H(PixelColor.RED, 71, 70),
-		DEFENSE_M(PixelColor.GREEN, 71, 70),
-		DEFENSE_L(PixelColor.BLUE, 71, 70),
-		REGENERATION_QUALITY_H(PixelColor.RED, 71, 71),
-		REGENERATION_QUALITY_M(PixelColor.GREEN, 71, 71),
-		REGENERATION_QUALITY_L(PixelColor.BLUE, 71, 71),
-		SPEED_H(PixelColor.RED, 70, 71),
-		SPEED_M(PixelColor.GREEN, 70, 71),
-		SPEED_L(PixelColor.BLUE, 70, 71),
-		TOTAL_DISTANCE_H(PixelColor.RED, 117, 63),
-		TOTAL_DISTANCE_M(PixelColor.RED,118, 63),
-		TOTAL_DISTANCE_L(PixelColor.RED,119, 63),
-		DISTANCE_UP_H(PixelColor.RED, 117, 64),
-		DISTANCE_UP_M(PixelColor.RED, 118, 64),
-		DISTANCE_UP_L(PixelColor.RED, 119, 64),
-		DISTANCE_DOWN_H(PixelColor.RED, 117, 65),
-		DISTANCE_DOWN_M(PixelColor.RED, 118, 65),
-		DISTANCE_DOWN_L(PixelColor.RED, 119, 65),
-		DISTANCE_LEFT_H(PixelColor.GREEN, 117, 63),
-		DISTANCE_LEFT_M(PixelColor.GREEN, 118, 63),
-		DISTANCE_LEFT_L(PixelColor.GREEN, 119, 63),
-		DISTANCE_RIGHT_H(PixelColor.GREEN, 117, 64),
-		DISTANCE_RIGHT_M(PixelColor.GREEN, 118, 64),
-		DISTANCE_RIGHT_L(PixelColor.GREEN, 119, 64),
-		TOTAL_STEPS_H(PixelColor.GREEN, 117, 65),
-		TOTAL_STEPS_M(PixelColor.GREEN, 118, 65),
-		TOTAL_STEPS_L(PixelColor.GREEN, 119, 65),
-		STEPS_UP_H(PixelColor.BLUE, 117, 63),
-		STEPS_UP_M(PixelColor.BLUE, 118, 63),
-		STEPS_UP_L(PixelColor.BLUE, 119, 63),
-		STEPS_DOWN_H(PixelColor.BLUE, 117, 64),
-		STEPS_DOWN_M(PixelColor.BLUE, 118, 64),
-		STEPS_DOWN_L(PixelColor.BLUE, 119, 64),
-		STEPS_LEFT_H(PixelColor.BLUE, 117, 65),
-		STEPS_LEFT_M(PixelColor.BLUE, 118, 65),
-		STEPS_LEFT_L(PixelColor.BLUE, 119, 65),
-		STEPS_RIGHT_H(PixelColor.BLUE, 118, 66),
-		STEPS_RIGHT_M(PixelColor.RED, 118, 66),
-		STEPS_RIGHT_L(PixelColor.GREEN, 118, 66),
-		TOTAL_PLAYTIME_E(PixelColor.RED, 9, 38),
-		TOTAL_PLAYTIME_H(PixelColor.GREEN, 9, 38),
-		TOTAL_PLAYTIME_M(PixelColor.GREEN, 8, 38),
-		TOTAL_PLAYTIME_L(PixelColor.BLUE, 9, 38),
-		MAX_STACK_SIZE_MULTIPLIER_M(PixelColor.RED, 27, 27),
-		MAX_STACK_SIZE_MULTIPLIER_L(PixelColor.GREEN, 27, 27);
+		SPAWNPOINT_M				(RED,69,42),
+		SPAWNPOINT_L				(BLUE,42,69),
+		LEVEL_M						(RED,4,15),
+		LEVEL_L						(BLUE,4,15),
+		LEVEL_POINTS_M				(GREEN,4,15),
+		LEVEL_POINTS_L				(RED,5,15),
+		XP_H						(GREEN,5,15),
+		XP_M						(BLUE,5,15),
+		XP_L						(RED,30,127),
+		MAX_HP_H					(BLUE,82,10),
+		MAX_HP_M					(GREEN,30,127),
+		MAX_HP_L					(RED,99,1),
+		MAX_ENTROPY_H				(RED,70,70),
+		MAX_ENTROPY_M				(GREEN,70,70),
+		MAX_ENTROPY_L				(BLUE,70,70),
+		DEFENSE_H					(RED,71,70),
+		DEFENSE_M					(GREEN,71,70),
+		DEFENSE_L					(BLUE,71,70),
+		REGENERATION_QUALITY_H		(RED,71,71),
+		REGENERATION_QUALITY_M		(GREEN,71,71),
+		REGENERATION_QUALITY_L		(BLUE,71,71),
+		SPEED_H						(RED,70,71),
+		SPEED_M						(GREEN,70,71),
+		SPEED_L						(BLUE,70,71),
+		TOTAL_DISTANCE_H			(RED,117,63),
+		TOTAL_DISTANCE_M			(RED,118,63),
+		TOTAL_DISTANCE_L			(RED,119,63),
+		DISTANCE_UP_H				(RED,117,64),
+		DISTANCE_UP_M				(RED,118,64),
+		DISTANCE_UP_L				(RED,119,64),
+		DISTANCE_DOWN_H				(RED,117,65),
+		DISTANCE_DOWN_M				(RED,118,65),
+		DISTANCE_DOWN_L				(RED,119,65),
+		DISTANCE_LEFT_H				(GREEN,117,63),
+		DISTANCE_LEFT_M				(GREEN,118,63),
+		DISTANCE_LEFT_L				(GREEN,119,63),
+		DISTANCE_RIGHT_H			(GREEN,117,64),
+		DISTANCE_RIGHT_M			(GREEN,118,64),
+		DISTANCE_RIGHT_L			(GREEN,119,64),
+		TOTAL_STEPS_H				(GREEN,117,65),
+		TOTAL_STEPS_M				(GREEN,118,65),
+		TOTAL_STEPS_L				(GREEN,119,65),
+		STEPS_UP_H					(BLUE,117,63),
+		STEPS_UP_M					(BLUE,118,63),
+		STEPS_UP_L					(BLUE,119,63),
+		STEPS_DOWN_H				(BLUE,117,64),
+		STEPS_DOWN_M				(BLUE,118,64),
+		STEPS_DOWN_L				(BLUE,119,64),
+		STEPS_LEFT_H				(BLUE,117,65),
+		STEPS_LEFT_M				(BLUE,118,65),
+		STEPS_LEFT_L				(BLUE,119,65),
+		STEPS_RIGHT_H				(BLUE,118,66),
+		STEPS_RIGHT_M				(RED,118,66),
+		STEPS_RIGHT_L				(GREEN,118,66),
+		TOTAL_PLAYTIME_E			(RED,9,38),
+		TOTAL_PLAYTIME_H			(GREEN,9,38),
+		TOTAL_PLAYTIME_M			(GREEN,8,38),
+		TOTAL_PLAYTIME_L			(BLUE,9,38),
+		MAX_STACK_SIZE_MULTIPLIER_M	(RED,27,27),
+		MAX_STACK_SIZE_MULTIPLIER_L	(GREEN,27,27);
 
 		private final PixelColor color;
 		private final int x;
@@ -251,13 +252,13 @@ public class SaveFile {
 					int[][][] tempInventory = new int[4][7][4];
 					for (int i = 0; i < 4; i++) {
 						for (int j = 0; j < 7; j++) {
-							tempInventory[i][j][0] = loadThis(PixelColor.RED, i, j + 15);
-							tempInventory[i][j][1] = loadThis(PixelColor.GREEN, i, j + 15);
+							tempInventory[i][j][0] = loadThis(RED, i, j + 15);
+							tempInventory[i][j][1] = loadThis(GREEN, i, j + 15);
 							// [i][j][0] = ID
 							tempInventory[i][j][0] = tempInventory[i][j][0] * 255 + tempInventory[i][j][1];
 
-							tempInventory[i][j][2] = loadThis(PixelColor.BLUE, i, j + 15);
-							tempInventory[i][j][3] = loadThis(PixelColor.RED, j + 15, i);
+							tempInventory[i][j][2] = loadThis(BLUE, i, j + 15);
+							tempInventory[i][j][3] = loadThis(RED, j + 15, i);
 							// [i][j][1] = Count
 							tempInventory[i][j][1] = tempInventory[i][j][2] * 255 + tempInventory[i][j][3];
 
@@ -309,9 +310,9 @@ public class SaveFile {
 		Color pixel = new Color(image.getRGB(x, y));
 
 		return switch (color) {
-			case PixelColor.RED -> pixel.getRed();
-			case PixelColor.GREEN -> pixel.getGreen();
-			case PixelColor.BLUE -> pixel.getBlue();
+			case RED -> pixel.getRed();
+			case GREEN -> pixel.getGreen();
+			case BLUE -> pixel.getBlue();
 			default -> {
 				System.out.println("Invalid color parameter for loading from the save file: " + color);
 				yield 0;
@@ -405,10 +406,10 @@ public class SaveFile {
 							tempInventory[i][j][2] = getMedium((player.inv.getItem(i, j).getCount()));    // HIGH COUNT
 							tempInventory[i][j][3] = getLow(player.inv.getItem(i, j).getCount());       // LOW COUNT
 						}
-						brandIntoSaveFile(tempInventory[i][j][0], PixelColor.RED, i, j + 15);
-						brandIntoSaveFile(tempInventory[i][j][1], PixelColor.GREEN, i, j + 15);
-						brandIntoSaveFile(tempInventory[i][j][2], PixelColor.BLUE, i, j + 15);
-						brandIntoSaveFile(tempInventory[i][j][3], PixelColor.RED, j + 15, i);
+						brandIntoSaveFile(tempInventory[i][j][0], RED, i, j + 15);
+						brandIntoSaveFile(tempInventory[i][j][1], GREEN, i, j + 15);
+						brandIntoSaveFile(tempInventory[i][j][2], BLUE, i, j + 15);
+						brandIntoSaveFile(tempInventory[i][j][3], RED, j + 15, i);
 					}
 				}
 			} catch (NullPointerException e) {
@@ -445,9 +446,9 @@ public class SaveFile {
 		int blue = previousValue.getBlue();
 
 		switch (color) {
-			case PixelColor.RED -> image.setRGB(x, y, new Color(value, green, blue).getRGB());
-			case PixelColor.GREEN -> image.setRGB(x, y, new Color(red, value, blue).getRGB());
-			case PixelColor.BLUE -> image.setRGB(x, y, new Color(red, green, value).getRGB());
+			case RED -> image.setRGB(x, y, new Color(value, green, blue).getRGB());
+			case GREEN -> image.setRGB(x, y, new Color(red, value, blue).getRGB());
+			case BLUE -> image.setRGB(x, y, new Color(red, green, value).getRGB());
 			default -> System.out.println("Invalid color parameter for branding to the save file: " + color);
 		}
 	}
