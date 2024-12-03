@@ -229,7 +229,7 @@ public class SaveFile {
 
 					// Max stack size
 
-					player.attr.setMaxStackSizeMulti(loadAttribute(PixelData.MAX_STACK_SIZE_MULTIPLIER_M, PixelData.MAX_STACK_SIZE_MULTIPLIER_L));
+					player.attr.setMaxStackSizeMulti((float) loadAttribute(PixelData.MAX_STACK_SIZE_MULTIPLIER_M, PixelData.MAX_STACK_SIZE_MULTIPLIER_L) / 1000);
 
 					// Statistics
 

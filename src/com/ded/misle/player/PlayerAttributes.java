@@ -87,6 +87,7 @@ public class PlayerAttributes {
 			this.setHeight(tileSize);
 			this.setHP(getMaxHP());
 			this.updateXPtoLevelUp();
+			this.setMaxStackSizeMulti(1);
 	}
 
 	// PLAYER SPEED

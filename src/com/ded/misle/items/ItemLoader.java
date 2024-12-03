@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.List;
 
 import static com.ded.misle.ChangeSettings.getPath;
+import static com.ded.misle.GamePanel.player;
 
 public class ItemLoader {
 	private static final Path FILE_PATH = getPath().resolve("items/items.json");
@@ -59,7 +60,15 @@ public class ItemLoader {
 						name = value;
 						break;
 					case "countLimit":
-						countLimit = Integer.parseInt(value);
+						try {
+							countLimit = Integer.parseInt(value);
+						} catch (NumberFormatException e) {
+							countLimit = (int) (player.attr.getMaxStackSizeMulti() * switch (value) {
+								case "consumable" -> 20; // Max value multiplied by max stack size
+								case "material" -> 30;
+								default -> countLimit = 1;
+							});
+                        }
 						break;
 					case "rarity":
 						rarity = value;
