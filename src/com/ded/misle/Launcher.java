@@ -61,20 +61,23 @@ public class Launcher {
 
 		if (screenSizeChanged) {
 			switch (screenSize) {
+
+				// scale = 1 is 512x288
+
 				case "small":
-					scale = 1.5; // 768x576
+					scale = 1.5; // 768x432
 					break;
 				case "big":
-					scale = 3.125; // 1600x1200
+					scale = 3.125; // 1600x900
 					break;
 				case "huge":
-					scale = 3.75; // 1920x1440
+					scale = 3.75; // 1920x1080
 					break;
 				case "tv-sized":
-					scale = 5; // 2560x1920
+					scale = 5; // 2560x1440
 					break;
 				case "comical":
-					scale = 15; // 7680x5760
+					scale = 15; // 7680x4320
 					break;
 				case "medium":
 				case null, default:
