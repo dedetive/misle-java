@@ -2,7 +2,6 @@ package com.ded.misle;
 
 import com.ded.misle.boxes.BoxesHandling;
 import com.ded.misle.items.Item;
-import com.ded.misle.player.PlayerStats;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -47,6 +46,9 @@ public class GameRenderer {
 	private static long itemNameDisplayStartTime;
 	private static double textShadow = 1 * scale;
 
+	public static int unscaledSlotSize = 32;
+	public static int unscaledSlotSpacing = 3;
+
 	private static final Color backgroundColor = new Color(76, 98, 76);
 
 	private static final List<String> floatingText = new ArrayList<>();
@@ -70,6 +72,7 @@ public class GameRenderer {
 	private static Font basicFont40 = FontManager.loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));
 	private static Font itemCountFont = FontManager.loadFont("/fonts/Ubuntu-Regular.ttf", (float) (40 * scale / 3.75));
 	private static Font ubuntuFont44 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
+
 
 	public static void updateFontSizes() {
 		comfortaaFont96 = FontManager.loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
@@ -588,34 +591,33 @@ public class GameRenderer {
 
 		// Slots info
 
-		int slotWidth = (int) (30 * scale);
-		int slotHeight = (int) (30 * scale);
+		int slotSize = (int) (30 * scale);
 		int slotSpacing = (int) (3 * scale);
 
-		int totalSlotsWidth = 7 * slotWidth + (6 * slotSpacing);
+		int totalSlotsWidth = 7 * slotSize + (6 * slotSpacing);
 		int slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
 
 		int selectedSlot = player.inv.getSelectedSlot();
 
 		for (int i = 0; i < 7; i++) {
-			int slotX = slotStartX + i * (slotWidth + slotSpacing);
-			int slotY = inventoryBarY + (inventoryBarHeight - slotHeight) / 2;
+			int slotX = slotStartX + i * (slotSize + slotSpacing);
+			int slotY = inventoryBarY + (inventoryBarHeight - slotSize) / 2;
 
 			// Draw the slot (e.g., as a gray rectangle)
 			g2d.setColor(Color.GRAY);
-			g2d.fillRect(slotX, slotY, slotWidth, slotHeight);
+			g2d.fillRect(slotX, slotY, slotSize, slotSize);
 
 		// Draw item if there is one in this slot (disabled as there's currently no getIcon())
 			Item item = player.inv.getItem(0, i);
 			if (item != null) {
-				g2d.drawImage(item.getIcon(), slotX, slotY, slotWidth, slotHeight, null);
+				g2d.drawImage(item.getIcon(), slotX, slotY, slotSize, slotSize, null);
 				int itemCount = item.getCount();
 				if (itemCount > 1) {
 					g2d.setFont(itemCountFont);
 					FontMetrics fm = g2d.getFontMetrics();
 					int textWidth = fm.stringWidth(Integer.toString(itemCount));
-					int textX = (int) (slotX - textWidth + slotWidth);
-					int textY = (int) (slotY + 8 * slotHeight / 9);
+					int textX = (int) (slotX - textWidth + slotSize);
+					int textY = (int) (slotY + 8 * slotSize / 9);
 					g2d.setColor(Color.black);
 					g2d.drawString(Integer.toString(itemCount), (int) (textX + textShadow), (int) (textY + textShadow));
 					g2d.setColor(Color.white);
@@ -624,7 +626,7 @@ public class GameRenderer {
 			}
 
 			if (i == selectedSlot) {
-				drawSelectedSlotOverlay(g2d, slotX, slotY, slotWidth, slotHeight);
+				drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize, slotSize);
 			}
 		}
 	}
@@ -645,8 +647,8 @@ public class GameRenderer {
 			int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
 			int inventoryBarY = (int) (screenHeight - inventoryBarHeight - 10);
 
-			int slotWidth = (int) (30 * scaleByScreenSize);
-			int slotSpacing = (int) (3 * scaleByScreenSize);
+			int slotWidth = (int) (unscaledSlotSize * scaleByScreenSize);
+			int slotSpacing = (int) (unscaledSlotSpacing * scaleByScreenSize);
 			int totalSlotsWidth = 7 * slotWidth + (6 * slotSpacing);
 			int slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
 
@@ -706,8 +708,8 @@ public class GameRenderer {
 		createTitle("inventory_menu_inventory", g2d, scaleByScreenSize);
 
 		// Slot dimensions and spacing
-		int slotSize = (int) (30 * scale);
-		int slotSpacing = (int) (3 * scale);
+		int slotSize = (int) (unscaledSlotSize * scale);
+		int slotSpacing = (int) (unscaledSlotSpacing * scale);
 
 		// Calculate the total width and height of the 7x4 grid with spacing
 		int gridWidth = 7 * slotSize + 6 * slotSpacing;
@@ -817,9 +819,8 @@ public class GameRenderer {
 
 		int slotX = 0;
 		int slotY = 0;
-		int slotWidth = (int) (30 * scale);
-		int slotHeight = (int) (30 * scale);
-		int slotSpacing = (int) (3 * scale);
+		int slotSize = (int) (unscaledSlotSize * scale);
+		int slotSpacing = (int) (unscaledSlotSpacing * scale);
 
 		if (hoveredSlot[0] == -1) {
 			// If playing
@@ -827,15 +828,15 @@ public class GameRenderer {
 			int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
 			int inventoryBarY = (int) (screenHeight - 20 * scale - 60);
 
-			int slotStartX = inventoryBarX + (inventoryBarWidth - (7 * slotWidth + 6 * slotSpacing)) / 2;
-			slotX = slotStartX + hoveredSlot[1] * (slotWidth + slotSpacing);
-			slotY = (int) (inventoryBarY + (20 * scale - slotHeight) / 2);
+			int slotStartX = inventoryBarX + (inventoryBarWidth - (7 * slotSize + 6 * slotSpacing)) / 2;
+			slotX = slotStartX + hoveredSlot[1] * (slotSize + slotSpacing);
+			slotY = (int) (inventoryBarY + (20 * scale - slotSize) / 2);
 			hoveredSlot[0] = 0;
 		} else {
 			// If in inventory menu
 
-			int gridWidth = 7 * slotWidth + 6 * slotSpacing;
-			int gridHeight = 4 * slotHeight + 3 * slotSpacing;
+			int gridWidth = 7 * slotSize + 6 * slotSpacing;
+			int gridHeight = 4 * slotSize + 3 * slotSpacing;
 
 			int gridX = (int) ((screenWidth - gridWidth) / 2);
 			int gridY = (int) ((screenHeight - gridHeight) / 2);
@@ -844,14 +845,14 @@ public class GameRenderer {
 
 			for (int j = 0; j < 4; j++) {
 				for (int i = 0; i < 7; i++) {
-					slotX = gridX + hoveredSlot[1] * (slotWidth + slotSpacing);
-					slotY = gridY + rowOrder[hoveredSlot[0]] * (slotHeight + slotSpacing);
+					slotX = gridX + hoveredSlot[1] * (slotSize + slotSpacing);
+					slotY = gridY + rowOrder[hoveredSlot[0]] * (slotSize + slotSpacing);
 				}
 			}
 		}
 
 		if (gameState == GameState.INVENTORY || (hoveredSlot[1] != player.inv.getSelectedSlot() && gameState == GameState.PLAYING)) {
-			drawSelectedSlotOverlay(g2d, slotX, slotY, slotWidth, slotHeight);
+			drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize, slotSize);
 		}
 
 		// Get item details
@@ -870,8 +871,8 @@ public class GameRenderer {
 		FontMetrics fm = g2d.getFontMetrics();
 
 		// Calculate width based on text
-		int tooltipWidth = Math.max(slotWidth * 4, fm.stringWidth(itemName) + (int) (20 * scale / 3.75));
-		int tooltipX = slotX - (tooltipWidth / 2) + slotWidth / 2;
+		int tooltipWidth = Math.max(slotSize * 4, fm.stringWidth(itemName) + (int) (20 * scale / 3.75));
+		int tooltipX = slotX - (tooltipWidth / 2) + slotSize / 2;
 		int tooltipY;
 
 		// Calculate dynamic height
@@ -882,13 +883,13 @@ public class GameRenderer {
 		String[] wrappedDescription = wrapText(itemDescription, tooltipWidth - 20, fm);
 		tooltipHeight += lineHeight * wrappedDescription.length;
 
-		int maxTooltipWidth = slotWidth * 6; // Set maximum tooltip width
+		int maxTooltipWidth = slotSize * 6; // Set maximum tooltip width
 		tooltipWidth = Math.min(maxTooltipWidth, Math.max(tooltipWidth, fm.stringWidth(itemEffect) + 20));
 		String[] wrappedEffect = wrapText(itemEffect, tooltipWidth - 20, fm);
 		tooltipHeight += lineHeight * (wrappedEffect.length - 1); // Adjust height based on wrapped lines
 
 		// Shift tooltip upwards if text exceeds height
-		int triangleHeight = slotHeight / 2;
+		int triangleHeight = slotSize / 2;
 		tooltipY = slotY - tooltipHeight - (triangleHeight);
 
 		// Draw rounded tooltip box
@@ -896,8 +897,8 @@ public class GameRenderer {
 		g2d.fillRoundRect(tooltipX, tooltipY, tooltipWidth, tooltipHeight, (int) (45 * scale / 3.75), (int) (45 * scale / 3.75));
 
 		// Draw triangle
-		int triangleBase = slotWidth;
-		int[] xPoints = { slotX + slotWidth / 2 - triangleBase / 2, slotX + slotWidth / 2 + triangleBase / 2, slotX + slotWidth / 2 };
+		int triangleBase = slotSize;
+		int[] xPoints = { slotX + slotSize / 2 - triangleBase / 2, slotX + slotSize / 2 + triangleBase / 2, slotX + slotSize / 2 };
 		int[] yPoints = { tooltipY + tooltipHeight, tooltipY + tooltipHeight, tooltipY + tooltipHeight + triangleHeight };
 		g2d.fillPolygon(xPoints, yPoints, 3);
 
@@ -1011,7 +1012,7 @@ public class GameRenderer {
 	public static void drawDraggedItem(Graphics2D g2d, MouseHandler mouseHandler) {
 		Item draggedItem = player.inv.getDraggedItem();
 
-		int slotSize = (int) (30 * scale);
+		int slotSize = (int) (unscaledSlotSize * scale);
 
 		g2d.drawImage(draggedItem.getIcon(), mouseHandler.getMouseX(), mouseHandler.getMouseY(), slotSize, slotSize, null);
 	}

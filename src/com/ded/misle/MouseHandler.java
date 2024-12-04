@@ -9,6 +9,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import static com.ded.misle.GamePanel.*;
+import static com.ded.misle.GameRenderer.unscaledSlotSize;
+import static com.ded.misle.GameRenderer.unscaledSlotSpacing;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.boxes.Box.clearSelectedBoxes;
 
@@ -58,8 +60,8 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 		// INVENTORY
 
-		slotSize = (int) (30 * scale);
-		slotSpacing = (int) (3 * scale);
+		slotSize = (int) (unscaledSlotSize * scale);
+		slotSpacing = (int) (unscaledSlotSpacing * scale);
 
 		gridWidth = 7 * slotSize + 6 * slotSpacing;
 		gridHeight = 4 * slotSize + 3 * slotSpacing;
@@ -98,8 +100,8 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 		// INVENTORY
 
-		slotSize = (int) (30 * scale);
-		slotSpacing = (int) (3 * scale);
+		slotSize = (int) (unscaledSlotSize * scale);
+		slotSpacing = (int) (unscaledSlotSpacing * scale);
 
 		gridWidth = 7 * slotSize + 6 * slotSpacing;
 		gridHeight = 4 * slotSize + 3 * slotSpacing;
