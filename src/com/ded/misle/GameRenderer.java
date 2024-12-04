@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import static com.ded.misle.ChangeSettings.getPath;
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.levelDesigner;
 import static com.ded.misle.Launcher.scale;
@@ -20,8 +21,11 @@ import static com.ded.misle.player.PlayerStats.Direction.RIGHT;
 import static java.lang.System.currentTimeMillis;
 
 import java.awt.Rectangle;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.geom.AffineTransform;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
@@ -719,6 +723,19 @@ public class GameRenderer {
 		int gridX = (int) ((screenWidth - gridWidth) / 2);
 		int gridY = (int) ((screenHeight - gridHeight) / 2);
 
+		// Draw background
+
+		Path basePath = getPath().resolve("resources/images/ui/");
+		Path fullPath = basePath.resolve("inventoryBackground.png");
+
+		int inventoryOffset = 16;
+
+		try {
+			g2d.drawImage(ImageIO.read(fullPath.toFile()), (int) (gridX - inventoryOffset * scale / 3.75), (int) (gridY - inventoryOffset * scale / 3.75), (int) (7 * (slotSize + slotSpacing) + inventoryOffset * scale / 3.75), (int) (4 * (slotSize + slotSpacing) + inventoryOffset * scale / 3.75), null);
+		} catch (IOException e) {
+			System.out.println("Can't find item texture " + fullPath + "!");
+		}
+
 		// Draw slots and item icons in the specified row order: row 1, row 2, row 3, row 0
 		int[] rowOrder = {1, 2, 3, 0};
 
@@ -728,7 +745,7 @@ public class GameRenderer {
 				int slotY = gridY + j * (slotSize + slotSpacing);
 
 				// Draw the slot as a gray rectangle
-				g2d.setColor(Color.GRAY);
+				g2d.setColor(new Color(0x44, 0x44, 0x44, 120));
 				g2d.fillRect(slotX, slotY, slotSize, slotSize);
 
 				// Draw item icon if there is one in this slot
