@@ -64,8 +64,8 @@ public class ItemLoader {
 							countLimit = Integer.parseInt(value);
 						} catch (NumberFormatException e) {
 							countLimit = (int) (player.attr.getMaxStackSizeMulti() * switch (value) {
-								case "consumable" -> 20; // Max value multiplied by max stack size
-								case "material" -> 30;
+								case "consumable" -> 15; // Max value multiplied by max stack size
+								case "material" -> 10;
 								default -> countLimit = 1;
 							});
                         }
