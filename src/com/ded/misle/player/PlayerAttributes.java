@@ -7,6 +7,7 @@ import java.util.TimerTask;
 
 import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.GamePanel.tileSize;
+import static com.ded.misle.GameRenderer.showHealthBar;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.items.Item.updateMaxStackSize;
 
@@ -30,7 +31,7 @@ public class PlayerAttributes {
 	private double playerSpeedModifier;
 	private double environmentSpeedModifier;
 	private double regenerationQuality;
-	private double regenerationRate;
+	private double regenerationRate = 1;
 	private boolean isInvulnerable;
 
 	// XP
@@ -408,10 +409,15 @@ public class PlayerAttributes {
 		// Calculate the interval for healing 1 HP, based on the existing regeneration rate and quality
 		double regenerationInterval = (250L / regenerationRate);
 
-		if (lastHitMillis + 2500 < currentTime && lastRegenerationMillis + regenerationInterval < currentTime && !this.isDead) {
-			receiveHeal(getRegenerationQuality(), "normal");
+		if (lastHitMillis + 2500 < currentTime && lastRegenerationMillis + regenerationInterval < currentTime && !isDead && hp < maxHP) {
+			receiveHeal(Math.max(getRegenerationQuality(), 1), "normal");
 			lastRegenerationMillis = currentTime;
-		}
+			showHealthBar = true;
+		} else showHealthBar = !(hp >= maxHP) || lastRegenerationMillis + 5000 >= currentTime || isDead;
+	}
+
+	public long getLastRegenerationMillis() {
+		return lastRegenerationMillis;
 	}
 
 	public double getRegenerationQuality() {

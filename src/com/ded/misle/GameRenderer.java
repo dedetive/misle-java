@@ -53,6 +53,8 @@ public class GameRenderer {
 	public static int unscaledSlotSize = 32;
 	public static int unscaledSlotSpacing = 3;
 
+	public static boolean showHealthBar = false;
+
 	private static final Color backgroundColor = new Color(76, 98, 76);
 
 	private static final List<String> floatingText = new ArrayList<>();
@@ -69,6 +71,7 @@ public class GameRenderer {
 		FADED,
 		UNFADED
 	}
+
 	private static FadingState isFading = FadingState.UNFADED;
 
 	private static Font comfortaaFont96 = FontManager.loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
@@ -553,7 +556,7 @@ public class GameRenderer {
 	}
 
 	private static void drawUIElements(Graphics2D g2d, int playerScreenX, int playerScreenY) {
-		drawHealthBar(g2d, playerScreenX, playerScreenY);
+		if (showHealthBar) drawHealthBar(g2d, playerScreenX, playerScreenY);
 		drawInventoryBar(g2d);
 		drawSelectedItemName(g2d);
 	}
