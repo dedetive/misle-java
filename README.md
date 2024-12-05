@@ -231,7 +231,6 @@ And finally, add the .png icon for the item in `resources/images/items/`. The na
 
 1. Currently, the `ru_RU` (Russian) and `el_GR` (Greek) fonts in item tooltips do not work properly due to unsupported characters in the current font.
 2. It crashes when trying to play the game with the language `mi_PM` due to lack of translation.
-3. When opening the inventory seconds after a playing session has started, slots may be incorrectly placed related to the mouse. This can be temporarily fixed by changing the window resolution.
 4. As of the most recent commit, all languages besides `en_US` and `pt_BR` will lead to a crash, due to the lack of translation of the Goblin Ear item. This will be fixed ASAP.
 
 > **Note:** Please report any issues you encounter during your game development. Please contact me if you're interested in helping. I'm available on Discord by the username `dedetive`. Your help would be greatly appreciated.
