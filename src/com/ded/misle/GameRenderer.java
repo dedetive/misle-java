@@ -4,13 +4,13 @@ import com.ded.misle.boxes.BoxesHandling;
 import com.ded.misle.items.Item;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import static com.ded.misle.ChangeSettings.getPath;
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.levelDesigner;
 import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.MenuButton.createButton;
+import static com.ded.misle.MenuButton.drawButtons;
 import static com.ded.misle.SaveFile.loadSaveFile;
 import static com.ded.misle.SaveFile.saveEverything;
 import static com.ded.misle.boxes.BoxesHandling.storeCachedBoxes;
@@ -28,9 +28,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -48,14 +45,14 @@ public class GameRenderer {
 	private static String selectedItemName;
 	private static Point selectedItemNamePosition;
 	private static long itemNameDisplayStartTime;
-	private static double textShadow = 1 * scale;
+	public static double textShadow = 1 * scale;
 
 	public static int unscaledSlotSize = 32;
 	public static int unscaledSlotSpacing = 3;
 
 	public static boolean showHealthBar = false;
 
-	private static final Color backgroundColor = new Color(76, 98, 76);
+	private static final Color backgroundColor = new Color(140, 110, 70);
 
 	private static final List<String> floatingText = new ArrayList<>();
 	private static final List<Point> floatingTextPosition = new ArrayList<>();
@@ -78,7 +75,7 @@ public class GameRenderer {
 	private static Font ubuntuFont35 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (35 * scale / 3.75));
 	private static Font basicFont40 = FontManager.loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));
 	private static Font itemCountFont = FontManager.loadFont("/fonts/Ubuntu-Regular.ttf", (float) (40 * scale / 3.75));
-	private static Font ubuntuFont44 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
+	public static Font ubuntuFont44 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
 
 
 	public static void updateFontSizes() {
@@ -89,31 +86,6 @@ public class GameRenderer {
 		ubuntuFont44 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
 
 		textShadow = 1 * scale;
-	}
-
-	private static void createButton(Rectangle button, String text, Runnable action, JPanel panel, Graphics2D g2d, double scaleByScreenSize) {
-		// BUTTON
-		g2d.fillRoundRect(button.x, button.y, button.width, button.height, (int) (69 * scaleByScreenSize), (int) (69 * scaleByScreenSize));
-
-		// TEXT SHADOW
-		g2d.setFont(ubuntuFont44);
-		FontMetrics fm = g2d.getFontMetrics();
-		String buttonText = text;
-		int textWidth = fm.stringWidth(buttonText);
-		int textHeight = fm.getAscent();
-		int textX = button.x + (button.width - textWidth) / 2;
-		int textY = button.y + (button.height + textHeight) / 2 - fm.getDescent() + (int) (2 * scale);
-		g2d.setColor(Color.black);
-		g2d.drawString(buttonText, (int) (textX - textShadow), textY); // Left
-		g2d.drawString(buttonText, (int) (textX + textShadow), textY); // Right
-		g2d.drawString(buttonText, textX, (int) (textY - textShadow)); // Up
-		g2d.drawString(buttonText, textX, (int) (textY + textShadow)); // Down
-
-		// ACTUAL TEXT
-		g2d.setColor(new Color(225, 225, 225));
-		g2d.drawString(buttonText, textX, textY);
-
-		addClickable(button, action, panel);
 	}
 
 	private static void createTitle(String text, Graphics2D g2d, double scaleByScreenSize) {
@@ -134,44 +106,6 @@ public class GameRenderer {
 		g2d.drawString(titleText, (int) (centerX - textShadow), (int) (textY - textShadow)); // Right-down corner
 		g2d.setColor(new Color(233, 233, 233));
 		g2d.drawString(titleText, centerX, textY);
-	}
-
-	private static final List<Object[]> clickables = new ArrayList<>();
-	private static boolean mouseListenerAdded = false;
-
-	private static void addClickable(Rectangle button, Runnable action, JPanel panel) {
-		// Add button and action as an object array to the list
-		clickables.add(new Object[]{button, action});
-
-		// Add the mouse listener only once
-		if (!mouseListenerAdded) {
-			panel.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					Point clickPoint = e.getPoint();
-					for (Object[] clickable : clickables) {
-						Rectangle rect = (Rectangle) clickable[0]; // Get the rectangle
-						Runnable clickableAction = (Runnable) clickable[1]; // Get the action
-
-						if (rect.contains(clickPoint)) {
-							clickableAction.run(); // Run action
-
-							// Clearing clickables afterwards
-							ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-							scheduler.schedule(GameRenderer::clearClickables, 8, TimeUnit.MILLISECONDS);
-							break;
-						}
-					}
-				}
-			});
-			mouseListenerAdded = true; // Prevent adding the listener again
-		}
-	}
-
-
-
-	public static void clearClickables() {
-		clickables.clear();
 	}
 
 	public static void gameStart() {
@@ -291,7 +225,6 @@ public class GameRenderer {
 
 			// Play button
 
-			g2d.setColor(new Color(191, 191, 191));
 			int playButtonX = (int) (736 * scaleByScreenSize);
 			int playButtonY = (int) (462 * scaleByScreenSize);
 			int playButtonWidth = (int) (448 * scaleByScreenSize);
@@ -306,7 +239,6 @@ public class GameRenderer {
 
 			// Quit button
 
-			g2d.setColor(new Color(191, 191, 191));
 			int quitButtonX = (int) (992 * scaleByScreenSize);
 			int quitButtonY = (int) (660 * scaleByScreenSize);
 			int quitButtonWidth = (int) (192 * scaleByScreenSize);
@@ -315,9 +247,9 @@ public class GameRenderer {
 
 			createButton(quitButton, LanguageManager.getText("main_menu_quit"), GameRenderer::quitGame, panel, g2d, scaleByScreenSize);
 
+
 			// Options menu
 
-			g2d.setColor(new Color(191, 191, 191));
 			int optionsButtonX = (int) (736 * scaleByScreenSize);
 			int optionsButtonY = (int) (660 * scaleByScreenSize);
 			int optionsButtonWidth = (int) (192 * scaleByScreenSize);
@@ -325,6 +257,8 @@ public class GameRenderer {
 			Rectangle optionsButton = new Rectangle(optionsButtonX, optionsButtonY, optionsButtonWidth, optionsButtonHeight);
 
 			createButton(optionsButton, LanguageManager.getText("main_menu_options"), GameRenderer::optionsMenu, panel, g2d, scaleByScreenSize);
+
+			drawButtons(g2d, scaleByScreenSize);
 
 			// Version
 
@@ -355,7 +289,6 @@ public class GameRenderer {
 
 			// Resume button
 
-			g2d.setColor(new Color(191, 191, 191));
 			int playButtonX = (int) (736 * scaleByScreenSize);
 			int playButtonY = (int) (462 * scaleByScreenSize);
 			int playButtonWidth = (int) (448 * scaleByScreenSize);
@@ -366,7 +299,6 @@ public class GameRenderer {
 
 			// Quit button
 
-			g2d.setColor(new Color(191, 191, 191));
 			int quitButtonX = (int) (992 * scaleByScreenSize);
 			int quitButtonY = (int) (660 * scaleByScreenSize);
 			int quitButtonWidth = (int) (192 * scaleByScreenSize);
@@ -377,7 +309,6 @@ public class GameRenderer {
 
 			// Options menu
 
-			g2d.setColor(new Color(191, 191, 191));
 			int optionsButtonX = (int) (736 * scaleByScreenSize);
 			int optionsButtonY = (int) (660 * scaleByScreenSize);
 			int optionsButtonWidth = (int) (192 * scaleByScreenSize);
@@ -385,6 +316,8 @@ public class GameRenderer {
 			Rectangle optionsButton = new Rectangle(optionsButtonX, optionsButtonY, optionsButtonWidth, optionsButtonHeight);
 
 			createButton(optionsButton, LanguageManager.getText("pause_menu_options"), GameRenderer::optionsMenu, panel, g2d, scaleByScreenSize);
+
+			drawButtons(g2d, scaleByScreenSize);
 		}
 	}
 
@@ -407,7 +340,6 @@ public class GameRenderer {
 
 			// Go back button
 
-			g2d.setColor(new Color(191, 191, 191));
 			int playButtonX = (int) (1338 * scaleByScreenSize);
 			int playButtonY = (int) (883 * Math.pow(scaleByScreenSize, 1.04));
 			int playButtonWidth = (int) (407 * scaleByScreenSize);
@@ -415,6 +347,8 @@ public class GameRenderer {
 			Rectangle playButton = new Rectangle(playButtonX, playButtonY, playButtonWidth, playButtonHeight);
 
 			createButton(playButton, LanguageManager.getText("options_menu_go_back"), GameRenderer::goToPreviousMenu, panel, g2d, scaleByScreenSize);
+
+			drawButtons(g2d, scaleByScreenSize);
 		}
 	}
 

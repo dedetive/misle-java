@@ -10,6 +10,7 @@ import java.awt.event.*;
 import static com.ded.misle.GameRenderer.*;
 import static com.ded.misle.KeyHandler.updateDesignerSpeed;
 import static com.ded.misle.Launcher.*;
+import static com.ded.misle.MenuButton.clearButtons;
 import static com.ded.misle.SaveFile.saveEverything;
 
 /**
@@ -216,7 +217,7 @@ public class GamePanel extends JPanel implements Runnable {
 				player.setX(player.getX() * scale / previousScale);
 				player.setY(player.getY() * scale / previousScale);
 
-				GameRenderer.clearClickables();
+				clearButtons();
 				GameRenderer.updateFontSizes();
 				MouseHandler.updateVariableScales();
 				if (levelDesigner) {
