@@ -13,6 +13,10 @@ import static com.ded.misle.GameRenderer.ubuntuFont44;
 import static com.ded.misle.Launcher.scale;
 
 public class MenuButton {
+    static Color defaultColor = new Color(70, 51, 5);
+    static Color hoverColor = new Color(40, 25, 1);
+    static Color shadowColor = new Color(40, 25, 1);
+
     Rectangle bounds;
     Color color;
     Runnable action;
@@ -35,8 +39,6 @@ public class MenuButton {
                 return;
             }
         }
-        Color defaultColor = new Color(70, 51, 5);
-        Color hoverColor = new Color(40, 25, 1);
         MenuButton button = new MenuButton(bounds, defaultColor, action, text);
         buttons.add(button);
 
@@ -85,9 +87,11 @@ public class MenuButton {
 
     public static void drawButtons(Graphics2D g2d, double scaleByScreenSize) {
         for (MenuButton button : buttons) {
+            int buttonBorderSize = (int) (69 * scaleByScreenSize);
+
             g2d.setColor(button.color);
             g2d.fillRoundRect(button.bounds.x, button.bounds.y, button.bounds.width, button.bounds.height,
-                (int) (69 * scaleByScreenSize), (int) (69 * scaleByScreenSize));
+                buttonBorderSize, buttonBorderSize);
 
             // TEXT SHADOW
             g2d.setFont(ubuntuFont44);

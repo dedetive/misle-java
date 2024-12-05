@@ -69,10 +69,12 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 		gridX = (int) ((screenWidth - gridWidth) / 2);
 		gridY = (int) ((screenHeight - gridHeight) / 2);
 
+		int[] rowOrder = {1, 2, 3, 0};
+
 		for (int j = 0; j < 4; j++) {
 			for (int i = 0; i < 7; i++) {
 				slotX[i] = gridX + i * (slotSize + slotSpacing);
-				slotY[j] = gridY + j * (slotSize + slotSpacing);
+				slotY[rowOrder[j]] = gridY + j * (slotSize + slotSpacing);
 			}
 		}
 	}
