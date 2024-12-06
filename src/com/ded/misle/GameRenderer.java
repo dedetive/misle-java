@@ -526,14 +526,10 @@ public class GameRenderer {
 		int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
 		int inventoryBarY = (int) (screenHeight - inventoryBarHeight - 60);
 
-		// Background of the inventory
-		g2d.setColor(new Color(30, 30, 30, 150)); // Semi-transparent black
-		g2d.fillRect(inventoryBarX, inventoryBarY, inventoryBarWidth, inventoryBarHeight);
-
 		// Slots info
 
-		int slotSize = (int) (30 * scale);
-		int slotSpacing = (int) (3 * scale);
+		int slotSize = (int) (unscaledSlotSize * scale);
+		int slotSpacing = (int) (unscaledSlotSpacing * scale);
 
 		int totalSlotsWidth = 7 * slotSize + (6 * slotSpacing);
 		int slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
@@ -544,11 +540,10 @@ public class GameRenderer {
 			int slotX = slotStartX + i * (slotSize + slotSpacing);
 			int slotY = inventoryBarY + (inventoryBarHeight - slotSize) / 2;
 
-			// Draw the slot (e.g., as a gray rectangle)
+			// Draw the slot
 			g2d.setColor(Color.GRAY);
 			g2d.fillRect(slotX, slotY, slotSize, slotSize);
 
-		// Draw item if there is one in this slot (disabled as there's currently no getIcon())
 			Item item = player.inv.getItem(0, i);
 			if (item != null) {
 				g2d.drawImage(item.getIcon(), slotX, slotY, slotSize, slotSize, null);
@@ -557,8 +552,8 @@ public class GameRenderer {
 					g2d.setFont(itemCountFont);
 					FontMetrics fm = g2d.getFontMetrics();
 					int textWidth = fm.stringWidth(Integer.toString(itemCount));
-					int textX = (int) (slotX - textWidth + slotSize);
-					int textY = (int) (slotY + 8 * slotSize / 9);
+					int textX = slotX - textWidth + slotSize;
+					int textY = slotY + 8 * slotSize / 9;
 					g2d.setColor(Color.black);
 					g2d.drawString(Integer.toString(itemCount), (int) (textX + textShadow), (int) (textY + textShadow));
 					g2d.setColor(Color.white);
@@ -567,14 +562,14 @@ public class GameRenderer {
 			}
 
 			if (i == selectedSlot) {
-				drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize, slotSize);
+				drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize);
 			}
 		}
 	}
 
-	private static void drawSelectedSlotOverlay(Graphics2D g2d, int slotX, int slotY, int slotWidth, int slotHeight) {
+	private static void drawSelectedSlotOverlay(Graphics2D g2d, int slotX, int slotY, int slotSize) {
 		g2d.setColor(new Color(255, 255, 255, 100)); // Semi-transparent overlay
-		g2d.fillRect(slotX, slotY, slotWidth, slotHeight);
+		g2d.fillRect(slotX, slotY, slotSize, slotSize);
 	}
 
 	public static void updateSelectedItemNamePosition() {
@@ -806,7 +801,7 @@ public class GameRenderer {
 		}
 
 		if (gameState == GameState.INVENTORY || (hoveredSlot[1] != player.inv.getSelectedSlot() && gameState == GameState.PLAYING)) {
-			drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize, slotSize);
+			drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize);
 		}
 
 		// Get item details
