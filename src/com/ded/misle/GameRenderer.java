@@ -665,10 +665,10 @@ public class GameRenderer {
 		Path basePath = getPath().resolve("resources/images/ui/");
 		Path fullPath = basePath.resolve("inventoryBackground.png");
 
-		int inventoryOffset = 16;
+		int inventoryImageOffset = 16;
 
 		try {
-			g2d.drawImage(ImageIO.read(fullPath.toFile()), (int) (gridX - inventoryOffset * scale / 3.75), (int) (gridY - inventoryOffset * scale / 3.75), (int) (7 * (slotSize + slotSpacing) + inventoryOffset * scale / 3.75), (int) (4 * (slotSize + slotSpacing) + inventoryOffset * scale / 3.75), null);
+			g2d.drawImage(ImageIO.read(fullPath.toFile()), (int) (gridX - inventoryImageOffset * scale / 3.75), (int) (gridY - inventoryImageOffset * scale / 3.75), (int) (7 * (slotSize + slotSpacing) + inventoryImageOffset * scale / 3.75), (int) (4 * (slotSize + slotSpacing) + inventoryImageOffset * scale / 3.75), null);
 		} catch (IOException e) {
 			System.out.println("Can't find item texture " + fullPath + "!");
 		}
