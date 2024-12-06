@@ -11,6 +11,7 @@ import static com.ded.misle.GameRenderer.*;
 import static com.ded.misle.KeyHandler.updateDesignerSpeed;
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.MenuButton.clearButtons;
+import static com.ded.misle.MouseHandler.updateVariableScales;
 import static com.ded.misle.SaveFile.saveEverything;
 
 /**
@@ -100,6 +101,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 		Thread windowSizeThread = new Thread(this::changeAndDetectWindowSize);
 		windowSizeThread.start();
+
+		updateVariableScales();
 
 		if (displayFPS) {
 			fpsLabel = new JLabel("FPS: 0");
@@ -219,7 +222,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 				clearButtons();
 				GameRenderer.updateFontSizes();
-				MouseHandler.updateVariableScales();
+				updateVariableScales();
 				if (levelDesigner) {
 					updateDesignerSpeed();
 				}

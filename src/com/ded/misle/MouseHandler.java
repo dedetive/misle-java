@@ -22,78 +22,24 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 	private static final int[] barSlotY = new int[7];
 	private static final int[] slotX = new int[7];
 	private static final int[] slotY = new int[7];
-	private static int inventoryBarWidth;
-	private static int inventoryBarHeight;
-	private static int inventoryBarX;
-	private static int inventoryBarY;
-	private static int slotSpacing;
-	private static int totalSlotsWidth;
-	private static int slotStartX;
-	private static int slotSize;
-	private static int gridWidth;
-	private static int gridHeight;
-	private static int gridX;
-	private static int gridY;
-	private int hoveredBarSlot = -1;
+    private int hoveredBarSlot = -1;
 	private int[] hoveredSlot = new int[]{-1, -1};
-
-	static {
-
-		// PLAYING
-
-		inventoryBarWidth = (int) (120 * scale);
-		inventoryBarHeight = (int) (20 * scale);
-		inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
-		inventoryBarY = (int) (screenHeight - inventoryBarHeight - 60);
-
-		slotWidth = (int) (30 * scale);
-		slotHeight = (int) (30 * scale);
-		slotSpacing = (int) (3 * scale);
-
-		totalSlotsWidth = 7 * slotWidth + (6 * slotSpacing);
-		slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
-
-		for (int i = 0; i < 7; i++) {
-			barSlotX[i] = slotStartX + i * (slotWidth + slotSpacing);
-			barSlotY[i] = inventoryBarY + (inventoryBarHeight - slotHeight) / 2;
-		}
-
-		// INVENTORY
-
-		slotSize = (int) (unscaledSlotSize * scale);
-		slotSpacing = (int) (unscaledSlotSpacing * scale);
-
-		gridWidth = 7 * slotSize + 6 * slotSpacing;
-		gridHeight = 4 * slotSize + 3 * slotSpacing;
-
-		gridX = (int) ((screenWidth - gridWidth) / 2);
-		gridY = (int) ((screenHeight - gridHeight) / 2);
-
-		int[] rowOrder = {1, 2, 3, 0};
-
-		for (int j = 0; j < 4; j++) {
-			for (int i = 0; i < 7; i++) {
-				slotX[i] = gridX + i * (slotSize + slotSpacing);
-				slotY[rowOrder[j]] = gridY + j * (slotSize + slotSpacing);
-			}
-		}
-	}
 
 	public static void updateVariableScales() {
 
 		// PLAYING
 
-		inventoryBarWidth = (int) (120 * scale);
-		inventoryBarHeight = (int) (20 * scale);
-		inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
-		inventoryBarY = (int) (screenHeight - inventoryBarHeight - 60);
+        int inventoryBarWidth = (int) (120 * scale);
+        int inventoryBarHeight = (int) (20 * scale);
+        int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
+        int inventoryBarY = (int) (screenHeight - inventoryBarHeight - 60);
 
 		slotWidth = (int) (30 * scale);
 		slotHeight = (int) (30 * scale);
-		slotSpacing = (int) (3 * scale);
+        int slotSpacing = (int) (3 * scale);
 
-		totalSlotsWidth = 7 * slotWidth + (6 * slotSpacing);
-		slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
+        int totalSlotsWidth = 7 * slotWidth + (6 * slotSpacing);
+        int slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
 
 		for (int i = 0; i < 7; i++) {
 			barSlotX[i] = slotStartX + i * (slotWidth + slotSpacing);
@@ -102,14 +48,14 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 		// INVENTORY
 
-		slotSize = (int) (unscaledSlotSize * scale);
+        int slotSize = (int) (unscaledSlotSize * scale);
 		slotSpacing = (int) (unscaledSlotSpacing * scale);
 
-		gridWidth = 7 * slotSize + 6 * slotSpacing;
-		gridHeight = 4 * slotSize + 3 * slotSpacing;
+        int gridWidth = 7 * slotSize + 6 * slotSpacing;
+        int gridHeight = 4 * slotSize + 3 * slotSpacing;
 
-		gridX = (int) ((screenWidth - gridWidth) / 2);
-		gridY = (int) ((screenHeight - gridHeight) / 2);
+        int gridX = (int) ((screenWidth - gridWidth) / 2);
+        int gridY = (int) ((screenHeight - gridHeight) / 2);
 
 		int[] rowOrder = {1, 2, 3, 0};
 
