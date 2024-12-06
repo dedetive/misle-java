@@ -15,7 +15,6 @@ import static com.ded.misle.Launcher.scale;
 public class MenuButton {
     static Color defaultColor = new Color(70, 51, 5);
     static Color hoverColor = new Color(40, 25, 1);
-    static Color shadowColor = new Color(40, 25, 1);
 
     Rectangle bounds;
     Color color;
@@ -77,6 +76,7 @@ public class MenuButton {
                 for (MenuButton button : buttons) {
                     if (button.bounds.contains(clickPoint)) {
                         button.action.run();
+                        panel.setCursor(Cursor.getDefaultCursor());
                         clearButtons();
                         break;
                     }
