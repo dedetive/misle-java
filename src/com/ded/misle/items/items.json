@@ -179,6 +179,17 @@
   "nameColor": "#088F08"
   },
   {
+    "id": 14,
+    "resourceID": 14,
+    "name": "Silver Ring",
+    "rarity": "E",
+    "str": 2,
+    "def": 2,
+    "type": "armor",
+    "subtype": "ring",
+    "nameColor": "#D6D6D6"
+  },
+  {
     "id": -1,
     "resourceID": -1,
     "name": "",
