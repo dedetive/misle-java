@@ -190,6 +190,18 @@
     "nameColor": "#D6D6D6"
   },
   {
+    "id": 15,
+    "resourceID": 15,
+    "name": "Golden Ring",
+    "rarity": "D",
+    "vit": 1,
+    "def": 2,
+    "str": 3,
+    "type": "armor",
+    "subtype": "ring",
+    "nameColor": "#FAE076"
+  },
+  {
     "id": -1,
     "resourceID": -1,
     "name": "",
