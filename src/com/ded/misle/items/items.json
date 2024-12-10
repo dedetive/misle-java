@@ -202,6 +202,17 @@
     "nameColor": "#FAE076"
   },
   {
+    "id": 16,
+    "resourceID": 16,
+    "name": "Turtle Ring",
+    "rarity": "C",
+    "vit": 4,
+    "def": 7,
+    "type": "armor",
+    "subtype": "ring",
+    "nameColor": "#089108"
+  },
+  {
     "id": -1,
     "resourceID": -1,
     "name": "",
