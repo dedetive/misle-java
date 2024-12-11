@@ -213,6 +213,18 @@
     "nameColor": "#089108"
   },
   {
+    "id": 17,
+    "resourceID": 17,
+    "name": "Flower Ring",
+    "rarity": "C",
+    "def": 1,
+    "ent": 5,
+    "vit": 15,
+    "type": "armor",
+    "subtype": "ring",
+    "nameColor": "#22E02E"
+  },
+  {
     "id": -1,
     "resourceID": -1,
     "name": "",
