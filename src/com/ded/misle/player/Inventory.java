@@ -15,6 +15,7 @@ import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.boxes.BoxManipulation.*;
 import static com.ded.misle.boxes.BoxesHandling.addBox;
 import static com.ded.misle.boxes.BoxesHandling.editBox;
+import static com.ded.misle.player.HandItemAnimator.animateClaw;
 import static java.lang.System.currentTimeMillis;
 
 public class Inventory {
@@ -283,43 +284,6 @@ public class Inventory {
                 }
             }
 		}
-	}
-
-	public void animateClaw() {
-		// PREPARATION (move claw up and swing back)
-
-		Item selectedItem = getSelectedItem();
-
-		getSelectedItem().delayedSetAnimationRotation(-75, 180);
-		getSelectedItem().delayedChangeAnimationBulk(0.175, 180);
-		getSelectedItem().delayedMoveAnimationY(-30, 70);
-		getSelectedItem().delayedMoveAnimationX(15, 70);
-
-		// ATTACK (swing forward)
-
-		Timer attack = new Timer(215, evt -> {
-			if (getSelectedItem() != selectedItem) {
-				return;
-			}
-			getSelectedItem().delayedSetAnimationRotation(150, 60);
-			getSelectedItem().delayedChangeAnimationBulk(-0.175, 120);
-
-			// RETURN TO ORIGINAL POSITION
-
-			Timer returnOriginalPos = new Timer(60, event -> {
-				if (getSelectedItem() != selectedItem) {
-					return;
-				}
-
-				getSelectedItem().delayedSetAnimationRotation(-75, 70);
-				getSelectedItem().delayedMoveAnimationY(30, 30);
-				getSelectedItem().delayedMoveAnimationX(-15, 30);
-			});
-			returnOriginalPos.setRepeats(false);
-			returnOriginalPos.start();
-		});
-		attack.setRepeats(false);
-		attack.start();
 	}
 
 	public void clearInventory() {
