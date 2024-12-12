@@ -236,7 +236,7 @@ public class Inventory {
                         healAmountValue = player.attr.getMaxHP();
                     }
                     String formattedHealAmount = df.format(player.attr.calculateHeal(healAmountValue, "normal"));
-                    createFloatingText("+" + formattedHealAmount, Color.decode("#DE4040"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+                    createFloatingText("+" + formattedHealAmount, Color.decode("#50EE50"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
                     player.attr.receiveHeal(healAmountValue, "normal");
 
                     Timer delayToRemove = new Timer(30, e -> {
