@@ -2,11 +2,14 @@ package com.ded.misle.player;
 
 import com.ded.misle.boxes.Box;
 
+import java.awt.*;
+import java.text.DecimalFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.GamePanel.tileSize;
+import static com.ded.misle.GameRenderer.createFloatingText;
 import static com.ded.misle.GameRenderer.showHealthBar;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.items.Item.updateMaxStackSize;
@@ -254,6 +257,16 @@ public class PlayerAttributes {
 		if (this.hp <= 0 || lockedHP > this.hp) {
 			playerDies();
 		}
+
+		// Displayed numerical value5
+
+		int playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()) / scale);
+		int playerScreenY = (int) ((player.getY() - player.pos.getCameraOffsetY()) / scale);
+		int randomPosX = (int) ((Math.random() * (40 + 40)) - 40);
+		int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
+		DecimalFormat df = new DecimalFormat("#.##");
+		String formattedHealAmount = df.format(damageToReceive);
+		createFloatingText("+" + formattedHealAmount, Color.decode("#DE4040"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
 
 		return damageToReceive;
 	}
