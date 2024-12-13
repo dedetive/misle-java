@@ -527,6 +527,16 @@ public class GameRenderer {
 		int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
 		int inventoryBarY = (int) (screenHeight - inventoryBarHeight - 60);
 
+		// Draw background
+		Path basePath = getPath().resolve("resources/images/ui/");
+		Path fullPath = basePath.resolve("inventoryBar.png");
+
+		try {
+			g2d.drawImage(ImageIO.read(fullPath.toFile()), 0, (int) (screenHeight - 82 * Math.pow(scale, (double) 1 /2)), (int) (512 * scale), (int) (35 * scale), null);
+		} catch (IOException e) {
+			System.out.println("Can't find item texture " + fullPath + "!");
+		}
+
 		// Slots info
 
 		int slotSize = (int) (unscaledSlotSize * scale);
@@ -541,9 +551,9 @@ public class GameRenderer {
 			int slotX = slotStartX + i * (slotSize + slotSpacing);
 			int slotY = inventoryBarY + (inventoryBarHeight - slotSize) / 2;
 
-			// Draw the slot
-			g2d.setColor(Color.GRAY);
-			g2d.fillRect(slotX, slotY, slotSize, slotSize);
+			// Draw the slot (DISABLED, ENABLE FOR TESTING)
+//			g2d.setColor(Color.GRAY);
+//			g2d.fillRect(slotX, slotY, slotSize, slotSize);
 
 			Item item = player.inv.getItem(0, i);
 			if (item != null) {
