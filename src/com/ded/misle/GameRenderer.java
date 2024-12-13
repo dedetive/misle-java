@@ -691,12 +691,12 @@ public class GameRenderer {
 
 		// 295, 22
 		// Draw stats name
-		drawStatText(g2d, "Vitality", 288, 33);
-		drawStatText(g2d, "Defense", 288, 65);
-		drawStatText(g2d, "Regeneration", 288, 97);
-		drawStatText(g2d, "Entropy", 384, 33);
-		drawStatText(g2d, "Strength", 384, 65);
-		drawStatText(g2d, "Speed", 384, 97);
+		drawStatText(g2d, LanguageManager.getText("inventory_vitality"), 288, 33);
+		drawStatText(g2d, LanguageManager.getText("inventory_defense"), 288, 65);
+		drawStatText(g2d, LanguageManager.getText("inventory_regeneration"), 288, 97);
+		drawStatText(g2d, LanguageManager.getText("inventory_entropy"), 384, 33);
+		drawStatText(g2d, LanguageManager.getText("inventory_strength"), 384, 65);
+		drawStatText(g2d, LanguageManager.getText("inventory_speed"), 384, 97);
 	}
 
 	private static void drawStatText(Graphics2D g2d, String statText, int centerX, int y) {
