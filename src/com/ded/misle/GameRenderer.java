@@ -689,27 +689,57 @@ public class GameRenderer {
 			}
 		}
 
-		// 295, 22
 		// Draw stats name
-		drawStatText(g2d, LanguageManager.getText("inventory_vitality"), 288, 33);
-		drawStatText(g2d, LanguageManager.getText("inventory_defense"), 288, 65);
-		drawStatText(g2d, LanguageManager.getText("inventory_regeneration"), 288, 97);
-		drawStatText(g2d, LanguageManager.getText("inventory_entropy"), 384, 33);
-		drawStatText(g2d, LanguageManager.getText("inventory_strength"), 384, 65);
-		drawStatText(g2d, LanguageManager.getText("inventory_speed"), 384, 97);
+			// VIT
+		drawStat(g2d, LanguageManager.getText("inventory_vitality"), 288, 33);
+		String formattedMaxHP = Long.toString(Math.round(player.attr.getMaxHP()));
+		drawStat(g2d, formattedMaxHP, 288, 47);
+			// DEF
+		drawStat(g2d, LanguageManager.getText("inventory_defense"), 288, 65);
+		String formattedDefense = Long.toString(Math.round(player.attr.getDefense()));
+		drawStat(g2d, formattedDefense, 288, 79);
+			// REG
+		drawStat(g2d, LanguageManager.getText("inventory_regeneration"), 288, 97);
+		String formattedRegeneration = Long.toString(Math.round(player.attr.getRegenerationQuality()));
+		drawStat(g2d, formattedRegeneration, 288, 111);
+			// ENT
+		drawStat(g2d, LanguageManager.getText("inventory_entropy"), 384, 33);
+		String formattedEntropy = Long.toString(Math.round(player.attr.getMaxEntropy()));
+		drawStat(g2d, formattedEntropy, 384, 47);
+			// STR
+		drawStat(g2d, LanguageManager.getText("inventory_strength"), 384, 65);
+//		String formattedStrength = Long.toString(Math.round(player.attr.getStrength()));
+		String formattedStrength = "WIP";
+		drawStat(g2d, formattedStrength, 384, 79);
+			// SPD
+		drawStat(g2d, LanguageManager.getText("inventory_speed"), 384, 97);
+		String formattedSpeed = Long.toString(Math.round(player.attr.getSpeed()));
+		drawStat(g2d, formattedSpeed, 384, 111);
 	}
 
-	private static void drawStatText(Graphics2D g2d, String statText, int centerX, int y) {
-		g2d.setFont(ubuntuFont44);
+	private static void drawStat(Graphics2D g2d, String statText, int centerX, int y, Color textColor, Color shadowColor) {
+		// Calculate center
 		centerX = (int) (centerX * scale);
 		FontMetrics fm = g2d.getFontMetrics();
 		int textWidth = fm.stringWidth(statText);
 		int startX = centerX - (textWidth / 2);
 		y = (int) (y * scale);
-		g2d.setColor(Color.black);
+
+		// Draw text shadow
+		g2d.setColor(shadowColor);
 		g2d.drawString(statText, (int) (startX + textShadow), (int) (y + textShadow));
-		g2d.setColor(new Color(230, 230, 180));
+
+		// Draw text
+		g2d.setColor(textColor);
 		g2d.drawString(statText, startX, y);
+	}
+
+	private static void drawStat(Graphics2D g2d, String statText, int centerX, int y) {
+		g2d.setFont(ubuntuFont44);
+		Color textColor = new Color(230, 230, 180);
+		Color shadowColor = Color.black;
+
+		drawStat(g2d, statText, centerX, y, textColor, shadowColor);
 	}
 
 	public static void drawRotatedImage(Graphics2D g2d, Image image, double x, double y, int width, int height, double angle) {
