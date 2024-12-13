@@ -51,11 +51,8 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
         int slotSize = (int) (unscaledSlotSize * scale);
 		slotSpacing = (int) (unscaledSlotSpacing * scale);
 
-        int gridWidth = 7 * slotSize + 6 * slotSpacing;
-        int gridHeight = 4 * slotSize + 3 * slotSpacing;
-
-        int gridX = (int) ((screenWidth - gridWidth) / 2);
-        int gridY = (int) ((screenHeight - gridHeight) / 2);
+		int gridX = (int) (225 * scale);
+		int gridY = (int) (148 * scale);
 
 		int[] rowOrder = {1, 2, 3, 0};
 

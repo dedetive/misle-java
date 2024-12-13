@@ -48,7 +48,7 @@ public class GameRenderer {
 	public static double textShadow = 1 * scale;
 
 	public static int unscaledSlotSize = 32;
-	public static int unscaledSlotSpacing = 3;
+	public static int unscaledSlotSpacing = 0;
 
 	public static boolean showHealthBar = false;
 
@@ -399,7 +399,7 @@ public class GameRenderer {
 		}
 	}
 
-	public static void renderPlayingGame(Graphics g, JPanel panel, MouseHandler mouseHandler) {
+	public static void renderPlayingGame(Graphics g, MouseHandler mouseHandler) {
 		Graphics2D g2d = (Graphics2D) g;
 		double scaleByScreenSize = scale / 3.75;
 
@@ -427,7 +427,7 @@ public class GameRenderer {
 		}
 
 		if (gameState == GamePanel.GameState.INVENTORY) {
-			renderInventoryMenu(g, panel);
+			renderInventoryMenu(g);
 			if (mouseHandler.getHoveredSlot()[0] > -1 && mouseHandler.getHoveredSlot()[1] > -1 && player.inv.getItem(mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1]) != null) {
 				drawHoveredItemTooltip(g, new int[]{mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1]});
 			}
@@ -631,39 +631,28 @@ public class GameRenderer {
 	}
 
 
-	public static void renderInventoryMenu(Graphics g, JPanel panel) {
-		double scaleByScreenSize = scale / 3.75;
-
+	public static void renderInventoryMenu(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 
 		// Semi-transparent background overlay
 		g2d.setColor(new Color(15, 15, 15, 130));
 		g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
 
-		// Inventory title
-		createTitle("inventory_menu_inventory", g2d, scaleByScreenSize);
-
 		// Slot dimensions and spacing
 		int slotSize = (int) (unscaledSlotSize * scale);
 		int slotSpacing = (int) (unscaledSlotSpacing * scale);
 
-		// Calculate the total width and height of the 7x4 grid with spacing
-		int gridWidth = 7 * slotSize + 6 * slotSpacing;
-		int gridHeight = 4 * slotSize + 3 * slotSpacing;
-
-		// Center the grid on the screen
-		int gridX = (int) ((screenWidth - gridWidth) / 2);
-		int gridY = (int) ((screenHeight - gridHeight) / 2);
+		// Start the grid
+		int gridX = (int) (225 * scale);
+		int gridY = (int) (148 * scale);
 
 		// Draw background
 
 		Path basePath = getPath().resolve("resources/images/ui/");
 		Path fullPath = basePath.resolve("inventoryBackground.png");
 
-		int inventoryImageOffset = 16;
-
 		try {
-			g2d.drawImage(ImageIO.read(fullPath.toFile()), (int) (gridX - inventoryImageOffset * scale / 3.75), (int) (gridY - inventoryImageOffset * scale / 3.75), (int) (7 * (slotSize + slotSpacing) + inventoryImageOffset * scale / 3.75), (int) (4 * (slotSize + slotSpacing) + inventoryImageOffset * scale / 3.75), null);
+			g2d.drawImage((Image) ImageIO.read(fullPath.toFile()), 0, 0, (int) screenWidth, (int) screenHeight, null);
 		} catch (IOException e) {
 			System.out.println("Can't find item texture " + fullPath + "!");
 		}
@@ -676,9 +665,9 @@ public class GameRenderer {
 				int slotX = gridX + i * (slotSize + slotSpacing);
 				int slotY = gridY + j * (slotSize + slotSpacing);
 
-				// Draw the slot as a gray rectangle
-				g2d.setColor(new Color(0x44, 0x44, 0x44, 120));
-				g2d.fillRect(slotX, slotY, slotSize, slotSize);
+				// Draw the slot as a gray rectangle (DISABLED, ENABLE FOR TESTING)
+//				g2d.setColor(new Color(0x44, 0x44, 0x44, 120));
+//				g2d.fillRect(slotX, slotY, slotSize, slotSize);
 
 				// Draw item icon if there is one in this slot
 				Item item = player.inv.getItem(rowOrder[j], i);
@@ -784,11 +773,8 @@ public class GameRenderer {
 		} else {
 			// If in inventory menu
 
-			int gridWidth = 7 * slotSize + 6 * slotSpacing;
-			int gridHeight = 4 * slotSize + 3 * slotSpacing;
-
-			int gridX = (int) ((screenWidth - gridWidth) / 2);
-			int gridY = (int) ((screenHeight - gridHeight) / 2);
+			int gridX = (int) (225 * scale);
+			int gridY = (int) (148 * scale);
 
 			int[] rowOrder = {3, 0, 1, 2};
 

@@ -362,7 +362,7 @@ public class GamePanel extends JPanel implements Runnable {
 			case GameState.INVENTORY:
 			case GameState.PLAYING:
 			case GameState.FROZEN_PLAYING:
-				renderPlayingGame(g, this, mouseHandler);
+				renderPlayingGame(g, mouseHandler);
 				break;
 			case GameState.MAIN_MENU:
 				renderMainMenu(g, this);
