@@ -416,7 +416,7 @@ public class GameRenderer {
 
 		// Draw the player above every box
 		g2d.setColor(Color.WHITE);
-		Rectangle playerRect = new Rectangle(playerScreenX, playerScreenY, (int) player.attr.getWidth(), (int) player.attr.getHeight());
+		Rectangle playerRect = new Rectangle(playerScreenX, playerScreenY, (int) player.getBoxScaleHorizontal(), (int) player.getBoxScaleVertical());
 		drawRotatedRect(g2d, playerRect, player.pos.getRotation());
 
 		drawHandItem(g2d, playerScreenX, playerScreenY, scaleByScreenSize);
@@ -472,7 +472,7 @@ public class GameRenderer {
 				mirror = true;
 			}
 
-			double distance = playerScreenX + (player.attr.getWidth() / 2) * 2 * isFacingRight * scaleByScreenSize;
+			double distance = playerScreenX + (player.getBoxScaleHorizontal() / 2) * 2 * isFacingRight * scaleByScreenSize;
 
 			Item selectedItem = player.inv.getSelectedItem();
 
@@ -499,7 +499,7 @@ public class GameRenderer {
 	private static void drawHealthBar(Graphics2D g2d, int playerScreenX, int playerScreenY) {
 		int healthBarWidth = (int) (50 * scale); // Width of the health bar
 		int healthBarHeight = (int) (10 * scale); // Height of the health bar
-		int healthBarX = (int) (playerScreenX - player.attr.getWidth() / 2 - 2 * scale); // Position it above the player
+		int healthBarX = (int) (playerScreenX - player.getBoxScaleHorizontal() / 2 - 2 * scale); // Position it above the player
 		int healthBarY = playerScreenY - healthBarHeight - 5; // Offset slightly above the player rectangle
 
 		// Calculate the percentage of health remaining

@@ -184,12 +184,16 @@ public class GamePanel extends JPanel implements Runnable {
 
 		double previousWidth = window.getWidth();
 		double previousHeight = window.getHeight();
-		while (running) {
+		double resizeThreshold = 5.0; // Allowable pixel difference to ignore small changes
 
+		while (running) {
 			int detectedWidth = window.getWidth();
 			int detectedHeight = window.getHeight();
 
-			if (detectedWidth != previousWidth || detectedHeight != previousHeight) {
+			// Check if the size change is significant
+			if (Math.abs(detectedWidth - previousWidth) > resizeThreshold ||
+				Math.abs(detectedHeight - previousHeight) > resizeThreshold) {
+
 				detectedWidth = Math.min(detectedWidth, screenWidth);
 				detectedHeight = Math.min(detectedHeight, screenHeight);
 
@@ -212,13 +216,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 				updateTileSize();
 				player.attr.updateStat(PlayerAttributes.Stat.SPEED);
-				player.attr.setWidth(tileSize);
-				player.attr.setHeight(tileSize);
+				player.setBoxScaleHorizontal(tileSize * 0.91);
+				player.setBoxScaleVertical(tileSize * 0.91);
 				worldWidth = originalWorldWidth * scale;
 				worldHeight = originalWorldHeight * scale;
-
-				player.setX(player.getX() * scale / previousScale);
-				player.setY(player.getY() * scale / previousScale);
 
 				clearButtons();
 				GameRenderer.updateFontSizes();
@@ -240,6 +241,7 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 		}
 	}
+
 
 
 	public void startGameThread() {
@@ -296,8 +298,8 @@ public class GamePanel extends JPanel implements Runnable {
 						}
 					}
 					case LEVEL_DESIGNER -> {
-						player.pos.setCameraOffsetX(player.getX() - screenWidth / 2 + player.attr.getWidth() / 2);
-						player.pos.setCameraOffsetY(player.getY() - screenHeight / 2 + player.attr.getHeight() / 2);
+						player.pos.setCameraOffsetX(player.getX() - screenWidth / 2 + player.getBoxScaleHorizontal() / 2);
+						player.pos.setCameraOffsetY(player.getY() - screenHeight / 2 + player.getBoxScaleVertical() / 2);
 
 						player.pos.setCameraOffsetX(Math.max(0, Math.min(player.pos.getCameraOffsetX(), worldWidth - screenWidth)));
 						player.pos.setCameraOffsetY(Math.max(0, Math.min(player.pos.getCameraOffsetY(), worldHeight - screenHeight)));
@@ -342,8 +344,8 @@ public class GamePanel extends JPanel implements Runnable {
 		long currentTime = System.currentTimeMillis();
 
 		// Update the camera offset to center the player in the view
-		player.pos.setCameraOffsetX(player.getX() - screenWidth / 2 + player.attr.getWidth() / 2);
-		player.pos.setCameraOffsetY(player.getY() - screenHeight / 2 + player.attr.getHeight() / 2);
+		player.pos.setCameraOffsetX(player.getX() - screenWidth / 2 + player.getBoxScaleHorizontal() / 2);
+		player.pos.setCameraOffsetY(player.getY() - screenHeight / 2 + player.getBoxScaleVertical() / 2);
 
 		player.pos.setCameraOffsetX(Math.max(0, Math.min(player.pos.getCameraOffsetX(), worldWidth - screenWidth)));
 		player.pos.setCameraOffsetY(Math.max(0, Math.min(player.pos.getCameraOffsetY(), worldHeight - screenHeight)));

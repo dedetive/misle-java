@@ -256,10 +256,10 @@ public class KeyHandler implements KeyListener {
 			if (!player.attr.isDead()) {
 				double range = (tileSize + 1) * Math.max(1, player.attr.getSpeed());
 				if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
-					if (!Physics.isPixelOccupied((player.getX() + willMovePlayer[0]), player.getY(), player.attr.getWidth(), player.attr.getHeight(), range, 12, Physics.ObjectType.PLAYER)) {
+					if (!Physics.isPixelOccupied((player.getX() + willMovePlayer[0]), player.getY(), player.getBoxScaleHorizontal(), player.getBoxScaleVertical(), range, 12, Physics.ObjectType.PLAYER)) {
 						Physics.movePlayer(willMovePlayer[0], 0);
 					}
-					if (!Physics.isPixelOccupied(player.getX(), (player.getY() + willMovePlayer[1]), player.attr.getWidth(), player.attr.getHeight(), range, 12, Physics.ObjectType.PLAYER)) {
+					if (!Physics.isPixelOccupied(player.getX(), (player.getY() + willMovePlayer[1]), player.getBoxScaleHorizontal(), player.getBoxScaleVertical(), range, 12, Physics.ObjectType.PLAYER)) {
 						Physics.movePlayer(0, willMovePlayer[1]);
 					}
 				}

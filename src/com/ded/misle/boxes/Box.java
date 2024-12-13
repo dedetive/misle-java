@@ -114,6 +114,8 @@ public class Box {
 		this.setColor(new Color(255, 255, 255));
 		this.setObjectType(Physics.ObjectType.PLAYER);
 		this.hasCollision = true;
+		this.boxScaleHorizontal = tileSize * 0.91;
+		this.boxScaleVertical = tileSize * 0.91;
 	}
 
 	// Method to render the box with the current tileSize and scale the position

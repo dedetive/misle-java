@@ -20,8 +20,6 @@ public class PlayerAttributes {
 	// BASE ATTRIBUTES
 
 	private double playerSpeed;
-	private double width;
-	private double height;
 
 	// STATS ATTRIBUTES
 
@@ -87,8 +85,6 @@ public class PlayerAttributes {
 			this.setSpeedModifier(1);
 			this.setEnvironmentSpeedModifier(1);
 			this.updateStat(Stat.ALL);
-			this.setWidth(tileSize);
-			this.setHeight(tileSize);
 			this.setHP(getMaxHP());
 			this.updateXPtoLevelUp();
 			this.setMaxStackSizeMulti(1);
@@ -125,24 +121,6 @@ public class PlayerAttributes {
 
 	public void setLastVelocityBox(Box box) {
 		this.lastVelocityBox = box;
-	}
-
-	// PLAYER SIZES
-
-	public double getWidth() {
-		return width;
-	}
-
-	public void setWidth(double playerWidth) {
-		this.width = playerWidth / 1.1;
-	}
-
-	public double getHeight() {
-		return height;
-	}
-
-	public void setHeight(double playerHeight) {
-		this.height = playerHeight / 1.1;
 	}
 
 	// HP, DAMAGE AND HEALS
@@ -630,8 +608,6 @@ public class PlayerAttributes {
 	public void unloadAttributes() {
 		this.setSpeedModifier(1);
 		this.setEnvironmentSpeedModifier(1);
-		this.setWidth(tileSize);
-		this.setHeight(tileSize);
 		this.updateStat(Stat.ALL);
 		this.setHP(getMaxHP());
 		this.fillEntropy();
