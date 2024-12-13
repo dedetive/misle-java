@@ -693,27 +693,33 @@ public class GameRenderer {
 			// VIT
 		drawStat(g2d, LanguageManager.getText("inventory_vitality"), 288, 33);
 		String formattedMaxHP = Long.toString(Math.round(player.attr.getMaxHP()));
+		formattedMaxHP = formattedMaxHP + LanguageManager.getText("inventory_hp_measure_word");
 		drawStat(g2d, formattedMaxHP, 288, 47);
 			// DEF
 		drawStat(g2d, LanguageManager.getText("inventory_defense"), 288, 65);
 		String formattedDefense = Long.toString(Math.round(player.attr.getDefense()));
+		formattedDefense = formattedDefense + LanguageManager.getText("inventory_defense_measure_word");
 		drawStat(g2d, formattedDefense, 288, 79);
 			// REG
 		drawStat(g2d, LanguageManager.getText("inventory_regeneration"), 288, 97);
 		String formattedRegeneration = Long.toString(Math.round(player.attr.getRegenerationQuality()));
+		formattedRegeneration = formattedRegeneration + LanguageManager.getText("inventory_regeneration_measure_word");
 		drawStat(g2d, formattedRegeneration, 288, 111);
 			// ENT
 		drawStat(g2d, LanguageManager.getText("inventory_entropy"), 384, 33);
 		String formattedEntropy = Long.toString(Math.round(player.attr.getMaxEntropy()));
+		formattedEntropy = formattedEntropy + LanguageManager.getText("inventory_entropy_measure_word");
 		drawStat(g2d, formattedEntropy, 384, 47);
 			// STR
 		drawStat(g2d, LanguageManager.getText("inventory_strength"), 384, 65);
 //		String formattedStrength = Long.toString(Math.round(player.attr.getStrength()));
+//		formattedStrength = formattedStrength + LanguageManager.getText("inventory_strength_measure_word");
 		String formattedStrength = "WIP";
 		drawStat(g2d, formattedStrength, 384, 79);
 			// SPD
 		drawStat(g2d, LanguageManager.getText("inventory_speed"), 384, 97);
 		String formattedSpeed = Long.toString(Math.round(player.attr.getSpeed()));
+		formattedSpeed = formattedSpeed + LanguageManager.getText("inventory_speed_measure_word");
 		drawStat(g2d, formattedSpeed, 384, 111);
 	}
 
