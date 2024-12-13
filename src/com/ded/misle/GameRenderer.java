@@ -26,6 +26,8 @@ import javax.swing.*;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -152,7 +154,7 @@ public class GameRenderer {
 	public static void softGameStart() {
 		previousMenu = currentMenu;
 		currentMenu = "PLAYING";
-		gameState = GamePanel.GameState.PLAYING;
+		gameState = GameState.PLAYING;
 	}
 
 	public static void softEnterLevelDesigner() {
@@ -168,22 +170,22 @@ public class GameRenderer {
 	public static void optionsMenu() {
 		previousMenu = currentMenu;
 		currentMenu = "OPTIONS_MENU";
-		gameState = GamePanel.GameState.OPTIONS_MENU;
+		gameState = GameState.OPTIONS_MENU;
 	}
 
 	public static void goToPreviousMenu() {
 		switch (previousMenu) {
 			case "MAIN_MENU":
-				gameState = GamePanel.GameState.MAIN_MENU;
+				gameState = GameState.MAIN_MENU;
 				break;
 			case "OPTIONS_MENU":
-				gameState = GamePanel.GameState.OPTIONS_MENU;
+				gameState = GameState.OPTIONS_MENU;
 				break;
 			case "PLAYING":
-				gameState = GamePanel.GameState.PLAYING;
+				gameState = GameState.PLAYING;
 				break;
 			case "PAUSE_MENU":
-				gameState = GamePanel.GameState.PAUSE_MENU;
+				gameState = GameState.PAUSE_MENU;
 		}
 		previousMenu = currentMenu;
 	}
@@ -193,13 +195,13 @@ public class GameRenderer {
 		unloadBoxes();
 		player.unloadPlayer();
 		previousMenu = currentMenu;
-		gameState = GamePanel.GameState.MAIN_MENU;
+		gameState = GameState.MAIN_MENU;
 	}
 
 	public static void pauseGame() {
 		previousMenu = currentMenu;
 		currentMenu = "PAUSE_MENU";
-		gameState = GamePanel.GameState.PAUSE_MENU;
+		gameState = GameState.PAUSE_MENU;
 	}
 
 	public static void renderMainMenu(Graphics g, JPanel panel) {
@@ -426,7 +428,7 @@ public class GameRenderer {
 			drawFloatingText(g2d);
 		}
 
-		if (gameState == GamePanel.GameState.INVENTORY) {
+		if (gameState == GameState.INVENTORY) {
 			renderInventoryMenu(g);
 			if (mouseHandler.getHoveredSlot()[0] > -1 && mouseHandler.getHoveredSlot()[1] > -1 && player.inv.getItem(mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1]) != null) {
 				drawHoveredItemTooltip(g, new int[]{mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1]});
@@ -593,7 +595,7 @@ public class GameRenderer {
 
 			// Position the name above the selected slot
 			selectedItemNamePosition = new Point(slotX + slotWidth / 2, slotY - 70);
-			itemNameDisplayStartTime = System.currentTimeMillis();
+			itemNameDisplayStartTime = currentTimeMillis();
 		} else {
 			selectedItemName = null;
 			selectedItemNamePosition = null;
@@ -604,7 +606,7 @@ public class GameRenderer {
 		if (selectedItemName != null && selectedItemNamePosition != null) {
 			// Check if the current time is within 5 seconds of the start time
 			try {
-				long currentTime = System.currentTimeMillis();
+				long currentTime = currentTimeMillis();
 				if (currentTime - itemNameDisplayStartTime < 5000) {
 					g2d.setFont(ubuntuFont35);
 					FontMetrics fm = g2d.getFontMetrics();
@@ -818,10 +820,20 @@ public class GameRenderer {
 		String[] wrappedDescription = wrapText(itemDescription, tooltipWidth - 20, fm);
 		tooltipHeight += lineHeight * wrappedDescription.length;
 
+		List<String> differentEffects = new ArrayList<>();
+		List<String[]> wrappedEffect = new ArrayList<>();
 		int maxTooltipWidth = slotSize * 6; // Set maximum tooltip width
+
+		// Split itemEffect into individual lines
+		String[] effects = itemEffect.split("\\\\n");
+		Collections.addAll(differentEffects, effects);
 		tooltipWidth = Math.min(maxTooltipWidth, Math.max(tooltipWidth, fm.stringWidth(itemEffect) + 20));
-		String[] wrappedEffect = wrapText(itemEffect, tooltipWidth - 20, fm);
-		tooltipHeight += lineHeight * (wrappedEffect.length - 1); // Adjust height based on wrapped lines
+
+		// Wrap each line of text
+		for (String effect : differentEffects) {
+			wrappedEffect.add(wrapText(effect, tooltipWidth - 20, fm));
+		}
+		tooltipHeight += lineHeight * (wrappedEffect.size() - 1); // Adjust height based on wrapped lines
 
 		// Shift tooltip upwards if text exceeds height
 		int triangleHeight = slotSize / 2;
@@ -865,12 +877,14 @@ public class GameRenderer {
 		textY += lineHeight;
 
 		// Item effect
-		for (String line : wrappedEffect) {
-			g2d.setColor(Color.black);
-			g2d.drawString(line, (int) (textX + textShadow), (int) (textY + textShadow));
-			g2d.setColor(Color.decode("#00A2FF"));
-			g2d.drawString(line, textX, textY);
-			textY += lineHeight;
+		for (String[] effectWrappedLines : wrappedEffect) {
+			for (String line : effectWrappedLines) {
+				g2d.setColor(Color.black);
+				g2d.drawString(line, (int) (textX + textShadow), (int) (textY + textShadow));
+				g2d.setColor(Color.decode("#00A2FF"));
+				g2d.drawString(line, textX, textY);
+				textY += lineHeight;
+			}
 		}
 
 		// Item description
@@ -885,7 +899,7 @@ public class GameRenderer {
 
 	// Helper method to wrap text
 	private static String[] wrapText(String text, int maxWidth, FontMetrics fm) {
-		java.util.List<String> lines = new java.util.ArrayList<>();
+		List<String> lines = new ArrayList<>();
 		StringBuilder line = new StringBuilder();
 
 		for (String word : text.split(" ")) {
