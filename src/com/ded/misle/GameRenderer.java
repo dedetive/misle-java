@@ -648,12 +648,11 @@ public class GameRenderer {
 		int gridY = (int) (148 * scale);
 
 		// Draw background
-
 		Path basePath = getPath().resolve("resources/images/ui/");
 		Path fullPath = basePath.resolve("inventoryBackground.png");
 
 		try {
-			g2d.drawImage((Image) ImageIO.read(fullPath.toFile()), 0, 0, (int) screenWidth, (int) screenHeight, null);
+			g2d.drawImage(ImageIO.read(fullPath.toFile()), 0, 0, (int) screenWidth, (int) screenHeight, null);
 		} catch (IOException e) {
 			System.out.println("Can't find item texture " + fullPath + "!");
 		}
@@ -689,6 +688,28 @@ public class GameRenderer {
 				}
 			}
 		}
+
+		// 295, 22
+		// Draw stats name
+		drawStatText(g2d, "Vitality", 288, 33);
+		drawStatText(g2d, "Defense", 288, 65);
+		drawStatText(g2d, "Regeneration", 288, 97);
+		drawStatText(g2d, "Entropy", 384, 33);
+		drawStatText(g2d, "Strength", 384, 65);
+		drawStatText(g2d, "Speed", 384, 97);
+	}
+
+	private static void drawStatText(Graphics2D g2d, String statText, int centerX, int y) {
+		g2d.setFont(ubuntuFont44);
+		centerX = (int) (centerX * scale);
+		FontMetrics fm = g2d.getFontMetrics();
+		int textWidth = fm.stringWidth(statText);
+		int startX = centerX - (textWidth / 2);
+		y = (int) (y * scale);
+		g2d.setColor(Color.black);
+		g2d.drawString(statText, (int) (startX + textShadow), (int) (y + textShadow));
+		g2d.setColor(new Color(230, 230, 180));
+		g2d.drawString(statText, startX, y);
 	}
 
 	public static void drawRotatedImage(Graphics2D g2d, Image image, double x, double y, int width, int height, double angle) {
