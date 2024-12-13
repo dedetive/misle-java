@@ -290,6 +290,8 @@ public class GamePanel extends JPanel implements Runnable {
 							} else {
 								softEnterLevelDesigner();
 							}
+							clearButtons();
+							this.setCursor(Cursor.getDefaultCursor());
 							player.keys.keyPressed.put(KeyHandler.Key.PAUSE, false);
 						}
 					}

@@ -26,7 +26,6 @@ import javax.swing.*;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
@@ -234,9 +233,9 @@ public class GameRenderer {
 			Rectangle playButton = new Rectangle(playButtonX, playButtonY, playButtonWidth, playButtonHeight);
 
 			if (!levelDesigner) {
-				createButton(playButton, LanguageManager.getText("main_menu_play"), GameRenderer::gameStart, panel, g2d, scaleByScreenSize);
+				createButton(playButton, LanguageManager.getText("main_menu_play"), GameRenderer::gameStart, panel);
 			} else {
-				createButton(playButton, LanguageManager.getText("main_menu_level_designer"), GameRenderer::enterLevelDesigner, panel, g2d, scaleByScreenSize);
+				createButton(playButton, LanguageManager.getText("main_menu_level_designer"), GameRenderer::enterLevelDesigner, panel);
 			}
 
 			// Quit button
@@ -247,7 +246,7 @@ public class GameRenderer {
 			int quitButtonHeight = (int) (155 * scaleByScreenSize);
 			Rectangle quitButton = new Rectangle(quitButtonX, quitButtonY, quitButtonWidth, quitButtonHeight);
 
-			createButton(quitButton, LanguageManager.getText("main_menu_quit"), GameRenderer::quitGame, panel, g2d, scaleByScreenSize);
+			createButton(quitButton, LanguageManager.getText("main_menu_quit"), GameRenderer::quitGame, panel);
 
 
 			// Options menu
@@ -258,7 +257,7 @@ public class GameRenderer {
 			int optionsButtonHeight = (int) (155 * scaleByScreenSize);
 			Rectangle optionsButton = new Rectangle(optionsButtonX, optionsButtonY, optionsButtonWidth, optionsButtonHeight);
 
-			createButton(optionsButton, LanguageManager.getText("main_menu_options"), GameRenderer::optionsMenu, panel, g2d, scaleByScreenSize);
+			createButton(optionsButton, LanguageManager.getText("main_menu_options"), GameRenderer::optionsMenu, panel);
 
 			drawButtons(g2d, scaleByScreenSize);
 
@@ -297,7 +296,7 @@ public class GameRenderer {
 			int playButtonHeight = (int) (155 * scaleByScreenSize);
 			Rectangle playButton = new Rectangle(playButtonX, playButtonY, playButtonWidth, playButtonHeight);
 
-			createButton(playButton, LanguageManager.getText("pause_menu_resume"), GameRenderer::softGameStart, panel, g2d, scaleByScreenSize);
+			createButton(playButton, LanguageManager.getText("pause_menu_resume"), GameRenderer::softGameStart, panel);
 
 			// Quit button
 
@@ -307,7 +306,7 @@ public class GameRenderer {
 			int quitButtonHeight = (int) (155 * scaleByScreenSize);
 			Rectangle quitButton = new Rectangle(quitButtonX, quitButtonY, quitButtonWidth, quitButtonHeight);
 
-			createButton(quitButton, LanguageManager.getText("pause_menu_quit"), GameRenderer::goToMainMenu, panel, g2d, scaleByScreenSize);
+			createButton(quitButton, LanguageManager.getText("pause_menu_quit"), GameRenderer::goToMainMenu, panel);
 
 			// Options menu
 
@@ -317,7 +316,7 @@ public class GameRenderer {
 			int optionsButtonHeight = (int) (155 * scaleByScreenSize);
 			Rectangle optionsButton = new Rectangle(optionsButtonX, optionsButtonY, optionsButtonWidth, optionsButtonHeight);
 
-			createButton(optionsButton, LanguageManager.getText("pause_menu_options"), GameRenderer::optionsMenu, panel, g2d, scaleByScreenSize);
+			createButton(optionsButton, LanguageManager.getText("pause_menu_options"), GameRenderer::optionsMenu, panel);
 
 			drawButtons(g2d, scaleByScreenSize);
 		}
@@ -348,7 +347,7 @@ public class GameRenderer {
 			int playButtonHeight = (int) (116 * scaleByScreenSize);
 			Rectangle playButton = new Rectangle(playButtonX, playButtonY, playButtonWidth, playButtonHeight);
 
-			createButton(playButton, LanguageManager.getText("options_menu_go_back"), GameRenderer::goToPreviousMenu, panel, g2d, scaleByScreenSize);
+			createButton(playButton, LanguageManager.getText("options_menu_go_back"), GameRenderer::goToPreviousMenu, panel);
 
 			drawButtons(g2d, scaleByScreenSize);
 		}

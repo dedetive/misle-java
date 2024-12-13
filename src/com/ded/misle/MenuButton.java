@@ -32,7 +32,7 @@ public class MenuButton {
         this.text = text;
     }
 
-    public static void createButton(Rectangle bounds, String text, Runnable action, JPanel panel, Graphics2D g2d, double scaleByScreenSize) {
+    public static void createButton(Rectangle bounds, String text, Runnable action, JPanel panel) {
         for (MenuButton button : buttons) {
             if (button.text.equals(text)) {
                 return;
@@ -113,8 +113,6 @@ public class MenuButton {
     }
 
 
-    public static void clearButtons() {
-        buttons.clear();
-    }
+    public static void clearButtons() { buttons.clear(); }
 }
 
