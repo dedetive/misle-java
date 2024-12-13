@@ -40,32 +40,14 @@ public class MenuButton {
         }
         MenuButton button = new MenuButton(bounds, defaultColor, action, text);
         buttons.add(button);
+        Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
+        SwingUtilities.convertPointFromScreen(mouseLocation, panel);
+        detectIfButtonHovered(mouseLocation, panel);
 
         panel.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                Point mousePoint = e.getPoint();
-                boolean repaintNeeded = false;
-
-                for (MenuButton button : buttons) {
-                    if (button.bounds.contains(mousePoint)) {
-                        if (!button.isHovered) {
-                            button.isHovered = true;
-                            button.color = hoverColor;
-                            repaintNeeded = true;
-                            panel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                        }
-                    } else if (button.isHovered) {
-                        button.isHovered = false;
-                        button.color = defaultColor;
-                        panel.setCursor(Cursor.getDefaultCursor());
-                        repaintNeeded = true;
-                    }
-                }
-
-                if (repaintNeeded) {
-                    panel.repaint();
-                }
+                detectIfButtonHovered(e.getPoint(), panel);
             }
         });
 
@@ -83,6 +65,30 @@ public class MenuButton {
                 }
             }
         });
+    }
+
+    private static void detectIfButtonHovered(Point mousePoint, JPanel panel) {
+        boolean repaintNeeded = false;
+
+        for (MenuButton button : buttons) {
+            if (button.bounds.contains(mousePoint)) {
+                if (!button.isHovered) {
+                    button.isHovered = true;
+                    button.color = hoverColor;
+                    repaintNeeded = true;
+                    panel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                }
+            } else if (button.isHovered) {
+                button.isHovered = false;
+                button.color = defaultColor;
+                panel.setCursor(Cursor.getDefaultCursor());
+                repaintNeeded = true;
+            }
+        }
+
+        if (repaintNeeded) {
+            panel.repaint();
+        }
     }
 
     public static void drawButtons(Graphics2D g2d, double scaleByScreenSize) {
