@@ -2,6 +2,9 @@ package com.ded.misle;
 
 import com.ded.misle.player.Player;
 import com.ded.misle.player.PlayerAttributes;
+import com.ded.misle.renderer.LevelDesignerRenderer;
+import com.ded.misle.renderer.MenuRenderer;
+import com.ded.misle.renderer.PlayingRenderer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,8 +37,8 @@ public class GamePanel extends JPanel implements Runnable {
 	public static int tileSize = (int) (originalTileSize * gameScale) / 3;
 	static final double maxScreenCol = 24; // Horizontal
 	static final double maxScreenRow = 13.5; // Vertical
-	static double screenWidth = maxScreenCol * tileSize;
-	static double screenHeight = maxScreenRow * tileSize;
+	public static double screenWidth = maxScreenCol * tileSize;
+	public static double screenHeight = maxScreenRow * tileSize;
 
 	public static void updateTileSize() {
 		tileSize = (int) (originalTileSize * gameScale) / 3;
@@ -241,7 +244,7 @@ public class GamePanel extends JPanel implements Runnable {
 				previousWidth = detectedWidth;
 				previousHeight = detectedHeight;
 
-				updateSelectedItemNamePosition();
+				PlayingRenderer.updateSelectedItemNamePosition();
 			}
 
 			try {
@@ -376,22 +379,22 @@ public class GamePanel extends JPanel implements Runnable {
 			case GameState.INVENTORY:
 			case GameState.PLAYING:
 			case GameState.FROZEN_PLAYING:
-				renderPlayingGame(g, mouseHandler);
+				PlayingRenderer.renderPlayingGame(g, mouseHandler);
 				break;
 			case GameState.MAIN_MENU:
-				renderMainMenu(g, this);
+				MenuRenderer.renderMainMenu(g, this);
 				break;
 			case GameState.OPTIONS_MENU:
-				renderOptionsMenu(g, this);
+				MenuRenderer.renderOptionsMenu(g, this);
 				break;
 			case GameState.PAUSE_MENU:
-				renderPauseMenu(g, this);
+				MenuRenderer.renderPauseMenu(g, this);
 				break;
 			case GameState.LOADING_MENU:
-				renderLoadingMenu(g, this);
+				MenuRenderer.renderLoadingMenu(g, this);
 				break;
 			case GameState.LEVEL_DESIGNER:
-				renderLevelDesigner(g, this, mouseHandler);
+				LevelDesignerRenderer.renderLevelDesigner(g, this, mouseHandler);
 				break;
 		}
 	}

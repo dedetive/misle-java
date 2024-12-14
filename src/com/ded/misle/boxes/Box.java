@@ -1,8 +1,8 @@
 package com.ded.misle.boxes;
 
-import com.ded.misle.GameRenderer;
 import com.ded.misle.Physics;
 import com.ded.misle.player.PlayerAttributes;
+import com.ded.misle.renderer.PlayingRenderer;
 
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
@@ -15,8 +15,8 @@ import java.util.*;
 import static com.ded.misle.AudioPlayer.playThis;
 import static com.ded.misle.ChangeSettings.getPath;
 import static com.ded.misle.GamePanel.*;
-import static com.ded.misle.GameRenderer.fadeIn;
-import static com.ded.misle.GameRenderer.fadeOut;
+import static com.ded.misle.renderer.PlayingRenderer.fadeIn;
+import static com.ded.misle.renderer.PlayingRenderer.fadeOut;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.Physics.ObjectType.BOX;
 import static com.ded.misle.Physics.ObjectType.HP_BOX;
@@ -132,7 +132,7 @@ public class Box {
 		if (Objects.equals(this.texture, "solid")) {
 			g2d.setColor(color);
 			Rectangle solidBox = new Rectangle(screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical));
-			GameRenderer.drawRotatedRect(g2d, solidBox, this.rotation);
+			PlayingRenderer.drawRotatedRect(g2d, solidBox, this.rotation);
 		} else if (texture.equals("invisible")) {
 			;
 		} else if (BoxesHandling.checkIfPresetHasSides(texture.split("\\.")[0])) {
@@ -146,7 +146,7 @@ public class Box {
 					textureExtra = textureName.substring(textureName.indexOf("@") + 1);
 					textureName = textureName.substring(0, textureName.indexOf("@"));
 				} else {
-					GameRenderer.drawRotatedImage(g2d, this.getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
+					PlayingRenderer.drawRotatedImage(g2d, this.getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
 				}
 
 				// Draw extras if any
@@ -154,11 +154,11 @@ public class Box {
 					if (textureParts[3].equals("@")) {
 						switch (textureExtra) {
 							case "Deco":
-								GameRenderer.drawRotatedImage(g2d, this.getTexture(textureName + textureExtra), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
+								PlayingRenderer.drawRotatedImage(g2d, this.getTexture(textureName + textureExtra), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
 						}
 					}
 				} else {
-					GameRenderer.drawRotatedImage(g2d, this.getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
+					PlayingRenderer.drawRotatedImage(g2d, this.getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
 				}
 
 				// Draw sides if they exist
@@ -167,7 +167,7 @@ public class Box {
 					String[] eachSide = sides.split("");
 
 					for (String side : eachSide) {
-						GameRenderer.drawRotatedImage(g2d, getTexture(textureName + "OverlayW"), screenX, screenY,
+						PlayingRenderer.drawRotatedImage(g2d, getTexture(textureName + "OverlayW"), screenX, screenY,
 								(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), rotationInstruction.get(side) + this.rotation);
 					}
 				}
@@ -180,7 +180,7 @@ public class Box {
 						if (Objects.equals(corner, "")) {
 							continue;
 						}
-						GameRenderer.drawRotatedImage(g2d, getTexture(textureName + "OverlayC"), screenX, screenY,
+						PlayingRenderer.drawRotatedImage(g2d, getTexture(textureName + "OverlayC"), screenX, screenY,
 								(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), rotationInstruction.get(corner) + this.rotation);
 					}
 				}
@@ -192,14 +192,14 @@ public class Box {
 			if (texture.contains("@")) {
 				texture = texture.replace("@", "");
 			}
-			GameRenderer.drawRotatedImage(g2d, this.getTexture(), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
+			PlayingRenderer.drawRotatedImage(g2d, this.getTexture(), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
 		}
 
 		try {
 			if (selectedBoxes.contains(this)) {
 				for (int i = 0; i <= 270; i += 90) {
 					System.out.println(i);
-					GameRenderer.drawRotatedImage(g2d, getTexture("wallDefaultOverlayW"), screenX, screenY,
+					PlayingRenderer.drawRotatedImage(g2d, getTexture("wallDefaultOverlayW"), screenX, screenY,
 							(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), i + this.rotation);
 				}
 			}
@@ -527,7 +527,7 @@ public class Box {
 		if (totalDistance < 30) {
 			playThis("collectItem");
 			player.inv.addItem(createItem(Integer.parseInt(this.effect[1]), Integer.parseInt(this.effect[2])));
-			GameRenderer.updateSelectedItemNamePosition();
+			PlayingRenderer.updateSelectedItemNamePosition();
 			deleteBox(this);
 		}
 	}

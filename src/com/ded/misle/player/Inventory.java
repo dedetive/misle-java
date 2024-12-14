@@ -3,6 +3,7 @@ package com.ded.misle.player;
 import com.ded.misle.boxes.Box;
 import com.ded.misle.boxes.BoxesHandling;
 import com.ded.misle.items.Item;
+import com.ded.misle.renderer.PlayingRenderer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +11,6 @@ import java.text.DecimalFormat;
 
 import static com.ded.misle.AudioPlayer.playThis;
 import static com.ded.misle.GamePanel.player;
-import static com.ded.misle.GameRenderer.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.boxes.BoxManipulation.*;
 import static com.ded.misle.boxes.BoxesHandling.addBox;
@@ -174,7 +174,7 @@ public class Inventory {
 
 	public void setSelectedSlot(int selectedSlot) {
 		this.selectedSlot = selectedSlot;
-		updateSelectedItemNamePosition();
+		PlayingRenderer.updateSelectedItemNamePosition();
 		if (hasHeldItem()) {
 			getSelectedItem().resetAnimation();
 		}
@@ -236,7 +236,7 @@ public class Inventory {
                         healAmountValue = player.attr.getMaxHP();
                     }
                     String formattedHealAmount = df.format(player.attr.calculateHeal(healAmountValue, "normal"));
-                    createFloatingText("+" + formattedHealAmount, Color.decode("#50EE50"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+                    PlayingRenderer.createFloatingText("+" + formattedHealAmount, Color.decode("#50EE50"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
                     player.attr.receiveHeal(healAmountValue, "normal");
 
                     Timer delayToRemove = new Timer(30, e -> {
@@ -255,7 +255,7 @@ public class Inventory {
                     }
                     String formattedEntropyAmount = df.format(player.attr.calculateEntropyGain(entropyAmountValue));
 
-                    createFloatingText("+" + formattedEntropyAmount, Color.decode("#A0A0FF"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+                    PlayingRenderer.createFloatingText("+" + formattedEntropyAmount, Color.decode("#A0A0FF"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
                     player.attr.addEntropy(entropyAmountValue);
                     getSelectedItem().setCount(getSelectedItem().getCount() - 1);
                     if (!getSelectedItem().isActive()) {
@@ -299,7 +299,7 @@ public class Inventory {
 		editBox(droppedItem, BoxesHandling.EditBoxKeys.COLLECTIBLE, "false");
 		playThis("dropItem");
 		removeItem(row, col, quantity);
-		updateSelectedItemNamePosition();
+		PlayingRenderer.updateSelectedItemNamePosition();
 		double dropSpeed = player.attr.getSpeedModifier() * player.attr.getEnvironmentSpeedModifier() * 20 * 2.25;
 		switch (player.stats.getWalkingDirection()) {
 			case PlayerStats.Direction.UP -> {
@@ -394,7 +394,7 @@ public class Inventory {
 		draggedItem.setCount(draggedItem.getCount() - count);
 		if (draggedItem.getCount() == 0) destroyGrabbedItem();
 		destroyTempItem();
-		updateSelectedItemNamePosition();
+		PlayingRenderer.updateSelectedItemNamePosition();
 		double dropSpeed = player.attr.getSpeedModifier() * player.attr.getEnvironmentSpeedModifier() * 20 * 2.25;
 		switch (player.stats.getWalkingDirection()) {
 			case UP -> {

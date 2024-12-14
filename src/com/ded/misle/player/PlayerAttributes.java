@@ -8,9 +8,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.ded.misle.GamePanel.player;
-import static com.ded.misle.GamePanel.tileSize;
-import static com.ded.misle.GameRenderer.createFloatingText;
-import static com.ded.misle.GameRenderer.showHealthBar;
+import static com.ded.misle.renderer.PlayingRenderer.createFloatingText;
+import static com.ded.misle.renderer.PlayingRenderer.showHealthBar;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.items.Item.updateMaxStackSize;
 

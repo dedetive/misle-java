@@ -9,8 +9,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import static com.ded.misle.GamePanel.*;
-import static com.ded.misle.GameRenderer.unscaledSlotSize;
-import static com.ded.misle.GameRenderer.unscaledSlotSpacing;
+import static com.ded.misle.renderer.InventoryRenderer.unscaledSlotSize;
+import static com.ded.misle.renderer.InventoryRenderer.unscaledSlotSpacing;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.boxes.Box.clearSelectedBoxes;
 
