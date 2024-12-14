@@ -197,11 +197,14 @@ public class GamePanel extends JPanel implements Runnable {
 				detectedWidth = Math.min(detectedWidth, screenWidth);
 				detectedHeight = Math.min(detectedHeight, screenHeight);
 
+				boolean widthAligned;
 				// Calculate the new dimensions to maintain the 16:9 aspect ratio
-				if (detectedWidth > detectedHeight * 16 / 9) {
-					detectedWidth = detectedHeight * 16 / 9;
+				if (detectedWidth > ((double) (detectedHeight * 512) / 288) + resizeThreshold) {
+					detectedWidth = (int) ((double) detectedHeight * 512 / 288);
+					widthAligned = false;
 				} else {
-					detectedHeight = detectedWidth * 9 / 16;
+					detectedHeight = (int) ((double) detectedWidth * 288 / 512);
+					widthAligned = true;
 				}
 
 				// Update the window size
@@ -209,7 +212,11 @@ public class GamePanel extends JPanel implements Runnable {
 
 				// Scale based on the new dimensions
 				double previousScale = scale;
-				scale = (double) detectedWidth / 512;
+				if (widthAligned) {
+					scale = (double) detectedWidth / 512;
+				} else {
+					scale = (double) detectedHeight / 288;
+				}
 				gameScale = scale;
 				GamePanel.screenWidth = Math.min(detectedWidth, screenWidth);
 				GamePanel.screenHeight = Math.min(detectedHeight, screenHeight);
@@ -220,6 +227,9 @@ public class GamePanel extends JPanel implements Runnable {
 				player.setBoxScaleVertical(tileSize * 0.91);
 				worldWidth = originalWorldWidth * scale;
 				worldHeight = originalWorldHeight * scale;
+
+				player.setX(player.getX() * scale / previousScale);
+				player.setY(player.getY() * scale / previousScale);
 
 				clearButtons();
 				GameRenderer.updateFontSizes();
