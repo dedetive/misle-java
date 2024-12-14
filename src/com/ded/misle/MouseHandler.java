@@ -166,7 +166,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 					if (!isSlotValid()) { player.inv.dropDraggedItem(1);
 					} else if (isSlotOccupied()) {
 							// Swap
-							player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], 1);
+							player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], draggedItem.getCount());
 						} else {
 							// Put one into slot
 							player.inv.putDraggedItem(getHoveredSlot()[0], getHoveredSlot()[1], 1);
