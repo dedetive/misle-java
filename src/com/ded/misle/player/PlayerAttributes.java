@@ -244,7 +244,7 @@ public class PlayerAttributes {
 		int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
 		DecimalFormat df = new DecimalFormat("#.##");
 		String formattedHealAmount = df.format(damageToReceive);
-		createFloatingText("+" + formattedHealAmount, Color.decode("#DE4040"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+		createFloatingText("-" + formattedHealAmount, Color.decode("#DE4040"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
 
 		return damageToReceive;
 	}
