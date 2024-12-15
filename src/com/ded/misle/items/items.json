@@ -225,6 +225,17 @@
     "nameColor": "#22E02E"
   },
   {
+    "id": 18,
+    "resourceID": 18,
+    "name": "Fury Ring",
+    "rarity": "B",
+    "def": 1,
+    "str": 12,
+    "type": "armor",
+    "subtype": "ring",
+    "nameColor": "#E01E00"
+  },
+  {
     "id": -1,
     "resourceID": -1,
     "name": "",
