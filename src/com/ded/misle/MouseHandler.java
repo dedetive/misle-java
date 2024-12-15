@@ -9,8 +9,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import static com.ded.misle.GamePanel.*;
-import static com.ded.misle.renderer.InventoryRenderer.unscaledSlotSize;
-import static com.ded.misle.renderer.InventoryRenderer.unscaledSlotSpacing;
+import static com.ded.misle.renderer.InventoryRenderer.unscaledInventorySlotSize;
+import static com.ded.misle.renderer.InventoryRenderer.unscaledInventorySlotSpacing;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.boxes.Box.clearSelectedBoxes;
 
@@ -48,8 +48,8 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 		// INVENTORY
 
-        int slotSize = (int) (unscaledSlotSize * scale);
-		slotSpacing = (int) (unscaledSlotSpacing * scale);
+        int slotSize = (int) (unscaledInventorySlotSize * scale);
+		slotSpacing = (int) (unscaledInventorySlotSpacing * scale);
 
 		int gridX = (int) (225 * scale);
 		int gridY = (int) (148 * scale);

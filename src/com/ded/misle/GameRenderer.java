@@ -1,7 +1,5 @@
 package com.ded.misle;
 
-import java.awt.*;
-
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.SaveFile.loadSaveFile;
@@ -20,22 +18,6 @@ public class GameRenderer {
 	public static final int LOADING_DURATION = 500;
 
 	public static double textShadow = 1 * scale;
-
-	public static Font comfortaaFont96 = FontManager.loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
-	public static Font ubuntuFont35 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (35 * scale / 3.75));
-	public static Font basicFont40 = FontManager.loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));
-	public static Font itemCountFont = FontManager.loadFont("/fonts/Ubuntu-Regular.ttf", (float) (40 * scale / 3.75));
-	public static Font ubuntuFont44 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
-
-	public static void updateFontSizes() {
-		comfortaaFont96 = FontManager.loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
-		ubuntuFont35 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
-		basicFont40 = FontManager.loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));
-		itemCountFont = FontManager.loadFont("/fonts/Ubuntu-Regular.ttf", (float) (50 * scale / 3.75));
-		ubuntuFont44 = FontManager.loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
-
-		textShadow = 1 * scale;
-	}
 
 	public static void gameStart() {
 		previousMenu = currentMenu;

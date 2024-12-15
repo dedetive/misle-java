@@ -235,7 +235,7 @@ public class GamePanel extends JPanel implements Runnable {
 				player.setY(player.getY() * scale / previousScale);
 
 				clearButtons();
-				GameRenderer.updateFontSizes();
+				FontManager.updateFontSizes();
 				updateVariableScales();
 				if (levelDesigner) {
 					updateDesignerSpeed();

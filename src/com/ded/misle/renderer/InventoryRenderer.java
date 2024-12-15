@@ -1,5 +1,6 @@
 package com.ded.misle.renderer;
 
+import com.ded.misle.FontManager;
 import com.ded.misle.GameRenderer;
 import com.ded.misle.LanguageManager;
 import com.ded.misle.MouseHandler;
@@ -18,8 +19,10 @@ import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
 
 public class InventoryRenderer {
-    public static int unscaledSlotSize = 32;
-    public static int unscaledSlotSpacing = 0;
+    public static int unscaledInventorySlotSize = 32;   // For inventory items (4x7 grid) and inventory bar (1x7 grid)
+    public static int unscaledInventorySlotSpacing = 0;
+    public static int unscaledExtraSlotSize = 24;       // For rings and trophy slot (2x2 grid)
+    public static int unscaledExtraSlotSpacing = 8;
 
     public static void drawSelectedSlotOverlay(Graphics2D g2d, int slotX, int slotY, int slotSize) {
         g2d.setColor(new Color(255, 255, 255, 100)); // Semi-transparent overlay
@@ -34,8 +37,8 @@ public class InventoryRenderer {
         g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
 
         // Slot dimensions and spacing
-        int slotSize = (int) (unscaledSlotSize * scale);
-        int slotSpacing = (int) (unscaledSlotSpacing * scale);
+        int slotSize = (int) (unscaledInventorySlotSize * scale);
+        int slotSpacing = (int) (unscaledInventorySlotSpacing * scale);
 
         // Start the grid
         int gridX = (int) (225 * scale);
@@ -51,7 +54,7 @@ public class InventoryRenderer {
             System.out.println("Can't find item texture " + fullPath + "!");
         }
 
-        // Draw slots and item icons in the specified row order: row 1, row 2, row 3, row 0
+        // Draw slots and item icons in the row order {1, 2, 3, 0}
         int[] rowOrder = {1, 2, 3, 0};
 
         for (int j = 0; j < 4; j++) {
@@ -69,7 +72,39 @@ public class InventoryRenderer {
                     g2d.drawImage(item.getIcon(), slotX, slotY, slotSize, slotSize, null);
                     int itemCount = item.getCount();
                     if (itemCount > 1) {
-                        g2d.setFont(GameRenderer.itemCountFont);
+                        g2d.setFont(FontManager.itemCountFont);
+                        FontMetrics fm = g2d.getFontMetrics();
+                        int textWidth = fm.stringWidth(Integer.toString(itemCount));
+                        int textX = slotX - textWidth + slotSize;
+                        int countY = slotY + slotSize;
+                        g2d.setColor(Color.black);
+                        g2d.drawString(Integer.toString(itemCount), (int) (textX + GameRenderer.textShadow), (int) (countY + GameRenderer.textShadow));
+                        g2d.setColor(Color.white);
+                        g2d.drawString(Integer.toString(itemCount), textX, countY);
+                    }
+                }
+            }
+        }
+
+        slotSize = (int) (unscaledExtraSlotSize * scale);
+        slotSpacing = (int) (unscaledExtraSlotSpacing * scale);
+
+        // Start the grid
+        gridX = (int) (132 * scale);
+        gridY = (int) (32 * scale);
+
+        // Draw extra slots (rings and trophy)
+        for (int j = 0; j < 2; j++) {
+            for (int i = 0; i < 2; i++) {
+                int slotX = gridX + i * (slotSize + slotSpacing);
+                int slotY = gridY + j * (slotSize + slotSpacing);
+
+                Item item = player.inv.getExtraItem(i * 2 + j);
+                if (item != null) {
+                    g2d.drawImage(item.getIcon(), slotX, slotY, slotSize, slotSize, null);
+                    int itemCount = item.getCount();
+                    if (itemCount > 1) {
+                        g2d.setFont(FontManager.itemCountFont);
                         FontMetrics fm = g2d.getFontMetrics();
                         int textWidth = fm.stringWidth(Integer.toString(itemCount));
                         int textX = slotX - textWidth + slotSize;
@@ -135,7 +170,7 @@ public class InventoryRenderer {
     }
 
     private static void drawStat(Graphics2D g2d, String statText, int centerX, int y) {
-        g2d.setFont(GameRenderer.ubuntuFont44);
+        g2d.setFont(FontManager.ubuntuFont44);
         Color textColor = new Color(230, 230, 180);
         Color shadowColor = Color.black;
 
@@ -147,8 +182,8 @@ public class InventoryRenderer {
 
         int slotX = 0;
         int slotY = 0;
-        int slotSize = (int) (unscaledSlotSize * scale);
-        int slotSpacing = (int) (unscaledSlotSpacing * scale);
+        int slotSize = (int) (unscaledInventorySlotSize * scale);
+        int slotSpacing = (int) (unscaledInventorySlotSpacing * scale);
 
         if (hoveredSlot[0] == -1) {
             // If playing
@@ -192,7 +227,7 @@ public class InventoryRenderer {
         String itemDescription = "\"" + hoveredItem.getDescription() + "\"";
 
         // Font and dimensions
-        g2d.setFont(GameRenderer.basicFont40);
+        g2d.setFont(FontManager.basicFont40);
         FontMetrics fm = g2d.getFontMetrics();
 
         // Calculate width based on text
@@ -305,7 +340,7 @@ public class InventoryRenderer {
     public static void drawDraggedItem(Graphics2D g2d, MouseHandler mouseHandler) {
         Item draggedItem = player.inv.getDraggedItem();
 
-        int slotSize = (int) (unscaledSlotSize * scale);
+        int slotSize = (int) (unscaledInventorySlotSize * scale);
 
         g2d.drawImage(draggedItem.getIcon(), mouseHandler.getMouseX(), mouseHandler.getMouseY(), slotSize, slotSize, null);
     }

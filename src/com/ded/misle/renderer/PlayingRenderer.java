@@ -1,5 +1,6 @@
 package com.ded.misle.renderer;
 
+import com.ded.misle.FontManager;
 import com.ded.misle.GameRenderer;
 import com.ded.misle.MouseHandler;
 import com.ded.misle.boxes.BoxesHandling;
@@ -183,8 +184,8 @@ public class PlayingRenderer {
 
         // Slots info
 
-        int slotSize = (int) (InventoryRenderer.unscaledSlotSize * scale);
-        int slotSpacing = (int) (InventoryRenderer.unscaledSlotSpacing * scale);
+        int slotSize = (int) (InventoryRenderer.unscaledInventorySlotSize * scale);
+        int slotSpacing = (int) (InventoryRenderer.unscaledInventorySlotSpacing * scale);
 
         int totalSlotsWidth = 7 * slotSize + (6 * slotSpacing);
         int slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
@@ -204,7 +205,7 @@ public class PlayingRenderer {
                 g2d.drawImage(item.getIcon(), slotX, slotY, slotSize, slotSize, null);
                 int itemCount = item.getCount();
                 if (itemCount > 1) {
-                    g2d.setFont(GameRenderer.itemCountFont);
+                    g2d.setFont(FontManager.itemCountFont);
                     FontMetrics fm = g2d.getFontMetrics();
                     int textWidth = fm.stringWidth(Integer.toString(itemCount));
                     int textX = slotX - textWidth + slotSize;
@@ -233,8 +234,8 @@ public class PlayingRenderer {
             int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
             int inventoryBarY = (int) (screenHeight - inventoryBarHeight - 10);
 
-            int slotWidth = (int) (InventoryRenderer.unscaledSlotSize * scaleByScreenSize);
-            int slotSpacing = (int) (InventoryRenderer.unscaledSlotSpacing * scaleByScreenSize);
+            int slotWidth = (int) (InventoryRenderer.unscaledInventorySlotSize * scaleByScreenSize);
+            int slotSpacing = (int) (InventoryRenderer.unscaledInventorySlotSpacing * scaleByScreenSize);
             int totalSlotsWidth = 7 * slotWidth + (6 * slotSpacing);
             int slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
 
@@ -256,7 +257,7 @@ public class PlayingRenderer {
             try {
                 long currentTime = currentTimeMillis();
                 if (currentTime - itemNameDisplayStartTime < 5000) {
-                    g2d.setFont(GameRenderer.ubuntuFont35);
+                    g2d.setFont(FontManager.ubuntuFont35);
                     FontMetrics fm = g2d.getFontMetrics();
                     int textWidth = fm.stringWidth(selectedItemName);
 
@@ -377,7 +378,7 @@ public class PlayingRenderer {
 
     private static void drawFloatingText(Graphics2D g2d) {
         for (int i = 0; i < floatingText.size(); i++) {
-            g2d.setFont(GameRenderer.basicFont40);
+            g2d.setFont(FontManager.basicFont40);
             g2d.setColor(Color.black);
             g2d.drawString(floatingText.get(i), (int) ((floatingTextPosition.get(i).x) * scale + GameRenderer.textShadow), (int) ((floatingTextPosition.get(i).y) * scale + GameRenderer.textShadow));
             g2d.setColor(floatingTextColor.get(i));

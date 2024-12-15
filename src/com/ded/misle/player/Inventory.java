@@ -25,9 +25,11 @@ public class Inventory {
 	private int selectedSlot = 0;
 	private Item draggedItem;
 	private Item tempItem;
+	private final Item[] extraSlots;
 
 	public Inventory() {
 		this.inventory = new Item[rows][cols];
+		this.extraSlots = new Item[4];
 	}
 
 	public boolean addItem(Item item, int row, int col) {
@@ -75,7 +77,6 @@ public class Inventory {
 
 		return remainingCount == 0; // Return true if all items were added, false if some couldn't fit
 	}
-
 
 	public boolean addItem(Item item) {
 		if (item == null) {
@@ -191,106 +192,14 @@ public class Inventory {
 		return getSelectedItem() != null;
 	}
 
-	public void useItem() {
-		if (getSelectedItem() != null) { // Ensure something is selected
-			String type = getSelectedItem().getType();
-			long currentTime = currentTimeMillis();
-
-            switch (type) {
-                case "potion" -> usePotion(currentTime);
-                case "weapon" -> useWeapon(currentTime);
-            }
-		}
-	}
-
-	public void usePotion(long currentTime) {
-		double potionDelay = Double.parseDouble(getSelectedItem().getAttributes().get("potionDelay").toString());
-		if (currentTime > getSelectedItem().getTimeToDelay()) {
-			getSelectedItem().setTimeToDelay((long) (potionDelay * 1000)); // Handle delay
-
-			int playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()) / scale);
-			int playerScreenY = (int) ((player.getY() - player.pos.getCameraOffsetY()) / scale);
-			int randomPosX = (int) ((Math.random() * (40 + 40)) - 40);
-			int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
-			DecimalFormat df = new DecimalFormat("#.##");
-
-			switch ((String) getSelectedItem().getAttributes().get("size")) {
-				case "small":
-					playThis("consumeSmallPot");
-					break;
-				case "medium":
-					playThis("consumeMediumPotion");
-					break;
-//				case "big":
-//					playThis("consumeBigPotion");
-//					break;
-//				case "huge":
-//					playThis("consumeHugePotion");
-//					break;
-			}
-
-            switch (getSelectedItem().getAttributes().get("subtype").toString()) {
-                case "heal" -> {
-                    double healAmountValue = Double.parseDouble(Integer.toString((Integer) getSelectedItem().getAttributes().get("heal")));
-                    if (healAmountValue == -1) {
-                        healAmountValue = player.attr.getMaxHP();
-                    }
-                    String formattedHealAmount = df.format(player.attr.calculateHeal(healAmountValue, "normal"));
-                    PlayingRenderer.createFloatingText("+" + formattedHealAmount, Color.decode("#50EE50"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
-                    player.attr.receiveHeal(healAmountValue, "normal");
-
-                    Timer delayToRemove = new Timer(30, e -> {
-                        getSelectedItem().setCount(getSelectedItem().getCount() - 1);
-                        if (!getSelectedItem().isActive()) {
-                            removeItem(0, getSelectedSlot());
-                        }
-                    });
-                    delayToRemove.setRepeats(false);
-                    delayToRemove.start();
-                }
-                case "entropy" -> {
-                    double entropyAmountValue = Double.parseDouble(Integer.toString((Integer) getSelectedItem().getAttributes().get("entropy")));
-                    if (entropyAmountValue == -1) {
-                        entropyAmountValue = player.attr.getMaxEntropy();
-                    }
-                    String formattedEntropyAmount = df.format(player.attr.calculateEntropyGain(entropyAmountValue));
-
-                    PlayingRenderer.createFloatingText("+" + formattedEntropyAmount, Color.decode("#A0A0FF"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
-                    player.attr.addEntropy(entropyAmountValue);
-                    getSelectedItem().setCount(getSelectedItem().getCount() - 1);
-                    if (!getSelectedItem().isActive()) {
-                        removeItem(0, getSelectedSlot());
-                    }
-                }
-            }
-
-		}
-	}
-
-	public void useWeapon(long currentTime) {
-		double attackDelay = Double.parseDouble(getSelectedItem().getAttributes().get("attackDelay").toString());
-		if (currentTime > getSelectedItem().getTimeToDelay()) {
-			getSelectedItem().setTimeToDelay((long) (attackDelay * 1000));
-
-            switch (getSelectedItem().getAttributes().get("subtype").toString()) {
-                case "melee" -> {
-                    switch (getSelectedItem().getAttributes().get("kind").toString()) {
-                        case "claw" -> animateClaw();
-                            // Weapon goes upward for a bit and then swings downwards
-                            // Deals area damage
-                        case "ranged" -> {     // throw a box projectile to held direction
-                        }
-                    }
-                }
-            }
-		}
-	}
-
 	public void clearInventory() {
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 7; j++) {
 				player.inv.removeItem(i, j);
 			}
+		}
+		for (int i = 0; i < 4; i++) {
+			player.inv.removeExtraItem(i);
 		}
 	}
 
@@ -422,5 +331,115 @@ public class Inventory {
 		});
 		timer.setRepeats(false);
 		timer.start();
+	}
+
+	public void useItem() {
+		if (getSelectedItem() != null) { // Ensure something is selected
+			String type = getSelectedItem().getType();
+			long currentTime = currentTimeMillis();
+
+			switch (type) {
+				case "potion" -> usePotion(currentTime);
+				case "weapon" -> useWeapon(currentTime);
+			}
+		}
+	}
+
+	public void usePotion(long currentTime) {
+		double potionDelay = Double.parseDouble(getSelectedItem().getAttributes().get("potionDelay").toString());
+		if (currentTime > getSelectedItem().getTimeToDelay()) {
+			getSelectedItem().setTimeToDelay((long) (potionDelay * 1000)); // Handle delay
+
+			int playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()) / scale);
+			int playerScreenY = (int) ((player.getY() - player.pos.getCameraOffsetY()) / scale);
+			int randomPosX = (int) ((Math.random() * (40 + 40)) - 40);
+			int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
+			DecimalFormat df = new DecimalFormat("#.##");
+
+			switch ((String) getSelectedItem().getAttributes().get("size")) {
+				case "small":
+					playThis("consumeSmallPot");
+					break;
+				case "medium":
+					playThis("consumeMediumPotion");
+					break;
+//				case "big":
+//					playThis("consumeBigPotion");
+//					break;
+//				case "huge":
+//					playThis("consumeHugePotion");
+//					break;
+			}
+
+			switch (getSelectedItem().getAttributes().get("subtype").toString()) {
+				case "heal" -> {
+					double healAmountValue = Double.parseDouble(Integer.toString((Integer) getSelectedItem().getAttributes().get("heal")));
+					if (healAmountValue == -1) {
+						healAmountValue = player.attr.getMaxHP();
+					}
+					String formattedHealAmount = df.format(player.attr.calculateHeal(healAmountValue, "normal"));
+					PlayingRenderer.createFloatingText("+" + formattedHealAmount, Color.decode("#50EE50"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+					player.attr.receiveHeal(healAmountValue, "normal");
+
+					Timer delayToRemove = new Timer(30, e -> {
+						getSelectedItem().setCount(getSelectedItem().getCount() - 1);
+						if (!getSelectedItem().isActive()) {
+							removeItem(0, getSelectedSlot());
+						}
+					});
+					delayToRemove.setRepeats(false);
+					delayToRemove.start();
+				}
+				case "entropy" -> {
+					double entropyAmountValue = Double.parseDouble(Integer.toString((Integer) getSelectedItem().getAttributes().get("entropy")));
+					if (entropyAmountValue == -1) {
+						entropyAmountValue = player.attr.getMaxEntropy();
+					}
+					String formattedEntropyAmount = df.format(player.attr.calculateEntropyGain(entropyAmountValue));
+
+					PlayingRenderer.createFloatingText("+" + formattedEntropyAmount, Color.decode("#A0A0FF"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+					player.attr.addEntropy(entropyAmountValue);
+					getSelectedItem().setCount(getSelectedItem().getCount() - 1);
+					if (!getSelectedItem().isActive()) {
+						removeItem(0, getSelectedSlot());
+					}
+				}
+			}
+
+		}
+	}
+
+	public void useWeapon(long currentTime) {
+		double attackDelay = Double.parseDouble(getSelectedItem().getAttributes().get("attackDelay").toString());
+		if (currentTime > getSelectedItem().getTimeToDelay()) {
+			getSelectedItem().setTimeToDelay((long) (attackDelay * 1000));
+
+			switch (getSelectedItem().getAttributes().get("subtype").toString()) {
+				case "melee" -> {
+					switch (getSelectedItem().getAttributes().get("kind").toString()) {
+						case "claw" -> animateClaw();
+						// Weapon goes upward for a bit and then swings downwards
+						// Deals area damage
+						case "ranged" -> {     // throw a box projectile to held direction
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public Item getExtraItem(int position) {
+		if (position >= 0 && position < 4) {
+			return extraSlots[position];
+		}
+		return null;
+	}
+
+	public void removeExtraItem(int position) {
+		this.extraSlots[position] = null;
+	}
+
+	public void bruteSetExtraItem(int position, Item item) {
+		this.extraSlots[position] = item;
 	}
 }

@@ -1,5 +1,7 @@
 package com.ded.misle;
 
+import com.ded.misle.items.Item;
+
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -380,11 +382,18 @@ public class KeyHandler implements KeyListener {
 		if (gameState != GameState.LEVEL_DESIGNER) {
 			if (player.keys.keyPressed.get(DEBUG1)) {
 
-				for (int i = 1; i < 19; i++) {
-					if (i != 5) {
-						player.inv.addItem(createItem(i, 1));
+				if (!player.keys.keyPressed.get(SHIFT)) {
+					for (int i = 1; i < 19; i++) {
+						if (i != 5) {
+							player.inv.addItem(createItem(i, 1));
+						}
 					}
+				} else {
+					player.inv.bruteSetExtraItem(0, Item.createItem(12));
+					player.inv.bruteSetExtraItem(1, Item.createItem(17));
+					player.inv.bruteSetExtraItem(2, Item.createItem(18));
 				}
+
 				player.keys.keyPressed.put(DEBUG1, false);
 
 			}

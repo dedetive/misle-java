@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ded.misle.GameRenderer.textShadow;
-import static com.ded.misle.GameRenderer.ubuntuFont44;
+import static com.ded.misle.FontManager.ubuntuFont44;
 import static com.ded.misle.Launcher.scale;
 
 public class MenuButton {
