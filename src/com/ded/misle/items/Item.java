@@ -85,6 +85,7 @@ public class Item {
 	public int getCountLimit() { return countLimit; }
 	public String getRarity() { return rarity; }
 	public String getType() { return type; }
+	public String getSubtype() { try { return (String) this.getAttributes().get("subtype"); } catch (NullPointerException e) { return "";} }
 	public String getDisplayType() { return displayType; }
 	public String getDisplayEffect() { return displayEffect; }
 	public Map<String, Object> getAttributes() { return attributes; }

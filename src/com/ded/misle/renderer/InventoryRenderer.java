@@ -22,7 +22,7 @@ public class InventoryRenderer {
     public static int unscaledExtraSlotSize = 24;       // For rings and trophy slot (2x2 grid)
     public static int unscaledExtraSlotSpacing = 8;
 
-    public static void drawSelectedSlotOverlay(Graphics2D g2d, int slotX, int slotY, int slotSize, boolean inverted) {
+    public static void drawSelectedSlotOverlay(Graphics2D g2d, int slotX, int slotY, int slotSize) {
         g2d.setColor(new Color(255, 255, 255, 100)); // Semi-transparent overlay
         g2d.fillRect(slotX, slotY, slotSize, slotSize);
     }
@@ -209,7 +209,7 @@ public class InventoryRenderer {
             hoveredItem = player.inv.getItem(hoveredSlot[0], hoveredSlot[1]);
 
             if (gameState == GameState.INVENTORY || (hoveredSlot[1] != player.inv.getSelectedSlot() && gameState == GameState.PLAYING)) {
-                drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize, false);
+                drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize);
             }
         } else {
             slotSize = (int) (unscaledExtraSlotSize * scale);
@@ -223,13 +223,14 @@ public class InventoryRenderer {
 
             hoveredItem = player.inv.getExtraItem(hoveredSlot[0] * 2 + hoveredSlot[1]);
 
-            drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize, true);
+            drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize);
         }
 
-        drawHoveredItemTooltip(g2d, slotX, slotY, slotSize, hoveredItem);
+        drawHoveredItemTooltip(g2d, slotX, slotY, slotSize, hoveredItem, isExtra);
     }
 
-    public static void drawHoveredItemTooltip(Graphics2D g2d, int slotX, int slotY, int slotSize, Item hoveredItem) {
+    public static void drawHoveredItemTooltip(Graphics2D g2d, int slotX, int slotY, int slotSize, Item hoveredItem, boolean isInverted) {
+        int invertedMultiplier = isInverted ? 1 : -1; // WIP
 
         // Get item details
         String itemName = hoveredItem.getDisplayName();

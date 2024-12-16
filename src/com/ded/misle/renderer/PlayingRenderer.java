@@ -218,7 +218,7 @@ public class PlayingRenderer {
             }
 
             if (i == selectedSlot) {
-                drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize, false);
+                drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize);
             }
         }
     }

@@ -238,33 +238,60 @@ public class Inventory {
 		timer.start();
 	}
 
-	public void initDraggingItem(int row, int col, int count) {
+	public void initDraggingItem(int row, int col, int count, boolean isExtra) {
+		int extraPosition = col * 2 + row;
 		if (getDraggedItem() == null) { // If no item, start grabbing
-			setDraggedItem(getItem(row, col));
-			removeItem(row, col);
-		} else if (getDraggedItem().getId() == getItem(row, col).getId()) { // If same item, add count
-			int itemCount = getItem(row, col).getCount();
+			if (!isExtra) {
+				setDraggedItem(getItem(row, col));
+				removeItem(row, col);
+			} else {
+				setDraggedItem(getExtraItem(extraPosition));
+				removeExtraItem(extraPosition);
+			}
+		// If same item, add count
+		} else if ((!isExtra && getDraggedItem().getId() == getItem(row, col).getId()) || (isExtra && getExtraItem(extraPosition) != null && getDraggedItem().getId() == getExtraItem(extraPosition).getId())) {
+			int itemCount = 0;
+			if (!isExtra) {
+				itemCount = getItem(row, col).getCount();
+			} else {
+				itemCount = getExtraItem(extraPosition).getCount();
+			}
 			int draggedCount = getDraggedItem().getCount();
 			if (itemCount + count <= draggedItem.getCountLimit()) { // Less than limit, add all to it
-				getItem(row, col).setCount(itemCount + count);
+				if (!isExtra) {
+					getItem(row, col).setCount(itemCount + count);
+				} else {
+					getExtraItem(extraPosition).setCount(itemCount + count);
+				}
 				draggedItem.setCount(draggedCount - count);
 				if (draggedItem.getCount() <= 0) destroyGrabbedItem();
-			} else {                                                       // More than limit, add some and keep some
-				getItem(row, col).setCount(draggedItem.getCountLimit());
+			} else { 	// More than limit, add some and keep some
+				if (!isExtra) {
+					getItem(row, col).setCount(draggedItem.getCountLimit());
+				} else {
+					getExtraItem(extraPosition).setCount(draggedItem.getCountLimit());
+				}
 				draggedItem.setCount(draggedCount - count);
 			}
 		} else { // If any other item, swap
-			setTempItem(getItem(row, col));
-			bruteSetItem(getDraggedItem(), row, col);
+			if (!isExtra) {
+				setTempItem(getItem(row, col));
+				bruteSetItem(getDraggedItem(), row, col);
+			} else {
+				setTempItem(getExtraItem(extraPosition));
+				bruteSetExtraItem(getDraggedItem(), extraPosition);
+			}
 			setDraggedItem(tempItem);
 			destroyTempItem();
 		}
 	}
 
-	public void putDraggedItem(int row, int col, int count) {
+	public void putDraggedItem(int row, int col, int count, boolean isExtra) {
+		int extraPosition = col * 2 + row;
 		setTempItem(getDraggedItem());
 		tempItem.setCount(count);
-		bruteSetItem(tempItem, row, col);
+		if (!isExtra) bruteSetItem(tempItem, row, col);
+		else bruteSetExtraItem(tempItem, extraPosition);
 		draggedItem.setCount(draggedItem.getCount() - count);
 		if (draggedItem.getCount() == 0) destroyGrabbedItem();
 		destroyTempItem();
@@ -439,7 +466,7 @@ public class Inventory {
 		this.extraSlots[position] = null;
 	}
 
-	public void bruteSetExtraItem(int position, Item item) {
+	public void bruteSetExtraItem(Item item, int position) {
 		this.extraSlots[position] = item;
 	}
 }
