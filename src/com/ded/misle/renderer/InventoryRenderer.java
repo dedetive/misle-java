@@ -15,6 +15,7 @@ import java.util.List;
 import static com.ded.misle.ChangeSettings.getPath;
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.renderer.ImageRenderer.cachedImages;
 
 public class InventoryRenderer {
     public static int unscaledInventorySlotSize = 32;   // For inventory items (4x7 grid) and inventory bar (1x7 grid)
@@ -42,15 +43,8 @@ public class InventoryRenderer {
         int gridX = (int) (225 * scale);
         int gridY = (int) (148 * scale);
 
-        // Draw background
-        Path basePath = getPath().resolve("resources/images/ui/");
-        Path fullPath = basePath.resolve("inventoryBackground.png");
 
-        try {
-            g2d.drawImage(ImageIO.read(fullPath.toFile()), 0, 0, (int) screenWidth, (int) screenHeight, null);
-        } catch (IOException e) {
-            System.out.println("Can't find item texture " + fullPath + "!");
-        }
+        g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.INVENTORY_MENU), 0, 0, (int) screenWidth, (int) screenHeight, null);
 
         // Draw slots and item icons in the row order {1, 2, 3, 0}
         int[] rowOrder = {1, 2, 3, 0};

@@ -8,13 +8,16 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.ded.misle.ChangeSettings.getPath;
 import static com.ded.misle.GamePanel.*;
+import static com.ded.misle.renderer.ImageRenderer.cachedImages;
 import static com.ded.misle.renderer.InventoryRenderer.drawSelectedSlotOverlay;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.player.PlayerStats.Direction.LEFT;
@@ -172,15 +175,7 @@ public class PlayingRenderer {
         int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
         int inventoryBarY = (int) (screenHeight - inventoryBarHeight - 60);
 
-        // Draw background
-        Path basePath = getPath().resolve("resources/images/ui/");
-        Path fullPath = basePath.resolve("inventoryBar.png");
-
-        try {
-            g2d.drawImage(ImageIO.read(fullPath.toFile()), 0, (int) (screenHeight - 82 * Math.pow(scale, (double) 1 /2)), (int) (512 * scale), (int) (35 * scale), null);
-        } catch (IOException e) {
-            System.out.println("Can't find item texture " + fullPath + "!");
-        }
+        g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.INVENTORY_BAR), 0, (int) (screenHeight - 82 * Math.pow(scale, (double) 1 /2)), (int) (512 * scale), (int) (35 * scale), null);
 
         // Slots info
 
