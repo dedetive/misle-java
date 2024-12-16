@@ -7,6 +7,7 @@ import com.ded.misle.items.Item;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Arrays;
 import java.util.Objects;
 
 import static com.ded.misle.GamePanel.*;
@@ -174,7 +175,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 								if (hasDraggedItem())
 									// Swap
 									player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], draggedItem.getCount(), false);
-									// Grab item
+									// Quick equip item
 								else if ((player.keys.keyPressed.get(KeyHandler.Key.SHIFT)) && Objects.equals(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]).getSubtype(), "ring")) {
 										boolean[] isSpaceOccupied = new boolean[3];
 										int firstValidPosition = -1;
@@ -182,13 +183,16 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 										for (int i = 0; i < 3; i++) {
 											isSpaceOccupied[i] = player.inv.getItem(i) != null;
 											if (!isSpaceOccupied[i] && firstValidPosition == -1) firstValidPosition = i;
-											if (!isSpaceOccupied[i]) isAnyEmpty = true;
+											if (!isSpaceOccupied[i]) {
+												isAnyEmpty = true;
+												break;}
 										}
 										if (isAnyEmpty) {
 											player.inv.bruteSetItem(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]), firstValidPosition);
 											player.inv.removeItem(getHoveredSlot()[0], getHoveredSlot()[1]);
 										}
 								}
+								// Grab item
 								else player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], -1, false);
 							} else if (hasDraggedItem()) {
 								// Place item into slot if it's empty and has dragged item
@@ -201,7 +205,27 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 								if (isRing)
 									// Swap only if it is a ring
 									player.inv.initDraggingItem(getExtraHoveredSlot()[0], getExtraHoveredSlot()[1], draggedItem.getCount(), true);
-									// Grab item
+									// Quick unequip ring
+								else if (player.keys.keyPressed.get(KeyHandler.Key.SHIFT)) {
+									boolean[] isSpaceOccupied = new boolean[3];
+									int[] firstValidPosition = new int[]{-1, -1};
+									boolean isAnyEmpty = false;
+									for (int i = 0; i < 4; i++) {
+										for (int j = 0; j < 7; j++) {
+											isSpaceOccupied[i] = player.inv.getItem(i, j) != null;
+											if (!isSpaceOccupied[i] && Arrays.equals(firstValidPosition, new int[]{-1, -1})) firstValidPosition = new int[]{i, j};
+											if (!isSpaceOccupied[i]) {
+												isAnyEmpty = true;
+												break; }
+										}
+										if (isAnyEmpty) break;
+									}
+									if (isAnyEmpty) {
+										player.inv.bruteSetItem(player.inv.getItem(getExtraHoveredSlot()[1] * 2 + getExtraHoveredSlot()[0]), firstValidPosition[0], firstValidPosition[1]);
+										player.inv.removeItem(getExtraHoveredSlot()[1] * 2 + getExtraHoveredSlot()[0]);
+									}
+								}
+								// Grab item
 								else if (!hasDraggedItem()) player.inv.initDraggingItem(getExtraHoveredSlot()[0], getExtraHoveredSlot()[1], -1, true);
 							} else if (isRing) {
 								// Place item into slot if it's empty and has dragged item
