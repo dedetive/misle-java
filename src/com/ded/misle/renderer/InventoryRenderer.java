@@ -97,7 +97,7 @@ public class InventoryRenderer {
                 int slotX = gridX + i * (slotSize + slotSpacing);
                 int slotY = gridY + j * (slotSize + slotSpacing);
 
-                Item item = player.inv.getExtraItem(i * 2 + j);
+                Item item = player.inv.getItem(i * 2 + j);
                 if (item != null) {
                     g2d.drawImage(item.getIcon(), slotX, slotY, slotSize, slotSize, null);
                     int itemCount = item.getCount();
@@ -221,7 +221,7 @@ public class InventoryRenderer {
             slotX = gridX + hoveredSlot[0] * (slotSize + slotSpacing);
             slotY = gridY + hoveredSlot[1] * (slotSize + slotSpacing);
 
-            hoveredItem = player.inv.getExtraItem(hoveredSlot[0] * 2 + hoveredSlot[1]);
+            hoveredItem = player.inv.getItem(hoveredSlot[0] * 2 + hoveredSlot[1]);
 
             drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize);
         }

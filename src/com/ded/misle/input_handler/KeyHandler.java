@@ -391,9 +391,9 @@ public class KeyHandler implements KeyListener {
 						}
 					}
 				} else {
-					player.inv.bruteSetExtraItem(Item.createItem(12), 0);
-					player.inv.bruteSetExtraItem(Item.createItem(17), 1);
-					player.inv.bruteSetExtraItem(Item.createItem(18), 2);
+					player.inv.bruteSetItem(Item.createItem(12), 0);
+					player.inv.bruteSetItem(Item.createItem(17), 1);
+					player.inv.bruteSetItem(Item.createItem(18), 2);
 				}
 
 				player.keys.keyPressed.put(DEBUG1, false);

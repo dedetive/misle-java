@@ -137,6 +137,10 @@ public class Inventory {
 		}
 	}
 
+	public void bruteSetItem(Item item, int position) {
+		this.extraSlots[position] = item;
+	}
+
 	public boolean removeItem(int row, int col) {
 		if (row >= 0 && row < rows && col >= 0 && col < cols && inventory[row][col] != null) {
 			inventory[row][col] = null;
@@ -162,11 +166,23 @@ public class Inventory {
 		}
 	}
 
+	public boolean removeItem(int position) {
+		this.extraSlots[position] = null;
+		return true;
+	}
+
 	public Item getItem(int row, int col) {
 		if (row >= 0 && row < rows && col >= 0 && col < cols) {
 			return inventory[row][col];
 		}
 		return null; // return null if position is out of bounds
+	}
+
+	public Item getItem(int position) {
+		if (position >= 0 && position < 4) {
+			return extraSlots[position];
+		}
+		return null;
 	}
 
 	public int getSelectedSlot() {
@@ -199,7 +215,7 @@ public class Inventory {
 			}
 		}
 		for (int i = 0; i < 4; i++) {
-			player.inv.removeExtraItem(i);
+			player.inv.removeItem(i);
 		}
 	}
 
@@ -239,63 +255,51 @@ public class Inventory {
 	}
 
 	public void initDraggingItem(int row, int col, int count, boolean isExtra) {
-		int extraPosition = col * 2 + row;
-		if (getDraggedItem() == null) { // If no item, start grabbing
-			if (!isExtra) {
-				setDraggedItem(getItem(row, col));
-				removeItem(row, col);
-			} else {
-				setDraggedItem(getExtraItem(extraPosition));
-				removeExtraItem(extraPosition);
-			}
+		int position = isExtra ? col * 2 + row : -1; // Use -1 when not "extra"
+
+		// If no item, start grabbing
+		if (getDraggedItem() == null) {
+			Item item = isExtra ? getItem(position) : getItem(row, col);
+			setDraggedItem(item);
+			boolean aux = isExtra ? removeItem(position) : removeItem(row, col);
+		}
 		// If same item, add count
-		} else if ((!isExtra && getDraggedItem().getId() == getItem(row, col).getId()) || (isExtra && getExtraItem(extraPosition) != null && getDraggedItem().getId() == getExtraItem(extraPosition).getId())) {
-			int itemCount = 0;
-			if (!isExtra) {
-				itemCount = getItem(row, col).getCount();
-			} else {
-				itemCount = getExtraItem(extraPosition).getCount();
-			}
-			int draggedCount = getDraggedItem().getCount();
-			if (itemCount + count <= draggedItem.getCountLimit()) { // Less than limit, add all to it
-				if (!isExtra) {
-					getItem(row, col).setCount(itemCount + count);
-				} else {
-					getExtraItem(extraPosition).setCount(itemCount + count);
+		else {
+			Item targetItem = isExtra ? getItem(position) : getItem(row, col);
+			if (targetItem != null && getDraggedItem().getId() == targetItem.getId()) {
+				int itemCount = targetItem.getCount();
+				int draggedCount = getDraggedItem().getCount();
+
+				if (itemCount + count <= getDraggedItem().getCountLimit()) { 	// Less than limit
+					targetItem.setCount(itemCount + count);
+					getDraggedItem().setCount(draggedCount - count);
+					if (getDraggedItem().getCount() <= 0) destroyGrabbedItem();
+				} else { 														// More than limit
+					targetItem.setCount(getDraggedItem().getCountLimit());
+					getDraggedItem().setCount(draggedCount - count);
 				}
-				draggedItem.setCount(draggedCount - count);
-				if (draggedItem.getCount() <= 0) destroyGrabbedItem();
-			} else { 	// More than limit, add some and keep some
-				if (!isExtra) {
-					getItem(row, col).setCount(draggedItem.getCountLimit());
-				} else {
-					getExtraItem(extraPosition).setCount(draggedItem.getCountLimit());
-				}
-				draggedItem.setCount(draggedCount - count);
 			}
-		} else { // If any other item, swap
-			if (!isExtra) {
-				setTempItem(getItem(row, col));
-				bruteSetItem(getDraggedItem(), row, col);
-			} else {
-				setTempItem(getExtraItem(extraPosition));
-				bruteSetExtraItem(getDraggedItem(), extraPosition);
+			// If any other item, swap
+			else {
+				Item tempItem = isExtra ? getItem(position) : getItem(row, col);
+				if (isExtra) bruteSetItem(getDraggedItem(), position);
+				else bruteSetItem(getDraggedItem(), row, col);
+				setDraggedItem(tempItem);
 			}
-			setDraggedItem(tempItem);
-			destroyTempItem();
 		}
 	}
 
 	public void putDraggedItem(int row, int col, int count, boolean isExtra) {
-		int extraPosition = col * 2 + row;
+		int position = isExtra ? col * 2 + row : -1;
 		setTempItem(getDraggedItem());
 		tempItem.setCount(count);
-		if (!isExtra) bruteSetItem(tempItem, row, col);
-		else bruteSetExtraItem(tempItem, extraPosition);
+		if (isExtra) bruteSetItem(tempItem, position);
+		else bruteSetItem(tempItem, row, col);
 		draggedItem.setCount(draggedItem.getCount() - count);
 		if (draggedItem.getCount() == 0) destroyGrabbedItem();
 		destroyTempItem();
 	}
+
 
 	private void setDraggedItem(Item draggedItem) {
 		this.draggedItem = draggedItem;
@@ -453,20 +457,5 @@ public class Inventory {
 				}
 			}
 		}
-	}
-
-	public Item getExtraItem(int position) {
-		if (position >= 0 && position < 4) {
-			return extraSlots[position];
-		}
-		return null;
-	}
-
-	public void removeExtraItem(int position) {
-		this.extraSlots[position] = null;
-	}
-
-	public void bruteSetExtraItem(Item item, int position) {
-		this.extraSlots[position] = item;
 	}
 }
