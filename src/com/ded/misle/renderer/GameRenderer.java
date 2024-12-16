@@ -1,4 +1,4 @@
-package com.ded.misle;
+package com.ded.misle.renderer;
 
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.scale;

@@ -1,7 +1,10 @@
 package com.ded.misle;
 
+import com.ded.misle.input_handler.KeyHandler;
+import com.ded.misle.input_handler.MouseHandler;
 import com.ded.misle.player.Player;
 import com.ded.misle.player.PlayerAttributes;
+import com.ded.misle.renderer.FontManager;
 import com.ded.misle.renderer.LevelDesignerRenderer;
 import com.ded.misle.renderer.MenuRenderer;
 import com.ded.misle.renderer.PlayingRenderer;
@@ -10,11 +13,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-import static com.ded.misle.GameRenderer.*;
-import static com.ded.misle.KeyHandler.updateDesignerSpeed;
+import static com.ded.misle.renderer.GameRenderer.*;
+import static com.ded.misle.input_handler.KeyHandler.updateDesignerSpeed;
 import static com.ded.misle.Launcher.*;
-import static com.ded.misle.MenuButton.clearButtons;
-import static com.ded.misle.MouseHandler.updateVariableScales;
+import static com.ded.misle.renderer.MenuButton.clearButtons;
+import static com.ded.misle.input_handler.MouseHandler.updateVariableScales;
 import static com.ded.misle.SaveFile.saveEverything;
 
 /**

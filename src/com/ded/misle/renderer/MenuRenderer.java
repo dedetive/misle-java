@@ -1,8 +1,6 @@
 package com.ded.misle.renderer;
 
-import com.ded.misle.FontManager;
 import com.ded.misle.GamePanel;
-import com.ded.misle.GameRenderer;
 import com.ded.misle.LanguageManager;
 
 import javax.swing.*;
@@ -11,8 +9,8 @@ import java.awt.*;
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.levelDesigner;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.MenuButton.createButton;
-import static com.ded.misle.MenuButton.drawButtons;
+import static com.ded.misle.renderer.MenuButton.createButton;
+import static com.ded.misle.renderer.MenuButton.drawButtons;
 import static com.ded.misle.SaveFile.saveEverything;
 import static com.ded.misle.boxes.BoxesLoad.unloadBoxes;
 import static java.lang.System.currentTimeMillis;

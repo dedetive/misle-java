@@ -1,8 +1,6 @@
 package com.ded.misle.renderer;
 
-import com.ded.misle.FontManager;
-import com.ded.misle.GameRenderer;
-import com.ded.misle.MouseHandler;
+import com.ded.misle.input_handler.MouseHandler;
 import com.ded.misle.boxes.BoxesHandling;
 import com.ded.misle.items.Item;
 
@@ -75,14 +73,16 @@ public class PlayingRenderer {
         if (gameState == GameState.INVENTORY) {
             InventoryRenderer.renderInventoryMenu(g);
             if (mouseHandler.getHoveredSlot()[0] > -1 && mouseHandler.getHoveredSlot()[1] > -1 && player.inv.getItem(mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1]) != null) {
-                InventoryRenderer.drawHoveredItemTooltip(g, new int[]{mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1]});
+                InventoryRenderer.drawHoveredItemTooltip(g, new int[]{mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1]}, false);
+            } else if (mouseHandler.getExtraHoveredSlot()[0] > -1 && mouseHandler.getExtraHoveredSlot()[1] > -1 && player.inv.getExtraItem(mouseHandler.getExtraHoveredSlot()[0] * 2 + mouseHandler.getExtraHoveredSlot()[1]) != null) {
+                InventoryRenderer.drawHoveredItemTooltip(g, new int[]{mouseHandler.getExtraHoveredSlot()[1], mouseHandler.getExtraHoveredSlot()[0]}, true);
             }
             if (player.inv.getDraggedItem() != null) {
                 InventoryRenderer.drawDraggedItem(g2d, mouseHandler);
             }
         } else {
             if (mouseHandler.getHoveredBarSlot() > -1 && player.inv.getItem(0, mouseHandler.getHoveredBarSlot()) != null) {
-                InventoryRenderer.drawHoveredItemTooltip(g, new int[]{-1, mouseHandler.getHoveredBarSlot()});
+                InventoryRenderer.drawHoveredItemTooltip(g, new int[]{-1, mouseHandler.getHoveredBarSlot()}, false);
             }
         }
 
@@ -218,7 +218,7 @@ public class PlayingRenderer {
             }
 
             if (i == selectedSlot) {
-                drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize);
+                drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize, false);
             }
         }
     }

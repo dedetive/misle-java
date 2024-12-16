@@ -1,9 +1,7 @@
 package com.ded.misle.renderer;
 
-import com.ded.misle.FontManager;
-import com.ded.misle.GameRenderer;
 import com.ded.misle.LanguageManager;
-import com.ded.misle.MouseHandler;
+import com.ded.misle.input_handler.MouseHandler;
 import com.ded.misle.items.Item;
 
 import javax.imageio.ImageIO;
@@ -24,7 +22,7 @@ public class InventoryRenderer {
     public static int unscaledExtraSlotSize = 24;       // For rings and trophy slot (2x2 grid)
     public static int unscaledExtraSlotSpacing = 8;
 
-    public static void drawSelectedSlotOverlay(Graphics2D g2d, int slotX, int slotY, int slotSize) {
+    public static void drawSelectedSlotOverlay(Graphics2D g2d, int slotX, int slotY, int slotSize, boolean inverted) {
         g2d.setColor(new Color(255, 255, 255, 100)); // Semi-transparent overlay
         g2d.fillRect(slotX, slotY, slotSize, slotSize);
     }
@@ -177,46 +175,63 @@ public class InventoryRenderer {
         drawStat(g2d, statText, centerX, y, textColor, shadowColor);
     }
 
-    public static void drawHoveredItemTooltip(Graphics g, int[] hoveredSlot) {
+    public static void drawHoveredItemTooltip(Graphics g, int[] hoveredSlot, boolean isExtra) {
         Graphics2D g2d = (Graphics2D) g;
 
-        int slotX = 0;
-        int slotY = 0;
+        int slotX;
+        int slotY;
         int slotSize = (int) (unscaledInventorySlotSize * scale);
         int slotSpacing = (int) (unscaledInventorySlotSpacing * scale);
+        Item hoveredItem = null;
+        if (!isExtra) {
+            if (hoveredSlot[0] == -1) {
+                // If playing
+                int inventoryBarWidth = (int) (120 * scale);
+                int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
+                int inventoryBarY = (int) (screenHeight - 20 * scale - 60);
 
-        if (hoveredSlot[0] == -1) {
-            // If playing
-            int inventoryBarWidth = (int) (120 * scale);
-            int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
-            int inventoryBarY = (int) (screenHeight - 20 * scale - 60);
+                int slotStartX = inventoryBarX + (inventoryBarWidth - (7 * slotSize + 6 * slotSpacing)) / 2;
+                slotX = slotStartX + hoveredSlot[1] * (slotSize + slotSpacing);
+                slotY = (int) (inventoryBarY + (20 * scale - slotSize) / 2);
+                hoveredSlot[0] = 0;
+            } else {
+                // If in inventory menu
 
-            int slotStartX = inventoryBarX + (inventoryBarWidth - (7 * slotSize + 6 * slotSpacing)) / 2;
-            slotX = slotStartX + hoveredSlot[1] * (slotSize + slotSpacing);
-            slotY = (int) (inventoryBarY + (20 * scale - slotSize) / 2);
-            hoveredSlot[0] = 0;
-        } else {
-            // If in inventory menu
+                int gridX = (int) (225 * scale);
+                int gridY = (int) (148 * scale);
 
-            int gridX = (int) (225 * scale);
-            int gridY = (int) (148 * scale);
+                int[] rowOrder = {3, 0, 1, 2};
 
-            int[] rowOrder = {3, 0, 1, 2};
-
-            for (int j = 0; j < 4; j++) {
-                for (int i = 0; i < 7; i++) {
-                    slotX = gridX + hoveredSlot[1] * (slotSize + slotSpacing);
-                    slotY = gridY + rowOrder[hoveredSlot[0]] * (slotSize + slotSpacing);
-                }
+                slotX = gridX + hoveredSlot[1] * (slotSize + slotSpacing);
+                slotY = gridY + rowOrder[hoveredSlot[0]] * (slotSize + slotSpacing);
             }
+
+            hoveredItem = player.inv.getItem(hoveredSlot[0], hoveredSlot[1]);
+
+            if (gameState == GameState.INVENTORY || (hoveredSlot[1] != player.inv.getSelectedSlot() && gameState == GameState.PLAYING)) {
+                drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize, false);
+            }
+        } else {
+            slotSize = (int) (unscaledExtraSlotSize * scale);
+            slotSpacing = (int) (unscaledExtraSlotSpacing * scale);
+
+            int gridX = (int) (132 * scale);
+            int gridY = (int) (32 * scale);
+
+            slotX = gridX + hoveredSlot[0] * (slotSize + slotSpacing);
+            slotY = gridY + hoveredSlot[1] * (slotSize + slotSpacing);
+
+            hoveredItem = player.inv.getExtraItem(hoveredSlot[0] * 2 + hoveredSlot[1]);
+
+            drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize, true);
         }
 
-        if (gameState == GameState.INVENTORY || (hoveredSlot[1] != player.inv.getSelectedSlot() && gameState == GameState.PLAYING)) {
-            drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize);
-        }
+        drawHoveredItemTooltip(g2d, slotX, slotY, slotSize, hoveredItem);
+    }
+
+    public static void drawHoveredItemTooltip(Graphics2D g2d, int slotX, int slotY, int slotSize, Item hoveredItem) {
 
         // Get item details
-        Item hoveredItem = player.inv.getItem(hoveredSlot[0], hoveredSlot[1]);
         String itemName = hoveredItem.getDisplayName();
         String itemCount = "";
         if (hoveredItem.getCount() > 1) {

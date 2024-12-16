@@ -1,4 +1,4 @@
-package com.ded.misle;
+package com.ded.misle.renderer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,8 +8,8 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ded.misle.GameRenderer.textShadow;
-import static com.ded.misle.FontManager.ubuntuFont44;
+import static com.ded.misle.renderer.GameRenderer.textShadow;
+import static com.ded.misle.renderer.FontManager.ubuntuFont44;
 import static com.ded.misle.Launcher.scale;
 
 public class MenuButton {

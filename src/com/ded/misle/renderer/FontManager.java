@@ -1,4 +1,4 @@
-package com.ded.misle;
+package com.ded.misle.renderer;
 
 import java.awt.Font;
 import java.awt.FontFormatException;

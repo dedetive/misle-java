@@ -1,6 +1,6 @@
 package com.ded.misle.renderer;
 
-import com.ded.misle.MouseHandler;
+import com.ded.misle.input_handler.MouseHandler;
 import com.ded.misle.boxes.BoxesHandling;
 
 import javax.swing.*;

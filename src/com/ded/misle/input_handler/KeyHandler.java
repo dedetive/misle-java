@@ -1,5 +1,7 @@
-package com.ded.misle;
+package com.ded.misle.input_handler;
 
+import com.ded.misle.GamePanel;
+import com.ded.misle.Physics;
 import com.ded.misle.items.Item;
 
 import javax.swing.*;
@@ -10,7 +12,7 @@ import java.util.HashMap;
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.renderer.LevelDesignerRenderer.levelDesignerGrid;
 import static com.ded.misle.renderer.MenuRenderer.pauseGame;
-import static com.ded.misle.KeyHandler.Key.*;
+import static com.ded.misle.input_handler.KeyHandler.Key.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.items.Item.createItem;
 import static java.awt.event.KeyEvent.*;
