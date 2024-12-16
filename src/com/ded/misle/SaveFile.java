@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.sql.SQLOutput;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
@@ -67,50 +68,53 @@ public class SaveFile {
 		 */
 
 		 /**
-		 * Additional pixels based on inventory (X, Y coordinates for each pixel set in inventory):
-	     * X  Y
-		 * 0, 15 R
-		 * 1, 15 G
-		 * 2, 15 B
-		 * 3, 15 R
-		 * 0, 16 G
-		 * 1, 16 B
-		 * 2, 16 R
-		 * 3, 16 G
-		 * 0, 17 B
-		 * 1, 17 R
-		 * 2, 17 G
-		 * 3, 17 B
-		 * 0, 18 R
-		 * 1, 18 G
-		 * 2, 18 B
-		 * 3, 18 R
-		 * 0, 19 G
-		 * 1, 19 B
-		 * 2, 19 R
-		 * 3, 19 G
-		 * 0, 20 B
-		 * 1, 20 R
-		 * 2, 20 G
-		 * 3, 20 B
-		 * 0, 21 R
-		 * 1, 21 G
-		 * 2, 21 B
-		 * 3, 21 R
-		 * 0, 22 G
-		 * 1, 22 B
-		 * 2, 22 R
-		 * 3, 22 G
-		 * 0, 23 B
-		 * 1, 23 R
-		 * 2, 23 G
-		 * 3, 23 B
-		 * 0, 24 R
-		 * 1, 24 G
-		 * 2, 24 B
-		 * 3, 24 R
-		 *
-		 */
+		  * Additional pixels based on inventory (X, Y coordinates for each pixel set in inventory):
+	      * X  Y
+		  * 0, 15 R
+		  * 1, 15 G
+		  * 2, 15 B
+		  * 3, 15 R
+		  * 0, 16 G
+		  * 1, 16 B
+		  * 2, 16 R
+		  * 3, 16 G
+		  * 0, 17 B
+		  * 1, 17 R
+		  * 2, 17 G
+		  * 3, 17 B
+		  * 0, 18 R
+		  * 1, 18 G
+		  * 2, 18 B
+		  * 3, 18 R
+		  * 0, 19 G
+		  * 1, 19 B
+		  * 2, 19 R
+		  * 3, 19 G
+		  * 0, 20 B
+		  * 1, 20 R
+		  * 2, 20 G
+		  * 3, 20 B
+		  * 0, 21 R
+		  * 1, 21 G
+		  * 2, 21 B
+		  * 3, 21 R
+		  * 0, 22 G
+		  * 1, 22 B
+		  * 2, 22 R
+		  * 3, 22 G
+		  * 0, 23 B
+		  * 1, 23 R
+		  * 2, 23 G
+		  * 3, 23 B
+		  * 0, 24 R
+		  * 1, 24 G
+		  * 2, 24 B
+		  * 3, 24 R
+		  *
+		  *
+		  *
+		  *
+		  */
 
 		SPAWNPOINT_M				(RED,69,42),
 		SPAWNPOINT_L				(BLUE,42,69),
@@ -266,7 +270,25 @@ public class SaveFile {
 						}
 					}
 
+					tempInventory = new int[2][2][4];
+					for (int i = 0; i < 2; i++) {
+						for (int j = 0; j < 2; j++) {
+							tempInventory[i][j][0] = loadThis(RED, i, j + 25);
+							tempInventory[i][j][1] = loadThis(GREEN, i, j + 25);
+							// [i][j][0] = ID
+							tempInventory[i][j][0] = tempInventory[i][j][0] * 255 + tempInventory[i][j][1];
+
+							tempInventory[i][j][2] = loadThis(BLUE, i, j + 25);
+							tempInventory[i][j][3] = loadThis(RED, j + 25, i);
+							// [i][j][1] = Count
+							tempInventory[i][j][1] = tempInventory[i][j][2] * 255 + tempInventory[i][j][3];
+
+							player.inv.bruteSetItem(Item.createItem(tempInventory[i][j][0], tempInventory[i][j][1]), i * 2 + j);
+						}
+					}
+
 				} catch (IOException e) {
+					System.out.println("Failed to load inventory!");
 					e.printStackTrace();
 				}
 			}
@@ -410,6 +432,31 @@ public class SaveFile {
 						brandIntoSaveFile(tempInventory[i][j][1], GREEN, i, j + 15);
 						brandIntoSaveFile(tempInventory[i][j][2], BLUE, i, j + 15);
 						brandIntoSaveFile(tempInventory[i][j][3], RED, j + 15, i);
+					}
+				}
+			} catch (NullPointerException e) {
+				// If the game hadn't been started before quitting, this just means the inventory was not loaded yet.
+			}
+
+			try {
+				int[][][] tempInventory = new int[2][2][4];
+				for (int i = 0; i < 2; i++) {
+					for (int j = 0; j < 2; j++) {
+						if (player.inv.getItem(i, j) == null) {
+							tempInventory[i][j][0] = 0;
+							tempInventory[i][j][1] = 0;
+							tempInventory[i][j][2] = 0;
+							tempInventory[i][j][3] = 0;
+						} else {
+							tempInventory[i][j][0] = getMedium((player.inv.getItem(i * 2 + j).getId()));       // HIGH ID
+							tempInventory[i][j][1] = getLow(player.inv.getItem(i * 2 + j).getId());          // LOW ID
+							tempInventory[i][j][2] = getMedium((player.inv.getItem(i * 2 + j).getCount()));    // HIGH COUNT
+							tempInventory[i][j][3] = getLow(player.inv.getItem(i * 2 + j).getCount());       // LOW COUNT
+						}
+						brandIntoSaveFile(tempInventory[i][j][0], RED, i, j + 25);
+						brandIntoSaveFile(tempInventory[i][j][1], GREEN, i, j + 25);
+						brandIntoSaveFile(tempInventory[i][j][2], BLUE, i, j + 25);
+						brandIntoSaveFile(tempInventory[i][j][3], RED, j + 25, i);
 					}
 				}
 			} catch (NullPointerException e) {
