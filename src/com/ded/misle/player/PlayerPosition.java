@@ -9,12 +9,8 @@ import static com.ded.misle.Launcher.scale;
 
 public class PlayerPosition {
 
-	private double x;
-	private double originalPlayerX;
-	private double cameraOffsetX;
-	private double y;
-	private double originalPlayerY;
-	private double cameraOffsetY;
+    private double cameraOffsetX;
+    private double cameraOffsetY;
 	private int spawnpointRoom;
 	private Region region = Region.VOID;
 	private int roomID;
@@ -26,13 +22,9 @@ public class PlayerPosition {
 
 	public PlayerPosition() {
 		if (player != null) {
-			if (spawnpointRoom == 0) {
-				spawnpointRoom = 1;
-				reloadSpawnpoint();
-			} else {
-				reloadSpawnpoint();
-			}
-		}
+            spawnpointRoom = 1;
+            reloadSpawnpoint();
+        }
 		setCameraOffsetX(0);
 		setCameraOffsetY(0);
 		setRegion(Region.CHAIN_OF_LIES);
