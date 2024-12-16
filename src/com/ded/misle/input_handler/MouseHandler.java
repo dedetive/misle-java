@@ -175,6 +175,20 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 									// Swap
 									player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], draggedItem.getCount(), false);
 									// Grab item
+								else if ((player.keys.keyPressed.get(KeyHandler.Key.SHIFT)) && Objects.equals(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]).getSubtype(), "ring")) {
+										boolean[] isSpaceOccupied = new boolean[3];
+										int firstValidPosition = -1;
+										boolean isAnyEmpty = false;
+										for (int i = 0; i < 3; i++) {
+											isSpaceOccupied[i] = player.inv.getItem(i) != null;
+											if (!isSpaceOccupied[i] && firstValidPosition == -1) firstValidPosition = i;
+											if (!isSpaceOccupied[i]) isAnyEmpty = true;
+										}
+										if (isAnyEmpty) {
+											player.inv.bruteSetItem(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]), firstValidPosition);
+											player.inv.removeItem(getHoveredSlot()[0], getHoveredSlot()[1]);
+										}
+								}
 								else player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], -1, false);
 							} else if (hasDraggedItem()) {
 								// Place item into slot if it's empty and has dragged item
