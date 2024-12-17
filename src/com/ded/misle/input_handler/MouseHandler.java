@@ -246,6 +246,17 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 								player.inv.putDraggedItem(getHoveredSlot()[0], getHoveredSlot()[1], 1, false);
 							}
 						}
+						case RING -> {
+							if (player.inv.getDraggedItem().getSubtype().equals("ring")) {
+								if (isSlotOccupied()) {
+									// Swap
+									player.inv.initDraggingItem(getExtraHoveredSlot()[0], getExtraHoveredSlot()[1], -1, true);
+								} else {
+									// Put into slot
+									player.inv.putDraggedItem(getExtraHoveredSlot()[0], getExtraHoveredSlot()[1], 1, true);
+								}
+							}
+						}
 					}
                 }
             }
