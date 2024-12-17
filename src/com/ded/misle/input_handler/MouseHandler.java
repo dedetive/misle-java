@@ -24,6 +24,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
     private int hoveredBarSlot = -1;
 	private int[] hoveredSlot = new int[]{-1, -1};
 	private static int extraSlotSize;
+	private static int extraSlotSpacing;
 	private static final int[] extraSlotX = new int[2];
 	private static final int[] extraSlotY = new int[2];
 	private int[] extraHoveredSlot = new int[]{-1, -1};
@@ -67,15 +68,15 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 		// INVENTORY EXTRA SLOTS
 
 		extraSlotSize = (int) (unscaledExtraSlotSize * scale);
-		slotSpacing = (int) (unscaledExtraSlotSpacing * scale);
+		extraSlotSpacing = (int) (unscaledExtraSlotSpacing * scale);
 
 		gridX = (int) (132 * scale);
 		gridY = (int) (32 * scale);
 
 		for (int j = 0; j < 2; j++) {
 			for (int i = 0; i < 2; i++) {
-				extraSlotX[i] = gridX + i * (slotSize + slotSpacing);
-				extraSlotY[j] = gridY + j * (slotSize + slotSpacing);
+				extraSlotX[i] = gridX + i * (extraSlotSize + extraSlotSpacing);
+				extraSlotY[j] = gridY + j * (extraSlotSize + extraSlotSpacing);
 			}
 		}
 	}
