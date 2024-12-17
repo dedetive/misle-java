@@ -227,7 +227,12 @@ public class InventoryRenderer {
         int invertedMultiplier = isInverted ? 1 : -1; // WIP
 
         // Get item details
-        String itemName = hoveredItem.getDisplayName();
+        String itemName;
+        try {
+            itemName = hoveredItem.getDisplayName();
+        } catch (NullPointerException e) {
+            return;
+        }
         String itemCount = "";
         if (hoveredItem.getCount() > 1) {
             itemCount = " (" + hoveredItem.getCount() + "x)";
