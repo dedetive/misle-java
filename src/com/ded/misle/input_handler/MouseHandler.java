@@ -182,7 +182,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 										boolean isAnyEmpty = false;
 										for (int i = 0; i < 3; i++) {
 											isSpaceOccupied[i] = player.inv.getItem(i) != null;
-											if (!isSpaceOccupied[i] && firstValidPosition == -1) firstValidPosition = i;
+											if (!isSpaceOccupied[i]) firstValidPosition = i;
 											if (!isSpaceOccupied[i]) {
 												isAnyEmpty = true;
 												break;}

@@ -16,6 +16,7 @@ import static com.ded.misle.boxes.BoxManipulation.*;
 import static com.ded.misle.boxes.BoxesHandling.addBox;
 import static com.ded.misle.boxes.BoxesHandling.editBox;
 import static com.ded.misle.player.HandItemAnimator.animateClaw;
+import static com.ded.misle.player.PlayerAttributes.Stat.ALL;
 import static java.lang.System.currentTimeMillis;
 
 public class Inventory {
@@ -139,6 +140,7 @@ public class Inventory {
 
 	public void bruteSetItem(Item item, int position) {
 		this.extraSlots[position] = item;
+		player.attr.updateEquipmentStat(ALL);
 	}
 
 	public boolean removeItem(int row, int col) {
@@ -168,6 +170,7 @@ public class Inventory {
 
 	public boolean removeItem(int position) {
 		this.extraSlots[position] = null;
+		player.attr.updateEquipmentStat(ALL);
 		return true;
 	}
 
@@ -456,6 +459,26 @@ public class Inventory {
 					}
 				}
 			}
+		}
+	}
+
+	public enum PossibleItemStats {
+		vit,
+		def,
+		ent,
+		str
+	}
+
+	/**
+	 *
+	 * @param stat as of now, should only be "vit", "def", "ent" or "str".
+	 * @return integer value
+	 */
+	public int getItemStat(Item item, PossibleItemStats stat) {
+		try {
+            return (int) item.getAttributes().get(stat.toString());
+		} catch (NullPointerException e) {
+			return 0;
 		}
 	}
 }

@@ -8,6 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.ded.misle.GamePanel.player;
+import static com.ded.misle.player.Inventory.PossibleItemStats.*;
 import static com.ded.misle.renderer.PlayingRenderer.createFloatingText;
 import static com.ded.misle.renderer.PlayingRenderer.showHealthBar;
 import static com.ded.misle.Launcher.scale;
@@ -48,13 +49,21 @@ public class PlayerAttributes {
 		SPEED
 	}
 
-	// Level attributes
+	// LEVEL ATTRIBUTES
 
 	double levelMaxHP;
 	double levelMaxEntropy;
 	double levelDefense;
 	double levelRegenerationQuality;
 	double levelSpeed;
+
+	// EQUIPMENT ATTRIBUTES
+
+	double equipmentMaxHP;
+	double equipmentMaxEntropy;
+	double equipmentDefense;
+	double equipmentRegenerationQuality;
+	double equipmentSpeed;
 
 	public enum LevelStat {
 		MAX_HP,
@@ -557,24 +566,6 @@ public class PlayerAttributes {
 		}
 	}
 
-	public void updateStat(Stat stat) {
-		switch (stat) {
-			case MAX_HP -> this.maxHP = 100 + levelMaxHP;
-			case MAX_ENTROPY -> this.maxEntropy = 80 + levelMaxEntropy;
-			case DEFENSE -> this.defense = levelDefense;
-			case REGENERATION_QUALITY -> this.regenerationQuality = 1 + levelRegenerationQuality;
-			case SPEED -> this.playerSpeed = this.playerSpeedModifier * (scale * 2 + 0.166) / 3 * this.environmentSpeedModifier + Math.log10(1 + this.levelSpeed);
-			case ALL -> {
-				for (Stat argument : Stat.values()) {
-					if (argument == Stat.ALL) {
-						continue;
-					}
-					updateStat(argument);
-				}
-			}
-		}
-	}
-
 	public double getLevelStat(LevelStat stat) {
 		return switch (stat) {
 			case MAX_HP -> this.levelMaxHP;
@@ -600,6 +591,64 @@ public class PlayerAttributes {
 		} catch (NullPointerException e) {
 			System.out.println("Max stack multiplier attribute failed because could not read 'inv' as player is null");
 		}
+	}
+
+	// GENERIC ATTRIBUTES
+
+	public void updateStat(Stat stat) {
+		switch (stat) {
+			case MAX_HP -> this.maxHP = 100 + levelMaxHP + equipmentMaxHP;
+			case MAX_ENTROPY -> this.maxEntropy = 80 + levelMaxEntropy + equipmentMaxEntropy;
+			case DEFENSE -> this.defense = levelDefense + equipmentDefense;
+			case REGENERATION_QUALITY -> this.regenerationQuality = 1 + levelRegenerationQuality + equipmentRegenerationQuality;
+			case SPEED -> this.playerSpeed = this.playerSpeedModifier * (scale * 2 + 0.166) / 3 * this.environmentSpeedModifier + Math.log10(1 + this.levelSpeed + this.equipmentSpeed);
+			case ALL -> {
+				for (Stat argument : Stat.values()) {
+					if (argument == Stat.ALL)
+						continue;
+					updateStat(argument);
+				}
+			}
+		}
+	}
+
+	public void updateEquipmentStat(Stat stat) {
+		switch (stat) {
+			case MAX_HP -> {
+				this.equipmentMaxHP = 0;
+				for (int i = 0; i < 3; i++) {
+					if (player.inv.getItem(i) != null) {
+						this.equipmentMaxHP += player.inv.getItemStat(player.inv.getItem(i), vit);
+					}
+				}
+            }
+			case MAX_ENTROPY -> {
+				this.equipmentMaxEntropy = 0;
+				for (int i = 0; i < 3; i++) {
+					if (player.inv.getItem(i) != null) {
+						this.equipmentMaxEntropy += player.inv.getItemStat(player.inv.getItem(i), ent);
+					}
+				}
+			}
+			case DEFENSE -> {
+				this.equipmentDefense = 0;
+				for (int i = 0; i < 3; i++) {
+					if (player.inv.getItem(i) != null) {
+						this.equipmentDefense += player.inv.getItemStat(player.inv.getItem(i), def);
+					}
+				}
+			}
+			case REGENERATION_QUALITY -> {}
+			case SPEED -> {}
+			case ALL -> {
+				for (Stat argument : Stat.values()) {
+					if (argument == Stat.ALL)
+						continue;
+					updateEquipmentStat(argument);
+				}
+			}
+		}
+		updateStat(stat);
 	}
 
 	// UNLOAD
