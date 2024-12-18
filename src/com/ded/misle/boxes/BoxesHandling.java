@@ -15,7 +15,7 @@ import static com.ded.misle.Launcher.scale;
 public class BoxesHandling {
 
 	private static final List<Box> boxes = new ArrayList<>();
-	private static final List<String> presetsWithSides = List.of(new String[]{"wallDefault"});
+	private static final List<String> presetsWithSides = List.of(new String[]{"wall_default"});
 	private static final double boxBaseSize = 20.9;
 	public static int maxLevel = 19;
 	private static final List<Box>[] cachedBoxes = new ArrayList[maxLevel + 1];
@@ -64,8 +64,8 @@ public class BoxesHandling {
 	 * Valid presets are:<br>
 	 * - spawnpoint<br>
 	 * - mountainChest<br>
-	 * - wallDefault<br>
-	 * - wallDefault@Deco<br>
+	 * - wall_default<br>
+	 * - wall_default@Deco<br>
 	 * - grass
 	 *
 	 */
@@ -243,14 +243,14 @@ public class BoxesHandling {
 				editBox(box, EditBoxKeys.EFFECT, "{spawnpoint, -1}");
 				editBox(box, EditBoxKeys.TEXTURE, "spawnpoint");
 				break;
-			case "mountainChest":
+			case "mountain_chest":
 				editBox(box, EditBoxKeys.EFFECT, "{chest, 3, mountain}");
 				editBox(box, EditBoxKeys.HAS_COLLISION, "true");
 				editBox(box, EditBoxKeys.TEXTURE, "chest");
 				break;
-			case "wallDefault":
+			case "wall_default":
 				editBox(box, EditBoxKeys.HAS_COLLISION, "true");
-				editBox(box, EditBoxKeys.TEXTURE, "wallDefault");
+				editBox(box, EditBoxKeys.TEXTURE, "wall_default");
 				break;
 			case "grass":
 				editBox(box, EditBoxKeys.HAS_COLLISION, "false");

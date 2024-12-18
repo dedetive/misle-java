@@ -167,7 +167,7 @@ public class Box {
 					String[] eachSide = sides.split("");
 
 					for (String side : eachSide) {
-						PlayingRenderer.drawRotatedImage(g2d, getTexture(textureName + "OverlayW"), screenX, screenY,
+						PlayingRenderer.drawRotatedImage(g2d, getTexture(textureName + "_overlayW"), screenX, screenY,
 								(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), rotationInstruction.get(side) + this.rotation);
 					}
 				}
@@ -180,7 +180,7 @@ public class Box {
 						if (Objects.equals(corner, "")) {
 							continue;
 						}
-						PlayingRenderer.drawRotatedImage(g2d, getTexture(textureName + "OverlayC"), screenX, screenY,
+						PlayingRenderer.drawRotatedImage(g2d, getTexture(textureName + "_overlayC"), screenX, screenY,
 								(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), rotationInstruction.get(corner) + this.rotation);
 					}
 				}
@@ -199,7 +199,7 @@ public class Box {
 			if (selectedBoxes.contains(this)) {
 				for (int i = 0; i <= 270; i += 90) {
 					System.out.println(i);
-					PlayingRenderer.drawRotatedImage(g2d, getTexture("wallDefaultOverlayW"), screenX, screenY,
+					PlayingRenderer.drawRotatedImage(g2d, getTexture("wall_default_overlayW"), screenX, screenY,
 							(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), i + this.rotation);
 				}
 			}
@@ -501,7 +501,7 @@ public class Box {
 		}
 		System.out.println("ID: " + id + "\nCount: " + count + "\nmultiplier: " + multiplier);
 
-		this.setTexture("chestOpen");
+		this.setTexture("chest_open");
 
 		droppedItem = createDroppedItem(this.getX(), this.getY() - 10, id, count);
 		moveBox(droppedItem, multiplier * 20, 10, delay);
