@@ -20,16 +20,23 @@ public class AudioPlayer {
 		}
 	}
 
+	public enum AudioFile {
+		consume_small_pot,
+		consume_medium_pot,
+		drop_item,
+		collect_item
+	}
+
 	/**
 	 * Plays an audio with the given name.
 	 *
 	 * @param audioName
 	 */
-	public static void playThis(String audioName) {
+	public static void playThis(AudioFile audioName) {
 		new AudioPlayer(String.valueOf(getPath().resolve("resources/audio/" + audioName + ".wav"))).play();
 	}
 
-	public static void stopThis(String audioName) {
+	public static void stopThis(AudioFile audioName) {
 		new AudioPlayer(String.valueOf(getPath().resolve("resources/audio/" + audioName + ".wav"))).stop();
 	}
 

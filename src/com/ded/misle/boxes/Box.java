@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
 
+import static com.ded.misle.AudioPlayer.AudioFile.collect_item;
 import static com.ded.misle.AudioPlayer.playThis;
 import static com.ded.misle.ChangeSettings.getPath;
 import static com.ded.misle.GamePanel.*;
@@ -525,7 +526,7 @@ public class Box {
 		double totalDistance = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
 
 		if (totalDistance < 30) {
-			playThis("collect_item");
+			playThis(collect_item);
 			player.inv.addItem(createItem(Integer.parseInt(this.effect[1]), Integer.parseInt(this.effect[2])));
 			PlayingRenderer.updateSelectedItemNamePosition();
 			deleteBox(this);
