@@ -12,8 +12,9 @@ public class ImageRenderer {
     public static final java.util.Map<ImageName, BufferedImage> cachedImages = new HashMap<>();
 
     public enum ImageName {
-        INVENTORY_BAR("ui", "inventoryBar.png"),
-        INVENTORY_MENU("ui", "inventoryBackground.png"),;
+        INVENTORY_BAR("ui", "inventory_bar.png"),
+        INVENTORY_MENU("ui", "inventory_background.png"),
+        INVENTORY_RINGLESS_EXTRA_SLOT("ui", "inventory_ringless_extra_slot.png"),;
 
         ImageName(String category, String fileName) {
             Path basePath = getPath().resolve("resources/images/");

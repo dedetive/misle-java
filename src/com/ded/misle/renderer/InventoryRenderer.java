@@ -93,6 +93,7 @@ public class InventoryRenderer {
 
                 Item item = player.inv.getItem(i * 2 + j);
                 if (item != null) {
+                    g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.INVENTORY_RINGLESS_EXTRA_SLOT), slotX, slotY, slotSize, slotSize, null);
                     g2d.drawImage(item.getIcon(), slotX, slotY, slotSize, slotSize, null);
                     int itemCount = item.getCount();
                     if (itemCount > 1) {
