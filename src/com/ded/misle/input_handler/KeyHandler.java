@@ -235,8 +235,8 @@ public class KeyHandler implements KeyListener {
 					} else {
 						player.inv.dropItem(0, player.inv.getSelectedSlot(), 1);
 					}
-					player.keys.keyPressed.put(DROP, false);
 				}
+				player.keys.keyPressed.put(DROP, false);
 			}
 			if (player.keys.keyPressed.get(DODGE)) {
 				int delay = 100;
@@ -296,8 +296,8 @@ public class KeyHandler implements KeyListener {
 					} else {
 						player.inv.dropItem(mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1], 1);
 					}
-					player.keys.keyPressed.put(DROP, false);
 				}
+				player.keys.keyPressed.put(DROP, false);
 			}
 		}
 
