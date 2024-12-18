@@ -225,7 +225,7 @@ public class Inventory {
 	public void dropItem(int row, int col, int quantity) {
 		Box droppedItem = BoxesHandling.addBoxItem(player.getX() / scale, player.getY() / scale, getItem(row, col).getId(), quantity);
 		editBox(droppedItem, BoxesHandling.EditBoxKeys.COLLECTIBLE, "false");
-		playThis("dropItem");
+		playThis("drop_item");
 		removeItem(row, col, quantity);
 		PlayingRenderer.updateSelectedItemNamePosition();
 		double dropSpeed = player.attr.getSpeedModifier() * player.attr.getEnvironmentSpeedModifier() * 20 * 2.25;
@@ -331,7 +331,7 @@ public class Inventory {
 	public void dropDraggedItem(int count) {
 		Box droppedItem = BoxesHandling.addBoxItem(player.getX() / scale, player.getY() / scale, getDraggedItem().getId(), count);
 		editBox(droppedItem, BoxesHandling.EditBoxKeys.COLLECTIBLE, "false");
-		playThis("dropItem");
+		playThis("drop_item");
 		setTempItem(getDraggedItem());
 		tempItem.setCount(count);
 		draggedItem.setCount(draggedItem.getCount() - count);
@@ -392,16 +392,16 @@ public class Inventory {
 
 			switch ((String) getSelectedItem().getAttributes().get("size")) {
 				case "small":
-					playThis("consumeSmallPot");
+					playThis("consume_small_pot");
 					break;
 				case "medium":
-					playThis("consumeMediumPotion");
+					playThis("consume_medium_potion");
 					break;
 //				case "big":
-//					playThis("consumeBigPotion");
+//					playThis("consume_big_potion");
 //					break;
 //				case "huge":
-//					playThis("consumeHugePotion");
+//					playThis("consume_huge_potion");
 //					break;
 			}
 

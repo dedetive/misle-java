@@ -525,7 +525,7 @@ public class Box {
 		double totalDistance = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
 
 		if (totalDistance < 30) {
-			playThis("collectItem");
+			playThis("collect_item");
 			player.inv.addItem(createItem(Integer.parseInt(this.effect[1]), Integer.parseInt(this.effect[2])));
 			PlayingRenderer.updateSelectedItemNamePosition();
 			deleteBox(this);
