@@ -281,13 +281,13 @@ public class PlayerAttributes {
 			theoreticalDamage = damage; // Return full damage
 		} else if (isAbsolute) {
 			// Absolute: defense effects are ignored
-			theoreticalDamage = Math.min(damage, this.hp);
+			theoreticalDamage = Math.max(Math.min(damage, this.hp), 0);
 		} else if (isPostMortem && !getIsInvulnerable()) {
 			// Post-mortem: damage will be dealt past 0 into the negatives
 			theoreticalDamage = defenseCalculation;
 		} else if (!getIsInvulnerable()) {
 			// Normal: defense and item effects take place normally
-			theoreticalDamage = Math.min(defenseCalculation, this.hp);
+			theoreticalDamage = Math.max(Math.min(defenseCalculation, this.hp), 0);
 		} else {
 			theoreticalDamage = 0;
 		}

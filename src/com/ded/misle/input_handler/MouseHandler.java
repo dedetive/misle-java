@@ -184,7 +184,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 									player.inv.initDraggingItem(getExtraHoveredSlot()[0], getExtraHoveredSlot()[1], draggedItem.getCount(), true);
 									// Quick unequip ring
 								else if (player.keys.keyPressed.get(KeyHandler.Key.SHIFT)) {
-									boolean[] isSpaceOccupied = new boolean[3];
+									boolean[] isSpaceOccupied = new boolean[4];
 									int[] firstValidPosition = new int[]{-1, -1};
 									boolean isAnyEmpty = false;
 									for (int i = 0; i < 4; i++) {
