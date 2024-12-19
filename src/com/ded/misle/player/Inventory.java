@@ -260,6 +260,41 @@ public class Inventory {
 		timer.start();
 	}
 
+	public void dropItem(int position, int quantity) {
+		Box droppedItem = BoxesHandling.addBoxItem(player.getX() / scale, player.getY() / scale, getItem(position).getId(), quantity);
+		editBox(droppedItem, BoxesHandling.EditBoxKeys.COLLECTIBLE, "false");
+		playThis(drop_item);
+		removeItem(position);
+		PlayingRenderer.updateSelectedItemNamePosition();
+		double dropSpeed = player.attr.getSpeedModifier() * player.attr.getEnvironmentSpeedModifier() * 20 * 2.25;
+		switch (player.stats.getWalkingDirection()) {
+			case PlayerStats.Direction.UP -> {
+				moveCollisionBox(droppedItem, 0, -dropSpeed, 300);
+				moveCollisionBox(droppedItem, 0, -dropSpeed / 2, 50);
+			}
+			case PlayerStats.Direction.DOWN -> {
+				moveCollisionBox(droppedItem, 0, dropSpeed, 300);
+				moveCollisionBox(droppedItem, 0, dropSpeed / 2, 50);
+			}
+			case PlayerStats.Direction.LEFT -> {
+				moveCollisionBox(droppedItem, -dropSpeed, 0, 300);
+				moveCollisionBox(droppedItem, -dropSpeed / 2, 0, 50);
+			}
+			case PlayerStats.Direction.RIGHT -> {
+				moveCollisionBox(droppedItem, dropSpeed, 0, 300);
+				moveCollisionBox(droppedItem, dropSpeed / 2, 0, 50);
+			}
+			case null, default -> {
+			}
+		}
+		delayedRotateBox(droppedItem, 360, 250);
+		Timer timer = new Timer(1500, e -> {
+			editBox(droppedItem, BoxesHandling.EditBoxKeys.COLLECTIBLE, "true");
+		});
+		timer.setRepeats(false);
+		timer.start();
+	}
+
 	public void initDraggingItem(int row, int col, int count, boolean isExtra) {
 		int position = isExtra ? col * 2 + row : -1; // Use -1 when not "extra"
 

@@ -296,6 +296,12 @@ public class KeyHandler implements KeyListener {
 					} else {
 						player.inv.dropItem(mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1], 1);
 					}
+				} else if (mouseHandler.getExtraHoveredSlot()[0] >= 0 && mouseHandler.getExtraHoveredSlot()[1] >= 0 && player.inv.getItem(mouseHandler.getExtraHoveredSlot()[0] * 2 + mouseHandler.getExtraHoveredSlot()[1]) != null) {
+					if (player.keys.keyPressed.get(CTRL)) {
+						player.inv.dropItem(mouseHandler.getExtraHoveredSlot()[1] * 2 + mouseHandler.getExtraHoveredSlot()[0], player.inv.getItem(mouseHandler.getExtraHoveredSlot()[0] * 2 + mouseHandler.getExtraHoveredSlot()[1]).getCount());
+					} else {
+						player.inv.dropItem(mouseHandler.getExtraHoveredSlot()[1] * 2 + mouseHandler.getExtraHoveredSlot()[0], 1);
+					}
 				}
 				player.keys.keyPressed.put(DROP, false);
 			}
