@@ -14,6 +14,8 @@ import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.boxes.Box.clearSelectedBoxes;
 import static com.ded.misle.renderer.InventoryRenderer.*;
+import static com.ded.misle.renderer.PlayingRenderer.inventoryBarY;
+import static com.ded.misle.renderer.PlayingRenderer.slotStartX;
 
 public class MouseHandler implements MouseListener, MouseMotionListener {
 
@@ -29,14 +31,6 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 	public static void updateMouseVariableScales() {
 		// PLAYING
-
-        int inventoryBarWidth = (int) (120 * scale);
-        int inventoryBarHeight = (int) (20 * scale);
-        int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
-        int inventoryBarY = (int) (screenHeight - inventoryBarHeight - 60);
-
-        int totalSlotsWidth = 7 * slotSize[0] + (6 * slotSpacing[0]);
-        int slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
 
 		for (int i = 0; i < 7; i++) {
 			barSlotX[i] = slotStartX + i * (slotSize[0] + slotSpacing[0]);
@@ -279,7 +273,6 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 	private void updateHoveredBarSlot() {
 		hoveredBarSlot = -1; // Reset hovered slot
-		int inventoryBarY = (int) ((screenHeight - (20 * scale) - 60) + ((20 * scale) - slotSize[0]) / 2);
 		for (int i = 0; i < 7; i++) {
 			if (mouseX >= barSlotX[i] && mouseX <= barSlotX[i] + slotSize[0] &&
 				mouseY >= inventoryBarY && mouseY <= inventoryBarY + slotSize[0]) {

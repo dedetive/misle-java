@@ -20,6 +20,7 @@ import static com.ded.misle.renderer.InventoryRenderer.updateRendererVariableSca
 import static com.ded.misle.renderer.MenuButton.clearButtons;
 import static com.ded.misle.input_handler.MouseHandler.updateMouseVariableScales;
 import static com.ded.misle.SaveFile.saveEverything;
+import static com.ded.misle.renderer.PlayingRenderer.updatePlayingVariableScales;
 
 /**
  * This is for loading and altering how the window behaves. Only do this once, otherwise new screens are created.
@@ -242,6 +243,7 @@ public class GamePanel extends JPanel implements Runnable {
 				FontManager.updateFontSizes();
 				updateMouseVariableScales();
 				updateRendererVariableScales();
+				updatePlayingVariableScales();
 				if (levelDesigner) {
 					updateDesignerSpeed();
 				}

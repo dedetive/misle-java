@@ -4,18 +4,12 @@ import com.ded.misle.input_handler.MouseHandler;
 import com.ded.misle.boxes.BoxesHandling;
 import com.ded.misle.items.Item;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.ded.misle.ChangeSettings.getPath;
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.renderer.ImageRenderer.cachedImages;
 import static com.ded.misle.Launcher.scale;
@@ -44,11 +38,32 @@ public class PlayingRenderer {
         UNFADED
     }
 
+    public static double scaleByScreenSize = scale / 3.75;
+
+    public static int inventoryBarWidth = (int) (120 * scale);
+    public static int inventoryBarHeight = (int) (20 * scale);
+    public static int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
+    public static int inventoryBarY = (int) (screenHeight - inventoryBarHeight - 60);
+
+    public static int totalSlotsWidth = 7 * slotSize[0] + (6 * slotSpacing[0]);
+    public static int slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
+
+    public static void updatePlayingVariableScales() {
+        scaleByScreenSize = scale / 3.75;
+
+        inventoryBarWidth = (int) (120 * scale);
+        inventoryBarHeight = (int) (20 * scale);
+        inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
+        inventoryBarY = (int) (screenHeight - inventoryBarHeight - 60);
+
+        totalSlotsWidth = 7 * slotSize[0] + (6 * slotSpacing[0]);
+        slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
+    }
+
     private static FadingState isFading = FadingState.UNFADED;
 
     public static void renderPlayingGame(Graphics g, MouseHandler mouseHandler) {
         Graphics2D g2d = (Graphics2D) g;
-        double scaleByScreenSize = scale / 3.75;
 
         // ANTI-ALIASING
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -170,17 +185,9 @@ public class PlayingRenderer {
 
     private static void drawInventoryBar(Graphics2D g2d) {
 
-        int inventoryBarWidth = (int) (120 * scale);
-        int inventoryBarHeight = (int) (20 * scale);
-        int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
-        int inventoryBarY = (int) (screenHeight - inventoryBarHeight - 60);
-
         g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.INVENTORY_BAR), 0, (int) (screenHeight - 82 * Math.pow(scale, (double) 1 /2)), (int) (512 * scale), (int) (35 * scale), null);
 
         // Slots info
-
-        int totalSlotsWidth = 7 * slotSize[0] + (6 * slotSpacing[0]);
-        int slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
 
         int selectedSlot = player.inv.getSelectedSlot();
 
@@ -220,22 +227,11 @@ public class PlayingRenderer {
         if (selectedItem != null) {
             selectedItemName = selectedItem.getDisplayName();
 
-            double scaleByScreenSize = scale;
-            int inventoryBarWidth = (int) (120 * scaleByScreenSize);
-            int inventoryBarHeight = (int) (20 * scaleByScreenSize);
-            int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
-            int inventoryBarY = (int) (screenHeight - inventoryBarHeight - 10);
-
-            int slotWidth = (int) (slotSize[0] * scaleByScreenSize);
-            int slotSpace = (int) (slotSpacing[0] * scaleByScreenSize);
-            int totalSlotsWidth = 7 * slotWidth + (6 * slotSpace);
-            int slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
-
-            int slotX = slotStartX + player.inv.getSelectedSlot() * (slotWidth + slotSpace);
-            int slotY = inventoryBarY;
+            int slotX = slotStartX + player.inv.getSelectedSlot() * (slotSize[0] + slotSpacing[0]);
+            int slotY = inventoryBarY + 50;
 
             // Position the name above the selected slot
-            selectedItemNamePosition = new Point(slotX + slotWidth / 2, slotY - 70);
+            selectedItemNamePosition = new Point((int) (slotX + slotSize[0] / scale * scaleByScreenSize / 2), slotY - 70);
             itemNameDisplayStartTime = currentTimeMillis();
         } else {
             selectedItemName = null;
