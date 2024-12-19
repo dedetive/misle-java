@@ -4,24 +4,33 @@ import com.ded.misle.LanguageManager;
 import com.ded.misle.input_handler.MouseHandler;
 import com.ded.misle.items.Item;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.ded.misle.ChangeSettings.getPath;
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.renderer.ImageRenderer.cachedImages;
 
 public class InventoryRenderer {
-    public static int unscaledInventorySlotSize = 32;   // For inventory items (4x7 grid) and inventory bar (1x7 grid)
-    public static int unscaledInventorySlotSpacing = 0;
-    public static int unscaledExtraSlotSize = 24;       // For rings and trophy slot (2x2 grid)
-    public static int unscaledExtraSlotSpacing = 8;
+    // [0] = Inventory and inventory bar
+    // [1] = Rings and trophies
+    public final static int[] slotSize = new int[]{(int) (32 * scale), (int) (24 * scale)};
+    public final static int[] slotSpacing = new int[]{0, (int) (8 * scale)};
+    public final static int[][] gridOffset = new int[][]{{(int) (225 * scale), (int) (148 * scale)}, {(int) (132 * scale), (int) (32 * scale)}};
+    // For gridOffset, first value is either INVENTORY or EXTRA and second value is either X or Y
+
+    public static void updateRendererVariableScales() {
+        slotSize[0] = (int) (32 * scale);
+        slotSpacing[0] = (int) (0 * scale);
+        gridOffset[0][0] = (int) (225 * scale);
+        gridOffset[0][1] = (int) (148 * scale);
+        slotSize[1] = (int) (24 * scale);
+        slotSpacing[1] = (int) (8 * scale);
+        gridOffset[1][0] = (int) (132 * scale);
+        gridOffset[1][1] = (int) (32 * scale);
+    }
 
     public static void drawSelectedSlotOverlay(Graphics2D g2d, int slotX, int slotY, int slotSize) {
         g2d.setColor(new Color(255, 255, 255, 100)); // Semi-transparent overlay
@@ -35,14 +44,7 @@ public class InventoryRenderer {
         g2d.setColor(new Color(15, 15, 15, 130));
         g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
 
-        // Slot dimensions and spacing
-        int slotSize = (int) (unscaledInventorySlotSize * scale);
-        int slotSpacing = (int) (unscaledInventorySlotSpacing * scale);
-
         // Start the grid
-        int gridX = (int) (225 * scale);
-        int gridY = (int) (148 * scale);
-
 
         g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.INVENTORY_MENU), 0, 0, (int) screenWidth, (int) screenHeight, null);
 
@@ -51,8 +53,8 @@ public class InventoryRenderer {
 
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 7; i++) {
-                int slotX = gridX + i * (slotSize + slotSpacing);
-                int slotY = gridY + j * (slotSize + slotSpacing);
+                int slotX = gridOffset[0][0] + i * (slotSize[0] + slotSpacing[0]);
+                int slotY = gridOffset[0][1] + j * (slotSize[0] + slotSpacing[0]);
 
                 // Draw the slot as a gray rectangle (DISABLED, ENABLE FOR TESTING)
 //				g2d.setColor(new Color(0x44, 0x44, 0x44, 120));
@@ -61,14 +63,14 @@ public class InventoryRenderer {
                 // Draw item icon if there is one in this slot
                 Item item = player.inv.getItem(rowOrder[j], i);
                 if (item != null) {
-                    g2d.drawImage(item.getIcon(), slotX, slotY, slotSize, slotSize, null);
+                    g2d.drawImage(item.getIcon(), slotX, slotY, slotSize[0], slotSize[0], null);
                     int itemCount = item.getCount();
                     if (itemCount > 1) {
                         g2d.setFont(FontManager.itemCountFont);
                         FontMetrics fm = g2d.getFontMetrics();
                         int textWidth = fm.stringWidth(Integer.toString(itemCount));
-                        int textX = slotX - textWidth + slotSize;
-                        int countY = slotY + slotSize;
+                        int textX = slotX - textWidth + slotSize[0];
+                        int countY = slotY + slotSize[0];
                         g2d.setColor(Color.black);
                         g2d.drawString(Integer.toString(itemCount), (int) (textX + GameRenderer.textShadow), (int) (countY + GameRenderer.textShadow));
                         g2d.setColor(Color.white);
@@ -78,30 +80,23 @@ public class InventoryRenderer {
             }
         }
 
-        slotSize = (int) (unscaledExtraSlotSize * scale);
-        slotSpacing = (int) (unscaledExtraSlotSpacing * scale);
-
-        // Start the grid
-        gridX = (int) (132 * scale);
-        gridY = (int) (32 * scale);
-
         // Draw extra slots (rings and trophy)
         for (int j = 0; j < 2; j++) {
             for (int i = 0; i < 2; i++) {
-                int slotX = gridX + i * (slotSize + slotSpacing);
-                int slotY = gridY + j * (slotSize + slotSpacing);
+                int slotX = gridOffset[1][0] + i * (slotSize[1] + slotSpacing[1]);
+                int slotY = gridOffset[1][1] + j * (slotSize[1] + slotSpacing[1]);
 
                 Item item = player.inv.getItem(i * 2 + j);
                 if (item != null) {
-                    g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.INVENTORY_RINGLESS_EXTRA_SLOT), slotX, slotY, slotSize, slotSize, null);
-                    g2d.drawImage(item.getIcon(), slotX, slotY, slotSize, slotSize, null);
+                    g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.INVENTORY_RINGLESS_EXTRA_SLOT), slotX, slotY, slotSize[1], slotSize[1], null);
+                    g2d.drawImage(item.getIcon(), slotX, slotY, slotSize[1], slotSize[1], null);
                     int itemCount = item.getCount();
                     if (itemCount > 1) {
                         g2d.setFont(FontManager.itemCountFont);
                         FontMetrics fm = g2d.getFontMetrics();
                         int textWidth = fm.stringWidth(Integer.toString(itemCount));
-                        int textX = slotX - textWidth + slotSize;
-                        int countY = slotY + slotSize;
+                        int textX = slotX - textWidth + slotSize[1];
+                        int countY = slotY + slotSize[1];
                         g2d.setColor(Color.black);
                         g2d.drawString(Integer.toString(itemCount), (int) (textX + GameRenderer.textShadow), (int) (countY + GameRenderer.textShadow));
                         g2d.setColor(Color.white);
@@ -175,8 +170,6 @@ public class InventoryRenderer {
 
         int slotX;
         int slotY;
-        int slotSize = (int) (unscaledInventorySlotSize * scale);
-        int slotSpacing = (int) (unscaledInventorySlotSpacing * scale);
         Item hoveredItem = null;
         if (!isExtra) {
             if (hoveredSlot[0] == -1) {
@@ -185,9 +178,9 @@ public class InventoryRenderer {
                 int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
                 int inventoryBarY = (int) (screenHeight - 20 * scale - 60);
 
-                int slotStartX = inventoryBarX + (inventoryBarWidth - (7 * slotSize + 6 * slotSpacing)) / 2;
-                slotX = slotStartX + hoveredSlot[1] * (slotSize + slotSpacing);
-                slotY = (int) (inventoryBarY + (20 * scale - slotSize) / 2);
+                int slotStartX = inventoryBarX + (inventoryBarWidth - (7 * slotSize[0] + 6 * slotSpacing[0])) / 2;
+                slotX = slotStartX + hoveredSlot[1] * (slotSize[0] + slotSpacing[0]);
+                slotY = (int) (inventoryBarY + (20 * scale - slotSize[0]) / 2);
                 hoveredSlot[0] = 0;
             } else {
                 // If in inventory menu
@@ -197,31 +190,25 @@ public class InventoryRenderer {
 
                 int[] rowOrder = {3, 0, 1, 2};
 
-                slotX = gridX + hoveredSlot[1] * (slotSize + slotSpacing);
-                slotY = gridY + rowOrder[hoveredSlot[0]] * (slotSize + slotSpacing);
+                slotX = gridX + hoveredSlot[1] * (slotSize[0] + slotSpacing[0]);
+                slotY = gridY + rowOrder[hoveredSlot[0]] * (slotSize[0] + slotSpacing[0]);
             }
 
             hoveredItem = player.inv.getItem(hoveredSlot[0], hoveredSlot[1]);
 
             if (gameState == GameState.INVENTORY || (hoveredSlot[1] != player.inv.getSelectedSlot() && gameState == GameState.PLAYING)) {
-                drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize);
+                drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize[0]);
             }
         } else {
-            slotSize = (int) (unscaledExtraSlotSize * scale);
-            slotSpacing = (int) (unscaledExtraSlotSpacing * scale);
-
-            int gridX = (int) (132 * scale);
-            int gridY = (int) (32 * scale);
-
-            slotX = gridX + hoveredSlot[0] * (slotSize + slotSpacing);
-            slotY = gridY + hoveredSlot[1] * (slotSize + slotSpacing);
+            slotX = gridOffset[1][0] + hoveredSlot[0] * (slotSize[1] + slotSpacing[1]);
+            slotY = gridOffset[1][1] + hoveredSlot[1] * (slotSize[1] + slotSpacing[1]);
 
             hoveredItem = player.inv.getItem(hoveredSlot[0] * 2 + hoveredSlot[1]);
 
-            drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize);
+            drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize[1]);
         }
 
-        drawHoveredItemTooltip(g2d, slotX, slotY, slotSize, hoveredItem, isExtra);
+        drawHoveredItemTooltip(g2d, slotX, slotY, slotSize[1], hoveredItem, isExtra);
     }
 
     public static void drawHoveredItemTooltip(Graphics2D g2d, int slotX, int slotY, int slotSize, Item hoveredItem, boolean isInverted) {
@@ -356,8 +343,6 @@ public class InventoryRenderer {
     public static void drawDraggedItem(Graphics2D g2d, MouseHandler mouseHandler) {
         Item draggedItem = player.inv.getDraggedItem();
 
-        int slotSize = (int) (unscaledInventorySlotSize * scale);
-
-        g2d.drawImage(draggedItem.getIcon(), mouseHandler.getMouseX(), mouseHandler.getMouseY(), slotSize, slotSize, null);
+        g2d.drawImage(draggedItem.getIcon(), mouseHandler.getMouseX(), mouseHandler.getMouseY(), slotSize[0], slotSize[0], null);
     }
 }

@@ -17,20 +17,17 @@ import static com.ded.misle.renderer.InventoryRenderer.*;
 
 public class MouseHandler implements MouseListener, MouseMotionListener {
 
-	private static int slotSize;
 	private static final int[] barSlotX = new int[7];
 	private static final int[] slotX = new int[7];
 	private static final int[] slotY = new int[4];
     private int hoveredBarSlot = -1;
 	private int[] hoveredSlot = new int[]{-1, -1};
-	private static int extraSlotSize;
-	private static int extraSlotSpacing;
 	private static final int[] extraSlotX = new int[2];
 	private static final int[] extraSlotY = new int[2];
 	private int[] extraHoveredSlot = new int[]{-1, -1};
 
 
-	public static void updateVariableScales() {
+	public static void updateMouseVariableScales() {
 		// PLAYING
 
         int inventoryBarWidth = (int) (120 * scale);
@@ -38,20 +35,14 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
         int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
         int inventoryBarY = (int) (screenHeight - inventoryBarHeight - 60);
 
-		slotSize = (int) (30 * scale);
-        int slotSpacing = (int) (3 * scale);
-
-        int totalSlotsWidth = 7 * slotSize + (6 * slotSpacing);
+        int totalSlotsWidth = 7 * slotSize[0] + (6 * slotSpacing[0]);
         int slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
 
 		for (int i = 0; i < 7; i++) {
-			barSlotX[i] = slotStartX + i * (slotSize + slotSpacing);
+			barSlotX[i] = slotStartX + i * (slotSize[0] + slotSpacing[0]);
 		}
 
 		// INVENTORY
-
-        int slotSize = (int) (unscaledInventorySlotSize * scale);
-		slotSpacing = (int) (unscaledInventorySlotSpacing * scale);
 
 		int gridX = (int) (225 * scale);
 		int gridY = (int) (148 * scale);
@@ -60,23 +51,20 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 		for (int j = 0; j < 4; j++) {
 			for (int i = 0; i < 7; i++) {
-				slotX[i] = gridX + i * (slotSize + slotSpacing);
-				slotY[rowOrder[j]] = gridY + j * (slotSize + slotSpacing);
+				slotX[i] = gridX + i * (slotSize[0] + slotSpacing[0]);
+				slotY[rowOrder[j]] = gridY + j * (slotSize[0] + slotSpacing[0]);
 			}
 		}
 
 		// INVENTORY EXTRA SLOTS
-
-		extraSlotSize = (int) (unscaledExtraSlotSize * scale);
-		extraSlotSpacing = (int) (unscaledExtraSlotSpacing * scale);
 
 		gridX = (int) (132 * scale);
 		gridY = (int) (32 * scale);
 
 		for (int j = 0; j < 2; j++) {
 			for (int i = 0; i < 2; i++) {
-				extraSlotX[i] = gridX + i * (extraSlotSize + extraSlotSpacing);
-				extraSlotY[j] = gridY + j * (extraSlotSize + extraSlotSpacing);
+				extraSlotX[i] = gridX + i * (slotSize[1] + slotSpacing[1]);
+				extraSlotY[j] = gridY + j * (slotSize[1] + slotSpacing[1]);
 			}
 		}
 	}
@@ -297,10 +285,10 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 	private void updateHoveredBarSlot() {
 		hoveredBarSlot = -1; // Reset hovered slot
-		int inventoryBarY = (int) ((screenHeight - (20 * scale) - 60) + ((20 * scale) - slotSize) / 2);
+		int inventoryBarY = (int) ((screenHeight - (20 * scale) - 60) + ((20 * scale) - slotSize[0]) / 2);
 		for (int i = 0; i < 7; i++) {
-			if (mouseX >= barSlotX[i] && mouseX <= barSlotX[i] + slotSize &&
-				mouseY >= inventoryBarY && mouseY <= inventoryBarY + slotSize) {
+			if (mouseX >= barSlotX[i] && mouseX <= barSlotX[i] + slotSize[0] &&
+				mouseY >= inventoryBarY && mouseY <= inventoryBarY + slotSize[0]) {
 				hoveredBarSlot = i; // Set the hovered slot index
 				break;
 			}
@@ -318,8 +306,8 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 		// Regular inventory
 		for (int j = 0; j < 4; j++) {
 			for (int i = 0; i < 7; i++) {
-				if (mouseX >= slotX[i] && mouseX <= slotX[i] + slotSize &&
-					mouseY >= slotY[j] && mouseY <= slotY[j] + slotSize) {
+				if (mouseX >= slotX[i] && mouseX <= slotX[i] + slotSize[0] &&
+					mouseY >= slotY[j] && mouseY <= slotY[j] + slotSize[0]) {
 					hoveredSlot = new int[]{j, i}; // Set the hovered slot index
 					return;
 				}
@@ -329,8 +317,8 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 		// Extra slots (rings and trophy)
 		for (int j = 0; j < 2; j++) {
 			for (int i = 0; i < 2; i++) {
-				if (mouseX >= extraSlotX[i] && mouseX <= extraSlotX[i] + extraSlotSize &&
-					mouseY >= extraSlotY[j] && mouseY <= extraSlotY[j] + extraSlotSize) {
+				if (mouseX >= extraSlotX[i] && mouseX <= extraSlotX[i] + slotSize[1] &&
+					mouseY >= extraSlotY[j] && mouseY <= extraSlotY[j] + slotSize[1]) {
 					extraHoveredSlot = new int[]{j, i};
 					return;
 				}

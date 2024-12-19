@@ -16,8 +16,9 @@ import java.awt.event.*;
 import static com.ded.misle.renderer.GameRenderer.*;
 import static com.ded.misle.input_handler.KeyHandler.updateDesignerSpeed;
 import static com.ded.misle.Launcher.*;
+import static com.ded.misle.renderer.InventoryRenderer.updateRendererVariableScales;
 import static com.ded.misle.renderer.MenuButton.clearButtons;
-import static com.ded.misle.input_handler.MouseHandler.updateVariableScales;
+import static com.ded.misle.input_handler.MouseHandler.updateMouseVariableScales;
 import static com.ded.misle.SaveFile.saveEverything;
 
 /**
@@ -108,7 +109,7 @@ public class GamePanel extends JPanel implements Runnable {
 		Thread windowSizeThread = new Thread(this::changeAndDetectWindowSize);
 		windowSizeThread.start();
 
-		updateVariableScales();
+		updateMouseVariableScales();
 
 		if (displayFPS) {
 			fpsLabel = new JLabel("FPS: 0");
@@ -239,7 +240,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 				clearButtons();
 				FontManager.updateFontSizes();
-				updateVariableScales();
+				updateMouseVariableScales();
+				updateRendererVariableScales();
 				if (levelDesigner) {
 					updateDesignerSpeed();
 				}

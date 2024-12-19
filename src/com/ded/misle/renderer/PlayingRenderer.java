@@ -18,10 +18,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static com.ded.misle.ChangeSettings.getPath;
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.renderer.ImageRenderer.cachedImages;
-import static com.ded.misle.renderer.InventoryRenderer.drawSelectedSlotOverlay;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.player.PlayerStats.Direction.LEFT;
 import static com.ded.misle.player.PlayerStats.Direction.RIGHT;
+import static com.ded.misle.renderer.InventoryRenderer.*;
 import static java.lang.System.currentTimeMillis;
 
 public class PlayingRenderer {
@@ -179,17 +179,14 @@ public class PlayingRenderer {
 
         // Slots info
 
-        int slotSize = (int) (InventoryRenderer.unscaledInventorySlotSize * scale);
-        int slotSpacing = (int) (InventoryRenderer.unscaledInventorySlotSpacing * scale);
-
-        int totalSlotsWidth = 7 * slotSize + (6 * slotSpacing);
+        int totalSlotsWidth = 7 * slotSize[0] + (6 * slotSpacing[0]);
         int slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
 
         int selectedSlot = player.inv.getSelectedSlot();
 
         for (int i = 0; i < 7; i++) {
-            int slotX = slotStartX + i * (slotSize + slotSpacing);
-            int slotY = inventoryBarY + (inventoryBarHeight - slotSize) / 2;
+            int slotX = slotStartX + i * (slotSize[0] + slotSpacing[0]);
+            int slotY = inventoryBarY + (inventoryBarHeight - slotSize[0]) / 2;
 
             // Draw the slot (DISABLED, ENABLE FOR TESTING)
 //			g2d.setColor(Color.GRAY);
@@ -197,14 +194,14 @@ public class PlayingRenderer {
 
             Item item = player.inv.getItem(0, i);
             if (item != null) {
-                g2d.drawImage(item.getIcon(), slotX, slotY, slotSize, slotSize, null);
+                g2d.drawImage(item.getIcon(), slotX, slotY, slotSize[0], slotSize[0], null);
                 int itemCount = item.getCount();
                 if (itemCount > 1) {
                     g2d.setFont(FontManager.itemCountFont);
                     FontMetrics fm = g2d.getFontMetrics();
                     int textWidth = fm.stringWidth(Integer.toString(itemCount));
-                    int textX = slotX - textWidth + slotSize;
-                    int textY = slotY + 8 * slotSize / 9;
+                    int textX = slotX - textWidth + slotSize[0];
+                    int textY = slotY + 8 * slotSize[0] / 9;
                     g2d.setColor(Color.black);
                     g2d.drawString(Integer.toString(itemCount), (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow));
                     g2d.setColor(Color.white);
@@ -213,7 +210,7 @@ public class PlayingRenderer {
             }
 
             if (i == selectedSlot) {
-                drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize);
+                drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize[0]);
             }
         }
     }
@@ -229,12 +226,12 @@ public class PlayingRenderer {
             int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
             int inventoryBarY = (int) (screenHeight - inventoryBarHeight - 10);
 
-            int slotWidth = (int) (InventoryRenderer.unscaledInventorySlotSize * scaleByScreenSize);
-            int slotSpacing = (int) (InventoryRenderer.unscaledInventorySlotSpacing * scaleByScreenSize);
-            int totalSlotsWidth = 7 * slotWidth + (6 * slotSpacing);
+            int slotWidth = (int) (slotSize[0] * scaleByScreenSize);
+            int slotSpace = (int) (slotSpacing[0] * scaleByScreenSize);
+            int totalSlotsWidth = 7 * slotWidth + (6 * slotSpace);
             int slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
 
-            int slotX = slotStartX + player.inv.getSelectedSlot() * (slotWidth + slotSpacing);
+            int slotX = slotStartX + player.inv.getSelectedSlot() * (slotWidth + slotSpace);
             int slotY = inventoryBarY;
 
             // Position the name above the selected slot
