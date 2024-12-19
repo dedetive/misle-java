@@ -185,13 +185,10 @@ public class InventoryRenderer {
             } else {
                 // If in inventory menu
 
-                int gridX = (int) (225 * scale);
-                int gridY = (int) (148 * scale);
-
                 int[] rowOrder = {3, 0, 1, 2};
 
-                slotX = gridX + hoveredSlot[1] * (slotSize[0] + slotSpacing[0]);
-                slotY = gridY + rowOrder[hoveredSlot[0]] * (slotSize[0] + slotSpacing[0]);
+                slotX = gridOffset[0][0] + hoveredSlot[1] * (slotSize[0] + slotSpacing[0]);
+                slotY = gridOffset[0][1] + rowOrder[hoveredSlot[0]] * (slotSize[0] + slotSpacing[0]);
             }
 
             hoveredItem = player.inv.getItem(hoveredSlot[0], hoveredSlot[1]);

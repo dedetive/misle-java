@@ -44,27 +44,21 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 		// INVENTORY
 
-		int gridX = (int) (225 * scale);
-		int gridY = (int) (148 * scale);
-
 		int[] rowOrder = {1, 2, 3, 0};
 
 		for (int j = 0; j < 4; j++) {
 			for (int i = 0; i < 7; i++) {
-				slotX[i] = gridX + i * (slotSize[0] + slotSpacing[0]);
-				slotY[rowOrder[j]] = gridY + j * (slotSize[0] + slotSpacing[0]);
+				slotX[i] = gridOffset[0][0] + i * (slotSize[0] + slotSpacing[0]);
+				slotY[rowOrder[j]] = gridOffset[0][1] + j * (slotSize[0] + slotSpacing[0]);
 			}
 		}
 
 		// INVENTORY EXTRA SLOTS
 
-		gridX = (int) (132 * scale);
-		gridY = (int) (32 * scale);
-
 		for (int j = 0; j < 2; j++) {
 			for (int i = 0; i < 2; i++) {
-				extraSlotX[i] = gridX + i * (slotSize[1] + slotSpacing[1]);
-				extraSlotY[j] = gridY + j * (slotSize[1] + slotSpacing[1]);
+				extraSlotX[i] = gridOffset[1][0] + i * (slotSize[1] + slotSpacing[1]);
+				extraSlotY[j] = gridOffset[1][1] + j * (slotSize[1] + slotSpacing[1]);
 			}
 		}
 	}
