@@ -87,6 +87,7 @@ public class Inventory {
 		Item newItem;
 		try {
 			newItem = new Item(item.getId(), item.getCount());
+			player.attr.turnRegenerationDoubledOn();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -172,6 +173,7 @@ public class Inventory {
 	public boolean removeItem(int position) {
 		this.extraSlots[position] = null;
 		player.attr.updateEquipmentStat(ALL);
+		player.attr.turnRegenerationDoubledOn();
 		return true;
 	}
 

@@ -34,6 +34,7 @@ public class PlayerAttributes {
 	private double regenerationQuality;
 	private double regenerationRate = 1;
 	private boolean isInvulnerable;
+	private boolean isRegenerationDoubled;
 
 	// XP
 
@@ -198,6 +199,8 @@ public class PlayerAttributes {
 	 * @return Final damage dealt
 	 */
 	public double takeDamage(double damage, String reason, String[] args) {
+		isRegenerationDoubled = false;
+
 		// Early exit for invalid damage
 		if (damage <= 0) {
 			return 0;
@@ -410,9 +413,15 @@ public class PlayerAttributes {
 
 		if (lastHitMillis + 2500 < currentTime && lastRegenerationMillis + regenerationInterval < currentTime && !isDead && hp < maxHP) {
 			receiveHeal(Math.max(getRegenerationQuality(), 1), "normal");
+			if (isRegenerationDoubled) receiveHeal(Math.max(getRegenerationQuality(), 1), "normal");
 			lastRegenerationMillis = currentTime;
 			showHealthBar = true;
-		} else showHealthBar = !(hp >= maxHP) || lastRegenerationMillis + 5000 >= currentTime || isDead;
+		} else {
+			showHealthBar = !(hp >= maxHP) || lastRegenerationMillis + 5000 >= currentTime || isDead;
+			if (hp >= maxHP) {
+				isRegenerationDoubled = false;
+			}
+		}
 	}
 
 	public long getLastRegenerationMillis() {
@@ -433,6 +442,10 @@ public class PlayerAttributes {
 
 	public void setRegenerationRate(double regenerationRate) {
 		this.regenerationRate = regenerationRate;
+	}
+
+	public void turnRegenerationDoubledOn() {
+		isRegenerationDoubled = true;
 	}
 
 	// DEATH HANDLING
