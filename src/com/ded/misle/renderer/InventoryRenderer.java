@@ -158,7 +158,7 @@ public class InventoryRenderer {
     }
 
     private static void drawStat(Graphics2D g2d, String statText, int centerX, int y) {
-        g2d.setFont(FontManager.ubuntuFont44);
+        g2d.setFont(FontManager.buttonFont);
         Color textColor = new Color(230, 230, 180);
         Color shadowColor = Color.black;
 
@@ -227,7 +227,7 @@ public class InventoryRenderer {
         String itemDescription = "\"" + hoveredItem.getDescription() + "\"";
 
         // Font and dimensions
-        g2d.setFont(FontManager.basicFont40);
+        g2d.setFont(FontManager.itemInfoFont);
         FontMetrics fm = g2d.getFontMetrics();
 
         // Calculate width based on text

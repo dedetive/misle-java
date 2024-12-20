@@ -3,13 +3,51 @@ package com.ded.misle;
 import java.util.ResourceBundle;
 import java.util.Locale;
 
+import static com.ded.misle.LanguageManager.Script.*;
+
 public class LanguageManager {
 	private static ResourceBundle messages;
 	private static ResourceBundle fallbackMessages;
 
+	public enum Script {
+		LATIN,
+		GREEK,
+		CYRILLIC
+	}
+
+	public enum Language {
+		en_US(LATIN),
+		es_ES(LATIN),
+		pt_BR(LATIN),
+		de_DE(LATIN),
+		ru_RU(CYRILLIC),
+		el_GR(GREEK),
+		mi_PM(GREEK);
+
+		private final Script script;
+
+		Language(Script script) {
+			this.script = script;
+		}
+
+		public Script getScript() {
+			return script;
+		}
+	}
+
+	private static Script currentScript;
+
 	public LanguageManager(String languageCode) {
 		try {
+			for (Language language : Language.values()) {
+				if (language == Language.valueOf(languageCode)) {
+					currentScript = language.getScript();
+					break;
+				}
+			}
+
 			String[] parts = languageCode.split("_");
+
 			Locale locale = new Locale(parts[0], parts.length > 1 ? parts[1] : "");
 
 			// Load the target locale's messages
@@ -42,5 +80,9 @@ public class LanguageManager {
 				return key;
 			}
 		}
+	}
+
+	public static Script getCurrentScript() {
+		return currentScript;
 	}
 }

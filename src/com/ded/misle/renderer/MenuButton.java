@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ded.misle.renderer.GameRenderer.textShadow;
-import static com.ded.misle.renderer.FontManager.ubuntuFont44;
+import static com.ded.misle.renderer.FontManager.buttonFont;
 import static com.ded.misle.Launcher.scale;
 
 public class MenuButton {
@@ -100,7 +100,7 @@ public class MenuButton {
                 buttonBorderSize, buttonBorderSize);
 
             // TEXT SHADOW
-            g2d.setFont(ubuntuFont44);
+            g2d.setFont(buttonFont);
             FontMetrics fm = g2d.getFontMetrics();
             int textWidth = fm.stringWidth(button.text);
             int textHeight = fm.getAscent();

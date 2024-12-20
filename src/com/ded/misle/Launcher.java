@@ -21,6 +21,7 @@ public class Launcher {
 	static int frameRateCap;
 	public static double scale;
 	public static boolean levelDesigner;
+	public static String languageCode;
 
 	private static String previousScreenSize = "";
 
@@ -43,9 +44,9 @@ public class Launcher {
 		fullscreenMode = getSetting("fullscreenMode");
 //		displayFPS = Boolean.parseBoolean(getSetting("displayFPS"));
 		frameRateCap = Integer.parseInt(getSetting("frameRateCap"));
-		String languageCode = getSetting("language");
-		LanguageManager languageManager = new LanguageManager(languageCode);
-		levelDesigner = Boolean.parseBoolean(getSetting("levelDesigner"));
+		languageCode = getSetting("language");
+        new LanguageManager(languageCode);
+        levelDesigner = Boolean.parseBoolean(getSetting("levelDesigner"));
 
 		if (!previousScreenSize.equals(screenSize)) {
 			screenSizeChanged = true;

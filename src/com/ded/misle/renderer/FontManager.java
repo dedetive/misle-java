@@ -1,18 +1,28 @@
 package com.ded.misle.renderer;
 
+import com.ded.misle.LanguageManager;
+import com.ded.misle.LanguageManager.Script;
+import org.w3c.dom.ls.LSOutput;
+
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static com.ded.misle.LanguageManager.getCurrentScript;
 import static com.ded.misle.Launcher.scale;
 
 public class FontManager {
-    public static Font comfortaaFont96 = loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
-    public static Font ubuntuFont35 = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (35 * scale / 3.75));
-    public static Font basicFont40 = loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));
-    public static Font itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (40 * scale / 3.75));
-    public static Font ubuntuFont44 = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
+    public static Font titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));      // Supports Latin, Cyrillic and Greek
+    public static Font smallUbuntuFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (35 * scale / 3.75));     // Supports Latin, Cyrillic and Greek
+    public static Font itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (40 * scale / 3.75));      // Supports Latin, Cyrillic and Greek
+    public static Font buttonFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));          // Supports Latin, Cyrillic and Greek
+    public static Font itemInfoFont = loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));        // Supports only Latin
+    static {
+        if (getCurrentScript() != Script.LATIN) {
+            itemInfoFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
+        }
+    }
 
     public static Font loadFont(String fontPath, float size) {
 		try (InputStream is = FontManager.class.getResourceAsStream(fontPath)) {
@@ -32,11 +42,15 @@ public class FontManager {
 	}
 
     public static void updateFontSizes() {
-        comfortaaFont96 = loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
-        ubuntuFont35 = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
-        basicFont40 = loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));
+        titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
+        smallUbuntuFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
+        itemInfoFont = loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));
         itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (50 * scale / 3.75));
-        ubuntuFont44 = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
+        buttonFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
+        System.out.println(getCurrentScript());
+        if (getCurrentScript() != Script.LATIN) {
+            itemInfoFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
+        }
 
         GameRenderer.textShadow = 1 * scale;
     }

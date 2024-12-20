@@ -22,7 +22,7 @@ public class MenuRenderer {
     private static final String gameVersion = "v0.1.5-alpha";
 
     private static void createTitle(String text, Graphics2D g2d, double scaleByScreenSize) {
-        g2d.setFont(FontManager.comfortaaFont96);
+        g2d.setFont(FontManager.titleFont);
         FontMetrics fm = g2d.getFontMetrics();
         String titleText = LanguageManager.getText(text);
         int textWidth = fm.stringWidth(titleText);
@@ -142,7 +142,7 @@ public class MenuRenderer {
 
             // Version
 
-            g2d.setFont(FontManager.basicFont40);
+            g2d.setFont(FontManager.itemInfoFont);
             g2d.setColor(Color.black);
             g2d.drawString(gameVersion, (int) (1640 * scaleByScreenSize + GameRenderer.textShadow), (int) (1010* Math.pow(scaleByScreenSize, 1.04) + GameRenderer.textShadow));
             g2d.setColor(new Color(217, 217, 217));
@@ -248,7 +248,7 @@ public class MenuRenderer {
             // MENU ITSELF
 
             createTitle("loading_menu_loading", g2d, scaleByScreenSize);
-            g2d.setFont(FontManager.comfortaaFont96);
+            g2d.setFont(FontManager.titleFont);
             FontMetrics fm = g2d.getFontMetrics();
             String titleText = LanguageManager.getText("loading_menu_loading");
             fm.stringWidth(titleText);
@@ -267,7 +267,7 @@ public class MenuRenderer {
             g2d.setColor(new Color(100, 200, 100));
             g2d.fillRect((int) (660 * scaleByScreenSize), progressBarY, progressBarWidth, progressBarHeight);
 
-            g2d.setFont(FontManager.ubuntuFont35);
+            g2d.setFont(FontManager.smallUbuntuFont);
             FontMetrics percentageFm = g2d.getFontMetrics();
             int textWidth = percentageFm.stringWidth(percentage); // Use the new font metrics for percentage
             int centerX = (int) ((screenWidth - textWidth) / 2);

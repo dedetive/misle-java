@@ -245,7 +245,7 @@ public class PlayingRenderer {
             try {
                 long currentTime = currentTimeMillis();
                 if (currentTime - itemNameDisplayStartTime < 5000) {
-                    g2d.setFont(FontManager.ubuntuFont35);
+                    g2d.setFont(FontManager.smallUbuntuFont);
                     FontMetrics fm = g2d.getFontMetrics();
                     int textWidth = fm.stringWidth(selectedItemName);
 
@@ -366,7 +366,7 @@ public class PlayingRenderer {
 
     private static void drawFloatingText(Graphics2D g2d) {
         for (int i = 0; i < floatingText.size(); i++) {
-            g2d.setFont(FontManager.basicFont40);
+            g2d.setFont(FontManager.itemInfoFont);
             g2d.setColor(Color.black);
             g2d.drawString(floatingText.get(i), (int) ((floatingTextPosition.get(i).x) * scale + GameRenderer.textShadow), (int) ((floatingTextPosition.get(i).y) * scale + GameRenderer.textShadow));
             g2d.setColor(floatingTextColor.get(i));
