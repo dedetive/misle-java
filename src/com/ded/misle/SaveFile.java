@@ -286,7 +286,6 @@ public class SaveFile {
 							player.inv.bruteSetItem(Item.createItem(tempInventory[i][j][0], tempInventory[i][j][1]), i * 2 + j);
 						}
 					}
-
 				} catch (IOException e) {
 					System.out.println("Failed to load inventory!");
 					e.printStackTrace();

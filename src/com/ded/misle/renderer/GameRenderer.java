@@ -28,6 +28,9 @@ public class GameRenderer {
 		loadSaveFile();
 		loadBoxes();
 
+		player.attr.setHP(player.attr.getMaxHP());
+		player.attr.fillEntropy();
+
 		Timer timer = new Timer(LOADING_DURATION, e -> {
 			for (int i = 15; i > 0; i--) {
 				storeCachedBoxes(i);
