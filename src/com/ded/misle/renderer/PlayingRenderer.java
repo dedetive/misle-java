@@ -245,7 +245,7 @@ public class PlayingRenderer {
             try {
                 long currentTime = currentTimeMillis();
                 if (currentTime - itemNameDisplayStartTime < 5000) {
-                    g2d.setFont(FontManager.smallUbuntuFont);
+                    g2d.setFont(FontManager.selectedItemNameFont);
                     FontMetrics fm = g2d.getFontMetrics();
                     int textWidth = fm.stringWidth(selectedItemName);
 

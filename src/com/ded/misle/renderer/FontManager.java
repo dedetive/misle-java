@@ -1,27 +1,24 @@
 package com.ded.misle.renderer;
 
-import com.ded.misle.LanguageManager;
 import com.ded.misle.LanguageManager.Script;
-import org.w3c.dom.ls.LSOutput;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static com.ded.misle.LanguageManager.Script.LATIN;
 import static com.ded.misle.LanguageManager.getCurrentScript;
 import static com.ded.misle.Launcher.scale;
 
 public class FontManager {
     public static Font titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));      // Supports Latin, Cyrillic and Greek
-    public static Font smallUbuntuFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (35 * scale / 3.75));     // Supports Latin, Cyrillic and Greek
+    public static Font selectedItemNameFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (35 * scale / 3.75));     // Supports Latin, Cyrillic and Greek
     public static Font itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (40 * scale / 3.75));      // Supports Latin, Cyrillic and Greek
     public static Font buttonFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));          // Supports Latin, Cyrillic and Greek
     public static Font itemInfoFont = loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));        // Supports only Latin
     static {
-        if (getCurrentScript() != Script.LATIN) {
-            itemInfoFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
-        }
+        updateFontSizes();
     }
 
     public static Font loadFont(String fontPath, float size) {
@@ -42,14 +39,28 @@ public class FontManager {
 	}
 
     public static void updateFontSizes() {
-        titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
-        smallUbuntuFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
-        itemInfoFont = loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));
-        itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (50 * scale / 3.75));
-        buttonFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
-        System.out.println(getCurrentScript());
-        if (getCurrentScript() != Script.LATIN) {
-            itemInfoFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
+        switch (getCurrentScript()) {
+            case LATIN -> {
+                titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
+                selectedItemNameFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
+                itemInfoFont = loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));
+                itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (50 * scale / 3.75));
+                buttonFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
+            }
+            case GREEK, CYRILLIC -> {
+                titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
+                selectedItemNameFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
+                itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (50 * scale / 3.75));
+                buttonFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
+                itemInfoFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
+            }
+            case SIMPLIFIED_HAN -> {
+                titleFont = loadFont("/fonts/NotoSansSC-SemiBold.ttf", (float) (96 * scale / 3.75));
+                selectedItemNameFont = loadFont("/fonts/NotoSansSC-Regular.ttf", (float) (35 * scale / 3.75));
+                itemInfoFont = loadFont("/fonts/NotoSansSC-Regular.ttf", (float) (40 * scale / 3.75));
+                itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (50 * scale / 3.75));
+                buttonFont = loadFont("/fonts/NotoSansSC-SemiBold.ttf", (float) (44 * scale / 3.75));
+            }
         }
 
         GameRenderer.textShadow = 1 * scale;

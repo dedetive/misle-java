@@ -16,6 +16,7 @@
       <file value="file://$PROJECT_DIR$/src/com/ded/misle/resources/lang/messages_mi_PM.properties" />
       <file value="file://$PROJECT_DIR$/src/com/ded/misle/resources/lang/messages_pt_BR.properties" />
       <file value="file://$PROJECT_DIR$/src/com/ded/misle/resources/lang/messages_ru_RU.properties" />
+      <file value="file://$PROJECT_DIR$/src/com/ded/misle/resources/lang/messages_zh_CN.properties" />
       <base-name>messages</base-name>
     </custom-resource-bundle>
   </component>

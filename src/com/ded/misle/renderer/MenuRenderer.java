@@ -267,7 +267,7 @@ public class MenuRenderer {
             g2d.setColor(new Color(100, 200, 100));
             g2d.fillRect((int) (660 * scaleByScreenSize), progressBarY, progressBarWidth, progressBarHeight);
 
-            g2d.setFont(FontManager.smallUbuntuFont);
+            g2d.setFont(FontManager.selectedItemNameFont);
             FontMetrics percentageFm = g2d.getFontMetrics();
             int textWidth = percentageFm.stringWidth(percentage); // Use the new font metrics for percentage
             int centerX = (int) ((screenWidth - textWidth) / 2);

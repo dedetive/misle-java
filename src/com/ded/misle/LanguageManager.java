@@ -12,7 +12,8 @@ public class LanguageManager {
 	public enum Script {
 		LATIN,
 		GREEK,
-		CYRILLIC
+		CYRILLIC,
+		SIMPLIFIED_HAN,
 	}
 
 	public enum Language {
@@ -22,7 +23,8 @@ public class LanguageManager {
 		de_DE(LATIN),
 		ru_RU(CYRILLIC),
 		el_GR(GREEK),
-		mi_PM(GREEK);
+		mi_PM(GREEK),
+		zh_CN(SIMPLIFIED_HAN);
 
 		private final Script script;
 
