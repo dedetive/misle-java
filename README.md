@@ -62,7 +62,7 @@ Each setting uses the format:
 - **`displayFPS`** (default=`false`): Display FPS on-screen (currently non-functional).
 
 - **`language`** (default=`en_US`): Set the language for the game.
-    - Options: `de_DE`, `el_GR`, `en_US`, `es_ES`, `mi_PM`, `pt_BR`, `ru_RU` (what these mean is explained below).
+    - Options: `de_DE`, `el_GR`, `en_US`, `es_ES`, `mi_PM`, `pt_BR`, `ru_RU`, `zh_CN` (what these mean is explained below).
     - If the selected language file is missing keys, English is used as a fallback.
  
 - **`levelDesigner`** (default=`false`): Toggle Level Designer mode for game design (currently partially functional, with only movement available).
@@ -70,13 +70,16 @@ Each setting uses the format:
 Text in parentheses is ignored, and only the value after the " = " sign is used. These values can be of types like STRING, INTEGER, or BOOLEAN. However, since the options do not exist, default value would apply.
 
 At the language section, those parameters are the region codes, which translate to:
-- de_DE: Deutsch / German
-- el_GR: Ελληνικά / Greek (Currently non-functional due to font issues)
+- de_DE: Deutsch / German (MS)
+- el_GR: Ελληνικά / Greek (MS)
 - en_US: English / U.S. English
-- es_ES: Español / Spanish
-- mi_PM: \[---------\] (Currently non-functional due to translation issues, crashes the game)
+- es_ES: Español / Spanish (MS)
+- mi_PM: \[---------\] (Currently non-functional due to missing translations)
 - pt_BR: Português / Brazilian Portuguese
-- ru_RU: Русский / Russian (Currently non-functional due to font issues)
+- ru_RU: Русский / Russian (MS)
+- zh_CN: 简体中文 / Simplified Chinese (MS)
+
+- MS = Missing translations
 
 > **Note:** The `displayFPS` function currently does not work and was only available in initial tests, but it will be reimplemented later.
 
