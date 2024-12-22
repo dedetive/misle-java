@@ -391,7 +391,7 @@ public class KeyHandler implements KeyListener {
 			if (player.keys.keyPressed.get(DEBUG1)) {
 
 				if (!player.keys.keyPressed.get(SHIFT)) {
-					for (int i = 1; i < 19; i++) {
+					for (int i = 1; i <= 19; i++) {
 						if (i != 5) {
 							player.inv.addItem(createItem(i, 1));
 						}

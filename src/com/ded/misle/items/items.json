@@ -234,6 +234,19 @@
     "nameColor": "#E01E00"
   },
   {
+    "id": 19,
+    "resourceID": 19,
+    "name": "Inversion Ring",
+    "rarity": "B",
+    "vit": -15,
+    "str": -7,
+    "ent": -7,
+    "def": -7,
+    "type": "armor",
+    "subtype": "ring",
+    "nameColor": "#609499"
+  },
+  {
     "id": -1,
     "resourceID": -1,
     "name": "",
