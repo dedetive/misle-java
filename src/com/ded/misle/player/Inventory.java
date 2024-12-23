@@ -449,9 +449,8 @@ public class Inventory {
 					if (healAmountValue == -1) {
 						healAmountValue = player.attr.getMaxHP();
 					}
-					String formattedHealAmount = df.format(player.attr.calculateHeal(healAmountValue, "normal"));
+					String formattedHealAmount = df.format(player.attr.receiveHeal(healAmountValue, "normal"));
 					PlayingRenderer.createFloatingText("+" + formattedHealAmount, Color.decode("#50EE50"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
-					player.attr.receiveHeal(healAmountValue, "normal");
 
 					Timer delayToRemove = new Timer(30, e -> {
 						getSelectedItem().setCount(getSelectedItem().getCount() - 1);
@@ -504,12 +503,13 @@ public class Inventory {
 		vit,
 		def,
 		ent,
-		str
+		str,
+		inversion
 	}
 
 	/**
 	 *
-	 * @param stat as of now, should only be "vit", "def", "ent" or "str".
+	 * @param stat as of now, should only be "vit", "def", "ent", "str" or "inversion".
 	 * @return integer value
 	 */
 	public int getItemStat(Item item, PossibleItemStats stat) {

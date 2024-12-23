@@ -23,16 +23,18 @@ public class PlayerAttributes {
 
 	// STATS ATTRIBUTES
 
-	private double hp;
 	private double maxHP;
-	private double lockedHP;
 	private double defense;
-	private double entropy;
 	private double maxEntropy;
 	private double playerSpeedModifier;
-	private double environmentSpeedModifier;
 	private double regenerationQuality;
 	private double regenerationRate = 1;
+	private double inversion;
+
+	private double hp;
+	private double lockedHP;
+	private double entropy;
+	private double environmentSpeedModifier;
 	private boolean isInvulnerable;
 	private boolean isRegenerationDoubled;
 
@@ -42,7 +44,7 @@ public class PlayerAttributes {
 	private double XPtoLevelUp;
 	private int level = 1;
 	private int levelUpPoints;
-	public static enum LevelUpPointsUsage {
+	public enum LevelUpPointsUsage {
 		MAX_HP,
 		MAX_ENTROPY,
 		DEFENSE,
@@ -65,6 +67,7 @@ public class PlayerAttributes {
 	double equipmentDefense;
 	double equipmentRegenerationQuality;
 	double equipmentSpeed;
+	double equipmentInversion;
 
 	public enum LevelStat {
 		MAX_HP,
@@ -79,6 +82,7 @@ public class PlayerAttributes {
 		DEFENSE,
 		REGENERATION_QUALITY,
 		SPEED,
+		INVERSION,
 		ALL
 	}
 
@@ -199,12 +203,15 @@ public class PlayerAttributes {
 	 * @return Final damage dealt
 	 */
 	public double takeDamage(double damage, String reason, String[] args) {
+
 		isRegenerationDoubled = false;
 
 		// Early exit for invalid damage
 		if (damage <= 0) {
 			return 0;
 		}
+
+		boolean inversionTriggers = Math.random() * 100 < inversion;
 
 		double damageToReceive;
 
@@ -213,49 +220,59 @@ public class PlayerAttributes {
 		boolean isPostMortem = reason.contains("post-mortem");
 		boolean isLocker = reason.contains("locker");
 
-		// Calculate damage based on the reason
-		if (isLocker) {
+		if (inversionTriggers) {
 			damageToReceive = calculateDamage(damage, reason);
-			lockedHP += damageToReceive;
-			// Schedule unlockHP() to run after a few seconds, based on args[0] in milliseconds
-			Timer timerToUnlock = new Timer();
-			timerToUnlock.schedule(new TimerTask() {
-				@Override
-				public void run() {
-					unlockHP(damage);
-				}
-			}, Integer.parseInt(args[0]));
+			player.attr.receiveHeal(damageToReceive, "absolute");
 
-		} else if (isNormalOrAbsolute) {
-			damageToReceive = calculateDamage(damage, reason);
-			this.hp = Math.max(this.hp - damageToReceive, 0); // Ensure HP doesn't go below 0 for non post mortem
-
-		} else if (isPostMortem) {
-			damageToReceive = calculateDamage(damage, reason);
-			this.hp -= damageToReceive; // Apply damage without floor so it can go below 0
-
+			int playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()) / scale);
+			int playerScreenY = (int) ((player.getY() - player.pos.getCameraOffsetY()) / scale);
+			int randomPosX = (int) ((Math.random() * (40 + 40)) - 40);
+			int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
+			DecimalFormat df = new DecimalFormat("#.##");
+			String formattedHealAmount = df.format(damageToReceive);
+			createFloatingText("+" + formattedHealAmount, Color.decode("#50EE50"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
 		} else {
-			throw new IllegalArgumentException("Invalid reason: " + reason); // Handle invalid reasons
+
+			if (isLocker) {
+				damageToReceive = calculateDamage(damage, reason);
+				lockedHP += damageToReceive;
+				// Schedule unlockHP() to run after a few seconds, based on args[0] in milliseconds
+				Timer timerToUnlock = new Timer();
+				timerToUnlock.schedule(new TimerTask() {
+					@Override
+					public void run() {
+						unlockHP(damage);
+					}
+				}, Integer.parseInt(args[0]));
+			} else if (isNormalOrAbsolute) {
+				damageToReceive = calculateDamage(damage, reason);
+				this.hp = Math.max(this.hp - damageToReceive, 0); // Ensure HP doesn't go below 0 for non post mortem
+			} else if (isPostMortem) {
+				damageToReceive = calculateDamage(damage, reason);
+				this.hp -= damageToReceive; // Apply damage without floor so it can go below 0
+			} else {
+				throw new IllegalArgumentException("Invalid reason: " + reason);
+			}
+
+			// Check if the player dies
+			if (this.hp <= 0 || lockedHP > this.hp) {
+				playerDies();
+			}
+
+			// Displayed numerical value
+
+			int playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()) / scale);
+			int playerScreenY = (int) ((player.getY() - player.pos.getCameraOffsetY()) / scale);
+			int randomPosX = (int) ((Math.random() * (40 + 40)) - 40);
+			int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
+			DecimalFormat df = new DecimalFormat("#.##");
+			String formattedHealAmount = df.format(damageToReceive);
+			createFloatingText("-" + formattedHealAmount, Color.decode("#DE4040"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
 		}
 
 		if (damageToReceive > 0) {
 			lastHitMillis = System.currentTimeMillis();
 		}
-
-		// Check if the player dies
-		if (this.hp <= 0 || lockedHP > this.hp) {
-			playerDies();
-		}
-
-		// Displayed numerical value5
-
-		int playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()) / scale);
-		int playerScreenY = (int) ((player.getY() - player.pos.getCameraOffsetY()) / scale);
-		int randomPosX = (int) ((Math.random() * (40 + 40)) - 40);
-		int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
-		DecimalFormat df = new DecimalFormat("#.##");
-		String formattedHealAmount = df.format(damageToReceive);
-		createFloatingText("-" + formattedHealAmount, Color.decode("#DE4040"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
 
 		return damageToReceive;
 	}
@@ -324,7 +341,6 @@ public class PlayerAttributes {
 		}
 
 		double healToReceive;
-
 		// Define boolean flags for different conditions
 		boolean isValidReason = reason.contains("normal") || reason.contains("overheal") ||
 				reason.contains("revival") || reason.contains("revival exclusive") ||
@@ -388,6 +404,8 @@ public class PlayerAttributes {
 			healingExpression = isAbsolute ?
 					Math.min(heal, this.maxHP - this.hp) :
 					Math.min(heal, this.maxHP - this.hp);
+		} else if (isAbsolute) {
+			healingExpression = Math.min(heal, this.maxHP - this.hp);
 		}
 
 		// Overheal logic
@@ -615,6 +633,7 @@ public class PlayerAttributes {
 			case DEFENSE -> this.defense = levelDefense + equipmentDefense;
 			case REGENERATION_QUALITY -> this.regenerationQuality = 1 + levelRegenerationQuality + equipmentRegenerationQuality;
 			case SPEED -> this.playerSpeed = this.playerSpeedModifier * (scale * 2 + 0.166) / 3 * this.environmentSpeedModifier + Math.log10(1 + this.levelSpeed + this.equipmentSpeed);
+			case INVERSION -> this.inversion = this.equipmentInversion;
 			case ALL -> {
 				for (Stat argument : Stat.values()) {
 					if (argument == Stat.ALL)
@@ -648,6 +667,14 @@ public class PlayerAttributes {
 				for (int i = 0; i < 3; i++) {
 					if (player.inv.getItem(i) != null) {
 						this.equipmentDefense += player.inv.getItemStat(player.inv.getItem(i), def);
+					}
+				}
+			}
+			case INVERSION -> {
+				this.equipmentInversion = 0;
+				for (int i = 0; i < 3; i++) {
+					if (player.inv.getItem(i) != null) {
+						this.equipmentInversion += player.inv.getItemStat(player.inv.getItem(i), Inventory.PossibleItemStats.inversion);
 					}
 				}
 			}

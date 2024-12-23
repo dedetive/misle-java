@@ -242,6 +242,7 @@
     "str": -7,
     "ent": -7,
     "def": -7,
+    "inversion": 25,
     "type": "armor",
     "subtype": "ring",
     "nameColor": "#609499"
