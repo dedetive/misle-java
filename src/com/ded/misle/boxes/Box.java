@@ -16,6 +16,7 @@ import static com.ded.misle.AudioPlayer.AudioFile.collect_item;
 import static com.ded.misle.AudioPlayer.playThis;
 import static com.ded.misle.ChangeSettings.getPath;
 import static com.ded.misle.GamePanel.*;
+import static com.ded.misle.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.PlayingRenderer.fadeIn;
 import static com.ded.misle.renderer.PlayingRenderer.fadeOut;
 import static com.ded.misle.Launcher.scale;
@@ -45,6 +46,7 @@ public class Box {
 	private double maxHP;
 	private double HP;
 	private Physics.ObjectType objectType;
+	private PlayerAttributes.KnockbackDirection knockbackDirection;
 
 	private BufferedImage cachedTexture1;
 	private String cachedTexture1Name;
@@ -66,7 +68,7 @@ public class Box {
 	 *
 	 * - "": for no effect <br>
 	 * - "damage": for damaging over time. Second value within the list is the damage amount. Third value is the rate
-	 * at which the damage is given. The fourth value is the reason of the damage. See {@link PlayerAttributes#takeDamage(double, String, String[])}
+	 * at which the damage is given. The fourth value is the reason of the damage. See {@link PlayerAttributes#takeDamage(double, String, String[], PlayerAttributes.KnockbackDirection)}
 	 * for a list of reasons.
 	 * - "velocity": for changing the speed. Second value is the multiplier of the speed based on player's playerSpeed.
 	 *
@@ -92,6 +94,7 @@ public class Box {
 		this.maxHP = maxHP;
 		this.HP = HP;
 		this.objectType = objectType;
+		this.knockbackDirection = NONE;
 	}
 
 	public Box(double x, double y) {
@@ -107,6 +110,7 @@ public class Box {
 		this.maxHP = -1;
 		this.HP = -1;
 		this.objectType = BOX;
+		this.knockbackDirection = NONE;
 	}
 
 	// For player creation
@@ -117,6 +121,7 @@ public class Box {
 		this.hasCollision = true;
 		this.boxScaleHorizontal = tileSize * 0.91;
 		this.boxScaleVertical = tileSize * 0.91;
+		this.knockbackDirection = NONE;
 	}
 
 	// Method to render the box with the current tileSize and scale the position
@@ -430,9 +435,17 @@ public class Box {
 		// Check if enough time has passed since the last damage was dealt
 		if (currentTime - this.getLastEffectTime() >= cooldownDuration) {
 			this.setLastEffectTime(currentTime); // Update the last damage time
-			player.attr.takeDamage(this.getEffectValue(), this.getEffectReason(), this.getEffectArgs());
+			player.attr.takeDamage(this.getEffectValue(), this.getEffectReason(), this.getEffectArgs(), getKnockbackDirection());
 //			System.out.println(box.getEffectValue() + " " + box.getEffectReason() + " damage dealt! Now at " + player.attr.getHP() + " HP.");
 		}
+	}
+
+	public PlayerAttributes.KnockbackDirection getKnockbackDirection() {
+		return knockbackDirection;
+	}
+
+	public void setKnockbackDirection(PlayerAttributes.KnockbackDirection knockbackDirection) {
+		this.knockbackDirection = knockbackDirection;
 	}
 
 	private void handleBoxHealCooldown() {

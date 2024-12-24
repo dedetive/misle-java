@@ -3,6 +3,7 @@ package com.ded.misle.input_handler;
 import com.ded.misle.GamePanel;
 import com.ded.misle.Physics;
 import com.ded.misle.items.Item;
+import com.ded.misle.player.PlayerAttributes;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
@@ -10,6 +11,7 @@ import java.awt.event.KeyListener;
 import java.util.HashMap;
 
 import static com.ded.misle.GamePanel.*;
+import static com.ded.misle.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.LevelDesignerRenderer.levelDesignerGrid;
 import static com.ded.misle.renderer.MenuRenderer.pauseGame;
 import static com.ded.misle.input_handler.KeyHandler.Key.*;
@@ -260,10 +262,22 @@ public class KeyHandler implements KeyListener {
 			if (!player.attr.isDead()) {
 				double range = (tileSize + 1) * Math.max(1, player.attr.getSpeed());
 				if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
-					if (!Physics.isPixelOccupied((player.getX() + willMovePlayer[0]), player.getY(), player.getBoxScaleHorizontal(), player.getBoxScaleVertical(), range, 12, Physics.ObjectType.PLAYER)) {
+					PlayerAttributes.KnockbackDirection horizontalDirection = PlayerAttributes.KnockbackDirection.NONE;
+					PlayerAttributes.KnockbackDirection verticalDirection = PlayerAttributes.KnockbackDirection.NONE;
+					if (willMovePlayer[0] > 0) {
+						horizontalDirection = PlayerAttributes.KnockbackDirection.RIGHT;
+					} else {
+						horizontalDirection = PlayerAttributes.KnockbackDirection.LEFT;
+					}
+					if (willMovePlayer[1] > 0) {
+						verticalDirection = PlayerAttributes.KnockbackDirection.DOWN;
+					} else {
+						verticalDirection = PlayerAttributes.KnockbackDirection.UP;
+					}
+					if (!Physics.isPixelOccupied((player.getX() + willMovePlayer[0]), player.getY(), player.getBoxScaleHorizontal(), player.getBoxScaleVertical(), range, 12, Physics.ObjectType.PLAYER, horizontalDirection)) {
 						Physics.movePlayer(willMovePlayer[0], 0);
 					}
-					if (!Physics.isPixelOccupied(player.getX(), (player.getY() + willMovePlayer[1]), player.getBoxScaleHorizontal(), player.getBoxScaleVertical(), range, 12, Physics.ObjectType.PLAYER)) {
+					if (!Physics.isPixelOccupied(player.getX(), (player.getY() + willMovePlayer[1]), player.getBoxScaleHorizontal(), player.getBoxScaleVertical(), range, 12, Physics.ObjectType.PLAYER, verticalDirection)) {
 						Physics.movePlayer(0, willMovePlayer[1]);
 					}
 				}

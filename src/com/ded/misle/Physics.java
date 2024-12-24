@@ -2,8 +2,10 @@ package com.ded.misle;
 
 import com.ded.misle.boxes.Box;
 import com.ded.misle.boxes.BoxesHandling;
+import com.ded.misle.player.PlayerAttributes;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.ded.misle.Launcher.levelDesigner;
 import static com.ded.misle.Launcher.scale;
@@ -61,7 +63,7 @@ public class Physics {
 	 * @param objectWidth double - The width of the object, in pixels.
 	 * @param objectHeight double - The height of the object, in pixels.
  	 */
-	public static boolean isPixelOccupied(double pixelX, double pixelY, double objectWidth, double objectHeight, double range, int level, ObjectType objectType) {
+	public static boolean isPixelOccupied(double pixelX, double pixelY, double objectWidth, double objectHeight, double range, int level, ObjectType objectType, PlayerAttributes.KnockbackDirection direction) {
 		List<Box> nearbyCollisionBoxes = BoxesHandling.getCollisionBoxesInRange(pixelX, pixelY, range, level);
 		for (Box box : nearbyCollisionBoxes) {
 			if (box.getBoxScaleHorizontal() >= 1 && box.getBoxScaleVertical() >= 1) {
@@ -72,6 +74,9 @@ public class Physics {
 				) {
 					if (objectType != ObjectType.BOX && !box.getEffect().isEmpty()) {
 						box.handleEffect(objectType);
+						if (Objects.equals(box.getEffect(), "damage")) {
+							box.setKnockbackDirection(direction);
+						}
 					}
 					return true;
 				}

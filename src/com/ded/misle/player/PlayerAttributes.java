@@ -8,6 +8,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.ded.misle.GamePanel.player;
+import static com.ded.misle.boxes.BoxManipulation.moveBox;
+import static com.ded.misle.boxes.BoxManipulation.moveCollisionBox;
 import static com.ded.misle.player.Inventory.PossibleItemStats.*;
 import static com.ded.misle.renderer.PlayingRenderer.createFloatingText;
 import static com.ded.misle.renderer.PlayingRenderer.showHealthBar;
@@ -93,6 +95,13 @@ public class PlayerAttributes {
 	private boolean isDead = false;
 	private Box lastVelocityBox = null;
 	private float maxStackSizeMulti;
+	public enum KnockbackDirection {
+		NONE,
+		LEFT,
+		RIGHT,
+		UP,
+		DOWN
+	}
 
 	public PlayerAttributes() {
 			this.setSpeedModifier(1);
@@ -202,7 +211,7 @@ public class PlayerAttributes {
 	 * @param reason the kind of damage that's taking place; see above for a list
 	 * @return Final damage dealt
 	 */
-	public double takeDamage(double damage, String reason, String[] args) {
+	public double takeDamage(double damage, String reason, String[] args, KnockbackDirection knockbackDirection) {
 
 		isRegenerationDoubled = false;
 
@@ -270,6 +279,13 @@ public class PlayerAttributes {
 			createFloatingText("-" + formattedHealAmount, Color.decode("#DE4040"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
 		}
 
+		switch (knockbackDirection) {
+			case RIGHT -> player.setX(player.getX() - 20);
+			case LEFT -> player.setX(player.getX() + 20);
+			case DOWN -> player.setY(player.getY() - 20);
+			case UP -> player.setY(player.getY() + 20);
+		}
+
 		if (damageToReceive > 0) {
 			lastHitMillis = System.currentTimeMillis();
 		}
@@ -279,7 +295,7 @@ public class PlayerAttributes {
 
 	/**
 	 *
-	 * The documentation for the method {@link #takeDamage(double, String, String[])} is valid for this method too.
+	 * The documentation for the method {@link #takeDamage(double, String, String[], KnockbackDirection)} is valid for this method too.
 	 *
 	 */
 	public double calculateDamage(double damage, String reason) {
