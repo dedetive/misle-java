@@ -39,8 +39,11 @@ public class ColorManager {
     // Game UI
         // Health UI
     public final static Color healthBarBackground = new Color(0xA0A0A0);
-    public final static Color healthBarCurrentHP = new Color(0x50EE50);
+    public final static Color healthBarCurrent = new Color(0x50EE50);
     public final static Color healthBarLockedHP = Color.DARK_GRAY;
+        // Entropy UI
+    public final static Color entropyBarBackground = new Color(0xA0A0A0);
+    public final static Color entropyBarCurrent = new Color(0xA0A0FF);
 
     // Menus
         // Buttons
