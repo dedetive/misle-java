@@ -73,10 +73,10 @@ public class Physics {
 					(box.isPointColliding(pixelX + objectWidth, pixelY + objectHeight, scale, objectWidth, objectHeight)) // Bottom-right corner
 				) {
 					if (objectType != ObjectType.BOX && !box.getEffect().isEmpty()) {
-						box.handleEffect(objectType);
 						if (Objects.equals(box.getEffect(), "damage")) {
 							box.setKnockbackDirection(direction);
 						}
+						box.handleEffect(objectType);
 					}
 					return true;
 				}
