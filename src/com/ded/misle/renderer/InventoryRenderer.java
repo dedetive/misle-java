@@ -11,6 +11,7 @@ import java.util.List;
 
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.ImageRenderer.cachedImages;
 
 public class InventoryRenderer {
@@ -33,7 +34,7 @@ public class InventoryRenderer {
     }
 
     public static void drawSelectedSlotOverlay(Graphics2D g2d, int slotX, int slotY, int slotSize) {
-        g2d.setColor(new Color(255, 255, 255, 100)); // Semi-transparent overlay
+        g2d.setColor(selectedSlotOverlay); // Semi-transparent overlay
         g2d.fillRect(slotX, slotY, slotSize, slotSize);
     }
 
@@ -41,7 +42,7 @@ public class InventoryRenderer {
         Graphics2D g2d = (Graphics2D) g;
 
         // Semi-transparent background overlay
-        g2d.setColor(new Color(15, 15, 15, 130));
+        g2d.setColor(backgroundOverlay);
         g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
 
         // Start the grid
@@ -159,7 +160,7 @@ public class InventoryRenderer {
 
     private static void drawStat(Graphics2D g2d, String statText, int centerX, int y) {
         g2d.setFont(FontManager.buttonFont);
-        Color textColor = new Color(230, 230, 180);
+        Color textColor = statColor;
         Color shadowColor = Color.black;
 
         drawStat(g2d, statText, centerX, y, textColor, shadowColor);
@@ -263,7 +264,7 @@ public class InventoryRenderer {
         tooltipY = slotY - tooltipHeight - (triangleHeight);
 
         // Draw rounded tooltip box
-        g2d.setColor(new Color(84, 84, 84, 190));
+        g2d.setColor(hoveredTooltipBackground);
         g2d.fillRoundRect(tooltipX, tooltipY, tooltipWidth, tooltipHeight, (int) (45 * scale / 3.75), (int) (45 * scale / 3.75));
 
         // Draw triangle
@@ -287,7 +288,7 @@ public class InventoryRenderer {
         int itemNameWidth = fm.stringWidth(itemName);
         g2d.setColor(Color.black);
         g2d.drawString(itemCount, (int) (textX + itemNameWidth + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow));
-        g2d.setColor(Color.decode("#FFFFFF"));
+        g2d.setColor(itemCountTooltip);
         g2d.drawString(itemCount, textX + itemNameWidth, textY);
 
         textY += lineHeight;
@@ -295,7 +296,7 @@ public class InventoryRenderer {
         // Item type
         g2d.setColor(Color.black);
         g2d.drawString(itemType, (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow));
-        g2d.setColor(Color.decode("#E0DE9B"));
+        g2d.setColor(itemTypeTooltip);
         g2d.drawString(itemType, textX, textY);
         textY += lineHeight;
 
@@ -304,7 +305,7 @@ public class InventoryRenderer {
             for (String line : effectWrappedLines) {
                 g2d.setColor(Color.black);
                 g2d.drawString(line, (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow));
-                g2d.setColor(Color.decode("#00A2FF"));
+                g2d.setColor(itemEffectTooltip);
                 g2d.drawString(line, textX, textY);
                 textY += lineHeight;
             }
@@ -314,7 +315,7 @@ public class InventoryRenderer {
         for (String line : wrappedDescription) {
             g2d.setColor(Color.black);
             g2d.drawString(line, (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow));
-            g2d.setColor(Color.decode("#A0A0A0"));
+            g2d.setColor(itemDescriptionTooltip);
             g2d.drawString(line, textX, textY);
             textY += lineHeight;
         }

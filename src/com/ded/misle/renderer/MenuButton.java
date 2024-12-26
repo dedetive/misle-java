@@ -8,14 +8,12 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.GameRenderer.textShadow;
 import static com.ded.misle.renderer.FontManager.buttonFont;
 import static com.ded.misle.Launcher.scale;
 
 public class MenuButton {
-    static Color defaultColor = new Color(70, 51, 5);
-    static Color hoverColor = new Color(40, 25, 1);
-
     Rectangle bounds;
     Color color;
     Runnable action;
@@ -38,7 +36,7 @@ public class MenuButton {
                 return;
             }
         }
-        MenuButton button = new MenuButton(bounds, defaultColor, action, text);
+        MenuButton button = new MenuButton(bounds, buttonDefaultColor, action, text);
         buttons.add(button);
         Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
         SwingUtilities.convertPointFromScreen(mouseLocation, panel);
@@ -74,13 +72,13 @@ public class MenuButton {
             if (button.bounds.contains(mousePoint)) {
                 if (!button.isHovered) {
                     button.isHovered = true;
-                    button.color = hoverColor;
+                    button.color = buttonHoveredColor;
                     repaintNeeded = true;
                     panel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 }
             } else if (button.isHovered) {
                 button.isHovered = false;
-                button.color = defaultColor;
+                button.color = buttonDefaultColor;
                 panel.setCursor(Cursor.getDefaultCursor());
                 repaintNeeded = true;
             }
@@ -113,7 +111,7 @@ public class MenuButton {
             g2d.drawString(button.text, textX, (int) (textY + textShadow)); // Down
 
             // ACTUAL TEXT
-            g2d.setColor(new Color(225, 225, 225));
+            g2d.setColor(buttonTextColor);
             g2d.drawString(button.text, textX, textY);
         }
     }

@@ -17,6 +17,7 @@ import static com.ded.misle.AudioPlayer.playThis;
 import static com.ded.misle.ChangeSettings.getPath;
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.player.PlayerAttributes.KnockbackDirection.NONE;
+import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 import static com.ded.misle.renderer.PlayingRenderer.fadeIn;
 import static com.ded.misle.renderer.PlayingRenderer.fadeOut;
 import static com.ded.misle.Launcher.scale;
@@ -100,7 +101,7 @@ public class Box {
 	public Box(double x, double y) {
 		this.x = x;
 		this.y = y;
-		this.color = new Color(255, 255, 255);
+		this.color = defaultBoxColor;
 		this.texture = "solid";
 		this.hasCollision = false;
 		this.boxScaleHorizontal = 1;
@@ -116,7 +117,7 @@ public class Box {
 	// For player creation
 	public Box() {
 		this.setTexture("solid");
-		this.setColor(new Color(255, 255, 255));
+		this.setColor(defaultBoxColor);
 		this.setObjectType(Physics.ObjectType.PLAYER);
 		this.hasCollision = true;
 		this.boxScaleHorizontal = tileSize * 0.91;
@@ -274,6 +275,8 @@ public class Box {
 	public void setColor(Color color) {
 		this.color = color;
 	}
+
+	public Color getColor() { return color; }
 
 	public void setHasCollision(boolean hasCollision) {
 		this.hasCollision = hasCollision;

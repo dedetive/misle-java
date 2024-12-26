@@ -2,15 +2,15 @@ package com.ded.misle.player;
 
 import com.ded.misle.boxes.Box;
 
-import java.awt.*;
 import java.text.DecimalFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.ded.misle.GamePanel.player;
-import static com.ded.misle.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.boxes.BoxManipulation.moveCollisionBox;
 import static com.ded.misle.player.Inventory.PossibleItemStats.*;
+import static com.ded.misle.renderer.ColorManager.damageColor;
+import static com.ded.misle.renderer.ColorManager.healColor;
 import static com.ded.misle.renderer.PlayingRenderer.createFloatingText;
 import static com.ded.misle.renderer.PlayingRenderer.showHealthBar;
 import static com.ded.misle.Launcher.scale;
@@ -239,7 +239,7 @@ public class PlayerAttributes {
 			int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
 			DecimalFormat df = new DecimalFormat("#.##");
 			String formattedHealAmount = df.format(damageToReceive);
-			createFloatingText("+" + formattedHealAmount, Color.decode("#50EE50"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+			createFloatingText("+" + formattedHealAmount, healColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
 		} else {
 
 			if (isLocker) {
@@ -276,7 +276,7 @@ public class PlayerAttributes {
 			int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
 			DecimalFormat df = new DecimalFormat("#.##");
 			String formattedHealAmount = df.format(damageToReceive);
-			createFloatingText("-" + formattedHealAmount, Color.decode("#DE4040"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+			createFloatingText("-" + formattedHealAmount, damageColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
 		}
 
 		switch (knockbackDirection) {

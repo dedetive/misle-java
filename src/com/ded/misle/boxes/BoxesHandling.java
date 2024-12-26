@@ -254,7 +254,6 @@ public class BoxesHandling {
 				break;
 			case "grass":
 				editBox(box, EditBoxKeys.HAS_COLLISION, "false");
-				editBox(box, EditBoxKeys.COLOR, "0x1EA81E");
 				editBox(box, EditBoxKeys.TEXTURE, "grass");
 				break;
 			case "travel":

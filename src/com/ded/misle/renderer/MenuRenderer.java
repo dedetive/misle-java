@@ -9,6 +9,7 @@ import java.awt.*;
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.levelDesigner;
 import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.MenuButton.createButton;
 import static com.ded.misle.renderer.MenuButton.drawButtons;
 import static com.ded.misle.SaveFile.saveEverything;
@@ -18,7 +19,6 @@ import static com.ded.misle.GamePanel.screenWidth;
 import static com.ded.misle.GamePanel.screenHeight;
 
 public class MenuRenderer {
-    public static final Color menuBackgroundColor = new Color(140, 110, 70);
     private static final String gameVersion = "v0.1.5-alpha";
 
     private static void createTitle(String text, Graphics2D g2d, double scaleByScreenSize) {
@@ -37,7 +37,7 @@ public class MenuRenderer {
         g2d.drawString(titleText, (int) (centerX + GameRenderer.textShadow), (int) (textY - GameRenderer.textShadow)); // Right-up corner
         g2d.drawString(titleText, (int) (centerX - GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow)); // Left-down corner
         g2d.drawString(titleText, (int) (centerX - GameRenderer.textShadow), (int) (textY - GameRenderer.textShadow)); // Right-down corner
-        g2d.setColor(new Color(233, 233, 233));
+        g2d.setColor(menuTitleColor);
         g2d.drawString(titleText, centerX, textY);
     }
 
@@ -145,7 +145,7 @@ public class MenuRenderer {
             g2d.setFont(FontManager.itemInfoFont);
             g2d.setColor(Color.black);
             g2d.drawString(gameVersion, (int) (1640 * scaleByScreenSize + GameRenderer.textShadow), (int) (1010* Math.pow(scaleByScreenSize, 1.04) + GameRenderer.textShadow));
-            g2d.setColor(new Color(217, 217, 217));
+            g2d.setColor(menuVersionColor);
             g2d.drawString(gameVersion, (int) (1640 * scaleByScreenSize), (int) (1010* Math.pow(scaleByScreenSize, 1.04)));
         }
     }
@@ -264,7 +264,7 @@ public class MenuRenderer {
             int progressBarHeight = (int) (25 * scaleByScreenSize);
             int progressBarY = (int) ((textY + 560) * scaleByScreenSize);
 
-            g2d.setColor(new Color(100, 200, 100));
+            g2d.setColor(progressBarColor);
             g2d.fillRect((int) (660 * scaleByScreenSize), progressBarY, progressBarWidth, progressBarHeight);
 
             g2d.setFont(FontManager.selectedItemNameFont);
@@ -274,7 +274,7 @@ public class MenuRenderer {
             textY = (int) ((progressBarY) - 20 * scaleByScreenSize);
             g2d.setColor(Color.black);
             g2d.drawString(percentage, (int) (centerX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow));
-            g2d.setColor(new Color(191, 191, 191));
+            g2d.setColor(progressBarPercentage);
             g2d.drawString(percentage, centerX, textY);
         }
     }

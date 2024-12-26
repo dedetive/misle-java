@@ -1,19 +1,16 @@
 package com.ded.misle.renderer;
 
-import com.ded.misle.LanguageManager.Script;
-
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static com.ded.misle.LanguageManager.Script.LATIN;
 import static com.ded.misle.LanguageManager.getCurrentScript;
 import static com.ded.misle.Launcher.scale;
 
 public class FontManager {
     public static Font titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));      // Supports Latin, Cyrillic and Greek
-    public static Font selectedItemNameFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (35 * scale / 3.75));     // Supports Latin, Cyrillic and Greek
+    public static Font selectedItemNameFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (35 * scale / 3.75));// Supports Latin, Cyrillic and Greek
     public static Font itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (40 * scale / 3.75));      // Supports Latin, Cyrillic and Greek
     public static Font buttonFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));          // Supports Latin, Cyrillic and Greek
     public static Font itemInfoFont = loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));        // Supports only Latin

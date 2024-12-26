@@ -6,7 +6,6 @@ import com.ded.misle.items.Item;
 import com.ded.misle.renderer.PlayingRenderer;
 
 import javax.swing.*;
-import java.awt.*;
 import java.text.DecimalFormat;
 
 import static com.ded.misle.AudioPlayer.AudioFile.*;
@@ -14,10 +13,11 @@ import static com.ded.misle.AudioPlayer.playThis;
 import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.boxes.BoxManipulation.*;
-import static com.ded.misle.boxes.BoxesHandling.addBox;
 import static com.ded.misle.boxes.BoxesHandling.editBox;
 import static com.ded.misle.player.HandItemAnimator.animateClaw;
 import static com.ded.misle.player.PlayerAttributes.Stat.ALL;
+import static com.ded.misle.renderer.ColorManager.entropyGainColor;
+import static com.ded.misle.renderer.ColorManager.healColor;
 import static java.lang.System.currentTimeMillis;
 
 public class Inventory {
@@ -450,7 +450,7 @@ public class Inventory {
 						healAmountValue = player.attr.getMaxHP();
 					}
 					String formattedHealAmount = df.format(player.attr.receiveHeal(healAmountValue, "normal"));
-					PlayingRenderer.createFloatingText("+" + formattedHealAmount, Color.decode("#50EE50"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+					PlayingRenderer.createFloatingText("+" + formattedHealAmount, healColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
 
 					Timer delayToRemove = new Timer(30, e -> {
 						getSelectedItem().setCount(getSelectedItem().getCount() - 1);
@@ -468,7 +468,7 @@ public class Inventory {
 					}
 					String formattedEntropyAmount = df.format(player.attr.calculateEntropyGain(entropyAmountValue));
 
-					PlayingRenderer.createFloatingText("+" + formattedEntropyAmount, Color.decode("#A0A0FF"), playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+					PlayingRenderer.createFloatingText("+" + formattedEntropyAmount, entropyGainColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
 					player.attr.addEntropy(entropyAmountValue);
 					getSelectedItem().setCount(getSelectedItem().getCount() - 1);
 					if (!getSelectedItem().isActive()) {

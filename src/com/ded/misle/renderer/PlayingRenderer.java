@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.ded.misle.GamePanel.*;
+import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.ImageRenderer.cachedImages;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.player.PlayerStats.Direction.LEFT;
@@ -76,7 +77,7 @@ public class PlayingRenderer {
         int playerScreenY = (int) (player.getY() - player.pos.getCameraOffsetY());
 
         // Draw the player above every box
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(player.getColor());
         Rectangle playerRect = new Rectangle(playerScreenX, playerScreenY, (int) player.getBoxScaleHorizontal(), (int) player.getBoxScaleVertical());
         drawRotatedRect(g2d, playerRect, player.pos.getRotation());
 
@@ -105,16 +106,16 @@ public class PlayingRenderer {
         }
 
         if (isFading == FadingState.FADING_IN || isFading == FadingState.FADED) {
-            fadingProgress = Math.min(fadingProgress + 0.0135F, 1F);
-            g2d.setColor(new Color(0, 0, 0, fadingProgress));
+            fadingProgress = Math.min(fadingProgress + 0.019F, 1F);
+            g2d.setColor(new Color((float) fadingColorR / 256, (float) fadingColorG / 256, (float) fadingColorB / 256, fadingProgress));
             g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
             if (fadingProgress == 1F) {
                 isFading = FadingState.FADED;
             }
         } else if (isFading == FadingState.FADING_OUT
         ) {
-            fadingProgress = Math.max(fadingProgress - 0.02F, 0F);
-            g2d.setColor(new Color(0, 0, 0, fadingProgress));
+            fadingProgress = Math.max(fadingProgress - 0.02125F, 0F);
+            g2d.setColor(new Color((float) fadingColorR / 256, (float) fadingColorG / 256, (float) fadingColorB / 256, fadingProgress));
             g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
             if (fadingProgress == 0F) {
                 isFading = FadingState.UNFADED;
@@ -168,18 +169,18 @@ public class PlayingRenderer {
         // Calculate the percentage of health remaining
         double healthPercentage = Math.min((double) player.attr.getHP() / player.attr.getMaxHP(), 1);
 
-        // Draw the background of the health bar (gray)
-        g2d.setColor(Color.GRAY);
+        // Draw the background of the health bar
+        g2d.setColor(healthBarBackground);
         g2d.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
 
-        // Draw the current health bar (green, for example)
-        g2d.setColor(Color.GREEN);
+        // Draw the current health bar
+        g2d.setColor(healthBarCurrentHP);
         g2d.fillRect(healthBarX, healthBarY, (int) (healthBarWidth * healthPercentage), healthBarHeight);
 
         // Draw locked HP, if any
         double lockedHPPercentage = Math.min(player.attr.getLockedHP() / player.attr.getMaxHP(), 1);
 
-        g2d.setColor(Color.DARK_GRAY);
+        g2d.setColor(healthBarLockedHP);
         g2d.fillRect(healthBarX, healthBarY, (int) (healthBarWidth * lockedHPPercentage), healthBarHeight);
     }
 
@@ -204,6 +205,7 @@ public class PlayingRenderer {
                 g2d.drawImage(item.getIcon(), slotX, slotY, slotSize[0], slotSize[0], null);
                 int itemCount = item.getCount();
                 if (itemCount > 1) {
+                    // Draw item count
                     g2d.setFont(FontManager.itemCountFont);
                     FontMetrics fm = g2d.getFontMetrics();
                     int textWidth = fm.stringWidth(Integer.toString(itemCount));
@@ -211,7 +213,7 @@ public class PlayingRenderer {
                     int textY = slotY + 8 * slotSize[0] / 9;
                     g2d.setColor(Color.black);
                     g2d.drawString(Integer.toString(itemCount), (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow));
-                    g2d.setColor(Color.white);
+                    g2d.setColor(itemCountColor);
                     g2d.drawString(Integer.toString(itemCount), textX, textY);
                 }
             }
@@ -365,7 +367,7 @@ public class PlayingRenderer {
     }
 
     private static void drawFloatingText(Graphics2D g2d) {
-        for (int i = 0; i < floatingText.size(); i++) {
+        for (int i = 0; i < floatingText.size() - 1; i++) {
             g2d.setFont(FontManager.itemInfoFont);
             g2d.setColor(Color.black);
             g2d.drawString(floatingText.get(i), (int) ((floatingTextPosition.get(i).x) * scale + GameRenderer.textShadow), (int) ((floatingTextPosition.get(i).y) * scale + GameRenderer.textShadow));

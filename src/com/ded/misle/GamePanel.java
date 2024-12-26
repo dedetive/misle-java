@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import static com.ded.misle.renderer.ColorManager.windowBackground;
 import static com.ded.misle.renderer.GameRenderer.*;
 import static com.ded.misle.input_handler.KeyHandler.updateDesignerSpeed;
 import static com.ded.misle.Launcher.*;
@@ -101,7 +102,7 @@ public class GamePanel extends JPanel implements Runnable {
 		this.addKeyListener(keyH);
 		this.setFocusable(true);
 
-		this.setBackground(Color.BLACK);
+		this.setBackground(windowBackground);
 
 		mouseHandler = new MouseHandler();
 		addMouseListener(mouseHandler);
