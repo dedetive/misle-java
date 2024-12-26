@@ -163,8 +163,8 @@ public class PlayingRenderer {
     private static void drawHealthBar(Graphics2D g2d) {
         int healthBarWidth = (int) (15 * scale);
         int healthBarHeight = (int) (50 * scale);
-        int healthBarX = (int) (50 * scale);
-        int healthBarY = (int) (205 * scale);
+        int healthBarX = (int) (30 * scale);
+        int healthBarY = (int) (212 * scale);
 
         // Calculate the percentage of health remaining
         double healthPercentage = Math.min(player.attr.getHP() / player.attr.getMaxHP(), 1);
@@ -187,8 +187,8 @@ public class PlayingRenderer {
     private static void drawEntropyBar(Graphics2D g2d) {
         int entropyBarWidth = (int) (15 * scale);
         int entropyBarHeight = (int) (50 * scale);
-        int entropyBarX = (int) (70 * scale);
-        int entropyBarY = (int) (205 * scale);
+        int entropyBarX = (int) (65 * scale);
+        int entropyBarY = (int) (212 * scale);
 
         // Calculate the percentage of entropy remaining
         double entropyPercentage = Math.min(player.attr.getEntropy() / player.attr.getMaxEntropy(), 1);
