@@ -38,8 +38,8 @@ public class ColorManager {
 
     // Game UI
         // Health UI
-    public final static Color healthBarBackground = Color.GRAY;
-    public final static Color healthBarCurrentHP = Color.GREEN;
+    public final static Color healthBarBackground = new Color(0xA0A0A0);
+    public final static Color healthBarCurrentHP = new Color(0x50EE50);
     public final static Color healthBarLockedHP = Color.DARK_GRAY;
 
     // Menus
