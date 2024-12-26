@@ -12,7 +12,6 @@ import static com.ded.misle.player.Inventory.PossibleItemStats.*;
 import static com.ded.misle.renderer.ColorManager.damageColor;
 import static com.ded.misle.renderer.ColorManager.healColor;
 import static com.ded.misle.renderer.PlayingRenderer.createFloatingText;
-import static com.ded.misle.renderer.PlayingRenderer.showHealthBar;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.items.Item.updateMaxStackSize;
 
@@ -449,9 +448,7 @@ public class PlayerAttributes {
 			receiveHeal(Math.max(getRegenerationQuality(), 1), "normal");
 			if (isRegenerationDoubled) receiveHeal(Math.max(getRegenerationQuality(), 1), "normal");
 			lastRegenerationMillis = currentTime;
-			showHealthBar = true;
 		} else {
-			showHealthBar = !(hp >= maxHP) || lastRegenerationMillis + 5000 >= currentTime || isDead;
 			if (hp >= maxHP) {
 				isRegenerationDoubled = false;
 			}

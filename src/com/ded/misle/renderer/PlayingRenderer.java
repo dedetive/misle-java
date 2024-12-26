@@ -29,7 +29,6 @@ public class PlayingRenderer {
     public static String selectedItemName;
     public static Point selectedItemNamePosition;
     public static long itemNameDisplayStartTime;
-    public static boolean showHealthBar = false;
 
     private static float fadingProgress;
     private enum FadingState {
@@ -155,7 +154,7 @@ public class PlayingRenderer {
     }
 
     private static void drawUIElements(Graphics2D g2d) {
-        if (showHealthBar) drawHealthBar(g2d);
+        drawHealthBar(g2d);
         drawEntropyBar(g2d);
         drawInventoryBar(g2d);
         drawSelectedItemName(g2d);
