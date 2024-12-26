@@ -104,7 +104,7 @@ public class MenuButton {
             int textHeight = fm.getAscent();
             int textX = button.bounds.x + (button.bounds.width - textWidth) / 2;
             int textY = button.bounds.y + (button.bounds.height + textHeight) / 2 - fm.getDescent() + (int) (2 * scale);
-            g2d.setColor(Color.black);
+            g2d.setColor(buttonTextShadowColor);
             g2d.drawString(button.text, (int) (textX - textShadow), textY); // Left
             g2d.drawString(button.text, (int) (textX + textShadow), textY); // Right
             g2d.drawString(button.text, textX, (int) (textY - textShadow)); // Up

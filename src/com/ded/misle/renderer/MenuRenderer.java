@@ -28,7 +28,7 @@ public class MenuRenderer {
         int textWidth = fm.stringWidth(titleText);
         int centerX = (int) ((screenWidth - textWidth) / 2);
         int textY = (int) (182 * scaleByScreenSize);
-        g2d.setColor(Color.black);
+        g2d.setColor(menuTitleShadowColor);
         g2d.drawString(titleText, (int) (centerX - GameRenderer.textShadow), textY); // Left
         g2d.drawString(titleText, (int) (centerX + GameRenderer.textShadow), textY); // Right
         g2d.drawString(titleText, centerX, (int) (textY - GameRenderer.textShadow)); // Up
@@ -143,7 +143,7 @@ public class MenuRenderer {
             // Version
 
             g2d.setFont(FontManager.itemInfoFont);
-            g2d.setColor(Color.black);
+            g2d.setColor(menuVersionShadowColor);
             g2d.drawString(gameVersion, (int) (1640 * scaleByScreenSize + GameRenderer.textShadow), (int) (1010* Math.pow(scaleByScreenSize, 1.04) + GameRenderer.textShadow));
             g2d.setColor(menuVersionColor);
             g2d.drawString(gameVersion, (int) (1640 * scaleByScreenSize), (int) (1010* Math.pow(scaleByScreenSize, 1.04)));
@@ -272,7 +272,7 @@ public class MenuRenderer {
             int textWidth = percentageFm.stringWidth(percentage); // Use the new font metrics for percentage
             int centerX = (int) ((screenWidth - textWidth) / 2);
             textY = (int) ((progressBarY) - 20 * scaleByScreenSize);
-            g2d.setColor(Color.black);
+            g2d.setColor(progressBarPercentageShadow);
             g2d.drawString(percentage, (int) (centerX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow));
             g2d.setColor(progressBarPercentage);
             g2d.drawString(percentage, centerX, textY);

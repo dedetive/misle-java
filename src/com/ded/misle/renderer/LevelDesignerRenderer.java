@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 import static com.ded.misle.GamePanel.*;
+import static com.ded.misle.renderer.ColorManager.gridColor;
 
 public class LevelDesignerRenderer {
     public static boolean levelDesignerGrid;
@@ -25,7 +26,7 @@ public class LevelDesignerRenderer {
             int timesToRepeatHorizontal = panel.getWidth() / tileSize;
             int timesToRepeatVertical = panel.getHeight() / tileSize;
 
-            g2d.setColor(Color.black);
+            g2d.setColor(gridColor);
             for (int i = 1; i < timesToRepeatHorizontal; i++) {
                 g2d.drawLine(tileSize * i, 0, tileSize * i, panel.getHeight());
             }

@@ -211,7 +211,7 @@ public class PlayingRenderer {
                     int textWidth = fm.stringWidth(Integer.toString(itemCount));
                     int textX = slotX - textWidth + slotSize[0];
                     int textY = slotY + 8 * slotSize[0] / 9;
-                    g2d.setColor(Color.black);
+                    g2d.setColor(itemCountShadowColor);
                     g2d.drawString(Integer.toString(itemCount), (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow));
                     g2d.setColor(itemCountColor);
                     g2d.drawString(Integer.toString(itemCount), textX, textY);
@@ -254,7 +254,7 @@ public class PlayingRenderer {
                     int textX = selectedItemNamePosition.x - textWidth / 2;
                     int textY = selectedItemNamePosition.y;
 
-                    g2d.setColor(Color.black);
+                    g2d.setColor(selectedItemNameShadowColor);
                     g2d.drawString(selectedItemName, (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow));
                     g2d.setColor(player.inv.getSelectedItem().getNameColor());
                     g2d.drawString(selectedItemName, textX, textY);
@@ -369,7 +369,7 @@ public class PlayingRenderer {
     private static void drawFloatingText(Graphics2D g2d) {
         for (int i = 0; i < floatingText.size() - 1; i++) {
             g2d.setFont(FontManager.itemInfoFont);
-            g2d.setColor(Color.black);
+            g2d.setColor(floatingTextShadow);
             g2d.drawString(floatingText.get(i), (int) ((floatingTextPosition.get(i).x) * scale + GameRenderer.textShadow), (int) ((floatingTextPosition.get(i).y) * scale + GameRenderer.textShadow));
             g2d.setColor(floatingTextColor.get(i));
             g2d.drawString(floatingText.get(i), (int) (floatingTextPosition.get(i).x * scale), (int) (floatingTextPosition.get(i).y * scale));
