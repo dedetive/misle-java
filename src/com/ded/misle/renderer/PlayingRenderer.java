@@ -161,10 +161,10 @@ public class PlayingRenderer {
     }
 
     private static void drawHealthBar(Graphics2D g2d, int playerScreenX, int playerScreenY) {
-        int healthBarWidth = (int) (50 * scale); // Width of the health bar
-        int healthBarHeight = (int) (10 * scale); // Height of the health bar
-        int healthBarX = (int) (playerScreenX - player.getBoxScaleHorizontal() / 2 - 2 * scale); // Position it above the player
-        int healthBarY = playerScreenY - healthBarHeight - 5; // Offset slightly above the player rectangle
+        int healthBarWidth = (int) (15 * scale);
+        int healthBarHeight = (int) (50 * scale);
+        int healthBarX = (int) (50 * scale);
+        int healthBarY = (int) (200 * scale);
 
         // Calculate the percentage of health remaining
         double healthPercentage = Math.min((double) player.attr.getHP() / player.attr.getMaxHP(), 1);
@@ -175,13 +175,13 @@ public class PlayingRenderer {
 
         // Draw the current health bar
         g2d.setColor(healthBarCurrentHP);
-        g2d.fillRect(healthBarX, healthBarY, (int) (healthBarWidth * healthPercentage), healthBarHeight);
+        g2d.fillRect(healthBarX, (int) (healthBarY + healthBarHeight - healthBarHeight * healthPercentage), healthBarWidth, (int) (healthBarHeight * healthPercentage));
 
         // Draw locked HP, if any
         double lockedHPPercentage = Math.min(player.attr.getLockedHP() / player.attr.getMaxHP(), 1);
 
         g2d.setColor(healthBarLockedHP);
-        g2d.fillRect(healthBarX, healthBarY, (int) (healthBarWidth * lockedHPPercentage), healthBarHeight);
+        g2d.fillRect(healthBarX, healthBarY, healthBarWidth, (int) (healthBarHeight * lockedHPPercentage));
     }
 
     private static void drawInventoryBar(Graphics2D g2d) {

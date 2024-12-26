@@ -59,7 +59,7 @@ public class BoxesLoad {
 				editLastBox(EditBoxKeys.COLOR, "#A02020");
 				editLastBox(HAS_COLLISION, "true");
 				editLastBox(MAX_HP, "20");
-				editLastBox(EFFECT, "{damage, 1, 300, normal, 0}");
+				editLastBox(EFFECT, "{damage, 15, 300, normal, 0}");
 
 				// For travelling to cliff
 				int travelBoxesAdded = lineAddBox(440, 10, 6, 1, "travel", FILL);
