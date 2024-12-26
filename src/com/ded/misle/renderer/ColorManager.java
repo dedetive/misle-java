@@ -46,11 +46,11 @@ public class ColorManager {
         // Buttons
     public final static Color buttonDefaultColor = new Color(70, 51, 5);
     public final static Color buttonHoveredColor = new Color(40, 25, 1);
-    public final static Color buttonTextColor = new Color(225, 225, 225);
+    public final static Color buttonTextColor = new Color(225, 210, 170);
     public final static Color buttonTextShadowColor = defaultShadowColor;
         // Menus themselves
     public final static Color menuBackgroundColor = new Color(140, 110, 70);
-    public final static Color menuTitleColor = new Color(233, 233, 233);
+    public final static Color menuTitleColor = new Color(200, 160, 105);
     public final static Color menuTitleShadowColor = defaultShadowColor;
     public final static Color menuVersionColor = new Color(217, 217, 217);
     public final static Color menuVersionShadowColor = defaultShadowColor;
