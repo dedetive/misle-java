@@ -280,10 +280,10 @@ public class PlayerAttributes {
 		}
 
 		switch (knockbackDirection) {
-			case RIGHT -> player.setX(player.getX() - 20);
-			case LEFT -> player.setX(player.getX() + 20);
-			case DOWN -> player.setY(player.getY() - 20);
-			case UP -> player.setY(player.getY() + 20);
+			case RIGHT -> moveCollisionBox(player, -30, 0, 50);
+			case LEFT -> moveCollisionBox(player, 30, 0, 50);
+			case DOWN -> moveCollisionBox(player, 0, -30, 50);
+			case UP -> moveCollisionBox(player, 0, 30, 50);
 		}
 
 		if (damageToReceive > 0) {

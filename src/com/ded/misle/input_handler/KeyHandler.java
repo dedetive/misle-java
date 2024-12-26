@@ -411,9 +411,7 @@ public class KeyHandler implements KeyListener {
 						}
 					}
 				} else {
-					player.inv.bruteSetItem(Item.createItem(12), 0);
-					player.inv.bruteSetItem(Item.createItem(17), 1);
-					player.inv.bruteSetItem(Item.createItem(18), 2);
+					player.attr.takeDamage(1, "normal", new String[]{}, PlayerAttributes.KnockbackDirection.DOWN);
 				}
 
 				player.keys.keyPressed.put(DEBUG1, false);
