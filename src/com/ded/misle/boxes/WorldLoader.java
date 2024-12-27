@@ -13,11 +13,11 @@ import static com.ded.misle.boxes.BoxHandling.LineAddBoxModes.HOLLOW;
 public class WorldLoader {
 	static HashMap<String, Integer> room = new HashMap<>();
 
-
 	static {
 		room.put("void", 0);
 		room.put("city_tuani", 1);
-		room.put("cliff", 2);
+		room.put("tuani_house1", 2);
+		room.put("cliff", 3);
 	}
 
 
@@ -49,24 +49,68 @@ public class WorldLoader {
 				editBoxNegativeIndex(TEXTURE, "wall_default.AS.D", boxesAdded); // Intersection fix
 				editLastBox(TEXTURE, "wall_default.SD.W"); // Intersection fix
 
-				// "House"
+				// House 1
 				lineAddBox(300, 420, 7, 7, "wall_default", HOLLOW);
 				deleteBox(4);
 				editBoxNegativeIndex(TEXTURE, "wall_default@Deco.AWD..@", 3);
 				editBoxNegativeIndex(TEXTURE, "wall_default@Deco.ASD..@", 4);
-
-				addBox(360, 480);
-				editLastBox(EditBoxKeys.COLOR, "#A02020");
+					// Interior
+				boxesAdded = lineAddBox(321, 441, 5, 5, "wall_default", FILL);
+				editLastBox(HAS_COLLISION, "false", boxesAdded);
+					// Door
+				addBox(426, 483, "travel");
 				editLastBox(HAS_COLLISION, "true");
-				editLastBox(MAX_HP, "20");
-				editLastBox(EFFECT, "{damage, 15, 300, normal, 0}");
+				editLastBox(EFFECT, "{travel, 2, 350, 110}");
+					// Chest and spawnpoint
+				addBox(321, 441, "spawnpoint");
+				addBox(341, 441, "mountain_chest");
+					// Corner block
+				addBox(402, 522);
+				editLastBox(EditBoxKeys.COLOR, "#A02020");
 
 				// For travelling to cliff
 				int travelBoxesAdded = lineAddBox(440, 10, 6, 1, "travel", FILL);
-				editLastBox(EFFECT, "{travel, 2, 300, 440}", travelBoxesAdded);
+				editLastBox(EFFECT, "{travel, 3, 300, 440}", travelBoxesAdded);
+			}
 
-				// Extra
-				addBox(500, 540, "spawnpoint");
+			case "tuani_house1" -> {
+				//Setup
+				int worldWidth = 500;
+				int worldHeight = 400;
+				setupWorld(worldWidth, worldHeight);
+
+				// Walls
+				lineAddBox(240, 20, 9, 9, "wall_default", HOLLOW);
+
+				// Door
+				deleteBox(5);
+				editBoxNegativeIndex(TEXTURE, "wall_default@Deco.AWD..@", 4);
+				editBoxNegativeIndex(TEXTURE, "wall_default@Deco.ASD..@", 5);
+
+				addBox(405, 104, "travel");
+				editLastBox(HAS_COLLISION, "true");
+				editLastBox(EFFECT, "{travel, 1, 460, 483}");
+
+				// Floor
+				int boxesAdded = lineAddBox(261, 41, 7, 7, "wall_default", FILL);
+				editLastBox(HAS_COLLISION, "false", boxesAdded);
+//				addBox(20, 20); 		NEED TO ADD ALPHA PARAMETER TO BOXES
+//				editLastBox(BOX_SCALE_HORIZONTAL, "14");
+//				editLastBox(BOX_SCALE_VERTICAL, "14");
+//				editLastBox(COLOR, "#808080");
+
+				// Chest
+				addBox(281, 41, "mountain_chest");
+
+				// Spawnpoint
+				addBox(261, 41, "spawnpoint");
+
+				// Corner block
+				addBox(385, 165);
+				editLastBox(EditBoxKeys.COLOR, "#A02020");
+				editLastBox(HAS_COLLISION, "true");
+				editLastBox(MAX_HP, "20");
+				editLastBox(EFFECT, "{damage, 5, 300, normal, 0}");
 			}
 
 			case "cliff" -> {

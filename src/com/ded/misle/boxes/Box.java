@@ -123,6 +123,7 @@ public class Box {
 		this.boxScaleHorizontal = tileSize * 0.91;
 		this.boxScaleVertical = tileSize * 0.91;
 		this.knockbackDirection = NONE;
+		this.effect = new String[]{""};
 	}
 
 	// Method to render the box with the current tileSize and scale the position
@@ -341,7 +342,7 @@ public class Box {
 			case "spawnpoint" -> this.handleBoxSpawnpoint();
 			case "chest" -> this.handleBoxChest();
 			case "item" -> this.handleBoxItemCollectible();
-			case "travel" -> handleBoxTravel();
+			case "travel" -> this.handleBoxTravel();
 		}
 	}
 

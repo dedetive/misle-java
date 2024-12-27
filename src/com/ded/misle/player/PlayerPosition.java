@@ -61,6 +61,7 @@ public class PlayerPosition {
 			// These should be the positions the spawnpoints are located
 
 			case 1 -> new int[]{500, 540};
+			case 2 -> new int[]{261, 41};
 			default -> new int[]{0, 0};
 		};
 		player.setX(spawnpointCoordinates[0] * scale);
