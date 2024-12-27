@@ -10,6 +10,7 @@ import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.levelDesigner;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.renderer.ColorManager.*;
+import static com.ded.misle.renderer.GameRenderer.*;
 import static com.ded.misle.renderer.MenuButton.createButton;
 import static com.ded.misle.renderer.MenuButton.drawButtons;
 import static com.ded.misle.SaveFile.saveEverything;
@@ -74,6 +75,8 @@ public class MenuRenderer {
         player.unloadPlayer();
         GameRenderer.previousMenu = GameRenderer.currentMenu;
         gameState = GameState.MAIN_MENU;
+        fadingProgress = 0F;
+        isFading = FadingState.UNFADED;
     }
 
     public static void pauseGame() {
@@ -241,12 +244,10 @@ public class MenuRenderer {
             double scaleByScreenSize = scale / 3.75;
 
             // BACKGROUND
-
             g2d.setColor(menuBackgroundColor);
             g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
 
             // MENU ITSELF
-
             createTitle("loading_menu_loading", g2d, scaleByScreenSize);
             g2d.setFont(FontManager.titleFont);
             FontMetrics fm = g2d.getFontMetrics();
@@ -255,7 +256,6 @@ public class MenuRenderer {
             int textY = (int) (182 * scaleByScreenSize);
 
             // Progress bar
-
             long elapsedTime = currentTimeMillis() - GameRenderer.startTime;
             double progress = Math.min((double) elapsedTime / GameRenderer.LOADING_DURATION, 1.0); // Calculate progress (0.0 to 1.0)
             String percentage = (int) (progress * 100) + "%";
@@ -269,13 +269,15 @@ public class MenuRenderer {
 
             g2d.setFont(FontManager.selectedItemNameFont);
             FontMetrics percentageFm = g2d.getFontMetrics();
-            int textWidth = percentageFm.stringWidth(percentage); // Use the new font metrics for percentage
+            int textWidth = percentageFm.stringWidth(percentage);
             int centerX = (int) ((screenWidth - textWidth) / 2);
             textY = (int) ((progressBarY) - 20 * scaleByScreenSize);
             g2d.setColor(progressBarPercentageShadow);
             g2d.drawString(percentage, (int) (centerX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow));
             g2d.setColor(progressBarPercentage);
             g2d.drawString(percentage, centerX, textY);
+
+            if (isFading != GameRenderer.FadingState.UNFADED) drawFading(g2d);
         }
     }
 }

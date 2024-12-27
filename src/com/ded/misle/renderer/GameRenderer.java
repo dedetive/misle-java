@@ -34,16 +34,25 @@ public class GameRenderer {
 		player.attr.setHP(player.attr.getMaxHP());
 		player.attr.fillEntropy();
 
-		Timer timer = new Timer(LOADING_DURATION, e -> {
-			for (int i = 15; i > 0; i--) {
-				storeCachedBoxes(i);
+		Timer fadeTimer = new Timer(LOADING_DURATION, e -> { fadeIn(); });
+		fadeTimer.setRepeats(false);
+		fadeTimer.start();
+
+		Timer timer = new Timer(75, e -> {
+			if (isFading == GameRenderer.FadingState.FADED) {
+				slowlyFadeOut();
+				for (int i = 15; i > 0; i--) {
+					storeCachedBoxes(i);
+				}
+				player.stats.resetStartTimestamp();
+				player.pos.reloadSpawnpoint();
+				gameState = GameState.PLAYING;
+
+				((Timer) e.getSource()).stop();
 			}
-			player.stats.resetStartTimestamp();
-			player.pos.reloadSpawnpoint();
-			gameState = GameState.PLAYING;
 		});
 
-		timer.setRepeats(false); // Ensure the timer only runs once
+		timer.setRepeats(true);
 		timer.start();
 	}
 
@@ -82,23 +91,40 @@ public class GameRenderer {
 
 	public static float fadingProgress;
 	public enum FadingState {
-		FADING_IN,
-		FADING_OUT,
-		FADED,
-		UNFADED
+		NONE(),
+		FADED(0, 1, NONE),
+		UNFADED(0, 0, NONE),
+		FADING_IN(0.019F, 1, FADED),
+		SLOWLY_FADING_IN(0.005F, 1, FADED),
+		FADING_OUT(-0.02125F, 0, UNFADED),
+		SLOWLY_FADING_OUT(-0.005F, 0, UNFADED);
+
+		float progressIncrease;
+		float progressMax;
+		FadingState turnsInto;
+
+		FadingState () {}
+
+		FadingState (float progressIncrease, float progressMax, FadingState turnsInto) {
+			this.progressIncrease = progressIncrease;
+			this.progressMax = progressMax;
+			this.turnsInto = turnsInto;
+		}
+
+		public float getProgressIncrease() { return progressIncrease; }
+
+		public float getProgressMax() { return progressMax; }
+
+		public FadingState getTurnsInto() { return turnsInto; }
 	}
 
-	public static void fadeIn() {
-		if (isFading == FadingState.UNFADED || isFading == FadingState.FADING_OUT) {
-			isFading = FadingState.FADING_IN;
-		}
-	}
+	public static void fadeIn() { isFading = FadingState.FADING_IN; }
 
-	public static void fadeOut() {
-		if (isFading == FadingState.FADED || isFading == FadingState.FADING_IN) {
-			isFading = FadingState.FADING_OUT;
-		}
-	}
+	public static void fadeOut() { isFading = FadingState.FADING_OUT; }
+
+	public static void slowlyFadeOut() { isFading = FadingState.SLOWLY_FADING_OUT; }
+
+	public static void slowlyFadeIn() { isFading = FadingState.SLOWLY_FADING_IN; }
 
 	public static void fadeInThenOut(int ms) {
 		fadeIn();
@@ -111,20 +137,12 @@ public class GameRenderer {
 	}
 
 	public static void drawFading(Graphics2D g2d) {
-		if (isFading == GameRenderer.FadingState.FADING_IN || isFading == GameRenderer.FadingState.FADED) {
-			fadingProgress = Math.min(fadingProgress + 0.019F, 1F);
+		if (isFading != GameRenderer.FadingState.UNFADED) {
+			fadingProgress = Math.clamp(fadingProgress + isFading.getProgressIncrease(), 0F, 1F);
 			g2d.setColor(new Color((float) fadingColorR / 256, (float) fadingColorG / 256, (float) fadingColorB / 256, fadingProgress));
 			g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
-			if (fadingProgress == 1F) {
-				isFading = GameRenderer.FadingState.FADED;
-			}
-		} else if (isFading == GameRenderer.FadingState.FADING_OUT
-		) {
-			fadingProgress = Math.max(fadingProgress - 0.02125F, 0F);
-			g2d.setColor(new Color((float) fadingColorR / 256, (float) fadingColorG / 256, (float) fadingColorB / 256, fadingProgress));
-			g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
-			if (fadingProgress == 0F) {
-				isFading = GameRenderer.FadingState.UNFADED;
+			if (fadingProgress == isFading.getProgressMax()) {
+                isFading = isFading.getProgressMax() == 0 ? FadingState.UNFADED : FadingState.FADED;
 			}
 		}
 	}
