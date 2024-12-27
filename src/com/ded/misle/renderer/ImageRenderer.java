@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
 
-import static com.ded.misle.ChangeSettings.getPath;
+import static com.ded.misle.SettingsManager.getPath;
 
 public class ImageRenderer {
     public static final java.util.Map<ImageName, BufferedImage> cachedImages = new HashMap<>();

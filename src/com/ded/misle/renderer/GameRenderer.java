@@ -3,8 +3,8 @@ package com.ded.misle.renderer;
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.SaveFile.loadSaveFile;
-import static com.ded.misle.boxes.BoxesHandling.storeCachedBoxes;
-import static com.ded.misle.boxes.BoxesLoad.loadBoxes;
+import static com.ded.misle.boxes.BoxHandling.storeCachedBoxes;
+import static com.ded.misle.boxes.WorldLoader.loadBoxes;
 import static java.lang.System.currentTimeMillis;
 
 import javax.swing.*;

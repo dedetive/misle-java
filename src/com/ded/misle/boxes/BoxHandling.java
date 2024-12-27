@@ -1,6 +1,6 @@
 package com.ded.misle.boxes;
 
-import com.ded.misle.Physics;
+import com.ded.misle.PhysicsEngine;
 
 import java.awt.*;
 import java.io.File;
@@ -12,7 +12,7 @@ import static com.ded.misle.GamePanel.tileSize;
 import static com.ded.misle.Launcher.levelDesigner;
 import static com.ded.misle.Launcher.scale;
 
-public class BoxesHandling {
+public class BoxHandling {
 
 	private static final List<Box> boxes = new ArrayList<>();
 	private static final List<String> presetsWithSides = List.of(new String[]{"wall_default"});
@@ -49,7 +49,7 @@ public class BoxesHandling {
 	 *  ...
 	 *
 	 */
-	public static void addBox(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, double maxHP, double HP, Physics.ObjectType objectType) {
+	public static void addBox(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, double maxHP, double HP, PhysicsEngine.ObjectType objectType) {
 		boxes.add(new Box(x, y, color, texture, hasCollision, boxScaleHorizontal, boxScaleVertical, effect, rotation, maxHP, HP, objectType));
 		addBoxToCache(boxes.getLast());
 	}

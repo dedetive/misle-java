@@ -9,14 +9,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.sql.SQLOutput;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 
-import static com.ded.misle.ChangeSettings.getPath;
+import static com.ded.misle.SettingsManager.getPath;
 import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.SaveFile.PixelColor.*;
 

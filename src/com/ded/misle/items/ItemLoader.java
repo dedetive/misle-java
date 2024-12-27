@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.List;
 
-import static com.ded.misle.ChangeSettings.getPath;
+import static com.ded.misle.SettingsManager.getPath;
 import static com.ded.misle.GamePanel.player;
 
 public class ItemLoader {

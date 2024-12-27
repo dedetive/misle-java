@@ -4,7 +4,7 @@ import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 
-import static com.ded.misle.ChangeSettings.getPath;
+import static com.ded.misle.SettingsManager.getPath;
 
 public class AudioPlayer {
 	private Clip clip;

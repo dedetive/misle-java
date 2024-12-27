@@ -1,7 +1,7 @@
 package com.ded.misle.input_handler;
 
 import com.ded.misle.boxes.Box;
-import com.ded.misle.boxes.BoxesHandling;
+import com.ded.misle.boxes.BoxHandling;
 import com.ded.misle.items.Item;
 
 import java.awt.event.MouseEvent;
@@ -247,7 +247,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
                     clearSelectedBoxes();
                     System.out.println();
                     System.out.println("mouse: " + mouseGameX + ", " + mouseGameY);
-                    for (Box box : BoxesHandling.getCachedBoxesInRange(mouseGameX, mouseGameY, 6)) {
+                    for (Box box : BoxHandling.getCachedBoxesInRange(mouseGameX, mouseGameY, 6)) {
                         box.addSelectedBox();
                         System.out.println("box: " + box.getX() * scale + ", " + box.getY() * scale);
                     }

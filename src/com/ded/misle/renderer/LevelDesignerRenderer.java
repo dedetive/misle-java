@@ -1,7 +1,7 @@
 package com.ded.misle.renderer;
 
 import com.ded.misle.input_handler.MouseHandler;
-import com.ded.misle.boxes.BoxesHandling;
+import com.ded.misle.boxes.BoxHandling;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +20,7 @@ public class LevelDesignerRenderer {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // Draw game components
-        BoxesHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), gameScale, tileSize);
+        BoxHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), gameScale, tileSize);
 
         if (levelDesignerGrid) {
             int timesToRepeatHorizontal = panel.getWidth() / tileSize;

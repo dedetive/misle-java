@@ -1,6 +1,6 @@
 package com.ded.misle.boxes;
 
-import com.ded.misle.Physics;
+import com.ded.misle.PhysicsEngine;
 import com.ded.misle.player.PlayerAttributes;
 import com.ded.misle.renderer.PlayingRenderer;
 
@@ -14,19 +14,19 @@ import java.util.*;
 
 import static com.ded.misle.AudioPlayer.AudioFile.collect_item;
 import static com.ded.misle.AudioPlayer.playThis;
-import static com.ded.misle.ChangeSettings.getPath;
+import static com.ded.misle.SettingsManager.getPath;
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 import static com.ded.misle.renderer.PlayingRenderer.fadeIn;
 import static com.ded.misle.renderer.PlayingRenderer.fadeOut;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.Physics.ObjectType.BOX;
-import static com.ded.misle.Physics.ObjectType.HP_BOX;
+import static com.ded.misle.PhysicsEngine.ObjectType.BOX;
+import static com.ded.misle.PhysicsEngine.ObjectType.HP_BOX;
 import static com.ded.misle.boxes.BoxManipulation.moveBox;
-import static com.ded.misle.boxes.BoxesHandling.*;
-import static com.ded.misle.boxes.BoxesLoad.loadBoxes;
-import static com.ded.misle.boxes.BoxesLoad.unloadBoxes;
+import static com.ded.misle.boxes.BoxHandling.*;
+import static com.ded.misle.boxes.WorldLoader.loadBoxes;
+import static com.ded.misle.boxes.WorldLoader.unloadBoxes;
 import static com.ded.misle.chests.ChestTables.getChestDropID;
 import static com.ded.misle.items.Item.createDroppedItem;
 import static com.ded.misle.items.Item.createItem;
@@ -46,7 +46,7 @@ public class Box {
 	private static ArrayList<Box> selectedBoxes;
 	private double maxHP;
 	private double HP;
-	private Physics.ObjectType objectType;
+	private PhysicsEngine.ObjectType objectType;
 	private PlayerAttributes.KnockbackDirection knockbackDirection;
 
 	private BufferedImage cachedTexture1;
@@ -82,7 +82,7 @@ public class Box {
 	 * @param boxScaleVertical how many tilesizes is the box in the y axis
 	 * @param effect first value is the type of effect. See above for a list of effects. Set "" if none
 	 */
-	public Box(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, double maxHP, double HP, Physics.ObjectType objectType) {
+	public Box(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, double maxHP, double HP, PhysicsEngine.ObjectType objectType) {
 		this.x = x;
 		this.y = y;
 		this.color = color;
@@ -118,7 +118,7 @@ public class Box {
 	public Box() {
 		this.setTexture("solid");
 		this.setColor(defaultBoxColor);
-		this.setObjectType(Physics.ObjectType.PLAYER);
+		this.setObjectType(PhysicsEngine.ObjectType.PLAYER);
 		this.hasCollision = true;
 		this.boxScaleHorizontal = tileSize * 0.91;
 		this.boxScaleVertical = tileSize * 0.91;
@@ -142,7 +142,7 @@ public class Box {
 			PlayingRenderer.drawRotatedRect(g2d, solidBox, this.rotation);
 		} else if (texture.equals("invisible")) {
 			;
-		} else if (BoxesHandling.checkIfPresetHasSides(texture.split("\\.")[0])) {
+		} else if (BoxHandling.checkIfPresetHasSides(texture.split("\\.")[0])) {
 			// Split texture once and reuse the result
 			String[] textureParts = texture.split("\\.");
 			String textureName = textureParts[0];
@@ -333,7 +333,7 @@ public class Box {
 		this.effect = effect;
 	}
 
-	public void handleEffect(Physics.ObjectType objectType) {
+	public void handleEffect(PhysicsEngine.ObjectType objectType) {
 		switch (this.effect[0]) {
 			case "damage" -> this.handleBoxDamageCooldown();
 			case "heal" -> this.handleBoxHealCooldown();
@@ -654,11 +654,11 @@ public class Box {
 
 	// Object type (BOX, HP_BOX)
 
-	public Physics.ObjectType getObjectType() {
+	public PhysicsEngine.ObjectType getObjectType() {
 		return objectType;
 	}
 
-	public void setObjectType(Physics.ObjectType objectType) {
+	public void setObjectType(PhysicsEngine.ObjectType objectType) {
 		this.objectType = objectType;
 	}
 }

@@ -13,7 +13,7 @@ import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.MenuButton.createButton;
 import static com.ded.misle.renderer.MenuButton.drawButtons;
 import static com.ded.misle.SaveFile.saveEverything;
-import static com.ded.misle.boxes.BoxesLoad.unloadBoxes;
+import static com.ded.misle.boxes.WorldLoader.unloadBoxes;
 import static java.lang.System.currentTimeMillis;
 import static com.ded.misle.GamePanel.screenWidth;
 import static com.ded.misle.GamePanel.screenHeight;

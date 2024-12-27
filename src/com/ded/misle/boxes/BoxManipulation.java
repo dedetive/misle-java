@@ -1,6 +1,6 @@
 package com.ded.misle.boxes;
 
-import com.ded.misle.Physics;
+import com.ded.misle.PhysicsEngine;
 import com.ded.misle.player.PlayerAttributes;
 
 import javax.swing.Timer;
@@ -87,7 +87,7 @@ public class BoxManipulation {
 			int count = 0;
 			public void actionPerformed(ActionEvent evt) {
 				if (count < frames) {
-					if (!Physics.isPixelOccupied((box.getX() + dx) * scale, (box.getY() + dy) * scale, box.getBoxScaleHorizontal() * tileSize, box.getBoxScaleVertical() * tileSize, tileSize, 11, Physics.ObjectType.BOX, finalDirection)) {
+					if (!PhysicsEngine.isPixelOccupied((box.getX() + dx) * scale, (box.getY() + dy) * scale, box.getBoxScaleHorizontal() * tileSize, box.getBoxScaleVertical() * tileSize, tileSize, 11, PhysicsEngine.ObjectType.BOX, finalDirection)) {
 						box.setX(box.getX() + dx);
 						box.setY(box.getY() + dy);
 					}

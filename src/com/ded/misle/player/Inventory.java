@@ -1,7 +1,7 @@
 package com.ded.misle.player;
 
 import com.ded.misle.boxes.Box;
-import com.ded.misle.boxes.BoxesHandling;
+import com.ded.misle.boxes.BoxHandling;
 import com.ded.misle.items.Item;
 import com.ded.misle.renderer.PlayingRenderer;
 
@@ -13,7 +13,7 @@ import static com.ded.misle.AudioPlayer.playThis;
 import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.boxes.BoxManipulation.*;
-import static com.ded.misle.boxes.BoxesHandling.editBox;
+import static com.ded.misle.boxes.BoxHandling.editBox;
 import static com.ded.misle.player.HandItemAnimator.animateClaw;
 import static com.ded.misle.player.PlayerAttributes.Stat.ALL;
 import static com.ded.misle.renderer.ColorManager.entropyGainColor;
@@ -226,8 +226,8 @@ public class Inventory {
 	}
 
 	public void dropItem(int row, int col, int quantity) {
-		Box droppedItem = BoxesHandling.addBoxItem(player.getX() / scale, player.getY() / scale, getItem(row, col).getId(), quantity);
-		editBox(droppedItem, BoxesHandling.EditBoxKeys.COLLECTIBLE, "false");
+		Box droppedItem = BoxHandling.addBoxItem(player.getX() / scale, player.getY() / scale, getItem(row, col).getId(), quantity);
+		editBox(droppedItem, BoxHandling.EditBoxKeys.COLLECTIBLE, "false");
 		playThis(drop_item);
 		removeItem(row, col, quantity);
 		PlayingRenderer.updateSelectedItemNamePosition();
@@ -254,15 +254,15 @@ public class Inventory {
 		}
 		delayedRotateBox(droppedItem, 360, 250);
 		Timer timer = new Timer(1500, e -> {
-			editBox(droppedItem, BoxesHandling.EditBoxKeys.COLLECTIBLE, "true");
+			editBox(droppedItem, BoxHandling.EditBoxKeys.COLLECTIBLE, "true");
 		});
 		timer.setRepeats(false);
 		timer.start();
 	}
 
 	public void dropItem(int position, int quantity) {
-		Box droppedItem = BoxesHandling.addBoxItem(player.getX() / scale, player.getY() / scale, getItem(position).getId(), quantity);
-		editBox(droppedItem, BoxesHandling.EditBoxKeys.COLLECTIBLE, "false");
+		Box droppedItem = BoxHandling.addBoxItem(player.getX() / scale, player.getY() / scale, getItem(position).getId(), quantity);
+		editBox(droppedItem, BoxHandling.EditBoxKeys.COLLECTIBLE, "false");
 		playThis(drop_item);
 		removeItem(position);
 		PlayingRenderer.updateSelectedItemNamePosition();
@@ -289,7 +289,7 @@ public class Inventory {
 		}
 		delayedRotateBox(droppedItem, 360, 250);
 		Timer timer = new Timer(1500, e -> {
-			editBox(droppedItem, BoxesHandling.EditBoxKeys.COLLECTIBLE, "true");
+			editBox(droppedItem, BoxHandling.EditBoxKeys.COLLECTIBLE, "true");
 		});
 		timer.setRepeats(false);
 		timer.start();
@@ -367,8 +367,8 @@ public class Inventory {
 	}
 
 	public void dropDraggedItem(int count) {
-		Box droppedItem = BoxesHandling.addBoxItem(player.getX() / scale, player.getY() / scale, getDraggedItem().getId(), count);
-		editBox(droppedItem, BoxesHandling.EditBoxKeys.COLLECTIBLE, "false");
+		Box droppedItem = BoxHandling.addBoxItem(player.getX() / scale, player.getY() / scale, getDraggedItem().getId(), count);
+		editBox(droppedItem, BoxHandling.EditBoxKeys.COLLECTIBLE, "false");
 		playThis(drop_item);
 		setTempItem(getDraggedItem());
 		tempItem.setCount(count);
@@ -399,7 +399,7 @@ public class Inventory {
 		}
 		delayedRotateBox(droppedItem, 360, 250);
 		Timer timer = new Timer(1500, e -> {
-			editBox(droppedItem, BoxesHandling.EditBoxKeys.COLLECTIBLE, "true");
+			editBox(droppedItem, BoxHandling.EditBoxKeys.COLLECTIBLE, "true");
 		});
 		timer.setRepeats(false);
 		timer.start();

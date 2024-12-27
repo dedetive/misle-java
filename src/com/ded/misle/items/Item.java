@@ -13,9 +13,9 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.IOException;
 
-import static com.ded.misle.ChangeSettings.getPath;
+import static com.ded.misle.SettingsManager.getPath;
 import static com.ded.misle.GamePanel.player;
-import static com.ded.misle.boxes.BoxesHandling.addBoxItem;
+import static com.ded.misle.boxes.BoxHandling.addBoxItem;
 import static java.lang.System.currentTimeMillis;
 
 public class Item {

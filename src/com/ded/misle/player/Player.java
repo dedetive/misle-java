@@ -2,7 +2,7 @@ package com.ded.misle.player;
 
 import com.ded.misle.boxes.Box;
 
-import static com.ded.misle.boxes.BoxesHandling.addBoxToCache;
+import static com.ded.misle.boxes.BoxHandling.addBoxToCache;
 
 public class Player extends Box {
 

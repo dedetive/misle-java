@@ -1,7 +1,7 @@
 package com.ded.misle.input_handler;
 
 import com.ded.misle.GamePanel;
-import com.ded.misle.Physics;
+import com.ded.misle.PhysicsEngine;
 import com.ded.misle.player.PlayerAttributes;
 
 import javax.swing.*;
@@ -272,11 +272,11 @@ public class KeyHandler implements KeyListener {
 					} else {
 						verticalDirection = PlayerAttributes.KnockbackDirection.UP;
 					}
-					if (!Physics.isPixelOccupied((player.getX() + willMovePlayer[0]), player.getY(), player.getBoxScaleHorizontal(), player.getBoxScaleVertical(), range, 12, Physics.ObjectType.PLAYER, horizontalDirection)) {
-						Physics.movePlayer(willMovePlayer[0], 0);
+					if (!PhysicsEngine.isPixelOccupied((player.getX() + willMovePlayer[0]), player.getY(), player.getBoxScaleHorizontal(), player.getBoxScaleVertical(), range, 12, PhysicsEngine.ObjectType.PLAYER, horizontalDirection)) {
+						PhysicsEngine.movePlayer(willMovePlayer[0], 0);
 					}
-					if (!Physics.isPixelOccupied(player.getX(), (player.getY() + willMovePlayer[1]), player.getBoxScaleHorizontal(), player.getBoxScaleVertical(), range, 12, Physics.ObjectType.PLAYER, verticalDirection)) {
-						Physics.movePlayer(0, willMovePlayer[1]);
+					if (!PhysicsEngine.isPixelOccupied(player.getX(), (player.getY() + willMovePlayer[1]), player.getBoxScaleHorizontal(), player.getBoxScaleVertical(), range, 12, PhysicsEngine.ObjectType.PLAYER, verticalDirection)) {
+						PhysicsEngine.movePlayer(0, willMovePlayer[1]);
 					}
 				}
 			}
@@ -366,7 +366,7 @@ public class KeyHandler implements KeyListener {
 			}
 
 			if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
-				Physics.movePlayer(willMovePlayer[0], willMovePlayer[1]);
+				PhysicsEngine.movePlayer(willMovePlayer[0], willMovePlayer[1]);
 			}
 
 			// Pause

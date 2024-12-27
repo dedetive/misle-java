@@ -9,7 +9,7 @@ import java.nio.file.Paths;
  * This is for changing settings (use changeThis()) and for getting the path of the game (use getPath())
  */
 
-public class ChangeSettings {
+public class SettingsManager {
 
 	/**
 	 * Receives a setting and a value and changes it in the location you ask to. The file has to already exist. Every writing has to be exact.

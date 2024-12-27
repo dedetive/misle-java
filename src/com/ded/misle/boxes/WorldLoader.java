@@ -5,12 +5,12 @@ import java.util.Map;
 
 import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.GamePanel.setWorldBorders;
-import static com.ded.misle.boxes.BoxesHandling.*;
-import static com.ded.misle.boxes.BoxesHandling.EditBoxKeys.*;
-import static com.ded.misle.boxes.BoxesHandling.LineAddBoxModes.FILL;
-import static com.ded.misle.boxes.BoxesHandling.LineAddBoxModes.HOLLOW;
+import static com.ded.misle.boxes.BoxHandling.*;
+import static com.ded.misle.boxes.BoxHandling.EditBoxKeys.*;
+import static com.ded.misle.boxes.BoxHandling.LineAddBoxModes.FILL;
+import static com.ded.misle.boxes.BoxHandling.LineAddBoxModes.HOLLOW;
 
-public class BoxesLoad {
+public class WorldLoader {
 	static HashMap<String, Integer> room = new HashMap<>();
 
 

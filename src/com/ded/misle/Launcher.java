@@ -2,8 +2,7 @@ package com.ded.misle;
 
 import javax.swing.*;
 
-import static com.ded.misle.ChangeSettings.getSetting;
-import static com.ded.misle.SaveFile.loadSaveFile;
+import static com.ded.misle.SettingsManager.getSetting;
 
 /**
  * This launches the game. Only ever run the game from this class.

@@ -1,7 +1,7 @@
 package com.ded.misle.renderer;
 
 import com.ded.misle.input_handler.MouseHandler;
-import com.ded.misle.boxes.BoxesHandling;
+import com.ded.misle.boxes.BoxHandling;
 import com.ded.misle.items.Item;
 
 import javax.swing.*;
@@ -69,7 +69,7 @@ public class PlayingRenderer {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // Draw game components
-        BoxesHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), scale, tileSize);
+        BoxHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), scale, tileSize);
 
         // Player position adjustments
         int playerScreenX = (int) (player.getX() - player.pos.getCameraOffsetX());

@@ -2,7 +2,7 @@ package com.ded.misle.player;
 
 import java.util.*;
 
-import static com.ded.misle.boxes.BoxesHandling.*;
+import static com.ded.misle.boxes.BoxHandling.*;
 
 public class PlayerStats {
 

@@ -1,7 +1,7 @@
 package com.ded.misle;
 
 import com.ded.misle.boxes.Box;
-import com.ded.misle.boxes.BoxesHandling;
+import com.ded.misle.boxes.BoxHandling;
 import com.ded.misle.player.PlayerAttributes;
 
 import java.util.List;
@@ -9,9 +9,9 @@ import java.util.Objects;
 
 import static com.ded.misle.Launcher.levelDesigner;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.Physics.ObjectType.PLAYER;
+import static com.ded.misle.PhysicsEngine.ObjectType.PLAYER;
 
-public class Physics {
+public class PhysicsEngine {
 
 	public enum ObjectType {
 		PLAYER,
@@ -40,7 +40,7 @@ public class Physics {
 				GamePanel.player.attr.setLastVelocityBox(null); // Clear the last velocity box
 			}
 
-			List<Box> nearbyNonCollisionBoxes = ((BoxesHandling.getNonCollisionBoxesInRange(GamePanel.player.getX(), GamePanel.player.getY(), GamePanel.tileSize)));
+			List<Box> nearbyNonCollisionBoxes = ((BoxHandling.getNonCollisionBoxesInRange(GamePanel.player.getX(), GamePanel.player.getY(), GamePanel.tileSize)));
 			for (Box box: nearbyNonCollisionBoxes) {
 				if (!box.getEffect().isEmpty()) {
 					box.handleEffect(PLAYER);
@@ -64,7 +64,7 @@ public class Physics {
 	 * @param objectHeight double - The height of the object, in pixels.
  	 */
 	public static boolean isPixelOccupied(double pixelX, double pixelY, double objectWidth, double objectHeight, double range, int level, ObjectType objectType, PlayerAttributes.KnockbackDirection direction) {
-		List<Box> nearbyCollisionBoxes = BoxesHandling.getCollisionBoxesInRange(pixelX, pixelY, range, level);
+		List<Box> nearbyCollisionBoxes = BoxHandling.getCollisionBoxesInRange(pixelX, pixelY, range, level);
 		for (Box box : nearbyCollisionBoxes) {
 			if (box.getBoxScaleHorizontal() >= 1 && box.getBoxScaleVertical() >= 1) {
 				if (box.isPointColliding(pixelX, pixelY, scale, objectWidth, objectHeight) || // Up-left corner
