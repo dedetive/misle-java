@@ -6,7 +6,6 @@ import static com.ded.misle.SaveFile.loadSaveFile;
 import static com.ded.misle.boxes.BoxHandling.storeCachedBoxes;
 import static com.ded.misle.boxes.WorldLoader.loadBoxes;
 import static com.ded.misle.renderer.ColorManager.*;
-import static com.ded.misle.renderer.ColorManager.fadingColorB;
 import static java.lang.System.currentTimeMillis;
 
 import javax.swing.*;
@@ -139,7 +138,7 @@ public class GameRenderer {
 	public static void drawFading(Graphics2D g2d) {
 		if (isFading != GameRenderer.FadingState.UNFADED) {
 			fadingProgress = Math.clamp(fadingProgress + isFading.getProgressIncrease(), 0F, 1F);
-			g2d.setColor(new Color((float) fadingColorR / 256, (float) fadingColorG / 256, (float) fadingColorB / 256, fadingProgress));
+			g2d.setColor(new Color((float) fadingColor.getRed() / 256, (float) fadingColor.getGreen() / 256, (float) fadingColor.getBlue() / 256, fadingProgress));
 			g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
 			if (fadingProgress == isFading.getProgressMax()) {
                 isFading = isFading.getProgressMax() == 0 ? FadingState.UNFADED : FadingState.FADED;

@@ -63,9 +63,7 @@ public class ColorManager {
 
     // Fading
 
-    public final static int fadingColorR = 0;
-    public final static int fadingColorG = 0;
-    public final static int fadingColorB = 0;
+    public final static Color fadingColor = new Color(0x000000);
 
     // Game panel
 
