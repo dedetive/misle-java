@@ -2,6 +2,7 @@ package com.ded.misle.boxes;
 
 import com.ded.misle.PhysicsEngine;
 import com.ded.misle.player.PlayerAttributes;
+import com.ded.misle.renderer.GameRenderer;
 import com.ded.misle.renderer.PlayingRenderer;
 
 import javax.imageio.ImageIO;
@@ -18,8 +19,6 @@ import static com.ded.misle.SettingsManager.getPath;
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
-import static com.ded.misle.renderer.PlayingRenderer.fadeIn;
-import static com.ded.misle.renderer.PlayingRenderer.fadeOut;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.PhysicsEngine.ObjectType.BOX;
 import static com.ded.misle.PhysicsEngine.ObjectType.HP_BOX;
@@ -30,6 +29,7 @@ import static com.ded.misle.boxes.WorldLoader.unloadBoxes;
 import static com.ded.misle.chests.ChestTables.getChestDropID;
 import static com.ded.misle.items.Item.createDroppedItem;
 import static com.ded.misle.items.Item.createItem;
+import static com.ded.misle.renderer.GameRenderer.*;
 import static java.lang.System.currentTimeMillis;
 
 public class Box {
@@ -553,22 +553,26 @@ public class Box {
 	private void handleBoxTravel() {
 		fadeIn();
 		gameState = GameState.FROZEN_PLAYING;
-		Timer fadingIn = new Timer(750, e -> {
-			int newRoomID = (int) getEffectValue();
-			player.pos.setRoomID(newRoomID);
-			player.setX(scale * Double.parseDouble(this.effect[2]));
-			player.setY(scale * Double.parseDouble(this.effect[3]));
-			unloadBoxes();
-			loadBoxes();
+		Timer fadingIn = new Timer(75, e -> {
+			if (isFading == GameRenderer.FadingState.FADED) {
+				int newRoomID = (int) getEffectValue();
+				player.pos.setRoomID(newRoomID);
+				player.setX(scale * Double.parseDouble(this.effect[2]));
+				player.setY(scale * Double.parseDouble(this.effect[3]));
+				unloadBoxes();
+				loadBoxes();
 
-			Timer loadWait = new Timer(200, evt -> {
-				fadeOut();
-				gameState = GameState.PLAYING;
-			});
-			loadWait.setRepeats(false);
-			loadWait.start();
+				Timer loadWait = new Timer(300, evt -> {
+					fadeOut();
+					gameState = GameState.PLAYING;
+				});
+				loadWait.setRepeats(false);
+				loadWait.start();
+
+				((Timer) e.getSource()).stop();
+			}
 		});
-		fadingIn.setRepeats(false);
+		fadingIn.setRepeats(true);
 		fadingIn.start();
 	}
 

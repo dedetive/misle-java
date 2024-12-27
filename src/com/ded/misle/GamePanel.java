@@ -4,16 +4,13 @@ import com.ded.misle.input_handler.KeyHandler;
 import com.ded.misle.input_handler.MouseHandler;
 import com.ded.misle.player.Player;
 import com.ded.misle.player.PlayerAttributes;
-import com.ded.misle.renderer.FontManager;
-import com.ded.misle.renderer.LevelDesignerRenderer;
-import com.ded.misle.renderer.MenuRenderer;
-import com.ded.misle.renderer.PlayingRenderer;
+import com.ded.misle.renderer.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-import static com.ded.misle.renderer.ColorManager.windowBackground;
+import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.GameRenderer.*;
 import static com.ded.misle.input_handler.KeyHandler.updateDesignerSpeed;
 import static com.ded.misle.Launcher.*;
@@ -382,6 +379,8 @@ public class GamePanel extends JPanel implements Runnable {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+
+		Graphics2D g2d = (Graphics2D) g;
 
 		switch (gameState) {
 			case GameState.INVENTORY:

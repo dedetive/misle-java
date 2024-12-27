@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.renderer.ColorManager.*;
+import static com.ded.misle.renderer.GameRenderer.*;
 import static com.ded.misle.renderer.ImageRenderer.cachedImages;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.player.PlayerStats.Direction.LEFT;
@@ -29,14 +30,6 @@ public class PlayingRenderer {
     public static String selectedItemName;
     public static Point selectedItemNamePosition;
     public static long itemNameDisplayStartTime;
-
-    private static float fadingProgress;
-    private enum FadingState {
-        FADING_IN,
-        FADING_OUT,
-        FADED,
-        UNFADED
-    }
 
     public static double scaleByScreenSize = scale / 3.75;
 
@@ -59,8 +52,6 @@ public class PlayingRenderer {
         totalSlotsWidth = 7 * slotSize[0] + (6 * slotSpacing[0]);
         slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
     }
-
-    private static FadingState isFading = FadingState.UNFADED;
 
     public static void renderPlayingGame(Graphics g, MouseHandler mouseHandler) {
         Graphics2D g2d = (Graphics2D) g;
@@ -104,22 +95,7 @@ public class PlayingRenderer {
             }
         }
 
-        if (isFading == FadingState.FADING_IN || isFading == FadingState.FADED) {
-            fadingProgress = Math.min(fadingProgress + 0.019F, 1F);
-            g2d.setColor(new Color((float) fadingColorR / 256, (float) fadingColorG / 256, (float) fadingColorB / 256, fadingProgress));
-            g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
-            if (fadingProgress == 1F) {
-                isFading = FadingState.FADED;
-            }
-        } else if (isFading == FadingState.FADING_OUT
-        ) {
-            fadingProgress = Math.max(fadingProgress - 0.02125F, 0F);
-            g2d.setColor(new Color((float) fadingColorR / 256, (float) fadingColorG / 256, (float) fadingColorB / 256, fadingProgress));
-            g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
-            if (fadingProgress == 0F) {
-                isFading = FadingState.UNFADED;
-            }
-        }
+        if (isFading != GameRenderer.FadingState.UNFADED) drawFading(g2d);
 
         g2d.dispose();
     }
@@ -391,18 +367,6 @@ public class PlayingRenderer {
             g2d.drawString(floatingText.get(i), (int) ((floatingTextPosition.get(i).x) * scale + GameRenderer.textShadow), (int) ((floatingTextPosition.get(i).y) * scale + GameRenderer.textShadow));
             g2d.setColor(floatingTextColor.get(i));
             g2d.drawString(floatingText.get(i), (int) (floatingTextPosition.get(i).x * scale), (int) (floatingTextPosition.get(i).y * scale));
-        }
-    }
-
-    public static void fadeIn() {
-        if (isFading == FadingState.UNFADED || isFading == FadingState.FADING_OUT) {
-            isFading = FadingState.FADING_IN;
-        }
-    }
-
-    public static void fadeOut() {
-        if (isFading == FadingState.FADED || isFading == FadingState.FADING_IN) {
-            isFading = FadingState.FADING_OUT;
         }
     }
 }
