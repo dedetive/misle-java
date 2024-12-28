@@ -115,16 +115,7 @@ public class Box {
 	}
 
 	// For player creation
-	public Box() {
-		this.setTexture("solid");
-		this.setColor(defaultBoxColor);
-		this.setObjectType(PhysicsEngine.ObjectType.PLAYER);
-		this.hasCollision = true;
-		this.boxScaleHorizontal = tileSize * 0.91;
-		this.boxScaleVertical = tileSize * 0.91;
-		this.knockbackDirection = NONE;
-		this.effect = new String[]{""};
-	}
+	public Box() {}
 
 	// Method to render the box with the current tileSize and scale the position
 	public void draw(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY, double scale, int tileSize, double boxScaleHorizontal, double boxScaleVertical) {

@@ -71,6 +71,9 @@ public class WorldLoader {
 				// For travelling to cliff
 				int travelBoxesAdded = lineAddBox(440, 10, 6, 1, "travel", FILL);
 				editLastBox(EFFECT, "{travel, 3, 300, 440}", travelBoxesAdded);
+
+				// NPC testing
+				new NPC(500, 300);
 			}
 
 			case "tuani_house1" -> {

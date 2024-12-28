@@ -16,7 +16,8 @@ public class PhysicsEngine {
 	public enum ObjectType {
 		PLAYER,
 		BOX,
-		HP_BOX
+		HP_BOX,
+		NPC
 	}
 
 	/**
