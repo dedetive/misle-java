@@ -52,10 +52,10 @@ public class PhysicsEngine {
 			// Select or unselect NPCs
 			double playerCenterX = (GamePanel.player.getX() + GamePanel.player.getBoxScaleHorizontal() / 2);
 			double playerCenterY = (GamePanel.player.getY() + GamePanel.player.getBoxScaleVertical() / 2);
-			List<NPC> distantNPCs = BoxHandling.getNPCsInRange(playerCenterX, playerCenterY, 128);
+			List<NPC> distantNPCs = BoxHandling.getNPCsInRange(playerCenterX, playerCenterY, 212);
 			for (NPC npc : distantNPCs)
 				npc.setSelected(false);
-			List<NPC> nearbyNPCs = BoxHandling.getNPCsInRange(playerCenterX, playerCenterY, 96);
+			List<NPC> nearbyNPCs = BoxHandling.getNPCsInRange(playerCenterX, playerCenterY, 128);
 			for (NPC npc : nearbyNPCs)
 				npc.setSelected(true);
 		}
