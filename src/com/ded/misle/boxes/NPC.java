@@ -12,7 +12,9 @@ import static com.ded.misle.boxes.BoxHandling.removeBoxFromCache;
 import static com.ded.misle.player.PlayerAttributes.KnockbackDirection.NONE;
 
 public class NPC extends Box {
-    private static final HashMap<Integer, NPC> NPCList = new HashMap<>();
+    private static final ArrayList<NPC> talkableNPCList = new ArrayList<>();
+    private boolean talkable;
+    private static final ArrayList<NPC> selectedNPCList = new ArrayList<>();
 
     public NPC(double x, double y) {
         this.setTexture("solid");
@@ -25,15 +27,28 @@ public class NPC extends Box {
         this.setEffect(new String[]{""});
         this.setX(x);
         this.setY(y);
+        this.talkable = false;
 
-        NPCList.put(NPCList.size(), this);  // ID starts at 0
         addBoxToCache(this);
     }
 
-    public static void clearNPCList() {
-        for (NPC npc : NPCList.values()) {
-            removeBoxFromCache(npc);
-        }
-        NPCList.clear();
+    public void setTalkable(boolean talkable) {
+        if (talkable && !this.talkable) talkableNPCList.add(this);
+        else if (!talkable && this.talkable) talkableNPCList.remove(this);
+
+        this.talkable = talkable;
+    }
+
+    public static ArrayList<NPC> getTalkableNPCList() {
+        return talkableNPCList;
+    }
+
+    public void setSelected(boolean selected) {
+        if (selected) selectedNPCList.add(this);
+        else selectedNPCList.remove(this);
+    }
+
+    public static ArrayList<NPC> getSelectedNPCList() {
+        return selectedNPCList;
     }
 }

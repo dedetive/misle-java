@@ -1,5 +1,6 @@
 package com.ded.misle.renderer;
 
+import com.ded.misle.boxes.NPC;
 import com.ded.misle.input_handler.MouseHandler;
 import com.ded.misle.boxes.BoxHandling;
 import com.ded.misle.items.Item;
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.ded.misle.GamePanel.*;
+import static com.ded.misle.boxes.Box.getTexture;
+import static com.ded.misle.boxes.NPC.getSelectedNPCList;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.GameRenderer.*;
 import static com.ded.misle.renderer.ImageRenderer.cachedImages;
@@ -61,6 +64,15 @@ public class PlayingRenderer {
 
         // Draw game components
         BoxHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), scale, tileSize);
+
+        // Draw selected NPC indicator
+        ArrayList<NPC> selectedNPCs = getSelectedNPCList();
+        for (NPC npc : selectedNPCs) {
+            for (int i = 0; i <= 270; i += 90) {
+                PlayingRenderer.drawRotatedImage(g2d, getTexture("wall_default_overlayW"), npc.getX() * scale - player.pos.getCameraOffsetX(), npc.getY() * scale - player.pos.getCameraOffsetY(),
+                    (int) (tileSize * npc.getBoxScaleHorizontal()), (int) (tileSize * npc.getBoxScaleVertical()), i + npc.getRotation());
+            }
+        }
 
         // Player position adjustments
         int playerScreenX = (int) (player.getX() - player.pos.getCameraOffsetX());

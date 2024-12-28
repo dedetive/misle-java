@@ -1,5 +1,6 @@
 package com.ded.misle.boxes;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,7 +74,8 @@ public class WorldLoader {
 				editLastBox(EFFECT, "{travel, 3, 300, 440}", travelBoxesAdded);
 
 				// NPC testing
-				new NPC(500, 300);
+				NPC yellowBlock = new NPC(500, 300);
+				yellowBlock.setTalkable(true);
 			}
 
 			case "tuani_house1" -> {

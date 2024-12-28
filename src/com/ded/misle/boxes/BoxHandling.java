@@ -486,6 +486,18 @@ public class BoxHandling {
 		return boxesInRange;
 	}
 
+	public static List<NPC> getNPCsInRange(double x, double y, double range) {
+		List<NPC> npcsInRange = new ArrayList<>();
+		for (Box box : getCachedBoxes(9)) {
+			if (box.getObjectType() != PhysicsEngine.ObjectType.NPC) continue;
+
+			if (checkIfBoxInRange(box, x, y, range)) {
+				npcsInRange.add((NPC) box);
+			}
+		}
+		return npcsInRange;
+	}
+
 	public static List<Box> getHPBoxesInRange(double x, double y, double range) {
 		List<Box> boxesInRange = new ArrayList<>();
 		for (Box box : getCachedBoxes(8)) {

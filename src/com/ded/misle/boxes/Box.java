@@ -49,9 +49,9 @@ public class Box {
 	private PhysicsEngine.ObjectType objectType;
 	private PlayerAttributes.KnockbackDirection knockbackDirection;
 
-	private BufferedImage cachedTexture1;
-	private String cachedTexture1Name;
-	private final Map<String, BufferedImage> cachedTexture2 = new HashMap<>();
+	private static BufferedImage cachedTexture1;
+	private static String cachedTexture1Name;
+	private static final Map<String, BufferedImage> cachedTexture2 = new HashMap<>();
 	private static final Map<String, Integer> rotationInstruction = new HashMap<>();
 	static {
 				rotationInstruction.put("W", 0);
@@ -402,7 +402,7 @@ public class Box {
 	}
 
 
-	public BufferedImage getTexture(String boxTextureName) {
+	public static BufferedImage getTexture(String boxTextureName) {
 		// Check if the texture is already cached
 		if (!cachedTexture2.containsKey(boxTextureName)) {
 			Path basePath = getPath().resolve("resources/images/boxes/");

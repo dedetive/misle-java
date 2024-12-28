@@ -2,6 +2,7 @@ package com.ded.misle;
 
 import com.ded.misle.boxes.Box;
 import com.ded.misle.boxes.BoxHandling;
+import com.ded.misle.boxes.NPC;
 import com.ded.misle.player.PlayerAttributes;
 
 import java.util.List;
@@ -42,11 +43,21 @@ public class PhysicsEngine {
 			}
 
 			List<Box> nearbyNonCollisionBoxes = ((BoxHandling.getNonCollisionBoxesInRange(GamePanel.player.getX(), GamePanel.player.getY(), GamePanel.tileSize)));
-			for (Box box: nearbyNonCollisionBoxes) {
+			for (Box box : nearbyNonCollisionBoxes) {
 				if (!box.getEffect().isEmpty()) {
 					box.handleEffect(PLAYER);
 				}
 			}
+
+			// Select or unselect NPCs
+			double playerCenterX = (GamePanel.player.getX() + GamePanel.player.getBoxScaleHorizontal() / 2);
+			double playerCenterY = (GamePanel.player.getY() + GamePanel.player.getBoxScaleVertical() / 2);
+			List<NPC> distantNPCs = BoxHandling.getNPCsInRange(playerCenterX, playerCenterY, 128);
+			for (NPC npc : distantNPCs)
+				npc.setSelected(false);
+			List<NPC> nearbyNPCs = BoxHandling.getNPCsInRange(playerCenterX, playerCenterY, 96);
+			for (NPC npc : nearbyNPCs)
+				npc.setSelected(true);
 		}
 	}
 
