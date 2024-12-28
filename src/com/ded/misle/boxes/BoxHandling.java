@@ -11,6 +11,7 @@ import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.GamePanel.tileSize;
 import static com.ded.misle.Launcher.levelDesigner;
 import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.boxes.NPC.getInteractableNPCs;
 
 public class BoxHandling {
 
@@ -496,6 +497,13 @@ public class BoxHandling {
 			}
 		}
 		return npcsInRange;
+	}
+
+	public static List<NPC> getInteractableNPCsInRange(double x, double y, double range) {
+		List<NPC> npcsInRange = getNPCsInRange(x, y, range);
+
+		// Intersection of npcsInRange and interactableNPCs
+        return npcsInRange.stream().filter(getInteractableNPCs()::contains).toList();
 	}
 
 	public static List<Box> getHPBoxesInRange(double x, double y, double range) {

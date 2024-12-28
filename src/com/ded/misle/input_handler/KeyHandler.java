@@ -2,14 +2,17 @@ package com.ded.misle.input_handler;
 
 import com.ded.misle.GamePanel;
 import com.ded.misle.PhysicsEngine;
+import com.ded.misle.boxes.NPC;
 import com.ded.misle.player.PlayerAttributes;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.ded.misle.GamePanel.*;
+import static com.ded.misle.boxes.NPC.getSelectedNPCs;
 import static com.ded.misle.renderer.LevelDesignerRenderer.levelDesignerGrid;
 import static com.ded.misle.renderer.MenuRenderer.pauseGame;
 import static com.ded.misle.input_handler.KeyHandler.Key.*;
@@ -178,27 +181,13 @@ public class KeyHandler implements KeyListener {
 		// PLAYING EXCLUSIVE
 
 		if (gameState == GameState.PLAYING) {
-			if (player.keys.keyPressed.get(NUM_1)) {
-				player.inv.setSelectedSlot(0);
-			}
-			if (player.keys.keyPressed.get(NUM_2)) {
-				player.inv.setSelectedSlot(1);
-			}
-			if (player.keys.keyPressed.get(NUM_3)) {
-				player.inv.setSelectedSlot(2);
-			}
-			if (player.keys.keyPressed.get(NUM_4)) {
-				player.inv.setSelectedSlot(3);
-			}
-			if (player.keys.keyPressed.get(NUM_5)) {
-				player.inv.setSelectedSlot(4);
-			}
-			if (player.keys.keyPressed.get(NUM_6)) {
-				player.inv.setSelectedSlot(5);
-			}
-			if (player.keys.keyPressed.get(NUM_7)) {
-				player.inv.setSelectedSlot(6);
-			}
+			if (player.keys.keyPressed.get(NUM_1)) player.inv.setSelectedSlot(0);
+			if (player.keys.keyPressed.get(NUM_2)) player.inv.setSelectedSlot(1);
+			if (player.keys.keyPressed.get(NUM_3)) player.inv.setSelectedSlot(2);
+			if (player.keys.keyPressed.get(NUM_4)) player.inv.setSelectedSlot(3);
+			if (player.keys.keyPressed.get(NUM_5)) player.inv.setSelectedSlot(4);
+			if (player.keys.keyPressed.get(NUM_6)) player.inv.setSelectedSlot(5);
+			if (player.keys.keyPressed.get(NUM_7)) player.inv.setSelectedSlot(6);
 			if (player.keys.keyPressed.get(PAUSE)) {
 				pauseGame();
 				player.keys.keyPressed.put(PAUSE, false);
@@ -251,6 +240,8 @@ public class KeyHandler implements KeyListener {
 				player.keys.keyPressed.put(DODGE, false);
 			}
 			if (player.keys.keyPressed.get(USE)) {
+				ArrayList<NPC> nearbyNPCs = getSelectedNPCs();
+
 				player.inv.useItem();
 				player.keys.keyPressed.put(USE, false);
 			}

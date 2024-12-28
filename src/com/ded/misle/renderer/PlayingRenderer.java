@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.boxes.Box.getTexture;
-import static com.ded.misle.boxes.NPC.getSelectedNPCList;
+import static com.ded.misle.boxes.NPC.getSelectedNPCs;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.GameRenderer.*;
 import static com.ded.misle.renderer.ImageRenderer.cachedImages;
@@ -66,7 +66,7 @@ public class PlayingRenderer {
         BoxHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), scale, tileSize);
 
         // Draw selected NPC indicator
-        ArrayList<NPC> selectedNPCs = getSelectedNPCList();
+        ArrayList<NPC> selectedNPCs = getSelectedNPCs();
         for (NPC npc : selectedNPCs) {
             for (int i = 0; i <= 270; i += 90) {
                 PlayingRenderer.drawRotatedImage(g2d, getTexture("wall_default_overlayW"), npc.getX() * scale - player.pos.getCameraOffsetX(), npc.getY() * scale - player.pos.getCameraOffsetY(),

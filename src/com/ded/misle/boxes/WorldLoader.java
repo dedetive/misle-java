@@ -10,6 +10,8 @@ import static com.ded.misle.boxes.BoxHandling.*;
 import static com.ded.misle.boxes.BoxHandling.EditBoxKeys.*;
 import static com.ded.misle.boxes.BoxHandling.LineAddBoxModes.FILL;
 import static com.ded.misle.boxes.BoxHandling.LineAddBoxModes.HOLLOW;
+import static com.ded.misle.boxes.NPC.InteractionType.DIALOG;
+import static com.ded.misle.boxes.NPC.InteractionType.NONE;
 
 public class WorldLoader {
 	static HashMap<String, Integer> room = new HashMap<>();
@@ -74,8 +76,9 @@ public class WorldLoader {
 				editLastBox(EFFECT, "{travel, 3, 300, 440}", travelBoxesAdded);
 
 				// NPC testing
-				NPC yellowBlock = new NPC(500, 300);
-				yellowBlock.setTalkable(true);
+				NPC yellowBlock = new NPC(500, 300, DIALOG);
+				new NPC(540, 340, DIALOG);
+				new NPC(460, 340, NONE);
 			}
 
 			case "tuani_house1" -> {
