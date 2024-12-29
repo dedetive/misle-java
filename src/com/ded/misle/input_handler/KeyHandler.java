@@ -16,6 +16,7 @@ import java.util.random.RandomGenerator;
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.npcs.NPC.getDialogNPCs;
 import static com.ded.misle.npcs.NPC.getSelectedNPCs;
+import static com.ded.misle.npcs.NPCDialog.getCurrentTalkingTo;
 import static com.ded.misle.npcs.NPCDialog.startDialog;
 import static com.ded.misle.renderer.LevelDesignerRenderer.levelDesignerGrid;
 import static com.ded.misle.renderer.MenuRenderer.pauseGame;
@@ -387,6 +388,15 @@ public class KeyHandler implements KeyListener {
 			if (player.keys.keyPressed.get(GRID)) {
 				levelDesignerGrid = !levelDesignerGrid;
 				player.keys.keyPressed.put(GRID, false);
+			}
+		}
+
+		// DIALOG EXCLUSIVE
+
+		if (gameState == GameState.DIALOG) {
+			if (player.keys.keyPressed.get(USE)) {
+				getCurrentTalkingTo().incrementDialogIndex();
+				player.keys.keyPressed.put(USE, false);
 			}
 		}
 

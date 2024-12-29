@@ -26,7 +26,8 @@ public class DialogRenderer {
         String npcName = npc.getName();
         g2d.drawString(npcName, (int) (32 * scale), (int) (174 * scale));
 
-        String text = LanguageManager.getText("DIALOG_" + npc.getDialogID());
+        // Dialog itself
+        String text = LanguageManager.getText("DIALOG_" + npc.getDialogID() + "." + npc.getDialogIndex());
         g2d.setColor(dialogTextColor);
         g2d.setFont(dialogNPCText);
         FontMetrics fm = g2d.getFontMetrics();

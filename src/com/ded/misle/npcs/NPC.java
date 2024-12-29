@@ -1,5 +1,6 @@
 package com.ded.misle.npcs;
 
+import com.ded.misle.LanguageManager;
 import com.ded.misle.PhysicsEngine;
 import com.ded.misle.boxes.Box;
 
@@ -7,6 +8,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import static com.ded.misle.boxes.BoxHandling.addBoxToCache;
+import static com.ded.misle.npcs.NPCDialog.endDialog;
 import static com.ded.misle.player.PlayerAttributes.KnockbackDirection.NONE;
 
 public class NPC extends Box {
@@ -15,6 +17,8 @@ public class NPC extends Box {
     private static final ArrayList<NPC> shopNPCs = new ArrayList<>();
     private static final ArrayList<NPC> interactableNPCs = new ArrayList<>();
     private int dialogID;
+    private int dialogIndex;
+    private int dialogMaxIndex;
     private String name;
     private Color nameColor;
     public enum InteractionType {
@@ -53,6 +57,8 @@ public class NPC extends Box {
         else selectedNPCs.remove(this);
     }
 
+    // Getters
+
     public static ArrayList<NPC> getSelectedNPCs() {
         return selectedNPCs;
     }
@@ -65,13 +71,42 @@ public class NPC extends Box {
         return dialogNPCs;
     }
 
+    // Dialog related
+
     public void setDialogID(int dialogID) {
-        this.dialogID = dialogID;        // Dialog ID should never be 0
+        this.dialogID = dialogID;
+        try {
+            this.dialogMaxIndex = Integer.parseInt(LanguageManager.getText("DIALOG_" + dialogID));
+        } catch (NumberFormatException e) {
+            this.dialogMaxIndex = 0;
+        }
     }
 
     public int getDialogID() {
         return dialogID;
     }
+
+    public void resetDialogIndex() {
+        this.dialogIndex = 0;
+    }
+
+    public void setDialogIndex(int dialogIndex) {
+        this.dialogIndex = dialogIndex;
+    }
+
+    public void incrementDialogIndex() {
+        this.dialogIndex++;
+        if (this.dialogIndex >= this.dialogMaxIndex + 1) {
+            this.resetDialogIndex();
+            endDialog();
+        }
+    }
+
+    public int getDialogIndex() {
+        return dialogIndex;
+    }
+
+    // Name related
 
     public String getName() {
         return name;

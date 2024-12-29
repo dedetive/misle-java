@@ -11,13 +11,14 @@ public class NPCDialog {
     public static void startDialog(NPC npc) {
         assert getDialogNPCs().contains(npc);
         if (npc.getDialogID() != 0) {
-            gameState = GamePanel.GameState.DIALOG;
             currentTalkingTo = npc;
+            gameState = GamePanel.GameState.DIALOG;
         }
     }
 
     public static void endDialog() {
         gameState = GamePanel.GameState.PLAYING;
+        currentTalkingTo = null;
     }
 
     public static NPC getCurrentTalkingTo() {
