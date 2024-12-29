@@ -13,6 +13,7 @@ import java.util.Objects;
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.boxes.Box.clearSelectedBoxes;
+import static com.ded.misle.input_handler.KeyHandler.pressUseButton;
 import static com.ded.misle.renderer.InventoryRenderer.*;
 import static com.ded.misle.renderer.PlayingRenderer.inventoryBarY;
 import static com.ded.misle.renderer.PlayingRenderer.slotStartX;
@@ -137,7 +138,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
                         foundWhereClicked = true;
                     }
                     if (!foundWhereClicked) {
-                        player.inv.useItem();
+                        pressUseButton();
                     }
                 }
             }

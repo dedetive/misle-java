@@ -2,7 +2,7 @@ package com.ded.misle.input_handler;
 
 import com.ded.misle.GamePanel;
 import com.ded.misle.PhysicsEngine;
-import com.ded.misle.boxes.NPC;
+import com.ded.misle.npcs.NPC;
 import com.ded.misle.player.PlayerAttributes;
 
 import javax.swing.*;
@@ -10,9 +10,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.random.RandomGenerator;
 
 import static com.ded.misle.GamePanel.*;
-import static com.ded.misle.boxes.NPC.getSelectedNPCs;
+import static com.ded.misle.npcs.NPC.getDialogNPCs;
+import static com.ded.misle.npcs.NPC.getSelectedNPCs;
+import static com.ded.misle.npcs.NPCDialog.startDialog;
 import static com.ded.misle.renderer.LevelDesignerRenderer.levelDesignerGrid;
 import static com.ded.misle.renderer.MenuRenderer.pauseGame;
 import static com.ded.misle.input_handler.KeyHandler.Key.*;
@@ -240,9 +244,7 @@ public class KeyHandler implements KeyListener {
 				player.keys.keyPressed.put(DODGE, false);
 			}
 			if (player.keys.keyPressed.get(USE)) {
-				ArrayList<NPC> nearbyNPCs = getSelectedNPCs();
-
-				player.inv.useItem();
+				pressUseButton();
 				player.keys.keyPressed.put(USE, false);
 			}
 
@@ -411,6 +413,22 @@ public class KeyHandler implements KeyListener {
 				player.inv.clearInventory();
 				player.keys.keyPressed.put(DEBUG2, false);
 
+			}
+		}
+	}
+
+	public static void pressUseButton() {
+		ArrayList<NPC> nearbyNPCs = getSelectedNPCs();
+
+		if (nearbyNPCs.isEmpty()) {
+			player.inv.useItem();
+		} else {
+			int size = nearbyNPCs.size();
+			int rand = ThreadLocalRandom.current().nextInt(0, size);
+			NPC npc = nearbyNPCs.get(rand);
+
+			if (getDialogNPCs().contains(npc)) {
+				startDialog(npc);
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 package com.ded.misle.boxes;
 
 import com.ded.misle.PhysicsEngine;
+import com.ded.misle.npcs.NPC;
 
 import java.awt.*;
 import java.io.File;
@@ -11,7 +12,7 @@ import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.GamePanel.tileSize;
 import static com.ded.misle.Launcher.levelDesigner;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.boxes.NPC.getInteractableNPCs;
+import static com.ded.misle.npcs.NPC.getInteractableNPCs;
 
 public class BoxHandling {
 

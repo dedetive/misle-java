@@ -1,6 +1,6 @@
 package com.ded.misle.renderer;
 
-import com.ded.misle.boxes.NPC;
+import com.ded.misle.npcs.NPC;
 import com.ded.misle.input_handler.MouseHandler;
 import com.ded.misle.boxes.BoxHandling;
 import com.ded.misle.items.Item;
@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.boxes.Box.getTexture;
-import static com.ded.misle.boxes.NPC.getSelectedNPCs;
+import static com.ded.misle.npcs.NPC.getSelectedNPCs;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.GameRenderer.*;
 import static com.ded.misle.renderer.ImageRenderer.cachedImages;

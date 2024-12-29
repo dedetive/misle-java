@@ -1,6 +1,7 @@
-package com.ded.misle.boxes;
+package com.ded.misle.npcs;
 
 import com.ded.misle.PhysicsEngine;
+import com.ded.misle.boxes.Box;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class NPC extends Box {
     private static final ArrayList<NPC> dialogNPCs = new ArrayList<>();
     private static final ArrayList<NPC> shopNPCs = new ArrayList<>();
     private static final ArrayList<NPC> interactableNPCs = new ArrayList<>();
+    private int dialogID;
     public enum InteractionType {
         NONE,
         DIALOG,
@@ -53,5 +55,17 @@ public class NPC extends Box {
 
     public static ArrayList<NPC> getInteractableNPCs() {
         return interactableNPCs;
+    }
+
+    public static ArrayList<NPC> getDialogNPCs() {
+        return dialogNPCs;
+    }
+
+    public void setDialogID(int dialogID) {
+        this.dialogID = dialogID;        // Dialog ID should never be 0
+    }
+
+    public int getDialogID() {
+        return dialogID;
     }
 }

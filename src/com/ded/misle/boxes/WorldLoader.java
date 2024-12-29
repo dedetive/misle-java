@@ -1,6 +1,7 @@
 package com.ded.misle.boxes;
 
-import java.awt.*;
+import com.ded.misle.npcs.NPC;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,8 +11,8 @@ import static com.ded.misle.boxes.BoxHandling.*;
 import static com.ded.misle.boxes.BoxHandling.EditBoxKeys.*;
 import static com.ded.misle.boxes.BoxHandling.LineAddBoxModes.FILL;
 import static com.ded.misle.boxes.BoxHandling.LineAddBoxModes.HOLLOW;
-import static com.ded.misle.boxes.NPC.InteractionType.DIALOG;
-import static com.ded.misle.boxes.NPC.InteractionType.NONE;
+import static com.ded.misle.npcs.NPC.InteractionType.DIALOG;
+import static com.ded.misle.npcs.NPC.InteractionType.NONE;
 
 public class WorldLoader {
 	static HashMap<String, Integer> room = new HashMap<>();
@@ -77,8 +78,14 @@ public class WorldLoader {
 
 				// NPC testing
 				NPC yellowBlock = new NPC(500, 300, DIALOG);
-				new NPC(540, 340, DIALOG);
-				new NPC(460, 340, NONE);
+				yellowBlock.setDialogID(1);
+
+				NPC magentaBlock = new NPC(540, 340, DIALOG);
+				editBox(magentaBlock, COLOR, "#FF00FF");
+				magentaBlock.setDialogID(2);
+
+				NPC cyanBlock = new NPC(460, 340, NONE);
+				editBox(cyanBlock, COLOR, "#00FFFF");
 			}
 
 			case "tuani_house1" -> {

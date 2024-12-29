@@ -2,7 +2,7 @@ package com.ded.misle;
 
 import com.ded.misle.boxes.Box;
 import com.ded.misle.boxes.BoxHandling;
-import com.ded.misle.boxes.NPC;
+import com.ded.misle.npcs.NPC;
 import com.ded.misle.player.PlayerAttributes;
 
 import java.util.List;
@@ -52,10 +52,10 @@ public class PhysicsEngine {
 			// Select or unselect NPCs
 			double playerCenterX = (GamePanel.player.getX() + GamePanel.player.getBoxScaleHorizontal() / 2);
 			double playerCenterY = (GamePanel.player.getY() + GamePanel.player.getBoxScaleVertical() / 2);
-			List<NPC> distantNPCs = BoxHandling.getInteractableNPCsInRange(playerCenterX, playerCenterY, 212);
+			List<NPC> distantNPCs = BoxHandling.getInteractableNPCsInRange(playerCenterX, playerCenterY, 196);
 			for (NPC npc : distantNPCs)
 				npc.setSelected(false);
-			List<NPC> nearbyNPCs = BoxHandling.getInteractableNPCsInRange(playerCenterX, playerCenterY, 128);
+			List<NPC> nearbyNPCs = BoxHandling.getInteractableNPCsInRange(playerCenterX, playerCenterY, 96);
 			for (NPC npc : nearbyNPCs)
 				npc.setSelected(true);
 		}
