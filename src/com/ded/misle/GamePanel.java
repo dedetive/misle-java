@@ -325,6 +325,9 @@ public class GamePanel extends JPanel implements Runnable {
 						keyH.updateKeys(mouseHandler);  // Check for player input and update position accordingly
 						mouseHandler.updateMouse();
 					}
+					case DIALOG -> {
+						mouseHandler.updateMouse();
+					}
 					case null, default -> {
 						keyH.updateKeys(mouseHandler);
 					}

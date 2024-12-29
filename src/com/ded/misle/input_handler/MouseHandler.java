@@ -14,6 +14,7 @@ import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.boxes.Box.clearSelectedBoxes;
 import static com.ded.misle.input_handler.KeyHandler.pressUseButton;
+import static com.ded.misle.npcs.NPCDialog.getCurrentTalkingTo;
 import static com.ded.misle.renderer.InventoryRenderer.*;
 import static com.ded.misle.renderer.PlayingRenderer.inventoryBarY;
 import static com.ded.misle.renderer.PlayingRenderer.slotStartX;
@@ -254,6 +255,11 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
                     }
                 }
             }
+			case GameState.DIALOG -> {
+				if (isLeftPressed()) {
+					getCurrentTalkingTo().incrementDialogIndex();
+				}
+			}
         }
 		isLeftPressed = false;
 		isRightPressed = false;

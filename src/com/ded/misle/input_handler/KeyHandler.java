@@ -11,7 +11,6 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.random.RandomGenerator;
 
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.npcs.NPC.getDialogNPCs;
