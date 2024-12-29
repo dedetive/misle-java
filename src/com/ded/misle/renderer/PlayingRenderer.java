@@ -15,6 +15,7 @@ import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.boxes.Box.getTexture;
 import static com.ded.misle.npcs.NPC.getSelectedNPCs;
 import static com.ded.misle.renderer.ColorManager.*;
+import static com.ded.misle.renderer.DialogRenderer.renderDialog;
 import static com.ded.misle.renderer.GameRenderer.*;
 import static com.ded.misle.renderer.ImageRenderer.cachedImages;
 import static com.ded.misle.Launcher.scale;
@@ -105,6 +106,10 @@ public class PlayingRenderer {
             if (mouseHandler.getHoveredBarSlot() > -1 && player.inv.getItem(0, mouseHandler.getHoveredBarSlot()) != null) {
                 InventoryRenderer.drawHoveredItemTooltip(g, new int[]{-1, mouseHandler.getHoveredBarSlot()}, false);
             }
+        }
+
+        if (gameState == GameState.DIALOG) {
+            renderDialog(g2d);
         }
 
         if (isFading != GameRenderer.FadingState.UNFADED) drawFading(g2d);

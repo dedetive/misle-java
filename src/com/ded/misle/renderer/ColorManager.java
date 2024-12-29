@@ -69,6 +69,11 @@ public class ColorManager {
 
     public final static Color windowBackground = new Color(0, 0, 0);
 
+    // Dialog
+
+    public final static Color dialogWindowBackground = new Color(140, 110, 70, 245);
+    public final static Color dialogTextColor = new Color(255, 255, 255);
+
     // Level Designer
 
     public final static Color gridColor = Color.BLACK;

@@ -321,7 +321,7 @@ public class InventoryRenderer {
     }
 
     // Helper method to wrap text
-    private static String[] wrapText(String text, int maxWidth, FontMetrics fm) {
+    public static String[] wrapText(String text, int maxWidth, FontMetrics fm) {
         List<String> lines = new ArrayList<>();
         StringBuilder line = new StringBuilder();
 

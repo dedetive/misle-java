@@ -386,6 +386,7 @@ public class GamePanel extends JPanel implements Runnable {
 			case GameState.INVENTORY:
 			case GameState.PLAYING:
 			case GameState.FROZEN_PLAYING:
+			case GameState.DIALOG:
 				PlayingRenderer.renderPlayingGame(g, mouseHandler);
 				break;
 			case GameState.MAIN_MENU:

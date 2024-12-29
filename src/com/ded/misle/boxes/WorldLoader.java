@@ -2,6 +2,7 @@ package com.ded.misle.boxes;
 
 import com.ded.misle.npcs.NPC;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,10 +80,14 @@ public class WorldLoader {
 				// NPC testing
 				NPC yellowBlock = new NPC(500, 300, DIALOG);
 				yellowBlock.setDialogID(1);
+				yellowBlock.setName("Yellow block");
+				yellowBlock.setNameColor(new Color(0xFFFF00));
 
 				NPC magentaBlock = new NPC(540, 340, DIALOG);
 				editBox(magentaBlock, COLOR, "#FF00FF");
 				magentaBlock.setDialogID(2);
+				magentaBlock.setName("Magenta block");
+				magentaBlock.setNameColor(new Color(0xFF00FF));
 
 				NPC cyanBlock = new NPC(460, 340, NONE);
 				editBox(cyanBlock, COLOR, "#00FFFF");

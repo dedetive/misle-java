@@ -15,6 +15,8 @@ public class NPC extends Box {
     private static final ArrayList<NPC> shopNPCs = new ArrayList<>();
     private static final ArrayList<NPC> interactableNPCs = new ArrayList<>();
     private int dialogID;
+    private String name;
+    private Color nameColor;
     public enum InteractionType {
         NONE,
         DIALOG,
@@ -32,6 +34,8 @@ public class NPC extends Box {
         this.setEffect(new String[]{""});
         this.setX(x);
         this.setY(y);
+        this.name = "NPC";
+        this.nameColor = new Color(0xFFFFFF);
 
         if (interactionType != InteractionType.NONE) {
             interactableNPCs.add(this);
@@ -68,4 +72,21 @@ public class NPC extends Box {
     public int getDialogID() {
         return dialogID;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Color getNameColor() {
+        return nameColor;
+    }
+
+    public void setNameColor(Color nameColor) {
+        this.nameColor = nameColor;
+    }
+
 }
