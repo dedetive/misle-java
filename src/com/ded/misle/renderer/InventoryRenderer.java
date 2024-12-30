@@ -230,7 +230,7 @@ public class InventoryRenderer {
         FontMetrics fm = g2d.getFontMetrics();
 
         // Calculate width based on text
-        int tooltipWidth = Math.max(slotSize * 4, fm.stringWidth(itemName) + (int) (20 * scale / 3.75));
+        int tooltipWidth = Math.max(slotSize * 4, fm.stringWidth(removeColorIndicators(itemName)) + (int) (20 * scale / 3.75));
         int tooltipX = slotX - (tooltipWidth / 2) + slotSize / 2;
         int tooltipY;
 
