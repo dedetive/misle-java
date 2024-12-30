@@ -333,11 +333,7 @@ public class SaveFile {
 			case RED -> pixel.getRed();
 			case GREEN -> pixel.getGreen();
 			case BLUE -> pixel.getBlue();
-			default -> {
-				System.out.println("Invalid color parameter for loading from the save file: " + color);
-				yield 0;
-			}
-		};
+        };
 	}
 
 	public static void saveEverything() {
@@ -478,11 +474,13 @@ public class SaveFile {
 	private static void brandIntoSaveFile(int value, PixelColor color, int x, int y) {
 
 		if (value > 255 || value < 0) {
-			throw new IllegalArgumentException("Save value must be between 0 and 255. Value inserted: " + value);
+			System.out.println(("Save value must be between 0 and 255. Value inserted: " + value));
+			value = 255;
 		}
 
 		if (x < 0 || x >= 128 || y < 0 || y >= 128) {
-			throw new IllegalArgumentException("Invalid x or y position for save file: " + x + ", " + y + ", value: " + value);
+			System.out.println(("Invalid x or y position for save file: " + x + ", " + y + ", value: " + value));
+			return;
 		}
 
 		Color previousValue = new Color(image.getRGB(x, y));
