@@ -35,7 +35,7 @@ public class ColorManager {
     public final static Color hoveredTooltipBackground = new Color(84, 84, 84, 190);
     public final static Color itemTypeTooltip = new Color(0xE0DE9B);
     public final static Color itemCountTooltip = new Color(0xFFFFFF);
-    public final static Color itemEffectTooltip = new Color(0x00A2FF);
+    public final static Color itemEffectTooltip = new Color(0xE0DE9B);
     public final static Color itemDescriptionTooltip = new Color(0xA0A0A0);
     public final static Color tooltipTextShadowColor = defaultShadowColor;
 
