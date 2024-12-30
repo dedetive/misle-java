@@ -47,7 +47,9 @@ public class Item {
 		ItemData itemDetails = ItemLoader.loadItemDataById(id);
 		if (itemDetails != null) {
 			this.name = itemDetails.getName();
-			String normalizedName = itemDetails.getName().replaceAll(" ", "_").toLowerCase();
+			String normalizedName = itemDetails.getName()
+				.replaceAll(" ", "_")
+				.toLowerCase();
 			this.displayName = LanguageManager.getText(normalizedName);
 			this.description = LanguageManager.getText(normalizedName + "_DESC");
 			this.countLimit = itemDetails.countLimit();

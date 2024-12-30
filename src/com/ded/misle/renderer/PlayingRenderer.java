@@ -260,15 +260,16 @@ public class PlayingRenderer {
                 if (currentTime - itemNameDisplayStartTime < 5000) {
                     g2d.setFont(FontManager.selectedItemNameFont);
                     FontMetrics fm = g2d.getFontMetrics();
-                    int textWidth = fm.stringWidth(selectedItemName);
+                    int textWidth = fm.stringWidth(removeColorIndicators(selectedItemName));
 
                     int textX = selectedItemNamePosition.x - textWidth / 2;
                     int textY = selectedItemNamePosition.y;
 
-                    g2d.setColor(selectedItemNameShadowColor);
-                    g2d.drawString(selectedItemName, (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow));
-                    g2d.setColor(player.inv.getSelectedItem().getNameColor());
-                    g2d.drawString(selectedItemName, textX, textY);
+                    drawColoredText(g2d, selectedItemName, (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow),
+                        g2d.getFont(), selectedItemNameShadowColor, true);
+
+                    drawColoredText(g2d, selectedItemName, textX, textY,
+                        g2d.getFont(), player.inv.getSelectedItem().getNameColor(), false);
                 } else {
                     // Clear the selected item name after 5 seconds
                     selectedItemName = null;

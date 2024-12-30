@@ -15,8 +15,7 @@ import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.npcs.NPCDialog.getCurrentTalkingTo;
 import static com.ded.misle.player.PlayerStats.PlaytimeMode.*;
-import static com.ded.misle.renderer.ColorManager.dialogTextColor;
-import static com.ded.misle.renderer.ColorManager.dialogWindowBackground;
+import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.*;
 import static com.ded.misle.renderer.InventoryRenderer.wrapText;
 
@@ -62,50 +61,8 @@ public class DialogRenderer {
         String[] wrappedText = wrapText(text, (int) ((512 - 64) * scale), fm);
         int height = (int) (192 * scale);
         for (String line : wrappedText) {
-            drawColoredText(g2d, line, (int) (40 * scale), height, dialogNPCText, dialogTextColor);
+            drawColoredText(g2d, line, (int) (40 * scale), height, dialogNPCText, dialogTextColor, false);
             height += fm.getHeight();
-        }
-    }
-
-    public static void drawColoredText(Graphics2D g2d, String text, int x, int y, Font font, Color baseColor) {
-        g2d.setFont(font);
-        if (!text.contains("c{")) {
-            g2d.setColor(baseColor);
-            g2d.drawString(text, x, y);
-        } else {
-            Pattern pattern = Pattern.compile("c\\{#([A-Fa-f0-9]{6}),\\s*(.*?)}");
-            Matcher matcher = pattern.matcher(text);
-            ArrayList<String[]> parts = new ArrayList<>();
-            int lastEnd = 0;
-
-            while (matcher.find()) {
-                // Add the preceding text (with baseColor)
-                if (matcher.start() > lastEnd) {
-                    parts.add(new String[]{text.substring(lastEnd, matcher.start()), "BASE"});
-                }
-
-                // Extract color and content inside the block
-                String colorCode = matcher.group(1);
-                String coloredText = matcher.group(2);
-                parts.add(new String[]{coloredText, colorCode});
-
-                lastEnd = matcher.end();
-            }
-
-            // Add the remaining text after the last match (with baseColor)
-            if (lastEnd < text.length()) {
-                parts.add(new String[]{text.substring(lastEnd), "BASE"});
-            }
-
-            // Draw stuff
-            g2d.setFont(font);
-            for (String[] part : parts) {
-                String snippet = part[0];
-                Color color = "BASE".equals(part[1]) ? baseColor : Color.decode("#" + part[1]);
-                g2d.setColor(color);
-                g2d.drawString(snippet, x, y);
-                x += g2d.getFontMetrics().stringWidth(snippet); // Move x forward
-            }
         }
     }
 }

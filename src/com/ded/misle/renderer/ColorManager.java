@@ -1,6 +1,9 @@
 package com.ded.misle.renderer;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ColorManager {
 
@@ -77,4 +80,53 @@ public class ColorManager {
     // Level Designer
 
     public final static Color gridColor = Color.BLACK;
+
+
+
+    public static void drawColoredText(Graphics2D g2d, String text, int x, int y, Font font, Color baseColor, boolean forceBaseColor) {
+        g2d.setFont(font);
+        if (!text.contains("c{") || forceBaseColor) {
+            text = removeColorIndicators(text);
+            g2d.setColor(baseColor);
+            g2d.drawString(text, x, y);
+        } else {
+            Pattern pattern = Pattern.compile("c\\{#([A-Fa-f0-9]{6}),\\s*(.*?)}");
+            Matcher matcher = pattern.matcher(text);
+            ArrayList<String[]> parts = new ArrayList<>();
+            int lastEnd = 0;
+
+            while (matcher.find()) {
+                // Add the preceding text (with baseColor)
+                if (matcher.start() > lastEnd) {
+                    parts.add(new String[]{text.substring(lastEnd, matcher.start()), "BASE"});
+                }
+
+                // Extract color and content inside the block
+                String colorCode = matcher.group(1);
+                String coloredText = matcher.group(2);
+                parts.add(new String[]{coloredText, colorCode});
+
+                lastEnd = matcher.end();
+            }
+
+            // Add the remaining text after the last match (with baseColor)
+            if (lastEnd < text.length()) {
+                parts.add(new String[]{text.substring(lastEnd), "BASE"});
+            }
+
+            // Draw stuff
+            g2d.setFont(font);
+            for (String[] part : parts) {
+                String snippet = part[0];
+                Color color = "BASE".equals(part[1]) ? baseColor : Color.decode("#" + part[1]);
+                g2d.setColor(color);
+                g2d.drawString(snippet, x, y);
+                x += g2d.getFontMetrics().stringWidth(snippet); // Move x forward
+            }
+        }
+    }
+
+    public static String removeColorIndicators(String text) {
+        return text.replaceAll("c\\{#[A-Fa-f0-9]{6},\\s*(.*?)}", "$1");
+    }
 }
