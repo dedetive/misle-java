@@ -4,9 +4,16 @@ import com.ded.misle.LanguageManager;
 import com.ded.misle.npcs.NPC;
 
 import java.awt.*;
+import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.npcs.NPCDialog.getCurrentTalkingTo;
+import static com.ded.misle.player.PlayerStats.PlaytimeMode.*;
 import static com.ded.misle.renderer.ColorManager.dialogTextColor;
 import static com.ded.misle.renderer.ColorManager.dialogWindowBackground;
 import static com.ded.misle.renderer.FontManager.*;
@@ -28,6 +35,28 @@ public class DialogRenderer {
 
         // Dialog itself
         String text = LanguageManager.getText("DIALOG_" + npc.getDialogID() + "." + npc.getDialogIndex());
+
+        if (text.contains("f{")) {
+            // Placeholder to method mapping
+            Map<String, String> placeholders = new HashMap<>();
+            placeholders.put("totalPlaytimeHours", Long.toString(player.stats.getCurrentTotalPlaytime(HOURS)));
+            placeholders.put("totalPlaytimeMinutes", Long.toString(player.stats.getCurrentTotalPlaytime(MINUTES)));
+            placeholders.put("totalPlaytimeSeconds", Long.toString(player.stats.getCurrentTotalPlaytime(SECONDS)));
+
+            // Regex to match placeholders in the format f{...}
+            Pattern pattern = Pattern.compile("f\\{(.*?)}");
+            Matcher matcher = pattern.matcher(text);
+
+            StringBuilder result = new StringBuilder();
+            while (matcher.find()) {
+                String placeholder = matcher.group(1); // Extract the placeholder inside f{}
+                String replacement = placeholders.getOrDefault(placeholder, "UNKNOWN"); // Get replacement or fallback
+                matcher.appendReplacement(result, replacement); // Replace in text
+            }
+            matcher.appendTail(result);
+            text = result.toString();
+        }
+
         g2d.setColor(dialogTextColor);
         g2d.setFont(dialogNPCText);
         FontMetrics fm = g2d.getFontMetrics();
