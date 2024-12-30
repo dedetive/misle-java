@@ -160,10 +160,8 @@ public class InventoryRenderer {
 
     private static void drawStat(Graphics2D g2d, String statText, int centerX, int y) {
         g2d.setFont(FontManager.buttonFont);
-        Color textColor = statColor;
-        Color shadowColor = statShadowColor;
 
-        drawStat(g2d, statText, centerX, y, textColor, shadowColor);
+        drawStat(g2d, statText, centerX, y, statColor, statShadowColor);
     }
 
     public static void drawHoveredItemTooltip(Graphics g, int[] hoveredSlot, boolean isExtra) {
@@ -307,8 +305,10 @@ public class InventoryRenderer {
                     String[] separatedLine = line.split("r\\{");
                     line = "";
                     for (String line1 : separatedLine) {
-                        line1 = line1.replaceAll("}", "");
-                        line1 = replaceColorIndicators(line1);
+                        if (line1.contains("}")) {
+                            line1 = line1.replaceAll("}", "");
+                            line1 = replaceColorIndicators(line1);
+                        }
                         line = line.concat(line1);
                     }
                 }

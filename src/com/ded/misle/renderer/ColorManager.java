@@ -84,12 +84,28 @@ public class ColorManager {
     // Stats colors
 
     public final static Color strengthColor = new Color(0xDB963D);
+    public final static Color slingshotDamageColor = new Color(0xDB963D);
+
+    public enum StringToColorCode {
+        STRENGTH("Strength", strengthColor),
+        SLINGSHOT_DAMAGE("Slingshot Damage", slingshotDamageColor),;
+
+        public final String text;
+        public final Color color;
+
+        StringToColorCode(String text, Color color) {
+            this.text = text;
+            this.color = color;
+        }
+    }
 
     public static String replaceColorIndicators(String text) {
-        return switch (text) {
-            case "STRENGTH" -> "c{#" + Integer.toHexString(strengthColor.getRGB()).substring(2) + ",Strength}";
-            default -> text;
-        };
+        text = text.replaceAll(" ", "_");
+        return normalizeColorIndicator(StringToColorCode.valueOf(text).text, StringToColorCode.valueOf(text).color);
+    }
+
+    private static String normalizeColorIndicator(String text, Color color) {
+        return "c{#" + Integer.toHexString(color.getRGB()).substring(2) + "," + text + "}";
     }
 
     public static void drawColoredText(Graphics2D g2d, String text, int x, int y, Font font, Color baseColor, boolean forceBaseColor) {
