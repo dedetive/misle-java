@@ -39,5 +39,6 @@ public class Player extends Box {
 		this.attr.unloadAttributes();
 		this.inv.destroyGrabbedItem();
 		this.inv.destroyTempItem();
+		this.pos.setSpawnpoint(2);
 	}
 }

@@ -286,9 +286,14 @@ public class SaveFile {
 						}
 					}
 				} catch (IOException e) {
-					System.out.println("Failed to load inventory!");
+					System.out.println("Failed to load save file!");
+					player.unloadPlayer();
 					e.printStackTrace();
 				}
+			} else {
+				System.out.println("Could not find a save file!");
+				player.unloadPlayer();
+				player.pos.reloadSpawnpoint();
 			}
 		}
 	}
