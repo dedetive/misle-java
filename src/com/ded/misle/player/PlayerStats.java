@@ -242,10 +242,10 @@ public class PlayerStats {
 
 	public long getTotalPlaytime(PlaytimeMode playtimeMode) {
 		return switch (playtimeMode) {
-			case MILLIS -> (totalPlaytime) % 1000;
-			case SECONDS -> (totalPlaytime / 1000) % 60;
-			case MINUTES -> (totalPlaytime / (60 * 1000)) % 60;
-			case HOURS -> (totalPlaytime / (60 * 60 * 1000)) % 60;
+			case MILLIS -> totalPlaytime;
+			case SECONDS -> (totalPlaytime / 1000);
+			case MINUTES -> (totalPlaytime / (60 * 1000));
+			case HOURS -> (totalPlaytime / (60 * 60 * 1000));
 		};
 	}
 }
