@@ -132,34 +132,35 @@ public class ColorManager {
     public static void drawColoredText(Graphics2D g2d, String text, int x, int y, Font font, Color baseColor, boolean forceBaseColor) {
         g2d.setFont(font);
 
-        if ((!text.contains("c{") && !text.contains("r{")) || forceBaseColor) {
+        if (text.contains("r{")) {
+            String[] separatedText = text.split("r\\{");
+            text = "";
+            for (int i = 0; i < separatedText.length; i++) {
+                String part = separatedText[i];
+                if (i == 0) {
+                    text = part;
+                } else {
+                    if (part.contains("}")) {
+                        String[] insideColorIndicator = part.split("}");
+                        String colorText = insideColorIndicator[0];
+                        colorText = replaceColorIndicators(colorText);
+                        text = text.concat(colorText);
+                        if (insideColorIndicator.length > 1) {
+                            text = text.concat(insideColorIndicator[1]);
+                        }
+                    } else {
+                        text = text.concat("r{" + part);
+                    }
+                }
+            }
+        }
+
+
+        if (!text.contains("c{") || forceBaseColor) {
             text = removeColorIndicators(text);
             g2d.setColor(baseColor);
             g2d.drawString(text, x, y);
         } else {
-            if (text.contains("r{")) {
-                String[] separatedText = text.split("r\\{");
-                text = "";
-                for (int i = 0; i < separatedText.length; i++) {
-                    String part = separatedText[i];
-                    if (i == 0) {
-                        text = part;
-                    } else {
-                        if (part.contains("}")) {
-                            String[] insideColorIndicator = part.split("}");
-                            String colorText = insideColorIndicator[0];
-                            colorText = replaceColorIndicators(colorText);
-                            text = text.concat(colorText);
-                            if (insideColorIndicator.length > 1) {
-                                text = text.concat(insideColorIndicator[1]);
-                            }
-                        } else {
-                            text = text.concat("r{" + part);
-                        }
-                    }
-                }
-            }
-
             Pattern pattern = Pattern.compile("c\\{#([A-Fa-f0-9]{6}),\\s*(.*?)}");
             Matcher matcher = pattern.matcher(text);
             ArrayList<String[]> parts = new ArrayList<>();
