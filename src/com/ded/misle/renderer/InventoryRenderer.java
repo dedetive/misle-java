@@ -253,7 +253,7 @@ public class InventoryRenderer {
 
         // Wrap each line of text
         for (String effect : differentEffects) {
-            wrappedEffect.add(wrapText(removeColorIndicators(effect), tooltipWidth - 20, fm));
+            wrappedEffect.add(wrapText(effect, tooltipWidth - 20, fm));
         }
         tooltipHeight += lineHeight * (wrappedEffect.size() - 1); // Adjust height based on wrapped lines
 
@@ -326,7 +326,7 @@ public class InventoryRenderer {
         StringBuilder line = new StringBuilder();
 
         for (String word : text.split(" ")) {
-            if (fm.stringWidth(line + word) > maxWidth) {
+            if (fm.stringWidth(removeColorIndicators(line + word)) > maxWidth) {
                 lines.add(line.toString());
                 line = new StringBuilder();
             }

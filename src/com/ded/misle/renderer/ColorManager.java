@@ -149,19 +149,18 @@ public class ColorManager {
                             text = text.concat(insideColorIndicator[1]);
                         }
                     } else {
-                        text = text.concat("r{" + part);
+                        text = text.concat(part);
                     }
                 }
             }
         }
-
 
         if (!text.contains("c{") || forceBaseColor) {
             text = removeColorIndicators(text);
             g2d.setColor(baseColor);
             g2d.drawString(text, x, y);
         } else {
-            Pattern pattern = Pattern.compile("c\\{#([A-Fa-f0-9]{6}),\\s*(.*?)}");
+            Pattern pattern = Pattern.compile("c\\{(.*?),\\s*(.*?)}");
             Matcher matcher = pattern.matcher(text);
             ArrayList<String[]> parts = new ArrayList<>();
             int lastEnd = 0;
@@ -189,7 +188,12 @@ public class ColorManager {
             g2d.setFont(font);
             for (String[] part : parts) {
                 String snippet = part[0];
-                Color color = "BASE".equals(part[1]) ? baseColor : Color.decode("#" + part[1]);
+                Color color = new Color(0xFFFFFF);
+                try {
+                    color = "BASE".equals(part[1]) ? baseColor : Color.decode(part[1]);
+                } catch (NumberFormatException e) {
+                    color = "BASE".equals(part[1]) ? baseColor : ColorConstant.valueOf(part[1]).color;
+                }
                 g2d.setColor(color);
                 g2d.drawString(snippet, x, y);
                 x += g2d.getFontMetrics().stringWidth(snippet); // Move x forward
@@ -197,7 +201,20 @@ public class ColorManager {
         }
     }
 
+    private enum ColorConstant {
+        HEAL(healColor),
+        ENTROPY(entropyColor),
+        LIGHT_ENTROPY(entropyBarCurrent),
+        DEFENSE(defenseColor),;
+
+        public final Color color;
+
+        ColorConstant(Color color) {
+            this.color = color;
+        }
+    }
+
     public static String removeColorIndicators(String text) {
-        return text.replaceAll("c\\{#[A-Fa-f0-9]{6},\\s*(.*?)}", "$1");
+        return text.replaceAll("c\\{.*?,\\s*(.*?)}", "$1").replaceAll("r\\{}", "$1");
     }
 }
