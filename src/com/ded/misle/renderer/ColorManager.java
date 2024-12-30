@@ -1,5 +1,7 @@
 package com.ded.misle.renderer;
 
+import com.ded.misle.LanguageManager;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -81,14 +83,33 @@ public class ColorManager {
 
     public final static Color gridColor = Color.BLACK;
 
-    // Stats colors
+    // Attribute colors
 
     public final static Color strengthColor = new Color(0xDB963D);
+    public final static Color vitalityColor = new Color(0xDB423D);
+    public final static Color entropyColor = new Color(0xA13DDB);
+    public final static Color defenseColor = new Color(0x3D5ADB);
+    public final static Color regenerationColor = new Color(0x52DB3D);
+    public final static Color speedColor = new Color(0x3DD8DB);
     public final static Color slingshotDamageColor = new Color(0xDB963D);
 
     public enum StringToColorCode {
-        STRENGTH("Strength", strengthColor),
-        SLINGSHOT_DAMAGE("Slingshot Damage", slingshotDamageColor),;
+        SLINGSHOT_DAMAGE(LanguageManager.getText("slingshot_damage"), slingshotDamageColor),
+        HP(LanguageManager.getText("hp"), vitalityColor),
+
+        STRENGTH(LanguageManager.getText("inventory_strength"), strengthColor),
+        ENTROPY(LanguageManager.getText("inventory_entropy"), entropyColor),
+        VITALITY(LanguageManager.getText("inventory_vitality"), vitalityColor),
+        DEFENSE(LanguageManager.getText("inventory_defense"), defenseColor),
+        REGENERATION(LanguageManager.getText("inventory_regeneration"), regenerationColor),
+        SPEED(LanguageManager.getText("inventory_speed"), speedColor),
+
+        STR(LanguageManager.getText("short_strength"), strengthColor),
+        ENT(LanguageManager.getText("short_entropy"), entropyColor),
+        VIT(LanguageManager.getText("short_vitality"), vitalityColor),
+        DEF(LanguageManager.getText("short_defense"), defenseColor),
+        REG(LanguageManager.getText("short_regeneration"), regenerationColor),
+        SPD(LanguageManager.getText("short_speed"), speedColor);
 
         public final String text;
         public final Color color;
@@ -110,6 +131,31 @@ public class ColorManager {
 
     public static void drawColoredText(Graphics2D g2d, String text, int x, int y, Font font, Color baseColor, boolean forceBaseColor) {
         g2d.setFont(font);
+
+        if (text.contains("r{")) {
+            String[] separatedText = text.split("r\\{");
+            text = "";
+            for (int i = 0; i < separatedText.length; i++) {
+                String part = separatedText[i];
+                if (i == 0) {
+                    text = part;
+                } else {
+                    if (part.contains("}")) {
+                        String[] insideColorIndicator = part.split("}");
+                        String colorText = insideColorIndicator[0];
+                        colorText = replaceColorIndicators(colorText);
+                        text = text.concat(colorText);
+                        if (insideColorIndicator.length > 1) {
+                            text = text.concat(insideColorIndicator[1]);
+                        }
+                    } else {
+                        text = text.concat("r{" + part);
+                    }
+                }
+            }
+        }
+
+
         if (!text.contains("c{") || forceBaseColor) {
             text = removeColorIndicators(text);
             g2d.setColor(baseColor);

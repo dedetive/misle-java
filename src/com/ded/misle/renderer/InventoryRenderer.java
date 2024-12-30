@@ -301,18 +301,6 @@ public class InventoryRenderer {
             // Item effect
         for (String[] effectWrappedLines : wrappedEffect) {
             for (String line : effectWrappedLines) {
-                if (line.contains("r{")) {
-                    String[] separatedLine = line.split("r\\{");
-                    line = "";
-                    for (String line1 : separatedLine) {
-                        if (line1.contains("}")) {
-                            line1 = line1.replaceAll("}", "");
-                            line1 = replaceColorIndicators(line1);
-                        }
-                        line = line.concat(line1);
-                    }
-                }
-
                 drawColoredText(g2d, line, (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow),
                     g2d.getFont(), tooltipTextShadowColor, true);
                 drawColoredText(g2d, line, textX, textY,
