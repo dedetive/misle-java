@@ -81,7 +81,16 @@ public class ColorManager {
 
     public final static Color gridColor = Color.BLACK;
 
+    // Stats colors
 
+    public final static Color strengthColor = new Color(0xDB963D);
+
+    public static String replaceColorIndicators(String text) {
+        return switch (text) {
+            case "STRENGTH" -> "c{#" + Integer.toHexString(strengthColor.getRGB()).substring(2) + ",Strength}";
+            default -> text;
+        };
+    }
 
     public static void drawColoredText(Graphics2D g2d, String text, int x, int y, Font font, Color baseColor, boolean forceBaseColor) {
         g2d.setFont(font);

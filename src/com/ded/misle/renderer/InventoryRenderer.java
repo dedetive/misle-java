@@ -238,15 +238,15 @@ public class InventoryRenderer {
 
         // Calculate dynamic height
         int lineHeight = fm.getHeight();
-        int tooltipHeight = lineHeight * 4; // minimum height for basic text
+        int tooltipHeight = (int) (lineHeight * 4.35); // minimum height for basic text
 
         // Adjust for multi-line description
-        String[] wrappedDescription = wrapText(itemDescription, tooltipWidth - 20, fm);
+        String[] wrappedDescription = wrapText(removeColorIndicators(itemDescription), tooltipWidth - 20, fm);
         tooltipHeight += lineHeight * wrappedDescription.length;
 
         java.util.List<String> differentEffects = new ArrayList<>();
         List<String[]> wrappedEffect = new ArrayList<>();
-        int maxTooltipWidth = slotSize * 6; // Set maximum tooltip width
+        int maxTooltipWidth = slotSize * 8; // Set maximum tooltip width
 
         // Split itemEffect into individual lines
         String[] effects = itemEffect.split("\\\\n");
@@ -255,7 +255,7 @@ public class InventoryRenderer {
 
         // Wrap each line of text
         for (String effect : differentEffects) {
-            wrappedEffect.add(wrapText(effect, tooltipWidth - 20, fm));
+            wrappedEffect.add(wrapText(removeColorIndicators(effect), tooltipWidth - 20, fm));
         }
         tooltipHeight += lineHeight * (wrappedEffect.size() - 1); // Adjust height based on wrapped lines
 
@@ -278,10 +278,10 @@ public class InventoryRenderer {
             // Item name
         int textX = tooltipX + 10;
         int textY = tooltipY + lineHeight;
-        g2d.setColor(tooltipTextShadowColor);
-        g2d.drawString(itemName, (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow));
-        g2d.setColor(hoveredItem.getNameColor());
-        g2d.drawString(itemName, textX, textY);
+        drawColoredText(g2d, itemName, (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow),
+            g2d.getFont(), tooltipTextShadowColor, true);
+        drawColoredText(g2d, itemName, textX, textY,
+            g2d.getFont(), hoveredItem.getNameColor(), false);
 
             // Item count
         int itemNameWidth = fm.stringWidth(itemName);
@@ -293,29 +293,41 @@ public class InventoryRenderer {
         textY += lineHeight;
 
             // Item type
-        g2d.setColor(tooltipTextShadowColor);
-        g2d.drawString(itemType, (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow));
-        g2d.setColor(itemTypeTooltip);
-        g2d.drawString(itemType, textX, textY);
+        drawColoredText(g2d, itemType, (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow),
+            g2d.getFont(), tooltipTextShadowColor, true);
+        drawColoredText(g2d, itemType, textX, textY,
+            g2d.getFont(), itemTypeTooltip, false);
         textY += lineHeight;
+
 
             // Item effect
         for (String[] effectWrappedLines : wrappedEffect) {
             for (String line : effectWrappedLines) {
-                g2d.setColor(tooltipTextShadowColor);
-                g2d.drawString(line, (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow));
-                g2d.setColor(itemEffectTooltip);
-                g2d.drawString(line, textX, textY);
+                if (line.contains("r{")) {
+                    String[] separatedLine = line.split("r\\{");
+                    line = "";
+                    for (String line1 : separatedLine) {
+                        line1 = line1.replaceAll("}", "");
+                        line1 = replaceColorIndicators(line1);
+                        line = line.concat(line1);
+                    }
+                }
+
+                drawColoredText(g2d, line, (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow),
+                    g2d.getFont(), tooltipTextShadowColor, true);
+                drawColoredText(g2d, line, textX, textY,
+                    g2d.getFont(), itemEffectTooltip, false);
                 textY += lineHeight;
             }
         }
 
             // Item description
         for (String line : wrappedDescription) {
-            g2d.setColor(tooltipTextShadowColor);
-            g2d.drawString(line, (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow));
-            g2d.setColor(itemDescriptionTooltip);
-            g2d.drawString(line, textX, textY);
+            drawColoredText(g2d, line, (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow),
+                g2d.getFont(), tooltipTextShadowColor, true);
+            drawColoredText(g2d, line, textX, textY,
+                g2d.getFont(), itemDescriptionTooltip, false);
+
             textY += lineHeight;
         }
     }
