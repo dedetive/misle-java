@@ -40,8 +40,8 @@ public class DialogRenderer {
             // Placeholder to method mapping
             Map<String, String> placeholders = new HashMap<>();
             placeholders.put("totalPlaytimeHours", Long.toString(player.stats.getCurrentTotalPlaytime(HOURS)));
-            placeholders.put("totalPlaytimeMinutes", Long.toString(player.stats.getCurrentTotalPlaytime(MINUTES)));
-            placeholders.put("totalPlaytimeSeconds", Long.toString(player.stats.getCurrentTotalPlaytime(SECONDS)));
+            placeholders.put("totalPlaytimeMinutes", Long.toString(player.stats.getCurrentTotalPlaytime(MINUTES) % 60));
+            placeholders.put("totalPlaytimeSeconds", Long.toString(player.stats.getCurrentTotalPlaytime(SECONDS) % 60));
 
             // Regex to match placeholders in the format f{...}
             Pattern pattern = Pattern.compile("f\\{(.*?)}");
