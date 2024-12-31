@@ -10,6 +10,7 @@ import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.levelDesigner;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.renderer.ColorManager.*;
+import static com.ded.misle.renderer.FontManager.itemInfoFont;
 import static com.ded.misle.renderer.GameRenderer.*;
 import static com.ded.misle.renderer.MenuButton.createButton;
 import static com.ded.misle.renderer.MenuButton.drawButtons;
@@ -20,8 +21,6 @@ import static com.ded.misle.GamePanel.screenWidth;
 import static com.ded.misle.GamePanel.screenHeight;
 
 public class MenuRenderer {
-    private static final String gameVersion = "v0.1.5-alpha";
-
     private static void createTitle(String text, Graphics2D g2d, double scaleByScreenSize) {
         g2d.setFont(FontManager.titleFont);
         FontMetrics fm = g2d.getFontMetrics();
@@ -145,11 +144,9 @@ public class MenuRenderer {
 
             // Version
 
-            g2d.setFont(FontManager.itemInfoFont);
-            g2d.setColor(menuVersionShadowColor);
-            g2d.drawString(gameVersion, (int) (1640 * scaleByScreenSize + GameRenderer.textShadow), (int) (1010* Math.pow(scaleByScreenSize, 1.04) + GameRenderer.textShadow));
-            g2d.setColor(menuVersionColor);
-            g2d.drawString(gameVersion, (int) (1640 * scaleByScreenSize), (int) (1010* Math.pow(scaleByScreenSize, 1.04)));
+            String gameVersion = LanguageManager.getText("version");
+            drawColoredText(g2d, gameVersion, (int) (1640 * scaleByScreenSize + textShadow), (int) (1010* Math.pow(scaleByScreenSize, 1.04) + textShadow), itemInfoFont, menuVersionShadowColor, true);
+            drawColoredText(g2d, gameVersion, (int) (1640 * scaleByScreenSize), (int) (1010* Math.pow(scaleByScreenSize, 1.04)), itemInfoFont, menuVersionColor, false);
         }
     }
 

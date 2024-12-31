@@ -1,5 +1,7 @@
 package com.ded.misle.renderer;
 
+import com.ded.misle.LanguageManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -7,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.GameRenderer.textShadow;
@@ -65,6 +68,24 @@ public class MenuButton {
         });
     }
 
+    private enum ButtonTextColorUpdater {
+        main_menu_quit("#FF7070"),
+        pause_menu_quit("#FF7070"),
+        options_menu_go_back("#FF7070"),
+
+        ;
+
+        public final String color;
+
+        ButtonTextColorUpdater(String color) {
+            this.color = color;
+        }
+
+        public String getColor() {
+            return this.color;
+        }
+    }
+
     private static void detectIfButtonHovered(Point mousePoint, JPanel panel) {
         boolean repaintNeeded = false;
 
@@ -73,6 +94,11 @@ public class MenuButton {
                 if (!button.isHovered) {
                     button.isHovered = true;
                     button.color = buttonHoveredColor;
+                    for (ButtonTextColorUpdater updater : ButtonTextColorUpdater.values()) {
+                        if (Objects.equals(button.text, LanguageManager.getText(String.valueOf(updater)))) {
+                            button.text = "c{" + updater.getColor() + "," + LanguageManager.getText(String.valueOf(updater)) + "}";
+                        }
+                    }
                     repaintNeeded = true;
                     panel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 }
