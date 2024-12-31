@@ -100,19 +100,19 @@ public class MenuButton {
             // TEXT SHADOW
             g2d.setFont(buttonFont);
             FontMetrics fm = g2d.getFontMetrics();
-            int textWidth = fm.stringWidth(button.text);
+            int textWidth = fm.stringWidth(removeColorIndicators(button.text));
             int textHeight = fm.getAscent();
             int textX = button.bounds.x + (button.bounds.width - textWidth) / 2;
             int textY = button.bounds.y + (button.bounds.height + textHeight) / 2 - fm.getDescent() + (int) (2 * scale);
             g2d.setColor(buttonTextShadowColor);
-            g2d.drawString(button.text, (int) (textX - textShadow), textY); // Left
-            g2d.drawString(button.text, (int) (textX + textShadow), textY); // Right
-            g2d.drawString(button.text, textX, (int) (textY - textShadow)); // Up
-            g2d.drawString(button.text, textX, (int) (textY + textShadow)); // Down
+            // Left, right, up, down
+            drawColoredText(g2d, button.text, (int) (textX - textShadow), textY, g2d.getFont(), buttonTextShadowColor, true);
+            drawColoredText(g2d, button.text, (int) (textX + textShadow), textY, g2d.getFont(), buttonTextShadowColor, true);
+            drawColoredText(g2d, button.text, textX, (int) (textY - textShadow), g2d.getFont(), buttonTextShadowColor, true);
+            drawColoredText(g2d, button.text, textX, (int) (textY + textShadow), g2d.getFont(), buttonTextShadowColor, true);
 
             // ACTUAL TEXT
-            g2d.setColor(buttonTextColor);
-            g2d.drawString(button.text, textX, textY);
+            drawColoredText(g2d, button.text, textX, textY, g2d.getFont(), buttonTextColor, false);
         }
     }
 
