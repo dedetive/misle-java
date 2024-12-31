@@ -229,10 +229,10 @@ public class PlayerStats {
 		long millisPlaytime = System.currentTimeMillis() - startTimestamp;
 		long millisTotalPlaytime = getTotalPlaytime(PlaytimeMode.MILLIS);
 		return switch (playtimeMode) {
-			case MILLIS -> (millisPlaytime + millisTotalPlaytime) % 1000;
-			case SECONDS -> ((millisPlaytime + millisTotalPlaytime) / 1000) % 60;
-			case MINUTES -> ((millisPlaytime + millisTotalPlaytime) / (60 * 1000)) % 60;
-			case HOURS -> ((millisPlaytime + millisTotalPlaytime) / (60 * 60 * 1000)) % 60;
+			case MILLIS -> (millisPlaytime + millisTotalPlaytime);
+			case SECONDS -> ((millisPlaytime + millisTotalPlaytime) / 1000);
+			case MINUTES -> ((millisPlaytime + millisTotalPlaytime) / (60 * 1000));
+			case HOURS -> ((millisPlaytime + millisTotalPlaytime) / (60 * 60 * 1000));
 		};
 	}
 

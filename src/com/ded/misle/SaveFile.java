@@ -402,10 +402,8 @@ public class SaveFile {
 			int distanceRight = (int) player.stats.getDistance(PlayerStats.Direction.RIGHT);
 			brandValue(distanceRight, PixelData.DISTANCE_RIGHT_H, PixelData.DISTANCE_RIGHT_M, PixelData.DISTANCE_RIGHT_L);
 
-			long previousPlaytime = player.stats.getTotalPlaytime(PlayerStats.PlaytimeMode.SECONDS);
-			long currentPlaytime = player.stats.getCurrentPlaytime(PlayerStats.PlaytimeMode.SECONDS);
-			long totalPlaytime = previousPlaytime + currentPlaytime;
-			brandValue(totalPlaytime, PixelData.TOTAL_PLAYTIME_E, PixelData.TOTAL_PLAYTIME_H, PixelData.TOTAL_PLAYTIME_M, PixelData.TOTAL_PLAYTIME_L);
+			long playtime = player.stats.getCurrentTotalPlaytime(PlayerStats.PlaytimeMode.SECONDS);
+			brandValue(playtime, PixelData.TOTAL_PLAYTIME_E, PixelData.TOTAL_PLAYTIME_H, PixelData.TOTAL_PLAYTIME_M, PixelData.TOTAL_PLAYTIME_L);
 
 			int maxStackSizeMultiplier = (int) (1000 * player.attr.getMaxStackSizeMulti());
 			brandValue(maxStackSizeMultiplier, PixelData.MAX_STACK_SIZE_MULTIPLIER_M, PixelData.MAX_STACK_SIZE_MULTIPLIER_L);
