@@ -54,6 +54,10 @@ public class PlayerAttributes {
 		SPEED
 	}
 
+	// COINS
+
+	private int balance;
+
 	// LEVEL ATTRIBUTES
 
 	double levelMaxHP;
@@ -622,7 +626,19 @@ public class PlayerAttributes {
 		};
 	}
 
-	// END XP
+	// COINS
+
+	public int getBalance() {
+		return balance;
+	}
+
+	public void setBalance(int balance) {
+		this.balance = balance;
+	}
+
+	public void addBalance(int balance) {
+		this.balance += balance;
+	}
 
 	// COUNT LIMIT
 
@@ -717,6 +733,7 @@ public class PlayerAttributes {
 		this.setRegenerationQuality(1);
 		this.setRegenerationRate(1);
 		this.updateXPtoLevelUp();
+		this.setBalance(0);
 		isDead = false;
 		unlockHP(lockedHP);
 	}
