@@ -14,7 +14,10 @@ public class ImageRenderer {
     public enum ImageName {
         INVENTORY_BAR("ui", "inventory_bar.png"),
         INVENTORY_MENU("ui", "inventory_background.png"),
-        INVENTORY_RINGLESS_EXTRA_SLOT("ui", "inventory_ringless_extra_slot.png"),;
+        INVENTORY_RINGLESS_EXTRA_SLOT("ui", "inventory_ringless_extra_slot.png"),
+        COIN("ui", "coin.png"),
+
+        ;
 
         ImageName(String category, String fileName) {
             Path basePath = getPath().resolve("resources/images/");

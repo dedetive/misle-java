@@ -49,6 +49,9 @@ public class ColorManager {
         // Entropy UI
     public final static Color entropyBarBackground = new Color(0xA0A0A0);
     public final static Color entropyBarCurrent = new Color(0xA0A0FF);
+        // Coins
+    public final static Color coinTextUI = new Color(225, 210, 170);
+    public final static Color coinTextShadowColor = defaultShadowColor;
 
     // Menus
         // Buttons

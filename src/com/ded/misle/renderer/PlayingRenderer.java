@@ -15,6 +15,7 @@ import static com.ded.misle.boxes.Box.getTexture;
 import static com.ded.misle.npcs.NPC.getSelectedNPCs;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.DialogRenderer.renderDialog;
+import static com.ded.misle.renderer.FontManager.coinTextFont;
 import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.renderer.ImageRenderer.cachedImages;
 import static com.ded.misle.Launcher.scale;
@@ -145,11 +146,48 @@ public class PlayingRenderer {
         }
     }
 
-    private static void drawUIElements(Graphics2D g2d) {
-        drawHealthBar(g2d);
-        drawEntropyBar(g2d);
-        drawInventoryBar(g2d);
-        drawSelectedItemName(g2d);
+    public static void createFloatingText(String textToDisplay, Color color, double x, double y, boolean movesUp) {
+        floatingText.add(textToDisplay);
+        Point point = new Point((int) x, (int) y);
+        floatingTextPosition.add(point);
+        floatingTextColor.add(color);
+
+        try {
+
+            AtomicInteger index = new AtomicInteger(floatingTextPosition.size() - 1);
+            Timer movingUp = new Timer(200, e -> {
+                if (index.get() != -1) {
+                    Point newPoint = new Point(floatingTextPosition.get(index.get()).x, (floatingTextPosition.get(index.get()).y - 1));
+                    floatingTextPosition.set(index.get(), newPoint);
+                }
+            });
+            if (movesUp) {
+                movingUp.setRepeats(true);
+                movingUp.start();
+            }
+
+            Timer timer = new Timer(2500, l -> {
+                index.addAndGet(-1);
+                movingUp.stop();
+                floatingText.removeFirst();
+                floatingTextPosition.removeFirst();
+                floatingTextColor.removeFirst();
+            });
+            timer.setRepeats(false);
+            timer.start();
+        } catch (IndexOutOfBoundsException e) {
+            // This would mean floatingText was removed, so stop
+        }
+    }
+
+    private static void drawFloatingText(Graphics2D g2d) {
+        for (int i = 0; i < floatingText.size() - 1; i++) {
+            g2d.setFont(FontManager.itemInfoFont);
+            g2d.setColor(floatingTextShadow);
+            g2d.drawString(floatingText.get(i), (int) ((floatingTextPosition.get(i).x) * scale + MainRenderer.textShadow), (int) ((floatingTextPosition.get(i).y) * scale + MainRenderer.textShadow));
+            g2d.setColor(floatingTextColor.get(i));
+            g2d.drawString(floatingText.get(i), (int) (floatingTextPosition.get(i).x * scale), (int) (floatingTextPosition.get(i).y * scale));
+        }
     }
 
     private static void drawHealthBar(Graphics2D g2d) {
@@ -282,47 +320,30 @@ public class PlayingRenderer {
         }
     }
 
-    public static void createFloatingText(String textToDisplay, Color color, double x, double y, boolean movesUp) {
-        floatingText.add(textToDisplay);
-        Point point = new Point((int) x, (int) y);
-        floatingTextPosition.add(point);
-        floatingTextColor.add(color);
+    public static void drawCoins(Graphics2D g2d) {
+        int coinTextX = (int) (468 * scale);
+        int coinTextY = (int) (222 * scale);
+        g2d.setColor(coinTextShadowColor);
+        g2d.setFont(coinTextFont);
+        g2d.drawString(String.valueOf(player.attr.getBalance()), (int) (coinTextX + textShadow), (int)(coinTextY + textShadow));
 
-        try {
+        g2d.setColor(coinTextUI);
+        g2d.drawString(String.valueOf(player.attr.getBalance()), coinTextX, coinTextY);
 
-            AtomicInteger index = new AtomicInteger(floatingTextPosition.size() - 1);
-            Timer movingUp = new Timer(200, e -> {
-                if (index.get() != -1) {
-                    Point newPoint = new Point(floatingTextPosition.get(index.get()).x, (floatingTextPosition.get(index.get()).y - 1));
-                    floatingTextPosition.set(index.get(), newPoint);
-                }
-            });
-            if (movesUp) {
-                movingUp.setRepeats(true);
-                movingUp.start();
-            }
+        FontMetrics fm = g2d.getFontMetrics();
+        int textWidth = fm.stringWidth(String.valueOf(player.attr.getBalance()));
+        int coinPosX = coinTextX + textWidth;
+        int coinPosY = (int) (coinTextY - g2d.getFontMetrics().getHeight() + 4 * scale);
 
-            Timer timer = new Timer(2500, l -> {
-                index.addAndGet(-1);
-                movingUp.stop();
-                floatingText.removeFirst();
-                floatingTextPosition.removeFirst();
-                floatingTextColor.removeFirst();
-            });
-            timer.setRepeats(false);
-            timer.start();
-        } catch (IndexOutOfBoundsException e) {
-            // This would mean floatingText was removed, so stop
-        }
+        g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.COIN), coinPosX, coinPosY,
+            g2d.getFontMetrics().getHeight(), g2d.getFontMetrics().getHeight(), null);
     }
 
-    private static void drawFloatingText(Graphics2D g2d) {
-        for (int i = 0; i < floatingText.size() - 1; i++) {
-            g2d.setFont(FontManager.itemInfoFont);
-            g2d.setColor(floatingTextShadow);
-            g2d.drawString(floatingText.get(i), (int) ((floatingTextPosition.get(i).x) * scale + MainRenderer.textShadow), (int) ((floatingTextPosition.get(i).y) * scale + MainRenderer.textShadow));
-            g2d.setColor(floatingTextColor.get(i));
-            g2d.drawString(floatingText.get(i), (int) (floatingTextPosition.get(i).x * scale), (int) (floatingTextPosition.get(i).y * scale));
-        }
+    private static void drawUIElements(Graphics2D g2d) {
+        drawHealthBar(g2d);
+        drawEntropyBar(g2d);
+        drawCoins(g2d);
+        drawInventoryBar(g2d);
+        drawSelectedItemName(g2d);
     }
 }

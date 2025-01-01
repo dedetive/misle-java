@@ -23,6 +23,7 @@ public class FontManager {
     public static Font itemInfoFont = loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));
     public static Font dialogNPCName = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (85 * scale / 3.75));
     public static Font dialogNPCText = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (52 * scale / 3.75));
+    public static Font coinTextFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (72 * scale / 3.75));
     static {
         updateFontSizes();
     }
@@ -45,12 +46,13 @@ public class FontManager {
 	}
 
     public static void updateFontSizes() {
+        coinTextFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (62 * scale / 3.75));
+        itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (50 * scale / 3.75));
         switch (getCurrentScript()) {
             case LATIN -> {
                 titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
                 selectedItemNameFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
                 itemInfoFont = loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));
-                itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (50 * scale / 3.75));
                 buttonFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
                 dialogNPCName = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (85 * scale / 3.75));
                 dialogNPCText = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (52 * scale / 3.75));
@@ -58,7 +60,6 @@ public class FontManager {
             case GREEK, CYRILLIC -> {
                 titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
                 selectedItemNameFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
-                itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (50 * scale / 3.75));
                 buttonFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
                 itemInfoFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
                 dialogNPCName = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (85 * scale / 3.75));
@@ -68,7 +69,6 @@ public class FontManager {
                 titleFont = loadFont("/fonts/NotoSansSC-SemiBold.ttf", (float) (96 * scale / 3.75));
                 selectedItemNameFont = loadFont("/fonts/NotoSansSC-Regular.ttf", (float) (35 * scale / 3.75));
                 itemInfoFont = loadFont("/fonts/NotoSansSC-Regular.ttf", (float) (40 * scale / 3.75));
-                itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (50 * scale / 3.75));
                 buttonFont = loadFont("/fonts/NotoSansSC-SemiBold.ttf", (float) (44 * scale / 3.75));
                 dialogNPCName = loadFont("/fonts/NotoSansSC-SemiBold.ttf", (float) (85 * scale / 3.75));
                 dialogNPCText = loadFont("/fonts/NotoSansSC-Regular.ttf", (float) (52 * scale / 3.75));
