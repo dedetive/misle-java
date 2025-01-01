@@ -4,8 +4,6 @@ import com.ded.misle.LanguageManager;
 import com.ded.misle.npcs.NPC;
 
 import java.awt.*;
-import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
