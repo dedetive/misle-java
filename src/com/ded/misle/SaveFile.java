@@ -40,6 +40,8 @@ public class SaveFile {
 		/**
 		  PIXELS IN USE:
 		  X   Y
+		  0, 0 RGB
+		  0, 1 G
 		  4, 15 RGB
 		  5, 15 RGB
 		  9, 38 RGB
@@ -174,7 +176,13 @@ public class SaveFile {
 		TOTAL_PLAYTIME_M			(GREEN,8,38),
 		TOTAL_PLAYTIME_L			(BLUE,9,38),
 		MAX_STACK_SIZE_MULTIPLIER_M	(RED,27,27),
-		MAX_STACK_SIZE_MULTIPLIER_L	(GREEN,27,27);
+		MAX_STACK_SIZE_MULTIPLIER_L	(GREEN,27,27),
+		BALANCE_E					(RED, 0, 0),
+		BALANCE_H					(GREEN, 0, 0),
+		BALANCE_M					(BLUE, 0, 0),
+		BALANCE_L					(GREEN, 0, 1),
+
+		;
 
 		private final PixelColor color;
 		private final int x;
@@ -249,6 +257,10 @@ public class SaveFile {
 					player.stats.setSteps(PlayerStats.Direction.RIGHT, loadAttribute(PixelData.STEPS_RIGHT_H, PixelData.STEPS_RIGHT_M, PixelData.STEPS_RIGHT_L));
 
 					player.stats.setTotalPlaytime(loadAttribute(PixelData.TOTAL_PLAYTIME_E, PixelData.TOTAL_PLAYTIME_H, PixelData.TOTAL_PLAYTIME_M, PixelData.TOTAL_PLAYTIME_L) * 1000L);
+
+					// Coins
+
+					player.attr.setBalance(loadAttribute(PixelData.BALANCE_E, PixelData.BALANCE_H, PixelData.BALANCE_M, PixelData.BALANCE_L));
 
 					// Load inventory
 
@@ -407,6 +419,9 @@ public class SaveFile {
 
 			int maxStackSizeMultiplier = (int) (1000 * player.attr.getMaxStackSizeMulti());
 			brandValue(maxStackSizeMultiplier, PixelData.MAX_STACK_SIZE_MULTIPLIER_M, PixelData.MAX_STACK_SIZE_MULTIPLIER_L);
+
+			int balance = player.attr.getBalance();
+			brandValue(balance, PixelData.BALANCE_E, PixelData.BALANCE_H, PixelData.BALANCE_M, PixelData.BALANCE_L);
 
 			// Inventory
 
