@@ -7,7 +7,6 @@ import com.ded.misle.items.Item;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -16,7 +15,7 @@ import static com.ded.misle.boxes.Box.getTexture;
 import static com.ded.misle.npcs.NPC.getSelectedNPCs;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.DialogRenderer.renderDialog;
-import static com.ded.misle.renderer.GameRenderer.*;
+import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.renderer.ImageRenderer.cachedImages;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.player.PlayerStats.Direction.LEFT;
@@ -70,7 +69,7 @@ public class PlayingRenderer {
         ArrayList<NPC> selectedNPCs = getSelectedNPCs();
         for (NPC npc : selectedNPCs) {
             for (int i = 0; i <= 270; i += 90) {
-                PlayingRenderer.drawRotatedImage(g2d, getTexture("wall_default_overlayW"), npc.getX() * scale - player.pos.getCameraOffsetX(), npc.getY() * scale - player.pos.getCameraOffsetY(),
+                drawRotatedImage(g2d, getTexture("wall_default_overlayW"), npc.getX() * scale - player.pos.getCameraOffsetX(), npc.getY() * scale - player.pos.getCameraOffsetY(),
                     (int) (tileSize * npc.getBoxScaleHorizontal()), (int) (tileSize * npc.getBoxScaleVertical()), i + npc.getRotation());
             }
         }
@@ -112,7 +111,7 @@ public class PlayingRenderer {
             renderDialog(g2d);
         }
 
-        if (isFading != GameRenderer.FadingState.UNFADED) drawFading(g2d);
+        if (isFading != MainRenderer.FadingState.UNFADED) drawFading(g2d);
 
         g2d.dispose();
     }
@@ -223,7 +222,7 @@ public class PlayingRenderer {
                     int textX = slotX - textWidth + slotSize[0];
                     int textY = slotY + 8 * slotSize[0] / 9;
                     g2d.setColor(itemCountShadowColor);
-                    g2d.drawString(Integer.toString(itemCount), (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow));
+                    g2d.drawString(Integer.toString(itemCount), (int) (textX + MainRenderer.textShadow), (int) (textY + MainRenderer.textShadow));
                     g2d.setColor(itemCountColor);
                     g2d.drawString(Integer.toString(itemCount), textX, textY);
                 }
@@ -265,7 +264,7 @@ public class PlayingRenderer {
                     int textX = selectedItemNamePosition.x - textWidth / 2;
                     int textY = selectedItemNamePosition.y;
 
-                    drawColoredText(g2d, selectedItemName, (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow),
+                    drawColoredText(g2d, selectedItemName, (int) (textX + MainRenderer.textShadow), (int) (textY + MainRenderer.textShadow),
                         g2d.getFont(), selectedItemNameShadowColor, true);
 
                     drawColoredText(g2d, selectedItemName, textX, textY,
@@ -281,67 +280,6 @@ public class PlayingRenderer {
                 selectedItemNamePosition = null;
             }
         }
-    }
-
-    public static void drawRotatedImage(Graphics2D g2d, Image image, double x, double y, int width, int height, double angle) {
-        // Calculate the rotation center based on the desired width and height
-        double centerX = x + width / 2.0;
-        double centerY = y + height / 2.0;
-
-        // Save the original transform
-        AffineTransform originalTransform = g2d.getTransform();
-
-        // Apply rotation around the calculated center
-        g2d.rotate(Math.toRadians(angle), centerX, centerY);
-
-        // Draw the scaled and rotated image at the specified position
-        g2d.drawImage(image, (int) x, (int) y, width, height, null);
-
-        // Restore the original transform to avoid affecting other drawings
-        g2d.setTransform(originalTransform);
-    }
-
-    public static void drawRotatedImage(Graphics2D g2d, Image image, double x, double y, int width, int height, double angle, boolean mirror) {
-        // Calculate the rotation center based on the desired width and height
-        double centerX = x + width / 2.0;
-        double centerY = y + height / 2.0;
-
-        // Save the original transform
-        AffineTransform originalTransform = g2d.getTransform();
-
-        // Apply rotation around the calculated center
-        g2d.rotate(Math.toRadians(angle), centerX, centerY);
-
-        // Apply mirroring if needed
-        if (mirror) {
-            // Translate to the center of the image, apply scaling to flip horizontally, then translate back
-            g2d.translate(x + width, y); // Move to the right edge of the image
-            g2d.scale(-1, 1);           // Flip horizontally
-            g2d.translate(-x, -y);       // Move back to the original position
-        }
-
-        // Draw the scaled and rotated (and possibly mirrored) image at the specified position
-        g2d.drawImage(image, (int) x, (int) y, width, height, null);
-
-        // Restore the original transform to avoid affecting other drawings
-        g2d.setTransform(originalTransform);
-    }
-
-    public static void drawRotatedRect(Graphics2D g2d, Rectangle rectangle, double angle) {
-        double centerX = rectangle.x + rectangle.width / 2.0;
-        double centerY = rectangle.y + rectangle.height / 2.0;
-
-        // Save the original transform
-        AffineTransform originalTransform = g2d.getTransform();
-
-        // Apply rotation around the calculated center
-        g2d.rotate(Math.toRadians(angle), centerX, centerY);
-
-        // Draw the scaled and rotated image at the specified position
-        g2d.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-
-        // Restore the original transform to avoid affecting other drawings
-        g2d.setTransform(originalTransform);
     }
 
     public static void createFloatingText(String textToDisplay, Color color, double x, double y, boolean movesUp) {
@@ -382,7 +320,7 @@ public class PlayingRenderer {
         for (int i = 0; i < floatingText.size() - 1; i++) {
             g2d.setFont(FontManager.itemInfoFont);
             g2d.setColor(floatingTextShadow);
-            g2d.drawString(floatingText.get(i), (int) ((floatingTextPosition.get(i).x) * scale + GameRenderer.textShadow), (int) ((floatingTextPosition.get(i).y) * scale + GameRenderer.textShadow));
+            g2d.drawString(floatingText.get(i), (int) ((floatingTextPosition.get(i).x) * scale + MainRenderer.textShadow), (int) ((floatingTextPosition.get(i).y) * scale + MainRenderer.textShadow));
             g2d.setColor(floatingTextColor.get(i));
             g2d.drawString(floatingText.get(i), (int) (floatingTextPosition.get(i).x * scale), (int) (floatingTextPosition.get(i).y * scale));
         }

@@ -11,7 +11,7 @@ import static com.ded.misle.Launcher.levelDesigner;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.itemInfoFont;
-import static com.ded.misle.renderer.GameRenderer.*;
+import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.renderer.MenuButton.createButton;
 import static com.ded.misle.renderer.MenuButton.drawButtons;
 import static com.ded.misle.SaveFile.saveEverything;
@@ -29,14 +29,14 @@ public class MenuRenderer {
         int centerX = (int) ((screenWidth - textWidth) / 2);
         int textY = (int) (182 * scaleByScreenSize);
         g2d.setColor(menuTitleShadowColor);
-        g2d.drawString(titleText, (int) (centerX - GameRenderer.textShadow), textY); // Left
-        g2d.drawString(titleText, (int) (centerX + GameRenderer.textShadow), textY); // Right
-        g2d.drawString(titleText, centerX, (int) (textY - GameRenderer.textShadow)); // Up
-        g2d.drawString(titleText, centerX, (int) (textY + GameRenderer.textShadow)); // Down
-        g2d.drawString(titleText, (int) (centerX - GameRenderer.textShadow), (int) (textY - GameRenderer.textShadow)); // Left-up corner
-        g2d.drawString(titleText, (int) (centerX + GameRenderer.textShadow), (int) (textY - GameRenderer.textShadow)); // Right-up corner
-        g2d.drawString(titleText, (int) (centerX - GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow)); // Left-down corner
-        g2d.drawString(titleText, (int) (centerX - GameRenderer.textShadow), (int) (textY - GameRenderer.textShadow)); // Right-down corner
+        g2d.drawString(titleText, (int) (centerX - MainRenderer.textShadow), textY); // Left
+        g2d.drawString(titleText, (int) (centerX + MainRenderer.textShadow), textY); // Right
+        g2d.drawString(titleText, centerX, (int) (textY - MainRenderer.textShadow)); // Up
+        g2d.drawString(titleText, centerX, (int) (textY + MainRenderer.textShadow)); // Down
+        g2d.drawString(titleText, (int) (centerX - MainRenderer.textShadow), (int) (textY - MainRenderer.textShadow)); // Left-up corner
+        g2d.drawString(titleText, (int) (centerX + MainRenderer.textShadow), (int) (textY - MainRenderer.textShadow)); // Right-up corner
+        g2d.drawString(titleText, (int) (centerX - MainRenderer.textShadow), (int) (textY + MainRenderer.textShadow)); // Left-down corner
+        g2d.drawString(titleText, (int) (centerX - MainRenderer.textShadow), (int) (textY - MainRenderer.textShadow)); // Right-down corner
         g2d.setColor(menuTitleColor);
         g2d.drawString(titleText, centerX, textY);
     }
@@ -46,13 +46,13 @@ public class MenuRenderer {
     }
 
     public static void optionsMenu() {
-        GameRenderer.previousMenu = GameRenderer.currentMenu;
-        GameRenderer.currentMenu = "OPTIONS_MENU";
+        MainRenderer.previousMenu = MainRenderer.currentMenu;
+        MainRenderer.currentMenu = "OPTIONS_MENU";
         gameState = GamePanel.GameState.OPTIONS_MENU;
     }
 
     public static void goToPreviousMenu() {
-        switch (GameRenderer.previousMenu) {
+        switch (MainRenderer.previousMenu) {
             case "MAIN_MENU":
                 gameState = GamePanel.GameState.MAIN_MENU;
                 break;
@@ -65,22 +65,22 @@ public class MenuRenderer {
             case "PAUSE_MENU":
                 gameState = GamePanel.GameState.PAUSE_MENU;
         }
-        GameRenderer.previousMenu = GameRenderer.currentMenu;
+        MainRenderer.previousMenu = MainRenderer.currentMenu;
     }
 
     public static void goToMainMenu() {
         saveEverything();
         unloadBoxes();
         player.unloadPlayer();
-        GameRenderer.previousMenu = GameRenderer.currentMenu;
+        MainRenderer.previousMenu = MainRenderer.currentMenu;
         gameState = GameState.MAIN_MENU;
         fadingProgress = 0F;
         isFading = FadingState.UNFADED;
     }
 
     public static void pauseGame() {
-        GameRenderer.previousMenu = GameRenderer.currentMenu;
-        GameRenderer.currentMenu = "PAUSE_MENU";
+        MainRenderer.previousMenu = MainRenderer.currentMenu;
+        MainRenderer.currentMenu = "PAUSE_MENU";
         gameState = GameState.PAUSE_MENU;
     }
 
@@ -90,7 +90,7 @@ public class MenuRenderer {
             // ANTI-ALIASING
             g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-            GameRenderer.currentMenu = "MAIN_MENU";
+            MainRenderer.currentMenu = "MAIN_MENU";
 
             double scaleByScreenSize = scale / 3.75;
 
@@ -114,9 +114,9 @@ public class MenuRenderer {
             Rectangle playButton = new Rectangle(playButtonX, playButtonY, playButtonWidth, playButtonHeight);
 
             if (!levelDesigner) {
-                createButton(playButton, LanguageManager.getText("main_menu_play"), GameRenderer::gameStart, panel);
+                createButton(playButton, LanguageManager.getText("main_menu_play"), MainRenderer::gameStart, panel);
             } else {
-                createButton(playButton, LanguageManager.getText("main_menu_level_designer"), GameRenderer::enterLevelDesigner, panel);
+                createButton(playButton, LanguageManager.getText("main_menu_level_designer"), MainRenderer::enterLevelDesigner, panel);
             }
 
             // Quit button
@@ -175,7 +175,7 @@ public class MenuRenderer {
             int playButtonHeight = (int) (155 * scaleByScreenSize);
             Rectangle playButton = new Rectangle(playButtonX, playButtonY, playButtonWidth, playButtonHeight);
 
-            createButton(playButton, LanguageManager.getText("pause_menu_resume"), GameRenderer::softGameStart, panel);
+            createButton(playButton, LanguageManager.getText("pause_menu_resume"), MainRenderer::softGameStart, panel);
 
             // Quit button
 
@@ -253,8 +253,8 @@ public class MenuRenderer {
             int textY = (int) (182 * scaleByScreenSize);
 
             // Progress bar
-            long elapsedTime = currentTimeMillis() - GameRenderer.startTime;
-            double progress = Math.min((double) elapsedTime / GameRenderer.LOADING_DURATION, 1.0); // Calculate progress (0.0 to 1.0)
+            long elapsedTime = currentTimeMillis() - MainRenderer.startTime;
+            double progress = Math.min((double) elapsedTime / MainRenderer.LOADING_DURATION, 1.0); // Calculate progress (0.0 to 1.0)
             String percentage = (int) (progress * 100) + "%";
 
             int progressBarWidth = (int) (640 * progress * scaleByScreenSize);
@@ -270,11 +270,11 @@ public class MenuRenderer {
             int centerX = (int) ((screenWidth - textWidth) / 2);
             textY = (int) ((progressBarY) - 20 * scaleByScreenSize);
             g2d.setColor(progressBarPercentageShadow);
-            g2d.drawString(percentage, (int) (centerX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow));
+            g2d.drawString(percentage, (int) (centerX + MainRenderer.textShadow), (int) (textY + MainRenderer.textShadow));
             g2d.setColor(progressBarPercentage);
             g2d.drawString(percentage, centerX, textY);
 
-            if (isFading != GameRenderer.FadingState.UNFADED) drawFading(g2d);
+            if (isFading != MainRenderer.FadingState.UNFADED) drawFading(g2d);
         }
     }
 }

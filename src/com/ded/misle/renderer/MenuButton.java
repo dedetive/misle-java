@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.ded.misle.renderer.ColorManager.*;
-import static com.ded.misle.renderer.GameRenderer.textShadow;
+import static com.ded.misle.renderer.MainRenderer.textShadow;
 import static com.ded.misle.renderer.FontManager.buttonFont;
 import static com.ded.misle.Launcher.scale;
 

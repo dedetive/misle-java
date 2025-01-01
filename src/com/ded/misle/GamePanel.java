@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import static com.ded.misle.renderer.ColorManager.*;
-import static com.ded.misle.renderer.GameRenderer.*;
+import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.input_handler.KeyHandler.updateDesignerSpeed;
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.renderer.InventoryRenderer.updateRendererVariableScales;

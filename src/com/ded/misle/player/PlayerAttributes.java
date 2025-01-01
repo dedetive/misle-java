@@ -11,7 +11,7 @@ import static com.ded.misle.boxes.BoxManipulation.moveCollisionBox;
 import static com.ded.misle.player.Inventory.PossibleItemStats.*;
 import static com.ded.misle.renderer.ColorManager.damageColor;
 import static com.ded.misle.renderer.ColorManager.healColor;
-import static com.ded.misle.renderer.GameRenderer.fadeInThenOut;
+import static com.ded.misle.renderer.MainRenderer.fadeInThenOut;
 import static com.ded.misle.renderer.PlayingRenderer.createFloatingText;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.items.Item.updateMaxStackSize;

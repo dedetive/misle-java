@@ -73,7 +73,7 @@ public class InventoryRenderer {
                         int textX = slotX - textWidth + slotSize[0];
                         int countY = slotY + slotSize[0];
                         g2d.setColor(itemCountShadowColor);
-                        g2d.drawString(Integer.toString(itemCount), (int) (textX + GameRenderer.textShadow), (int) (countY + GameRenderer.textShadow));
+                        g2d.drawString(Integer.toString(itemCount), (int) (textX + MainRenderer.textShadow), (int) (countY + MainRenderer.textShadow));
                         g2d.setColor(itemCountColor);
                         g2d.drawString(Integer.toString(itemCount), textX, countY);
                     }
@@ -99,7 +99,7 @@ public class InventoryRenderer {
                         int textX = slotX - textWidth + slotSize[1];
                         int countY = slotY + slotSize[1];
                         g2d.setColor(itemCountShadowColor);
-                        g2d.drawString(Integer.toString(itemCount), (int) (textX + GameRenderer.textShadow), (int) (countY + GameRenderer.textShadow));
+                        g2d.drawString(Integer.toString(itemCount), (int) (textX + MainRenderer.textShadow), (int) (countY + MainRenderer.textShadow));
                         g2d.setColor(itemCountColor);
                         g2d.drawString(Integer.toString(itemCount), textX, countY);
                     }
@@ -151,7 +151,7 @@ public class InventoryRenderer {
 
         // Draw text shadow
         g2d.setColor(shadowColor);
-        g2d.drawString(statText, (int) (startX + GameRenderer.textShadow), (int) (y + GameRenderer.textShadow));
+        g2d.drawString(statText, (int) (startX + MainRenderer.textShadow), (int) (y + MainRenderer.textShadow));
 
         // Draw text
         g2d.setColor(textColor);
@@ -276,7 +276,7 @@ public class InventoryRenderer {
             // Item name
         int textX = tooltipX + 10;
         int textY = tooltipY + lineHeight;
-        drawColoredText(g2d, itemName, (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow),
+        drawColoredText(g2d, itemName, (int) (textX + MainRenderer.textShadow), (int) (textY + MainRenderer.textShadow),
             g2d.getFont(), tooltipTextShadowColor, true);
         drawColoredText(g2d, itemName, textX, textY,
             g2d.getFont(), hoveredItem.getNameColor(), false);
@@ -284,14 +284,14 @@ public class InventoryRenderer {
             // Item count
         int itemNameWidth = fm.stringWidth(itemName);
         g2d.setColor(tooltipTextShadowColor);
-        g2d.drawString(itemCount, (int) (textX + itemNameWidth + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow));
+        g2d.drawString(itemCount, (int) (textX + itemNameWidth + MainRenderer.textShadow), (int) (textY + MainRenderer.textShadow));
         g2d.setColor(itemCountTooltip);
         g2d.drawString(itemCount, textX + itemNameWidth, textY);
 
         textY += lineHeight;
 
             // Item type
-        drawColoredText(g2d, itemType, (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow),
+        drawColoredText(g2d, itemType, (int) (textX + MainRenderer.textShadow), (int) (textY + MainRenderer.textShadow),
             g2d.getFont(), tooltipTextShadowColor, true);
         drawColoredText(g2d, itemType, textX, textY,
             g2d.getFont(), itemTypeTooltip, false);
@@ -301,7 +301,7 @@ public class InventoryRenderer {
             // Item effect
         for (String[] effectWrappedLines : wrappedEffect) {
             for (String line : effectWrappedLines) {
-                drawColoredText(g2d, line, (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow),
+                drawColoredText(g2d, line, (int) (textX + MainRenderer.textShadow), (int) (textY + MainRenderer.textShadow),
                     g2d.getFont(), tooltipTextShadowColor, true);
                 drawColoredText(g2d, line, textX, textY,
                     g2d.getFont(), itemEffectTooltip, false);
@@ -311,7 +311,7 @@ public class InventoryRenderer {
 
             // Item description
         for (String line : wrappedDescription) {
-            drawColoredText(g2d, line, (int) (textX + GameRenderer.textShadow), (int) (textY + GameRenderer.textShadow),
+            drawColoredText(g2d, line, (int) (textX + MainRenderer.textShadow), (int) (textY + MainRenderer.textShadow),
                 g2d.getFont(), tooltipTextShadowColor, true);
             drawColoredText(g2d, line, textX, textY,
                 g2d.getFont(), itemDescriptionTooltip, false);

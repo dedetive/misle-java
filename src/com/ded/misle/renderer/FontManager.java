@@ -75,6 +75,6 @@ public class FontManager {
             }
         }
 
-        GameRenderer.textShadow = 1 * scale;
+        MainRenderer.textShadow = 1 * scale;
     }
 }

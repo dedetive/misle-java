@@ -10,9 +10,10 @@ import static java.lang.System.currentTimeMillis;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 
 
-public class GameRenderer {
+public class MainRenderer {
 	public static String previousMenu;
 	public static String currentMenu;
 
@@ -38,7 +39,7 @@ public class GameRenderer {
 		fadeTimer.start();
 
 		Timer timer = new Timer(75, e -> {
-			if (isFading == GameRenderer.FadingState.FADED) {
+			if (isFading == MainRenderer.FadingState.FADED) {
 				slowlyFadeOut();
 				for (int i = 15; i > 0; i--) {
 					storeCachedBoxes(i);
@@ -89,7 +90,69 @@ public class GameRenderer {
 	public static FadingState isFading = FadingState.UNFADED;
 
 	public static float fadingProgress;
-	public enum FadingState {
+
+    public static void drawRotatedImage(Graphics2D g2d, Image image, double x, double y, int width, int height, double angle) {
+        // Calculate the rotation center based on the desired width and height
+        double centerX = x + width / 2.0;
+        double centerY = y + height / 2.0;
+
+        // Save the original transform
+        AffineTransform originalTransform = g2d.getTransform();
+
+        // Apply rotation around the calculated center
+        g2d.rotate(Math.toRadians(angle), centerX, centerY);
+
+        // Draw the scaled and rotated image at the specified position
+        g2d.drawImage(image, (int) x, (int) y, width, height, null);
+
+        // Restore the original transform to avoid affecting other drawings
+        g2d.setTransform(originalTransform);
+    }
+
+    public static void drawRotatedImage(Graphics2D g2d, Image image, double x, double y, int width, int height, double angle, boolean mirror) {
+        // Calculate the rotation center based on the desired width and height
+        double centerX = x + width / 2.0;
+        double centerY = y + height / 2.0;
+
+        // Save the original transform
+        AffineTransform originalTransform = g2d.getTransform();
+
+        // Apply rotation around the calculated center
+        g2d.rotate(Math.toRadians(angle), centerX, centerY);
+
+        // Apply mirroring if needed
+        if (mirror) {
+            // Translate to the center of the image, apply scaling to flip horizontally, then translate back
+            g2d.translate(x + width, y); // Move to the right edge of the image
+            g2d.scale(-1, 1);           // Flip horizontally
+            g2d.translate(-x, -y);       // Move back to the original position
+        }
+
+        // Draw the scaled and rotated (and possibly mirrored) image at the specified position
+        g2d.drawImage(image, (int) x, (int) y, width, height, null);
+
+        // Restore the original transform to avoid affecting other drawings
+        g2d.setTransform(originalTransform);
+    }
+
+    public static void drawRotatedRect(Graphics2D g2d, Rectangle rectangle, double angle) {
+        double centerX = rectangle.x + rectangle.width / 2.0;
+        double centerY = rectangle.y + rectangle.height / 2.0;
+
+        // Save the original transform
+        AffineTransform originalTransform = g2d.getTransform();
+
+        // Apply rotation around the calculated center
+        g2d.rotate(Math.toRadians(angle), centerX, centerY);
+
+        // Draw the scaled and rotated image at the specified position
+        g2d.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+
+        // Restore the original transform to avoid affecting other drawings
+        g2d.setTransform(originalTransform);
+    }
+
+    public enum FadingState {
 		NONE(),
 		FADED(0, 1, NONE),
 		UNFADED(0, 0, NONE),
@@ -136,7 +199,7 @@ public class GameRenderer {
 	}
 
 	public static void drawFading(Graphics2D g2d) {
-		if (isFading != GameRenderer.FadingState.UNFADED) {
+		if (isFading != MainRenderer.FadingState.UNFADED) {
 			fadingProgress = Math.clamp(fadingProgress + isFading.getProgressIncrease(), 0F, 1F);
 			g2d.setColor(new Color((float) fadingColor.getRed() / 256, (float) fadingColor.getGreen() / 256, (float) fadingColor.getBlue() / 256, fadingProgress));
 			g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
