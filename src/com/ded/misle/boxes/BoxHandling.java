@@ -51,8 +51,8 @@ public class BoxHandling {
 	 *  ...
 	 *
 	 */
-	public static void addBox(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, double maxHP, double HP, PhysicsEngine.ObjectType objectType) {
-		boxes.add(new Box(x, y, color, texture, hasCollision, boxScaleHorizontal, boxScaleVertical, effect, rotation, maxHP, HP, objectType));
+	public static void addBox(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, PhysicsEngine.ObjectType objectType) {
+		boxes.add(new Box(x, y, color, texture, hasCollision, boxScaleHorizontal, boxScaleVertical, effect, rotation, objectType));
 		addBoxToCache(boxes.getLast());
 	}
 
@@ -504,13 +504,13 @@ public class BoxHandling {
         return npcsInRange.stream().filter(getInteractableNPCs()::contains).toList();
 	}
 
-	public static List<Box> getHPBoxesInRange(double x, double y, double range) {
-		List<Box> boxesInRange = new ArrayList<>();
+	public static List<HPBox> getHPBoxesInRange(double x, double y, double range) {
+		List<HPBox> boxesInRange = new ArrayList<>();
 		for (Box box : getCachedBoxes(8)) {
-			if (box.getHP() > 0) continue;
+			if (box.getObjectType() != PhysicsEngine.ObjectType.HP_BOX || box.getObjectType() != PhysicsEngine.ObjectType.NPC || box.getObjectType() != PhysicsEngine.ObjectType.PLAYER) continue;
 
 			if (checkIfBoxInRange(box, x, y, range)) {
-				boxesInRange.add(box);
+				boxesInRange.add((HPBox) box);
 			}
 		}
 		return boxesInRange;

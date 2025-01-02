@@ -197,7 +197,7 @@ public class PlayingRenderer {
         int healthBarY = (int) (212 * scale);
 
         // Calculate the percentage of health remaining
-        double healthPercentage = Math.min(player.attr.getHP() / player.attr.getMaxHP(), 1);
+        double healthPercentage = Math.min(player.getHP() / player.getMaxHP(), 1);
 
         // Draw the background of the health bar
         g2d.setColor(healthBarBackground);
@@ -208,7 +208,7 @@ public class PlayingRenderer {
         g2d.fillRect(healthBarX, (int) (healthBarY + healthBarHeight - healthBarHeight * healthPercentage), healthBarWidth, (int) (healthBarHeight * healthPercentage));
 
         // Draw locked HP, if any
-        double lockedHPPercentage = Math.min(player.attr.getLockedHP() / player.attr.getMaxHP(), 1);
+        double lockedHPPercentage = Math.min(player.attr.getLockedHP() / player.getMaxHP(), 1);
 
         g2d.setColor(healthBarLockedHP);
         g2d.fillRect(healthBarX, healthBarY, healthBarWidth, (int) (healthBarHeight * lockedHPPercentage));

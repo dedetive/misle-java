@@ -1,14 +1,15 @@
 package com.ded.misle.player;
 
 import com.ded.misle.PhysicsEngine;
-import com.ded.misle.boxes.Box;
+import com.ded.misle.boxes.HPBox;
 
+import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.GamePanel.tileSize;
 import static com.ded.misle.boxes.BoxHandling.addBoxToCache;
 import static com.ded.misle.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 
-public class Player extends Box {
+public class Player extends HPBox {
 
 	public final PlayerKeys keys;
 	public final PlayerPosition pos;

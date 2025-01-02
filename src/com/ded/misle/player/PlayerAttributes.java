@@ -25,7 +25,6 @@ public class PlayerAttributes {
 
 	// STATS ATTRIBUTES
 
-	private double maxHP;
 	private double defense;
 	private double maxEntropy;
 	private double playerSpeedModifier;
@@ -33,7 +32,6 @@ public class PlayerAttributes {
 	private double regenerationRate = 1;
 	private double inversion;
 
-	private double hp;
 	private double lockedHP;
 	private double entropy;
 	private double environmentSpeedModifier;
@@ -111,7 +109,6 @@ public class PlayerAttributes {
 			this.setSpeedModifier(1);
 			this.setEnvironmentSpeedModifier(1);
 			this.updateStat(Stat.ALL);
-			this.setHP(getMaxHP());
 			this.updateXPtoLevelUp();
 			this.setMaxStackSizeMulti(1);
 	}
@@ -154,19 +151,6 @@ public class PlayerAttributes {
 	public boolean getIsInvulnerable() { return isInvulnerable; }
 
 	public void setIsInvulnerable(boolean isInvulnerable) { this.isInvulnerable = isInvulnerable; }
-
-	public double getHP() {
-		return hp;
-	}
-
-	public double setHP(double HP) {
-		this.hp = HP;
-		return HP;
-	}
-
-	public double getMaxHP() {
-		return maxHP;
-	}
 
 	public double getEntropy() {
 		return entropy;
@@ -259,16 +243,16 @@ public class PlayerAttributes {
 				}, Integer.parseInt(args[0]));
 			} else if (isNormalOrAbsolute) {
 				damageToReceive = calculateDamage(damage, reason);
-				this.hp = Math.max(this.hp - damageToReceive, 0); // Ensure HP doesn't go below 0 for non post mortem
+				player.setHP(Math.max(player.getHP() - damageToReceive, 0)); // Ensure HP doesn't go below 0 for non post mortem
 			} else if (isPostMortem) {
 				damageToReceive = calculateDamage(damage, reason);
-				this.hp -= damageToReceive; // Apply damage without floor so it can go below 0
+				player.setHP(player.getHP() - damageToReceive); // Apply damage without floor so it can go below 0
 			} else {
 				throw new IllegalArgumentException("Invalid reason: " + reason);
 			}
 
 			// Check if the player dies
-			if (this.hp <= 0 || lockedHP > this.hp) {
+			if (player.getHP() <= 0 || lockedHP > player.getHP()) {
 				playerDies();
 			}
 
@@ -321,13 +305,13 @@ public class PlayerAttributes {
 			theoreticalDamage = damage; // Return full damage
 		} else if (isAbsolute) {
 			// Absolute: defense effects are ignored
-			theoreticalDamage = Math.max(Math.min(damage, this.hp), 0);
+			theoreticalDamage = Math.max(Math.min(damage, player.getHP()), 0);
 		} else if (isPostMortem && !getIsInvulnerable()) {
 			// Post-mortem: damage will be dealt past 0 into the negatives
 			theoreticalDamage = defenseCalculation;
 		} else if (!getIsInvulnerable()) {
 			// Normal: defense and item effects take place normally
-			theoreticalDamage = Math.max(Math.min(defenseCalculation, this.hp), 0);
+			theoreticalDamage = Math.max(Math.min(defenseCalculation, player.getHP()), 0);
 		} else {
 			theoreticalDamage = 0;
 		}
@@ -356,7 +340,7 @@ public class PlayerAttributes {
 	 */
 	public double receiveHeal(double heal, String reason) {
 		// Early exit for invalid heal or if the character is dead without revival
-		if (heal <= 0 || (this.isDead && (!reason.contains("revival"))) || (this.isDead && lockedHP > this.hp && this.hp >= 0)) {
+		if (heal <= 0 || (this.isDead && (!reason.contains("revival"))) || (this.isDead && lockedHP > player.getHP() && player.getHP() >= 0)) {
 			return 0;
 		}
 
@@ -369,17 +353,17 @@ public class PlayerAttributes {
 		// Check for valid healing reasons
 		if (isValidReason) {
 			healToReceive = calculateHeal(heal, reason);
-			setHP(getHP() + healToReceive);
+			player.setHP(player.getHP() + healToReceive);
 
 			// Check for revival condition
-			if (reason.contains("revival") && this.hp > 0) {
+			if (reason.contains("revival") && player.getHP() > 0) {
 				this.isDead = false; // Set isDead to false if revived
 			}
 		} else {
 			throw new IllegalArgumentException("Invalid reason: " + reason); // Handle invalid reasons
 		}
 
-		if (this.hp > lockedHP) {
+		if (player.getHP() > lockedHP) {
 			this.isDead = false;        // Set isDead to false if new HP is higher than locked HP
 		}
 
@@ -416,16 +400,16 @@ public class PlayerAttributes {
 						heal;
 			} else {
 				healingExpression = isAbsolute ?
-						Math.min(heal, this.maxHP - this.hp) :
-						Math.min(heal, this.maxHP - this.hp);
+						Math.min(heal, player.getMaxHP() - player.getHP()) :
+						Math.min(heal, player.getMaxHP() - player.getHP());
 			}
 		} else if (isNormal || isRevival) {
 			// Normal or revival healing logic
 			healingExpression = isAbsolute ?
-					Math.min(heal, this.maxHP - this.hp) :
-					Math.min(heal, this.maxHP - this.hp);
+					Math.min(heal, player.getMaxHP() - player.getHP()) :
+					Math.min(heal, player.getMaxHP() - player.getHP());
 		} else if (isAbsolute) {
-			healingExpression = Math.min(heal, this.maxHP - this.hp);
+			healingExpression = Math.min(heal, player.getMaxHP() - player.getHP());
 		}
 
 		// Overheal logic
@@ -449,12 +433,12 @@ public class PlayerAttributes {
 		// Calculate the interval for healing 1 HP, based on the existing regeneration rate and quality
 		double regenerationInterval = (250L / regenerationRate);
 
-		if (lastHitMillis + 2500 < currentTime && lastRegenerationMillis + regenerationInterval < currentTime && !isDead && hp < maxHP) {
+		if (lastHitMillis + 2500 < currentTime && lastRegenerationMillis + regenerationInterval < currentTime && !isDead && player.getHP() < player.getMaxHP()) {
 			receiveHeal(Math.max(getRegenerationQuality(), 1), "normal");
 			if (isRegenerationDoubled) receiveHeal(Math.max(getRegenerationQuality(), 1), "normal");
 			lastRegenerationMillis = currentTime;
 		} else {
-			if (hp >= maxHP) {
+			if (player.getHP() >= player.getMaxHP()) {
 				isRegenerationDoubled = false;
 			}
 		}
@@ -508,7 +492,7 @@ public class PlayerAttributes {
 
 	private void playerRespawns() {
 		player.pos.reloadSpawnpoint();
-		this.setHP(getMaxHP());
+		player.setHP(player.getMaxHP());
 		this.setLockedHP(0);
 		this.isDead = false;
 	}
@@ -659,7 +643,13 @@ public class PlayerAttributes {
 
 	public void updateStat(Stat stat) {
 		switch (stat) {
-			case MAX_HP -> this.maxHP = 100 + levelMaxHP + equipmentMaxHP;
+			case MAX_HP -> {
+				try {
+					player.setMaxHP(100 + levelMaxHP + equipmentMaxHP);
+				} catch (NullPointerException e) {
+					// This would mean player had not been initialized, so do nothing
+				}
+			}
 			case MAX_ENTROPY -> this.maxEntropy = 80 + levelMaxEntropy + equipmentMaxEntropy;
 			case DEFENSE -> this.defense = levelDefense + equipmentDefense;
 			case REGENERATION_QUALITY -> this.regenerationQuality = 1 + levelRegenerationQuality + equipmentRegenerationQuality;
@@ -728,7 +718,7 @@ public class PlayerAttributes {
 		this.setSpeedModifier(1);
 		this.setEnvironmentSpeedModifier(1);
 		this.updateStat(Stat.ALL);
-		this.setHP(getMaxHP());
+		player.setHP(player.getMaxHP());
 		this.fillEntropy();
 		this.setRegenerationQuality(1);
 		this.setRegenerationRate(1);

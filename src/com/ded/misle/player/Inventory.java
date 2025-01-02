@@ -447,7 +447,7 @@ public class Inventory {
 				case "heal" -> {
 					double healAmountValue = Double.parseDouble(Integer.toString((Integer) getSelectedItem().getAttributes().get("heal")));
 					if (healAmountValue == -1) {
-						healAmountValue = player.attr.getMaxHP();
+						healAmountValue = player.getMaxHP();
 					}
 					String formattedHealAmount = df.format(player.attr.receiveHeal(healAmountValue, "normal"));
 					PlayingRenderer.createFloatingText("+" + formattedHealAmount, healColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);

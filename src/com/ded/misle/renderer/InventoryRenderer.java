@@ -110,7 +110,7 @@ public class InventoryRenderer {
         // Draw stats name
             // VIT
         drawStat(g2d, LanguageManager.getText("inventory_vitality"), 288, 33);
-        String formattedMaxHP = Long.toString(Math.round(player.attr.getMaxHP()));
+        String formattedMaxHP = Long.toString(Math.round(player.getMaxHP()));
         formattedMaxHP = formattedMaxHP + LanguageManager.getText("inventory_vitality_measure_word");
         drawStat(g2d, formattedMaxHP, 288, 47);
             // DEF

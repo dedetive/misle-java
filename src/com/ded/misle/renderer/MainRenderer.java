@@ -1,5 +1,7 @@
 package com.ded.misle.renderer;
 
+import com.ded.misle.player.PlayerAttributes;
+
 import static com.ded.misle.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.SaveFile.loadSaveFile;
@@ -31,7 +33,8 @@ public class MainRenderer {
 		loadSaveFile();
 		loadBoxes();
 
-		player.attr.setHP(player.attr.getMaxHP());
+		player.attr.updateStat(PlayerAttributes.Stat.ALL);
+		player.setHP(player.getMaxHP());
 		player.attr.fillEntropy();
 
 		Timer fadeTimer = new Timer(LOADING_DURATION, e -> { fadeIn(); });
