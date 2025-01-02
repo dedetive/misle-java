@@ -11,10 +11,12 @@ import java.util.TimerTask;
 
 import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.PhysicsEngine.ObjectType.BOX;
+import static com.ded.misle.PhysicsEngine.ObjectType.HP_BOX;
 import static com.ded.misle.boxes.BoxHandling.deleteBox;
 import static com.ded.misle.boxes.BoxManipulation.moveCollisionBox;
-import static com.ded.misle.renderer.ColorManager.damageColor;
-import static com.ded.misle.renderer.ColorManager.healColor;
+import static com.ded.misle.player.PlayerAttributes.KnockbackDirection.NONE;
+import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.PlayingRenderer.createFloatingText;
 
 public class HPBox extends Box {
@@ -35,7 +37,27 @@ public class HPBox extends Box {
         return HPBoxes;
     }
 
+    public HPBox(double x, double y) {
+        this.setX(x);
+        this.setY(y);
+        this.setColor(defaultBoxColor);
+        this.setTexture("solid");
+        this.setHasCollision(true);
+        this.setBoxScaleHorizontal(1);
+        this.setBoxScaleVertical(1);
+        this.setEffect(new String[]{""});
+        this.setRotation(0);
+        this.setObjectType(HP_BOX);
+        this.setKnockbackDirection(NONE);
+        this.setInteractsWithPlayer(true);
+        this.HP = 1;
+        this.maxHP = 1;
+        HPBoxes.add(this);
+    }
+
     public HPBox() {
+        this.HP = 1;
+        this.maxHP = 1;
         HPBoxes.add(this);
     }
 
@@ -104,15 +126,21 @@ public class HPBox extends Box {
             damageToReceive = calculateDamage(damage, reason);
             this.receiveHeal(damageToReceive, "absolute");
 
-            int playerScreenX = (int) ((this.getX() - player.pos.getCameraOffsetX()) / scale);
-            int playerScreenY = (int) ((this.getY() - player.pos.getCameraOffsetY()) / scale);
+            int playerScreenX;
+            int playerScreenY;
+            if (this == player) {
+                playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()) / scale);
+                playerScreenY = (int) ((player.getY() - player.pos.getCameraOffsetY()) / scale);
+            } else {
+                playerScreenX = (int) (this.getX() * scale);
+                playerScreenY = (int) (this.getY() * scale);
+            }
             int randomPosX = (int) ((Math.random() * (40 + 40)) - 40);
             int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
             DecimalFormat df = new DecimalFormat("#.##");
             String formattedHealAmount = df.format(damageToReceive);
             createFloatingText("+" + formattedHealAmount, healColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
         } else {
-
             if (isLocker) {
                 damageToReceive = calculateDamage(damage, reason);
                 lockedHP += damageToReceive;
@@ -126,23 +154,30 @@ public class HPBox extends Box {
                 }, Integer.parseInt(args[0]));
             } else if (isNormalOrAbsolute) {
                 damageToReceive = calculateDamage(damage, reason);
-                player.setHP(Math.max(this.getHP() - damageToReceive, 0)); // Ensure HP doesn't go below 0 for non post mortem
+                this.setHP(Math.max(this.getHP() - damageToReceive, 0)); // Ensure HP doesn't go below 0 for non post mortem
             } else if (isPostMortem) {
                 damageToReceive = calculateDamage(damage, reason);
-                player.setHP(this.getHP() - damageToReceive); // Apply damage without floor so it can go below 0
+                this.setHP(this.getHP() - damageToReceive); // Apply damage without floor so it can go below 0
             } else {
                 throw new IllegalArgumentException("Invalid reason: " + reason);
             }
 
             // Check if the player dies
-            if (this.getHP() <= 0 || lockedHP > player.getHP()) {
+            if (this.getHP() <= 0 || (lockedHP > player.getHP()) && this == player) {
                 checkIfDead();
             }
 
             // Displayed numerical value
 
-            int playerScreenX = (int) ((this.getX() - player.pos.getCameraOffsetX()) / scale);
-            int playerScreenY = (int) ((this.getY() - player.pos.getCameraOffsetY()) / scale);
+            int playerScreenX;
+            int playerScreenY;
+            if (this == player) {
+                playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()) / scale);
+                playerScreenY = (int) ((player.getY() - player.pos.getCameraOffsetY()) / scale);
+            } else {
+                playerScreenX = (int) (this.getX());
+                playerScreenY = (int) (this.getY());
+            }
             int randomPosX = (int) ((Math.random() * (40 + 40)) - 40);
             int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
             DecimalFormat df = new DecimalFormat("#.##");

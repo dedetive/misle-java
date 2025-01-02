@@ -70,7 +70,7 @@ public class WorldLoader {
 				addBox(321, 441, "spawnpoint");
 				addBox(341, 441, "mountain_chest");
 					// Corner block
-				addBox(402, 522);
+				addBox(382, 502);
 				editLastBox(EditBoxKeys.COLOR, "#A02020");
 
 				// For travelling to cliff
@@ -126,10 +126,10 @@ public class WorldLoader {
 				addBox(261, 41, "spawnpoint");
 
 				// Corner block
-				addBox(385, 165);
+				HPBox corner = addHPBox(365, 145);
+				corner.setMaxHP(50);
+				corner.setHP(50);
 				editLastBox(EditBoxKeys.COLOR, "#A02020");
-				editLastBox(HAS_COLLISION, "true");
-				editLastBox(MAX_HP, "20");
 				editLastBox(EFFECT, "{damage, 5, 300, normal, 0}");
 			}
 

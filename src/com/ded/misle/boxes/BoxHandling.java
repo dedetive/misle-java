@@ -7,11 +7,13 @@ import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.GamePanel.tileSize;
 import static com.ded.misle.Launcher.levelDesigner;
 import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.boxes.HPBox.getHPBoxes;
 import static com.ded.misle.npcs.NPC.getInteractableNPCs;
 
 public class BoxHandling {
@@ -37,7 +39,7 @@ public class BoxHandling {
 		EFFECT,
 		COLLECTIBLE,
 		ROTATION,
-		MAX_HP
+		INTERACTS_WITH_PLAYER
 	}
 
 	static {
@@ -51,14 +53,21 @@ public class BoxHandling {
 	 *  ...
 	 *
 	 */
-	public static void addBox(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, PhysicsEngine.ObjectType objectType) {
-		boxes.add(new Box(x, y, color, texture, hasCollision, boxScaleHorizontal, boxScaleVertical, effect, rotation, objectType));
+	public static void addBox(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, PhysicsEngine.ObjectType objectType, boolean interactsWithPlayer) {
+		boxes.add(new Box(x, y, color, texture, hasCollision, boxScaleHorizontal, boxScaleVertical, effect, rotation, objectType, interactsWithPlayer));
 		addBoxToCache(boxes.getLast());
 	}
 
-	public static void addBox(double x, double y) {
+	public static Box addBox(double x, double y) {
 		boxes.add(new Box(x, y));
 		addBoxToCache(boxes.getLast());
+		return boxes.getLast();
+	}
+
+	public static HPBox addHPBox(double x, double y) {
+		boxes.add(new HPBox(x, y));
+		addBoxToCache(boxes.getLast());
+		return getHPBoxes().getLast();
 	}
 
 	/**
@@ -301,6 +310,9 @@ public class BoxHandling {
 			case ROTATION:
 				box.setRotation(Double.parseDouble(value));
 				break;
+			case INTERACTS_WITH_PLAYER:
+				box.setInteractsWithPlayer(Boolean.parseBoolean(value));
+				break;
 		}
 	}
 
@@ -507,7 +519,7 @@ public class BoxHandling {
 	public static List<HPBox> getHPBoxesInRange(double x, double y, double range) {
 		List<HPBox> boxesInRange = new ArrayList<>();
 		for (Box box : getCachedBoxes(8)) {
-			if (box.getObjectType() != PhysicsEngine.ObjectType.HP_BOX || box.getObjectType() != PhysicsEngine.ObjectType.NPC || box.getObjectType() != PhysicsEngine.ObjectType.PLAYER) continue;
+			if (!(box instanceof HPBox)) continue;
 
 			if (checkIfBoxInRange(box, x, y, range)) {
 				boxesInRange.add((HPBox) box);

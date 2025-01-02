@@ -146,9 +146,9 @@ public class PlayingRenderer {
         }
     }
 
-    public static void createFloatingText(String textToDisplay, Color color, double x, double y, boolean movesUp) {
+    public static void createFloatingText(String textToDisplay, Color color, int x, int y, boolean movesUp) {
         floatingText.add(textToDisplay);
-        Point point = new Point((int) x, (int) y);
+        Point point = new Point(x, y);
         floatingTextPosition.add(point);
         floatingTextColor.add(color);
 

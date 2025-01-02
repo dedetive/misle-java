@@ -45,6 +45,7 @@ public class Box {
 	private static ArrayList<Box> selectedBoxes;
 	private PhysicsEngine.ObjectType objectType;
 	private PlayerAttributes.KnockbackDirection knockbackDirection;
+	private boolean interactsWithPlayer;
 
 	private static BufferedImage cachedTexture1;
 	private static String cachedTexture1Name;
@@ -79,7 +80,7 @@ public class Box {
 	 * @param boxScaleVertical how many tilesizes is the box in the y axis
 	 * @param effect first value is the type of effect. See above for a list of effects. Set "" if none
 	 */
-	public Box(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, PhysicsEngine.ObjectType objectType) {
+	public Box(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, PhysicsEngine.ObjectType objectType, boolean interactsWithPlayer) {
 		this.x = x;
 		this.y = y;
 		this.color = color;
@@ -91,6 +92,7 @@ public class Box {
 		this.rotation = rotation;
 		this.objectType = objectType;
 		this.knockbackDirection = NONE;
+		this.interactsWithPlayer = interactsWithPlayer;
 	}
 
 	public Box(double x, double y) {
@@ -105,6 +107,7 @@ public class Box {
 		this.rotation = 0;
 		this.objectType = BOX;
 		this.knockbackDirection = NONE;
+		this.interactsWithPlayer = true;
 	}
 
 	// For player creation
@@ -206,7 +209,8 @@ public class Box {
 	public boolean isPointColliding(double pointX, double pointY, double scale, double objectWidth, double objectHeight) {
 		double scaledX = x * scale;
 		double scaledY = y * scale;
-		return pointX >= scaledX && pointX <= scaledX + objectWidth * boxScaleHorizontal && pointY >= scaledY && pointY <= scaledY + objectHeight * boxScaleVertical;
+		return  pointX >= scaledX && pointX <= scaledX + objectWidth * boxScaleHorizontal &&
+				pointY >= scaledY && pointY <= scaledY + objectHeight * boxScaleVertical;
 	}
 
 	public boolean getHasCollision() {
@@ -319,6 +323,8 @@ public class Box {
 	}
 
 	public void handleEffect(HPBox box) {
+		if (!this.interactsWithPlayer && box == player) return;
+
 		switch (this.effect[0]) {
 			case "damage" -> this.handleBoxDamageCooldown(box);
 			case "heal" -> this.handleBoxHealCooldown(box);
@@ -612,5 +618,15 @@ public class Box {
 
 	public void setObjectType(PhysicsEngine.ObjectType objectType) {
 		this.objectType = objectType;
+	}
+
+	// Interacts with player
+
+	public void setInteractsWithPlayer(boolean interactsWithPlayer) {
+		this.interactsWithPlayer = interactsWithPlayer;
+	}
+
+	public boolean getInteractsWithPlayer() {
+		return interactsWithPlayer;
 	}
 }
