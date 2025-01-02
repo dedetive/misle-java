@@ -301,9 +301,6 @@ public class BoxHandling {
 			case ROTATION:
 				box.setRotation(Double.parseDouble(value));
 				break;
-			case MAX_HP:
-				box.setMaxHP(Double.parseDouble(value));
-				box.setHP(Double.parseDouble(value));
 		}
 	}
 

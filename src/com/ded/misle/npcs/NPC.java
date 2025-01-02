@@ -2,7 +2,7 @@ package com.ded.misle.npcs;
 
 import com.ded.misle.LanguageManager;
 import com.ded.misle.PhysicsEngine;
-import com.ded.misle.boxes.Box;
+import com.ded.misle.boxes.HPBox;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import static com.ded.misle.boxes.BoxHandling.addBoxToCache;
 import static com.ded.misle.npcs.NPCDialog.endDialog;
 import static com.ded.misle.player.PlayerAttributes.KnockbackDirection.NONE;
 
-public class NPC extends Box {
+public class NPC extends HPBox {
     private static final ArrayList<NPC> selectedNPCs = new ArrayList<>();
     private static final ArrayList<NPC> dialogNPCs = new ArrayList<>();
     private static final ArrayList<NPC> shopNPCs = new ArrayList<>();
@@ -40,6 +40,7 @@ public class NPC extends Box {
         this.setY(y);
         this.name = "NPC";
         this.nameColor = new Color(0xFFFFFF);
+        this.setMaxHP(20);
 
         if (interactionType != InteractionType.NONE) {
             interactableNPCs.add(this);
