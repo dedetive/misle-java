@@ -66,7 +66,7 @@ public class Box {
 	 *
 	 * - "": for no effect <br>
 	 * - "damage": for damaging over time. Second value within the list is the damage amount. Third value is the rate
-	 * at which the damage is given. The fourth value is the reason of the damage. See {@link PlayerAttributes#takeDamage(double, String, String[], PlayerAttributes.KnockbackDirection)}
+	 * at which the damage is given. The fourth value is the reason of the damage. See {@link HPBox#takeDamage(double, String, String[], PlayerAttributes.KnockbackDirection)}
 	 * for a list of reasons.
 	 * - "velocity": for changing the speed. Second value is the multiplier of the speed based on player's playerSpeed.
 	 *
@@ -318,10 +318,10 @@ public class Box {
 		this.effect = effect;
 	}
 
-	public void handleEffect(PhysicsEngine.ObjectType objectType) {
+	public void handleEffect(HPBox box) {
 		switch (this.effect[0]) {
-			case "damage" -> this.handleBoxDamageCooldown();
-			case "heal" -> this.handleBoxHealCooldown();
+			case "damage" -> this.handleBoxDamageCooldown(box);
+			case "heal" -> this.handleBoxHealCooldown(box);
 			case "velocity" -> this.handleBoxVelocity();
 			case "spawnpoint" -> this.handleBoxSpawnpoint();
 			case "chest" -> this.handleBoxChest();
@@ -416,14 +416,14 @@ public class Box {
 
 	// EFFECT HANDLING
 
-	private void handleBoxDamageCooldown() {
+	private void handleBoxDamageCooldown(HPBox box) {
 		long currentTime = currentTimeMillis();
 		long cooldownDuration = (long) this.getEffectRate(); // Use the box's damage rate for cooldown
 
 		// Check if enough time has passed since the last damage was dealt
 		if (currentTime - this.getLastEffectTime() >= cooldownDuration) {
 			this.setLastEffectTime(currentTime); // Update the last damage time
-			player.attr.takeDamage(this.getEffectValue(), this.getEffectReason(), this.getEffectArgs(), getKnockbackDirection());
+			box.takeDamage(this.getEffectValue(), this.getEffectReason(), this.getEffectArgs(), getKnockbackDirection());
 //			System.out.println(box.getEffectValue() + " " + box.getEffectReason() + " damage dealt! Now at " + player.attr.getHP() + " HP.");
 		}
 	}
@@ -436,13 +436,13 @@ public class Box {
 		this.knockbackDirection = knockbackDirection;
 	}
 
-	private void handleBoxHealCooldown() {
+	private void handleBoxHealCooldown(HPBox box) {
 		long currentTime = currentTimeMillis();
 		long cooldownDuration = (long) this.getEffectRate();
 
 		if (currentTime - this.getLastEffectTime() >= cooldownDuration) {
 			this.setLastEffectTime(currentTime);
-			player.attr.receiveHeal(this.getEffectValue(), this.getEffectReason());
+			 box.receiveHeal(this.getEffectValue(), this.getEffectReason());
 //			System.out.println(box.getEffectValue() + " " + box.getEffectReason() + " heal received! Now at " + player.attr.getHP() + " HP.");
 		}
 	}

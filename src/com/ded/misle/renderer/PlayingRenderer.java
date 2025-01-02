@@ -208,7 +208,7 @@ public class PlayingRenderer {
         g2d.fillRect(healthBarX, (int) (healthBarY + healthBarHeight - healthBarHeight * healthPercentage), healthBarWidth, (int) (healthBarHeight * healthPercentage));
 
         // Draw locked HP, if any
-        double lockedHPPercentage = Math.min(player.attr.getLockedHP() / player.getMaxHP(), 1);
+        double lockedHPPercentage = Math.min(player.getLockedHP() / player.getMaxHP(), 1);
 
         g2d.setColor(healthBarLockedHP);
         g2d.fillRect(healthBarX, healthBarY, healthBarWidth, (int) (healthBarHeight * lockedHPPercentage));

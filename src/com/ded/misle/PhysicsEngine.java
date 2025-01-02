@@ -2,15 +2,16 @@ package com.ded.misle;
 
 import com.ded.misle.boxes.Box;
 import com.ded.misle.boxes.BoxHandling;
+import com.ded.misle.boxes.HPBox;
 import com.ded.misle.npcs.NPC;
 import com.ded.misle.player.PlayerAttributes;
 
 import java.util.List;
 import java.util.Objects;
 
+import static com.ded.misle.GamePanel.player;
 import static com.ded.misle.Launcher.levelDesigner;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.PhysicsEngine.ObjectType.PLAYER;
 
 public class PhysicsEngine {
 
@@ -32,26 +33,26 @@ public class PhysicsEngine {
 	 * @param y double - How many pixels in y direction (this is not based on scale).
 	 */
 	public static void movePlayer(double x, double y) {
-		GamePanel.player.setX(GamePanel.player.getX() + x);
-		GamePanel.player.setY(GamePanel.player.getY() + y);
-		GamePanel.player.stats.increaseDistance(x, y);
+		player.setX(player.getX() + x);
+		player.setY(player.getY() + y);
+		player.stats.increaseDistance(x, y);
 
 		if (!levelDesigner) {
-			if (GamePanel.player.attr.getLastVelocityBox() != null) {
-				GamePanel.player.attr.setEnvironmentSpeedModifier(1.0); // Reset to default speed
-				GamePanel.player.attr.setLastVelocityBox(null); // Clear the last velocity box
+			if (player.attr.getLastVelocityBox() != null) {
+				player.attr.setEnvironmentSpeedModifier(1.0); // Reset to default speed
+				player.attr.setLastVelocityBox(null); // Clear the last velocity box
 			}
 
-			List<Box> nearbyNonCollisionBoxes = ((BoxHandling.getNonCollisionBoxesInRange(GamePanel.player.getX(), GamePanel.player.getY(), GamePanel.tileSize)));
+			List<Box> nearbyNonCollisionBoxes = ((BoxHandling.getNonCollisionBoxesInRange(player.getX(), player.getY(), GamePanel.tileSize)));
 			for (Box box : nearbyNonCollisionBoxes) {
 				if (!box.getEffect().isEmpty()) {
-					box.handleEffect(PLAYER);
+					box.handleEffect(player);
 				}
 			}
 
 			// Select or unselect NPCs
-			double playerCenterX = (GamePanel.player.getX() + GamePanel.player.getBoxScaleHorizontal() / 2);
-			double playerCenterY = (GamePanel.player.getY() + GamePanel.player.getBoxScaleVertical() / 2);
+			double playerCenterX = (player.getX() + player.getBoxScaleHorizontal() / 2);
+			double playerCenterY = (player.getY() + player.getBoxScaleVertical() / 2);
 			List<NPC> distantNPCs = BoxHandling.getInteractableNPCsInRange(playerCenterX, playerCenterY, 196);
 			for (NPC npc : distantNPCs)
 				npc.setSelected(false);
@@ -70,12 +71,8 @@ public class PhysicsEngine {
 	 * something blocking the player at 45 pixels in the X axis from where the player is, based on
 	 * the player entire hitbox, not just from the top-left corner.
 	 *
-	 * @param pixelX double - The X location in pixels of the object.
-	 * @param pixelY double - The Y location in pixels of the object.
-	 * @param objectWidth double - The width of the object, in pixels.
-	 * @param objectHeight double - The height of the object, in pixels.
  	 */
-	public static boolean isPixelOccupied(double pixelX, double pixelY, double objectWidth, double objectHeight, double range, int level, ObjectType objectType, PlayerAttributes.KnockbackDirection direction) {
+	public static boolean isPixelOccupied(Box inputBox, double pixelX, double pixelY, double objectWidth, double objectHeight, double range, int level, ObjectType objectType, PlayerAttributes.KnockbackDirection direction) {
 		List<Box> nearbyCollisionBoxes = BoxHandling.getCollisionBoxesInRange(pixelX, pixelY, range, level);
 		for (Box box : nearbyCollisionBoxes) {
 			if (box.getBoxScaleHorizontal() >= 1 && box.getBoxScaleVertical() >= 1) {
@@ -88,7 +85,7 @@ public class PhysicsEngine {
 						if (Objects.equals(box.getEffect(), "damage")) {
 							box.setKnockbackDirection(direction);
 						}
-						box.handleEffect(objectType);
+						box.handleEffect((HPBox) inputBox);
 					}
 					return true;
 				}
@@ -101,14 +98,14 @@ public class PhysicsEngine {
 						(box.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY + objectHeight, scale, objectWidth, objectHeight)) // Bottom edge
 					) {
 						if (objectType != ObjectType.BOX && !box.getEffect().isEmpty()) {
-							box.handleEffect(objectType);
+							box.handleEffect((HPBox) inputBox);
 						}
 						return true;
 					}
 				}
 			}
-        }
-    return false;
+		}
+		return false;
 	}
 
 	public static double coordinateToPixel(int coordinate) {

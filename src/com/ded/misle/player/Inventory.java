@@ -87,7 +87,7 @@ public class Inventory {
 		Item newItem;
 		try {
 			newItem = new Item(item.getId(), item.getCount());
-			player.attr.turnRegenerationDoubledOn();
+			player.turnRegenerationDoubledOn();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -173,7 +173,7 @@ public class Inventory {
 	public boolean removeItem(int position) {
 		this.extraSlots[position] = null;
 		player.attr.updateEquipmentStat(ALL);
-		player.attr.turnRegenerationDoubledOn();
+		player.turnRegenerationDoubledOn();
 		return true;
 	}
 
@@ -449,7 +449,7 @@ public class Inventory {
 					if (healAmountValue == -1) {
 						healAmountValue = player.getMaxHP();
 					}
-					String formattedHealAmount = df.format(player.attr.receiveHeal(healAmountValue, "normal"));
+					String formattedHealAmount = df.format(player.receiveHeal(healAmountValue, "normal"));
 					PlayingRenderer.createFloatingText("+" + formattedHealAmount, healColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
 
 					Timer delayToRemove = new Timer(30, e -> {

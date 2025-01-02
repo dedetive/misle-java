@@ -115,12 +115,12 @@ public class InventoryRenderer {
         drawStat(g2d, formattedMaxHP, 288, 47);
             // DEF
         drawStat(g2d, LanguageManager.getText("inventory_defense"), 288, 65);
-        String formattedDefense = Long.toString(Math.round(player.attr.getDefense()));
+        String formattedDefense = Long.toString(Math.round(player.getDefense()));
         formattedDefense = formattedDefense + LanguageManager.getText("inventory_defense_measure_word");
         drawStat(g2d, formattedDefense, 288, 79);
             // REG
         drawStat(g2d, LanguageManager.getText("inventory_regeneration"), 288, 97);
-        String formattedRegeneration = Long.toString(Math.round(player.attr.getRegenerationQuality()));
+        String formattedRegeneration = Long.toString(Math.round(player.getRegenerationQuality()));
         formattedRegeneration = formattedRegeneration + LanguageManager.getText("inventory_regeneration_measure_word");
         drawStat(g2d, formattedRegeneration, 288, 111);
             // ENT

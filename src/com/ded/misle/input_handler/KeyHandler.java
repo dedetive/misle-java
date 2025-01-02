@@ -234,9 +234,9 @@ public class KeyHandler implements KeyListener {
 			if (player.keys.keyPressed.get(DODGE)) {
 				int delay = 100;
 				player.pos.delayedRotate(-360, delay * 5);
-				player.attr.setIsInvulnerable(true);
+				player.setIsInvulnerable(true);
 				Timer timer = new Timer(delay, e -> {
-					player.attr.setIsInvulnerable(false);
+					player.setIsInvulnerable(false);
 				});
 				timer.setRepeats(false); // Ensure the timer only runs once
 				timer.start();
@@ -265,10 +265,10 @@ public class KeyHandler implements KeyListener {
 					} else {
 						verticalDirection = PlayerAttributes.KnockbackDirection.UP;
 					}
-					if (!PhysicsEngine.isPixelOccupied((player.getX() + willMovePlayer[0]), player.getY(), player.getBoxScaleHorizontal(), player.getBoxScaleVertical(), range, 12, PhysicsEngine.ObjectType.PLAYER, horizontalDirection)) {
+					if (!PhysicsEngine.isPixelOccupied(player, (player.getX() + willMovePlayer[0]), player.getY(), player.getBoxScaleHorizontal(), player.getBoxScaleVertical(), range, 12, PhysicsEngine.ObjectType.PLAYER, horizontalDirection)) {
 						PhysicsEngine.movePlayer(willMovePlayer[0], 0);
 					}
-					if (!PhysicsEngine.isPixelOccupied(player.getX(), (player.getY() + willMovePlayer[1]), player.getBoxScaleHorizontal(), player.getBoxScaleVertical(), range, 12, PhysicsEngine.ObjectType.PLAYER, verticalDirection)) {
+					if (!PhysicsEngine.isPixelOccupied(player, player.getX(), (player.getY() + willMovePlayer[1]), player.getBoxScaleHorizontal(), player.getBoxScaleVertical(), range, 12, PhysicsEngine.ObjectType.PLAYER, verticalDirection)) {
 						PhysicsEngine.movePlayer(0, willMovePlayer[1]);
 					}
 				}
@@ -410,7 +410,7 @@ public class KeyHandler implements KeyListener {
 						}
 					}
 				} else {
-					player.attr.takeDamage(1, "normal", new String[]{}, PlayerAttributes.KnockbackDirection.DOWN);
+					player.takeDamage(1, "normal", new String[]{}, PlayerAttributes.KnockbackDirection.DOWN);
 				}
 
 				player.keys.keyPressed.put(DEBUG1, false);

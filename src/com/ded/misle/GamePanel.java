@@ -1,5 +1,6 @@
 package com.ded.misle;
 
+import com.ded.misle.boxes.HPBox;
 import com.ded.misle.input_handler.KeyHandler;
 import com.ded.misle.input_handler.MouseHandler;
 import com.ded.misle.player.Player;
@@ -10,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import static com.ded.misle.boxes.HPBox.getHPBoxes;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.input_handler.KeyHandler.updateDesignerSpeed;
@@ -374,7 +376,9 @@ public class GamePanel extends JPanel implements Runnable {
 
 		player.attr.checkIfLevelUp();
 
-		player.attr.updateRegenerationHP(currentTime);
+		for (HPBox box : getHPBoxes()) {
+			box.updateRegenerationHP(currentTime);
+		}
 		keyH.updateKeys(mouseHandler);  // Check for player input and update position accordingly
 		mouseHandler.updateMouse();
 		}
