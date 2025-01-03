@@ -44,8 +44,8 @@ public class HandItemAnimator {
             double attackY = player.getY() / scale;
 
             Box attack = addBox(attackX, attackY);
-//            editBox(attack, BoxHandling.EditBoxKeys.COLOR, "#DEDE40");
-            editBox(attack, EditBoxKeys.TEXTURE, "invisible");
+            editBox(attack, BoxHandling.EditBoxKeys.COLOR, "#DEDE40");
+//            editBox(attack, EditBoxKeys.TEXTURE, "invisible");
             editBox(attack, EditBoxKeys.HAS_COLLISION, "true");
             editBox(attack, EditBoxKeys.INTERACTS_WITH_PLAYER, "false");
             for (HPBox box : getHPBoxesInRange(attackX, attackY, 12.5 * abs(attackRange * attackDirection))) {

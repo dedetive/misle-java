@@ -85,7 +85,7 @@ public class PlayingRenderer {
         Rectangle playerRect = new Rectangle(playerScreenX, playerScreenY, (int) player.getBoxScaleHorizontal(), (int) player.getBoxScaleVertical());
         drawRotatedRect(g2d, playerRect, player.pos.getRotation());
 
-        drawHandItem(g2d, playerScreenX, playerScreenY, scaleByScreenSize);
+        drawHandItem(g2d, playerScreenX, playerScreenY, scaleByScreenSize, mouseHandler);
 
         drawUIElements(g2d);
 
@@ -118,13 +118,13 @@ public class PlayingRenderer {
         g2d.dispose();
     }
 
-    private static void drawHandItem(Graphics2D g2d, double playerScreenX, double playerScreenY, double scaleByScreenSize) {
+    private static void drawHandItem(Graphics2D g2d, double playerScreenX, double playerScreenY, double scaleByScreenSize, MouseHandler mouseHandler) {
         if (player.inv.hasHeldItem()) {
 
-            if (player.stats.getHorizontalDirection() == RIGHT) {
+            if (mouseHandler.getMouseHorizontalDirection() == RIGHT) {
                 isFacingRight = 0.5;
                 mirror = false;
-            } else if (player.stats.getHorizontalDirection() == LEFT) {
+            } else {
                 isFacingRight = -1;
                 mirror = true;
             }
@@ -143,7 +143,7 @@ public class PlayingRenderer {
                 drawRotatedImage(g2d, selectedItem.getIcon(), distance + pos + selectedItem.getAnimationX() * isFacingRight * scale / 3.75, playerScreenY + 15 * scaleByScreenSize + selectedItem.getAnimationY() * scale / 3.75, (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), (-35 + selectedItem.getAnimationRotation()) * Math.ceil(isFacingRight), mirror);
             }
 
-            drawRotatedImage(g2d, selectedItem.getIcon(), (int) distance + selectedItem.getAnimationX() * isFacingRight * scale / 3.75, playerScreenY + selectedItem.getAnimationY() * scale / 3.75, (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), selectedItem.getAnimationRotation() * Math.ceil(isFacingRight), mirror);
+            drawRotatedImage(g2d, selectedItem.getIcon(), (int) distance + selectedItem.getAnimationX() * isFacingRight * scale / 3.75, playerScreenY + selectedItem.getAnimationY() * scale / 3.75, (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), selectedItem.getAnimationRotation() * Math.ceil(isFacingRight) + mouseHandler.getMouseHorizontalRotation(), mirror);
         }
     }
 

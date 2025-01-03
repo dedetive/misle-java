@@ -3,6 +3,7 @@ package com.ded.misle.input_handler;
 import com.ded.misle.boxes.Box;
 import com.ded.misle.boxes.BoxHandling;
 import com.ded.misle.items.Item;
+import com.ded.misle.player.PlayerStats;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -15,6 +16,8 @@ import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.boxes.Box.clearSelectedBoxes;
 import static com.ded.misle.input_handler.KeyHandler.pressUseButton;
 import static com.ded.misle.npcs.NPCDialog.getCurrentTalkingTo;
+import static com.ded.misle.player.PlayerStats.Direction.LEFT;
+import static com.ded.misle.player.PlayerStats.Direction.RIGHT;
 import static com.ded.misle.renderer.InventoryRenderer.*;
 import static com.ded.misle.renderer.PlayingRenderer.inventoryBarY;
 import static com.ded.misle.renderer.PlayingRenderer.slotStartX;
@@ -34,6 +37,33 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 	public double getRelativeMouseRotation() {
 		return relativeMouseRotation;
+	}
+
+	public double getMouseHorizontalRotation() {
+		double rotation = 0;
+
+		if (relativeMouseRotation >= 0 && relativeMouseRotation <= 90) {
+			rotation = relativeMouseRotation;
+		} else if (relativeMouseRotation > 90 && relativeMouseRotation <= 270) {
+			rotation = relativeMouseRotation - 180;
+		} else if (relativeMouseRotation > 270 && relativeMouseRotation <= 360) {
+			rotation = relativeMouseRotation;
+		}
+
+		return rotation;
+	}
+
+	public PlayerStats.Direction getMouseHorizontalDirection() {
+		PlayerStats.Direction direction;
+
+		if ((relativeMouseRotation >= 0 && relativeMouseRotation <= 90) ||
+			(relativeMouseRotation >= 270 && relativeMouseRotation <= 360)) {
+			direction = RIGHT;
+		} else {
+			direction = LEFT;
+		}
+
+		return direction;
 	}
 
 	public static void updateMouseVariableScales() {
