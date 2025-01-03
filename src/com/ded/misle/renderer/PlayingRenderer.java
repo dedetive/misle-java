@@ -31,6 +31,7 @@ public class PlayingRenderer {
 
     public static double isFacingRight;
     public static boolean mirror;
+
     public static String selectedItemName;
     public static Point selectedItemNamePosition;
     public static long itemNameDisplayStartTime;

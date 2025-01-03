@@ -30,6 +30,11 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 	private static final int[] extraSlotY = new int[2];
 	private int[] extraHoveredSlot = new int[]{-1, -1};
 
+	private static double relativeMouseRotation;
+
+	public double getRelativeMouseRotation() {
+		return relativeMouseRotation;
+	}
 
 	public static void updateMouseVariableScales() {
 		// PLAYING
@@ -92,11 +97,19 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 	public void mouseMoved(MouseEvent e) {
 		mouseX = e.getX();
 		mouseY = e.getY();
+		double worldMouseX = mouseX + player.pos.getCameraOffsetX();
+		double worldMouseY = mouseY + player.pos.getCameraOffsetY();
+		double deltaX = worldMouseX - player.getX();
+		double deltaY = worldMouseY - player.getY();
+
+		relativeMouseRotation = Math.toDegrees(Math.atan2(deltaY, deltaX));
+		if (relativeMouseRotation < 0) {
+			relativeMouseRotation += 360;
+		}
+
 		switch (gameState) {
 			case PLAYING -> updateHoveredBarSlot();
-			case INVENTORY -> {
-				updateHoveredSlot();
-			}
+			case INVENTORY -> updateHoveredSlot();
 		}
 	}
 

@@ -8,11 +8,9 @@ import com.ded.misle.items.Item;
 import javax.swing.*;
 
 import static com.ded.misle.GamePanel.player;
-import static com.ded.misle.GamePanel.tileSize;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.PhysicsEngine.isPixelOccupied;
 import static com.ded.misle.boxes.BoxHandling.*;
-import static com.ded.misle.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.PlayingRenderer.isFacingRight;
 import static java.lang.Math.abs;
 import static java.lang.Math.clamp;
@@ -46,8 +44,8 @@ public class HandItemAnimator {
             double attackY = player.getY() / scale;
 
             Box attack = addBox(attackX, attackY);
-            editBox(attack, BoxHandling.EditBoxKeys.COLOR, "#DEDE40");
-//            editBox(attack, EditBoxKeys.TEXTURE, "invisible");
+//            editBox(attack, BoxHandling.EditBoxKeys.COLOR, "#DEDE40");
+            editBox(attack, EditBoxKeys.TEXTURE, "invisible");
             editBox(attack, EditBoxKeys.HAS_COLLISION, "true");
             editBox(attack, EditBoxKeys.INTERACTS_WITH_PLAYER, "false");
             for (HPBox box : getHPBoxesInRange(attackX, attackY, 12.5 * abs(attackRange * attackDirection))) {
