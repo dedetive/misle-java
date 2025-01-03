@@ -46,10 +46,13 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 			rotation = relativeMouseRotation;
 		} else if (relativeMouseRotation > 90 && relativeMouseRotation <= 270) {
 			rotation = relativeMouseRotation - 180;
+			rotation = Math.min(rotation, 90 - 35);
 		} else if (relativeMouseRotation > 270 && relativeMouseRotation <= 360) {
 			rotation = relativeMouseRotation;
+			rotation = Math.max(rotation, 270 + 35);
 		}
 
+		System.out.println(rotation);
 		return rotation;
 	}
 
