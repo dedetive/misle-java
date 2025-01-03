@@ -7,6 +7,7 @@ import com.ded.misle.npcs.NPC;
 import com.ded.misle.player.Player;
 import com.ded.misle.player.PlayerAttributes;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
@@ -77,6 +78,7 @@ public class PhysicsEngine {
 	public static boolean isPixelOccupied(Box responsibleBox, double pixelX, double pixelY, double objectWidth, double objectHeight, double range, int level, PlayerAttributes.KnockbackDirection direction) {
 		List<Box> nearbyCollisionBoxes = BoxHandling.getCollisionBoxesInRange(pixelX, pixelY, range, level);
 		for (Box box : nearbyCollisionBoxes) {
+			if (responsibleBox == box) continue;
 			if (responsibleBox instanceof Player && !box.getInteractsWithPlayer()) continue;
 			if (box.getBoxScaleHorizontal() >= 1 && box.getBoxScaleVertical() >= 1) {
 				if (box.isPointColliding(pixelX, pixelY, scale, objectWidth, objectHeight) || // Up-left corner
@@ -84,6 +86,7 @@ public class PhysicsEngine {
 					(box.isPointColliding(pixelX, pixelY + objectHeight, scale, objectWidth, objectHeight)) || // Bottom-left corner
 					(box.isPointColliding(pixelX + objectWidth, pixelY + objectHeight, scale, objectWidth, objectHeight)) // Bottom-right corner
 				) {
+					if (Objects.equals(responsibleBox.getColor(), new Color(0xA02020))) System.out.println("red box found: " + box.getColor());
 					if (responsibleBox instanceof HPBox && !box.getEffect().isEmpty()) {
 						if (Objects.equals(box.getEffect(), "damage")) {
 							box.setKnockbackDirection(direction);
@@ -94,26 +97,28 @@ public class PhysicsEngine {
 				}
 			} else {
 				int inverseBoxScale = (int) (1 / Math.min(box.getBoxScaleHorizontal(), box.getBoxScaleVertical())) + 1;
+				boolean result = false;
 				for (int i = 0; i <= inverseBoxScale; i++) {
 					if ((box.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY, scale, objectWidth, objectHeight)) || // Top edge
 						(box.isPointColliding(pixelX, pixelY + i * objectHeight / inverseBoxScale, scale, objectWidth, objectHeight)) || // Left edge
 						(box.isPointColliding(pixelX + objectWidth, pixelY + i * objectHeight / inverseBoxScale, scale, objectWidth, objectHeight)) || // Right edge
 						(box.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY + objectHeight, scale, objectWidth, objectHeight)) // Bottom edge
 					) {
-						if (responsibleBox instanceof HPBox && !box.getEffect().isEmpty()) {
-							box.handleEffect((HPBox) responsibleBox);
-						}
-						return true;
+						result = true;
 					}
 				}
+				if (responsibleBox instanceof HPBox && !box.getEffect().isEmpty()) {
+					box.handleEffect((HPBox) responsibleBox);
+				}
+				return true;
 			}
 		}
 		return false;
 	}
 
 	public static boolean isPixelOccupied(Box responsibleBox, double range, int level, PlayerAttributes.KnockbackDirection direction) {
-		double pixelX = responsibleBox.getX();
-		double pixelY = responsibleBox.getY();
+		double pixelX = responsibleBox.getX() * scale + tileSize;
+		double pixelY = responsibleBox.getY() * scale + tileSize;
 		double objectWidth = responsibleBox.getBoxScaleHorizontal() * tileSize;
 		double objectHeight = responsibleBox.getBoxScaleVertical() * tileSize;
 

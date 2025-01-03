@@ -9,7 +9,7 @@
     "subtype": "melee",
     "kind": "claw",
     "attackDelay": 1.2,
-    "range": 35,
+    "range": 18,
     "nameColor": "#F5B114"
   },
   {

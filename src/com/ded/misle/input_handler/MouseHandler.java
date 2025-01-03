@@ -52,7 +52,6 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 			rotation = Math.max(rotation, 270 + 35);
 		}
 
-		System.out.println(rotation);
 		return rotation;
 	}
 
@@ -130,6 +129,15 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 	public void mouseMoved(MouseEvent e) {
 		mouseX = e.getX();
 		mouseY = e.getY();
+		updateCurrentMouseRotation();
+
+		switch (gameState) {
+			case PLAYING -> updateHoveredBarSlot();
+			case INVENTORY -> updateHoveredSlot();
+		}
+	}
+
+	public void updateCurrentMouseRotation() {
 		double worldMouseX = mouseX + player.pos.getCameraOffsetX();
 		double worldMouseY = mouseY + player.pos.getCameraOffsetY();
 		double deltaX = worldMouseX - player.getX();
@@ -138,11 +146,6 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 		relativeMouseRotation = Math.toDegrees(Math.atan2(deltaY, deltaX));
 		if (relativeMouseRotation < 0) {
 			relativeMouseRotation += 360;
-		}
-
-		switch (gameState) {
-			case PLAYING -> updateHoveredBarSlot();
-			case INVENTORY -> updateHoveredSlot();
 		}
 	}
 
@@ -185,7 +188,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
                         foundWhereClicked = true;
                     }
                     if (!foundWhereClicked) {
-                        pressUseButton();
+                        pressUseButton(this);
                     }
                 }
             }

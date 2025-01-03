@@ -2,6 +2,7 @@ package com.ded.misle.player;
 
 import com.ded.misle.boxes.Box;
 import com.ded.misle.boxes.BoxHandling;
+import com.ded.misle.input_handler.MouseHandler;
 import com.ded.misle.items.Item;
 import com.ded.misle.renderer.PlayingRenderer;
 
@@ -405,14 +406,14 @@ public class Inventory {
 		timer.start();
 	}
 
-	public void useItem() {
+	public void useItem(MouseHandler mouseHandler) {
 		if (getSelectedItem() != null) { // Ensure something is selected
 			String type = getSelectedItem().getType();
 			long currentTime = currentTimeMillis();
 
 			switch (type) {
 				case "potion" -> usePotion(currentTime);
-				case "weapon" -> useWeapon(currentTime);
+				case "weapon" -> useWeapon(currentTime, mouseHandler);
 			}
 		}
 	}
@@ -480,7 +481,7 @@ public class Inventory {
 		}
 	}
 
-	public void useWeapon(long currentTime) {
+	public void useWeapon(long currentTime, MouseHandler mouseHandler) {
 		double attackDelay = Double.parseDouble(getSelectedItem().getAttributes().get("attackDelay").toString());
 		if (currentTime > getSelectedItem().getTimeToDelay()) {
 			getSelectedItem().setTimeToDelay((long) (attackDelay * 1000));
@@ -488,7 +489,7 @@ public class Inventory {
 			switch (getSelectedItem().getAttributes().get("subtype").toString()) {
 				case "melee" -> {
 					switch (getSelectedItem().getAttributes().get("kind").toString()) {
-						case "claw" -> animateClaw();
+						case "claw" -> animateClaw(mouseHandler);
 						// Weapon goes upward for a bit and then swings downwards
 						// Deals area damage
 						case "ranged" -> {     // throw a box projectile to held direction

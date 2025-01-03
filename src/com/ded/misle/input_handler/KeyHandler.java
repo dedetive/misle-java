@@ -244,7 +244,7 @@ public class KeyHandler implements KeyListener {
 				player.keys.keyPressed.put(DODGE, false);
 			}
 			if (player.keys.keyPressed.get(USE)) {
-				pressUseButton();
+				pressUseButton(mouseHandler);
 				player.keys.keyPressed.put(USE, false);
 			}
 
@@ -425,11 +425,11 @@ public class KeyHandler implements KeyListener {
 		}
 	}
 
-	public static void pressUseButton() {
+	public static void pressUseButton(MouseHandler mouseHandler) {
 		ArrayList<NPC> nearbyNPCs = getSelectedNPCs();
 
 		if (nearbyNPCs.isEmpty()) {
-			player.inv.useItem();
+			player.inv.useItem(mouseHandler);
 		} else {
 			int size = nearbyNPCs.size();
 			int rand = ThreadLocalRandom.current().nextInt(0, size);
