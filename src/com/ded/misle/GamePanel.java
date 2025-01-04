@@ -216,7 +216,8 @@ public class GamePanel extends JPanel implements Runnable {
 				}
 
 				// Update the window size
-				window.setSize(detectedWidth, detectedHeight);
+				window.setPreferredSize(new Dimension(detectedWidth, detectedHeight));
+				window.pack();
 
 				// Scale based on the new dimensions
 				double previousScale = scale;
