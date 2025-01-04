@@ -1,8 +1,8 @@
 package com.ded.misle.renderer;
 
-import com.ded.misle.npcs.NPC;
-import com.ded.misle.input_handler.MouseHandler;
-import com.ded.misle.boxes.BoxHandling;
+import com.ded.misle.world.npcs.NPC;
+import com.ded.misle.input.MouseHandler;
+import com.ded.misle.world.boxes.BoxHandling;
 import com.ded.misle.items.Item;
 
 import javax.swing.*;
@@ -10,17 +10,16 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.ded.misle.GamePanel.*;
-import static com.ded.misle.boxes.Box.getTexture;
-import static com.ded.misle.npcs.NPC.getSelectedNPCs;
+import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.world.boxes.Box.getTexture;
+import static com.ded.misle.world.npcs.NPC.getSelectedNPCs;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.DialogRenderer.renderDialog;
 import static com.ded.misle.renderer.FontManager.coinTextFont;
 import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.renderer.ImageRenderer.cachedImages;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.player.PlayerStats.Direction.LEFT;
-import static com.ded.misle.player.PlayerStats.Direction.RIGHT;
+import static com.ded.misle.world.player.PlayerStats.Direction.RIGHT;
 import static com.ded.misle.renderer.InventoryRenderer.*;
 import static java.lang.System.currentTimeMillis;
 

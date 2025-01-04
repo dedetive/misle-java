@@ -1,10 +1,10 @@
-package com.ded.misle;
+package com.ded.misle.audio;
 
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 
-import static com.ded.misle.SettingsManager.getPath;
+import static com.ded.misle.core.SettingsManager.getPath;
 
 public class AudioPlayer {
 	private Clip clip;

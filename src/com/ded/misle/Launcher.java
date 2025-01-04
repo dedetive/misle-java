@@ -1,8 +1,11 @@
 package com.ded.misle;
 
+import com.ded.misle.core.GamePanel;
+import com.ded.misle.core.LanguageManager;
+
 import javax.swing.*;
 
-import static com.ded.misle.SettingsManager.getSetting;
+import static com.ded.misle.core.SettingsManager.getSetting;
 
 /**
  * This launches the game. Only ever run the game from this class.
@@ -13,11 +16,11 @@ public class Launcher {
 
 	// VARIABLE INITIALIZATIONS
 
-	static String windowTitle;
-	static boolean isFullscreen;
-	static String fullscreenMode;
-	static boolean displayFPS;
-	static int frameRateCap;
+	public static String windowTitle;
+	public static boolean isFullscreen;
+	public static String fullscreenMode;
+	public static boolean displayFPS;
+	public static int frameRateCap;
 	public static double scale;
 	public static boolean levelDesigner;
 	public static String languageCode;

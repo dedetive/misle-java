@@ -1,7 +1,7 @@
-package com.ded.misle.boxes;
+package com.ded.misle.world.boxes;
 
-import com.ded.misle.PhysicsEngine;
-import com.ded.misle.player.PlayerAttributes;
+import com.ded.misle.core.PhysicsEngine;
+import com.ded.misle.world.player.PlayerAttributes;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -9,13 +9,12 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.ded.misle.GamePanel.player;
+import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.PhysicsEngine.ObjectType.BOX;
-import static com.ded.misle.PhysicsEngine.ObjectType.HP_BOX;
-import static com.ded.misle.boxes.BoxHandling.deleteBox;
-import static com.ded.misle.boxes.BoxManipulation.moveCollisionBox;
-import static com.ded.misle.player.PlayerAttributes.KnockbackDirection.NONE;
+import static com.ded.misle.core.PhysicsEngine.ObjectType.HP_BOX;
+import static com.ded.misle.world.boxes.BoxHandling.deleteBox;
+import static com.ded.misle.world.boxes.BoxManipulation.moveCollisionBox;
+import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.PlayingRenderer.createFloatingText;
 

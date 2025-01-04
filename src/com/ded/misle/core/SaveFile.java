@@ -1,8 +1,8 @@
-package com.ded.misle;
+package com.ded.misle.core;
 
 import com.ded.misle.items.Item;
-import com.ded.misle.player.PlayerAttributes;
-import com.ded.misle.player.PlayerStats;
+import com.ded.misle.world.player.PlayerAttributes;
+import com.ded.misle.world.player.PlayerStats;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,9 +15,9 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 
-import static com.ded.misle.SettingsManager.getPath;
-import static com.ded.misle.GamePanel.player;
-import static com.ded.misle.SaveFile.PixelColor.*;
+import static com.ded.misle.core.SettingsManager.getPath;
+import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.core.SaveFile.PixelColor.*;
 
 public class SaveFile {
 

@@ -1,6 +1,6 @@
 package com.ded.misle.renderer;
 
-import com.ded.misle.LanguageManager;
+import com.ded.misle.core.LanguageManager;
 
 import java.awt.*;
 import java.util.ArrayList;

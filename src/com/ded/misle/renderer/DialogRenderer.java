@@ -1,7 +1,7 @@
 package com.ded.misle.renderer;
 
-import com.ded.misle.LanguageManager;
-import com.ded.misle.npcs.NPC;
+import com.ded.misle.core.LanguageManager;
+import com.ded.misle.world.npcs.NPC;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -9,10 +9,10 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.ded.misle.GamePanel.player;
+import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.npcs.NPCDialog.getCurrentTalkingTo;
-import static com.ded.misle.player.PlayerStats.PlaytimeMode.*;
+import static com.ded.misle.world.npcs.NPCDialog.getCurrentTalkingTo;
+import static com.ded.misle.world.player.PlayerStats.PlaytimeMode.*;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.*;
 import static com.ded.misle.renderer.InventoryRenderer.wrapText;

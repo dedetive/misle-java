@@ -1,4 +1,4 @@
-package com.ded.misle;
+package com.ded.misle.core;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -77,7 +77,7 @@ public class SettingsManager {
 	 * @param args the setting you want to know the value of
 	 * @return the value of a specific setting from settings.config in a String format
 	 */
-	static String getSetting(String args) {
+	public static String getSetting(String args) {
 		Path file = getPath().resolve("resources/settings.config");
 		String result = "";
 

@@ -1,12 +1,12 @@
-package com.ded.misle.player;
+package com.ded.misle.world.player;
 
-import com.ded.misle.boxes.Box;
+import com.ded.misle.world.boxes.Box;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.ded.misle.GamePanel.player;
-import static com.ded.misle.player.Inventory.PossibleItemStats.*;
+import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.world.player.Inventory.PossibleItemStats.*;
 import static com.ded.misle.renderer.MainRenderer.fadeInThenOut;
 import static com.ded.misle.renderer.MainRenderer.fadeOut;
 import static com.ded.misle.Launcher.scale;

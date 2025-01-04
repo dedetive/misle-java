@@ -5,7 +5,7 @@ import java.awt.FontFormatException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static com.ded.misle.LanguageManager.getCurrentScript;
+import static com.ded.misle.core.LanguageManager.getCurrentScript;
 import static com.ded.misle.Launcher.scale;
 
 public class FontManager {

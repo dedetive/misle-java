@@ -1,19 +1,20 @@
-package com.ded.misle.boxes;
+package com.ded.misle.world;
 
-import com.ded.misle.npcs.NPC;
+import com.ded.misle.world.npcs.NPC;
+import com.ded.misle.world.boxes.HPBox;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.ded.misle.GamePanel.player;
-import static com.ded.misle.GamePanel.setWorldBorders;
-import static com.ded.misle.boxes.BoxHandling.*;
-import static com.ded.misle.boxes.BoxHandling.EditBoxKeys.*;
-import static com.ded.misle.boxes.BoxHandling.LineAddBoxModes.FILL;
-import static com.ded.misle.boxes.BoxHandling.LineAddBoxModes.HOLLOW;
-import static com.ded.misle.npcs.NPC.InteractionType.DIALOG;
-import static com.ded.misle.npcs.NPC.InteractionType.NONE;
+import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.core.GamePanel.setWorldBorders;
+import static com.ded.misle.world.boxes.BoxHandling.*;
+import static com.ded.misle.world.boxes.BoxHandling.EditBoxKeys.*;
+import static com.ded.misle.world.boxes.BoxHandling.LineAddBoxModes.FILL;
+import static com.ded.misle.world.boxes.BoxHandling.LineAddBoxModes.HOLLOW;
+import static com.ded.misle.world.npcs.NPC.InteractionType.DIALOG;
+import static com.ded.misle.world.npcs.NPC.InteractionType.NONE;
 
 public class WorldLoader {
 	static HashMap<String, Integer> room = new HashMap<>();

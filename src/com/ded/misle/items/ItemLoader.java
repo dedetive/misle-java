@@ -8,8 +8,8 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.List;
 
-import static com.ded.misle.SettingsManager.getPath;
-import static com.ded.misle.GamePanel.player;
+import static com.ded.misle.core.SettingsManager.getPath;
+import static com.ded.misle.core.GamePanel.player;
 
 public class ItemLoader {
 	private static final Path FILE_PATH = getPath().resolve("items/items.json");

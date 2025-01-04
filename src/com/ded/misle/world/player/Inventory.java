@@ -1,22 +1,22 @@
-package com.ded.misle.player;
+package com.ded.misle.world.player;
 
-import com.ded.misle.boxes.Box;
-import com.ded.misle.boxes.BoxHandling;
-import com.ded.misle.input_handler.MouseHandler;
+import com.ded.misle.world.boxes.Box;
+import com.ded.misle.world.boxes.BoxHandling;
+import com.ded.misle.input.MouseHandler;
 import com.ded.misle.items.Item;
 import com.ded.misle.renderer.PlayingRenderer;
 
 import javax.swing.*;
 import java.text.DecimalFormat;
 
-import static com.ded.misle.AudioPlayer.AudioFile.*;
-import static com.ded.misle.AudioPlayer.playThis;
-import static com.ded.misle.GamePanel.player;
+import static com.ded.misle.audio.AudioPlayer.AudioFile.*;
+import static com.ded.misle.audio.AudioPlayer.playThis;
+import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.boxes.BoxManipulation.*;
-import static com.ded.misle.boxes.BoxHandling.editBox;
-import static com.ded.misle.player.HandItemAnimator.animateClaw;
-import static com.ded.misle.player.PlayerAttributes.Stat.ALL;
+import static com.ded.misle.world.boxes.BoxManipulation.*;
+import static com.ded.misle.world.boxes.BoxHandling.editBox;
+import static com.ded.misle.world.player.HandItemAnimator.animateClaw;
+import static com.ded.misle.world.player.PlayerAttributes.Stat.ALL;
 import static com.ded.misle.renderer.ColorManager.entropyGainColor;
 import static com.ded.misle.renderer.ColorManager.healColor;
 import static java.lang.System.currentTimeMillis;

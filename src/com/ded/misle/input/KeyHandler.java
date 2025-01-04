@@ -1,9 +1,9 @@
-package com.ded.misle.input_handler;
+package com.ded.misle.input;
 
-import com.ded.misle.GamePanel;
-import com.ded.misle.PhysicsEngine;
-import com.ded.misle.npcs.NPC;
-import com.ded.misle.player.PlayerAttributes;
+import com.ded.misle.core.GamePanel;
+import com.ded.misle.core.PhysicsEngine;
+import com.ded.misle.world.npcs.NPC;
+import com.ded.misle.world.player.PlayerAttributes;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
@@ -12,14 +12,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.ded.misle.GamePanel.*;
-import static com.ded.misle.npcs.NPC.getDialogNPCs;
-import static com.ded.misle.npcs.NPC.getSelectedNPCs;
-import static com.ded.misle.npcs.NPCDialog.getCurrentTalkingTo;
-import static com.ded.misle.npcs.NPCDialog.startDialog;
+import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.world.npcs.NPC.getDialogNPCs;
+import static com.ded.misle.world.npcs.NPC.getSelectedNPCs;
+import static com.ded.misle.world.npcs.NPCDialog.getCurrentTalkingTo;
+import static com.ded.misle.world.npcs.NPCDialog.startDialog;
 import static com.ded.misle.renderer.LevelDesignerRenderer.levelDesignerGrid;
 import static com.ded.misle.renderer.MenuRenderer.pauseGame;
-import static com.ded.misle.input_handler.KeyHandler.Key.*;
+import static com.ded.misle.input.KeyHandler.Key.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.items.Item.createItem;
 import static java.awt.event.KeyEvent.*;

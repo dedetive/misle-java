@@ -1,7 +1,7 @@
 package com.ded.misle.items;
 
-import com.ded.misle.LanguageManager;
-import com.ded.misle.boxes.Box;
+import com.ded.misle.core.LanguageManager;
+import com.ded.misle.world.boxes.Box;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,9 +13,9 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.IOException;
 
-import static com.ded.misle.SettingsManager.getPath;
-import static com.ded.misle.GamePanel.player;
-import static com.ded.misle.boxes.BoxHandling.addBoxItem;
+import static com.ded.misle.core.SettingsManager.getPath;
+import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.world.boxes.BoxHandling.addBoxItem;
 import static java.lang.System.currentTimeMillis;
 
 public class Item {

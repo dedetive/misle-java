@@ -1,10 +1,10 @@
-package com.ded.misle.player;
+package com.ded.misle.world.player;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static com.ded.misle.GamePanel.player;
+import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
 
 public class PlayerPosition {

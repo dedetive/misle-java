@@ -1,20 +1,19 @@
-package com.ded.misle.boxes;
+package com.ded.misle.world.boxes;
 
-import com.ded.misle.PhysicsEngine;
-import com.ded.misle.npcs.NPC;
+import com.ded.misle.core.PhysicsEngine;
+import com.ded.misle.world.npcs.NPC;
 
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import static com.ded.misle.GamePanel.player;
-import static com.ded.misle.GamePanel.tileSize;
+import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.core.GamePanel.tileSize;
 import static com.ded.misle.Launcher.levelDesigner;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.boxes.HPBox.getHPBoxes;
-import static com.ded.misle.npcs.NPC.getInteractableNPCs;
+import static com.ded.misle.world.boxes.HPBox.getHPBoxes;
+import static com.ded.misle.world.npcs.NPC.getInteractableNPCs;
 
 public class BoxHandling {
 

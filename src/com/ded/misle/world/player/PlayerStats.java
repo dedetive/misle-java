@@ -1,8 +1,8 @@
-package com.ded.misle.player;
+package com.ded.misle.world.player;
 
 import java.util.*;
 
-import static com.ded.misle.boxes.BoxHandling.*;
+import static com.ded.misle.world.boxes.BoxHandling.*;
 
 public class PlayerStats {
 

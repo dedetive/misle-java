@@ -1,9 +1,9 @@
-package com.ded.misle;
+package com.ded.misle.core;
 
 import java.util.ResourceBundle;
 import java.util.Locale;
 
-import static com.ded.misle.LanguageManager.Script.*;
+import static com.ded.misle.core.LanguageManager.Script.*;
 
 public class LanguageManager {
 	private static ResourceBundle messages;

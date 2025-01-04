@@ -1,4 +1,4 @@
-package com.ded.misle.chests;
+package com.ded.misle.world.chests;
 
 import com.ded.misle.items.ItemData;
 import com.ded.misle.items.ItemGetter;

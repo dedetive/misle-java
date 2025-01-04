@@ -1,18 +1,17 @@
-package com.ded.misle.player;
+package com.ded.misle.world.player;
 
-import com.ded.misle.boxes.Box;
-import com.ded.misle.boxes.BoxHandling;
-import com.ded.misle.boxes.HPBox;
-import com.ded.misle.input_handler.MouseHandler;
+import com.ded.misle.world.boxes.Box;
+import com.ded.misle.world.boxes.HPBox;
+import com.ded.misle.input.MouseHandler;
 import com.ded.misle.items.Item;
 
 import javax.swing.*;
 
-import static com.ded.misle.GamePanel.player;
+import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.PhysicsEngine.isPixelOccupied;
-import static com.ded.misle.boxes.BoxHandling.*;
-import static com.ded.misle.player.PlayerAttributes.KnockbackDirection.NONE;
+import static com.ded.misle.core.PhysicsEngine.isPixelOccupied;
+import static com.ded.misle.world.boxes.BoxHandling.*;
+import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.PlayingRenderer.isFacingRight;
 import static java.lang.Math.abs;
 import static java.lang.Math.clamp;

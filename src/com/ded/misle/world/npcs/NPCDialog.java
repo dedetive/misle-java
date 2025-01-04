@@ -1,9 +1,9 @@
-package com.ded.misle.npcs;
+package com.ded.misle.world.npcs;
 
-import com.ded.misle.GamePanel;
+import com.ded.misle.core.GamePanel;
 
-import static com.ded.misle.GamePanel.gameState;
-import static com.ded.misle.npcs.NPC.getDialogNPCs;
+import static com.ded.misle.core.GamePanel.gameState;
+import static com.ded.misle.world.npcs.NPC.getDialogNPCs;
 
 public class NPCDialog {
     private static NPC currentTalkingTo;

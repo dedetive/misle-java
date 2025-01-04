@@ -1,15 +1,15 @@
-package com.ded.misle.npcs;
+package com.ded.misle.world.npcs;
 
-import com.ded.misle.LanguageManager;
-import com.ded.misle.PhysicsEngine;
-import com.ded.misle.boxes.HPBox;
+import com.ded.misle.core.LanguageManager;
+import com.ded.misle.core.PhysicsEngine;
+import com.ded.misle.world.boxes.HPBox;
 
 import java.awt.*;
 import java.util.ArrayList;
 
-import static com.ded.misle.boxes.BoxHandling.addBoxToCache;
-import static com.ded.misle.npcs.NPCDialog.endDialog;
-import static com.ded.misle.player.PlayerAttributes.KnockbackDirection.NONE;
+import static com.ded.misle.world.boxes.BoxHandling.addBoxToCache;
+import static com.ded.misle.world.npcs.NPCDialog.endDialog;
+import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 
 public class NPC extends HPBox {
     private static final ArrayList<NPC> selectedNPCs = new ArrayList<>();

@@ -1,12 +1,11 @@
-package com.ded.misle.player;
+package com.ded.misle.world.player;
 
-import com.ded.misle.PhysicsEngine;
-import com.ded.misle.boxes.HPBox;
+import com.ded.misle.core.PhysicsEngine;
+import com.ded.misle.world.boxes.HPBox;
 
-import static com.ded.misle.GamePanel.player;
-import static com.ded.misle.GamePanel.tileSize;
-import static com.ded.misle.boxes.BoxHandling.addBoxToCache;
-import static com.ded.misle.player.PlayerAttributes.KnockbackDirection.NONE;
+import static com.ded.misle.core.GamePanel.tileSize;
+import static com.ded.misle.world.boxes.BoxHandling.addBoxToCache;
+import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 
 public class Player extends HPBox {

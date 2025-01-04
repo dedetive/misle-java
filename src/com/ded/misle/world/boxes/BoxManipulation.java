@@ -1,15 +1,15 @@
-package com.ded.misle.boxes;
+package com.ded.misle.world.boxes;
 
-import com.ded.misle.PhysicsEngine;
-import com.ded.misle.player.PlayerAttributes;
+import com.ded.misle.core.PhysicsEngine;
+import com.ded.misle.world.player.PlayerAttributes;
 
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static com.ded.misle.GamePanel.*;
+import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.player.PlayerAttributes.KnockbackDirection.*;
+import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.*;
 
 public class BoxManipulation {
 

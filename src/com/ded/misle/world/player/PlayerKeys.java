@@ -1,7 +1,7 @@
-package com.ded.misle.player;
+package com.ded.misle.world.player;
 
-import com.ded.misle.input_handler.KeyHandler.Key;
-import static com.ded.misle.input_handler.KeyHandler.Key.*;
+import com.ded.misle.input.KeyHandler.Key;
+import static com.ded.misle.input.KeyHandler.Key.*;
 import java.util.HashMap;
 
 public class PlayerKeys {

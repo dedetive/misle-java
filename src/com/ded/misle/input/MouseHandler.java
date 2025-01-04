@@ -1,9 +1,9 @@
-package com.ded.misle.input_handler;
+package com.ded.misle.input;
 
-import com.ded.misle.boxes.Box;
-import com.ded.misle.boxes.BoxHandling;
+import com.ded.misle.world.boxes.Box;
+import com.ded.misle.world.boxes.BoxHandling;
 import com.ded.misle.items.Item;
-import com.ded.misle.player.PlayerStats;
+import com.ded.misle.world.player.PlayerStats;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -11,13 +11,13 @@ import java.awt.event.MouseMotionListener;
 import java.util.Arrays;
 import java.util.Objects;
 
-import static com.ded.misle.GamePanel.*;
+import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.boxes.Box.clearSelectedBoxes;
-import static com.ded.misle.input_handler.KeyHandler.pressUseButton;
-import static com.ded.misle.npcs.NPCDialog.getCurrentTalkingTo;
-import static com.ded.misle.player.PlayerStats.Direction.LEFT;
-import static com.ded.misle.player.PlayerStats.Direction.RIGHT;
+import static com.ded.misle.world.boxes.Box.clearSelectedBoxes;
+import static com.ded.misle.input.KeyHandler.pressUseButton;
+import static com.ded.misle.world.npcs.NPCDialog.getCurrentTalkingTo;
+import static com.ded.misle.world.player.PlayerStats.Direction.LEFT;
+import static com.ded.misle.world.player.PlayerStats.Direction.RIGHT;
 import static com.ded.misle.renderer.InventoryRenderer.*;
 import static com.ded.misle.renderer.PlayingRenderer.inventoryBarY;
 import static com.ded.misle.renderer.PlayingRenderer.slotStartX;

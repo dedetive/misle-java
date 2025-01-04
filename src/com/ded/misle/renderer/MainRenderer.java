@@ -1,12 +1,12 @@
 package com.ded.misle.renderer;
 
-import com.ded.misle.player.PlayerAttributes;
+import com.ded.misle.world.player.PlayerAttributes;
 
-import static com.ded.misle.GamePanel.*;
+import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.SaveFile.loadSaveFile;
-import static com.ded.misle.boxes.BoxHandling.storeCachedBoxes;
-import static com.ded.misle.boxes.WorldLoader.loadBoxes;
+import static com.ded.misle.core.SaveFile.loadSaveFile;
+import static com.ded.misle.world.boxes.BoxHandling.storeCachedBoxes;
+import static com.ded.misle.world.WorldLoader.loadBoxes;
 import static com.ded.misle.renderer.ColorManager.*;
 import static java.lang.System.currentTimeMillis;
 

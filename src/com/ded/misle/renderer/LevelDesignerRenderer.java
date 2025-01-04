@@ -1,12 +1,12 @@
 package com.ded.misle.renderer;
 
-import com.ded.misle.input_handler.MouseHandler;
-import com.ded.misle.boxes.BoxHandling;
+import com.ded.misle.input.MouseHandler;
+import com.ded.misle.world.boxes.BoxHandling;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static com.ded.misle.GamePanel.*;
+import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.renderer.ColorManager.gridColor;
 
 public class LevelDesignerRenderer {

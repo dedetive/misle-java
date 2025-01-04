@@ -1,7 +1,7 @@
-package com.ded.misle.boxes;
+package com.ded.misle.world.boxes;
 
-import com.ded.misle.PhysicsEngine;
-import com.ded.misle.player.PlayerAttributes;
+import com.ded.misle.core.PhysicsEngine;
+import com.ded.misle.world.player.PlayerAttributes;
 import com.ded.misle.renderer.MainRenderer;
 import com.ded.misle.renderer.PlayingRenderer;
 
@@ -13,19 +13,19 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
 
-import static com.ded.misle.AudioPlayer.AudioFile.collect_item;
-import static com.ded.misle.AudioPlayer.playThis;
-import static com.ded.misle.SettingsManager.getPath;
-import static com.ded.misle.GamePanel.*;
-import static com.ded.misle.player.PlayerAttributes.KnockbackDirection.NONE;
+import static com.ded.misle.audio.AudioPlayer.AudioFile.collect_item;
+import static com.ded.misle.audio.AudioPlayer.playThis;
+import static com.ded.misle.core.SettingsManager.getPath;
+import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.PhysicsEngine.ObjectType.BOX;
-import static com.ded.misle.boxes.BoxManipulation.moveBox;
-import static com.ded.misle.boxes.BoxHandling.*;
-import static com.ded.misle.boxes.WorldLoader.loadBoxes;
-import static com.ded.misle.boxes.WorldLoader.unloadBoxes;
-import static com.ded.misle.chests.ChestTables.getChestDropID;
+import static com.ded.misle.core.PhysicsEngine.ObjectType.BOX;
+import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
+import static com.ded.misle.world.boxes.BoxHandling.*;
+import static com.ded.misle.world.WorldLoader.loadBoxes;
+import static com.ded.misle.world.WorldLoader.unloadBoxes;
+import static com.ded.misle.world.chests.ChestTables.getChestDropID;
 import static com.ded.misle.items.Item.createDroppedItem;
 import static com.ded.misle.items.Item.createItem;
 import static com.ded.misle.renderer.MainRenderer.*;
