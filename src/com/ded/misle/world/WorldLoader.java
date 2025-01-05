@@ -33,7 +33,6 @@ public class WorldLoader {
 			case "void" -> {
 				;
 			}
-
 			case "city_tuani" -> {
 				//Setup
 				int worldWidth = 1000;
@@ -93,7 +92,6 @@ public class WorldLoader {
 				NPC cyanBlock = new NPC(460, 340, NONE);
 				editBox(cyanBlock, COLOR, "#00FFFF");
 			}
-
 			case "tuani_house1" -> {
 				//Setup
 				int worldWidth = 500;
@@ -130,10 +128,11 @@ public class WorldLoader {
 				HPBox corner = addHPBox(365, 145);
 				corner.setMaxHP(50);
 				corner.setHP(50);
-				editLastBox(EditBoxKeys.COLOR, "#A02020");
-				editLastBox(EFFECT, "{damage, 5, 300, normal, 0}");
-			}
+				corner.setColor(new Color(0xA02020));
+				corner.setDropTableName("mountain");
+				editBox(corner, EFFECT, "{damage, 5, 300, normal, 0}");
 
+			}
 			case "cliff" -> {
 				// Setup
 				setupWorld(1190, 490);

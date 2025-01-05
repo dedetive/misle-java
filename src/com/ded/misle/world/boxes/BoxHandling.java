@@ -73,10 +73,11 @@ public class BoxHandling {
 	 *
 	 * Valid presets are:<br>
 	 * - spawnpoint<br>
-	 * - mountainChest<br>
+	 * - mountain_chest<br>
 	 * - wall_default<br>
 	 * - wall_default@Deco<br>
 	 * - grass
+	 * - travel
 	 *
 	 */
 	public static void addBox(double x, double y, String preset) {
@@ -269,7 +270,7 @@ public class BoxHandling {
 			case "travel":
 				editBox(box, EditBoxKeys.HAS_COLLISION, "true");
 				editBox(box, EditBoxKeys.TEXTURE, "invisible");
-				// Should also manually add room ID, X and Y positions
+				// Should also manually add room ID, X and Y positions (in this order)
 				// Effect should look like: {travel, 1, 500, 20}
 				break;
 		}

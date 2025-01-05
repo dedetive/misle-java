@@ -9,16 +9,16 @@ import java.util.Random;
 
 import static com.ded.misle.items.ItemGetter.getParameterizedItems;
 
-public class ChestTables {
-	public static int[] getChestDropID(String chestType) {
-		List<ItemData> itemsInBundle = getParameterizedItems(ItemGetter.ParameterKey.BUNDLE, chestType);
+public class DropTable {
+	public static int[] getDropTableItemID(String dropTableName) {
+		List<ItemData> itemsInBundle = getParameterizedItems(ItemGetter.ParameterKey.BUNDLE, dropTableName);
 		List<ItemData> weightedItems = new ArrayList<>();
 		int count = 1;
 
 		// Calculate total weight
 		int totalWeight = 0;
 		for (ItemData item : itemsInBundle) {
-			int weight = item.getBundles().get(chestType);  // get weight for specific bundle
+			int weight = item.getBundles().get(dropTableName);  // get weight for specific bundle
 			totalWeight += weight;
 			// Add each item as many times as its weight for easier random selection
 			for (int i = 0; i < weight; i++) {
@@ -28,7 +28,7 @@ public class ChestTables {
 
 		// Select random item based on weight
 		int randomIndex = new Random().nextInt(weightedItems.size());
-		int maxCount = weightedItems.get(randomIndex).getBundleCount().get(chestType);
+		int maxCount = weightedItems.get(randomIndex).getBundleCount().get(dropTableName);
 		if (maxCount > 1) {
 			count = (int) ((Math.random() * (maxCount - 1)) + 1);
 		}

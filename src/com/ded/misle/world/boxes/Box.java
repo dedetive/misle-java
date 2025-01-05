@@ -25,7 +25,7 @@ import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.WorldLoader.loadBoxes;
 import static com.ded.misle.world.WorldLoader.unloadBoxes;
-import static com.ded.misle.world.chests.ChestTables.getChestDropID;
+import static com.ded.misle.world.chests.DropTable.getDropTableItemID;
 import static com.ded.misle.items.Item.createDroppedItem;
 import static com.ded.misle.items.Item.createItem;
 import static com.ded.misle.renderer.MainRenderer.*;
@@ -474,23 +474,23 @@ public class Box {
 
 		if (currentTime - this.getLastEffectTime() >= cooldownDuration) {
 			this.setLastEffectTime(currentTime);
-			int[] results = getChestDropID(this.effect[2]);
+			int[] results = getDropTableItemID(this.effect[2]);
 			int id = results[0];
 			int count = results[1];
 			boolean canGoMinus = false;
 			boolean canGoPlus = false;
-			if (getCollisionBoxesInRange(this.x - 20, this.y * scale, 0, 6).isEmpty()) {
+			if (getCollisionBoxesInRange(this.x - 20, this.y, 10, 6).isEmpty()) {
 				canGoMinus = true;
 			}
-			if (getCollisionBoxesInRange(this.x + 20, this.y * scale, 0, 6).isEmpty()) {
+			if (getCollisionBoxesInRange(this.x + 20, this.y, 10, 6).isEmpty()) {
 				canGoPlus = true;
 			}
 
-			this.boxSpawnItem(canGoMinus, canGoPlus, id, count);
+			this.spawnItem(canGoMinus, canGoPlus, id, count);
 		}
 	}
 
-	private void boxSpawnItem(boolean canGoMinus, boolean canGoPlus, int id, int count) {
+	public void spawnItem(boolean canGoMinus, boolean canGoPlus, int id, int count) {
 		double randomNumber = Math.random();
 
 		int delay = 750;

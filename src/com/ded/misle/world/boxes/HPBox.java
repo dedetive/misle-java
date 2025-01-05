@@ -1,6 +1,6 @@
 package com.ded.misle.world.boxes;
 
-import com.ded.misle.core.PhysicsEngine;
+import com.ded.misle.world.player.Player;
 import com.ded.misle.world.player.PlayerAttributes;
 
 import java.text.DecimalFormat;
@@ -13,7 +13,9 @@ import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.PhysicsEngine.ObjectType.HP_BOX;
 import static com.ded.misle.world.boxes.BoxHandling.deleteBox;
+import static com.ded.misle.world.boxes.BoxHandling.getCollisionBoxesInRange;
 import static com.ded.misle.world.boxes.BoxManipulation.moveCollisionBox;
+import static com.ded.misle.world.chests.DropTable.getDropTableItemID;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.PlayingRenderer.createFloatingText;
@@ -30,6 +32,7 @@ public class HPBox extends Box {
     private double regenerationQuality;
     private double regenerationRate = 1;
     private boolean isInvulnerable;
+    private String dropTableName;
     private static List<HPBox> HPBoxes = new ArrayList<>();
 
     public static List<HPBox> getHPBoxes() {
@@ -79,7 +82,24 @@ public class HPBox extends Box {
 
     public boolean checkIfDead() {
         if (this.HP == 0) {
-            if (getObjectType() != PhysicsEngine.ObjectType.PLAYER) {
+            if (!(this instanceof Player)) {
+                if (!this.getDropTableName().isEmpty()) {
+                    boolean canGoMinus = false;
+                    boolean canGoPlus = false;
+                    if (getCollisionBoxesInRange(this.getX() - 20, this.getY(), 10, 6).isEmpty()) {
+                        canGoMinus = true;
+                    }
+                    if (getCollisionBoxesInRange(this.getX() + 20, this.getY(), 10, 6).isEmpty()) {
+                        canGoPlus = true;
+                    }
+
+                    int[] results = getDropTableItemID(this.getDropTableName());
+                    int id = results[0];
+                    int count = results[1];
+
+                    this.spawnItem(canGoMinus, canGoPlus, id, count);
+                }
+
                 deleteBox(this);
             } else {
                 player.attr.playerDies();
@@ -161,7 +181,7 @@ public class HPBox extends Box {
                 throw new IllegalArgumentException("Invalid reason: " + reason);
             }
 
-            // Check if the player dies
+            // Check if the box dies
             if (this.getHP() <= 0 || (lockedHP > player.getHP()) && this == player) {
                 checkIfDead();
             }
@@ -393,6 +413,16 @@ public class HPBox extends Box {
 
     public void turnRegenerationDoubledOn() {
         isRegenerationDoubled = true;
+    }
+
+    // DROP TABLE
+
+    public String getDropTableName() {
+        return dropTableName;
+    }
+
+    public void setDropTableName(String dropTableName) {
+        this.dropTableName = dropTableName;
     }
 
     // OTHER ATTRIBUTES
