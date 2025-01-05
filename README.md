@@ -12,7 +12,7 @@ This is a game of a project I've had for over two years now. It used to be just 
 
 To open the game, navigate to the directory `misle-java-master/src` in a terminal and copy paste the following lines of code:
 
-In `misle-java-master/`:
+In `misle-java-master/`, where you can see the folder `com`:
 
 ```bash
 rm -rf out
