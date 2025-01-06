@@ -181,11 +181,6 @@ public class HPBox extends Box {
                 throw new IllegalArgumentException("Invalid reason: " + reason);
             }
 
-            // Check if the box dies
-            if (this.getHP() <= 0 || (lockedHP > player.getHP()) && this == player) {
-                checkIfDead();
-            }
-
             // Displayed numerical value
 
             int playerScreenX;
