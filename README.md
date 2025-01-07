@@ -236,3 +236,12 @@ And finally, add the .png icon for the item in `resources/images/items/`. The na
 2. As of the most recent commit, all languages besides `en_US` and `pt_BR` have no English translation for items with ID higher or equal to 12.
 
 > **Note:** Please report any issues you encounter during your game development. Please contact me if you're interested in helping. I'm available on Discord by the username `dedetive`. Your help would be greatly appreciated.
+
+### Donations
+
+To donate to the project and help me and my team, which consists of solely me and a graphical artist, use the following link:
+https://pixie.gg/ded/
+
+> **Note:** Donating will not grant you special benefits. This is not a paid product, and there are no paid in-game bonuses or bonus content.
+
+Again, I profoundly thank you and everyone who is reading this.
