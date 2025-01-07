@@ -92,6 +92,8 @@ public class WorldLoader {
 
 				NPC cyanBlock = new NPC(460, 340, NONE);
 				editBox(cyanBlock, COLOR, "#00FFFF");
+
+				Enemy goblin = new Enemy(600, 500, Enemy.EnemyType.GOBLIN);
 			}
 			case "tuani_house1" -> {
 				//Setup
