@@ -1,5 +1,6 @@
 package com.ded.misle.world;
 
+import com.ded.misle.world.enemies.Enemy;
 import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.world.boxes.HPBox;
 
@@ -125,13 +126,7 @@ public class WorldLoader {
 				addBox(261, 41, "spawnpoint");
 
 				// Corner block
-				HPBox corner = addHPBox(365, 145);
-				corner.setMaxHP(50);
-				corner.setHP(50);
-				corner.setColor(new Color(0xA02020));
-				corner.setDropTableName("mountain");
-				editBox(corner, EFFECT, "{damage, 5, 300, normal, 0}");
-
+				addEnemyBox(365, 145, Enemy.EnemyType.RED_BLOCK);
 			}
 			case "cliff" -> {
 				// Setup
