@@ -8,7 +8,7 @@
     "type": "weapon",
     "subtype": "melee",
     "kind": "claw",
-    "attackDelay": 1.2,
+    "attackDelay": 1,
     "range": 18,
     "nameColor": "#F5B114"
   },
@@ -246,6 +246,20 @@
     "type": "armor",
     "subtype": "ring",
     "nameColor": "#609499"
+  },
+  {
+    "id": 20,
+    "resourceID": 20,
+    "name": "Sports Glove",
+    "rarity": "F",
+    "damage": 5,
+    "secondary_damage": 3,
+    "type": "weapon",
+    "subtype": "melee",
+    "kind": "glove",
+    "attackDelay": 0.6125,
+    "range": 15,
+    "nameColor": "#BDBDBD"
   },
   {
     "id": -1,
