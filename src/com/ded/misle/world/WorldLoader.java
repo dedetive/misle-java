@@ -2,7 +2,6 @@ package com.ded.misle.world;
 
 import com.ded.misle.world.enemies.Enemy;
 import com.ded.misle.world.npcs.NPC;
-import com.ded.misle.world.boxes.HPBox;
 
 import java.awt.*;
 import java.util.HashMap;
