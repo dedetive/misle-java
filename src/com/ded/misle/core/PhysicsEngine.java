@@ -86,11 +86,19 @@ public class PhysicsEngine {
 					(box.isPointColliding(pixelX, pixelY + objectHeight, scale, objectWidth, objectHeight)) || // Bottom-left corner
 					(box.isPointColliding(pixelX + objectWidth, pixelY + objectHeight, scale, objectWidth, objectHeight)) // Bottom-right corner
 				) {
+					// Touching box gets effect
 					if (responsibleBox instanceof HPBox && !box.getEffect().isEmpty()) {
 						if (Objects.equals(box.getEffect(), "damage")) {
 							box.setKnockbackDirection(direction);
 						}
 						box.handleEffect((HPBox) responsibleBox);
+					}
+					// Responsible box gets effect
+					if (box instanceof HPBox && !responsibleBox.getEffect().isEmpty()) {
+						if (Objects.equals(responsibleBox.getEffect(), "damage")) {
+							responsibleBox.setKnockbackDirection(direction);
+						}
+						responsibleBox.handleEffect((HPBox) box);
 					}
 					return true;
 				}
