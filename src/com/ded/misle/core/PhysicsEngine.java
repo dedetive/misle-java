@@ -7,7 +7,6 @@ import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.world.player.Player;
 import com.ded.misle.world.player.PlayerAttributes;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
@@ -75,12 +74,14 @@ public class PhysicsEngine {
 	 * the player entire hitbox, not just from the top-left corner.
 	 *
  	 */
-	public static boolean isPixelOccupied(Box responsibleBox, double pixelX, double pixelY, double objectWidth, double objectHeight, double range, int level, PlayerAttributes.KnockbackDirection direction) {
+	public static boolean isPixelOccupied(Box responsibleBox, double pixelX, double pixelY, double range, int level, PlayerAttributes.KnockbackDirection direction) {
+		double objectWidth = responsibleBox.getBoxScaleHorizontal();
+		double objectHeight = responsibleBox.getBoxScaleVertical();
 		List<Box> nearbyCollisionBoxes = BoxHandling.getCollisionBoxesInRange(pixelX, pixelY, range, level);
 		for (Box box : nearbyCollisionBoxes) {
 			if (responsibleBox == box) continue;
 			if (responsibleBox instanceof Player && !box.getInteractsWithPlayer()) continue;
-			if (box.getBoxScaleHorizontal() >= 1 && box.getBoxScaleVertical() >= 1) {
+			if ((box.getBoxScaleHorizontal() >= 1 && box.getBoxScaleVertical() >= 1) && (responsibleBox.getBoxScaleHorizontal() >= 1 && responsibleBox.getBoxScaleVertical() >= 1)) {
 				if (box.isPointColliding(pixelX, pixelY, scale, objectWidth, objectHeight) || // Up-left corner
 					(box.isPointColliding(pixelX + objectWidth, pixelY, scale, objectWidth, objectHeight)) || // Up-right corner
 					(box.isPointColliding(pixelX, pixelY + objectHeight, scale, objectWidth, objectHeight)) || // Bottom-left corner
@@ -103,21 +104,31 @@ public class PhysicsEngine {
 					return true;
 				}
 			} else {
-				int inverseBoxScale = (int) (1 / Math.min(box.getBoxScaleHorizontal(), box.getBoxScaleVertical())) + 1;
-				boolean result = false;
+				int inverseBoxScale = (int) Math.min(1 / Math.min(box.getBoxScaleHorizontal(), box.getBoxScaleVertical()),
+					(1 / Math.min(responsibleBox.getBoxScaleHorizontal(), responsibleBox.getBoxScaleVertical()))) + 1;
 				for (int i = 0; i <= inverseBoxScale; i++) {
 					if ((box.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY, scale, objectWidth, objectHeight)) || // Top edge
 						(box.isPointColliding(pixelX, pixelY + i * objectHeight / inverseBoxScale, scale, objectWidth, objectHeight)) || // Left edge
 						(box.isPointColliding(pixelX + objectWidth, pixelY + i * objectHeight / inverseBoxScale, scale, objectWidth, objectHeight)) || // Right edge
 						(box.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY + objectHeight, scale, objectWidth, objectHeight)) // Bottom edge
 					) {
-						result = true;
+						// Touching box gets effect
+						if (responsibleBox instanceof HPBox && !box.getEffect().isEmpty()) {
+							if (Objects.equals(box.getEffect(), "damage")) {
+								box.setKnockbackDirection(direction);
+							}
+							box.handleEffect((HPBox) responsibleBox);
+						}
+						// Responsible box gets effect
+						if (box instanceof HPBox && !responsibleBox.getEffect().isEmpty()) {
+							if (Objects.equals(responsibleBox.getEffect(), "damage")) {
+								responsibleBox.setKnockbackDirection(direction.getOppositeDirection());
+							}
+							responsibleBox.handleEffect((HPBox) box);
+						}
+						return true;
 					}
 				}
-				if (responsibleBox instanceof HPBox && !box.getEffect().isEmpty()) {
-					box.handleEffect((HPBox) responsibleBox);
-				}
-				return result;
 			}
 		}
 		return false;
@@ -126,10 +137,8 @@ public class PhysicsEngine {
 	public static boolean isPixelOccupied(Box responsibleBox, double range, int level, PlayerAttributes.KnockbackDirection direction) {
 		double pixelX = responsibleBox.getX() * scale + tileSize;
 		double pixelY = responsibleBox.getY() * scale + tileSize;
-		double objectWidth = responsibleBox.getBoxScaleHorizontal() * tileSize;
-		double objectHeight = responsibleBox.getBoxScaleVertical() * tileSize;
 
-		return isPixelOccupied(responsibleBox, pixelX, pixelY, objectWidth, objectHeight, range, level, direction);
+		return isPixelOccupied(responsibleBox, pixelX, pixelY, range, level, direction);
 	}
 
 	public static double coordinateToPixel(int coordinate) {

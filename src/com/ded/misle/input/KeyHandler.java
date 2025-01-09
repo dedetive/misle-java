@@ -265,10 +265,10 @@ public class KeyHandler implements KeyListener {
 					} else {
 						verticalDirection = PlayerAttributes.KnockbackDirection.UP;
 					}
-					if (!PhysicsEngine.isPixelOccupied(player, (player.getX() + willMovePlayer[0]), player.getY(), player.getBoxScaleHorizontal(), player.getBoxScaleVertical(), range, 12, horizontalDirection)) {
+					if (!PhysicsEngine.isPixelOccupied(player, (player.getX() + willMovePlayer[0]), player.getY(), range, 12, horizontalDirection)) {
 						PhysicsEngine.movePlayer(willMovePlayer[0], 0);
 					}
-					if (!PhysicsEngine.isPixelOccupied(player, player.getX(), (player.getY() + willMovePlayer[1]), player.getBoxScaleHorizontal(), player.getBoxScaleVertical(), range, 12, verticalDirection)) {
+					if (!PhysicsEngine.isPixelOccupied(player, player.getX(), (player.getY() + willMovePlayer[1]), range, 12, verticalDirection)) {
 						PhysicsEngine.movePlayer(0, willMovePlayer[1]);
 					}
 				}

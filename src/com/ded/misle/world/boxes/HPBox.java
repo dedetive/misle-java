@@ -83,7 +83,7 @@ public class HPBox extends Box {
     public boolean checkIfDead() {
         if (this.HP == 0) {
             if (!(this instanceof Player)) {
-                if (!this.getDropTableName().isEmpty()) {
+                if (!(this.getDropTableName() == null || this.getDropTableName().isEmpty())) {
                     boolean canGoMinus = false;
                     boolean canGoPlus = false;
                     if (getCollisionBoxesInRange(this.getX() - 20, this.getY(), 10, 6).isEmpty()) {

@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import static com.ded.misle.core.GamePanel.*;
-import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.*;
 
 public class BoxManipulation {
@@ -64,7 +63,7 @@ public class BoxManipulation {
 	 * @param delay how long it takes in milliseconds for the box to be fully moved
 	 */
 	public static void moveCollisionBox(Box box, double x, double y, double delay) {
-		int frames = (int)(delay / 1000 * 60);
+		int frames = Math.max((int)(delay / 1000 * 60), 1);
 		double dx = x / (double) frames;
 		double dy = y / (double) frames;
 
@@ -85,9 +84,11 @@ public class BoxManipulation {
 			int count = 0;
 			public void actionPerformed(ActionEvent evt) {
 				if (count < frames) {
-					if (!PhysicsEngine.isPixelOccupied(box, (box.getX() + dx) * scale, (box.getY() + dy) * scale, box.getBoxScaleHorizontal() * tileSize, box.getBoxScaleVertical() * tileSize, tileSize, 11, finalDirection)) {
+					if (!PhysicsEngine.isPixelOccupied(box, (box.getX() + dx), (box.getY() + dy), tileSize, 11, finalDirection)) {
 						box.setX(box.getX() + dx);
 						box.setY(box.getY() + dy);
+					} else {
+						count = frames; // Force stop
 					}
 					count++;
 				} else {
