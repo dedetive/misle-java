@@ -46,6 +46,7 @@ public class Box {
 	private PhysicsEngine.ObjectType objectType;
 	private PlayerAttributes.KnockbackDirection knockbackDirection;
 	private boolean interactsWithPlayer;
+	public boolean isMoving = false;
 
 	private static BufferedImage cachedTexture1;
 	private static String cachedTexture1Name;

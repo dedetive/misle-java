@@ -21,6 +21,7 @@ import static com.ded.misle.renderer.MenuButton.clearButtons;
 import static com.ded.misle.input.MouseHandler.updateMouseVariableScales;
 import static com.ded.misle.core.SaveFile.saveEverything;
 import static com.ded.misle.renderer.PlayingRenderer.updatePlayingVariableScales;
+import static com.ded.misle.world.enemies.EnemyAI.updateEnemyAI;
 
 /**
  * This is for loading and altering how the window behaves. Only do this once, otherwise new screens are created.
@@ -376,6 +377,8 @@ public class GamePanel extends JPanel implements Runnable {
 		player.pos.setCameraOffsetY(Math.max(0, Math.min(player.pos.getCameraOffsetY(), worldHeight - screenHeight)));
 
 		player.attr.checkIfLevelUp();
+
+		updateEnemyAI();
 
 		for (HPBox box : getHPBoxes()) {
 			box.updateRegenerationHP(currentTime);

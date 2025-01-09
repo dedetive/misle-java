@@ -14,16 +14,14 @@ import static com.ded.misle.world.boxes.BoxHandling.editBox;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 
 public class Enemy extends HPBox {
+
+    private final EnemyType enemyType;
     public enum EnemyType {
         RED_BLOCK,
         GOBLIN
     }
 
     private static List<Enemy> enemyBoxes = new ArrayList<>();
-
-    public static List<Enemy> getEnemyBoxes() {
-        return enemyBoxes;
-    }
 
     public Enemy(double x, double y, EnemyType enemyType) {
         this.setBoxScaleHorizontal(1);
@@ -38,14 +36,15 @@ public class Enemy extends HPBox {
         this.setX(x);
         this.setY(y);
 
-        this.loadEnemy(enemyType);
+        this.enemyType = enemyType;
+        this.loadEnemy();
 
 
         enemyBoxes.add(this);
         addBoxToCache(this);
     }
 
-    public void loadEnemy(EnemyType enemyType) {
+    public void loadEnemy() {
         double maxHP = 1;
         double damage = 1;
         double damageRate = 1;  // In ms
@@ -59,20 +58,17 @@ public class Enemy extends HPBox {
 
                 this.setTexture("solid");
                 this.setColor(new Color(0xA02020));
-                editBox(this, EFFECT, "{damage, 5, 300, normal, 0}");
                 this.setDropTableName("mountain");
             }
             case GOBLIN -> {
                 maxHP = 20;
-                damage = 7;
+                damage = 2;
                 damageRate = 400;
 
                 this.setTexture("solid");
-                this.setColor(new Color(0x60A020));
+                this.setColor(new Color(0x106000));
                 this.setBoxScaleHorizontal(0.75);
                 this.setBoxScaleVertical(0.75);
-                this.setEffect("{damage, 3, 400, normal, 0}");
-                this.setMaxHP(20);
             }
             default -> {
                 this.setTexture("solid");
@@ -85,5 +81,13 @@ public class Enemy extends HPBox {
         }
         this.setMaxHP(maxHP);
         this.setHP(this.getMaxHP());
+    }
+
+    public static List<Enemy> getEnemyBoxes() {
+        return enemyBoxes;
+    }
+
+    public EnemyType getEnemyType() {
+        return enemyType;
     }
 }

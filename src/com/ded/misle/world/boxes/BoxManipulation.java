@@ -39,6 +39,7 @@ public class BoxManipulation {
 		double dx = x / (double) frames;
 		double dy = y / (double) frames;
 
+		box.isMoving = true;
 		Timer timer = new Timer(1000 / 60, new ActionListener() {
 			int count = 0;
 			public void actionPerformed(ActionEvent evt) {
@@ -47,6 +48,7 @@ public class BoxManipulation {
 					box.setY(box.getY() + dy);
 					count++;
 				} else {
+					box.isMoving = false;
 					((Timer) evt.getSource()).stop();  // Stop the timer when done
 				}
 			}
@@ -77,12 +79,8 @@ public class BoxManipulation {
 			direction = UP;
 		}
 
-		boolean hasCollision = box.getHasCollision();
-		if (hasCollision) {
-			box.setHasCollision(false);
-		}
-
 		PlayerAttributes.KnockbackDirection finalDirection = direction;
+		box.isMoving = true;
 		Timer timer = new Timer(1000 / 60, new ActionListener() {
 			int count = 0;
 			public void actionPerformed(ActionEvent evt) {
@@ -93,10 +91,8 @@ public class BoxManipulation {
 					}
 					count++;
 				} else {
+					box.isMoving = false;
 					((Timer) evt.getSource()).stop();  // Stop the timer when done
-					if (hasCollision) {
-						box.setHasCollision(true);
-					}
 				}
 			}
 		});
