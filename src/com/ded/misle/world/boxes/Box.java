@@ -1,6 +1,7 @@
 package com.ded.misle.world.boxes;
 
 import com.ded.misle.core.PhysicsEngine;
+import com.ded.misle.world.player.Player;
 import com.ded.misle.world.player.PlayerAttributes;
 import com.ded.misle.renderer.MainRenderer;
 import com.ded.misle.renderer.PlayingRenderer;
@@ -330,10 +331,10 @@ public class Box {
 			case "damage" -> this.handleBoxDamageCooldown(box);
 			case "heal" -> this.handleBoxHealCooldown(box);
 			case "velocity" -> this.handleBoxVelocity();
-			case "spawnpoint" -> this.handleBoxSpawnpoint();
-			case "chest" -> this.handleBoxChest();
-			case "item" -> this.handleBoxItemCollectible();
-			case "travel" -> this.handleBoxTravel();
+            case "spawnpoint" -> { if (box instanceof Player) this.handleBoxSpawnpoint(); }
+            case "chest" -> { if (box instanceof Player) this.handleBoxChest(); }
+			case "item" -> { if (box instanceof Player) this.handleBoxItemCollectible(); }
+			case "travel" -> { if (box instanceof Player) this.handleBoxTravel(); }
 		}
 	}
 

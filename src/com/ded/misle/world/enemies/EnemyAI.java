@@ -17,8 +17,8 @@ public class EnemyAI  {
     }
 
     public static void goblinAI(Enemy enemy) {
-        double moveX = 0;
-        double moveY = -30;
+        double moveX = -30;
+        double moveY = 0;
         if (!isPixelOccupied(enemy, enemy.getX() + moveX, enemy.getY() + moveY,
             tileSize, 10, PlayerAttributes.KnockbackDirection.NONE)) {
             if (!enemy.isMoving) {
