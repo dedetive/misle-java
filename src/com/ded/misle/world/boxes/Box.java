@@ -210,8 +210,8 @@ public class Box {
 	public boolean isPointColliding(double pointX, double pointY, double scale, double objectWidth, double objectHeight) {
 		double scaledX = x * scale;
 		double scaledY = y * scale;
-		return  pointX >= scaledX && pointX <= scaledX + objectWidth * boxScaleHorizontal &&
-				pointY >= scaledY && pointY <= scaledY + objectHeight * boxScaleVertical;
+		return  pointX >= scaledX && pointX <= scaledX + objectWidth &&
+				pointY >= scaledY && pointY <= scaledY + objectHeight;
 	}
 
 	public boolean getHasCollision() {

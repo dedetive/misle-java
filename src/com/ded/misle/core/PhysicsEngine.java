@@ -86,7 +86,6 @@ public class PhysicsEngine {
 					(box.isPointColliding(pixelX, pixelY + objectHeight, scale, objectWidth, objectHeight)) || // Bottom-left corner
 					(box.isPointColliding(pixelX + objectWidth, pixelY + objectHeight, scale, objectWidth, objectHeight)) // Bottom-right corner
 				) {
-					if (Objects.equals(responsibleBox.getColor(), new Color(0xA02020))) System.out.println("red box found: " + box.getColor());
 					if (responsibleBox instanceof HPBox && !box.getEffect().isEmpty()) {
 						if (Objects.equals(box.getEffect(), "damage")) {
 							box.setKnockbackDirection(direction);
@@ -110,7 +109,7 @@ public class PhysicsEngine {
 				if (responsibleBox instanceof HPBox && !box.getEffect().isEmpty()) {
 					box.handleEffect((HPBox) responsibleBox);
 				}
-				return true;
+				return result;
 			}
 		}
 		return false;
