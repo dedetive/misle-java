@@ -4,6 +4,7 @@ import com.ded.misle.world.player.PlayerAttributes;
 
 import static com.ded.misle.core.GamePanel.tileSize;
 import static com.ded.misle.core.PhysicsEngine.isPixelOccupied;
+import static com.ded.misle.world.boxes.BoxHandling.getCachedBoxes;
 import static com.ded.misle.world.boxes.BoxManipulation.moveCollisionBox;
 import static com.ded.misle.world.enemies.Enemy.getEnemyBoxes;
 

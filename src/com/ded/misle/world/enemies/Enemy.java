@@ -83,11 +83,9 @@ public class Enemy extends HPBox {
         this.setHP(this.getMaxHP());
     }
 
-    public static List<Enemy> getEnemyBoxes() {
-        return enemyBoxes;
-    }
+    public static List<Enemy> getEnemyBoxes() { return enemyBoxes; }
 
-    public EnemyType getEnemyType() {
-        return enemyType;
-    }
+    public static void clearEnemyBoxes() { enemyBoxes.clear(); }
+
+    public EnemyType getEnemyType() { return enemyType; }
 }

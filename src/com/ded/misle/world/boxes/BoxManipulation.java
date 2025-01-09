@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.world.boxes.BoxHandling.getCachedBoxes;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.*;
 
 public class BoxManipulation {

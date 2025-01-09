@@ -3,6 +3,7 @@ package com.ded.misle.world.boxes;
 import com.ded.misle.core.PhysicsEngine;
 import com.ded.misle.world.enemies.Enemy;
 import com.ded.misle.world.npcs.NPC;
+import com.ded.misle.world.player.Player;
 
 import java.awt.*;
 import java.io.File;
@@ -13,8 +14,11 @@ import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.GamePanel.tileSize;
 import static com.ded.misle.Launcher.levelDesigner;
 import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.world.boxes.HPBox.clearHPBoxes;
 import static com.ded.misle.world.boxes.HPBox.getHPBoxes;
+import static com.ded.misle.world.enemies.Enemy.clearEnemyBoxes;
 import static com.ded.misle.world.enemies.Enemy.getEnemyBoxes;
+import static com.ded.misle.world.npcs.NPC.clearNPCs;
 import static com.ded.misle.world.npcs.NPC.getInteractableNPCs;
 
 public class BoxHandling {
@@ -403,6 +407,9 @@ public class BoxHandling {
 			removeBoxFromCache(box);
 		}
 		boxes.clear();
+		clearHPBoxes();
+		clearEnemyBoxes();
+		clearNPCs();
 	}
 
 	public static int getBoxesCount() {

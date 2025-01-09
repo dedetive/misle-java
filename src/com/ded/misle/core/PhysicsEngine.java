@@ -80,8 +80,12 @@ public class PhysicsEngine {
 		double objectHeight = responsibleBox.getBoxScaleVertical();
 		List<Box> nearbyCollisionBoxes = BoxHandling.getCollisionBoxesInRange(pixelX, pixelY, range, level);
 		for (Box box : nearbyCollisionBoxes) {
+			// Not allow box to check for itself
 			if (responsibleBox == box) continue;
+			// If it doesn't interact with the player, do not check for it
 			if (responsibleBox instanceof Player && !box.getInteractsWithPlayer()) continue;
+
+			// If it is a regular box (scales above 1)
 			if ((box.getBoxScaleHorizontal() >= 1 && box.getBoxScaleVertical() >= 1) && (responsibleBox.getBoxScaleHorizontal() >= 1 && responsibleBox.getBoxScaleVertical() >= 1)) {
 				if (box.isPointColliding(pixelX, pixelY, scale, objectWidth, objectHeight) || // Up-left corner
 					(box.isPointColliding(pixelX + objectWidth, pixelY, scale, objectWidth, objectHeight)) || // Up-right corner
@@ -105,9 +109,11 @@ public class PhysicsEngine {
 					return true;
 				}
 			} else {
+				// If it is not a regular box (scales smaller than 1)
 				int inverseBoxScale = (int) Math.min(1 / Math.min(box.getBoxScaleHorizontal(), box.getBoxScaleVertical()),
 					(1 / Math.min(responsibleBox.getBoxScaleHorizontal(), responsibleBox.getBoxScaleVertical()))) + 1;
 				for (int i = 0; i <= inverseBoxScale; i++) {
+					// Check for each edge for box and responsible box
 					if ((box.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY, scale, objectWidth, objectHeight)) || // Top edge
 						(box.isPointColliding(pixelX, pixelY + i * objectHeight / inverseBoxScale, scale, objectWidth, objectHeight)) || // Left edge
 						(box.isPointColliding(pixelX + objectWidth, pixelY + i * objectHeight / inverseBoxScale, scale, objectWidth, objectHeight)) || // Right edge

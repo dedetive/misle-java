@@ -38,6 +38,7 @@ public class HPBox extends Box {
     public static List<HPBox> getHPBoxes() {
         return HPBoxes;
     }
+    public static void clearHPBoxes () { HPBoxes.clear(); }
 
     public HPBox(double x, double y) {
         this.setX(x);
