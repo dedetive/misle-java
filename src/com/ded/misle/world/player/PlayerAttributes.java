@@ -87,8 +87,22 @@ public class PlayerAttributes {
 		NONE,
 		LEFT,
 		RIGHT,
+		DOWN,
 		UP,
-		DOWN
+
+		;
+
+		private KnockbackDirection opposite;
+
+		public KnockbackDirection getOppositeDirection() {
+			return switch (this) {
+				case LEFT -> RIGHT;
+				case RIGHT -> LEFT;
+				case DOWN -> UP;
+				case UP -> DOWN;
+				default -> NONE;
+			};
+		}
 	}
 
 	public PlayerAttributes() {
