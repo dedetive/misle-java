@@ -1,6 +1,7 @@
 package com.ded.misle.world.player;
 
 import com.ded.misle.world.boxes.Box;
+import com.ded.misle.world.boxes.BoxHandling;
 import com.ded.misle.world.boxes.HPBox;
 import com.ded.misle.input.MouseHandler;
 import com.ded.misle.items.Item;
@@ -62,15 +63,8 @@ public class HandItemAnimator {
             editBox(attack, EditBoxKeys.TEXTURE, "invisible");
             editBox(attack, EditBoxKeys.HAS_COLLISION, "true");
             editBox(attack, EditBoxKeys.INTERACTS_WITH_PLAYER, "false");
-            scheduleAnimation(10, () -> {
-                for (HPBox box : getHPBoxesInRange(attackX, attackY, attackRange * 10)) {
-                    if (box instanceof Player) continue;
-                    boolean result = isPixelOccupied(box, attackRange * 4, 10, direction);
-                    if (result) {
-                        box.takeDamage(Double.parseDouble(String.valueOf(selectedItem.getAttributes().get("damage"))), "normal", new String[]{}, direction);
-                    }
-                }
-            });
+            editBox(attack, EditBoxKeys.EFFECT, "{damage, " + selectedItem.getAttributes().get("damage") + ", 1000, normal, 0}");
+            isPixelOccupied(attack, attackRange, 10, direction);
 
             selectedItem.delayedSetAnimationRotation(150, 60);
             selectedItem.delayedChangeAnimationBulk(-0.175, 120);

@@ -76,8 +76,15 @@ public class PhysicsEngine {
 	 *
  	 */
 	public static boolean isPixelOccupied(Box responsibleBox, double pixelX, double pixelY, double range, int level, PlayerAttributes.KnockbackDirection direction) {
-		double objectWidth = responsibleBox.getBoxScaleHorizontal();
-		double objectHeight = responsibleBox.getBoxScaleVertical();
+		double objectWidth;
+		double objectHeight;
+		if (responsibleBox instanceof Player) {
+			objectWidth = responsibleBox.getBoxScaleHorizontal();
+			objectHeight = responsibleBox.getBoxScaleVertical();
+		} else {
+			objectWidth = responsibleBox.getBoxScaleHorizontal() * tileSize;
+			objectHeight = responsibleBox.getBoxScaleVertical() * tileSize;
+		}
 		List<Box> nearbyCollisionBoxes = BoxHandling.getCollisionBoxesInRange(pixelX, pixelY, range, level);
 		for (Box box : nearbyCollisionBoxes) {
 			// Not allow box to check for itself
@@ -151,11 +158,11 @@ public class PhysicsEngine {
 		double pixelX;
 		double pixelY;
 		if (!(responsibleBox instanceof Player)) {
-			pixelX = responsibleBox.getX() * scale + tileSize;
-			pixelY = responsibleBox.getY() * scale + tileSize;
+			pixelX = responsibleBox.getX() * scale;
+			pixelY = responsibleBox.getY() * scale;
 		} else {
-			pixelX = responsibleBox.getX() ;
-			pixelY = responsibleBox.getY() ;
+			pixelX = responsibleBox.getX();
+			pixelY = responsibleBox.getY();
 		}
 
 		return isPixelOccupied(responsibleBox, pixelX, pixelY, range, level, direction);

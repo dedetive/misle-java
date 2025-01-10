@@ -32,7 +32,7 @@ public class EnemyAI  {
             tileSize, 10, PlayerAttributes.KnockbackDirection.NONE)) {
             if (!enemy.isMoving) {
                 moveCollisionBox(enemy, moveX, moveY, rand * 7);
-                isPixelOccupied(player, tileSize, 10, PlayerAttributes.KnockbackDirection.NONE);
+                isPixelOccupied(player, tileSize, 8, PlayerAttributes.KnockbackDirection.NONE);
             }
         }
     }

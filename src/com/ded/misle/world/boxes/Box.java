@@ -207,10 +207,10 @@ public class Box {
 
 	// COLLISION
 
-	// Check if a point (e.g., player) is inside this box (adjusted for the new scale)
+	// Check if a point is inside this box
 	public boolean isPointColliding(double pointX, double pointY, double scale, double objectWidth, double objectHeight) {
-		double scaledX = x * scale;
-		double scaledY = y * scale;
+		double scaledX = this.x * scale;
+		double scaledY = this.y * scale;
 		return  pointX >= scaledX && pointX <= scaledX + objectWidth &&
 				pointY >= scaledY && pointY <= scaledY + objectHeight;
 	}
