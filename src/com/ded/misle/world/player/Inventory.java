@@ -1,5 +1,6 @@
 package com.ded.misle.world.player;
 
+import com.ded.misle.renderer.FloatingText;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.boxes.BoxHandling;
 import com.ded.misle.input.MouseHandler;
@@ -451,7 +452,7 @@ public class Inventory {
 						healAmountValue = player.getMaxHP();
 					}
 					String formattedHealAmount = df.format(player.receiveHeal(healAmountValue, "normal"));
-					PlayingRenderer.createFloatingText("+" + formattedHealAmount, healColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+					new FloatingText("+" + formattedHealAmount, healColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
 
 					Timer delayToRemove = new Timer(30, e -> {
 						getSelectedItem().setCount(getSelectedItem().getCount() - 1);
@@ -469,7 +470,7 @@ public class Inventory {
 					}
 					String formattedEntropyAmount = df.format(player.attr.calculateEntropyGain(entropyAmountValue));
 
-					PlayingRenderer.createFloatingText("+" + formattedEntropyAmount, entropyGainColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+					new FloatingText("+" + formattedEntropyAmount, entropyGainColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
 					player.attr.addEntropy(entropyAmountValue);
 					getSelectedItem().setCount(getSelectedItem().getCount() - 1);
 					if (!getSelectedItem().isActive()) {

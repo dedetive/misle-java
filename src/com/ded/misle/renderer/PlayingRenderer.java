@@ -5,12 +5,12 @@ import com.ded.misle.input.MouseHandler;
 import com.ded.misle.world.boxes.BoxHandling;
 import com.ded.misle.items.Item;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.renderer.FloatingText.drawFloatingTexts;
+import static com.ded.misle.renderer.FloatingText.getFloatingTexts;
 import static com.ded.misle.world.boxes.Box.getTexture;
 import static com.ded.misle.world.npcs.NPC.getSelectedNPCs;
 import static com.ded.misle.renderer.ColorManager.*;
@@ -24,10 +24,6 @@ import static com.ded.misle.renderer.InventoryRenderer.*;
 import static java.lang.System.currentTimeMillis;
 
 public class PlayingRenderer {
-    private static final java.util.List<String> floatingText = new ArrayList<>();
-    private static final java.util.List<Point> floatingTextPosition = new ArrayList<>();
-    private static final java.util.List<Color> floatingTextColor = new ArrayList<>();
-
     public static double isFacingRight;
     public static boolean mirror;
 
@@ -88,9 +84,7 @@ public class PlayingRenderer {
 
         drawUIElements(g2d);
 
-        if (floatingText != null) {
-            drawFloatingText(g2d);
-        }
+        drawFloatingTexts(g2d);
 
         if (gameState == GameState.INVENTORY) {
             InventoryRenderer.renderInventoryMenu(g);
@@ -143,50 +137,6 @@ public class PlayingRenderer {
             }
 
             drawRotatedImage(g2d, selectedItem.getIcon(), (int) distance + selectedItem.getAnimationX() * isFacingRight * scale / 3.75, playerScreenY + selectedItem.getAnimationY() * scale / 3.75, (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), selectedItem.getAnimationRotation() * Math.ceil(isFacingRight) + mouseHandler.getMouseHorizontalRotation(), mirror);
-        }
-    }
-
-    public static void createFloatingText(String textToDisplay, Color color, int x, int y, boolean movesUp) {
-        floatingText.add(textToDisplay);
-        Point point = new Point(x, y);
-        floatingTextPosition.add(point);
-        floatingTextColor.add(color);
-
-        try {
-
-            AtomicInteger index = new AtomicInteger(floatingTextPosition.size() - 1);
-            Timer movingUp = new Timer(200, e -> {
-                if (index.get() != -1) {
-                    Point newPoint = new Point(floatingTextPosition.get(index.get()).x, (floatingTextPosition.get(index.get()).y - 1));
-                    floatingTextPosition.set(index.get(), newPoint);
-                }
-            });
-            if (movesUp) {
-                movingUp.setRepeats(true);
-                movingUp.start();
-            }
-
-            Timer timer = new Timer(2500, l -> {
-                index.addAndGet(-1);
-                movingUp.stop();
-                floatingText.removeFirst();
-                floatingTextPosition.removeFirst();
-                floatingTextColor.removeFirst();
-            });
-            timer.setRepeats(false);
-            timer.start();
-        } catch (IndexOutOfBoundsException e) {
-            // This would mean floatingText was removed, so stop
-        }
-    }
-
-    private static void drawFloatingText(Graphics2D g2d) {
-        for (int i = 0; i < floatingText.size() - 1; i++) {
-            g2d.setFont(FontManager.itemInfoFont);
-            g2d.setColor(floatingTextShadow);
-            g2d.drawString(floatingText.get(i), (int) ((floatingTextPosition.get(i).x) * scale + MainRenderer.textShadow), (int) ((floatingTextPosition.get(i).y) * scale + MainRenderer.textShadow));
-            g2d.setColor(floatingTextColor.get(i));
-            g2d.drawString(floatingText.get(i), (int) (floatingTextPosition.get(i).x * scale), (int) (floatingTextPosition.get(i).y * scale));
         }
     }
 
@@ -347,3 +297,4 @@ public class PlayingRenderer {
         drawSelectedItemName(g2d);
     }
 }
+

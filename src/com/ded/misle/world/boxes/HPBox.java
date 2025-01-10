@@ -1,5 +1,6 @@
 package com.ded.misle.world.boxes;
 
+import com.ded.misle.renderer.FloatingText;
 import com.ded.misle.world.player.Player;
 import com.ded.misle.world.player.PlayerAttributes;
 
@@ -18,7 +19,6 @@ import static com.ded.misle.world.boxes.BoxManipulation.moveCollisionBox;
 import static com.ded.misle.world.chests.DropTable.getDropTableItemID;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.*;
-import static com.ded.misle.renderer.PlayingRenderer.createFloatingText;
 
 public class HPBox extends Box {
     private double HP;
@@ -159,7 +159,7 @@ public class HPBox extends Box {
             int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
             DecimalFormat df = new DecimalFormat("#.##");
             String formattedHealAmount = df.format(damageToReceive);
-            createFloatingText("+" + formattedHealAmount, healColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+            new FloatingText("+" + formattedHealAmount, healColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
         } else {
             if (isLocker) {
                 damageToReceive = calculateDamage(damage, reason);
@@ -197,7 +197,7 @@ public class HPBox extends Box {
             int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
             DecimalFormat df = new DecimalFormat("#.##");
             String formattedHealAmount = df.format(damageToReceive);
-            createFloatingText("-" + formattedHealAmount, damageColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+            new FloatingText("-" + formattedHealAmount, damageColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
         }
 
         switch (knockbackDirection) {
