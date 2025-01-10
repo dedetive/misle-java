@@ -148,8 +148,15 @@ public class PhysicsEngine {
 	}
 
 	public static boolean isPixelOccupied(Box responsibleBox, double range, int level, PlayerAttributes.KnockbackDirection direction) {
-		double pixelX = responsibleBox.getX() * scale + tileSize;
-		double pixelY = responsibleBox.getY() * scale + tileSize;
+		double pixelX;
+		double pixelY;
+		if (!(responsibleBox instanceof Player)) {
+			pixelX = responsibleBox.getX() * scale + tileSize;
+			pixelY = responsibleBox.getY() * scale + tileSize;
+		} else {
+			pixelX = responsibleBox.getX() ;
+			pixelY = responsibleBox.getY() ;
+		}
 
 		return isPixelOccupied(responsibleBox, pixelX, pixelY, range, level, direction);
 	}
