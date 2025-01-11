@@ -69,8 +69,6 @@ public class SettingsManager {
 	}
 
 
-
-
 	/**
 	 * Receives a setting you want to know the value of and returns it's value in a String format. The parameter writing has to be exact.
 	 *

@@ -24,6 +24,7 @@ public class Launcher {
 	public static double scale;
 	public static boolean levelDesigner;
 	public static String languageCode;
+	public static boolean heldItemFollowsMouse;
 
 	private static String previousScreenSize = "";
 
@@ -49,6 +50,8 @@ public class Launcher {
 		languageCode = getSetting("language");
         new LanguageManager(languageCode);
         levelDesigner = Boolean.parseBoolean(getSetting("levelDesigner"));
+		heldItemFollowsMouse = Boolean.parseBoolean(getSetting("heldItemFollowsMouse"));
+
 
 		if (!previousScreenSize.equals(screenSize)) {
 			screenSizeChanged = true;

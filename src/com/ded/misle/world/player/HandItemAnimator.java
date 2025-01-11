@@ -3,11 +3,13 @@ package com.ded.misle.world.player;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.input.MouseHandler;
 import com.ded.misle.items.Item;
+import com.ded.misle.world.boxes.BoxHandling;
 
 import javax.swing.*;
 
 import java.sql.SQLOutput;
 
+import static com.ded.misle.Launcher.heldItemFollowsMouse;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.PhysicsEngine.isPixelOccupied;
@@ -36,7 +38,10 @@ public class HandItemAnimator {
         scheduleAnimation(215, () -> {
             if (player.inv.getSelectedItem() != selectedItem) return;
 
-            launchAttack(mouseHandler, Double.parseDouble(selectedItem.getAttributes().get("damage").toString()), Double.parseDouble(selectedItem.getAttributes().get("range").toString()));
+            double damage = Double.parseDouble(selectedItem.getAttributes().get("damage").toString());
+            double range = Double.parseDouble(selectedItem.getAttributes().get("range").toString());
+
+            launchAttack(mouseHandler, damage, range);
 
             selectedItem.delayedSetAnimationRotation(150, 60);
             selectedItem.delayedChangeAnimationBulk(-0.175, 120);
@@ -56,22 +61,59 @@ public class HandItemAnimator {
     }
 
     private static void launchAttack(MouseHandler mouseHandler, double damage, double range) {
-        mouseHandler.updateCurrentMouseRotation();
-
-        double angleRadians = Math.toRadians(mouseHandler.getRelativeMouseRotation());
-        double XComponent = Math.cos(angleRadians) * range;
-        double YComponent = Math.sin(angleRadians) * range;
+        double XComponent;
+        double YComponent;
 
         PlayerAttributes.KnockbackDirection direction;
 
-        if (mouseHandler.getRelativeMouseRotation() >= 0 && mouseHandler.getRelativeMouseRotation() < 60) direction = PlayerAttributes.KnockbackDirection.LEFT;
-        else if (mouseHandler.getRelativeMouseRotation() >= 60 && mouseHandler.getRelativeMouseRotation() < 120) direction = PlayerAttributes.KnockbackDirection.UP;
-        else if (mouseHandler.getRelativeMouseRotation() >= 120 && mouseHandler.getRelativeMouseRotation() < 240) direction = PlayerAttributes.KnockbackDirection.RIGHT;
-        else if (mouseHandler.getRelativeMouseRotation() >= 240 && mouseHandler.getRelativeMouseRotation() < 330) direction = PlayerAttributes.KnockbackDirection.DOWN;
-        else if (mouseHandler.getRelativeMouseRotation() >= 330 && mouseHandler.getRelativeMouseRotation() < 360) direction = PlayerAttributes.KnockbackDirection.RIGHT;
-        else {
-            direction = NONE;
+        if (heldItemFollowsMouse) {
+            mouseHandler.updateCurrentMouseRotation();
+
+            double angleRadians = Math.toRadians(mouseHandler.getRelativeMouseRotation());
+
+            XComponent = Math.cos(angleRadians) * range;
+            YComponent = Math.sin(angleRadians) * range;
+
+            if (mouseHandler.getRelativeMouseRotation() >= 0 && mouseHandler.getRelativeMouseRotation() < 60)
+                direction = PlayerAttributes.KnockbackDirection.LEFT;
+            else if (mouseHandler.getRelativeMouseRotation() >= 60 && mouseHandler.getRelativeMouseRotation() < 120)
+                direction = PlayerAttributes.KnockbackDirection.UP;
+            else if (mouseHandler.getRelativeMouseRotation() >= 120 && mouseHandler.getRelativeMouseRotation() < 240)
+                direction = PlayerAttributes.KnockbackDirection.RIGHT;
+            else if (mouseHandler.getRelativeMouseRotation() >= 240 && mouseHandler.getRelativeMouseRotation() < 330)
+                direction = PlayerAttributes.KnockbackDirection.DOWN;
+            else if (mouseHandler.getRelativeMouseRotation() >= 330 && mouseHandler.getRelativeMouseRotation() < 360)
+                direction = PlayerAttributes.KnockbackDirection.RIGHT;
+            else {
+                direction = NONE;
+            }
+        } else {
+            direction = PlayerAttributes.KnockbackDirection.valueOf(player.stats.getWalkingDirection().toString()).getOppositeDirection();
+
+            switch (direction) {
+                case LEFT -> {
+                    XComponent = range;
+                    YComponent = 0;
+                }
+                case RIGHT -> {
+                    XComponent = -range;
+                    YComponent = 0;
+                }
+                case UP -> {
+                    XComponent = 0;
+                    YComponent = range;
+                }
+                case DOWN -> {
+                    XComponent = 0;
+                    YComponent = -range;
+                }
+                default -> {
+                    XComponent = range;
+                    YComponent = 0;
+                }
+            }
         }
+
         double attackX = player.getX() / scale + XComponent;
         double attackY = player.getY() / scale + YComponent;
 
