@@ -33,10 +33,10 @@ Alternatively, you can use your preferred IDE with a compiler to run the code au
 - **E:** Open inventory.
 - **Z** or **left-click:** Use held item.
 - **Left-click in the inventory**: Move item around. Click again to fill the empty slot with the selected item or swap it with a filled slot. Click anywhere out of the inventory to drop held item.
+- **Q:** Drop held item or hovered item in inventory.
+- **Ctrl in the inventory**: The shift key adds some functionalities to the inventory, such as quick equipping an item when left-clicking or dropping an entire stack along with Q.  
 - **C:** Dodge (become immune to damage for a fraction of time).
 - **1-7** or **left-click an inventory bar slot:** Select slot.
-- **Q:** Drop held item or hovered item in inventory.
-- **Ctrl + Q:** Drop the entire held stack or hovered stack in inventory.
 - **\[** and **\]:** Test keys with functionality that varies by version; these can be customized in KeyHandler.java at the end of the updateKeys() method.
 
 ### Settings
@@ -47,50 +47,46 @@ Each setting uses the format:
 `parameterName = value`
 
 #### Available Parameters:
-- **`screenSize`** (default=`medium`): Adjust the game's screen size.
-    - Options: `small`, `medium`, `big`, `huge`, `tv-sized`, `comical`
 
-- **`isFullscreen`** (default=`false`): Enable or disable fullscreen mode.
-    - Options: `true`, `false`
+| Setting              | Explanation                                                  | Options                                                       | Default  |
+|----------------------|--------------------------------------------------------------|---------------------------------------------------------------|----------|
+| screenSize           | Adjusts the game's screen size                               | small / medium / big /<br/> huge / tv-sized / comical         | medium   |
+| isFullscreen         | Enables or disables fullscreen                               | true / false                                                  | false    |
+| fullscreenMode       | Selects the fullscreen mode                                  | windowed / exclusive                                          | windowed |
+| frameRateCap         | Sets the maximum frames per second                           | 1 to 144                                                      | 60       |
+| displayFPS           | Displays FPS on-screen <br/>(currently non-functional)       | true / false                                                  | false    |
+| language             | Sets the language for the game                               | de_DE / el_GR / en_US / es_ES / mi_PM / pt_BR / ru_RU / zh_CN | en_US    |
+| levelDesigner        | Toggles Level Designer mode (mostly non-functional)          | true / false                                                  | false    | 
+| heldItemFollowsMouse | Toggles whether held item follows mouse or walking direction | true / false                                                  | true     |
 
-- **`fullscreenMode`** (default=`windowed`): Choose fullscreen type.
-    - Options: `windowed`, `exclusive`
-
-- **`frameRateCap`** (default=`60`): Set the maximum frames per second.
-    - Range: `1` to `144`
-
-- **`displayFPS`** (default=`false`): Display FPS on-screen (currently non-functional).
-
-- **`language`** (default=`en_US`): Set the language for the game.
-    - Options: `de_DE`, `el_GR`, `en_US`, `es_ES`, `mi_PM`, `pt_BR`, `ru_RU`, `zh_CN` (what these mean is explained below).
-    - If the selected language file is missing keys, English is used as a fallback.
- 
-- **`levelDesigner`** (default=`false`): Toggle Level Designer mode for game design (currently partially functional, with only movement available).
-
-Text in parentheses is ignored, and only the value after the " = " sign is used. These values can be of types like STRING, INTEGER, or BOOLEAN. However, since the options do not exist, default value would apply.
+Text in parentheses is ignored, and only the value after the " = " sign is used. These values can be of types STRING, INTEGER, or BOOLEAN. However, since the options do not exist, default value would apply.
 
 At the language section, those parameters are the region codes, which translate to:
-- de_DE: Deutsch / German (MS)
-- el_GR: Ελληνικά / Greek (MS)
-- en_US: English / U.S. English
-- es_ES: Español / Spanish (MS)
-- mi_PM: \[---------\] (Currently non-functional due to missing translations)
-- pt_BR: Português / Brazilian Portuguese
-- ru_RU: Русский / Russian (MS)
-- zh_CN: 简体中文 / Simplified Chinese (MS)
-
-- MS = Missing translations
 
 > **Note:** The `displayFPS` function currently does not work and was only available in initial tests, but it will be reimplemented later.
+
+| Language code | Language  | Language (English)   | State |
+|---------------|-----------|----------------------|-------|
+| de_DE         | Deutsch   | German               | MS    |
+| el_GR         | Ελληνικά  | Greek                | MS    |
+| en_US         | English   | U.S. English         |       |
+| es_ES         | Español   | Spanish              | MS    |
+| mi_PM         | [------]  |                      | MS    |
+| pt_BR         | Português | Brazilian Portuguese |       |
+| ru_RU         | Русский   | Russian              | MS    |
+| zh_CN         | 简体中文      | Simplified Chinese   | MS    |
+- MS = Missing translations
 
 Example usage of `settings.config`:
 
 ```properties
-screenSize = big
-isFullscreen = false
-fullscreenMode = exclusive
-frameRateCap = 120
-language = en_US
+screenSize (small, default=medium, big, huge, tv-sized, comical) = small
+isFullscreen (default=false, true) = false
+fullscreenMode (default=windowed, exclusive) = windowed
+frameRateCap (1..144, default=60) = 144
+language (de_DE, el_GR, default=en_US, es_ES, mi_PM, pt_BR, ru_RU, zh_CN) = pt_BR
+levelDesigner (default=false, true) = false
+heldItemFollowsMouse (false, default=true) = false
 ```
 
 ### How-to of adding new items
@@ -187,8 +183,8 @@ And finally, add the .png icon for the item in `resources/images/items/`. The na
    2. Copy the ID -1 template and modify it:
    ```json
     {
-        "id": 12,
-        "resourceID": 12,
+        "id": 512,
+        "resourceID": 512,
         "name": "Fireball Wand",
         "countLimit": 1,
         "rarity": "E",
@@ -217,14 +213,14 @@ And finally, add the .png icon for the item in `resources/images/items/`. The na
    2. You can also go to the KeyHandler class, and inside the debug keys section, comment out or remove the current functionality of the debug keys and add the following line:
     ```java
     if (player.keys.keyPressed.get("debug1")) {
-        player.inv.addItem(createItem(12));
+        player.inv.addItem(createItem(512));
         player.keys.keyPressed.put("debug1", false);
     }
     ```
    3. Press "[" in-game. The item should appear in your inventory.
    4. Note the createItem(12). That means it's creating an item with the ID 12. To add more than 1 of the item, just add a new integer parameter, like so:
    ```java
-        player.inv.addItem(createItem(12, 3));
+        player.inv.addItem(createItem(512, 3));
    ```
    5. Make sure the item allows more than 1 count limit, otherwise your inventory might become cluttered with the item.
 
