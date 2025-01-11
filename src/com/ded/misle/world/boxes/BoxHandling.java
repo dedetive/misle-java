@@ -75,8 +75,8 @@ public class BoxHandling {
 		return getHPBoxes().getLast();
 	}
 
-	public static Enemy addEnemyBox(double x, double y, Enemy.EnemyType enemyType) {
-		boxes.add(new Enemy(x, y, enemyType));
+	public static Enemy addEnemyBox(double x, double y, Enemy.EnemyType enemyType, double magnification) {
+		boxes.add(new Enemy(x, y, enemyType, magnification));
 		addBoxToCache(boxes.getLast());
 		return getEnemyBoxes().getLast();
 	}

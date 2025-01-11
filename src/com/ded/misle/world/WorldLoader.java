@@ -92,7 +92,7 @@ public class WorldLoader {
 				NPC cyanBlock = new NPC(460, 340, NONE);
 				editBox(cyanBlock, COLOR, "#00FFFF");
 
-				Enemy goblin = new Enemy(600, 500, Enemy.EnemyType.GOBLIN);
+				Enemy goblin = new Enemy(600, 500, Enemy.EnemyType.GOBLIN, 0.1);
 			}
 			case "tuani_house1" -> {
 				//Setup
@@ -127,7 +127,7 @@ public class WorldLoader {
 				addBox(261, 41, "spawnpoint");
 
 				// Corner block
-				addEnemyBox(365, 145, Enemy.EnemyType.RED_BLOCK);
+				addEnemyBox(365, 145, Enemy.EnemyType.RED_BLOCK, 2);
 			}
 			case "cliff" -> {
 				// Setup

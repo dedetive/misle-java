@@ -20,15 +20,17 @@ public class Enemy extends HPBox {
         RED_BLOCK,
         GOBLIN
     }
+    private final double magnification;
 
     private static List<Enemy> enemyBoxes = new ArrayList<>();
 
-    public Enemy(double x, double y, EnemyType enemyType) {
+    public Enemy(double x, double y, EnemyType enemyType, double magnification) {
         this.setBoxScaleHorizontal(1);
         this.setBoxScaleVertical(1);
         this.setEffect(new String[]{""});
         this.setRotation(0);
         this.setInteractsWithPlayer(true);
+        this.magnification = magnification;
 
         this.setObjectType(HP_BOX);
         this.setHasCollision(true);
@@ -75,6 +77,9 @@ public class Enemy extends HPBox {
                 this.setColor(defaultBoxColor);
             }
         }
+
+        damage *= magnification;
+        maxHP *= magnification;
 
         if (defaultDamageType) {
             editBox(this, EFFECT, "{damage, " + damage + ", " + damageRate + ", normal, 0}");
