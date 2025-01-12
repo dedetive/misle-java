@@ -18,14 +18,30 @@ import static com.ded.misle.world.npcs.NPC.InteractionType.NONE;
 
 public class WorldLoader {
 	static HashMap<String, Integer> room = new HashMap<>();
-
 	static {
 		room.put("void", 0);
 		room.put("city_tuani", 1);
 		room.put("tuani_house1", 2);
 		room.put("cliff", 3);
 	}
+	public enum TravelTransition {
+		leaving_tuani_house1(1, 460, 483),
+		entering_tuani_house1(2, 350, 110),
+		tuani_to_cliff(3, 300, 440),
+		cliff_to_tuani(1, 500, 31),
 
+		;
+
+		public final int enteringRoomID;
+		public final double x;
+		public final double y;
+
+		TravelTransition(int enteringRoomID, double x, double y) {
+			this.enteringRoomID = enteringRoomID;
+			this.x = x;
+			this.y = y;
+		}
+	}
 
 	public static void loadBoxes() {
 		System.out.println("Loading room: " + roomIDToName(player.pos.getRoomID()));
@@ -65,7 +81,7 @@ public class WorldLoader {
 					// Door
 				addBox(426, 483, "travel");
 				editLastBox(HAS_COLLISION, "true");
-				editLastBox(EFFECT, "{travel, 2, 350, 110}");
+				editLastBox(EFFECT, "{travel, entering_tuani_house1}");
 					// Chest and spawnpoint
 				addBox(321, 441, "spawnpoint");
 				addBox(341, 441, "mountain_chest");
@@ -75,7 +91,7 @@ public class WorldLoader {
 
 				// For travelling to cliff
 				int travelBoxesAdded = lineAddBox(440, 10, 6, 1, "travel", FILL);
-				editLastBox(EFFECT, "{travel, 3, 300, 440}", travelBoxesAdded);
+				editLastBox(EFFECT, "{travel, tuani_to_cliff}", travelBoxesAdded);
 
 				// NPC testing
 				NPC yellowBlock = new NPC(500, 300, DIALOG);
@@ -110,7 +126,7 @@ public class WorldLoader {
 
 				addBox(405, 104, "travel");
 				editLastBox(HAS_COLLISION, "true");
-				editLastBox(EFFECT, "{travel, 1, 460, 483}");
+				editLastBox(EFFECT, "{travel, leaving_tuani_house1}");
 
 				// Floor
 				int boxesAdded = lineAddBox(261, 41, 7, 7, "wall_default", FILL);
@@ -159,7 +175,7 @@ public class WorldLoader {
 				editLastBox(TEXTURE, "wall_default", 1);
 
 				int travelBoxesAdded = lineAddBox(250, 460, 6, 1, "travel", FILL);
-				editLastBox(EFFECT, "{travel, 1, 500, 31}", travelBoxesAdded);
+				editLastBox(EFFECT, "{travel, cliff_to_tuani}", travelBoxesAdded);
 			}
 
 			case null -> {}

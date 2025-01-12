@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
 
+import com.ded.misle.world.WorldLoader.TravelTransition;
 import static com.ded.misle.audio.AudioPlayer.AudioFile.collect_item;
 import static com.ded.misle.audio.AudioPlayer.playThis;
 import static com.ded.misle.core.SettingsManager.getPath;
@@ -297,8 +298,6 @@ public class Box {
 			case "velocity":
 			case "heal":
 				return Double.parseDouble(effect[1]);
-			case "travel":
-				return Integer.parseInt(effect[1]);
 			default:
 				return 0;
 		}
@@ -547,10 +546,12 @@ public class Box {
 		gameState = GameState.FROZEN_PLAYING;
 		Timer fadingIn = new Timer(75, e -> {
 			if (isFading == MainRenderer.FadingState.FADED) {
-				int newRoomID = (int) getEffectValue();
-				player.pos.setRoomID(newRoomID);
-				player.setX(scale * Double.parseDouble(this.effect[2]));
-				player.setY(scale * Double.parseDouble(this.effect[3]));
+				TravelTransition room = TravelTransition.valueOf(effect[1]);
+
+				player.pos.setRoomID(room.enteringRoomID);
+
+				player.setX(scale * room.x);
+				player.setY(scale * room.y);
 				unloadBoxes();
 				loadBoxes();
 
