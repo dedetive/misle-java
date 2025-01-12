@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
 
-import com.ded.misle.world.WorldLoader.TravelTransition;
+import com.ded.misle.world.RoomManager.TravelTransition;
 import static com.ded.misle.audio.AudioPlayer.AudioFile.collect_item;
 import static com.ded.misle.audio.AudioPlayer.playThis;
 import static com.ded.misle.core.SettingsManager.getPath;
