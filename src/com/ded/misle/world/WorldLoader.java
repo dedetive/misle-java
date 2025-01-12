@@ -19,10 +19,10 @@ public class WorldLoader {
 	public static void loadBoxes() {
 		System.out.println("Loading room: " + roomIDToName(player.pos.getRoomID()));
 		switch (roomIDToName(player.pos.getRoomID())) {
-			case "void" -> {
+			case VOID -> {
 				;
 			}
-			case "city_tuani" -> {
+			case CITY_TUANI -> {
 				//Setup
 				int worldWidth = 1000;
 				int worldHeight = 990;
@@ -83,7 +83,7 @@ public class WorldLoader {
 
 				Enemy goblin = new Enemy(600, 500, Enemy.EnemyType.GOBLIN, 0.1);
 			}
-			case "tuani_house1" -> {
+			case TUANI_HOUSE1 -> {
 				//Setup
 				int worldWidth = 500;
 				int worldHeight = 400;
@@ -118,7 +118,7 @@ public class WorldLoader {
 				// Corner block
 				addEnemyBox(365, 145, Enemy.EnemyType.RED_BLOCK, 2);
 			}
-			case "cliff" -> {
+			case CLIFF -> {
 				// Setup
 				setupWorld(1190, 490);
 

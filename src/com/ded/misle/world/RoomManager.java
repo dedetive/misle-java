@@ -4,13 +4,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RoomManager {
-    static HashMap<String, Integer> room = new HashMap<>();
-    static {
-        room.put("void", 0);
-        room.put("city_tuani", 1);
-        room.put("tuani_house1", 2);
-        room.put("cliff", 3);
+    public enum Room {
+        VOID(0),
+        CITY_TUANI(1),
+        TUANI_HOUSE1(2),
+        CLIFF(3),
+        ;
+
+        public final int id;
+
+        Room(int id) {
+            this.id = id;
+        }
     }
+
     public enum TravelTransition {
         leaving_tuani_house1(1, 460, 483),
         entering_tuani_house1(2, 350, 110),
@@ -30,14 +37,10 @@ public class RoomManager {
         }
     }
 
-    public static int roomNameToID(String roomName) {
-        return room.get(roomName);
-    }
-
-    public static String roomIDToName(int roomID) {
-        for (Map.Entry<String, Integer> entry : room.entrySet()) {
-            if (entry.getValue() == roomID) {
-                return entry.getKey();
+    public static Room roomIDToName(int roomID) {
+        for (Room room : RoomManager.Room.values()) {
+            if (room.id == roomID) {
+                return room;
             }
         }
         return null;
