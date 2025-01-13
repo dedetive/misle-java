@@ -40,6 +40,39 @@ public class AudioPlayer {
 		new AudioPlayer(String.valueOf(getPath().resolve("resources/audio/" + audioName + ".wav"))).stop();
 	}
 
+	public static void playWithSpeed(String filePath, float speedFactor) {
+		try {
+			File audioFile = new File(filePath);
+			AudioInputStream originalStream = AudioSystem.getAudioInputStream(audioFile);
+
+			AudioFormat originalFormat = originalStream.getFormat();
+			AudioFormat newFormat = new AudioFormat(
+				originalFormat.getEncoding(),
+				originalFormat.getSampleRate() * speedFactor, // Adjust sample rate
+				originalFormat.getSampleSizeInBits(),
+				originalFormat.getChannels(),
+				originalFormat.getFrameSize(),
+				originalFormat.getFrameRate() * speedFactor,
+				originalFormat.isBigEndian()
+			);
+
+			AudioInputStream adjustedStream = AudioSystem.getAudioInputStream(newFormat, originalStream);
+
+			Clip clip = AudioSystem.getClip();
+			clip.open(adjustedStream);
+			clip.start();
+
+			// Wait for the clip to finish playing
+			while (clip.isRunning()) {
+				Thread.sleep(20);
+			}
+
+			clip.close();
+		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void play() {
 		if (clip != null) {
 			clip.setFramePosition(0);
