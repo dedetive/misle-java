@@ -1,8 +1,5 @@
 package com.ded.misle.world;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class RoomManager {
     public enum Room {
         VOID(0),
