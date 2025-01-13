@@ -25,52 +25,27 @@ public class AudioPlayer {
 		consume_medium_pot,
 		drop_item,
 		collect_item
+
+		;
+
+		public final String path;
+
+		AudioFile () {
+			this.path = getPath().resolve("resources/audio/" + this + ".wav").toString();
+		}
 	}
 
 	/**
 	 * Plays an audio with the given name.
 	 *
-	 * @param audioName
+	 * @param audio
 	 */
-	public static void playThis(AudioFile audioName) {
-		new AudioPlayer(String.valueOf(getPath().resolve("resources/audio/" + audioName + ".wav"))).play();
+	public static void playThis(AudioFile audio) {
+		new AudioPlayer(audio.path).play();
 	}
 
-	public static void stopThis(AudioFile audioName) {
-		new AudioPlayer(String.valueOf(getPath().resolve("resources/audio/" + audioName + ".wav"))).stop();
-	}
-
-	public static void playWithSpeed(String filePath, float speedFactor) {
-		try {
-			File audioFile = new File(filePath);
-			AudioInputStream originalStream = AudioSystem.getAudioInputStream(audioFile);
-
-			AudioFormat originalFormat = originalStream.getFormat();
-			AudioFormat newFormat = new AudioFormat(
-				originalFormat.getEncoding(),
-				originalFormat.getSampleRate() * speedFactor, // Adjust sample rate
-				originalFormat.getSampleSizeInBits(),
-				originalFormat.getChannels(),
-				originalFormat.getFrameSize(),
-				originalFormat.getFrameRate() * speedFactor,
-				originalFormat.isBigEndian()
-			);
-
-			AudioInputStream adjustedStream = AudioSystem.getAudioInputStream(newFormat, originalStream);
-
-			Clip clip = AudioSystem.getClip();
-			clip.open(adjustedStream);
-			clip.start();
-
-			// Wait for the clip to finish playing
-			while (clip.isRunning()) {
-				Thread.sleep(20);
-			}
-
-			clip.close();
-		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InterruptedException e) {
-			e.printStackTrace();
-		}
+	public static void stopThis(AudioFile audio) {
+		new AudioPlayer(audio.path).stop();
 	}
 
 	private void play() {
@@ -85,4 +60,7 @@ public class AudioPlayer {
 			clip.stop();
 		}
 	}
+
+	// AUDIO MANIPULATION
+		// Here should be pitch and speed alteration, reverb, echo, and more effects
 }

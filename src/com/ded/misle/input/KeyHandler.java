@@ -1,5 +1,6 @@
 package com.ded.misle.input;
 
+import com.ded.misle.audio.AudioPlayer;
 import com.ded.misle.core.GamePanel;
 import com.ded.misle.core.PhysicsEngine;
 import com.ded.misle.world.npcs.NPC;
