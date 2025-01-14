@@ -405,7 +405,7 @@ public class GamePanel extends JPanel implements Runnable {
 				MenuRenderer.renderMainMenu(g, this);
 				break;
 			case GameState.OPTIONS_MENU:
-				MenuRenderer.renderOptionsMenu(g, this);
+				SettingsMenuRenderer.renderOptionsMenu(g, this);
 				break;
 			case GameState.PAUSE_MENU:
 				MenuRenderer.renderPauseMenu(g, this);
