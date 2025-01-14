@@ -51,17 +51,17 @@ public class SettingsMenuRenderer {
             // General
             buttonX = (int) (117 * scale);
             button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-            createButton(button, LanguageManager.getText("settings_menu_graphics"), SettingsMenuRenderer::switchToGeneral, panel);
+            createButton(button, LanguageManager.getText("settings_menu_graphics"), SettingsMenuRenderer::switchToGraphics, panel);
 
                 // Audio
             buttonX = (int) (192 * scale);
             button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-            createButton(button, LanguageManager.getText("settings_menu_audio"), SettingsMenuRenderer::switchToGeneral, panel);
+            createButton(button, LanguageManager.getText("settings_menu_audio"), SettingsMenuRenderer::switchToAudio, panel);
 
                 // Gameplay
             buttonX = (int) (267 * scale);
             button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-            createButton(button, LanguageManager.getText("settings_menu_gameplay"), SettingsMenuRenderer::switchToGeneral, panel);
+            createButton(button, LanguageManager.getText("settings_menu_gameplay"), SettingsMenuRenderer::switchToGameplay, panel);
 
             // Go back button
             buttonX = (int) (356 * scale);
