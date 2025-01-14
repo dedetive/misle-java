@@ -195,7 +195,7 @@ public class MenuRenderer {
             int optionsButtonHeight = (int) (155 * scaleByScreenSize);
             Rectangle optionsButton = new Rectangle(optionsButtonX, optionsButtonY, optionsButtonWidth, optionsButtonHeight);
 
-            createButton(optionsButton, LanguageManager.getText("pause_menu_options"), MenuRenderer::optionsMenu, panel);
+            createButton(optionsButton, LanguageManager.getText("pause_menu_settings"), MenuRenderer::optionsMenu, panel);
 
             drawButtons(g2d, scaleByScreenSize);
         }
