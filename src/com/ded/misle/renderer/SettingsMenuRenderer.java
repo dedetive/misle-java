@@ -19,7 +19,7 @@ public class SettingsMenuRenderer {
         AUDIO,
         GAMEPLAY,
     }
-    private static SettingState settingState = SettingState.GENERAL;
+    public static SettingState settingState = SettingState.GENERAL;
 
     public static void renderOptionsMenu(Graphics g, JPanel panel) {
         if (g instanceof Graphics2D g2d) {

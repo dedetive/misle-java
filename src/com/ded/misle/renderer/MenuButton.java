@@ -1,5 +1,6 @@
 package com.ded.misle.renderer;
 
+import com.ded.misle.core.GamePanel;
 import com.ded.misle.core.LanguageManager;
 
 import javax.swing.*;
@@ -11,10 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.ded.misle.core.GamePanel.gameState;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.MainRenderer.textShadow;
 import static com.ded.misle.renderer.FontManager.buttonFont;
 import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.renderer.SettingsMenuRenderer.settingState;
 
 public class MenuButton {
     Rectangle bounds;
@@ -71,7 +74,7 @@ public class MenuButton {
     private enum ButtonTextColorUpdater {
         main_menu_quit("#FF7070"),
         pause_menu_quit("#FF7070"),
-        options_menu_go_back("#FF7070"),
+        settings_menu_go_back("#FF7070"),
 
         ;
 
@@ -90,6 +93,13 @@ public class MenuButton {
         boolean repaintNeeded = false;
 
         for (MenuButton button : buttons) {
+            if (gameState == GamePanel.GameState.OPTIONS_MENU) {
+                if (Objects.equals(button.text, LanguageManager.getText("settings_menu_" + String.valueOf(settingState).toLowerCase()))) {
+                    button.color = buttonCurrentMenu;
+                    repaintNeeded = true;
+                }
+            }
+
             if (button.bounds.contains(mousePoint)) {
                 if (!button.isHovered) {
                     button.isHovered = true;
