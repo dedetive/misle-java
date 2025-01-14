@@ -33,7 +33,7 @@ public class SettingsMenuRenderer {
             g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
 
             // MENU ITSELF
-            MenuRenderer.createTitle("options_menu_options", g2d, scaleByScreenSize);
+            MenuRenderer.createTitle("settings_menu_options", g2d, scaleByScreenSize);
 
             int buttonX;
             int buttonY = (int) (220 * Math.pow(scale, 1.04));
@@ -45,30 +45,30 @@ public class SettingsMenuRenderer {
                 // General
             buttonX = (int) (42 * scale);
             button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-            createButton(button, LanguageManager.getText("options_menu_general"), SettingsMenuRenderer::switchToGeneral, panel);
+            createButton(button, LanguageManager.getText("settings_menu_general"), SettingsMenuRenderer::switchToGeneral, panel);
 
                 // Graphics
             // General
             buttonX = (int) (117 * scale);
             button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-            createButton(button, LanguageManager.getText("options_menu_graphics"), SettingsMenuRenderer::switchToGeneral, panel);
+            createButton(button, LanguageManager.getText("settings_menu_graphics"), SettingsMenuRenderer::switchToGeneral, panel);
 
                 // Audio
             buttonX = (int) (192 * scale);
             button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-            createButton(button, LanguageManager.getText("options_menu_audio"), SettingsMenuRenderer::switchToGeneral, panel);
+            createButton(button, LanguageManager.getText("settings_menu_audio"), SettingsMenuRenderer::switchToGeneral, panel);
 
                 // Gameplay
             buttonX = (int) (267 * scale);
             button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-            createButton(button, LanguageManager.getText("options_menu_gameplay"), SettingsMenuRenderer::switchToGeneral, panel);
+            createButton(button, LanguageManager.getText("settings_menu_gameplay"), SettingsMenuRenderer::switchToGeneral, panel);
 
             // Go back button
             buttonX = (int) (356 * scale);
             buttonWidth = (int) (109 * scale);
             button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
 
-            createButton(button, LanguageManager.getText("options_menu_go_back"), MenuRenderer::goToPreviousMenu, panel);
+            createButton(button, LanguageManager.getText("settings_menu_go_back"), MenuRenderer::goToPreviousMenu, panel);
 
             switch (settingState) {
                 case GENERAL -> renderGeneralMenu(g2d);
