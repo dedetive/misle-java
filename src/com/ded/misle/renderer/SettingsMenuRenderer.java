@@ -8,7 +8,9 @@ import java.awt.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.GamePanel.screenHeight;
 import static com.ded.misle.core.GamePanel.screenWidth;
-import static com.ded.misle.renderer.ColorManager.menuBackgroundColor;
+import static com.ded.misle.renderer.ColorManager.*;
+import static com.ded.misle.renderer.FontManager.dialogNPCText;
+import static com.ded.misle.renderer.MainRenderer.textShadow;
 import static com.ded.misle.renderer.MenuButton.createButton;
 import static com.ded.misle.renderer.MenuButton.drawButtons;
 
@@ -69,6 +71,18 @@ public class SettingsMenuRenderer {
             button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
 
             createButton(button, LanguageManager.getText("settings_menu_go_back"), MenuRenderer::goToPreviousMenu, panel);
+
+            g2d.setFont(dialogNPCText);
+            FontMetrics fm = g2d.getFontMetrics();
+            String text = LanguageManager.getText("settings_menu_" + String.valueOf(settingState).toLowerCase());
+            int textWidth = fm.stringWidth(text);
+            int centerX = (int) ((screenWidth - textWidth) / 2);
+            int textY = (int) (66 * scale);
+
+            g2d.setColor(buttonTextShadowColor);
+            g2d.drawString(text, (int) (centerX + textShadow), (int) (textY + textShadow));
+            g2d.setColor(buttonTextColor);
+            g2d.drawString(text, centerX, textY);
 
             switch (settingState) {
                 case GENERAL -> renderGeneralMenu(g2d);
