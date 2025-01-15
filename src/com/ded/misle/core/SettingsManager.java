@@ -132,20 +132,8 @@ public class SettingsManager {
 
 	public static void cycleLanguage() {
 		String[] languageCodes = new String[]{"de_DE", "el_GR", "en_US", "es_ES", "pt_BR", "ru_RU", "zh_CN"};
-		for (int i = 0; i < languageCodes.length; i++) {
-			if (languageCodes[i].equals(languageCode)) {
-				try {
-					languageCode = languageCodes[i + 1];
-				} catch (ArrayIndexOutOfBoundsException e) {
-					languageCode = languageCodes[0];
-				}
-				changeSetting("language", languageCode, getPath().resolve("resources/settings.config"));
-				languageManager = new LanguageManager(languageCode);
-				updateFontSizes();
-				return;
-			}
-		}
-		languageCode = languageCodes[0];
+		languageCode = cycleThroughSetting(languageCodes, languageCode);
+
 		changeSetting("language", languageCode, getPath().resolve("resources/settings.config"));
 		languageManager = new LanguageManager(languageCode);
 		updateFontSizes();
@@ -153,20 +141,24 @@ public class SettingsManager {
 
 	public static void cycleScreenSize() {
 		String[] screenSizes = new String[]{"small", "medium", "big", "huge"};
-		for (int i = 0; i < screenSizes.length; i++) {
-			if (screenSizes[i].equals(screenSize)) {
-				try {
-					screenSize = screenSizes[i + 1];
-				} catch (ArrayIndexOutOfBoundsException e) {
-					screenSize = screenSizes[0];
-				}
-				changeSetting("screenSize", screenSize, getPath().resolve("resources/settings.config"));
-				forceResize(screenSize);
-				return;
-			}
-		}
-		screenSize = screenSizes[0];
+		screenSize = cycleThroughSetting(screenSizes, screenSize);
+
 		changeSetting("screenSize", screenSize, getPath().resolve("resources/settings.config"));
 		forceResize(screenSize);
+	}
+
+	private static String cycleThroughSetting(String[] possibleValues, String currentValue) {
+		String value;
+		for (int i = 0; i < possibleValues.length; i++) {
+			if (possibleValues[i].equals(currentValue)) {
+				try {
+					value = possibleValues[i + 1];
+				} catch (ArrayIndexOutOfBoundsException e) {
+					value = possibleValues[0];
+				}
+				return value;
+			}
+		}
+		return possibleValues[0];
 	}
 }
