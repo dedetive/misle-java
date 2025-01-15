@@ -17,6 +17,7 @@ public class Launcher {
 	// VARIABLE INITIALIZATIONS
 
 	public static String windowTitle;
+	public static String screenSize;
 	public static boolean isFullscreen;
 	public static String fullscreenMode;
 	public static boolean displayFPS;
@@ -43,7 +44,7 @@ public class Launcher {
 
 		boolean screenSizeChanged = false;
 
-		String screenSize = getSetting("screenSize");
+		screenSize = getSetting("screenSize");
 		isFullscreen = Boolean.parseBoolean(getSetting("isFullscreen"));
 		fullscreenMode = getSetting("fullscreenMode");
 //		displayFPS = Boolean.parseBoolean(getSetting("displayFPS"));
@@ -53,45 +54,11 @@ public class Launcher {
         levelDesigner = Boolean.parseBoolean(getSetting("levelDesigner"));
 		heldItemFollowsMouse = Boolean.parseBoolean(getSetting("heldItemFollowsMouse"));
 
-
-		if (!previousScreenSize.equals(screenSize)) {
-			screenSizeChanged = true;
-		}
-
-		previousScreenSize = screenSize;
-
 		// WINDOW CONFIGS
 
 		windowTitle = "Misle";
 
-		// SCREEN SIZE
-
-		if (screenSizeChanged) {
-			switch (screenSize) {
-
-				// scale = 1 is 512x288
-
-				case "small":
-					scale = 1.5; // 768x432
-					break;
-				case "big":
-					scale = 3.125; // 1600x900
-					break;
-				case "huge":
-					scale = 3.75; // 1920x1080
-					break;
-				case "tv-sized":
-					scale = 5; // 2560x1440
-					break;
-				case "comical":
-					scale = 15; // 7680x4320
-					break;
-				case "medium":
-				case null, default:
-					scale = 2; // 1024x768
-					break;
-			}
-		}
+		scale = 2;
 	}
 
 	public static void main(String[] args) {
@@ -99,9 +66,9 @@ public class Launcher {
 		loadMainMenu();
 
 		SwingUtilities.invokeLater(() -> {
-			GamePanel mainGamePanel = new GamePanel();
-			mainGamePanel.showScreen();
-			mainGamePanel.startGameThread();
+			GamePanel panel = new GamePanel();
+			panel.showScreen();
+			panel.startGameThread();
 		});
 	}
 }

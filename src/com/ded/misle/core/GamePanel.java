@@ -94,7 +94,12 @@ public class GamePanel extends JPanel implements Runnable {
 		window.setResizable(true);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setSize((int) screenWidth, (int) screenHeight);
-		window.setLocationRelativeTo(null);
+		setWindow(window);
+		try {
+			forceResize(screenSize);
+		} catch (IllegalArgumentException e) {
+			forceResize("medium");
+		}
 
 		window.add(this);
 		this.setLayout(null);
@@ -184,6 +189,47 @@ public class GamePanel extends JPanel implements Runnable {
 		});
 		timer.setRepeats(false);
 		timer.start();
+	}
+
+	private enum ScreenSizeDimensions {
+		small(1.5),
+		medium(2),
+		big(3.125),
+		huge(3.75),
+		tv_sized(5),
+		comical(15),
+		;
+
+		final int x;
+		final int y;
+
+		ScreenSizeDimensions(double scale) {
+			int x = (int) (scale * 512);
+			int y = (int) (scale * 288);
+			this.x = x;
+			this.y = y;
+		}
+	}
+
+	private static JFrame jframe;
+
+	private static void setWindow(JFrame frame) {
+		jframe = frame;
+	}
+
+	public static JFrame getWindow() {
+		return jframe;
+	}
+
+	public static void forceResize(String screenSize) {
+		int preferredX =  ScreenSizeDimensions.valueOf(screenSize).x;
+		int preferredY =  ScreenSizeDimensions.valueOf(screenSize).y;
+
+		JFrame window = getWindow();
+
+		window.setPreferredSize(new Dimension(preferredX, preferredY));
+		window.pack();
+		window.setLocationRelativeTo(null);
 	}
 
 	private void changeAndDetectWindowSize() {

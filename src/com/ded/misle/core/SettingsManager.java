@@ -1,12 +1,13 @@
 package com.ded.misle.core;
 
+import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static com.ded.misle.Launcher.languageCode;
-import static com.ded.misle.Launcher.languageManager;
+import static com.ded.misle.Launcher.*;
+import static com.ded.misle.core.GamePanel.forceResize;
 import static com.ded.misle.renderer.FontManager.updateFontSizes;
 
 /**
@@ -141,6 +142,22 @@ public class SettingsManager {
 				changeSetting("language", languageCode, getPath().resolve("resources/settings.config"));
 				languageManager = new LanguageManager(languageCode);
 				updateFontSizes();
+				return;
+			}
+		}
+	}
+
+	public static void cycleScreenSize() {
+		String[] screenSizes = new String[]{"small", "medium", "big", "huge"};
+		for (int i = 0; i < screenSizes.length; i++) {
+			if (screenSizes[i].equals(screenSize)) {
+				try {
+					screenSize = screenSizes[i + 1];
+				} catch (ArrayIndexOutOfBoundsException e) {
+					screenSize = screenSizes[0];
+				}
+				changeSetting("screenSize", screenSize, getPath().resolve("resources/settings.config"));
+				forceResize(screenSize);
 				return;
 			}
 		}

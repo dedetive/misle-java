@@ -6,8 +6,7 @@ import com.ded.misle.core.SettingsManager;
 import javax.swing.*;
 import java.awt.*;
 
-import static com.ded.misle.Launcher.languageCode;
-import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.GamePanel.screenHeight;
 import static com.ded.misle.core.GamePanel.screenWidth;
 import static com.ded.misle.renderer.ColorManager.*;
@@ -114,7 +113,29 @@ public class SettingsMenuRenderer {
     }
 
     public static void renderGraphicsMenu(Graphics2D g2d, JPanel panel) {
-        // screenSize, isFullscreen, fullscreenMode, displayFPS, frameRateCap
+        // screenSize
+        int buttonX = (int) (42 * scale);
+        int buttonY = (int) (82 * Math.pow(scale, 1.04));
+        int buttonWidth = (int) (88 * scale);
+        int buttonHeight = (int) (28 * scale);
+        Rectangle button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
+        createButton(button, LanguageManager.getText("settings_graphics_screenSize"), SettingsManager::cycleScreenSize, panel);
+
+        buttonX = (int) (142 * scale);
+        buttonWidth = (int) (39 * scale);
+        button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
+        createButton(button, LanguageManager.getText(screenSize), SettingsManager::cycleScreenSize, panel);
+
+        // isFullscreen
+
+
+        // fullscreenMode
+
+
+        // displayFPS
+
+
+        // frameRateCap
     }
 
     public static void renderAudioMenu(Graphics2D g2d, JPanel panel) {
