@@ -84,21 +84,6 @@ public class LanguageManager {
 		}
 	}
 
-	public static String getItemName(String key) {
-
-		try {
-			return messages.getString(key);
-		} catch (Exception e) {
-			// If the key is missing, fallback to English
-			try {
-				return fallbackMessages.getString(key);
-			} catch (Exception ex) {
-				// If the key is missing in English too, return the key name as a placeholder
-				return key;
-			}
-		}
-	}
-
 	public static Script getCurrentScript() {
 		return currentScript;
 	}
