@@ -81,6 +81,10 @@ public class SettingsMenuRenderer {
             g2d.setColor(buttonTextColor);
             g2d.drawString(text, centerX, textY);
 
+            // Separating bar
+            g2d.setColor(settingsSeparatingBar);
+            g2d.fillRect(0, (int) (210 * Math.pow(scale, 1.04)), (int) screenWidth, (int) (2 * scale));
+
             switch (settingState) {
                 case GENERAL -> renderGeneralMenu(g2d);
                 case GRAPHICS -> renderGraphicsMenu(g2d);

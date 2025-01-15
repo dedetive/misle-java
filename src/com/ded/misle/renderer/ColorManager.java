@@ -57,7 +57,7 @@ public class ColorManager {
         // Buttons
     public final static Color buttonDefaultColor = new Color(70, 51, 5);
     public final static Color buttonHoveredColor = new Color(40, 25, 1);
-    public final static Color buttonCurrentMenu = new Color(55, 35, 3);
+    public final static Color buttonCurrentMenu = new Color(40, 25, 1);
     public final static Color buttonTextColor = new Color(225, 210, 170);
     public final static Color buttonTextShadowColor = defaultShadowColor;
         // Menus themselves
@@ -69,6 +69,7 @@ public class ColorManager {
     public final static Color progressBarColor = new Color(100, 200, 100);
     public final static Color progressBarPercentage = new Color(191, 191, 191);
     public final static Color progressBarPercentageShadow = defaultShadowColor;
+    public final static Color settingsSeparatingBar = new Color(40, 25, 1);
 
     // Fading
 
