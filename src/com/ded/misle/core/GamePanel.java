@@ -113,9 +113,6 @@ public class GamePanel extends JPanel implements Runnable {
 		addMouseListener(mouseHandler);
 		addMouseMotionListener(mouseHandler);
 
-		Thread windowSizeThread = new Thread(this::changeAndDetectWindowSize);
-		windowSizeThread.start();
-
 		updateMouseVariableScales();
 
 		if (displayFPS) {
@@ -202,28 +199,55 @@ public class GamePanel extends JPanel implements Runnable {
 
 		final int x;
 		final int y;
+		final double scale;
 
 		ScreenSizeDimensions(double scale) {
 			int x = (int) (scale * 512);
 			int y = (int) (scale * 288);
 			this.x = x;
 			this.y = y;
+			this.scale = scale;
 		}
 	}
 
 	private static JFrame jframe;
-
 	private static void setWindow(JFrame frame) {
 		jframe = frame;
 	}
-
 	public static JFrame getWindow() {
 		return jframe;
 	}
 
 	public static void forceResize(String screenSize) {
-		int preferredX =  ScreenSizeDimensions.valueOf(screenSize).x;
-		int preferredY =  ScreenSizeDimensions.valueOf(screenSize).y;
+		double previousScale = scale;
+		ScreenSizeDimensions screen = ScreenSizeDimensions.valueOf(screenSize);
+		int preferredX =  screen.x;
+		int preferredY =  screen.y;
+		scale = screen.scale;
+		gameScale = scale;
+		GamePanel.screenWidth = preferredX;
+		GamePanel.screenHeight = preferredY;
+
+		updateTileSize();
+		player.attr.updateStat(PlayerAttributes.Stat.SPEED);
+		player.setBoxScaleHorizontal(tileSize * 0.91);
+		player.setBoxScaleVertical(tileSize * 0.91);
+		worldWidth = originalWorldWidth * scale;
+		worldHeight = originalWorldHeight * scale;
+
+		player.setX(player.getX() * scale / previousScale);
+		player.setY(player.getY() * scale / previousScale);
+
+		clearButtons();
+		FontManager.updateFontSizes();
+		updateMouseVariableScales();
+		updateRendererVariableScales();
+		updatePlayingVariableScales();
+		if (levelDesigner) {
+			updateDesignerSpeed();
+		}
+
+		PlayingRenderer.updateSelectedItemNamePosition();
 
 		JFrame window = getWindow();
 
@@ -231,86 +255,6 @@ public class GamePanel extends JPanel implements Runnable {
 		window.pack();
 		window.setLocationRelativeTo(null);
 	}
-
-	private void changeAndDetectWindowSize() {
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		int screenWidth = (int) toolkit.getScreenSize().getWidth();
-		int screenHeight = (int) toolkit.getScreenSize().getHeight();
-
-		double previousWidth = window.getWidth();
-		double previousHeight = window.getHeight();
-		double resizeThreshold = 5.0; // Allowable pixel difference to ignore small changes
-
-		while (running) {
-			int detectedWidth = window.getWidth();
-			int detectedHeight = window.getHeight();
-
-			// Check if the size change is significant
-			if (Math.abs(detectedWidth - previousWidth) > resizeThreshold ||
-				Math.abs(detectedHeight - previousHeight) > resizeThreshold) {
-
-				detectedWidth = Math.min(detectedWidth, screenWidth);
-				detectedHeight = Math.min(detectedHeight, screenHeight);
-
-				boolean widthAligned;
-				// Calculate the new dimensions to maintain the 16:9 aspect ratio
-				if (detectedWidth > ((double) (detectedHeight * 512) / 288) + resizeThreshold) {
-					detectedWidth = (int) ((double) detectedHeight * 512 / 288);
-					widthAligned = false;
-				} else {
-					detectedHeight = (int) ((double) detectedWidth * 288 / 512);
-					widthAligned = true;
-				}
-
-				// Update the window size
-				window.setPreferredSize(new Dimension(detectedWidth, detectedHeight));
-				window.pack();
-
-				// Scale based on the new dimensions
-				double previousScale = scale;
-				if (widthAligned) {
-					scale = (double) detectedWidth / 512;
-				} else {
-					scale = (double) detectedHeight / 288;
-				}
-				gameScale = scale;
-				GamePanel.screenWidth = Math.min(detectedWidth, screenWidth);
-				GamePanel.screenHeight = Math.min(detectedHeight, screenHeight);
-
-				updateTileSize();
-				player.attr.updateStat(PlayerAttributes.Stat.SPEED);
-				player.setBoxScaleHorizontal(tileSize * 0.91);
-				player.setBoxScaleVertical(tileSize * 0.91);
-				worldWidth = originalWorldWidth * scale;
-				worldHeight = originalWorldHeight * scale;
-
-				player.setX(player.getX() * scale / previousScale);
-				player.setY(player.getY() * scale / previousScale);
-
-				clearButtons();
-				FontManager.updateFontSizes();
-				updateMouseVariableScales();
-				updateRendererVariableScales();
-				updatePlayingVariableScales();
-				if (levelDesigner) {
-					updateDesignerSpeed();
-				}
-
-				previousWidth = detectedWidth;
-				previousHeight = detectedHeight;
-
-				PlayingRenderer.updateSelectedItemNamePosition();
-			}
-
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-			}
-		}
-	}
-
-
 
 	public void startGameThread() {
 		gameThread = new Thread(this);
