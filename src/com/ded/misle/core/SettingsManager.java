@@ -5,6 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static com.ded.misle.Launcher.languageCode;
+
 /**
  * This is for changing settings (use changeThis()) and for getting the path of the game (use getPath())
  */
@@ -123,5 +125,20 @@ public class SettingsManager {
 				break;
 		}
 		return defaultSetting;
+	}
+
+	public static void cycleLanguage() {
+		String[] languageCodes = new String[]{"de_DE", "el_GR", "en_US", "es_ES", "pt_BR", "ru_RU", "zh_CN"};
+		for (int i = 0; i < languageCodes.length; i++) {
+			if (languageCodes[i].equals(languageCode)) {
+				try {
+					languageCode = languageCodes[i + 1];
+				} catch (ArrayIndexOutOfBoundsException e) {
+					languageCode = languageCodes[0];
+				}
+				changeSetting("language", languageCode, getPath().resolve("resources/settings.config"));
+				return;
+			}
+		}
 	}
 }

@@ -1,10 +1,12 @@
 package com.ded.misle.renderer;
 
 import com.ded.misle.core.LanguageManager;
+import com.ded.misle.core.SettingsManager;
 
 import javax.swing.*;
 import java.awt.*;
 
+import static com.ded.misle.Launcher.languageCode;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.GamePanel.screenHeight;
 import static com.ded.misle.core.GamePanel.screenWidth;
@@ -66,9 +68,9 @@ public class SettingsMenuRenderer {
             buttonX = (int) (356 * scale);
             buttonWidth = (int) (109 * scale);
             button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-
             createButton(button, LanguageManager.getText("settings_menu_go_back"), MenuRenderer::goToPreviousMenu, panel);
 
+            // Text with setting state below title
             g2d.setFont(dialogNPCText);
             FontMetrics fm = g2d.getFontMetrics();
             String text = LanguageManager.getText("settings_menu_" + String.valueOf(settingState).toLowerCase());
@@ -86,30 +88,41 @@ public class SettingsMenuRenderer {
             g2d.fillRect(0, (int) (210 * Math.pow(scale, 1.04)), (int) screenWidth, (int) (2 * scale));
 
             switch (settingState) {
-                case GENERAL -> renderGeneralMenu(g2d);
-                case GRAPHICS -> renderGraphicsMenu(g2d);
-                case AUDIO -> renderAudioMenu(g2d);
-                case GAMEPLAY -> renderGameplayMenu(g2d);
+                case GENERAL -> renderGeneralMenu(g2d, panel);
+                case GRAPHICS -> renderGraphicsMenu(g2d, panel);
+                case AUDIO -> renderAudioMenu(g2d, panel);
+                case GAMEPLAY -> renderGameplayMenu(g2d, panel);
             }
 
             drawButtons(g2d, scaleByScreenSize);
         }
     }
 
-    public static void renderGeneralMenu(Graphics2D g2d) {
+    public static void renderGeneralMenu(Graphics2D g2d, JPanel panel) {
+        // language
+        int buttonX = (int) (42 * scale);
+        int buttonY = (int) (82 * Math.pow(scale, 1.04));
+        int buttonWidth = (int) (109 * scale);
+        int buttonHeight = (int) (31 * scale);
+        Rectangle button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
+        createButton(button, LanguageManager.getText("settings_general_language"), SettingsManager::cycleLanguage, panel);
+
+        buttonX = (int) (159 * scale);
+        buttonWidth = (int) (52 * scale);
+        button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
+        createButton(button, LanguageManager.getText(languageCode), SettingsManager::cycleLanguage, panel);
+    }
+
+    public static void renderGraphicsMenu(Graphics2D g2d, JPanel panel) {
+        // screenSize, isFullscreen, fullscreenMode, displayFPS, frameRateCap
+    }
+
+    public static void renderAudioMenu(Graphics2D g2d, JPanel panel) {
 
     }
 
-    public static void renderGraphicsMenu(Graphics2D g2d) {
-
-    }
-
-    public static void renderAudioMenu(Graphics2D g2d) {
-
-    }
-
-    public static void renderGameplayMenu(Graphics2D g2d) {
-
+    public static void renderGameplayMenu(Graphics2D g2d, JPanel panel) {
+        // heldItemFollowsMouse
     }
 
     public static void switchToGeneral() { settingState = SettingState.GENERAL; }
