@@ -44,26 +44,23 @@ public class SettingsMenuRenderer {
             Rectangle button;
 
             // Other menus buttons
-                // General
-            buttonX = (int) (42 * scale);
-            button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-            createButton(button, LanguageManager.getText("settings_menu_general"), SettingsMenuRenderer::switchToGeneral, panel);
-
-                // Graphics
-            // General
-            buttonX = (int) (117 * scale);
-            button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-            createButton(button, LanguageManager.getText("settings_menu_graphics"), SettingsMenuRenderer::switchToGraphics, panel);
-
-                // Audio
-            buttonX = (int) (192 * scale);
-            button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-            createButton(button, LanguageManager.getText("settings_menu_audio"), SettingsMenuRenderer::switchToAudio, panel);
-
-                // Gameplay
-            buttonX = (int) (267 * scale);
-            button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-            createButton(button, LanguageManager.getText("settings_menu_gameplay"), SettingsMenuRenderer::switchToGameplay, panel);
+            String[] menus = new String[]{
+                LanguageManager.getText("settings_menu_general"),
+                LanguageManager.getText("settings_menu_graphics"),
+                LanguageManager.getText("settings_menu_audio"),
+                LanguageManager.getText("settings_menu_gameplay")
+            };
+            Runnable[] actions = new Runnable[]{
+                SettingsMenuRenderer::switchToGeneral,
+                SettingsMenuRenderer::switchToGraphics,
+                SettingsMenuRenderer::switchToAudio,
+                SettingsMenuRenderer::switchToGameplay
+            };
+            for (int i = 0; i < 4; i++) {
+                buttonX = (int) ((42 + 65 * i) * scale);
+                button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
+                createButton(button, menus[i], actions[i], panel);
+            }
 
             // Go back button
             buttonX = (int) (356 * scale);
