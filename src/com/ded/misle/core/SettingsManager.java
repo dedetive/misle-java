@@ -145,6 +145,10 @@ public class SettingsManager {
 				return;
 			}
 		}
+		languageCode = languageCodes[0];
+		changeSetting("language", languageCode, getPath().resolve("resources/settings.config"));
+		languageManager = new LanguageManager(languageCode);
+		updateFontSizes();
 	}
 
 	public static void cycleScreenSize() {
@@ -161,5 +165,8 @@ public class SettingsManager {
 				return;
 			}
 		}
+		screenSize = screenSizes[0];
+		changeSetting("screenSize", screenSize, getPath().resolve("resources/settings.config"));
+		forceResize(screenSize);
 	}
 }
