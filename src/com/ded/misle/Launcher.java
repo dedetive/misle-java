@@ -25,6 +25,7 @@ public class Launcher {
 	public static boolean levelDesigner;
 	public static String languageCode;
 	public static boolean heldItemFollowsMouse;
+	public static LanguageManager languageManager;
 
 	private static String previousScreenSize = "";
 
@@ -48,7 +49,7 @@ public class Launcher {
 //		displayFPS = Boolean.parseBoolean(getSetting("displayFPS"));
 		frameRateCap = Integer.parseInt(getSetting("frameRateCap"));
 		languageCode = getSetting("language");
-        new LanguageManager(languageCode);
+        languageManager = new LanguageManager(languageCode);
         levelDesigner = Boolean.parseBoolean(getSetting("levelDesigner"));
 		heldItemFollowsMouse = Boolean.parseBoolean(getSetting("heldItemFollowsMouse"));
 
