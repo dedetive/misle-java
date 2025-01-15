@@ -6,9 +6,8 @@ import com.ded.misle.core.LanguageManager;
 import javax.swing.*;
 import java.awt.*;
 
+import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.GamePanel.*;
-import static com.ded.misle.Launcher.levelDesigner;
-import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.itemInfoFont;
 import static com.ded.misle.renderer.MainRenderer.*;
@@ -88,7 +87,9 @@ public class MenuRenderer {
         if (g instanceof Graphics2D g2d) {
 
             // ANTI-ALIASING
-            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            if (antiAliasing) {
+                g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            }
 
             MainRenderer.currentMenu = "MAIN_MENU";
 
@@ -154,7 +155,9 @@ public class MenuRenderer {
         if (g instanceof Graphics2D g2d) {
 
             // ANTI-ALIASING
-            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            if (antiAliasing) {
+                g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            }
 
             double scaleByScreenSize = scale / 3.75;
 
@@ -205,7 +208,9 @@ public class MenuRenderer {
         if (g instanceof Graphics2D g2d) {
 
             // ANTI-ALIASING
-            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            if (antiAliasing) {
+                g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            }
 
             double scaleByScreenSize = scale / 3.75;
 

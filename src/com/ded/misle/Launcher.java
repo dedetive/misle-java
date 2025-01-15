@@ -27,6 +27,7 @@ public class Launcher {
 	public static String languageCode;
 	public static boolean heldItemFollowsMouse;
 	public static LanguageManager languageManager;
+	public static boolean antiAliasing;
 
 	private static String previousScreenSize = "";
 
@@ -48,6 +49,7 @@ public class Launcher {
 		isFullscreen = Boolean.parseBoolean(getSetting("isFullscreen"));
 		fullscreenMode = getSetting("fullscreenMode");
 //		displayFPS = Boolean.parseBoolean(getSetting("displayFPS"));
+		antiAliasing = Boolean.parseBoolean(getSetting("antiAliasing"));
 		frameRateCap = Integer.parseInt(getSetting("frameRateCap"));
 		languageCode = getSetting("language");
         languageManager = new LanguageManager(languageCode);

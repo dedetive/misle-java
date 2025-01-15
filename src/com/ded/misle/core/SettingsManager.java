@@ -123,6 +123,9 @@ public class SettingsManager {
 			case "displayFPS":
 				defaultSetting = "false";
 				break;
+			case "antiAliasing":
+				defaultSetting = "true";
+				break;
 			case "language":
 				defaultSetting = "en_US";
 				break;

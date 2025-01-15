@@ -8,7 +8,7 @@ import com.ded.misle.items.Item;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static com.ded.misle.Launcher.heldItemFollowsMouse;
+import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.renderer.FloatingText.drawFloatingTexts;
 import static com.ded.misle.renderer.FloatingText.getFloatingTexts;
@@ -19,7 +19,6 @@ import static com.ded.misle.renderer.DialogRenderer.renderDialog;
 import static com.ded.misle.renderer.FontManager.coinTextFont;
 import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.renderer.ImageRenderer.cachedImages;
-import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.world.player.PlayerStats.Direction.RIGHT;
 import static com.ded.misle.renderer.InventoryRenderer.*;
 import static java.lang.System.currentTimeMillis;
@@ -58,7 +57,9 @@ public class PlayingRenderer {
         Graphics2D g2d = (Graphics2D) g;
 
         // ANTI-ALIASING
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        if (antiAliasing) {
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        }
 
         // Draw game components
         BoxHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), scale, tileSize);
