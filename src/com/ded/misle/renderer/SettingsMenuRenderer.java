@@ -102,13 +102,13 @@ public class SettingsMenuRenderer {
         // language
         int buttonX = (int) (42 * scale);
         int buttonY = (int) (82 * Math.pow(scale, 1.04));
-        int buttonWidth = (int) (109 * scale);
-        int buttonHeight = (int) (31 * scale);
+        int buttonWidth = (int) (88 * scale);
+        int buttonHeight = (int) (28 * scale);
         Rectangle button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
         createButton(button, LanguageManager.getText("settings_general_language"), SettingsManager::cycleLanguage, panel);
 
-        buttonX = (int) (159 * scale);
-        buttonWidth = (int) (52 * scale);
+        buttonX = (int) (142 * scale);
+        buttonWidth = (int) (39 * scale);
         button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
         createButton(button, LanguageManager.getText(languageCode), SettingsManager::cycleLanguage, panel);
     }
