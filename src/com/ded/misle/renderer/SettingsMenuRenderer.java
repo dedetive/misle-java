@@ -106,10 +106,11 @@ public class SettingsMenuRenderer {
     public static void renderGraphicsMenu(JPanel panel) {
         // screenSize
         createSetting("settings_graphics_screenSize", String.valueOf(screenSize),
-    42, 82, SettingsManager::cycleScreenSize, panel);
+    42, 112, SettingsManager::cycleScreenSize, panel);
 
         // isFullscreen
-
+        createSetting("settings_graphics_isFullscreen", String.valueOf(isFullscreen),
+            42, 82, SettingsManager::cycleIsFullscreen, panel);
 
         // fullscreenMode
 

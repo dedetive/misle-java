@@ -117,29 +117,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		updateMouseVariableScales();
 
-		// Fullscreen Mode Logic
-		if (isFullscreen) {
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			window.setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
-			scale = (screenSize.getWidth() * 3) / (originalTileSize * maxScreenCol);
-			screenWidth = (int) screenSize.getWidth();
-			screenHeight = (int) screenSize.getHeight();
-			updateTileSize();
-
-			if (!fullscreenMode.equals("exclusive")) {
-				window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-				window.setUndecorated(true);
-			}
-			else {
-				GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-				if (gd.isFullScreenSupported()) {
-					window.setUndecorated(true);
-					gd.setFullScreenWindow(window);
-				} else {
-					System.out.println("Exclusive fullscreen is not supported on this device.");
-				}
-			}
-		}
+		forceResize(screenSize);
 
 		// Handle window close event
 		window.addWindowListener(new WindowAdapter() {
@@ -193,13 +171,55 @@ public class GamePanel extends JPanel implements Runnable {
 	public static void forceResize(String screenSize) {
 		double previousScale = scale;
 		ScreenSizeDimensions screen = ScreenSizeDimensions.valueOf(screenSize);
-		int preferredX =  screen.x;
-		int preferredY =  screen.y;
+		int preferredX = screen.x;
+		int preferredY = screen.y;
 		scale = screen.scale;
 		gameScale = scale;
 		GamePanel.screenWidth = preferredX;
 		GamePanel.screenHeight = preferredY;
 
+		JFrame window = getWindow();
+
+		// Handle fullscreen logic
+		if (isFullscreen) {
+			if (fullscreenMode.equals("windowed")) {
+				// Set window to borderless and maximize
+				window.dispose();
+				window.setUndecorated(true);
+				window.setResizable(false);
+				window.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds());
+				window.setVisible(true);
+				scale = (double) window.getWidth() / 512;
+				gameScale = scale;
+				GamePanel.screenWidth = window.getWidth();
+				GamePanel.screenHeight = window.getHeight();
+			} else if (fullscreenMode.equals("exclusive")) {
+				// Switch to exclusive fullscreen mode
+				GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+				if (device.isFullScreenSupported()) {
+					window.dispose();
+					window.setUndecorated(true);
+					device.setFullScreenWindow(window);
+					scale = (double) window.getWidth() / 512;
+					gameScale = scale;
+					GamePanel.screenWidth = window.getWidth();
+					GamePanel.screenHeight = window.getHeight();
+				} else {
+					System.out.println("Exclusive fullscreen not supported on this device.");
+				}
+			}
+		} else {
+			// Restore windowed mode
+			window.dispose();
+			window.setUndecorated(false);
+			window.setPreferredSize(new Dimension(preferredX, preferredY));
+			window.pack();
+			window.setResizable(false);
+			window.setLocationRelativeTo(null);
+			window.setVisible(true);
+		}
+
+		// Update game variables for resizing
 		updateTileSize();
 		player.attr.updateStat(PlayerAttributes.Stat.SPEED);
 		player.setBoxScaleHorizontal(tileSize * 0.91);
@@ -221,15 +241,9 @@ public class GamePanel extends JPanel implements Runnable {
 
 		PlayingRenderer.updateSelectedItemNamePosition();
 
-		JFrame window = getWindow();
-
-		window.setResizable(true);
-		window.setPreferredSize(new Dimension(preferredX, preferredY));
-		window.pack();
-		window.setResizable(false);
-		window.setLocationRelativeTo(null);
 		window.repaint();
 	}
+
 
 	public void startGameThread() {
 		gameThread = new Thread(this);

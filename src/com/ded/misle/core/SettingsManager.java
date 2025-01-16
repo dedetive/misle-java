@@ -1,6 +1,5 @@
 package com.ded.misle.core;
 
-import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -133,6 +132,7 @@ public class SettingsManager {
 		return defaultSetting;
 	}
 
+	// General
 	public static void cycleLanguage() {
 		String[] languageCodes = new String[]{"de_DE", "el_GR", "en_US", "es_ES", "pt_BR", "ru_RU", "zh_CN"};
 		languageCode = cycleThroughSetting(languageCodes, languageCode);
@@ -142,6 +142,7 @@ public class SettingsManager {
 		updateFontSizes();
 	}
 
+	// Graphics
 	public static void cycleScreenSize() {
 		String[] screenSizes = new String[]{"small", "medium", "big", "huge"};
 		screenSize = cycleThroughSetting(screenSizes, screenSize);
@@ -150,13 +151,24 @@ public class SettingsManager {
 		forceResize(screenSize);
 	}
 
-	public static void cycleHeldItemFollowsMouse() {
-		String[] options = new String[]{"true", "false"};
-		heldItemFollowsMouse = Boolean.parseBoolean(cycleThroughSetting(options, String.valueOf(heldItemFollowsMouse)));
-
-		changeSetting("heldItemFollowsMouse", String.valueOf(heldItemFollowsMouse), getPath().resolve("resources/settings.config"));
+	public static void cycleIsFullscreen() {
+		isFullscreen = cycleBoolean("isFullscreen", isFullscreen);
+		forceResize(screenSize);
 	}
 
+	// Gameplay
+	public static void cycleHeldItemFollowsMouse() {
+		heldItemFollowsMouse = cycleBoolean("heldItemFollowsMouse", heldItemFollowsMouse);
+	}
+
+	// General-use methods
+	public static boolean cycleBoolean(String setting, boolean currentValue) {
+		boolean cycledResult = !currentValue;
+
+		changeSetting(setting, String.valueOf(cycledResult), getPath().resolve("resources/settings.config"));
+
+		return cycledResult;
+	}
 	private static String cycleThroughSetting(String[] possibleValues, String currentValue) {
 		String value;
 		for (int i = 0; i < possibleValues.length; i++) {
