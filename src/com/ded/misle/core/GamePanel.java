@@ -223,9 +223,12 @@ public class GamePanel extends JPanel implements Runnable {
 
 		JFrame window = getWindow();
 
+		window.setResizable(true);
 		window.setPreferredSize(new Dimension(preferredX, preferredY));
 		window.pack();
+		window.setResizable(false);
 		window.setLocationRelativeTo(null);
+		window.repaint();
 	}
 
 	public void startGameThread() {
