@@ -30,14 +30,20 @@ public class SettingsManager {
 		try (BufferedReader reader = Files.newBufferedReader(settingsFile);
 		     BufferedWriter writer = Files.newBufferedWriter(tempFile)) {
 
+			boolean foundLine = false;
 			String line;
 			while ((line = reader.readLine()) != null) {
 				if (line.contains(setting)) {
-					setting = line.split("= ")[0];
-					line = setting + "= " + changeTo;
+					setting = line.split(" = ")[0];
+					line = setting + " = " + changeTo;
+					foundLine = true;
 				}
 				writer.write(line);
 				writer.newLine();
+			}
+			if (!foundLine) {
+				line = setting + " = " + changeTo;
+				writer.write(line);
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
