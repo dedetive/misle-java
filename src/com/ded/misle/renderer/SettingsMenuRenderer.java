@@ -113,7 +113,8 @@ public class SettingsMenuRenderer {
             42, 82, SettingsManager::cycleIsFullscreen, panel);
 
         // fullscreenMode
-
+        createSetting("settings_graphics_fullscreenMode", fullscreenMode,
+            282, 82, SettingsManager::cycleFullscreenMode, panel);
 
         // displayFPS
 

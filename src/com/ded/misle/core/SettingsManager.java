@@ -156,6 +156,14 @@ public class SettingsManager {
 		forceResize(screenSize);
 	}
 
+	public static void cycleFullscreenMode() {
+		String[] modes = new String[]{"windowed", "exclusive"};
+		fullscreenMode = cycleThroughSetting(modes, fullscreenMode);
+
+		changeSetting("fullscreenMode", fullscreenMode, getPath().resolve("resources/settings.config"));
+		forceResize(screenSize);
+	}
+
 	// Gameplay
 	public static void cycleHeldItemFollowsMouse() {
 		heldItemFollowsMouse = cycleBoolean("heldItemFollowsMouse", heldItemFollowsMouse);
