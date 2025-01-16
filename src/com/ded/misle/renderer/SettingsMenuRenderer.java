@@ -87,44 +87,26 @@ public class SettingsMenuRenderer {
             g2d.fillRect(0, (int) (210 * Math.pow(scale, 1.04)), (int) screenWidth, (int) (2 * scale));
 
             switch (settingState) {
-                case GENERAL -> renderGeneralMenu(g2d, panel);
-                case GRAPHICS -> renderGraphicsMenu(g2d, panel);
-                case AUDIO -> renderAudioMenu(g2d, panel);
-                case GAMEPLAY -> renderGameplayMenu(g2d, panel);
+                case GENERAL -> renderGeneralMenu(panel);
+                case GRAPHICS -> renderGraphicsMenu(panel);
+                case AUDIO -> renderAudioMenu(panel);
+                case GAMEPLAY -> renderGameplayMenu(panel);
             }
 
             drawButtons(g2d, scaleByScreenSize);
         }
     }
 
-    public static void renderGeneralMenu(Graphics2D g2d, JPanel panel) {
+    public static void renderGeneralMenu(JPanel panel) {
         // language
-        int buttonX = (int) (42 * scale);
-        int buttonY = (int) (82 * Math.pow(scale, 1.04));
-        int buttonWidth = (int) (88 * scale);
-        int buttonHeight = (int) (28 * scale);
-        Rectangle button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-        createButton(button, LanguageManager.getText("settings_general_language"), SettingsManager::cycleLanguage, panel);
-
-        buttonX = (int) (142 * scale);
-        buttonWidth = (int) (39 * scale);
-        button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-        createButton(button, LanguageManager.getText(languageCode), SettingsManager::cycleLanguage, panel);
+        createSetting("settings_general_language", String.valueOf(languageCode),
+            42, 82, SettingsManager::cycleLanguage, panel);
     }
 
-    public static void renderGraphicsMenu(Graphics2D g2d, JPanel panel) {
+    public static void renderGraphicsMenu(JPanel panel) {
         // screenSize
-        int buttonX = (int) (42 * scale);
-        int buttonY = (int) (82 * Math.pow(scale, 1.04));
-        int buttonWidth = (int) (88 * scale);
-        int buttonHeight = (int) (28 * scale);
-        Rectangle button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-        createButton(button, LanguageManager.getText("settings_graphics_screenSize"), SettingsManager::cycleScreenSize, panel);
-
-        buttonX = (int) (142 * scale);
-        buttonWidth = (int) (39 * scale);
-        button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-        createButton(button, LanguageManager.getText(screenSize), SettingsManager::cycleScreenSize, panel);
+        createSetting("settings_graphics_screenSize", String.valueOf(screenSize),
+    42, 82, SettingsManager::cycleScreenSize, panel);
 
         // isFullscreen
 
@@ -138,23 +120,28 @@ public class SettingsMenuRenderer {
         // frameRateCap
     }
 
-    public static void renderAudioMenu(Graphics2D g2d, JPanel panel) {
+    public static void renderAudioMenu(JPanel panel) {
 
     }
 
-    public static void renderGameplayMenu(Graphics2D g2d, JPanel panel) {
+    public static void renderGameplayMenu(JPanel panel) {
         // heldItemFollowsMouse
-        int buttonX = (int) (42 * scale);
-        int buttonY = (int) (82 * Math.pow(scale, 1.04));
+        createSetting("settings_gameplay_heldItemFollowsMouse", String.valueOf(heldItemFollowsMouse),
+            42, 82, SettingsManager::cycleHeldItemFollowsMouse, panel);
+    }
+
+    public static void createSetting(String text, String value, int unscaledX, int unscaledY, Runnable action, JPanel panel) {
+        int buttonX = (int) (unscaledX * scale);
+        int buttonY = (int) (unscaledY * Math.pow(scale, 1.04));
         int buttonWidth = (int) (88 * scale);
         int buttonHeight = (int) (28 * scale);
         Rectangle button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-        createButton(button, LanguageManager.getText("settings_gameplay_heldItemFollowsMouse"), SettingsManager::cycleHeldItemFollowsMouse, panel);
+        createButton(button, LanguageManager.getText(text), action, panel);
 
-        buttonX = (int) (142 * scale);
+        buttonX = (int) ((unscaledX + 100) * scale);
         buttonWidth = (int) (39 * scale);
         button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-        createButton(button, LanguageManager.getText(String.valueOf(heldItemFollowsMouse)), SettingsManager::cycleHeldItemFollowsMouse, panel);
+        createButton(button, LanguageManager.getText(String.valueOf(value)), action, panel);
     }
 
     public static void switchToGeneral() { settingState = SettingState.GENERAL; }
