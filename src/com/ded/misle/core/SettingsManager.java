@@ -46,7 +46,13 @@ public class SettingsManager {
 				writer.write(line);
 			}
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			try {
+				Files.createFile(settingsFile);
+				changeSetting(setting, changeTo);
+				return;
+			} catch (IOException exc) {
+				throw new RuntimeException("Could not create settings file", exc);
+			}
 		}
 
 		try {
@@ -100,7 +106,7 @@ public class SettingsManager {
 				}
 			}
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			result = "";
 		}
 
 		if (result.isEmpty()) {
