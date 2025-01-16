@@ -60,14 +60,14 @@ public class SettingsMenuRenderer {
             for (int i = 0; i < 4; i++) {
                 buttonX = (int) ((42 + 65 * i) * scale);
                 button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-                createButton(button, menus[i], actions[i], panel);
+                createButton(button, menus[i], actions[i], panel, 38 * i + 100);
             }
 
             // Go back button
             buttonX = (int) (356 * scale);
             buttonWidth = (int) (109 * scale);
             button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-            createButton(button, LanguageManager.getText("settings_menu_go_back"), MenuRenderer::goToPreviousMenu, panel);
+            createButton(button, LanguageManager.getText("settings_menu_go_back"), MenuRenderer::goToPreviousMenu, panel, 40);
 
             // Text with setting state below title
             g2d.setFont(dialogNPCText);
@@ -100,24 +100,25 @@ public class SettingsMenuRenderer {
     public static void renderGeneralMenu(JPanel panel) {
         // language
         createSetting("settings_general_language", String.valueOf(languageCode),
-            42, 82, SettingsManager::cycleLanguage, panel);
+            42, 82, SettingsManager::cycleLanguage, panel, 42);
     }
 
     public static void renderGraphicsMenu(JPanel panel) {
         // screenSize
         createSetting("settings_graphics_screenSize", String.valueOf(screenSize),
-    42, 112, SettingsManager::cycleScreenSize, panel);
+    42, 112, SettingsManager::cycleScreenSize, panel, 44);
 
         // isFullscreen
         createSetting("settings_graphics_isFullscreen", String.valueOf(isFullscreen),
-            42, 82, SettingsManager::cycleIsFullscreen, panel);
+            42, 82, SettingsManager::cycleIsFullscreen, panel, 46);
 
         // fullscreenMode
         createSetting("settings_graphics_fullscreenMode", fullscreenMode,
-            282, 82, SettingsManager::cycleFullscreenMode, panel);
+            282, 82, SettingsManager::cycleFullscreenMode, panel, 48);
 
         // displayFPS
-
+        createSetting("settings_graphics_displayFPS", String.valueOf(displayFPS),
+            282, 142, SettingsManager::cycleDisplayFPS, panel, 50);
 
         // frameRateCap
     }
@@ -129,21 +130,21 @@ public class SettingsMenuRenderer {
     public static void renderGameplayMenu(JPanel panel) {
         // heldItemFollowsMouse
         createSetting("settings_gameplay_heldItemFollowsMouse", String.valueOf(heldItemFollowsMouse),
-            42, 82, SettingsManager::cycleHeldItemFollowsMouse, panel);
+            42, 82, SettingsManager::cycleHeldItemFollowsMouse, panel, 52);
     }
 
-    public static void createSetting(String text, String value, int unscaledX, int unscaledY, Runnable action, JPanel panel) {
+    public static void createSetting(String text, String value, int unscaledX, int unscaledY, Runnable action, JPanel panel, int id) {
         int buttonX = (int) (unscaledX * scale);
         int buttonY = (int) (unscaledY * Math.pow(scale, 1.04));
         int buttonWidth = (int) (88 * scale);
         int buttonHeight = (int) (28 * scale);
         Rectangle button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-        createButton(button, LanguageManager.getText(text), action, panel);
+        createButton(button, LanguageManager.getText(text), action, panel, id);
 
         buttonX = (int) ((unscaledX + 100) * scale);
         buttonWidth = (int) (39 * scale);
         button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-        createButton(button, LanguageManager.getText(String.valueOf(value)), action, panel);
+        createButton(button, LanguageManager.getText(value), action, panel, id + 1);
     }
 
     public static void switchToGeneral() { settingState = SettingState.GENERAL; }

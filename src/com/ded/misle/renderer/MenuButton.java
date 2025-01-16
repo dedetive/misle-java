@@ -25,24 +25,28 @@ public class MenuButton {
     Runnable action;
     boolean isHovered;
     String text;
+    int id;
+    boolean needsToUpdate;
 
     private static final List<MenuButton> buttons = new ArrayList<>();
 
-    public MenuButton(Rectangle bounds, Color defaultColor, Runnable action, String text) {
+    public MenuButton(Rectangle bounds, Color defaultColor, Runnable action, String text, int id) {
         this.bounds = bounds;
         this.color = defaultColor;
         this.action = action;
         this.isHovered = false;
         this.text = text;
+        this.id = id;
+        this.needsToUpdate = true;
     }
 
-    public static void createButton(Rectangle bounds, String text, Runnable action, JPanel panel) {
+    public static void createButton(Rectangle bounds, String text, Runnable action, JPanel panel, int id) {
         for (MenuButton button : buttons) {
-            if (button.text.equals(text)) {
+            if (button.id == id && !button.needsToUpdate) {
                 return;
             }
         }
-        MenuButton button = new MenuButton(bounds, buttonDefaultColor, action, text);
+        MenuButton button = new MenuButton(bounds, buttonDefaultColor, action, text, id);
         buttons.add(button);
         Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
         SwingUtilities.convertPointFromScreen(mouseLocation, panel);
@@ -69,6 +73,7 @@ public class MenuButton {
                 }
             }
         });
+        button.needsToUpdate = false;
     }
 
     private enum ButtonTextColorUpdater {
@@ -97,6 +102,7 @@ public class MenuButton {
                 if (Objects.equals(button.text, LanguageManager.getText("settings_menu_" + String.valueOf(settingState).toLowerCase()))) {
                     button.color = buttonCurrentMenu;
                     repaintNeeded = true;
+                    button.needsToUpdate = true;
                 }
             }
 
@@ -110,6 +116,7 @@ public class MenuButton {
                         }
                     }
                     repaintNeeded = true;
+                    button.needsToUpdate = true;
                     panel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 }
             } else if (button.isHovered) {
@@ -117,6 +124,7 @@ public class MenuButton {
                 button.color = buttonDefaultColor;
                 panel.setCursor(Cursor.getDefaultCursor());
                 repaintNeeded = true;
+                button.needsToUpdate = true;
             }
         }
 

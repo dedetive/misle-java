@@ -175,6 +175,10 @@ public class SettingsManager {
 		forceResize(screenSize);
 	}
 
+	public static void cycleDisplayFPS() {
+		displayFPS = cycleBoolean("displayFPS", displayFPS);
+	}
+
 	// Gameplay
 	public static void cycleHeldItemFollowsMouse() {
 		heldItemFollowsMouse = cycleBoolean("heldItemFollowsMouse", heldItemFollowsMouse);
