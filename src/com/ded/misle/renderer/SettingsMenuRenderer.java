@@ -144,6 +144,17 @@ public class SettingsMenuRenderer {
 
     public static void renderGameplayMenu(Graphics2D g2d, JPanel panel) {
         // heldItemFollowsMouse
+        int buttonX = (int) (42 * scale);
+        int buttonY = (int) (82 * Math.pow(scale, 1.04));
+        int buttonWidth = (int) (88 * scale);
+        int buttonHeight = (int) (28 * scale);
+        Rectangle button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
+        createButton(button, LanguageManager.getText("settings_gameplay_heldItemFollowsMouse"), SettingsManager::cycleHeldItemFollowsMouse, panel);
+
+        buttonX = (int) (142 * scale);
+        buttonWidth = (int) (39 * scale);
+        button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
+        createButton(button, LanguageManager.getText(String.valueOf(heldItemFollowsMouse)), SettingsManager::cycleHeldItemFollowsMouse, panel);
     }
 
     public static void switchToGeneral() { settingState = SettingState.GENERAL; }

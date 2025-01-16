@@ -150,6 +150,13 @@ public class SettingsManager {
 		forceResize(screenSize);
 	}
 
+	public static void cycleHeldItemFollowsMouse() {
+		String[] options = new String[]{"true", "false"};
+		heldItemFollowsMouse = Boolean.parseBoolean(cycleThroughSetting(options, String.valueOf(heldItemFollowsMouse)));
+
+		changeSetting("heldItemFollowsMouse", String.valueOf(heldItemFollowsMouse), getPath().resolve("resources/settings.config"));
+	}
+
 	private static String cycleThroughSetting(String[] possibleValues, String currentValue) {
 		String value;
 		for (int i = 0; i < possibleValues.length; i++) {
