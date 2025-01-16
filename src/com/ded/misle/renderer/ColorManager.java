@@ -70,6 +70,8 @@ public class ColorManager {
     public final static Color progressBarPercentage = new Color(191, 191, 191);
     public final static Color progressBarPercentageShadow = defaultShadowColor;
     public final static Color settingsSeparatingBar = new Color(40, 25, 1);
+    public final static Color FPSColor = new Color(50, 255, 50);
+    public final static Color FPSShadowColor = defaultShadowColor;
 
     // Fading
 

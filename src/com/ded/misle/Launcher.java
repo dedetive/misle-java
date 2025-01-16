@@ -29,8 +29,6 @@ public class Launcher {
 	public static LanguageManager languageManager;
 	public static boolean antiAliasing;
 
-	private static String previousScreenSize = "";
-
 	/**
 	 * Loads main menu.
 	 * <p>
@@ -41,14 +39,12 @@ public class Launcher {
 
 	public static void loadMainMenu() {
 
-		// VARIABLE DECLARATIONS
-
-		boolean screenSizeChanged = false;
+		// SETTINGS GETTERS
 
 		screenSize = getSetting("screenSize");
 		isFullscreen = Boolean.parseBoolean(getSetting("isFullscreen"));
 		fullscreenMode = getSetting("fullscreenMode");
-//		displayFPS = Boolean.parseBoolean(getSetting("displayFPS"));
+		displayFPS = Boolean.parseBoolean(getSetting("displayFPS"));
 		antiAliasing = Boolean.parseBoolean(getSetting("antiAliasing"));
 		frameRateCap = Integer.parseInt(getSetting("frameRateCap"));
 		languageCode = getSetting("language");

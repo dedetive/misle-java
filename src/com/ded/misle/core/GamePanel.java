@@ -10,7 +10,9 @@ import com.ded.misle.renderer.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.concurrent.atomic.AtomicLong;
 
+import static com.ded.misle.renderer.FontManager.buttonFont;
 import static com.ded.misle.world.boxes.HPBox.getHPBoxes;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.MainRenderer.*;
@@ -91,7 +93,7 @@ public class GamePanel extends JPanel implements Runnable {
 		// Setting up the JFrame
 		window = new JFrame();
 		window.setTitle(windowTitle);
-		window.setResizable(true);
+		window.setResizable(false);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setSize((int) screenWidth, (int) screenHeight);
 		setWindow(window);
@@ -114,36 +116,6 @@ public class GamePanel extends JPanel implements Runnable {
 		addMouseMotionListener(mouseHandler);
 
 		updateMouseVariableScales();
-
-		if (displayFPS) {
-			fpsLabel = new JLabel("FPS: 0");
-			fpsLabel.setFont(new Font("Arial", Font.PLAIN, 18)); // Set the font and size
-			fpsLabel.setForeground(Color.WHITE); // Set text color
-			this.add(fpsLabel);  // Add FPS label to the panel
-			window.addComponentListener(new ComponentAdapter() {
-				@Override
-				public void componentResized(ComponentEvent e) {
-					updateLabelPositionAndSize();
-				}
-			});
-		}
-
-		window.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentResized(ComponentEvent e) {
-				if ((window.getExtendedState() & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
-					screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-					screenHeight = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-				} else {
-					screenWidth = window.getWidth();
-					screenHeight = window.getHeight();
-				}
-				scale = screenWidth / 512.0;
-
-			
-				repaint();
-			}
-		});
 
 		// Fullscreen Mode Logic
 		if (isFullscreen) {
@@ -265,25 +237,12 @@ public class GamePanel extends JPanel implements Runnable {
 		window.setVisible(true);
 	}
 
-	private void updateLabelPositionAndSize() {
-//		int width = getToolkit().getScreenSize().width;
-//		int height = getToolkit().getScreenSize().height;
-//
-//		int labelWidth = (int) (width / (10 - 2 * Math.log10(targetFPS)));
-//		int labelHeight = (int) (height / (15 * scale));
-//
-//		int labelX = (int) (width - 58 - 18 * Math.floor(Math.log10(targetFPS)));
-//		int labelY = 5;
-//
-//		fpsLabel.setBounds(labelX, labelY, labelWidth, labelHeight);
-	}
-
+	AtomicLong frameCount = new AtomicLong();
 	@Override
 	public void run() {
 		long lastTime = System.nanoTime(); // Using nanoTime for precision with delta time
 		double delta = 0;
-		double nsPerFrame = 1000000000.0 / targetFPS;
-		long frameCount = 0;
+		double nsPerFrame = 1000000000.0 / Math.clamp(targetFPS, 30, 144);
 		long lastFPSUpdate = System.currentTimeMillis();
 
 		// GAME LOOP
@@ -331,20 +290,12 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 
 			renderFrame(); // Render the appropriate frame based on gameState
-			frameCount++;
-
-			// FPS LABEL DISABLED FOR NOW
-
-			// Update FPS label every second
-//			long currentMillis = System.currentTimeMillis();
-//			if (currentMillis - lastFPSUpdate >= 1000) {
-//				if (displayFPS) {
-//					fpsLabel.setText("FPS: " + frameCount);
-//					System.out.println(frameCount);
-//				}
-//				frameCount = 0;
-//				lastFPSUpdate = currentMillis;
-//			}
+			frameCount.getAndIncrement();
+			Timer framePastSecond = new Timer(1000, evt -> {
+				frameCount.getAndDecrement();
+			});
+			framePastSecond.setRepeats(false);
+			framePastSecond.start();
 
 			// Sleep dynamically to maintain target FPS
 			try {
@@ -406,6 +357,19 @@ public class GamePanel extends JPanel implements Runnable {
 			case GameState.LEVEL_DESIGNER:
 				LevelDesignerRenderer.renderLevelDesigner(g, this, mouseHandler);
 				break;
+		}
+
+		if (displayFPS) {
+			g2d.setFont(buttonFont);
+			String text = "FPS: " + frameCount;
+			FontMetrics fm = g2d.getFontMetrics(buttonFont);
+			int textWidth = fm.stringWidth(text);
+			int textX = (int) (screenWidth - textWidth) - 8;
+			int textY = fm.getHeight() - 8;
+			g2d.setColor(FPSShadowColor);
+			g2d.drawString(text, (int) (textX + textShadow), (int) (textY + textShadow));
+			g2d.setColor(FPSColor);
+			g2d.drawString(text, textX, textY);
 		}
 	}
 
