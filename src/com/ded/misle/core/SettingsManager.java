@@ -20,12 +20,11 @@ public class SettingsManager {
 	 *
 	 * @param setting the setting you'd like to alter their value. E.g.: isFullscreen
 	 * @param changeTo the value of the setting you'd like to change. E.g.: true
-	 * @param location the position of the file. E.g.: For settings, go with settings.config
 	 */
 
-	public static void changeSetting(String setting, String changeTo, Path location) {
+	public static void changeSetting(String setting, String changeTo) {
 		Path file = getPath();
-		Path settingsFile = file.resolve(location);
+		Path settingsFile = file.resolve("resources/settings.config");
 		Path tempFile = file.resolve("resources/temp.config");
 
 		try (BufferedReader reader = Files.newBufferedReader(settingsFile);
@@ -137,7 +136,7 @@ public class SettingsManager {
 		String[] languageCodes = new String[]{"de_DE", "el_GR", "en_US", "es_ES", "pt_BR", "ru_RU", "zh_CN"};
 		languageCode = cycleThroughSetting(languageCodes, languageCode);
 
-		changeSetting("language", languageCode, getPath().resolve("resources/settings.config"));
+		changeSetting("language", languageCode);
 		languageManager = new LanguageManager(languageCode);
 		updateFontSizes();
 	}
@@ -147,7 +146,7 @@ public class SettingsManager {
 		String[] screenSizes = new String[]{"small", "medium", "big", "huge"};
 		screenSize = cycleThroughSetting(screenSizes, screenSize);
 
-		changeSetting("screenSize", screenSize, getPath().resolve("resources/settings.config"));
+		changeSetting("screenSize", screenSize);
 		forceResize(screenSize);
 	}
 
@@ -160,7 +159,7 @@ public class SettingsManager {
 		String[] modes = new String[]{"windowed", "exclusive"};
 		fullscreenMode = cycleThroughSetting(modes, fullscreenMode);
 
-		changeSetting("fullscreenMode", fullscreenMode, getPath().resolve("resources/settings.config"));
+		changeSetting("fullscreenMode", fullscreenMode);
 		forceResize(screenSize);
 	}
 
@@ -173,7 +172,7 @@ public class SettingsManager {
 	public static boolean cycleBoolean(String setting, boolean currentValue) {
 		boolean cycledResult = !currentValue;
 
-		changeSetting(setting, String.valueOf(cycledResult), getPath().resolve("resources/settings.config"));
+		changeSetting(setting, String.valueOf(cycledResult));
 
 		return cycledResult;
 	}
