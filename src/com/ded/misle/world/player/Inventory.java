@@ -407,6 +407,29 @@ public class Inventory {
 		timer.start();
 	}
 
+	public int getEmptySlotCount() {
+		int count = 0;
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				if (inventory[i][j] == null) {
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+
+	public boolean hasEmptySlot() {
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				if (inventory[i][j] == null) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public void useItem(MouseHandler mouseHandler) {
 		if (getSelectedItem() != null) { // Ensure something is selected
 			String type = getSelectedItem().getType();
