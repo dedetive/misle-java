@@ -41,18 +41,6 @@ public class PhysicsEngine {
 		player.stats.increaseDistance(x, y);
 
 		if (!levelDesigner) {
-			if (player.attr.getLastVelocityBox() != null) {
-				player.attr.setEnvironmentSpeedModifier(1.0); // Reset to default speed
-				player.attr.setLastVelocityBox(null); // Clear the last velocity box
-			}
-
-			List<Box> nearbyNonCollisionBoxes = ((BoxHandling.getNonCollisionBoxesInRange(player.getX(), player.getY(), GamePanel.tileSize)));
-			for (Box box : nearbyNonCollisionBoxes) {
-				if (!box.getEffect().isEmpty()) {
-					box.handleEffect(player);
-				}
-			}
-
 			// Select or unselect NPCs
 			double playerCenterX = (player.getX() + player.getBoxScaleHorizontal() / 2);
 			double playerCenterY = (player.getY() + player.getBoxScaleVertical() / 2);
@@ -85,6 +73,17 @@ public class PhysicsEngine {
 			objectWidth = responsibleBox.getBoxScaleHorizontal() * tileSize;
 			objectHeight = responsibleBox.getBoxScaleVertical() * tileSize;
 		}
+
+		List<Box> nearbyNonCollisionBoxes = ((BoxHandling.getNonCollisionBoxesInRange(player.getX(), player.getY(), GamePanel.tileSize)));
+		for (Box nonColBox : nearbyNonCollisionBoxes) {
+			if (!nonColBox.getEffect().isEmpty()) {
+				try {
+					nonColBox.handleEffect((HPBox) responsibleBox);
+				} catch (ClassCastException e) {
+					//
+				}
+			}
+		}
 		List<Box> nearbyCollisionBoxes = BoxHandling.getCollisionBoxesInRange(pixelX, pixelY, range, level);
 		for (Box box : nearbyCollisionBoxes) {
 			// Not allow box to check for itself
@@ -112,6 +111,11 @@ public class PhysicsEngine {
 							responsibleBox.setKnockbackDirection(direction.getOppositeDirection());
 						}
 						responsibleBox.handleEffect((HPBox) box);
+					}
+
+					if (player.attr.getLastVelocityBox() != null) {
+						player.attr.setEnvironmentSpeedModifier(1.0); // Reset to default speed
+						player.attr.setLastVelocityBox(null); // Clear the last velocity box
 					}
 					return true;
 				}
