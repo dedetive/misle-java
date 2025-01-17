@@ -116,11 +116,13 @@ public class SettingsMenuRenderer {
         createSetting("settings_graphics_fullscreenMode", fullscreenMode,
             282, 82, SettingsManager::cycleFullscreenMode, panel, 48);
 
+        // frameRateCap
+        createSetting("settings_graphics_frameRateCap", String.valueOf(frameRateCap),
+            42, 142, SettingsManager::cycleFrameRateCap, panel, 50);
+
         // displayFPS
         createSetting("settings_graphics_displayFPS", String.valueOf(displayFPS),
-            282, 142, SettingsManager::cycleDisplayFPS, panel, 50);
-
-        // frameRateCap
+            282, 142, SettingsManager::cycleDisplayFPS, panel, 54);
     }
 
     public static void renderAudioMenu(JPanel panel) {

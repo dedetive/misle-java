@@ -31,7 +31,6 @@ import static com.ded.misle.world.enemies.EnemyAI.updateEnemyAI;
 public class GamePanel extends JPanel implements Runnable {
 
 	private final JFrame window;
-	private final int targetFPS = frameRateCap;
 	private static volatile boolean running = true;
 	private JLabel fpsLabel;
 	KeyHandler keyH = new KeyHandler();
@@ -254,13 +253,14 @@ public class GamePanel extends JPanel implements Runnable {
 		window.setVisible(true);
 	}
 
+	public static double nsPerFrame;
+
 	AtomicLong frameCount = new AtomicLong();
 	@Override
 	public void run() {
 		long lastTime = System.nanoTime(); // Using nanoTime for precision with delta time
 		double delta = 0;
-		double nsPerFrame = 1000000000.0 / Math.clamp(targetFPS, 30, 144);
-		long lastFPSUpdate = System.currentTimeMillis();
+		nsPerFrame = 1000000000.0 / Math.clamp(frameRateCap, 30, 144);
 
 		// GAME LOOP
 

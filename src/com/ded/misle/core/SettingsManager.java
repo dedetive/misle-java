@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.GamePanel.forceResize;
 import static com.ded.misle.renderer.FontManager.updateFontSizes;
+import static com.ded.misle.core.GamePanel.nsPerFrame;
 
 /**
  * This is for changing settings (use changeThis()) and for getting the path of the game (use getPath())
@@ -177,6 +178,14 @@ public class SettingsManager {
 
 	public static void cycleDisplayFPS() {
 		displayFPS = cycleBoolean("displayFPS", displayFPS);
+	}
+
+	public static void cycleFrameRateCap() {
+		String[] modes = new String[]{"30", "60", "90", "120", "160"};
+		frameRateCap = Integer.parseInt(cycleThroughSetting(modes, String.valueOf(frameRateCap)));
+
+		changeSetting("frameRateCap", String.valueOf(frameRateCap));
+		nsPerFrame = 1000000000.0 / Math.clamp((double) frameRateCap, 30, 144);
 	}
 
 	// Gameplay
