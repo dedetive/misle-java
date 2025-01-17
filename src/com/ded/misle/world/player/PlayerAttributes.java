@@ -5,6 +5,7 @@ import com.ded.misle.world.boxes.Box;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.ded.misle.core.GamePanel.deltaTime;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.world.player.Inventory.PossibleItemStats.*;
 import static com.ded.misle.renderer.MainRenderer.fadeInThenOut;
@@ -360,8 +361,7 @@ public class PlayerAttributes {
 				case DEFENSE -> player.setDefense(levelDefense + equipmentDefense);
 				case REGENERATION_QUALITY ->
 					player.setRegenerationQuality(1 + levelRegenerationQuality + equipmentRegenerationQuality);
-				case SPEED ->
-					this.playerSpeed = this.playerSpeedModifier * (scale * 2 + 0.166) / 3 * this.environmentSpeedModifier + Math.log10(1 + this.levelSpeed + this.equipmentSpeed);
+				case SPEED -> this.playerSpeed = 120 * deltaTime * (this.playerSpeedModifier * (scale * 2 + 0.166) / 3 * this.environmentSpeedModifier + Math.log10(1 + this.levelSpeed + this.equipmentSpeed));
 				case INVERSION -> player.setInversion(this.equipmentInversion);
 				case ALL -> {
 					for (Stat argument : Stat.values()) {

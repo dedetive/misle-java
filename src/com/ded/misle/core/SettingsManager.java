@@ -1,14 +1,16 @@
 package com.ded.misle.core;
 
+import com.ded.misle.world.player.PlayerAttributes;
+
+import javax.swing.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static com.ded.misle.Launcher.*;
-import static com.ded.misle.core.GamePanel.forceResize;
+import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.renderer.FontManager.updateFontSizes;
-import static com.ded.misle.core.GamePanel.nsPerFrame;
 
 /**
  * This is for changing settings (use changeThis()) and for getting the path of the game (use getPath())
@@ -186,6 +188,11 @@ public class SettingsManager {
 
 		changeSetting("frameRateCap", String.valueOf(frameRateCap));
 		nsPerFrame = 1000000000.0 / Math.clamp((double) frameRateCap, 30, 144);
+		Timer wait = new Timer(500, e -> {
+			player.attr.updateStat(PlayerAttributes.Stat.SPEED);
+		});
+		wait.setRepeats(false);
+		wait.start();
 	}
 
 	// Gameplay

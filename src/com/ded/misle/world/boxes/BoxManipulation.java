@@ -66,8 +66,8 @@ public class BoxManipulation {
 	 */
 	public static void moveCollisionBox(Box box, double x, double y, double delay) {
 		int frames = Math.max((int)(delay / 1000 * 60), 1);
-		double dx = x / (double) frames;
-		double dy = y / (double) frames;
+		double dx = x / (double) frames * 120 * deltaTime;
+		double dy = y / (double) frames * 120 * deltaTime;
 
 		PlayerAttributes.KnockbackDirection direction = NONE;
 		if (dx > 0 && dy == 0) {

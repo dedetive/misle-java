@@ -254,6 +254,7 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public static double nsPerFrame;
+	public static double deltaTime;
 
 	AtomicLong frameCount = new AtomicLong();
 	@Override
@@ -267,6 +268,7 @@ public class GamePanel extends JPanel implements Runnable {
 		while (gameThread != null && running) {
 			long currentTime = System.nanoTime();
 			delta += (currentTime - lastTime) / nsPerFrame;
+			deltaTime = (currentTime - lastTime) / 1e9;
 			lastTime = currentTime;
 
 			// Process updates and rendering while delta is >= 1
