@@ -106,7 +106,7 @@ public class SettingsMenuRenderer {
     public static void renderGraphicsMenu(JPanel panel) {
         // screenSize
         createSetting("settings_graphics_screenSize", String.valueOf(screenSize),
-    42, 112, SettingsManager::cycleScreenSize, panel, 44);
+    42, 142, SettingsManager::cycleScreenSize, panel, 44);
 
         // isFullscreen
         createSetting("settings_graphics_isFullscreen", String.valueOf(isFullscreen),
@@ -118,11 +118,11 @@ public class SettingsMenuRenderer {
 
         // frameRateCap
         createSetting("settings_graphics_frameRateCap", String.valueOf(frameRateCap),
-            42, 142, SettingsManager::cycleFrameRateCap, panel, 50);
+            42, 112, SettingsManager::cycleFrameRateCap, panel, 50);
 
         // displayFPS
         createSetting("settings_graphics_displayFPS", String.valueOf(displayFPS),
-            282, 142, SettingsManager::cycleDisplayFPS, panel, 54);
+            282, 112, SettingsManager::cycleDisplayFPS, panel, 54);
     }
 
     public static void renderAudioMenu(JPanel panel) {
