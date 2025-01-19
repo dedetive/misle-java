@@ -76,6 +76,7 @@ public class PhysicsEngine {
 
 		List<Box> nearbyNonCollisionBoxes = ((BoxHandling.getNonCollisionBoxesInRange(player.getX(), player.getY(), GamePanel.tileSize)));
 		for (Box nonColBox : nearbyNonCollisionBoxes) {
+			if (responsibleBox == nonColBox) continue;
 			if (!nonColBox.getEffect().isEmpty()) {
 				try {
 					nonColBox.handleEffect((HPBox) responsibleBox);

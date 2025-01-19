@@ -67,6 +67,7 @@ public class Enemy extends HPBox {
                 damage = 2;
                 damageRate = 400;
 
+                this.setHasCollision(false);
                 this.setTexture("solid");
                 this.setColor(new Color(0x106000));
                 this.setBoxScaleHorizontal(0.75);
