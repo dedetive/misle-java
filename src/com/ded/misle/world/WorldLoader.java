@@ -80,8 +80,6 @@ public class WorldLoader {
 
 				NPC cyanBlock = new NPC(460, 340, NONE);
 				editBox(cyanBlock, COLOR, "#00FFFF");
-
-				Enemy goblin = new Enemy(600, 500, Enemy.EnemyType.GOBLIN, 0.1);
 			}
 			case TUANI_HOUSE1 -> {
 				//Setup
@@ -149,6 +147,12 @@ public class WorldLoader {
 
 				int travelBoxesAdded = lineAddBox(250, 460, 6, 1, "travel", FILL);
 				editLastBox(EFFECT, "{travel, cliff_to_tuani}", travelBoxesAdded);
+
+				// Enemies
+				new Enemy(Math.random() * (1000 - 200) + 200, Math.random() * (380 - 200) + 200, Enemy.EnemyType.GOBLIN, 0.5);
+				new Enemy(Math.random() * (1000 - 200) + 200, Math.random() * (380 - 200) + 200, Enemy.EnemyType.GOBLIN, 0.5);
+				new Enemy(Math.random() * (1000 - 200) + 200, Math.random() * (380 - 200) + 200, Enemy.EnemyType.GOBLIN, 0.5);
+				new Enemy(Math.random() * (1000 - 200) + 200, Math.random() * (380 - 200) + 200, Enemy.EnemyType.GOBLIN, 0.5);
 			}
 
 			case null -> {}
