@@ -74,12 +74,18 @@ public class PhysicsEngine {
 			objectHeight = responsibleBox.getBoxScaleVertical() * tileSize;
 		}
 
-		List<Box> nearbyNonCollisionBoxes = ((BoxHandling.getNonCollisionBoxesInRange(player.getX(), player.getY(), GamePanel.tileSize)));
+		List<Box> nearbyNonCollisionBoxes = ((BoxHandling.getNonCollisionBoxesInRange(player.getX(), player.getY(), range)));
 		for (Box nonColBox : nearbyNonCollisionBoxes) {
 			if (responsibleBox == nonColBox) continue;
 			if (!nonColBox.getEffect().isEmpty()) {
 				try {
 					nonColBox.handleEffect((HPBox) responsibleBox);
+				} catch (ClassCastException e) {
+					//
+				}
+			} if (!responsibleBox.getEffect().isEmpty()) {
+				try {
+					responsibleBox.handleEffect((HPBox) nonColBox);
 				} catch (ClassCastException e) {
 					//
 				}
