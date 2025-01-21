@@ -149,10 +149,10 @@ public class WorldLoader {
 				editLastBox(EFFECT, "{travel, cliff_to_tuani}", travelBoxesAdded);
 
 				// Enemies
-				new Enemy(Math.random() * (1000 - 200) + 200, Math.random() * (380 - 200) + 200, Enemy.EnemyType.GOBLIN, 0.5);
-				new Enemy(Math.random() * (1000 - 200) + 200, Math.random() * (380 - 200) + 200, Enemy.EnemyType.GOBLIN, 0.5);
-				new Enemy(Math.random() * (1000 - 200) + 200, Math.random() * (380 - 200) + 200, Enemy.EnemyType.GOBLIN, 0.5);
-				new Enemy(Math.random() * (1000 - 200) + 200, Math.random() * (380 - 200) + 200, Enemy.EnemyType.GOBLIN, 0.5);
+				new Enemy(300, 200, Enemy.EnemyType.GOBLIN, 0.5);
+				new Enemy(380, 240, Enemy.EnemyType.GOBLIN, 0.5);
+				new Enemy(570, 320, Enemy.EnemyType.GOBLIN, 0.5);
+				new Enemy(620, 220, Enemy.EnemyType.GOBLIN, 0.5);
 			}
 
 			case null -> {}
