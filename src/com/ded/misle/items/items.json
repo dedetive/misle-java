@@ -262,6 +262,20 @@
     "nameColor": "#BDBDBD"
   },
   {
+  "id": 21,
+  "resourceID": 21,
+  "name": "Boxing Glove",
+  "rarity": "F",
+  "damage": 8,
+  "secondary_damage": 5,
+  "type": "weapon",
+  "subtype": "melee",
+  "kind": "glove",
+  "attackDelay": 0.6125,
+  "range": 15,
+  "nameColor": "#DB2525"
+  },
+  {
     "id": -1,
     "resourceID": -1,
     "name": "",
