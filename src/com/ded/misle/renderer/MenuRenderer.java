@@ -52,8 +52,6 @@ public class MenuRenderer {
 
     public static void goToPreviousMenu() {
         clearButtons();
-        System.out.println("was in: " + currentMenu);
-        System.out.println("going to: " + previousMenu);
         GameState newGameState = previousMenu;
         gameState = newGameState;
         MainRenderer.previousMenu = MainRenderer.currentMenu;
