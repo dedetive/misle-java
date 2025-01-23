@@ -8,6 +8,7 @@ import java.awt.*;
 
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.core.GamePanel.GameState.*;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.itemInfoFont;
 import static com.ded.misle.renderer.MainRenderer.*;
@@ -45,18 +46,18 @@ public class MenuRenderer {
 
     public static void optionsMenu() {
         MainRenderer.previousMenu = MainRenderer.currentMenu;
-        MainRenderer.currentMenu = "OPTIONS_MENU";
-        gameState = GamePanel.GameState.OPTIONS_MENU;
+        MainRenderer.currentMenu = OPTIONS_MENU;
+        gameState = OPTIONS_MENU;
     }
 
     public static void goToPreviousMenu() {
         clearButtons();
         System.out.println("was in: " + currentMenu);
         System.out.println("going to: " + previousMenu);
-        GameState newGameState = GameState.valueOf(previousMenu);
+        GameState newGameState = previousMenu;
         gameState = newGameState;
         MainRenderer.previousMenu = MainRenderer.currentMenu;
-        currentMenu = String.valueOf(newGameState);
+        currentMenu = newGameState;
     }
 
     public static void goToMainMenu() {
@@ -64,15 +65,15 @@ public class MenuRenderer {
         unloadBoxes();
         player.unloadPlayer();
         MainRenderer.previousMenu = MainRenderer.currentMenu;
-        gameState = GameState.MAIN_MENU;
+        gameState = MAIN_MENU;
         fadingProgress = 0F;
         isFading = FadingState.UNFADED;
     }
 
     public static void pauseGame() {
         MainRenderer.previousMenu = MainRenderer.currentMenu;
-        MainRenderer.currentMenu = "PAUSE_MENU";
-        gameState = GameState.PAUSE_MENU;
+        MainRenderer.currentMenu = PAUSE_MENU;
+        gameState = PAUSE_MENU;
     }
 
     public static void renderMainMenu(Graphics g, JPanel panel) {
@@ -83,7 +84,7 @@ public class MenuRenderer {
                 g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             }
 
-            MainRenderer.currentMenu = "MAIN_MENU";
+            MainRenderer.currentMenu = MAIN_MENU;
 
             double scaleByScreenSize = scale / 3.75;
 

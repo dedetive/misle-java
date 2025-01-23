@@ -4,6 +4,8 @@ import com.ded.misle.world.player.PlayerAttributes;
 
 import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.core.GamePanel.GameState.LEVEL_DESIGNER;
+import static com.ded.misle.core.GamePanel.GameState.PLAYING;
 import static com.ded.misle.core.SaveFile.loadSaveFile;
 import static com.ded.misle.world.boxes.BoxHandling.storeCachedBoxes;
 import static com.ded.misle.world.WorldLoader.loadBoxes;
@@ -16,8 +18,8 @@ import java.awt.geom.AffineTransform;
 
 
 public class MainRenderer {
-	public static String previousMenu;
-	public static String currentMenu;
+	public static GameState previousMenu;
+	public static GameState currentMenu;
 
 	public static long startTime;
 	public static final int LOADING_DURATION = 500;
@@ -26,7 +28,7 @@ public class MainRenderer {
 
 	public static void gameStart() {
 		previousMenu = currentMenu;
-		currentMenu = "PLAYING";
+		currentMenu = PLAYING;
 		startTime = currentTimeMillis();
 		gameState = GameState.LOADING_MENU;
 
@@ -49,7 +51,7 @@ public class MainRenderer {
 				}
 				player.stats.resetStartTimestamp();
 				player.pos.reloadSpawnpoint();
-				gameState = GameState.PLAYING;
+				gameState = PLAYING;
 
 				((Timer) e.getSource()).stop();
 			}
@@ -61,13 +63,13 @@ public class MainRenderer {
 
 	public static void softGameStart() {
 		previousMenu = currentMenu;
-		currentMenu = "PLAYING";
-		gameState = GameState.PLAYING;
+		currentMenu = PLAYING;
+		gameState = PLAYING;
 	}
 
 	public static void enterLevelDesigner() {
 		previousMenu = currentMenu;
-		currentMenu = "LEVEL_DESIGNER";
+		currentMenu = LEVEL_DESIGNER;
 		startTime = currentTimeMillis();
 		gameState = GameState.LOADING_MENU;
 
@@ -77,7 +79,7 @@ public class MainRenderer {
 			for (int i = 15; i > 0; i--) {
 				storeCachedBoxes(i);
 			}
-			gameState = GameState.LEVEL_DESIGNER;
+			gameState = LEVEL_DESIGNER;
 		});
 
 		timer.setRepeats(false); // Ensure the timer only runs once
@@ -86,8 +88,8 @@ public class MainRenderer {
 
 	public static void softEnterLevelDesigner() {
 		previousMenu = currentMenu;
-		currentMenu = "LEVEL_DESIGNER";
-		gameState = GameState.LEVEL_DESIGNER;
+		currentMenu = LEVEL_DESIGNER;
+		gameState = LEVEL_DESIGNER;
 	}
 
 	public static FadingState isFading = FadingState.UNFADED;
