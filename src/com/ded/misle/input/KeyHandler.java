@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.renderer.MenuRenderer.goToPreviousMenu;
 import static com.ded.misle.world.npcs.NPC.getDialogNPCs;
 import static com.ded.misle.world.npcs.NPC.getSelectedNPCs;
 import static com.ded.misle.world.npcs.NPCDialog.getCurrentTalkingTo;
@@ -397,6 +398,15 @@ public class KeyHandler implements KeyListener {
 			if (player.keys.keyPressed.get(USE)) {
 				getCurrentTalkingTo().incrementDialogIndex();
 				player.keys.keyPressed.put(USE, false);
+			}
+		}
+
+		// OTHER MENUS
+			// Options
+		if (gameState == GameState.OPTIONS_MENU) {
+			if (player.keys.keyPressed.get(PAUSE)) {
+				goToPreviousMenu();
+				player.keys.keyPressed.put(PAUSE, false);
 			}
 		}
 

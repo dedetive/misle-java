@@ -11,9 +11,8 @@ import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.itemInfoFont;
 import static com.ded.misle.renderer.MainRenderer.*;
-import static com.ded.misle.renderer.MenuButton.createButton;
-import static com.ded.misle.renderer.MenuButton.drawButtons;
 import static com.ded.misle.core.SaveFile.saveEverything;
+import static com.ded.misle.renderer.MenuButton.*;
 import static com.ded.misle.world.WorldLoader.unloadBoxes;
 import static java.lang.System.currentTimeMillis;
 import static com.ded.misle.core.GamePanel.screenWidth;
@@ -51,20 +50,13 @@ public class MenuRenderer {
     }
 
     public static void goToPreviousMenu() {
-        switch (MainRenderer.previousMenu) {
-            case "MAIN_MENU":
-                gameState = GamePanel.GameState.MAIN_MENU;
-                break;
-            case "OPTIONS_MENU":
-                gameState = GamePanel.GameState.OPTIONS_MENU;
-                break;
-            case "PLAYING":
-                gameState = GamePanel.GameState.PLAYING;
-                break;
-            case "PAUSE_MENU":
-                gameState = GamePanel.GameState.PAUSE_MENU;
-        }
+        clearButtons();
+        System.out.println("was in: " + currentMenu);
+        System.out.println("going to: " + previousMenu);
+        GameState newGameState = GameState.valueOf(previousMenu);
+        gameState = newGameState;
         MainRenderer.previousMenu = MainRenderer.currentMenu;
+        currentMenu = String.valueOf(newGameState);
     }
 
     public static void goToMainMenu() {

@@ -294,7 +294,7 @@ public class GamePanel extends JPanel implements Runnable {
 						player.pos.setCameraOffsetX(Math.max(0, Math.min(player.pos.getCameraOffsetX(), worldWidth - screenWidth)));
 						player.pos.setCameraOffsetY(Math.max(0, Math.min(player.pos.getCameraOffsetY(), worldHeight - screenHeight)));
 
-						keyH.updateKeys(mouseHandler);  // Check for player input and update position accordingly
+						keyH.updateKeys(mouseHandler);
 						mouseHandler.updateMouse();
 					}
 					case DIALOG -> {
