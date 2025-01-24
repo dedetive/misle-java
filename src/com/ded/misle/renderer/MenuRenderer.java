@@ -222,12 +222,23 @@ public class MenuRenderer {
             double progress = Math.min((double) elapsedTime / MainRenderer.LOADING_DURATION, 1.0); // Calculate progress (0.0 to 1.0)
             String percentage = (int) (progress * 100) + "%";
 
-            int progressBarWidth = (int) (640 * progress * scaleByScreenSize);
+            int fullProgressBarWidth = (int) (640 * scaleByScreenSize);
+            int progressBarWidth = (int) (fullProgressBarWidth * progress);
             int progressBarHeight = (int) (25 * scaleByScreenSize);
+            int progressBarX = (int) (660 * scaleByScreenSize);
             int progressBarY = (int) ((textY + 560) * scaleByScreenSize);
 
+            final int shadowExtra = (int) (2 * scale);
+            final int shadowWidth = fullProgressBarWidth + shadowExtra;
+            final int shadowHeight = progressBarHeight + shadowExtra;
+            final int shadowX = progressBarX - shadowExtra / 2;
+            final int shadowY = progressBarY - shadowExtra / 2;
+
+            g2d.setColor(progressBarShadowColor);
+            g2d.fillRect(shadowX, shadowY, shadowWidth, shadowHeight);
+
             g2d.setColor(progressBarColor);
-            g2d.fillRect((int) (660 * scaleByScreenSize), progressBarY, progressBarWidth, progressBarHeight);
+            g2d.fillRect(progressBarX, progressBarY, progressBarWidth, progressBarHeight);
 
             g2d.setFont(FontManager.selectedItemNameFont);
             FontMetrics percentageFm = g2d.getFontMetrics();

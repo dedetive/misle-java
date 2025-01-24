@@ -68,6 +68,7 @@ public class ColorManager {
     public final static Color menuTitleShadowColor = defaultShadowColor;
     public final static Color menuVersionColor = new Color(217, 217, 217);
     public final static Color menuVersionShadowColor = defaultShadowColor;
+    public final static Color progressBarShadowColor = defaultShadowColor;
     public final static Color progressBarColor = new Color(100, 200, 100);
     public final static Color progressBarPercentage = new Color(191, 191, 191);
     public final static Color progressBarPercentageShadow = defaultShadowColor;
