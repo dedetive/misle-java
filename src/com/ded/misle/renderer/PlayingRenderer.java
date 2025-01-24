@@ -151,9 +151,18 @@ public class PlayingRenderer {
         int healthBarHeight = (int) (50 * scale);
         int healthBarX = (int) (30 * scale);
         int healthBarY = (int) (212 * scale);
+        final int shadowExtra = (int) (3 * scale);
+        final int shadowWidth = healthBarWidth + shadowExtra;
+        final int shadowHeight = healthBarHeight + shadowExtra;
+        final int shadowX = healthBarX - shadowExtra / 2;
+        final int shadowY = healthBarY - shadowExtra / 2;
 
         // Calculate the percentage of health remaining
         double healthPercentage = Math.min(player.getHP() / player.getMaxHP(), 1);
+
+        // Shadow
+        g2d.setColor(healthBarShadow);
+        g2d.fillRect(shadowX, shadowY, shadowWidth, shadowHeight);
 
         // Draw the background of the health bar
         g2d.setColor(healthBarBackground);
@@ -175,9 +184,18 @@ public class PlayingRenderer {
         int entropyBarHeight = (int) (50 * scale);
         int entropyBarX = (int) (65 * scale);
         int entropyBarY = (int) (212 * scale);
+        final int shadowExtra = (int) (3 * scale);
+        final int shadowWidth = entropyBarWidth + shadowExtra;
+        final int shadowHeight = entropyBarHeight + shadowExtra;
+        final int shadowX = entropyBarX - shadowExtra / 2;
+        final int shadowY = entropyBarY - shadowExtra / 2;
 
         // Calculate the percentage of entropy remaining
         double entropyPercentage = Math.min(player.attr.getEntropy() / player.attr.getMaxEntropy(), 1);
+
+        // Shadow
+        g2d.setColor(entropyBarShadow);
+        g2d.fillRect(shadowX, shadowY, shadowWidth, shadowHeight);
 
         // Draw the background of the entropy bar
         g2d.setColor(entropyBarBackground);
@@ -298,7 +316,7 @@ public class PlayingRenderer {
     private static void drawUIElements(Graphics2D g2d) {
         drawHealthBar(g2d);
         drawEntropyBar(g2d);
-        drawCoins(g2d);
+//        drawCoins(g2d);
         drawInventoryBar(g2d);
         drawSelectedItemName(g2d);
     }
