@@ -26,6 +26,7 @@ public class PlayerAttributes {
 	private double playerSpeedModifier;
 	private double entropy;
 	private double environmentSpeedModifier;
+	private double strength;
 
 	// XP
 
@@ -38,7 +39,8 @@ public class PlayerAttributes {
 		MAX_ENTROPY,
 		DEFENSE,
 		REGENERATION,
-		SPEED
+		SPEED,
+		STRENGTH
 	}
 
 	// COINS
@@ -52,6 +54,7 @@ public class PlayerAttributes {
 	double levelDefense;
 	double levelRegenerationQuality;
 	double levelSpeed;
+	double levelStrength;
 
 	// EQUIPMENT ATTRIBUTES
 
@@ -61,13 +64,15 @@ public class PlayerAttributes {
 	double equipmentRegenerationQuality;
 	double equipmentSpeed;
 	double equipmentInversion;
+	double equipmentStrength;
 
 	public enum LevelStat {
 		MAX_HP,
 		MAX_ENTROPY,
 		DEFENSE,
 		REGENERATION_QUALITY,
-		SPEED
+		SPEED,
+		STRENGTH
 	}
 	public enum Stat {
 		MAX_HP,
@@ -76,6 +81,7 @@ public class PlayerAttributes {
 		REGENERATION_QUALITY,
 		SPEED,
 		INVERSION,
+		STRENGTH,
 		ALL
 	}
 
@@ -148,6 +154,10 @@ public class PlayerAttributes {
 	}
 
 	// HP, DAMAGE AND HEALS
+
+	public double getStrength() {
+		return this.strength;
+	}
 
 	public double getEntropy() {
 		return entropy;
@@ -309,6 +319,10 @@ public class PlayerAttributes {
 				this.levelSpeed = amount;
 				updateStat(Stat.SPEED);
 			}
+			case STRENGTH -> {
+				this.levelStrength = amount;
+				updateStat(Stat.STRENGTH);
+			}
 		}
 	}
 
@@ -318,7 +332,8 @@ public class PlayerAttributes {
 			case MAX_ENTROPY -> this.levelMaxEntropy;
 			case DEFENSE -> this.levelDefense;
 			case REGENERATION_QUALITY -> this.levelRegenerationQuality;
-			case SPEED -> this.playerSpeed;
+			case SPEED -> this.levelSpeed;
+			case STRENGTH -> this.levelStrength;
 		};
 	}
 
@@ -363,6 +378,7 @@ public class PlayerAttributes {
 					player.setRegenerationQuality(1 + levelRegenerationQuality + equipmentRegenerationQuality);
 				case SPEED -> this.playerSpeed = 120 * deltaTime * (this.playerSpeedModifier * (scale * 2 + 0.166) / 3 * this.environmentSpeedModifier + Math.log10(1 + this.levelSpeed + this.equipmentSpeed));
 				case INVERSION -> player.setInversion(this.equipmentInversion);
+				case STRENGTH -> this.strength = this.equipmentStrength + this.levelStrength;
 				case ALL -> {
 					for (Stat argument : Stat.values()) {
 						if (argument == Stat.ALL)
@@ -407,6 +423,14 @@ public class PlayerAttributes {
 				for (int i = 0; i < 3; i++) {
 					if (player.inv.getItem(i) != null) {
 						this.equipmentInversion += player.inv.getItemStat(player.inv.getItem(i), Inventory.PossibleItemStats.inversion);
+					}
+				}
+			}
+			case STRENGTH -> {
+				this.equipmentStrength = 0;
+				for (int i = 0; i < 3; i++) {
+					if (player.inv.getItem(i) != null) {
+						this.equipmentStrength += player.inv.getItemStat(player.inv.getItem(i), str);
 					}
 				}
 			}

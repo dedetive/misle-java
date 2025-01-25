@@ -130,9 +130,8 @@ public class InventoryRenderer {
         drawStat(g2d, formattedEntropy, 384, 47);
             // STR
         drawStat(g2d, LanguageManager.getText("inventory_strength"), 384, 65);
-//		String formattedStrength = Long.toString(Math.round(player.attr.getStrength()));
-//		formattedStrength = formattedStrength + LanguageManager.getText("inventory_strength_measure_word");
-        String formattedStrength = "WIP";
+		String formattedStrength = Long.toString(Math.round(player.attr.getStrength()));
+		formattedStrength = formattedStrength + LanguageManager.getText("inventory_strength_measure_word");
         drawStat(g2d, formattedStrength, 384, 79);
             // SPD
         drawStat(g2d, LanguageManager.getText("inventory_speed"), 384, 97);
