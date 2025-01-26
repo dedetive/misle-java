@@ -205,7 +205,8 @@ public class MainRenderer {
 
 	public static void drawFading(Graphics2D g2d) {
 		if (isFading != MainRenderer.FadingState.UNFADED) {
-			fadingProgress = (float) Math.clamp(fadingProgress + isFading.getProgressIncrease() * deltaTime * 80, 0F, 1F);
+			System.out.println(Math.pow(deltaTime, 0.3) * 6);
+			fadingProgress = (float) Math.clamp(fadingProgress + isFading.getProgressIncrease() * Math.pow(deltaTime, 0.3) * 6, 0F, 1F);
 			g2d.setColor(new Color((float) fadingColor.getRed() / 256, (float) fadingColor.getGreen() / 256, (float) fadingColor.getBlue() / 256, fadingProgress));
 			g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
 			if (fadingProgress == isFading.getProgressMax()) {
