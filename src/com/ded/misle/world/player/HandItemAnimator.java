@@ -122,7 +122,7 @@ public class HandItemAnimator {
         editBox(attack, EditBoxKeys.TEXTURE, "invisible");
         editBox(attack, EditBoxKeys.HAS_COLLISION, "true");
         editBox(attack, EditBoxKeys.INTERACTS_WITH_PLAYER, "false");
-        editBox(attack, EditBoxKeys.EFFECT, "{damage, " + damage + ", 1000, normal, 0}");
+        editBox(attack, EditBoxKeys.EFFECT, "{damage, " + Math.max(Math.ceil(Math.floor(Math.pow(damage, 1.1)) * (player.attr.getStrength() * 10/100 + 1)), 1) + ", 1000, normal, 0}");
         isPixelOccupied(attack, range, 10, direction);
         System.out.println(direction);
 
