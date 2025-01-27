@@ -29,7 +29,7 @@ public class EnemyAI  {
         double moveX = Math.clamp(distanceX, -1, 1) * rand;
         double moveY = Math.clamp(distanceY, -1, 1) * rand;
         if (!isPixelOccupied(enemy, enemy.getX() + moveX, enemy.getY() + moveY,
-            tileSize, 7, PlayerAttributes.KnockbackDirection.NONE)) {
+            tileSize, 7, PlayerAttributes.KnockbackDirection.NONE, Enemy.EnemyType.GOBLIN)) {
             if (!enemy.isMoving) {
                 moveCollisionBox(enemy, moveX, moveY, rand * 7);
                 isPixelOccupied(player, tileSize, 8, PlayerAttributes.KnockbackDirection.NONE);
