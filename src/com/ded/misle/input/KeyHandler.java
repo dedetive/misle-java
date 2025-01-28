@@ -64,6 +64,22 @@ public class KeyHandler implements KeyListener {
 		}
 	}
 
+	public enum NumberKey {
+		NUM_1(0),
+		NUM_2(1),
+		NUM_3(2),
+		NUM_4(3),
+		NUM_5(4),
+		NUM_6(5),
+		NUM_7(6);
+
+		public final int slot;
+
+		NumberKey(int slot) {
+			this.slot = slot;
+		}
+	}
+
 	Key[] continuousInput = new Key[]{
 		UP,
 		DOWN,
@@ -187,20 +203,12 @@ public class KeyHandler implements KeyListener {
 		// PLAYING EXCLUSIVE
 
 		if (gameState == GameState.PLAYING) {
-			if (player.keys.keyPressed.get(NUM_1)) player.inv.setSelectedSlot(0);
-			if (player.keys.keyPressed.get(NUM_2)) player.inv.setSelectedSlot(1);
-			if (player.keys.keyPressed.get(NUM_3)) player.inv.setSelectedSlot(2);
-			if (player.keys.keyPressed.get(NUM_4)) player.inv.setSelectedSlot(3);
-			if (player.keys.keyPressed.get(NUM_5)) player.inv.setSelectedSlot(4);
-			if (player.keys.keyPressed.get(NUM_6)) player.inv.setSelectedSlot(5);
-			if (player.keys.keyPressed.get(NUM_7)) player.inv.setSelectedSlot(6);
-			player.keys.keyPressed.put(NUM_1, false);
-			player.keys.keyPressed.put(NUM_2, false);
-			player.keys.keyPressed.put(NUM_3, false);
-			player.keys.keyPressed.put(NUM_4, false);
-			player.keys.keyPressed.put(NUM_5, false);
-			player.keys.keyPressed.put(NUM_6, false);
-			player.keys.keyPressed.put(NUM_7, false);
+			for (NumberKey numberKey : NumberKey.values()) {
+				if (player.keys.keyPressed.get(Key.valueOf(String.valueOf(numberKey)))) {
+					player.inv.setSelectedSlot(numberKey.slot);
+					player.keys.keyPressed.put(Key.valueOf(String.valueOf(numberKey)), false);
+				}
+			}
 			if (player.keys.keyPressed.get(PAUSE)) {
 				pauseGame();
 				player.keys.keyPressed.put(PAUSE, false);
@@ -302,55 +310,16 @@ public class KeyHandler implements KeyListener {
 			int hoveredCol = mouseHandler.getHoveredSlot()[1];
 
 			if (hoveredRow >= 0 && hoveredCol >= 0) {
-				if (player.keys.keyPressed.get(NUM_1)) {
-					player.inv.setTempItem(player.inv.getItem(hoveredRow, hoveredCol));
-					player.inv.bruteSetItem(player.inv.getItem(0, 0), hoveredRow, hoveredCol);
-					player.inv.bruteSetItem(player.inv.getTempItem(), 0, 0);
-					player.inv.destroyTempItem();
+				for (NumberKey numberKey : NumberKey.values()) {
+					if (player.keys.keyPressed.get(Key.valueOf(String.valueOf(numberKey)))) {
+						player.inv.setTempItem(player.inv.getItem(hoveredRow, hoveredCol));
+						player.inv.bruteSetItem(player.inv.getItem(0, numberKey.slot), hoveredRow, hoveredCol);
+						player.inv.bruteSetItem(player.inv.getTempItem(), 0, numberKey.slot);
+						player.inv.destroyTempItem();
+
+						player.keys.keyPressed.put(Key.valueOf(String.valueOf(numberKey)), false);
+					}
 				}
-				if (player.keys.keyPressed.get(NUM_2)) {
-					player.inv.setTempItem(player.inv.getItem(hoveredRow, hoveredCol));
-					player.inv.bruteSetItem(player.inv.getItem(0, 1), hoveredRow, hoveredCol);
-					player.inv.bruteSetItem(player.inv.getTempItem(), 0, 1);
-					player.inv.destroyTempItem();
-				}
-				if (player.keys.keyPressed.get(NUM_3)) {
-					player.inv.setTempItem(player.inv.getItem(hoveredRow, hoveredCol));
-					player.inv.bruteSetItem(player.inv.getItem(0, 2), hoveredRow, hoveredCol);
-					player.inv.bruteSetItem(player.inv.getTempItem(), 0, 2);
-					player.inv.destroyTempItem();
-				}
-				if (player.keys.keyPressed.get(NUM_4)) {
-					player.inv.setTempItem(player.inv.getItem(hoveredRow, hoveredCol));
-					player.inv.bruteSetItem(player.inv.getItem(0, 3), hoveredRow, hoveredCol);
-					player.inv.bruteSetItem(player.inv.getTempItem(), 0, 3);
-					player.inv.destroyTempItem();
-				}
-				if (player.keys.keyPressed.get(NUM_5)) {
-					player.inv.setTempItem(player.inv.getItem(hoveredRow, hoveredCol));
-					player.inv.bruteSetItem(player.inv.getItem(0, 4), hoveredRow, hoveredCol);
-					player.inv.bruteSetItem(player.inv.getTempItem(), 0, 4);
-					player.inv.destroyTempItem();
-				}
-				if (player.keys.keyPressed.get(NUM_6)) {
-					player.inv.setTempItem(player.inv.getItem(hoveredRow, hoveredCol));
-					player.inv.bruteSetItem(player.inv.getItem(0, 5), hoveredRow, hoveredCol);
-					player.inv.bruteSetItem(player.inv.getTempItem(), 0, 5);
-					player.inv.destroyTempItem();
-				}
-				if (player.keys.keyPressed.get(NUM_7)) {
-					player.inv.setTempItem(player.inv.getItem(hoveredRow, hoveredCol));
-					player.inv.bruteSetItem(player.inv.getItem(0, 6), hoveredRow, hoveredCol);
-					player.inv.bruteSetItem(player.inv.getTempItem(), 0, 6);
-					player.inv.destroyTempItem();
-				}
-				player.keys.keyPressed.put(NUM_1, false);
-				player.keys.keyPressed.put(NUM_2, false);
-				player.keys.keyPressed.put(NUM_3, false);
-				player.keys.keyPressed.put(NUM_4, false);
-				player.keys.keyPressed.put(NUM_5, false);
-				player.keys.keyPressed.put(NUM_6, false);
-				player.keys.keyPressed.put(NUM_7, false);
 			}
 
 			if (player.keys.keyPressed.get(PAUSE)) {
