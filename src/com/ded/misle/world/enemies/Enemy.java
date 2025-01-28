@@ -41,7 +41,6 @@ public class Enemy extends HPBox {
         this.enemyType = enemyType;
         this.loadEnemy();
 
-
         enemyBoxes.add(this);
         addBoxToCache(this);
     }

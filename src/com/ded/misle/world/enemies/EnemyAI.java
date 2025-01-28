@@ -30,8 +30,11 @@ public class EnemyAI  {
         double moveY = Math.clamp(distanceY, -1, 1) * rand;
         if (!isPixelOccupied(enemy, enemy.getX() + moveX, enemy.getY() + moveY,
             tileSize, 7, PlayerAttributes.KnockbackDirection.NONE, Enemy.EnemyType.GOBLIN)) {
-            if (!enemy.isMoving) {
-                moveCollisionBox(enemy, moveX, moveY, rand * 7);
+            if (!(enemy.isMoving) &&
+                Math.abs(distanceX) < 140 &&
+                Math.abs(distanceY) < 140) {
+                System.out.println("distanceX: " + distanceX + " distanceY: " + distanceY);
+                moveCollisionBox(enemy, moveX, moveY, rand * 4);
                 isPixelOccupied(player, tileSize, 8, PlayerAttributes.KnockbackDirection.NONE);
             }
         }

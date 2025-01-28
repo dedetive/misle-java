@@ -1,6 +1,7 @@
 package com.ded.misle.world.boxes;
 
 import com.ded.misle.renderer.FloatingText;
+import com.ded.misle.world.enemies.Enemy;
 import com.ded.misle.world.player.Player;
 import com.ded.misle.world.player.PlayerAttributes;
 
