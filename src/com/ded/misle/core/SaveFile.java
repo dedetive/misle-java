@@ -270,14 +270,16 @@ public class SaveFile {
 							tempInventory[i][j][0] = loadThis(RED, i, j + 15);
 							tempInventory[i][j][1] = loadThis(GREEN, i, j + 15);
 							// [i][j][0] = ID
-							tempInventory[i][j][0] = tempInventory[i][j][0] * 255 + tempInventory[i][j][1];
+							int itemID = tempInventory[i][j][0] * 255 + tempInventory[i][j][1];
 
 							tempInventory[i][j][2] = loadThis(BLUE, i, j + 15);
 							tempInventory[i][j][3] = loadThis(RED, j + 15, i);
 							// [i][j][1] = Count
-							tempInventory[i][j][1] = tempInventory[i][j][2] * 255 + tempInventory[i][j][3];
+							int itemCount = tempInventory[i][j][2] * 255 + tempInventory[i][j][3];
 
-							player.inv.bruteSetItem(Item.createItem(tempInventory[i][j][0], tempInventory[i][j][1]), i, j);
+							if (itemID == 0 || itemCount == 0) continue;
+
+							player.inv.bruteSetItem(Item.createItem(itemID, itemCount), i, j);
 						}
 					}
 
@@ -287,14 +289,16 @@ public class SaveFile {
 							tempInventory[i][j][0] = loadThis(RED, i, j + 25);
 							tempInventory[i][j][1] = loadThis(GREEN, i, j + 25);
 							// [i][j][0] = ID
-							tempInventory[i][j][0] = tempInventory[i][j][0] * 255 + tempInventory[i][j][1];
+							int itemID = tempInventory[i][j][0] * 255 + tempInventory[i][j][1];
 
 							tempInventory[i][j][2] = loadThis(BLUE, i, j + 25);
 							tempInventory[i][j][3] = loadThis(RED, j + 25, i);
 							// [i][j][1] = Count
-							tempInventory[i][j][1] = tempInventory[i][j][2] * 255 + tempInventory[i][j][3];
+							int itemCount = tempInventory[i][j][2] * 255 + tempInventory[i][j][3];
 
-							player.inv.bruteSetItem(Item.createItem(tempInventory[i][j][0], tempInventory[i][j][1]), i * 2 + j);
+							if (itemID == 0 || itemCount == 0) continue;
+
+							player.inv.bruteSetItem(Item.createItem(itemID, itemCount), i * 2 + j);
 						}
 					}
 				} catch (IOException e) {

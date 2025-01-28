@@ -73,10 +73,9 @@ public class Item {
 		this.count = 1; // Default count is set to 1
 	}
 
-	// Optional constructor to allow explicit count setting
 	public Item(int id, int count) throws Exception {
 		this(id); // Call the first constructor
-		this.count = count; // Set count explicitly
+		this.count = count; // Set count
 	}
 
 	public int getId() { return id; }
