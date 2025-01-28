@@ -219,6 +219,20 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 											player.inv.bruteSetItem(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]), firstValidPosition);
 											player.inv.removeItem(getHoveredSlot()[0], getHoveredSlot()[1]);
 										}
+								} else if ((player.keys.keyPressed.get(KeyHandler.Key.SHIFT) &&
+									getHoveredSlot()[0] == 0 &&
+                                    !Arrays.equals(player.inv.getFirstEmptyInventorySlot(), new int[]{-1, -1}))) {
+										// Quick move item to first inventory slot
+										player.inv.bruteSetItem(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]),
+											player.inv.getFirstEmptyInventorySlot()[0], player.inv.getFirstEmptyInventorySlot()[1]);
+										player.inv.removeItem(getHoveredSlot()[0], getHoveredSlot()[1]);
+								} else if ((player.keys.keyPressed.get(KeyHandler.Key.SHIFT) &&
+									getHoveredSlot()[0] > 0 &&
+									!Arrays.equals(player.inv.getFirstEmptyBarSlot(), new int[]{-1, -1}))) {
+									// Quick move item to first bar slot
+									player.inv.bruteSetItem(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]),
+										player.inv.getFirstEmptyBarSlot()[0], player.inv.getFirstEmptyBarSlot()[1]);
+									player.inv.removeItem(getHoveredSlot()[0], getHoveredSlot()[1]);
 								}
 								// Grab item
 								else player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], -1, false);

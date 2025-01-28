@@ -419,6 +419,40 @@ public class Inventory {
 		return count;
 	}
 
+	public int[] getFirstEmptySlot() {
+		int count = 0;
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				if (inventory[i][j] == null) {
+					return new int[]{i, j};
+				}
+			}
+		}
+		return new int[]{-1, -1};
+	}
+
+	public int[] getFirstEmptyInventorySlot() {
+		int count = 0;
+		for (int i = 1; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				if (inventory[i][j] == null) {
+					return new int[]{i, j};
+				}
+			}
+		}
+		return new int[]{-1, -1};
+	}
+
+	public int[] getFirstEmptyBarSlot() {
+		int count = 0;
+			for (int j = 0; j < cols; j++) {
+				if (inventory[0][j] == null) {
+					return new int[]{0, j};
+				}
+			}
+		return new int[]{-1, -1};
+	}
+
 	public boolean hasEmptySlot() {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
