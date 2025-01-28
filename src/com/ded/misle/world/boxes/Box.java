@@ -508,9 +508,10 @@ public class Box {
 		} else if (canGoMinus) {
 			multiplier = -1;
 		}
-		System.out.println("ID: " + id + "\nCount: " + count + "\nmultiplier: " + multiplier);
 
-		this.setTexture("chest_open");
+		if (Objects.equals(this.texture, "chest")) {
+			this.setTexture("chest_open");
+		}
 
 		droppedItem = createDroppedItem(this.getX(), this.getY() - 10, id, count);
 		moveBox(droppedItem, multiplier * 20, 10, delay);
@@ -519,7 +520,9 @@ public class Box {
 
 		Timer timer = new Timer((int) (delay * 1.5), e -> {
 			editBox(droppedItem, EditBoxKeys.COLLECTIBLE, "true");
-			this.setTexture("chest");
+			if (Objects.equals(this.texture, "chest")) {
+				this.setTexture("chest");
+			}
 		});
 		timer.setRepeats(false);
 		timer.start();

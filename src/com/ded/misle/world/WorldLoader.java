@@ -114,7 +114,7 @@ public class WorldLoader {
 				addBox(261, 41, "spawnpoint");
 
 				// Corner block
-				addEnemyBox(365, 145, Enemy.EnemyType.RED_BLOCK, 2);
+				addEnemyBox(365, 145, Enemy.EnemyType.RED_BLOCK, 0.5);
 			}
 			case CLIFF -> {
 				// Setup

@@ -14,8 +14,7 @@ import java.util.TimerTask;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.PhysicsEngine.ObjectType.HP_BOX;
-import static com.ded.misle.world.boxes.BoxHandling.deleteBox;
-import static com.ded.misle.world.boxes.BoxHandling.getCollisionBoxesInRange;
+import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.boxes.BoxManipulation.moveCollisionBox;
 import static com.ded.misle.world.chests.DropTable.getDropTableItemID;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
@@ -102,10 +101,16 @@ public class HPBox extends Box {
                     this.spawnItem(canGoMinus, canGoPlus, id, count);
                 }
 
-                if (this instanceof Enemy) {
-                    ((Enemy) this).removeEnemyBox();
-                }
-                deleteBox(this);
+                javax.swing.Timer wait = new javax.swing.Timer(10, e -> {
+                    if (this instanceof Enemy) {
+                        ((Enemy) this).removeEnemyBox();
+                    }
+                    deleteBox(this);
+
+                    if (getAllBoxes().contains(this)) ((Timer) e.getSource()).cancel();
+                });
+                wait.setRepeats(true);
+                wait.start();
             } else {
                 player.attr.playerDies();
             }
