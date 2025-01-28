@@ -65,14 +65,6 @@ public class KeyHandler implements KeyListener {
 	}
 
 	Key[] continuousInput = new Key[]{
-		NUM_0,
-		NUM_1,
-		NUM_2,
-		NUM_3,
-		NUM_4,
-		NUM_5,
-		NUM_6,
-		NUM_7,
 		UP,
 		DOWN,
 		LEFT,
@@ -82,6 +74,14 @@ public class KeyHandler implements KeyListener {
 	};
 
 	Key[] outputOnRelease = new Key[] {
+		NUM_0,
+		NUM_1,
+		NUM_2,
+		NUM_3,
+		NUM_4,
+		NUM_5,
+		NUM_6,
+		NUM_7,
 		PAUSE,
 		INVENTORY,
 		DROP,
@@ -194,6 +194,13 @@ public class KeyHandler implements KeyListener {
 			if (player.keys.keyPressed.get(NUM_5)) player.inv.setSelectedSlot(4);
 			if (player.keys.keyPressed.get(NUM_6)) player.inv.setSelectedSlot(5);
 			if (player.keys.keyPressed.get(NUM_7)) player.inv.setSelectedSlot(6);
+			player.keys.keyPressed.put(NUM_1, false);
+			player.keys.keyPressed.put(NUM_2, false);
+			player.keys.keyPressed.put(NUM_3, false);
+			player.keys.keyPressed.put(NUM_4, false);
+			player.keys.keyPressed.put(NUM_5, false);
+			player.keys.keyPressed.put(NUM_6, false);
+			player.keys.keyPressed.put(NUM_7, false);
 			if (player.keys.keyPressed.get(PAUSE)) {
 				pauseGame();
 				player.keys.keyPressed.put(PAUSE, false);
@@ -337,6 +344,13 @@ public class KeyHandler implements KeyListener {
 					player.inv.bruteSetItem(player.inv.getTempItem(), 0, 6);
 					player.inv.destroyTempItem();
 				}
+				player.keys.keyPressed.put(NUM_1, false);
+				player.keys.keyPressed.put(NUM_2, false);
+				player.keys.keyPressed.put(NUM_3, false);
+				player.keys.keyPressed.put(NUM_4, false);
+				player.keys.keyPressed.put(NUM_5, false);
+				player.keys.keyPressed.put(NUM_6, false);
+				player.keys.keyPressed.put(NUM_7, false);
 			}
 
 			if (player.keys.keyPressed.get(PAUSE)) {
