@@ -2,6 +2,7 @@ package com.ded.misle.world.boxes;
 
 import com.ded.misle.renderer.FloatingText;
 import com.ded.misle.world.enemies.Enemy;
+import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.world.player.Player;
 import com.ded.misle.world.player.PlayerAttributes;
 
@@ -106,6 +107,8 @@ public class HPBox extends Box {
                 deleteBox(this);
                 if (this instanceof Enemy) {
                     ((Enemy) this).removeEnemyBox();
+                } else if (this instanceof NPC) {
+                    ((NPC) this).deleteNPC();
                 }
                 deleteBox(this);
             } else {

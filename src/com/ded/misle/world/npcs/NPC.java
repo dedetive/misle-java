@@ -79,6 +79,13 @@ public class NPC extends HPBox {
         shopNPCs.clear();
     }
 
+    public void deleteNPC() {
+        selectedNPCs.remove(this);
+        dialogNPCs.remove(this);
+        interactableNPCs.remove(this);
+        shopNPCs.remove(this);
+    }
+
     // Dialog related
 
     public void setDialogID(int dialogID) {
