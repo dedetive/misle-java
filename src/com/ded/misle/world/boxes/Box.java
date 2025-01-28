@@ -494,7 +494,7 @@ public class Box {
 	public void spawnItem(boolean canGoMinus, boolean canGoPlus, int id, int count) {
 		double randomNumber = Math.random();
 
-		int delay = 750;
+		int delay = 550;
 		Box droppedItem;
 		int multiplier = 0;
 		if (canGoMinus && canGoPlus) {

@@ -17,6 +17,7 @@ import static com.ded.misle.core.PhysicsEngine.ObjectType.HP_BOX;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.boxes.BoxManipulation.moveCollisionBox;
 import static com.ded.misle.world.chests.DropTable.getDropTableItemID;
+import static com.ded.misle.world.enemies.Enemy.getEnemyBoxes;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.*;
 
@@ -101,16 +102,12 @@ public class HPBox extends Box {
                     this.spawnItem(canGoMinus, canGoPlus, id, count);
                 }
 
-                javax.swing.Timer wait = new javax.swing.Timer(10, e -> {
-                    if (this instanceof Enemy) {
-                        ((Enemy) this).removeEnemyBox();
-                    }
-                    deleteBox(this);
-
-                    if (getAllBoxes().contains(this)) ((Timer) e.getSource()).cancel();
-                });
-                wait.setRepeats(true);
-                wait.start();
+                HPBoxes.remove(this);
+                deleteBox(this);
+                if (this instanceof Enemy) {
+                    ((Enemy) this).removeEnemyBox();
+                }
+                deleteBox(this);
             } else {
                 player.attr.playerDies();
             }
