@@ -520,7 +520,7 @@ public class Box {
 
 		Timer timer = new Timer((int) (delay * 1.5), e -> {
 			editBox(droppedItem, EditBoxKeys.COLLECTIBLE, "true");
-			if (Objects.equals(this.texture, "chest")) {
+			if (Objects.equals(this.texture, "chest_open")) {
 				this.setTexture("chest");
 			}
 		});
