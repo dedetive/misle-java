@@ -358,7 +358,7 @@ public class Inventory {
 		return this.draggedItem;
 	}
 
-	private void setTempItem(Item tempItem) {
+	public void setTempItem(Item tempItem) {
 		try {
 			this.tempItem = new Item(tempItem.getId(), tempItem.getCount());
 		} catch (Exception e) {
@@ -368,6 +368,10 @@ public class Inventory {
 
 	public void destroyTempItem() {
 		this.tempItem = null;
+	}
+
+	public Item getTempItem() {
+		return tempItem;
 	}
 
 	public void destroyGrabbedItem() {

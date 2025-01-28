@@ -291,6 +291,54 @@ public class KeyHandler implements KeyListener {
 		// INVENTORY EXCLUSIVE
 
 		if (gameState == GameState.INVENTORY) {
+			int hoveredRow = mouseHandler.getHoveredSlot()[0];
+			int hoveredCol = mouseHandler.getHoveredSlot()[1];
+
+			if (hoveredRow >= 0 && hoveredCol >= 0) {
+				if (player.keys.keyPressed.get(NUM_1)) {
+					player.inv.setTempItem(player.inv.getItem(hoveredRow, hoveredCol));
+					player.inv.bruteSetItem(player.inv.getItem(0, 0), hoveredRow, hoveredCol);
+					player.inv.bruteSetItem(player.inv.getTempItem(), 0, 0);
+					player.inv.destroyTempItem();
+				}
+				if (player.keys.keyPressed.get(NUM_2)) {
+					player.inv.setTempItem(player.inv.getItem(hoveredRow, hoveredCol));
+					player.inv.bruteSetItem(player.inv.getItem(0, 1), hoveredRow, hoveredCol);
+					player.inv.bruteSetItem(player.inv.getTempItem(), 0, 1);
+					player.inv.destroyTempItem();
+				}
+				if (player.keys.keyPressed.get(NUM_3)) {
+					player.inv.setTempItem(player.inv.getItem(hoveredRow, hoveredCol));
+					player.inv.bruteSetItem(player.inv.getItem(0, 2), hoveredRow, hoveredCol);
+					player.inv.bruteSetItem(player.inv.getTempItem(), 0, 2);
+					player.inv.destroyTempItem();
+				}
+				if (player.keys.keyPressed.get(NUM_4)) {
+					player.inv.setTempItem(player.inv.getItem(hoveredRow, hoveredCol));
+					player.inv.bruteSetItem(player.inv.getItem(0, 3), hoveredRow, hoveredCol);
+					player.inv.bruteSetItem(player.inv.getTempItem(), 0, 3);
+					player.inv.destroyTempItem();
+				}
+				if (player.keys.keyPressed.get(NUM_5)) {
+					player.inv.setTempItem(player.inv.getItem(hoveredRow, hoveredCol));
+					player.inv.bruteSetItem(player.inv.getItem(0, 4), hoveredRow, hoveredCol);
+					player.inv.bruteSetItem(player.inv.getTempItem(), 0, 4);
+					player.inv.destroyTempItem();
+				}
+				if (player.keys.keyPressed.get(NUM_6)) {
+					player.inv.setTempItem(player.inv.getItem(hoveredRow, hoveredCol));
+					player.inv.bruteSetItem(player.inv.getItem(0, 5), hoveredRow, hoveredCol);
+					player.inv.bruteSetItem(player.inv.getTempItem(), 0, 5);
+					player.inv.destroyTempItem();
+				}
+				if (player.keys.keyPressed.get(NUM_7)) {
+					player.inv.setTempItem(player.inv.getItem(hoveredRow, hoveredCol));
+					player.inv.bruteSetItem(player.inv.getItem(0, 6), hoveredRow, hoveredCol);
+					player.inv.bruteSetItem(player.inv.getTempItem(), 0, 6);
+					player.inv.destroyTempItem();
+				}
+			}
+
 			if (player.keys.keyPressed.get(PAUSE)) {
 				gameState = GamePanel.GameState.PLAYING;
 				player.keys.keyPressed.put(PAUSE, false);
