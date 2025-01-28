@@ -102,11 +102,19 @@ public class BoxHandling {
 	}
 
 	public static Box addBoxItem(double x, double y, int id, int count) {
-		boxes.add(new Box(x, y));
-		editLastBox(EditBoxKeys.EFFECT, "{item, " + id + ", " + count + ", true}");
-		editLastBox(EditBoxKeys.TEXTURE, (".." + File.separator + "items" + File.separator + id));
-		addBoxToCache(boxes.getLast());
-		return boxes.getLast();
+		if (id > 0) {
+			boxes.add(new Box(x, y));
+			editLastBox(EditBoxKeys.EFFECT, "{item, " + id + ", " + count + ", true}");
+			editLastBox(EditBoxKeys.TEXTURE, (".." + File.separator + "items" + File.separator + id));
+			addBoxToCache(boxes.getLast());
+			return boxes.getLast();
+		} else {
+			boxes.add(new Box(x, y));
+			editLastBox(EditBoxKeys.EFFECT, "{item, " + 1 + ", " + 0 + ", false}");
+			editLastBox(EditBoxKeys.TEXTURE, ("invisible"));
+			addBoxToCache(boxes.getLast());
+			return boxes.getLast();
+		}
 	}
 
 	public static int lineCoordinatedAddBox(double startX, double startY, int boxesX, int boxesY, String preset, LineAddBoxModes mode) {

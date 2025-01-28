@@ -532,6 +532,10 @@ public class Box {
 		if (this.getEffectReason().equals("false")) {
 			return;
 		}
+		if (Integer.parseInt(this.effect[2]) == 0) {
+			deleteBox(this);
+		}
+
 		double xDistance = Math.abs(this.getX() - player.getX() / scale);
 		double yDistance = Math.abs(this.getY() - player.getY() / scale);
 		double totalDistance = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));

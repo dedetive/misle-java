@@ -1,5 +1,17 @@
 [
   {
+    "id": 0,
+    "resourceID": 0,
+    "name": "",
+    "countLimit": 0,
+    "rarity": "",
+    "type": "",
+    "subtype": "",
+    "kind": "",
+    "bundles": "goblin|0|4",
+    "nameColor": "#FFFFFF"
+  },
+  {
     "id": 1,
     "resourceID": 1,
     "name": "Copper Claw",
@@ -177,7 +189,7 @@
   "rarity": "F",
   "type": "material",
   "nameColor": "#088F08",
-  "bundles": "goblin|7|2"
+  "bundles": "goblin|2|7"
   },
   {
     "id": 14,
