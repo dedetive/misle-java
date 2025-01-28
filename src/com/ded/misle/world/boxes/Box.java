@@ -19,6 +19,7 @@ import static com.ded.misle.audio.AudioPlayer.AudioFile.collect_item;
 import static com.ded.misle.audio.AudioPlayer.playThis;
 import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.world.enemies.EnemyAI.clearBreadcrumbs;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 import static com.ded.misle.Launcher.scale;
@@ -562,6 +563,7 @@ public class Box {
 				player.setY(scale * room.y);
 				unloadBoxes();
 				loadBoxes();
+				clearBreadcrumbs();
 
 				Timer loadWait = new Timer(300, evt -> {
 					fadeOut();

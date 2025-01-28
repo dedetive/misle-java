@@ -2,6 +2,9 @@ package com.ded.misle.world.enemies;
 
 import com.ded.misle.world.player.PlayerAttributes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.GamePanel.tileSize;
@@ -10,7 +13,35 @@ import static com.ded.misle.world.boxes.BoxManipulation.moveCollisionBox;
 import static com.ded.misle.world.enemies.Enemy.getEnemyBoxes;
 
 public class EnemyAI  {
+    // First breadcrumb = oldest breadcrumb
+    // Last breadcrumb = newest breadcrumb
+    private static List<int[]> breadcrumbs = new ArrayList<>();
+    private static long lastBreadcrumbUpdate = System.currentTimeMillis();
+    private static final int maxBreadcrumbs = 5;
+
+    public static void updateBreadcrumbs() {
+        breadcrumbs.add(new int[]{(int) (player.getX() / scale), (int) (player.getY() / scale)});
+        lastBreadcrumbUpdate = System.currentTimeMillis();
+        if (breadcrumbs.size() > maxBreadcrumbs) {
+            breadcrumbs.removeFirst();
+        }
+        System.out.println("=============");
+        System.out.println("Breadcrumbs: " + breadcrumbs.size());
+        for (int[] b : breadcrumbs) {
+            System.out.println("X: " + b[0] + ", Y: " + b[1]);
+        }
+        System.out.println("=============");
+    }
+
+    public static void clearBreadcrumbs() {
+        breadcrumbs.clear();
+    }
+
     public static void updateEnemyAI() {
+        if (lastBreadcrumbUpdate + 1000 < System.currentTimeMillis()) {
+            updateBreadcrumbs();
+        }
+
         for (Enemy enemy : getEnemyBoxes()) {
             switch (enemy.getEnemyType()) {
                 case GOBLIN -> goblinAI(enemy);
@@ -19,8 +50,15 @@ public class EnemyAI  {
     }
 
     public static void goblinAI(Enemy enemy) {
-        double playerX = player.getX() / scale;
-        double playerY = player.getY() / scale;
+        double playerX;
+        double playerY;
+        try {
+            playerX = breadcrumbs.get(4)[0];
+            playerY = breadcrumbs.get(4)[1];
+        } catch (IndexOutOfBoundsException e) {
+            playerX = breadcrumbs.getFirst()[0];
+            playerY = breadcrumbs.getFirst()[1];
+        }
         double enemyX = enemy.getX();
         double enemyY = enemy.getY();
         double distanceX = (playerX - enemyX);
@@ -33,7 +71,6 @@ public class EnemyAI  {
             if (!(enemy.isMoving) &&
                 Math.abs(distanceX) < 140 &&
                 Math.abs(distanceY) < 140) {
-                System.out.println("distanceX: " + distanceX + " distanceY: " + distanceY);
                 moveCollisionBox(enemy, moveX, moveY, rand * 4);
                 isPixelOccupied(player, tileSize, 8, PlayerAttributes.KnockbackDirection.NONE);
             }

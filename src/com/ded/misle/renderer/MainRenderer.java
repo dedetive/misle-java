@@ -10,6 +10,7 @@ import static com.ded.misle.core.SaveFile.loadSaveFile;
 import static com.ded.misle.world.boxes.BoxHandling.storeCachedBoxes;
 import static com.ded.misle.world.WorldLoader.loadBoxes;
 import static com.ded.misle.renderer.ColorManager.*;
+import static com.ded.misle.world.enemies.EnemyAI.clearBreadcrumbs;
 import static java.lang.System.currentTimeMillis;
 
 import javax.swing.*;
@@ -38,6 +39,7 @@ public class MainRenderer {
 		player.attr.updateStat(PlayerAttributes.Stat.ALL);
 		player.setHP(player.getMaxHP());
 		player.attr.fillEntropy();
+		clearBreadcrumbs();
 
 		Timer fadeTimer = new Timer(LOADING_DURATION, e -> { fadeIn(); });
 		fadeTimer.setRepeats(false);
