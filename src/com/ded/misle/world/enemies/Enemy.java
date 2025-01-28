@@ -71,6 +71,7 @@ public class Enemy extends HPBox {
                 this.setColor(new Color(0x106000));
                 this.setBoxScaleHorizontal(0.75);
                 this.setBoxScaleVertical(0.75);
+                this.setDropTableName("goblin");
             }
             default -> {
                 this.setTexture("solid");

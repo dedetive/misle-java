@@ -176,7 +176,8 @@
   "countLimit": "material",
   "rarity": "F",
   "type": "material",
-  "nameColor": "#088F08"
+  "nameColor": "#088F08",
+  "bundles": "goblin|7|2"
   },
   {
     "id": 14,
