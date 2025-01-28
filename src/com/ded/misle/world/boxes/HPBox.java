@@ -102,6 +102,9 @@ public class HPBox extends Box {
                     this.spawnItem(canGoMinus, canGoPlus, id, count);
                 }
 
+                if (this instanceof Enemy) {
+                    ((Enemy) this).removeEnemyBox();
+                }
                 deleteBox(this);
             } else {
                 player.attr.playerDies();

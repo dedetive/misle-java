@@ -93,4 +93,8 @@ public class Enemy extends HPBox {
     public static void clearEnemyBoxes() { enemyBoxes.clear(); }
 
     public EnemyType getEnemyType() { return enemyType; }
+
+    public void removeEnemyBox() {
+        enemyBoxes.remove(this);
+    }
 }
