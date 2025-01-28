@@ -458,21 +458,24 @@ public class SaveFile {
 				int[][][] tempInventory = new int[2][2][4];
 				for (int i = 0; i < 2; i++) {
 					for (int j = 0; j < 2; j++) {
-						if (player.inv.getItem(i, j) == null) {
-							tempInventory[i][j][0] = 0;
-							tempInventory[i][j][1] = 0;
-							tempInventory[i][j][2] = 0;
-							tempInventory[i][j][3] = 0;
-						} else {
-							tempInventory[i][j][0] = getMedium((player.inv.getItem(i * 2 + j).getId()));       // HIGH ID
-							tempInventory[i][j][1] = getLow(player.inv.getItem(i * 2 + j).getId());          // LOW ID
-							tempInventory[i][j][2] = getMedium((player.inv.getItem(i * 2 + j).getCount()));    // HIGH COUNT
-							tempInventory[i][j][3] = getLow(player.inv.getItem(i * 2 + j).getCount());       // LOW COUNT
+						try {
+							Item item = player.inv.getItem(i * 2 + j);
+
+							tempInventory[i][j][0] = getMedium(item.getId());       // HIGH ID
+							tempInventory[i][j][1] = getLow(item.getId());          // LOW ID
+							tempInventory[i][j][2] = getMedium(item.getCount());    // HIGH COUNT
+							tempInventory[i][j][3] = getLow(item.getCount());       // LOW COUNT
+
+							brandIntoSaveFile(tempInventory[i][j][0], RED, i, j + 25);
+							brandIntoSaveFile(tempInventory[i][j][1], GREEN, i, j + 25);
+							brandIntoSaveFile(tempInventory[i][j][2], BLUE, i, j + 25);
+							brandIntoSaveFile(tempInventory[i][j][3], RED, j + 25, i);
+						} catch (NullPointerException ignored) {
+							brandIntoSaveFile(0, RED, i, j + 25);
+							brandIntoSaveFile(0, GREEN, i, j + 25);
+							brandIntoSaveFile(0, BLUE, i, j + 25);
+							brandIntoSaveFile(0, RED, j + 25, i);
 						}
-						brandIntoSaveFile(tempInventory[i][j][0], RED, i, j + 25);
-						brandIntoSaveFile(tempInventory[i][j][1], GREEN, i, j + 25);
-						brandIntoSaveFile(tempInventory[i][j][2], BLUE, i, j + 25);
-						brandIntoSaveFile(tempInventory[i][j][3], RED, j + 25, i);
 					}
 				}
 			} catch (NullPointerException e) {

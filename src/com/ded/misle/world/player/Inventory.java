@@ -180,10 +180,16 @@ public class Inventory {
 	}
 
 	public Item getItem(int row, int col) {
-		if (row >= 0 && row < rows && col >= 0 && col < cols) {
+		try {
+			if (inventory[row][col].getId() == 0) {
+				return null;
+			}
+		if (row < rows && col < cols) {
 			return inventory[row][col];
 		}
-		return null; // return null if position is out of bounds
+		} catch (NullPointerException | ArrayIndexOutOfBoundsException ignored) {
+        }
+		return null;
 	}
 
 	public Item getItem(int position) {
