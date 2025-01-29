@@ -121,10 +121,8 @@ public class SettingsMenuRenderer {
             282, 112, SettingsManager::cycleDisplayFPS, panel, 54);
 
         // screenSize
-        if (!isFullscreen) {
-            createSetting("settings_graphics_screenSize", String.valueOf(screenSize),
-                42, 142, SettingsManager::cycleScreenSize, panel, 44);
-        }
+        createSetting("settings_graphics_screenSize", String.valueOf(screenSize),
+            42, 142, SettingsManager::cycleScreenSize, panel, 44);
 
         // antiAliasing
         createSetting("settings_graphics_antiAliasing", String.valueOf(antiAliasing),
