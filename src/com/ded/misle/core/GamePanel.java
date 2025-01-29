@@ -231,8 +231,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 		clearButtons();
 		FontManager.updateFontSizes();
-		updateMouseVariableScales();
 		updateRendererVariableScales();
+		updateMouseVariableScales();
 		updatePlayingVariableScales();
 		if (levelDesigner) {
 			updateDesignerSpeed();
