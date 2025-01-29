@@ -11,6 +11,8 @@ import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.core.GamePanel.GameState.*;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.itemInfoFont;
+import static com.ded.misle.renderer.ImageRenderer.ImageName.MAIN_MENU_BACKGROUND;
+import static com.ded.misle.renderer.ImageRenderer.cachedImages;
 import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.core.SaveFile.saveEverything;
 import static com.ded.misle.renderer.MenuButton.*;
@@ -87,9 +89,7 @@ public class MenuRenderer {
             double scaleByScreenSize = scale / 3.75;
 
             // BACKGROUND
-
-            g2d.setColor(menuBackgroundColor);
-            g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
+            drawMenuBackground(g2d);
 
             // MENU ITSELF
 
@@ -153,9 +153,7 @@ public class MenuRenderer {
             double scaleByScreenSize = scale / 3.75;
 
             // BACKGROUND
-
-            g2d.setColor(menuBackgroundColor);
-            g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
+            drawMenuBackground(g2d);
 
             // MENU ITSELF
 
@@ -206,8 +204,7 @@ public class MenuRenderer {
             double scaleByScreenSize = scale / 3.75;
 
             // BACKGROUND
-            g2d.setColor(menuBackgroundColor);
-            g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
+            drawMenuBackground(g2d);
 
             // MENU ITSELF
             createTitle("loading_menu_loading", g2d, scaleByScreenSize);
@@ -252,5 +249,12 @@ public class MenuRenderer {
 
             if (isFading != MainRenderer.FadingState.UNFADED) drawFading(g2d);
         }
+    }
+
+    public static void drawMenuBackground(Graphics2D g2d) {
+//        g2d.setColor(menuBackgroundColor);
+//        g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
+
+        g2d.drawImage(cachedImages.get(MAIN_MENU_BACKGROUND), 0, 0, (int) screenWidth, (int) screenHeight, null);
     }
 }

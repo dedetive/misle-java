@@ -8,13 +8,13 @@ import java.awt.*;
 import java.util.ConcurrentModificationException;
 
 import static com.ded.misle.Launcher.*;
-import static com.ded.misle.core.GamePanel.screenHeight;
 import static com.ded.misle.core.GamePanel.screenWidth;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.dialogNPCText;
 import static com.ded.misle.renderer.MainRenderer.textShadow;
 import static com.ded.misle.renderer.MenuButton.createButton;
 import static com.ded.misle.renderer.MenuButton.drawButtons;
+import static com.ded.misle.renderer.MenuRenderer.drawMenuBackground;
 
 public class SettingsMenuRenderer {
     public enum SettingState {
@@ -33,8 +33,7 @@ public class SettingsMenuRenderer {
             double scaleByScreenSize = scale / 3.75;
 
             // BACKGROUND
-            g2d.setColor(menuBackgroundColor);
-            g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
+            drawMenuBackground(g2d);
 
             // MENU ITSELF
             MenuRenderer.createTitle("settings_menu_options", g2d, scaleByScreenSize);
