@@ -47,6 +47,9 @@ public class ColorManager {
     public final static Color healthBarBackground = new Color(0xA0A0A0);
     public final static Color healthBarCurrent = new Color(0x50EE50);
     public final static Color healthBarLockedHP = Color.DARK_GRAY;
+    public final static Color healthBarTextShadow = defaultShadowColor;
+    public final static Color healthBarText = new Color(225, 210, 170);
+    public final static Color healthBarTextCritical = new Color(255, 100, 80);
         // Entropy UI
     public final static Color entropyBarShadow = defaultShadowColor;
     public final static Color entropyBarBackground = new Color(0xA0A0A0);

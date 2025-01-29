@@ -12,6 +12,7 @@ import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.renderer.FloatingText.drawFloatingTexts;
 import static com.ded.misle.renderer.FloatingText.getFloatingTexts;
+import static com.ded.misle.renderer.FontManager.itemInfoFont;
 import static com.ded.misle.world.boxes.Box.getTexture;
 import static com.ded.misle.world.npcs.NPC.getSelectedNPCs;
 import static com.ded.misle.renderer.ColorManager.*;
@@ -177,6 +178,25 @@ public class PlayingRenderer {
 
         g2d.setColor(healthBarLockedHP);
         g2d.fillRect(healthBarX, healthBarY, healthBarWidth, (int) (healthBarHeight * lockedHPPercentage));
+
+        // More info (Current HP / Max HP)
+        if (displayMoreInfo) {
+            g2d.setFont(itemInfoFont);
+            String str = (int) player.getHP() + "/" + (int) player.getMaxHP();
+            FontMetrics fm = g2d.getFontMetrics();
+            int strWidth = fm.stringWidth(str);
+            int x = healthBarX + healthBarWidth / 2 - strWidth / 2;
+            int y = (int) (healthBarY + healthBarHeight * 1.2);
+
+            g2d.setColor(healthBarShadow);
+            g2d.drawString(str, (int) (x + textShadow), (int) (y + textShadow));
+
+            if (healthPercentage <= 0.25)
+                g2d.setColor(healthBarTextCritical);
+            else g2d.setColor(healthBarText);
+
+            g2d.drawString(str, x, y);
+        }
     }
 
     private static void drawEntropyBar(Graphics2D g2d) {
