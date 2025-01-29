@@ -408,9 +408,7 @@ public class BoxHandling {
 	}
 
 	public static void clearAllBoxes() {
-		for (Box box : boxes) {
-			removeBoxFromCache(box);
-		}
+		clearEntireCache();
 		boxes.clear();
 		clearHPBoxes();
 		clearEnemyBoxes();
@@ -445,6 +443,12 @@ public class BoxHandling {
 
 	public static List<Box> getCachedBoxes(int level) {
 		return cachedBoxes[level];
+	}
+
+	public static void clearEntireCache() {
+		for (int level = maxLevel; level > 0; level--) {
+			cachedBoxes[level].clear();
+		}
 	}
 
 	public static void storeCachedBoxes(int level) {
