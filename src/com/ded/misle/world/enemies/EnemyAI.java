@@ -39,18 +39,18 @@ public class EnemyAI  {
     }
 
     public static void updateEnemyAI() {
-        if (lastBreadcrumbUpdate + 1000 < System.currentTimeMillis()) {
-            updateBreadcrumbs();
-        }
-
-        for (Enemy enemy : getEnemyBoxes()) {
-            try {
-                switch (enemy.getEnemyType()) {
-                    case GOBLIN -> goblinAI(enemy);
-                }
-            } catch (ConcurrentModificationException e) {
-                //
+        try {
+            if (lastBreadcrumbUpdate + 1000 < System.currentTimeMillis()) {
+                updateBreadcrumbs();
             }
+
+            for (Enemy enemy : getEnemyBoxes()) {
+                    switch (enemy.getEnemyType()) {
+                        case GOBLIN -> goblinAI(enemy);
+                    }
+            }
+        } catch (ConcurrentModificationException e) {
+                    //
         }
     }
 
@@ -60,8 +60,8 @@ public class EnemyAI  {
         double playerX;
         double playerY;
         try {
-            playerX = enemy.getPersonalBreadcrumbs().get(enemy.getPersonalBreadcrumbs().size() - 2)[0];
-            playerY = enemy.getPersonalBreadcrumbs().get(enemy.getPersonalBreadcrumbs().size() - 2)[1];
+            playerX = enemy.getPersonalBreadcrumbs().getLast()[0];
+            playerY = enemy.getPersonalBreadcrumbs().getLast()[1];
         } catch (IndexOutOfBoundsException e) {
             playerX = enemy.getPersonalBreadcrumbs().getFirst()[0];
             playerY = enemy.getPersonalBreadcrumbs().getFirst()[1];
