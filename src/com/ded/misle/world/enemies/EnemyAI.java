@@ -55,8 +55,8 @@ public class EnemyAI  {
         double playerX;
         double playerY;
         try {
-            playerX = enemy.getPersonalBreadcrumbs().get(2)[0];
-            playerY = enemy.getPersonalBreadcrumbs().get(2)[1];
+            playerX = enemy.getPersonalBreadcrumbs().get(enemy.getPersonalBreadcrumbs().size() - 2)[0];
+            playerY = enemy.getPersonalBreadcrumbs().get(enemy.getPersonalBreadcrumbs().size() - 2)[1];
         } catch (IndexOutOfBoundsException e) {
             playerX = enemy.getPersonalBreadcrumbs().getFirst()[0];
             playerY = enemy.getPersonalBreadcrumbs().getFirst()[1];

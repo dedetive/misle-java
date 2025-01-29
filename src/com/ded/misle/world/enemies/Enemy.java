@@ -74,8 +74,8 @@ public class Enemy extends HPBox {
                 this.setBoxScaleHorizontal(0.75);
                 this.setBoxScaleVertical(0.75);
                 this.setDropTableName("goblin");
-                this.maxPersonalBreadcrumbs = 3;
-                this.personalBreadcrumbUpdateInterval = (long) (Math.random() * (1400 - 400) + 400);
+                this.maxPersonalBreadcrumbs = (int) (Math.random() * (5 - 2) + 2);
+                this.personalBreadcrumbUpdateInterval = (long) (Math.random() * (1400 - 200) + 200);
                 updatePersonalBreadcrumbs();
             }
             default -> {
