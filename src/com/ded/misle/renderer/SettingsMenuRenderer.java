@@ -139,7 +139,7 @@ public class SettingsMenuRenderer {
             42, 82, SettingsManager::cycleHeldItemFollowsMouse, panel, 52);
 
         // DisplayMoreInfo
-        createSetting("settings_gameplay_displayMoreInfo", String.valueOf(antiAliasing),
+        createSetting("settings_gameplay_displayMoreInfo", String.valueOf(displayMoreInfo),
             282, 82, SettingsManager::cycleDisplayMoreInfo, panel, 58);
     }
 
