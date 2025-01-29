@@ -54,6 +54,9 @@ public class ColorManager {
     public final static Color entropyBarShadow = defaultShadowColor;
     public final static Color entropyBarBackground = new Color(0xA0A0A0);
     public final static Color entropyBarCurrent = new Color(0xA0A0FF);
+    public final static Color entropyBarTextShadow = defaultShadowColor;
+    public final static Color entropyBarText = new Color(225, 210, 170);
+    public final static Color entropyBarTextCritical = new Color(255, 100, 80);
         // Coins
     public final static Color coinTextUI = new Color(225, 210, 170);
     public final static Color coinTextShadowColor = defaultShadowColor;

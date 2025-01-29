@@ -188,7 +188,7 @@ public class PlayingRenderer {
             int x = healthBarX + healthBarWidth / 2 - strWidth / 2;
             int y = (int) (healthBarY + healthBarHeight * 1.2);
 
-            g2d.setColor(healthBarShadow);
+            g2d.setColor(healthBarTextShadow);
             g2d.drawString(str, (int) (x + textShadow), (int) (y + textShadow));
 
             if (healthPercentage <= 0.25)
@@ -224,6 +224,25 @@ public class PlayingRenderer {
         // Draw the current entropy bar
         g2d.setColor(entropyBarCurrent);
         g2d.fillRect(entropyBarX, (int) (entropyBarY + entropyBarHeight - entropyBarHeight * entropyPercentage), entropyBarWidth, (int) (entropyBarHeight * entropyPercentage));
+
+        // More info (Current Entropy / Max Entropy)
+        if (displayMoreInfo) {
+            g2d.setFont(itemInfoFont);
+            String str = (int) player.attr.getEntropy() + "/" + (int) player.attr.getMaxEntropy();
+            FontMetrics fm = g2d.getFontMetrics();
+            int strWidth = fm.stringWidth(str);
+            int x = entropyBarX + entropyBarWidth / 2 - strWidth / 2;
+            int y = (int) (entropyBarY + entropyBarHeight * 1.2);
+
+            g2d.setColor(entropyBarTextShadow);
+            g2d.drawString(str, (int) (x + textShadow), (int) (y + textShadow));
+
+            if (entropyPercentage <= 0.25)
+                g2d.setColor(entropyBarTextCritical);
+            else g2d.setColor(entropyBarText);
+
+            g2d.drawString(str, x, y);
+        }
     }
 
     private static void drawInventoryBar(Graphics2D g2d) {
