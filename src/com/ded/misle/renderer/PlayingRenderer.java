@@ -7,6 +7,7 @@ import com.ded.misle.items.Item;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.GamePanel.*;
@@ -180,9 +181,17 @@ public class PlayingRenderer {
         g2d.fillRect(healthBarX, healthBarY, healthBarWidth, (int) (healthBarHeight * lockedHPPercentage));
 
         // More info (Current HP / Max HP)
-        if (displayMoreInfo) {
+        if (!Objects.equals(displayMoreInfo, "false")) {
             g2d.setFont(itemInfoFont);
-            String str = (int) player.getHP() + "/" + (int) player.getMaxHP();
+            String str;
+
+            if (Objects.equals(displayMoreInfo, "exact")) {
+                str = (int) player.getHP() + "/" + (int) player.getMaxHP();
+            } else {
+                str = (int) (100 * player.getHP() / player.getMaxHP()) + "%";
+            }
+
+
             FontMetrics fm = g2d.getFontMetrics();
             int strWidth = fm.stringWidth(str);
             int x = healthBarX + healthBarWidth / 2 - strWidth / 2;
@@ -226,9 +235,17 @@ public class PlayingRenderer {
         g2d.fillRect(entropyBarX, (int) (entropyBarY + entropyBarHeight - entropyBarHeight * entropyPercentage), entropyBarWidth, (int) (entropyBarHeight * entropyPercentage));
 
         // More info (Current Entropy / Max Entropy)
-        if (displayMoreInfo) {
+        if (!Objects.equals(displayMoreInfo, "false")) {
             g2d.setFont(itemInfoFont);
-            String str = (int) player.attr.getEntropy() + "/" + (int) player.attr.getMaxEntropy();
+
+            String str;
+            if (Objects.equals(displayMoreInfo, "exact")) {
+                str = (int) player.attr.getEntropy() + "/" + (int) player.attr.getMaxEntropy();
+            } else {
+                str = (int) (100 * player.attr.getEntropy() / player.attr.getMaxEntropy()) + "%";
+            }
+
+
             FontMetrics fm = g2d.getFontMetrics();
             int strWidth = fm.stringWidth(str);
             int x = entropyBarX + entropyBarWidth / 2 - strWidth / 2;

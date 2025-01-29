@@ -228,6 +228,9 @@ public class SettingsManager {
 	}
 
 	public static void cycleDisplayMoreInfo() {
-		displayMoreInfo = cycleBoolean("displayMoreInfo", displayMoreInfo);
+		String[] modes = new String[]{"false", "exact", "percentage"};
+		displayMoreInfo = cycleThroughSetting(modes, displayMoreInfo);
+
+		changeSetting("displayMoreInfo", displayMoreInfo);
 	}
 }
