@@ -1,6 +1,5 @@
 package com.ded.misle.input;
 
-import com.ded.misle.audio.AudioPlayer;
 import com.ded.misle.core.GamePanel;
 import com.ded.misle.core.PhysicsEngine;
 import com.ded.misle.world.npcs.NPC;
@@ -11,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.core.GamePanel.*;
@@ -206,12 +206,10 @@ public class KeyHandler implements KeyListener {
 			for (NumberKey numberKey : NumberKey.values()) {
 				if (player.keys.keyPressed.get(Key.valueOf(String.valueOf(numberKey)))) {
 					player.inv.setSelectedSlot(numberKey.slot);
-					player.keys.keyPressed.put(Key.valueOf(String.valueOf(numberKey)), false);
 				}
 			}
 			if (player.keys.keyPressed.get(PAUSE)) {
 				pauseGame();
-				player.keys.keyPressed.put(PAUSE, false);
 			}
 			double[] willMovePlayer = {0, 0};
 			if (player.keys.keyPressed.get(UP)) {
@@ -246,7 +244,6 @@ public class KeyHandler implements KeyListener {
 						player.inv.dropItem(0, player.inv.getSelectedSlot(), 1);
 					}
 				}
-				player.keys.keyPressed.put(DROP, false);
 			}
 			if (player.keys.keyPressed.get(DODGE)) {
 				int delay = 100;
@@ -258,11 +255,9 @@ public class KeyHandler implements KeyListener {
 				timer.setRepeats(false); // Ensure the timer only runs once
 				timer.start();
 
-				player.keys.keyPressed.put(DODGE, false);
 			}
 			if (player.keys.keyPressed.get(USE)) {
 				pressUseButton(mouseHandler);
-				player.keys.keyPressed.put(USE, false);
 			}
 
 			// MOVING
@@ -300,7 +295,6 @@ public class KeyHandler implements KeyListener {
 			} else if (gameState == GamePanel.GameState.INVENTORY) {
 				gameState = GamePanel.GameState.PLAYING;
 			}
-			player.keys.keyPressed.put(INVENTORY, false);
 		}
 
 		// INVENTORY EXCLUSIVE
@@ -317,14 +311,12 @@ public class KeyHandler implements KeyListener {
 						player.inv.bruteSetItem(player.inv.getTempItem(), 0, numberKey.slot);
 						player.inv.destroyTempItem();
 
-						player.keys.keyPressed.put(Key.valueOf(String.valueOf(numberKey)), false);
 					}
 				}
 			}
 
 			if (player.keys.keyPressed.get(PAUSE)) {
 				gameState = GamePanel.GameState.PLAYING;
-				player.keys.keyPressed.put(PAUSE, false);
 			}
 
 			if (player.keys.keyPressed.get(DROP)) {
@@ -341,7 +333,6 @@ public class KeyHandler implements KeyListener {
 						player.inv.dropItem(mouseHandler.getExtraHoveredSlot()[1] * 2 + mouseHandler.getExtraHoveredSlot()[0], 1);
 					}
 				}
-				player.keys.keyPressed.put(DROP, false);
 			}
 		}
 
@@ -359,7 +350,6 @@ public class KeyHandler implements KeyListener {
 					baseDesignerSpeed = Math.max(0.4, baseDesignerSpeed - 0.4);
 					updateDesignerSpeed();
 				}
-				player.keys.keyPressed.put(DEBUG1, false);
 			}
 
 			// Movement
@@ -399,7 +389,6 @@ public class KeyHandler implements KeyListener {
 
 			if (player.keys.keyPressed.get(PAUSE)) {
 				pauseGame();
-				player.keys.keyPressed.put(PAUSE, false);
 			}
 
 			// Zooming
@@ -407,19 +396,16 @@ public class KeyHandler implements KeyListener {
 			if (player.keys.keyPressed.get(EQUAL)) {
 				gameScale = Math.min(8, gameScale + 0.25);
 				updateTileSize();
-				player.keys.keyPressed.put(EQUAL, false);
 			}
 			if (player.keys.keyPressed.get(MINUS)) {
 				gameScale = Math.max(0.75, gameScale - 0.25);
 				updateTileSize();
-				player.keys.keyPressed.put(MINUS, false);
 			}
 			if (player.keys.keyPressed.get(NUM_0) && player.keys.keyPressed.get(CTRL)) {
 				gameScale = scale;
 			}
 			if (player.keys.keyPressed.get(GRID)) {
 				levelDesignerGrid = !levelDesignerGrid;
-				player.keys.keyPressed.put(GRID, false);
 			}
 		}
 
@@ -428,7 +414,6 @@ public class KeyHandler implements KeyListener {
 		if (gameState == GameState.DIALOG) {
 			if (player.keys.keyPressed.get(USE)) {
 				getCurrentTalkingTo().incrementDialogIndex();
-				player.keys.keyPressed.put(USE, false);
 			}
 		}
 
@@ -437,7 +422,6 @@ public class KeyHandler implements KeyListener {
 		if (gameState == GameState.OPTIONS_MENU) {
 			if (player.keys.keyPressed.get(PAUSE)) {
 				goToPreviousMenu();
-				player.keys.keyPressed.put(PAUSE, false);
 			}
 		}
 
@@ -455,16 +439,24 @@ public class KeyHandler implements KeyListener {
 					player.takeDamage(1, "normal", new String[]{}, PlayerAttributes.KnockbackDirection.DOWN);
 				}
 
-				player.keys.keyPressed.put(DEBUG1, false);
 
 			}
 			if (player.keys.keyPressed.get(DEBUG2)) {
 
 				player.inv.clearInventory();
-				player.keys.keyPressed.put(DEBUG2, false);
 
 			}
 		}
+
+		List<Key> keysToSetFalse = new ArrayList<>();
+		keysToSetFalse.addAll(List.of(outputOnRelease));
+		keysToSetFalse.addAll(List.of(cooldownOnRelease));
+		keysToSetFalse.addAll(List.of(cooldownOnPress));
+
+		for (Key key : keysToSetFalse) {
+			player.keys.keyPressed.put(key, false);
+		}
+
 	}
 
 	public static void pressUseButton(MouseHandler mouseHandler) {
