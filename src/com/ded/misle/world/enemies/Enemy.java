@@ -18,13 +18,11 @@ import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NON
 public class Enemy extends HPBox {
 
     private final EnemyType enemyType;
-    public enum EnemyType {
-        RED_BLOCK,
-        GOBLIN
-    }
     private final double magnification;
 
     private static List<Enemy> enemyBoxes = new ArrayList<>();
+
+    // INITIALIZATION
 
     public Enemy(double x, double y, EnemyType enemyType, double magnification) {
         this.setBoxScaleHorizontal(1);
@@ -45,6 +43,13 @@ public class Enemy extends HPBox {
 
         enemyBoxes.add(this);
         addBoxToCache(this);
+    }
+
+    // ENEMY LOADER
+
+    public enum EnemyType {
+        RED_BLOCK,
+        GOBLIN
     }
 
     public void loadEnemy() {
@@ -94,15 +99,19 @@ public class Enemy extends HPBox {
         this.setHP(this.getMaxHP());
     }
 
+    // ENEMY BOXES
+
     public static List<Enemy> getEnemyBoxes() { return enemyBoxes; }
 
     public static void clearEnemyBoxes() { enemyBoxes.clear(); }
 
-    public EnemyType getEnemyType() { return enemyType; }
-
     public void removeEnemyBox() {
         enemyBoxes.remove(this);
     }
+
+    public EnemyType getEnemyType() { return enemyType; }
+
+    // BREADCRUMBS
 
     private final List<int[]> personalBreadcrumbs = new ArrayList<>();
     private long lastPersonalBreadcrumbUpdate = System.currentTimeMillis();
