@@ -3,6 +3,7 @@ package com.ded.misle.world.enemies;
 import com.ded.misle.world.player.PlayerAttributes;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import static com.ded.misle.Launcher.scale;
@@ -43,8 +44,12 @@ public class EnemyAI  {
         }
 
         for (Enemy enemy : getEnemyBoxes()) {
-            switch (enemy.getEnemyType()) {
-                case GOBLIN -> goblinAI(enemy);
+            try {
+                switch (enemy.getEnemyType()) {
+                    case GOBLIN -> goblinAI(enemy);
+                }
+            } catch (ConcurrentModificationException e) {
+                //
             }
         }
     }

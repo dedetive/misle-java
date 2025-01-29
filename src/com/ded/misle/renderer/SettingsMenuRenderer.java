@@ -5,6 +5,7 @@ import com.ded.misle.core.SettingsManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ConcurrentModificationException;
 
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.GamePanel.screenHeight;
@@ -93,7 +94,11 @@ public class SettingsMenuRenderer {
                 case GAMEPLAY -> renderGameplayMenu(panel);
             }
 
-            drawButtons(g2d, scaleByScreenSize);
+            try {
+                drawButtons(g2d, scaleByScreenSize);
+            } catch (ConcurrentModificationException e) {
+                //
+            }
         }
     }
 
