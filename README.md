@@ -41,7 +41,7 @@ Alternatively, you can use your preferred IDE with a compiler to run the code au
 
 ### Settings
 
-To modify default settings, edit `misle-java-master/src/com/ded/misle/resources/settings.config`.
+To modify default settings, either change in-game options or edit `misle-java-master/src/com/ded/misle/resources/settings.config`.
 
 Each setting uses the format:  
 `parameterName = value`
@@ -235,7 +235,7 @@ And finally, add the .png icon for the item in `resources/images/items/`. The na
 
 ### Donations
 
-To donate to the project and help me and my team, which consists of solely me and a graphical artist, use the following link:
+To donate to the project and help me and my team, which consists of solely me and Glacy, my graphical artist, use the following link:
 https://pixie.gg/ded/
 
 > **Note:** Donating will not grant you special benefits. This is not a paid product, and there are no paid in-game bonuses or bonus content.
