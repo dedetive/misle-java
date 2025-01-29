@@ -137,6 +137,10 @@ public class SettingsMenuRenderer {
         // heldItemFollowsMouse
         createSetting("settings_gameplay_heldItemFollowsMouse", String.valueOf(heldItemFollowsMouse),
             42, 82, SettingsManager::cycleHeldItemFollowsMouse, panel, 52);
+
+        // DisplayMoreInfo
+        createSetting("settings_gameplay_displayMoreInfo", String.valueOf(antiAliasing),
+            282, 82, SettingsManager::cycleDisplayMoreInfo, panel, 58);
     }
 
     public static void createSetting(String text, String value, int unscaledX, int unscaledY, Runnable action, JPanel panel, int id) {

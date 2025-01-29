@@ -28,6 +28,7 @@ public class Launcher {
 	public static boolean heldItemFollowsMouse;
 	public static LanguageManager languageManager;
 	public static boolean antiAliasing;
+	public static boolean displayMoreInfo;
 
 	/**
 	 * Loads main menu.
@@ -51,6 +52,7 @@ public class Launcher {
         languageManager = new LanguageManager(languageCode);
         levelDesigner = Boolean.parseBoolean(getSetting("levelDesigner"));
 		heldItemFollowsMouse = Boolean.parseBoolean(getSetting("heldItemFollowsMouse"));
+		displayMoreInfo = Boolean.parseBoolean(getSetting("displayMoreInfo"));
 
 		// WINDOW CONFIGS
 

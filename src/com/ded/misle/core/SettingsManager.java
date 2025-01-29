@@ -226,4 +226,8 @@ public class SettingsManager {
 		}
 		return possibleValues[0];
 	}
+
+	public static void cycleDisplayMoreInfo() {
+		displayMoreInfo = cycleBoolean("displayMoreInfo", displayMoreInfo);
+	}
 }
