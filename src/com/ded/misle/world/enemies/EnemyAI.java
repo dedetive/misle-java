@@ -15,7 +15,7 @@ import static com.ded.misle.world.enemies.Enemy.getEnemyBoxes;
 public class EnemyAI  {
     // First breadcrumb = oldest breadcrumb
     // Last breadcrumb = newest breadcrumb
-    private static List<int[]> breadcrumbs = new ArrayList<>();
+    private static final List<int[]> breadcrumbs = new ArrayList<>();
     private static long lastBreadcrumbUpdate = System.currentTimeMillis();
     private static final int maxBreadcrumbs = 5;
 
@@ -25,12 +25,12 @@ public class EnemyAI  {
         if (breadcrumbs.size() > maxBreadcrumbs) {
             breadcrumbs.removeFirst();
         }
-        System.out.println("=============");
-        System.out.println("Breadcrumbs: " + breadcrumbs.size());
-        for (int[] b : breadcrumbs) {
-            System.out.println("X: " + b[0] + ", Y: " + b[1]);
-        }
-        System.out.println("=============");
+//        System.out.println("=============");
+//        System.out.println("Breadcrumbs: " + breadcrumbs.size());
+//        for (int[] b : breadcrumbs) {
+//            System.out.println("X: " + b[0] + ", Y: " + b[1]);
+//        }
+//        System.out.println("=============");
     }
 
     public static void clearBreadcrumbs() {
@@ -50,14 +50,16 @@ public class EnemyAI  {
     }
 
     public static void goblinAI(Enemy enemy) {
+        enemy.checkIfBreadcrumbUpdate();
+
         double playerX;
         double playerY;
         try {
-            playerX = breadcrumbs.get(4)[0];
-            playerY = breadcrumbs.get(4)[1];
+            playerX = enemy.getPersonalBreadcrumbs().get(2)[0];
+            playerY = enemy.getPersonalBreadcrumbs().get(2)[1];
         } catch (IndexOutOfBoundsException e) {
-            playerX = breadcrumbs.getFirst()[0];
-            playerY = breadcrumbs.getFirst()[1];
+            playerX = enemy.getPersonalBreadcrumbs().getFirst()[0];
+            playerY = enemy.getPersonalBreadcrumbs().getFirst()[1];
         }
         double enemyX = enemy.getX();
         double enemyY = enemy.getY();

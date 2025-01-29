@@ -6,6 +6,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.PhysicsEngine.ObjectType.HP_BOX;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 import static com.ded.misle.world.boxes.BoxHandling.EditBoxKeys.EFFECT;
@@ -72,6 +74,9 @@ public class Enemy extends HPBox {
                 this.setBoxScaleHorizontal(0.75);
                 this.setBoxScaleVertical(0.75);
                 this.setDropTableName("goblin");
+                this.maxPersonalBreadcrumbs = 3;
+                this.personalBreadcrumbUpdateInterval = (long) (Math.random() * (1400 - 400) + 400);
+                updatePersonalBreadcrumbs();
             }
             default -> {
                 this.setTexture("solid");
@@ -97,5 +102,28 @@ public class Enemy extends HPBox {
 
     public void removeEnemyBox() {
         enemyBoxes.remove(this);
+    }
+
+    private final List<int[]> personalBreadcrumbs = new ArrayList<>();
+    private long lastPersonalBreadcrumbUpdate = System.currentTimeMillis();
+    private int maxPersonalBreadcrumbs;
+    private long personalBreadcrumbUpdateInterval;
+
+    public List<int[]> getPersonalBreadcrumbs() {
+        return personalBreadcrumbs;
+    }
+
+    public void updatePersonalBreadcrumbs() {
+        personalBreadcrumbs.add(new int[]{(int) (player.getX() / scale), (int) (player.getY() / scale)});
+        lastPersonalBreadcrumbUpdate = System.currentTimeMillis();
+        if (personalBreadcrumbs.size() > maxPersonalBreadcrumbs) {
+            personalBreadcrumbs.removeFirst();
+        }
+    }
+
+    public void checkIfBreadcrumbUpdate() {
+        if (lastPersonalBreadcrumbUpdate + personalBreadcrumbUpdateInterval < System.currentTimeMillis()) {
+            updatePersonalBreadcrumbs();
+        }
     }
 }
