@@ -315,7 +315,7 @@ public class PlayingRenderer {
 
     private static void drawUIElements(Graphics2D g2d) {
         drawHealthBar(g2d);
-        drawEntropyBar(g2d);
+//        drawEntropyBar(g2d);
 //        drawCoins(g2d);
         drawInventoryBar(g2d);
         drawSelectedItemName(g2d);
