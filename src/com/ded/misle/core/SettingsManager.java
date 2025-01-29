@@ -195,6 +195,10 @@ public class SettingsManager {
 		wait.start();
 	}
 
+	public static void cycleAntiAliasing() {
+		antiAliasing = cycleBoolean("antiAliasing", antiAliasing);
+	}
+
 	// Gameplay
 	public static void cycleHeldItemFollowsMouse() {
 		heldItemFollowsMouse = cycleBoolean("heldItemFollowsMouse", heldItemFollowsMouse);

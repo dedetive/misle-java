@@ -125,6 +125,10 @@ public class SettingsMenuRenderer {
             createSetting("settings_graphics_screenSize", String.valueOf(screenSize),
                 42, 142, SettingsManager::cycleScreenSize, panel, 44);
         }
+
+        // antiAliasing
+        createSetting("settings_graphics_antiAliasing", String.valueOf(antiAliasing),
+            282, 142, SettingsManager::cycleAntiAliasing, panel, 56);
     }
 
     public static void renderAudioMenu(JPanel panel) {
