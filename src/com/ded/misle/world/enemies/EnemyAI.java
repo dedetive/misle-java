@@ -65,7 +65,7 @@ public class EnemyAI  {
         double enemyY = enemy.getY();
         double distanceX = (playerX - enemyX);
         double distanceY = (playerY - enemyY);
-        double rand = (Math.random() * (10 - 1) + 1);
+        double rand = (Math.random() * (7 - 1) + 1);
         double moveX = Math.clamp(distanceX, -1, 1) * rand;
         double moveY = Math.clamp(distanceY, -1, 1) * rand;
         if (!isPixelOccupied(enemy, enemy.getX() + moveX, enemy.getY() + moveY,
