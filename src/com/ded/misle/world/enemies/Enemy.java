@@ -70,7 +70,7 @@ public class Enemy extends HPBox {
             }
             case GOBLIN -> {
                 maxHP = 20;
-                damage = 2;
+                damage = 3;
                 damageRate = 400;
 
                 this.setHasCollision(false);
