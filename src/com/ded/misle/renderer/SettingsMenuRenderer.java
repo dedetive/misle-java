@@ -8,6 +8,7 @@ import java.awt.*;
 import java.util.ConcurrentModificationException;
 
 import static com.ded.misle.Launcher.*;
+import static com.ded.misle.core.GamePanel.screenHeight;
 import static com.ded.misle.core.GamePanel.screenWidth;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.dialogNPCText;
@@ -34,6 +35,14 @@ public class SettingsMenuRenderer {
 
             // BACKGROUND
             drawMenuBackground(g2d);
+
+            // SEPARATING BAR
+            g2d.setColor(settingsSeparatingBar);
+            int separatingBarY = (int) (210 * Math.pow(scale, 1.04));
+            int separatingBarHeight = (int) (2 * scale);
+            g2d.fillRect(0, separatingBarY, (int) screenWidth, separatingBarHeight);
+            g2d.setColor(settingsSeparatingBarBottom);
+            g2d.fillRect(0, separatingBarY + separatingBarHeight, (int) screenWidth, (int) (screenHeight - (separatingBarY + separatingBarHeight)));
 
             // MENU ITSELF
             MenuRenderer.createTitle("settings_menu_options", g2d, scaleByScreenSize);
@@ -81,10 +90,6 @@ public class SettingsMenuRenderer {
             g2d.drawString(text, (int) (centerX + textShadow), (int) (textY + textShadow));
             g2d.setColor(buttonTextColor);
             g2d.drawString(text, centerX, textY);
-
-            // Separating bar
-            g2d.setColor(settingsSeparatingBar);
-            g2d.fillRect(0, (int) (210 * Math.pow(scale, 1.04)), (int) screenWidth, (int) (2 * scale));
 
             switch (settingState) {
                 case GENERAL -> renderGeneralMenu(panel);
