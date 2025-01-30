@@ -258,6 +258,7 @@ public class KeyHandler implements KeyListener {
 			}
 			if (player.keys.keyPressed.get(USE)) {
 				pressUseButton(mouseHandler);
+				player.keys.keyPressed.put(USE, false);
 			}
 
 			// MOVING
@@ -448,6 +449,10 @@ public class KeyHandler implements KeyListener {
 			}
 		}
 
+		setKeysToFalse();
+	}
+
+	public void setKeysToFalse() {
 		List<Key> keysToSetFalse = new ArrayList<>();
 		keysToSetFalse.addAll(List.of(outputOnRelease));
 		keysToSetFalse.addAll(List.of(cooldownOnRelease));
@@ -456,7 +461,6 @@ public class KeyHandler implements KeyListener {
 		for (Key key : keysToSetFalse) {
 			player.keys.keyPressed.put(key, false);
 		}
-
 	}
 
 	public static void pressUseButton(MouseHandler mouseHandler) {
