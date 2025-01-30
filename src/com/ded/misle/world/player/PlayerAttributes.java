@@ -370,16 +370,20 @@ public class PlayerAttributes {
 	}
 
 	// GENERIC ATTRIBUTES
+	final int startingHP = 20;
+	final int startingEntropy = 5;
+	final int startingRegenerationQuality = 1;
 
 	public void updateStat(Stat stat) {
 		try {
 			switch (stat) {
-				case MAX_HP -> player.setMaxHP(100 + levelMaxHP + equipmentMaxHP);
-				case MAX_ENTROPY -> this.maxEntropy = 80 + levelMaxEntropy + equipmentMaxEntropy;
+				case MAX_HP -> player.setMaxHP(startingHP + levelMaxHP + equipmentMaxHP);
+				case MAX_ENTROPY -> this.maxEntropy = startingEntropy + levelMaxEntropy + equipmentMaxEntropy;
 				case DEFENSE -> player.setDefense(levelDefense + equipmentDefense);
 				case REGENERATION_QUALITY ->
-					player.setRegenerationQuality(1 + levelRegenerationQuality + equipmentRegenerationQuality);
-				case SPEED -> this.playerSpeed = 120 * deltaTime * (this.playerSpeedModifier * (scale * 2 + 0.166) / 3 * this.environmentSpeedModifier + Math.log10(1 + this.levelSpeed + this.equipmentSpeed));
+					player.setRegenerationQuality(startingRegenerationQuality + levelRegenerationQuality + equipmentRegenerationQuality);
+				case SPEED -> this.playerSpeed = 120 * deltaTime * (this.playerSpeedModifier * (scale * 2 + 0.166) / 3 *
+					this.environmentSpeedModifier + Math.log10(1 + this.levelSpeed + this.equipmentSpeed));
 				case INVERSION -> player.setInversion(this.equipmentInversion);
 				case STRENGTH -> this.strength = this.equipmentStrength + this.levelStrength;
 				case ALL -> {
