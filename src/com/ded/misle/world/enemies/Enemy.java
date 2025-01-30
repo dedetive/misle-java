@@ -74,8 +74,9 @@ public class Enemy extends HPBox {
                 damageRate = 400;
 
                 this.setHasCollision(false);
-                this.setTexture("solid");
-                this.setColor(new Color(0x106000));
+//                this.setTexture("solid");
+//                this.setColor(new Color(0x106000));
+                this.setTexture("../characters/enemy/goblin");
                 this.setBoxScaleHorizontal(0.75);
                 this.setBoxScaleVertical(0.75);
                 this.setDropTableName("goblin");

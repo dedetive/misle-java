@@ -12,6 +12,10 @@
       <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/lang" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/audio" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/images/ui" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/images/characters" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/images/characters/enemy" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/images/characters/npc" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/images/characters/player" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/out/production/Misle/com/ded/misle" />
       <excludeFolder url="file://$MODULE_DIR$/src/out" />
     </content>
