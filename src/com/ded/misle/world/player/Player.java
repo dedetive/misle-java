@@ -17,7 +17,7 @@ public class Player extends HPBox {
 	public final Inventory inv;
 
 	public Player() {
-		this.setTexture("solid");
+		this.setTexture("invisible");
 		this.setColor(defaultBoxColor);
 		this.setObjectType(PhysicsEngine.ObjectType.PLAYER);
 		this.setHasCollision(true);

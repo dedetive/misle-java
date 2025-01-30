@@ -7,6 +7,8 @@ import java.util.TimerTask;
 
 import static com.ded.misle.core.GamePanel.deltaTime;
 import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.world.WorldLoader.loadBoxes;
+import static com.ded.misle.world.WorldLoader.unloadBoxes;
 import static com.ded.misle.world.player.Inventory.PossibleItemStats.*;
 import static com.ded.misle.renderer.MainRenderer.fadeInThenOut;
 import static com.ded.misle.renderer.MainRenderer.fadeOut;
@@ -204,7 +206,9 @@ public class PlayerAttributes {
 	}
 
 	private void playerRespawns() {
+		unloadBoxes();
 		player.pos.reloadSpawnpoint();
+		loadBoxes();
 		player.setHP(player.getMaxHP());
 		player.setLockedHP(0);
 		this.isDead = false;
