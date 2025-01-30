@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.renderer.ImageRenderer.cachedImages;
 import static com.ded.misle.world.npcs.NPCDialog.getCurrentTalkingTo;
 import static com.ded.misle.world.player.PlayerStats.PlaytimeMode.*;
 import static com.ded.misle.renderer.ColorManager.*;
@@ -21,8 +22,12 @@ public class DialogRenderer {
 
     public static void renderDialog(Graphics2D g2d) {
         // Background
+        int dialogX = (int) (24 * scale);
+        int dialogY = (int) (148 * scale);
+        int dialogWidth = (int) ((512 - 48) * scale);
+        int dialogHeight = (int) (114 * scale);
         g2d.setColor(dialogWindowBackground);
-        g2d.fillRect((int) (24 * scale), (int) (148 * scale), (int) ((512 - 48) * scale), (int) (114 * scale));
+        g2d.fillRect(dialogX, dialogY, dialogWidth, dialogHeight);
 
         // NPC name
         NPC npc = getCurrentTalkingTo();
