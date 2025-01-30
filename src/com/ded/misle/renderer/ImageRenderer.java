@@ -12,11 +12,20 @@ public class ImageRenderer {
     public static final java.util.Map<ImageName, BufferedImage> cachedImages = new HashMap<>();
 
     public enum ImageName {
-        INVENTORY_BAR("ui", "inventory_bar.png"),
-        INVENTORY_MENU("ui", "inventory_background.png"),
-        INVENTORY_RINGLESS_EXTRA_SLOT("ui", "inventory_ringless_extra_slot.png"),
-        COIN("ui", "coin.png"),
-        MAIN_MENU_BACKGROUND("ui", "main_menu_background.png"),
+        // UI
+            INVENTORY_BAR("ui", "inventory_bar.png"),
+            INVENTORY_MENU("ui", "inventory_background.png"),
+            INVENTORY_RINGLESS_EXTRA_SLOT("ui", "inventory_ringless_extra_slot.png"),
+            COIN("ui", "coin.png"),
+            MAIN_MENU_BACKGROUND("ui", "main_menu_background.png"),
+
+        // CHARACTER
+            // PLAYER
+                PLAYER_FRONT("characters/player", "player_front.png"),
+                PLAYER_BACK("characters/player", "player_back.png"),
+                PLAYER_WALK0("characters/player", "player_walk0.png"),
+                PLAYER_WALK1("characters/player", "player_walk1.png"),
+                PLAYER_WALK2("characters/player", "player_walk2.png"),
 
         ;
 

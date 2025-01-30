@@ -4,8 +4,11 @@ import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.input.MouseHandler;
 import com.ded.misle.world.boxes.BoxHandling;
 import com.ded.misle.items.Item;
+import com.ded.misle.world.player.PlayerAttributes;
+import com.ded.misle.world.player.PlayerStats;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -21,8 +24,8 @@ import static com.ded.misle.renderer.DialogRenderer.renderDialog;
 import static com.ded.misle.renderer.FontManager.coinTextFont;
 import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.renderer.ImageRenderer.cachedImages;
-import static com.ded.misle.world.player.PlayerStats.Direction.RIGHT;
 import static com.ded.misle.renderer.InventoryRenderer.*;
+import static com.ded.misle.world.player.PlayerStats.Direction.*;
 import static java.lang.System.currentTimeMillis;
 
 public class PlayingRenderer {
@@ -82,7 +85,29 @@ public class PlayingRenderer {
         // Draw the player above every box
         g2d.setColor(player.getColor());
         Rectangle playerRect = new Rectangle(playerScreenX, playerScreenY, (int) player.getBoxScaleHorizontal(), (int) player.getBoxScaleVertical());
-        drawRotatedRect(g2d, playerRect, player.pos.getRotation());
+//        drawRotatedRect(g2d, playerRect, player.pos.getRotation()); // CUBE PLAYER
+
+        long precision = 300;
+        PlayerStats.Direction horizontalDirection = player.stats.getCurrentHorizontalDirection(precision);
+        PlayerStats.Direction verticalDirection = player.stats.getCurrentVerticalDirection(precision);
+        PlayerStats.Direction totalDirection = player.stats.getCurrentWalkingDirection(precision);
+        BufferedImage playerSprite = null;
+
+        // Draw player sprite
+        if (totalDirection == NONE) {
+            playerSprite = cachedImages.get(ImageRenderer.ImageName.PLAYER_FRONT);
+        } else if (horizontalDirection != NONE) {
+            playerSprite = cachedImages.get(ImageRenderer.ImageName.PLAYER_WALK0);
+        } else if (verticalDirection == UP) {
+            playerSprite = cachedImages.get(ImageRenderer.ImageName.PLAYER_BACK);
+        } else {
+            playerSprite = cachedImages.get(ImageRenderer.ImageName.PLAYER_FRONT);
+        }
+
+
+        drawRotatedImage(g2d, playerSprite,
+            playerScreenX - player.getBoxScaleHorizontal() * 0.25, playerScreenY - player.getBoxScaleVertical() * 0.25,
+            (int) (player.getBoxScaleHorizontal() * 1.5), (int) (player.getBoxScaleVertical() * 1.5), player.pos.getRotation(), mirror);
 
         drawHandItem(g2d, playerScreenX, playerScreenY, scaleByScreenSize, mouseHandler);
 
@@ -91,18 +116,19 @@ public class PlayingRenderer {
         drawFloatingTexts(g2d);
 
         if (gameState == GameState.INVENTORY) {
-            InventoryRenderer.renderInventoryMenu(g);
+            renderInventoryMenu(g);
             if (mouseHandler.getHoveredSlot()[0] > -1 && mouseHandler.getHoveredSlot()[1] > -1 && player.inv.getItem(mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1]) != null) {
-                InventoryRenderer.drawHoveredItemTooltip(g, new int[]{mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1]}, false);
-            } else if (mouseHandler.getExtraHoveredSlot()[0] > -1 && mouseHandler.getExtraHoveredSlot()[1] > -1 && player.inv.getItem(mouseHandler.getExtraHoveredSlot()[0] * 2 + mouseHandler.getExtraHoveredSlot()[1]) != null) {
-                InventoryRenderer.drawHoveredItemTooltip(g, new int[]{mouseHandler.getExtraHoveredSlot()[1], mouseHandler.getExtraHoveredSlot()[0]}, true);
+                drawHoveredItemTooltip(g, new int[]{mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1]}, false);
+            } else if (mouseHandler.getExtraHoveredSlot()[0] > -1 && mouseHandler.getExtraHoveredSlot()[1] > -1 &&
+                player.inv.getItem(mouseHandler.getExtraHoveredSlot()[0] * 2 + mouseHandler.getExtraHoveredSlot()[1]) != null) {
+                drawHoveredItemTooltip(g, new int[]{mouseHandler.getExtraHoveredSlot()[1], mouseHandler.getExtraHoveredSlot()[0]}, true);
             }
             if (player.inv.getDraggedItem() != null) {
-                InventoryRenderer.drawDraggedItem(g2d, mouseHandler);
+                drawDraggedItem(g2d, mouseHandler);
             }
         } else {
             if (mouseHandler.getHoveredBarSlot() > -1 && player.inv.getItem(0, mouseHandler.getHoveredBarSlot()) != null) {
-                InventoryRenderer.drawHoveredItemTooltip(g, new int[]{-1, mouseHandler.getHoveredBarSlot()}, false);
+                drawHoveredItemTooltip(g, new int[]{-1, mouseHandler.getHoveredBarSlot()}, false);
             }
         }
 
@@ -110,7 +136,7 @@ public class PlayingRenderer {
             renderDialog(g2d);
         }
 
-        if (isFading != MainRenderer.FadingState.UNFADED) drawFading(g2d);
+        if (isFading != FadingState.UNFADED) drawFading(g2d);
 
         g2d.dispose();
     }
@@ -290,7 +316,7 @@ public class PlayingRenderer {
                     int textX = slotX - textWidth + slotSize[0];
                     int textY = slotY + 8 * slotSize[0] / 9;
                     g2d.setColor(itemCountShadowColor);
-                    g2d.drawString(Integer.toString(itemCount), (int) (textX + MainRenderer.textShadow), (int) (textY + MainRenderer.textShadow));
+                    g2d.drawString(Integer.toString(itemCount), (int) (textX + textShadow), (int) (textY + textShadow));
                     g2d.setColor(itemCountColor);
                     g2d.drawString(Integer.toString(itemCount), textX, textY);
                 }
@@ -332,7 +358,7 @@ public class PlayingRenderer {
                     int textX = selectedItemNamePosition.x - textWidth / 2;
                     int textY = selectedItemNamePosition.y;
 
-                    drawColoredText(g2d, selectedItemName, (int) (textX + MainRenderer.textShadow), (int) (textY + MainRenderer.textShadow),
+                    drawColoredText(g2d, selectedItemName, (int) (textX + textShadow), (int) (textY + textShadow),
                         g2d.getFont(), selectedItemNameShadowColor, true);
 
                     drawColoredText(g2d, selectedItemName, textX, textY,

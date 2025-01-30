@@ -21,12 +21,17 @@ public class PlayerStats {
 	Direction walkingDirection;
 	Direction horizontalDirection;
 	Direction verticalDirection;
+	long lastDirectionUpdate;
+	long lastHorizontalDirectionUpdate;
+	long lastVerticalDirectionUpdate;
+
 	public enum Direction {
 		UP,
 		DOWN,
 		LEFT,
 		RIGHT,
-		TOTAL
+		TOTAL,
+		NONE
 	}
 	public enum PlaytimeMode {
 		MILLIS,
@@ -104,7 +109,8 @@ public class PlayerStats {
 			case LEFT -> stepsLeft;
 			case RIGHT -> stepsRight;
 			case TOTAL -> totalSteps;
-		};
+            case NONE -> 0;
+        };
 	}
 
 	public double getDistance(Direction direction) {
@@ -114,6 +120,7 @@ public class PlayerStats {
 			case LEFT -> distanceLeft;
 			case RIGHT -> distanceRight;
 			case TOTAL -> totalDistance;
+			case NONE -> 0;
 		};
 	}
 
@@ -125,20 +132,25 @@ public class PlayerStats {
 			case UP -> {
 				distanceUp += distance;
 				verticalDirection = Direction.UP;
+				lastVerticalDirectionUpdate = System.currentTimeMillis();
 			}
 			case DOWN -> {
 				distanceDown += distance;
 				verticalDirection = Direction.DOWN;
+				lastVerticalDirectionUpdate = System.currentTimeMillis();
 			}
 			case LEFT -> {
 				distanceLeft += distance;
 				horizontalDirection = Direction.LEFT;
+				lastHorizontalDirectionUpdate = System.currentTimeMillis();
 			}
 			case RIGHT -> {
 				distanceRight += distance;
 				horizontalDirection = Direction.RIGHT;
+				lastHorizontalDirectionUpdate = System.currentTimeMillis();
 			}
 		}
+		lastDirectionUpdate = System.currentTimeMillis();
 	}
 
 	private void incrementSteps(Direction direction) {
@@ -184,6 +196,24 @@ public class PlayerStats {
 	}
 
 	public Direction getVerticalDirection() {
+		return verticalDirection;
+	}
+
+	public Direction getCurrentWalkingDirection(long precisionMS) {
+		if (lastDirectionUpdate + precisionMS < System.currentTimeMillis()) return Direction.NONE;
+
+		return walkingDirection;
+	}
+
+	public Direction getCurrentHorizontalDirection(long precisionMS) {
+		if (lastHorizontalDirectionUpdate + precisionMS < System.currentTimeMillis()) return Direction.NONE;
+
+		return horizontalDirection;
+	}
+
+	public Direction getCurrentVerticalDirection(long precisionMS) {
+		if (lastVerticalDirectionUpdate + precisionMS < System.currentTimeMillis()) return Direction.NONE;
+
 		return verticalDirection;
 	}
 
