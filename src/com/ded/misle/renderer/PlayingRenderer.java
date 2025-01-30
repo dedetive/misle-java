@@ -87,7 +87,7 @@ public class PlayingRenderer {
         Rectangle playerRect = new Rectangle(playerScreenX, playerScreenY, (int) player.getBoxScaleHorizontal(), (int) player.getBoxScaleVertical());
 //        drawRotatedRect(g2d, playerRect, player.pos.getRotation()); // CUBE PLAYER
 
-        long precision = 300;
+        long precision = 50;
         PlayerStats.Direction horizontalDirection = player.stats.getCurrentHorizontalDirection(precision);
         PlayerStats.Direction verticalDirection = player.stats.getCurrentVerticalDirection(precision);
         PlayerStats.Direction totalDirection = player.stats.getCurrentWalkingDirection(precision);
@@ -97,7 +97,9 @@ public class PlayingRenderer {
         if (totalDirection == NONE) {
             playerSprite = cachedImages.get(ImageRenderer.ImageName.PLAYER_FRONT);
         } else if (horizontalDirection != NONE) {
-            playerSprite = cachedImages.get(ImageRenderer.ImageName.PLAYER_WALK0);
+            int animationFrame = (int) ((System.currentTimeMillis() / 150) % 3);
+
+            playerSprite = cachedImages.get(ImageRenderer.ImageName.valueOf("PLAYER_WALK" + animationFrame));
         } else if (verticalDirection == UP) {
             playerSprite = cachedImages.get(ImageRenderer.ImageName.PLAYER_BACK);
         } else {
