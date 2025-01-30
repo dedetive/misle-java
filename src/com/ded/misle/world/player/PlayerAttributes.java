@@ -15,7 +15,6 @@ import static com.ded.misle.renderer.MainRenderer.fadeOut;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.items.Item.updateMaxStackSize;
 
-@SuppressWarnings("ConditionalExpressionWithIdenticalBranches")
 public class PlayerAttributes {
 
 	// BASE ATTRIBUTES
