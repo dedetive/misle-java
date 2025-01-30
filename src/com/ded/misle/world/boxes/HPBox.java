@@ -40,7 +40,10 @@ public class HPBox extends Box {
     public static List<HPBox> getHPBoxes() {
         return HPBoxes;
     }
-    public static void clearHPBoxes () { HPBoxes.clear(); }
+    public static void clearHPBoxes () {
+        HPBoxes.clear();
+        HPBoxes.add(player);
+    }
 
     public HPBox(double x, double y) {
         this.setX(x);
@@ -283,23 +286,6 @@ public class HPBox extends Box {
         this.setLockedHP(Math.max(lockedHP - damage, 0));
     }
 
-    // REGENERATION
-
-    public void updateRegenerationHP(long currentTime) {
-        // Calculate the interval for healing 1 HP, based on the existing regeneration rate and quality
-        double regenerationInterval = (250L / regenerationRate);
-
-        if (lastHitMillis + 2500 < currentTime && lastRegenerationMillis + regenerationInterval < currentTime && (!player.attr.isDead() || this != player) && this.getHP() < this.getMaxHP()) {
-            receiveHeal(Math.max(getRegenerationQuality(), 1), "normal");
-            if (isRegenerationDoubled) receiveHeal(Math.max(getRegenerationQuality(), 1), "normal");
-            lastRegenerationMillis = currentTime;
-        } else {
-            if (this.getHP() >= this.getMaxHP()) {
-                isRegenerationDoubled = false;
-            }
-        }
-    }
-
 
 
     /**
@@ -319,7 +305,9 @@ public class HPBox extends Box {
      */
     public double receiveHeal(double heal, String reason) {
         // Early exit for invalid heal or if the character is dead without revival
-        if (heal <= 0 || ((player.attr.isDead() || this != player) && (!reason.contains("revival"))) || ((player.attr.isDead() || this != player) && lockedHP > this.getHP() && this.getHP() >= 0)) {
+        if (heal <= 0 ||
+            ((player.attr.isDead() || this != player) && (!reason.contains("revival"))) ||
+            ((player.attr.isDead() || this != player) && lockedHP > this.getHP() && this.getHP() >= 0)) {
             return 0;
         }
 
@@ -425,6 +413,22 @@ public class HPBox extends Box {
 
     public void turnRegenerationDoubledOn() {
         isRegenerationDoubled = true;
+    }
+
+    public void updateRegenerationHP(long currentTime) {
+        // Calculate the interval for healing 1 HP, based on the existing regeneration rate and quality
+        double regenerationInterval = (250L / regenerationRate);
+
+        if (lastHitMillis + 2500 < currentTime && lastRegenerationMillis + regenerationInterval < currentTime &&
+            (!player.attr.isDead() || this != player) && this.getHP() < this.getMaxHP()) {
+            receiveHeal(Math.max(getRegenerationQuality(), 1), "normal");
+            if (isRegenerationDoubled) receiveHeal(Math.max(getRegenerationQuality(), 1), "normal");
+            lastRegenerationMillis = currentTime;
+        } else {
+            if (this.getHP() >= this.getMaxHP()) {
+                isRegenerationDoubled = false;
+            }
+        }
     }
 
     // DROP TABLE
