@@ -121,6 +121,9 @@ public class HPBox extends Box {
 
     // DAMAGE AND HEAL
 
+    private long damageCooldown;
+    private static final long damageCooldownInterval = 100;
+
     /**
      * REASONS: <br>
      * - "normal": defense and item effects take place normally. <br><br>
@@ -134,6 +137,10 @@ public class HPBox extends Box {
      * @return Final damage dealt
      */
     public double takeDamage(double damage, String reason, String[] args, PlayerAttributes.KnockbackDirection knockbackDirection) {
+        if (damageCooldown + damageCooldownInterval > System.currentTimeMillis()) {
+            return 0;
+        }
+        damageCooldown = System.currentTimeMillis();
 
         isRegenerationDoubled = false;
 
