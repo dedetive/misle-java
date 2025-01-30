@@ -122,8 +122,8 @@ public class HandItemAnimator {
 //        Box attack = addBox(attackX, attackY);
         int boxCount = lineAddBox(attackX, attackY, Math.max((int) (Math.ceil(range / 20) * clamp(abs(XComponent), 0, 1)), 1),
             Math.max((int) (Math.ceil(range / 20) * clamp(abs(YComponent), 0, 1)), 1), "", LineAddBoxModes.FILL);
-        editLastBox(EditBoxKeys.COLOR, "#DEDE40", boxCount);
-//        editLastBox(EditBoxKeys.TEXTURE, "invisible", boxCount);
+//        editLastBox(EditBoxKeys.COLOR, "#DEDE40", boxCount);
+        editLastBox(EditBoxKeys.TEXTURE, "invisible", boxCount);
         editLastBox(EditBoxKeys.HAS_COLLISION, "true", boxCount);
         editLastBox(EditBoxKeys.INTERACTS_WITH_PLAYER, "false", boxCount);
         editLastBox(EditBoxKeys.EFFECT, "{damage, " + Math.max(Math.ceil(Math.floor(Math.pow(damage, 1.1)) * (player.attr.getStrength() * 10/100 + 1)), 1) + ", 1000, normal, 0}", boxCount);
