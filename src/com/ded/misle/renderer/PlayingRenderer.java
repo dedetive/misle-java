@@ -10,6 +10,7 @@ import com.ded.misle.world.player.PlayerStats;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Objects;
 
 import static com.ded.misle.Launcher.*;
@@ -71,11 +72,15 @@ public class PlayingRenderer {
 
         // Draw selected NPC indicator
         ArrayList<NPC> selectedNPCs = getSelectedNPCs();
-        for (NPC npc : selectedNPCs) {
-            for (int i = 0; i <= 270; i += 90) {
-                drawRotatedImage(g2d, getTexture("wall_default_overlayW"), npc.getX() * scale - player.pos.getCameraOffsetX(), npc.getY() * scale - player.pos.getCameraOffsetY(),
-                    (int) (tileSize * npc.getBoxScaleHorizontal()), (int) (tileSize * npc.getBoxScaleVertical()), i + npc.getRotation());
+        try {
+            for (NPC npc : selectedNPCs) {
+                for (int i = 0; i <= 270; i += 90) {
+                    drawRotatedImage(g2d, getTexture("wall_default_overlayW"), npc.getX() * scale - player.pos.getCameraOffsetX(), npc.getY() * scale - player.pos.getCameraOffsetY(),
+                        (int) (tileSize * npc.getBoxScaleHorizontal()), (int) (tileSize * npc.getBoxScaleVertical()), i + npc.getRotation());
+                }
             }
+        } catch (ConcurrentModificationException e) {
+            //
         }
 
         // Player position adjustments
