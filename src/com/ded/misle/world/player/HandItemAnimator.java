@@ -8,6 +8,8 @@ import com.ded.misle.world.boxes.BoxHandling;
 import javax.swing.*;
 
 import java.sql.SQLOutput;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.ded.misle.Launcher.heldItemFollowsMouse;
 import static com.ded.misle.core.GamePanel.player;
@@ -92,7 +94,7 @@ public class HandItemAnimator {
 
             switch (direction) {
                 case LEFT -> {
-                    XComponent = range;
+                    XComponent = range / 2;
                     YComponent = 0;
                 }
                 case RIGHT -> {
@@ -101,14 +103,14 @@ public class HandItemAnimator {
                 }
                 case UP -> {
                     XComponent = 0;
-                    YComponent = range;
+                    YComponent = range / 2;
                 }
                 case DOWN -> {
                     XComponent = 0;
                     YComponent = -range;
                 }
                 default -> {
-                    XComponent = range;
+                    XComponent = range / 2;
                     YComponent = 0;
                 }
             }
@@ -117,16 +119,27 @@ public class HandItemAnimator {
         double attackX = player.getX() / scale + XComponent;
         double attackY = player.getY() / scale + YComponent;
 
-        Box attack = addBox(attackX, attackY);
-//            editBox(attack, BoxHandling.EditBoxKeys.COLOR, "#DEDE40");
-        editBox(attack, EditBoxKeys.TEXTURE, "invisible");
-        editBox(attack, EditBoxKeys.HAS_COLLISION, "true");
-        editBox(attack, EditBoxKeys.INTERACTS_WITH_PLAYER, "false");
-        editBox(attack, EditBoxKeys.EFFECT, "{damage, " + Math.max(Math.ceil(Math.floor(Math.pow(damage, 1.1)) * (player.attr.getStrength() * 10/100 + 1)), 1) + ", 1000, normal, 0}");
-        isPixelOccupied(attack, range, 15, direction);
+//        Box attack = addBox(attackX, attackY);
+        int boxCount = lineAddBox(attackX, attackY, Math.max((int) (Math.ceil(range / 20) * clamp(abs(XComponent), 0, 1)), 1),
+            Math.max((int) (Math.ceil(range / 20) * clamp(abs(YComponent), 0, 1)), 1), "", LineAddBoxModes.FILL);
+        editLastBox(EditBoxKeys.COLOR, "#DEDE40", boxCount);
+//        editLastBox(EditBoxKeys.TEXTURE, "invisible", boxCount);
+        editLastBox(EditBoxKeys.HAS_COLLISION, "true", boxCount);
+        editLastBox(EditBoxKeys.INTERACTS_WITH_PLAYER, "false", boxCount);
+        editLastBox(EditBoxKeys.EFFECT, "{damage, " + Math.max(Math.ceil(Math.floor(Math.pow(damage, 1.1)) * (player.attr.getStrength() * 10/100 + 1)), 1) + ", 1000, normal, 0}", boxCount);
+
+        List<Box> boxes = getAllBoxes();
+        List<Box> attack = new ArrayList<>(List.of());
+
+        for (int i = 0; i < boxCount; i++) {
+            attack.add(boxes.get(boxes.size() - 1 - i));
+            isPixelOccupied(boxes.get(boxes.size() - 1 - i), range, 15, direction);
+        }
 
         scheduleAnimation(60, () -> {
-            deleteBox(attack);
+            for (int i = 0; i < boxCount; i++) {
+                deleteBox(attack.get(i));
+            }
         });
     }
 }
