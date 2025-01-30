@@ -83,11 +83,6 @@ public class PlayingRenderer {
         g2d.setColor(player.getColor());
         Rectangle playerRect = new Rectangle(playerScreenX, playerScreenY, (int) player.getBoxScaleHorizontal(), (int) player.getBoxScaleVertical());
         drawRotatedRect(g2d, playerRect, player.pos.getRotation());
-        int lowTaperFadeX = (int) (playerScreenX - 5 * scale);
-        int lowTaperFadeY = (int) (playerScreenY - 10 * scale);
-        int lowTaperFadeWidth = (int) (player.getBoxScaleHorizontal() * 1.65);
-        int lowTaperFadeHeight = (int) (player.getBoxScaleHorizontal() * 1.5);
-        g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.LOW_TAPER_FADE), lowTaperFadeX, lowTaperFadeY, lowTaperFadeWidth, lowTaperFadeHeight, null);
 
         drawHandItem(g2d, playerScreenX, playerScreenY, scaleByScreenSize, mouseHandler);
 

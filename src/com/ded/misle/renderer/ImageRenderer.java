@@ -17,7 +17,6 @@ public class ImageRenderer {
         INVENTORY_RINGLESS_EXTRA_SLOT("ui", "inventory_ringless_extra_slot.png"),
         COIN("ui", "coin.png"),
         MAIN_MENU_BACKGROUND("ui", "main_menu_background.png"),
-        LOW_TAPER_FADE("boxes", "low_taper_fade.png"),
 
         ;
 
