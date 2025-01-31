@@ -97,6 +97,7 @@ public class PlayingRenderer {
         PlayerStats.Direction verticalDirection = player.stats.getCurrentVerticalDirection(precision);
         PlayerStats.Direction totalDirection = player.stats.getCurrentWalkingDirection(precision);
         BufferedImage playerSprite = null;
+        boolean playerMirror = player.stats.getHorizontalDirection() == LEFT;
 
         // Draw player sprite
         if (totalDirection == NONE) {
@@ -111,10 +112,10 @@ public class PlayingRenderer {
             playerSprite = cachedImages.get(ImageRenderer.ImageName.PLAYER_FRONT);
         }
 
-
+        System.out.println(mirror);
         drawRotatedImage(g2d, playerSprite,
             playerScreenX - player.getBoxScaleHorizontal() * 0.25, playerScreenY - player.getBoxScaleVertical() * 0.25,
-            (int) (player.getBoxScaleHorizontal() * 1.5), (int) (player.getBoxScaleVertical() * 1.5), player.pos.getRotation(), mirror);
+            (int) (player.getBoxScaleHorizontal() * 1.5), (int) (player.getBoxScaleVertical() * 1.5), player.pos.getRotation(), playerMirror);
 
         drawHandItem(g2d, playerScreenX, playerScreenY, scaleByScreenSize, mouseHandler);
 
