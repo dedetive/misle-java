@@ -382,8 +382,14 @@ public class PlayerAttributes {
 				case DEFENSE -> player.setDefense(levelDefense + equipmentDefense);
 				case REGENERATION_QUALITY ->
 					player.setRegenerationQuality(startingRegenerationQuality + levelRegenerationQuality + equipmentRegenerationQuality);
-				case SPEED -> this.playerSpeed = 120 * deltaTime * (this.playerSpeedModifier * (scale * 2 + 0.166) / 3 *
-					this.environmentSpeedModifier + Math.log10(1 + this.levelSpeed + this.equipmentSpeed));
+				case SPEED -> {
+					double delta = 120 * deltaTime;
+					double scaleFactor = (scale * 2 + 0.166) / 3;
+					double modifiers = this.playerSpeedModifier * this.environmentSpeedModifier;
+					double progressModifiers = Math.log10(1 + this.levelSpeed + this.equipmentSpeed);
+
+					this.playerSpeed = delta * (scaleFactor * modifiers + progressModifiers);
+				}
 				case INVERSION -> player.setInversion(this.equipmentInversion);
 				case STRENGTH -> this.strength = this.equipmentStrength + this.levelStrength;
 				case ALL -> {
