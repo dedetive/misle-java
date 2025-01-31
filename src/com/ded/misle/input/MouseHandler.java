@@ -199,7 +199,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
                         // If not pressed a slot, drop item
 						case EMPTY -> { if (hasDraggedItem()) player.inv.dropDraggedItem(draggedItem.getCount()); }
 						case INVENTORY -> {
-							if (isSlotOccupied()) {
+							if (isSlotOccupied(false)) {
 								if (hasDraggedItem())
 									// Swap
 									player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], draggedItem.getCount(), false);
@@ -243,7 +243,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 						}
 						case RING -> {
 							boolean isRing = hasDraggedItem() && Objects.equals(player.inv.getDraggedItem().getSubtype(), "ring");
-                            if (isSlotOccupied()) {
+                            if (isSlotOccupied(true)) {
 								if (isRing)
 									// Swap only if it is a ring
 									player.inv.initDraggingItem(getExtraHoveredSlot()[0], getExtraHoveredSlot()[1], draggedItem.getCount(), true);
@@ -263,7 +263,8 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 										if (isAnyEmpty) break;
 									}
 									if (isAnyEmpty) {
-										player.inv.bruteSetItem(player.inv.getItem(getExtraHoveredSlot()[1] * 2 + getExtraHoveredSlot()[0]), firstValidPosition[0], firstValidPosition[1]);
+										Item item = player.inv.getItem(getExtraHoveredSlot()[1] * 2 + getExtraHoveredSlot()[0]);
+										player.inv.bruteSetItem(item, firstValidPosition[0], firstValidPosition[1]);
 										player.inv.removeItem(getExtraHoveredSlot()[1] * 2 + getExtraHoveredSlot()[0]);
 									}
 								}
@@ -280,7 +281,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
                     	// Drop outside
 						case EMPTY -> player.inv.dropDraggedItem(1);
 						case INVENTORY -> {
-							if (isSlotOccupied()) {
+							if (isSlotOccupied(false)) {
 								// Swap
 								player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], draggedItem.getCount(), false);
 							} else {
@@ -290,7 +291,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 						}
 						case RING -> {
 							if (player.inv.getDraggedItem().getSubtype().equals("ring")) {
-								if (isSlotOccupied()) {
+								if (isSlotOccupied(true)) {
 									// Swap
 									player.inv.initDraggingItem(getExtraHoveredSlot()[0], getExtraHoveredSlot()[1], -1, true);
 								} else {
@@ -391,8 +392,12 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 		return extraHoveredSlot;
 	}
 	
-	private boolean isSlotOccupied() {
-		return (player.inv.getItem(hoveredSlot[0], hoveredSlot[1]) != null) || (player.inv.getItem(extraHoveredSlot[0], extraHoveredSlot[1]) != null);
+	private boolean isSlotOccupied(boolean isExtra) {
+		if (isExtra) {
+			return player.inv.getItem(extraHoveredSlot[0] + extraHoveredSlot[1] * 2) != null;
+		} else {
+			return player.inv.getItem(hoveredSlot[0], hoveredSlot[1]) != null;
+		}
 	}
 
 	private enum SlotType {

@@ -304,7 +304,7 @@ public class Inventory {
 	}
 
 	public void initDraggingItem(int row, int col, int count, boolean isExtra) {
-		int position = isExtra ? col * 2 + row : -1; // Use -1 when not "extra"
+		int position = isExtra ? col * 2 + row : -1; // Use -1 when not extra
 
 		// If no item, start grabbing
 		if (getDraggedItem() == null) {
