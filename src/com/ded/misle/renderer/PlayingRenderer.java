@@ -112,7 +112,6 @@ public class PlayingRenderer {
             playerSprite = cachedImages.get(ImageRenderer.ImageName.PLAYER_FRONT);
         }
 
-        System.out.println(mirror);
         drawRotatedImage(g2d, playerSprite,
             playerScreenX - player.getBoxScaleHorizontal() * 0.25, playerScreenY - player.getBoxScaleVertical() * 0.25,
             (int) (player.getBoxScaleHorizontal() * 1.5), (int) (player.getBoxScaleVertical() * 1.5), player.pos.getRotation(), playerMirror);
@@ -311,6 +310,11 @@ public class PlayingRenderer {
             // Draw the slot (DISABLED, ENABLE FOR TESTING)
 //			g2d.setColor(Color.GRAY);
 //			g2d.fillRect(slotX, slotY, slotSize, slotSize);
+            if (!Objects.equals(displayMoreInfo, "false")) {
+                g2d.setFont(FontManager.coinTextFont);
+                g2d.setColor(slotIndicator);
+                g2d.drawString(String.valueOf(i + 1), slotX + slotSize[0] / 3, slotY + slotSize[1]);
+            }
 
             Item item = player.inv.getItem(0, i);
             if (item != null) {

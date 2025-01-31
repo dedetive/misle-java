@@ -33,6 +33,7 @@ public class ColorManager {
     public final static Color itemCountShadowColor = defaultShadowColor;
     public final static Color itemCountColor = Color.WHITE;
     public final static Color selectedItemNameShadowColor = defaultShadowColor;
+    public final static Color slotIndicator = new Color(100, 50, 30, 140);
         // Tooltip
     public final static Color hoveredTooltipBackground = new Color(84, 84, 84, 190);
     public final static Color itemTypeTooltip = new Color(0xE0DE9B);
