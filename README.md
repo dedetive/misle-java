@@ -50,20 +50,21 @@ Each setting uses the format:
 
 | Setting              | Explanation                                                  | Options                                                       | Default  |
 |----------------------|--------------------------------------------------------------|---------------------------------------------------------------|----------|
-| screenSize           | Adjusts the game's screen size                               | small / medium / big /<br/> huge / tv-sized / comical         | medium   |
+| screenSize           | Adjusts the game's screen size                               | small / medium / big / huge / tv-sized / comical              | medium   |
 | isFullscreen         | Enables or disables fullscreen                               | true / false                                                  | false    |
 | fullscreenMode       | Selects the fullscreen mode                                  | windowed / exclusive                                          | windowed |
-| frameRateCap         | Sets the maximum frames per second                           | 1 to 144                                                      | 60       |
-| displayFPS           | Displays FPS on-screen <br/>(currently non-functional)       | true / false                                                  | false    |
+| frameRateCap         | Sets the maximum frames per second                           | 30 / 60 / 90 / 120 / 160                                      | 60       |
+| displayFPS           | Displays FPS on-screen                                       | true / false                                                  | false    |
 | language             | Sets the language for the game                               | de_DE / el_GR / en_US / es_ES / mi_PM / pt_BR / ru_RU / zh_CN | en_US    |
 | levelDesigner        | Toggles Level Designer mode (mostly non-functional)          | true / false                                                  | false    | 
 | heldItemFollowsMouse | Toggles whether held item follows mouse or walking direction | true / false                                                  | true     |
+| antiAliasing         | Toggles Anti-Aliasing                                        | true / false                                                  | true     |
+| displayMoreInfo      | Displays HP / Entropy values and other info                  | false / exact / percentage                                    | false    |
+
 
 Text in parentheses is ignored, and only the value after the " = " sign is used. These values can be of types STRING, INTEGER, or BOOLEAN. However, since the options do not exist, default value would apply.
 
 At the language section, those parameters are the region codes, which translate to:
-
-> **Note:** The `displayFPS` function currently does not work and was only available in initial tests, but it will be reimplemented later.
 
 | Language code | Language  | Language (English)   | State |
 |---------------|-----------|----------------------|-------|
@@ -80,13 +81,16 @@ At the language section, those parameters are the region codes, which translate 
 Example usage of `settings.config`:
 
 ```properties
-screenSize (small, default=medium, big, huge, tv-sized, comical) = small
-isFullscreen (default=false, true) = false
-fullscreenMode (default=windowed, exclusive) = windowed
-frameRateCap (1..144, default=60) = 144
-language (de_DE, el_GR, default=en_US, es_ES, mi_PM, pt_BR, ru_RU, zh_CN) = pt_BR
-levelDesigner (default=false, true) = false
-heldItemFollowsMouse (false, default=true) = false
+screenSize = small
+isFullscreen = false
+fullscreenMode = windowed
+displayFPS = false
+frameRateCap = 160
+language = pt_BR
+levelDesigner = false
+heldItemFollowsMouse = false
+antiAliasing = true
+displayMoreInfo = exact
 ```
 
 ### How-to of adding new items
