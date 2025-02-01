@@ -134,9 +134,11 @@ public class SettingsManager {
 			case "isFullscreen":
 			case "levelDesigner":
 			case "displayFPS":
+			case "displayMoreInfo":
 				defaultSetting = "false";
 				break;
 			case "antiAliasing":
+			case "heldItemFollowsMouse":
 				defaultSetting = "true";
 				break;
 			case "language":
