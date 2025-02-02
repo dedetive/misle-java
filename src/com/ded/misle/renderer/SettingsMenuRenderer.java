@@ -16,6 +16,7 @@ import static com.ded.misle.renderer.MainRenderer.textShadow;
 import static com.ded.misle.renderer.MenuButton.createButton;
 import static com.ded.misle.renderer.MenuButton.drawButtons;
 import static com.ded.misle.renderer.MenuRenderer.drawMenuBackground;
+import static com.ded.misle.renderer.SettingsMenuRenderer.SettingPos.*;
 
 public class SettingsMenuRenderer {
     public enum SettingState {
@@ -106,36 +107,67 @@ public class SettingsMenuRenderer {
         }
     }
 
+    private static final int LEFTX = 42;
+    private static final int RIGHTX = 282;
+    private static final int TOPY = 82;
+    private static final int MIDY = 112;
+    private static final int BOTTOMY = 142;
+
+    enum SettingPos {
+        TOP_LEFT(new int[]{LEFTX, TOPY}),
+        TOP_RIGHT(new int[]{RIGHTX, TOPY}),
+        MID_LEFT(new int[]{LEFTX, MIDY}),
+        MID_RIGHT(new int[]{RIGHTX, MIDY}),
+        BOTTOM_LEFT(new int[]{LEFTX, BOTTOMY}),
+        BOTTOM_RIGHT(new int[]{RIGHTX, BOTTOMY}),
+
+        ;
+
+        final int[] pos;
+
+        SettingPos (int[] pos) {
+            this.pos = pos;
+        }
+    }
+
     public static void renderGeneralMenu(JPanel panel) {
+
         // language
+        int[] pos = TOP_LEFT.pos;
         createSetting("settings_general_language", String.valueOf(languageCode),
-            42, 82, SettingsManager::cycleLanguage, panel, 42);
+            pos[0], pos[1], SettingsManager::cycleLanguage, panel, 42);
     }
 
     public static void renderGraphicsMenu(JPanel panel) {
         // isFullscreen
+        int[] pos = TOP_LEFT.pos;
         createSetting("settings_graphics_isFullscreen", String.valueOf(isFullscreen),
-            42, 82, SettingsManager::cycleIsFullscreen, panel, 46);
+            pos[0], pos[1], SettingsManager::cycleIsFullscreen, panel, 46);
 
         // fullscreenMode
+        pos = TOP_RIGHT.pos;
         createSetting("settings_graphics_fullscreenMode", fullscreenMode,
-            282, 82, SettingsManager::cycleFullscreenMode, panel, 48);
+            pos[0], pos[1], SettingsManager::cycleFullscreenMode, panel, 48);
 
         // frameRateCap
+        pos = MID_LEFT.pos;
         createSetting("settings_graphics_frameRateCap", String.valueOf(frameRateCap),
-            42, 112, SettingsManager::cycleFrameRateCap, panel, 50);
+            pos[0], pos[1], SettingsManager::cycleFrameRateCap, panel, 50);
 
         // displayFPS
+        pos = MID_RIGHT.pos;
         createSetting("settings_graphics_displayFPS", String.valueOf(displayFPS),
-            282, 112, SettingsManager::cycleDisplayFPS, panel, 54);
+            pos[0], pos[1], SettingsManager::cycleDisplayFPS, panel, 54);
 
         // screenSize
+        pos = BOTTOM_LEFT.pos;
         createSetting("settings_graphics_screenSize", String.valueOf(screenSize),
-            42, 142, SettingsManager::cycleScreenSize, panel, 44);
+            pos[0], pos[1], SettingsManager::cycleScreenSize, panel, 44);
 
         // antiAliasing
+        pos = BOTTOM_RIGHT.pos;
         createSetting("settings_graphics_antiAliasing", String.valueOf(antiAliasing),
-            282, 142, SettingsManager::cycleAntiAliasing, panel, 56);
+            pos[0], pos[1], SettingsManager::cycleAntiAliasing, panel, 56);
     }
 
     public static void renderAudioMenu(JPanel panel) {
@@ -144,12 +176,14 @@ public class SettingsMenuRenderer {
 
     public static void renderGameplayMenu(JPanel panel) {
         // heldItemFollowsMouse
+        int[] pos = TOP_LEFT.pos;
         createSetting("settings_gameplay_heldItemFollowsMouse", String.valueOf(heldItemFollowsMouse),
-            42, 82, SettingsManager::cycleHeldItemFollowsMouse, panel, 52);
+            pos[0], pos[1], SettingsManager::cycleHeldItemFollowsMouse, panel, 52);
 
         // DisplayMoreInfo
+        pos = TOP_RIGHT.pos;
         createSetting("settings_gameplay_displayMoreInfo", String.valueOf(displayMoreInfo),
-            282, 82, SettingsManager::cycleDisplayMoreInfo, panel, 58);
+            pos[0], pos[1], SettingsManager::cycleDisplayMoreInfo, panel, 58);
     }
 
     public static void createSetting(String text, String value, int unscaledX, int unscaledY, Runnable action, JPanel panel, int id) {
