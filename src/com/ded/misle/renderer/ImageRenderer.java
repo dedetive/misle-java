@@ -21,8 +21,8 @@ public class ImageRenderer {
 
         // CHARACTER
             // PLAYER
-                PLAYER_FRONT("characters/player", "player_front.png"),
-                PLAYER_BACK("characters/player", "player_back.png"),
+                PLAYER_FRONT0("characters/player", "player_front0.png"),
+                PLAYER_FRONT1("characters/player", "player_front1.png"),
                 PLAYER_WALK0("characters/player", "player_walk0.png"),
                 PLAYER_WALK1("characters/player", "player_walk1.png"),
                 PLAYER_WALK2("characters/player", "player_walk2.png"),

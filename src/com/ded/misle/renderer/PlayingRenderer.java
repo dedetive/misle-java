@@ -102,15 +102,15 @@ public class PlayingRenderer {
 
         // Draw player sprite
         if (totalDirection == NONE) {
-            playerSprite = cachedImages.get(ImageRenderer.ImageName.PLAYER_FRONT);
+            playerSprite = cachedImages.get(ImageRenderer.ImageName.PLAYER_FRONT0);
         } else if (horizontalDirection != NONE) {
             int animationFrame = (int) ((System.currentTimeMillis() / 150) % 3);
 
             playerSprite = cachedImages.get(ImageRenderer.ImageName.valueOf("PLAYER_WALK" + animationFrame));
-        } else if (verticalDirection == UP) {
-            playerSprite = cachedImages.get(ImageRenderer.ImageName.PLAYER_BACK);
-        } else {
-            playerSprite = cachedImages.get(ImageRenderer.ImageName.PLAYER_FRONT);
+        } else if (verticalDirection != NONE) {
+            int animationFrame = (int) ((System.currentTimeMillis() / 100) % 2);
+
+            playerSprite = cachedImages.get(ImageRenderer.ImageName.valueOf("PLAYER_FRONT" + animationFrame));
         }
 
         drawRotatedImage(g2d, playerSprite,
