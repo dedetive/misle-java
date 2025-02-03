@@ -138,6 +138,13 @@ public class InventoryRenderer {
         String formattedSpeed = Long.toString(Math.round(player.attr.getSpeed()));
         formattedSpeed = formattedSpeed + LanguageManager.getText("inventory_speed_measure_word");
         drawStat(g2d, formattedSpeed, 384, 111);
+            // LEVEL
+        String levelText = LanguageManager.getText("inventory_level");
+
+        String formattedLevel = Long.toString(player.attr.getLevel());
+        formattedLevel = formattedLevel + LanguageManager.getText("inventory_level_measure_word");
+
+        drawStat(g2d, levelText + " " + formattedLevel, 336, 129);
     }
 
     private static void drawStat(Graphics2D g2d, String statText, int centerX, int y, Color textColor, Color shadowColor) {
