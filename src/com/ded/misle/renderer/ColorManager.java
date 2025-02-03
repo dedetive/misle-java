@@ -24,6 +24,16 @@ public class ColorManager {
 
     public final static Color defaultBoxColor = new Color(0xFFFFFF);
 
+    // Attribute colors
+
+    public final static Color strengthColor = new Color(0xDB963D);
+    public final static Color vitalityColor = new Color(0xDB423D);
+    public final static Color entropyColor = new Color(0xA13DDB);
+    public final static Color defenseColor = new Color(0x3D5ADB);
+    public final static Color regenerationColor = new Color(0x52DB3D);
+    public final static Color speedColor = new Color(0x3DD8DB);
+    public final static Color slingshotDamageColor = new Color(0xDB963D);
+
     // Inventory UI
 
     public final static Color selectedSlotOverlay = new Color(255, 255, 255, 100);
@@ -58,7 +68,7 @@ public class ColorManager {
         // Entropy UI
     public final static Color entropyBarShadow = defaultShadowColor;
     public final static Color entropyBarBackground = new Color(0xA0A0A0);
-    public final static Color entropyBarCurrent = new Color(0xA0A0FF);
+    public final static Color entropyBarCurrent = entropyColor;
     public final static Color entropyBarTextShadow = defaultShadowColor;
     public final static Color entropyBarText = new Color(225, 210, 170);
     public final static Color entropyBarTextCritical = new Color(255, 100, 80);
@@ -108,16 +118,6 @@ public class ColorManager {
     // Level Designer
 
     public final static Color gridColor = Color.BLACK;
-
-    // Attribute colors
-
-    public final static Color strengthColor = new Color(0xDB963D);
-    public final static Color vitalityColor = new Color(0xDB423D);
-    public final static Color entropyColor = new Color(0xA13DDB);
-    public final static Color defenseColor = new Color(0x3D5ADB);
-    public final static Color regenerationColor = new Color(0x52DB3D);
-    public final static Color speedColor = new Color(0x3DD8DB);
-    public final static Color slingshotDamageColor = new Color(0xDB963D);
 
     public enum StringToColorCode {
         SLINGSHOT_DAMAGE(LanguageManager.getText("slingshot_damage"), slingshotDamageColor),
