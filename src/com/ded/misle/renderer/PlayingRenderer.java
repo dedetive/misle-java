@@ -295,9 +295,68 @@ public class PlayingRenderer {
         }
     }
 
+    private static void drawXPBar(Graphics2D g2d) {
+        int xpBarWidth = (slotSize[0] + slotSpacing[0]) * 7;
+        int xpBarHeight = (int) (4 * scale);
+        int xpBarX = slotStartX - 4;
+        int xpBarY = inventoryBarImageY - 2 - xpBarHeight;
+        final int shadowOffset = (int) (1 * scale);
+        final int shadowWidth = xpBarWidth + shadowOffset * 2;
+        final int shadowHeight = xpBarHeight + shadowOffset * 2;
+        final int shadowX = xpBarX - shadowOffset;
+        final int shadowY = xpBarY - shadowOffset;
+        final int arcWidth = (int) (2 * scale);
+        final int arcHeight = (int) (14 * scale);
+
+        // Calculate the percentage of XP remaining
+        double xpPercentage = Math.min(player.attr.getXP() / player.attr.getXPtoLevelUp(), 1);
+
+        // Shadow
+        g2d.setColor(xpBarShadow);
+        g2d.fillRoundRect(shadowX, shadowY, shadowWidth, shadowHeight, arcWidth, arcHeight);
+
+        // Draw the background of the XP bar
+        g2d.setColor(xpBarBackground);
+        g2d.fillRoundRect(xpBarX, xpBarY, xpBarWidth, xpBarHeight, arcWidth, arcHeight);
+
+        // Draw the current XP bar
+        g2d.setColor(xpBarCurrent);
+        g2d.fillRoundRect(xpBarX, xpBarY,
+            (int) (xpBarWidth * xpPercentage), xpBarHeight, arcWidth, arcHeight);
+
+        // More info
+//        if (!Objects.equals(displayMoreInfo, "false")) {
+//            g2d.setFont(itemInfoFont);
+//
+//            String str;
+//            if (Objects.equals(displayMoreInfo, "exact")) {
+//                str = (int) player.attr.getEntropy() + "/" + (int) player.attr.getMaxEntropy();
+//            } else {
+//                str = (int) (100 * player.attr.getEntropy() / player.attr.getMaxEntropy()) + "%";
+//            }
+//
+//
+//            FontMetrics fm = g2d.getFontMetrics();
+//            int strWidth = fm.stringWidth(str);
+//            int x = entropyBarX + entropyBarWidth / 2 - strWidth / 2;
+//            int y = (int) (entropyBarY + entropyBarHeight * 1.2);
+//
+//            g2d.setColor(entropyBarTextShadow);
+//            g2d.drawString(str, (int) (x + textShadow), (int) (y + textShadow));
+//
+//            if (entropyPercentage <= 0.25)
+//                g2d.setColor(entropyBarTextCritical);
+//            else g2d.setColor(entropyBarText);
+//
+//            g2d.drawString(str, x, y);
+//        }
+    }
+
+    static int inventoryBarImageY =(int) (screenHeight - 82 * Math.pow(scale, (double) 1 /2));
     private static void drawInventoryBar(Graphics2D g2d) {
 
-        g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.INVENTORY_BAR), 0, (int) (screenHeight - 82 * Math.pow(scale, (double) 1 /2)), (int) (512 * scale), (int) (35 * scale), null);
+        g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.INVENTORY_BAR), 0, inventoryBarImageY,
+            (int) (512 * scale), (int) (35 * scale), null);
 
         // Slots info
 
@@ -409,7 +468,8 @@ public class PlayingRenderer {
 
     private static void drawUIElements(Graphics2D g2d) {
         drawHealthBar(g2d);
-//        drawEntropyBar(g2d);
+        drawEntropyBar(g2d);
+        drawXPBar(g2d);
 //        drawCoins(g2d);
         drawInventoryBar(g2d);
         drawSelectedItemName(g2d);
