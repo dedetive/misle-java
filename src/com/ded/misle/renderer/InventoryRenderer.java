@@ -168,23 +168,6 @@ public class InventoryRenderer {
         // Draw the current xp bar
         g2d.setColor(xpBarCurrent);
         g2d.fillRect(xpBarX, (int) Math.ceil((xpBarY + xpBarHeight - xpBarHeight * xpPercentage)), xpBarWidth, (int) (xpBarHeight * xpPercentage));
-
-        switch (displayMoreInfo) {
-            case "exact":
-                String formattedXP = String.valueOf(player.attr.getXP());
-                if (formattedXP.contains(".0")) formattedXP = formattedXP.substring(0, formattedXP.indexOf(".0"));
-                String formattedNecessaryXP = String.valueOf((int) player.attr.getXPtoLevelUp());
-                String text = formattedXP + "/" + formattedNecessaryXP + LanguageManager.getText("inventory_xp_measure_word");
-                drawStat(g2d, text, 430 + 7 / 2, 127);
-                break;
-            case "percentage":
-                formattedXP = String.valueOf((int) (player.attr.getXP() / player.attr.getXPtoLevelUp() * 100));
-                text = formattedXP + "% " + LanguageManager.getText("inventory_xp_measure_word");
-                drawStat(g2d, text, 430 + 7 / 2, 127);
-                break;
-            default:
-                break;
-        }
     }
 
     private static void drawStat(Graphics2D g2d, String statText, int centerX, int y, Color textColor, Color shadowColor) {
