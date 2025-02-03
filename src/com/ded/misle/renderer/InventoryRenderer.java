@@ -8,7 +8,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
+import static com.ded.misle.Launcher.displayMoreInfo;
 import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.renderer.ColorManager.*;
@@ -140,11 +142,42 @@ public class InventoryRenderer {
         drawStat(g2d, formattedSpeed, 384, 111);
             // LEVEL
         String levelText = LanguageManager.getText("inventory_level");
-
         String formattedLevel = Long.toString(player.attr.getLevel());
         formattedLevel = formattedLevel + LanguageManager.getText("inventory_level_measure_word");
-
         drawStat(g2d, levelText + " " + formattedLevel, 336, 129);
+            // XP
+        int xpBarWidth = (int) (7 * scale);
+        int xpBarHeight = (int) (70 * scale);
+        int xpBarX = (int) (430 * scale);
+        int xpBarY = (int) (40 * scale);
+        final int shadowExtra = (int) (3 * scale);
+        final int shadowWidth = xpBarWidth + shadowExtra;
+        final int shadowHeight = xpBarHeight + shadowExtra;
+        final int shadowX = xpBarX - shadowExtra / 2;
+        final int shadowY = xpBarY - shadowExtra / 2;
+        double xpPercentage = Math.clamp(player.attr.getXP() / player.attr.getXPtoLevelUp(), 0, 1);
+
+        // Shadow
+        g2d.setColor(xpBarShadow);
+        g2d.fillRect(shadowX, shadowY, shadowWidth, shadowHeight);
+
+        // Draw the background of the xp bar
+        g2d.setColor(xpBarBackground);
+        g2d.fillRect(xpBarX, xpBarY, xpBarWidth, xpBarHeight);
+
+        // Draw the current xp bar
+        g2d.setColor(xpBarCurrent);
+        g2d.fillRect(xpBarX, (int) Math.ceil((xpBarY + xpBarHeight - xpBarHeight * xpPercentage)), xpBarWidth, (int) (xpBarHeight * xpPercentage));
+
+//        if (!Objects.equals(displayMoreInfo, "false")) {
+//            String formattedXP = String.valueOf(player.attr.getXP());
+//            if (formattedXP.contains(".0")) formattedXP = formattedXP.substring(0, formattedXP.indexOf(".0"));
+//            String formattedNecessaryXP = String.valueOf((int) player.attr.getXPtoLevelUp());
+//            String text = formattedXP + "/" + formattedNecessaryXP + LanguageManager.getText("inventory_xp_measure_word");
+//            FontMetrics fm = g2d.getFontMetrics();
+//            int textWidth = fm.stringWidth(text);
+//            drawStat(g2d, text, 412, 129);
+//        }
     }
 
     private static void drawStat(Graphics2D g2d, String statText, int centerX, int y, Color textColor, Color shadowColor) {

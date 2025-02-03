@@ -437,7 +437,11 @@ public class KeyHandler implements KeyListener {
 						}
 					}
 				} else {
-					player.takeDamage(1, "normal", new String[]{}, PlayerAttributes.KnockbackDirection.DOWN);
+					if (player.keys.keyPressed.get(CTRL)) {
+						player.attr.setLevel(1);
+					} else {
+						player.attr.addXP(player.attr.getXPtoLevelUp() * 9 / 10);
+					}
 				}
 
 

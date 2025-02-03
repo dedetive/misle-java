@@ -41,6 +41,10 @@ public class ColorManager {
     public final static Color itemEffectTooltip = new Color(0xE0DE9B);
     public final static Color itemDescriptionTooltip = new Color(0xA0A0A0);
     public final static Color tooltipTextShadowColor = defaultShadowColor;
+        // XP bar
+    public final static Color xpBarShadow = defaultShadowColor;
+    public final static Color xpBarBackground = new Color(0xDFDFC8);
+    public final static Color xpBarCurrent = new Color(0xC54CFB);
 
     // Game UI
         // Health UI
