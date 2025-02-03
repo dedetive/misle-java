@@ -1,11 +1,11 @@
 package com.ded.misle.renderer;
 
+import com.ded.misle.core.GamePanel;
 import com.ded.misle.core.LanguageManager;
 import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.input.MouseHandler;
 import com.ded.misle.world.boxes.BoxHandling;
 import com.ded.misle.items.Item;
-import com.ded.misle.world.player.PlayerAttributes;
 import com.ded.misle.world.player.PlayerStats;
 
 import java.awt.*;
@@ -17,13 +17,12 @@ import java.util.Objects;
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.renderer.FloatingText.drawFloatingTexts;
-import static com.ded.misle.renderer.FloatingText.getFloatingTexts;
-import static com.ded.misle.renderer.FontManager.itemInfoFont;
+import static com.ded.misle.renderer.FontManager.*;
+import static com.ded.misle.renderer.FontManager.buttonFont;
 import static com.ded.misle.world.boxes.Box.getTexture;
 import static com.ded.misle.world.npcs.NPC.getSelectedNPCs;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.DialogRenderer.renderDialog;
-import static com.ded.misle.renderer.FontManager.coinTextFont;
 import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.renderer.ImageRenderer.cachedImages;
 import static com.ded.misle.renderer.InventoryRenderer.*;
@@ -145,6 +144,19 @@ public class PlayingRenderer {
         }
 
         if (isFading != FadingState.UNFADED) drawFading(g2d);
+
+        if (displayFPS) {
+            g2d.setFont(buttonFont);
+            String text = "FPS: " + frameCount;
+            FontMetrics fm = g2d.getFontMetrics(buttonFont);
+            int textWidth = fm.stringWidth(text);
+            int textX = (int) (screenWidth - textWidth) - 8;
+            int textY = fm.getHeight() - 8;
+            g2d.setColor(FPSShadowColor);
+            g2d.drawString(text, (int) (textX + textShadow), (int) (textY + textShadow));
+            g2d.setColor(FPSColor);
+            g2d.drawString(text, textX, textY);
+        }
 
         g2d.dispose();
     }

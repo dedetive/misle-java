@@ -256,7 +256,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public static double nsPerFrame;
 	public static double deltaTime;
 
-	AtomicLong frameCount = new AtomicLong();
+	public static AtomicLong frameCount = new AtomicLong();
 	@Override
 	public void run() {
 		long lastTime = System.nanoTime(); // Using nanoTime for precision with delta time
@@ -378,7 +378,8 @@ public class GamePanel extends JPanel implements Runnable {
 				break;
 		}
 
-		if (displayFPS) {
+		if (displayFPS && gameState != GameState.PLAYING && gameState != GameState.INVENTORY &&
+			gameState != GameState.FROZEN_PLAYING && gameState != GameState.DIALOG && gameState != GameState.LEVEL_DESIGNER) {
 			g2d.setFont(buttonFont);
 			String text = "FPS: " + frameCount;
 			FontMetrics fm = g2d.getFontMetrics(buttonFont);
