@@ -1,5 +1,6 @@
 package com.ded.misle.renderer;
 
+import com.ded.misle.core.LanguageManager;
 import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.input.MouseHandler;
 import com.ded.misle.world.boxes.BoxHandling;
@@ -325,31 +326,26 @@ public class PlayingRenderer {
             (int) (xpBarWidth * xpPercentage), xpBarHeight, arcWidth, arcHeight);
 
         // More info
-//        if (!Objects.equals(displayMoreInfo, "false")) {
-//            g2d.setFont(itemInfoFont);
-//
-//            String str;
-//            if (Objects.equals(displayMoreInfo, "exact")) {
-//                str = (int) player.attr.getEntropy() + "/" + (int) player.attr.getMaxEntropy();
-//            } else {
-//                str = (int) (100 * player.attr.getEntropy() / player.attr.getMaxEntropy()) + "%";
-//            }
-//
-//
-//            FontMetrics fm = g2d.getFontMetrics();
-//            int strWidth = fm.stringWidth(str);
-//            int x = entropyBarX + entropyBarWidth / 2 - strWidth / 2;
-//            int y = (int) (entropyBarY + entropyBarHeight * 1.2);
-//
-//            g2d.setColor(entropyBarTextShadow);
-//            g2d.drawString(str, (int) (x + textShadow), (int) (y + textShadow));
-//
-//            if (entropyPercentage <= 0.25)
-//                g2d.setColor(entropyBarTextCritical);
-//            else g2d.setColor(entropyBarText);
-//
-//            g2d.drawString(str, x, y);
-//        }
+        if (!Objects.equals(displayMoreInfo, "false")) {
+            g2d.setFont(itemInfoFont);
+
+            String str;
+            if (Objects.equals(displayMoreInfo, "exact")) {
+                str = (int) player.attr.getXP() + "/" + (int) player.attr.getXPtoLevelUp();
+            } else {
+                str = (int) (100 * player.attr.getXP() / player.attr.getXPtoLevelUp()) + "%";
+            }
+            str = str + LanguageManager.getText("inventory_xp_measure_word");
+
+            int x = xpBarX + xpBarWidth + 6;
+            int y = (int) (xpBarY + xpBarHeight * 1.2);
+
+            g2d.setColor(xpBarTextShadow);
+            g2d.drawString(str, (int) (x + textShadow), (int) (y + textShadow));
+
+            g2d.setColor(xpBarText);
+            g2d.drawString(str, x, y);
+        }
     }
 
     static int inventoryBarImageY =(int) (screenHeight - 82 * Math.pow(scale, (double) 1 /2));

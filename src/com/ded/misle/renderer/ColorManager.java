@@ -62,6 +62,9 @@ public class ColorManager {
     public final static Color entropyBarTextShadow = defaultShadowColor;
     public final static Color entropyBarText = new Color(225, 210, 170);
     public final static Color entropyBarTextCritical = new Color(255, 100, 80);
+        // XP UI
+    public final static Color xpBarTextShadow = defaultShadowColor;
+    public final static Color xpBarText = new Color(225, 210, 170);
         // Coins
     public final static Color coinTextUI = new Color(225, 210, 170);
     public final static Color coinTextShadowColor = defaultShadowColor;
