@@ -1,5 +1,6 @@
 package com.ded.misle.world.boxes;
 
+import com.ded.misle.core.LanguageManager;
 import com.ded.misle.renderer.FloatingText;
 import com.ded.misle.world.enemies.Enemy;
 import com.ded.misle.world.npcs.NPC;
@@ -18,7 +19,6 @@ import static com.ded.misle.core.PhysicsEngine.ObjectType.HP_BOX;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.boxes.BoxManipulation.moveCollisionBox;
 import static com.ded.misle.world.chests.DropTable.getDropTableItemID;
-import static com.ded.misle.world.enemies.Enemy.getEnemyBoxes;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.*;
 
@@ -106,7 +106,15 @@ public class HPBox extends Box {
                     this.spawnItem(canGoMinus, canGoPlus, id, count);
 
                     if (this instanceof Enemy) {
-                        player.attr.addXP(((Enemy) this).getXPDrop());
+                        double xpGain = ((Enemy) this).getXPDrop();
+                        player.attr.addXP(xpGain);
+                        int playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()) / scale);
+                        int playerScreenY = (int) ((player.getY() - player.pos.getCameraOffsetY()) / scale);
+                        int randomPosX = (int) ((Math.random() * (40 + 40)) - 40);
+                        int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
+                        DecimalFormat df = new DecimalFormat("#.##");
+                        String formattedXPGain = df.format(xpGain);
+                        new FloatingText("+" + formattedXPGain + LanguageManager.getText("xp"), xpGainColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
                     }
                 }
 

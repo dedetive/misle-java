@@ -18,6 +18,7 @@ public class ColorManager {
     public final static Color damageColor = new Color(0xDE4040);
     public final static Color healColor = new Color(0x50EE50);
     public final static Color entropyGainColor = new Color(0xA0A0FF);
+    public final static Color xpGainColor = new Color(0xC07DE4);
     public final static Color floatingTextShadow = defaultShadowColor;
 
     // Boxes
@@ -54,7 +55,7 @@ public class ColorManager {
         // XP bar
     public final static Color xpBarShadow = defaultShadowColor;
     public final static Color xpBarBackground = new Color(0xDFDFC8);
-    public final static Color xpBarCurrent = new Color(0xC54CFB);
+    public final static Color xpBarCurrent = new Color(0xC07DE4);
 
     // Game UI
         // Health UI
