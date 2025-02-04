@@ -4,8 +4,11 @@ import com.ded.misle.core.LanguageManager;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.ded.misle.renderer.ImageRenderer.cachedImages;
 
 public class ColorManager {
 
@@ -183,7 +186,7 @@ public class ColorManager {
             }
         }
 
-        if (!text.contains("c{") || forceBaseColor) {
+        if (!text.contains("c{") && !text.contains("i{") || forceBaseColor) {
             text = removeColorIndicators(text);
             g2d.setColor(baseColor);
             g2d.drawString(text, x, y);
@@ -214,18 +217,73 @@ public class ColorManager {
 
             // Draw stuff
             g2d.setFont(font);
+            FontMetrics fm = g2d.getFontMetrics();
+            int fontHeight = fm.getHeight(); // Height of the font, used for image size
+
             for (String[] part : parts) {
                 String snippet = part[0];
-                Color color = new Color(0xFFFFFF);
+
+                HashMap<Integer, ImageRenderer.ImageName> skipPos = new HashMap<>();
+
+                if (snippet.contains("i{")) {
+                    StringBuilder cleanText = new StringBuilder();
+                    int offset = 0;
+
+                    String[] separatedText = snippet.split("i\\{");
+                    for (int i = 0; i < separatedText.length; i++) {
+                        String fragment = separatedText[i];
+                        if (i == 0) {
+                            cleanText.append(fragment);
+                            offset += fragment.length();
+                        } else {
+                            if (fragment.contains("}")) {
+                                String[] insideImageIndicator = fragment.split("}");
+                                ImageRenderer.ImageName imageName = ImageRenderer.ImageName.valueOf(insideImageIndicator[0]);
+
+                                skipPos.put(offset, imageName);
+                                offset += 1; // Placeholder for image
+                                cleanText.append(" "); // Add space for positioning text after image
+                                if (insideImageIndicator.length > 1) {
+                                    cleanText.append(insideImageIndicator[1]);
+                                    offset += insideImageIndicator[1].length();
+                                }
+                            } else {
+                                cleanText.append(fragment);
+                                offset += fragment.length();
+                            }
+                        }
+                    }
+                    snippet = cleanText.toString();
+                }
+
+                Color color;
                 try {
                     color = "BASE".equals(part[1]) ? baseColor : Color.decode(part[1]);
                 } catch (NumberFormatException e) {
                     color = "BASE".equals(part[1]) ? baseColor : ColorConstant.valueOf(part[1]).color;
                 }
                 g2d.setColor(color);
-                g2d.drawString(snippet, x, y);
-                x += g2d.getFontMetrics().stringWidth(snippet); // Move x forward
+
+                int charX = x;
+                for (int i = 0; i < snippet.length(); i++) {
+                    if (skipPos.containsKey(i)) {
+                        ImageRenderer.ImageName imageName = skipPos.get(i);
+                        Image img = cachedImages.get(imageName);
+
+                        if (img != null) {
+                            g2d.drawImage(img, charX, y - fontHeight, (int) (fontHeight * 1.1), (int) (fontHeight * 1.1), null);
+                            charX += fontHeight; // Move cursor forward by the image width
+                        }
+                    } else {
+                        String letter = String.valueOf(snippet.charAt(i));
+                        g2d.drawString(letter, charX, y);
+                        charX += fm.charWidth(snippet.charAt(i)); // Move x forward by character width
+                    }
+                }
+
+                x = charX; // Update x position for the next snippet
             }
+
         }
     }
 
