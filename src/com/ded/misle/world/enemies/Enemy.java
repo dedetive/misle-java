@@ -22,6 +22,8 @@ public class Enemy extends HPBox {
 
     private static List<Enemy> enemyBoxes = new ArrayList<>();
 
+    private double xpDrop = 0;
+
     // INITIALIZATION
 
     public Enemy(double x, double y, EnemyType enemyType, double magnification) {
@@ -67,6 +69,7 @@ public class Enemy extends HPBox {
                 this.setTexture("solid");
                 this.setColor(new Color(0xA02020));
                 this.setDropTableName("mountain");
+                this.xpDrop = 100;
             }
             case GOBLIN -> {
                 maxHP = 20;
@@ -80,6 +83,7 @@ public class Enemy extends HPBox {
                 this.setBoxScaleHorizontal(0.75);
                 this.setBoxScaleVertical(0.75);
                 this.setDropTableName("goblin");
+                this.xpDrop = 1;
                 this.maxPersonalBreadcrumbs = (int) (Math.random() * (5 - 2) + 2);
                 this.personalBreadcrumbUpdateInterval = (long) (Math.random() * (1400 - 200) + 200);
                 updatePersonalBreadcrumbs();
@@ -111,6 +115,8 @@ public class Enemy extends HPBox {
     }
 
     public EnemyType getEnemyType() { return enemyType; }
+
+    public double getXPDrop() { return xpDrop; }
 
     // BREADCRUMBS
 

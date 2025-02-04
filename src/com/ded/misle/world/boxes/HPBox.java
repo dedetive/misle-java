@@ -104,6 +104,10 @@ public class HPBox extends Box {
                     int count = results[1];
 
                     this.spawnItem(canGoMinus, canGoPlus, id, count);
+
+                    if (this instanceof Enemy) {
+                        player.attr.addXP(((Enemy) this).getXPDrop());
+                    }
                 }
 
                 HPBoxes.remove(this);
