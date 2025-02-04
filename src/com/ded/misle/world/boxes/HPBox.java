@@ -126,13 +126,9 @@ public class HPBox extends Box {
                         player.attr.addBalance(coinGain);
 
                         FontMetrics fm = getWindow().getFontMetrics(itemInfoFont);
-                        int newY = playerScreenY + randomPosY + fm.getHeight() / 4;
-                        String formattedCoinGain = "+" + coinGain;
+                        int newY = (int) (playerScreenY + randomPosY + fm.getHeight() / scale);
+                        String formattedCoinGain = "+" + coinGain + "i{COIN}";
                         new FloatingText(formattedCoinGain, coinGainColor, playerScreenX + randomPosX, newY, true);
-//                        int textWidth = fm.stringWidth(formattedCoinGain);
-//                        int newX = playerScreenX + randomPosX + textWidth;
-//                        Graphics2D g2d = (Graphics2D) getWindow().getGraphics();
-//                        g2d.drawImage(cachedImages.get(COIN), (int) (newX * scale), (int) (newY * scale), fm.getHeight(), fm.getHeight(), null);
                     }
                 }
 

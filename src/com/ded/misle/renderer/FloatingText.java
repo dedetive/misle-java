@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.renderer.ColorManager.drawColoredText;
 import static com.ded.misle.renderer.ColorManager.floatingTextShadow;
+import static com.ded.misle.renderer.FontManager.itemInfoFont;
 
 public class FloatingText {
     private static final ArrayList<FloatingText> floatingTexts = new ArrayList<>();
@@ -52,11 +54,16 @@ public class FloatingText {
                 continue;
             }
 
-            g2d.setFont(FontManager.itemInfoFont);
-            g2d.setColor(floatingTextShadow);
-            g2d.drawString(floatingText.text, (int) ((floatingText.position.x) * scale + MainRenderer.textShadow), (int) ((floatingText.position.y) * scale + MainRenderer.textShadow));
-            g2d.setColor(floatingText.color);
-            g2d.drawString(floatingText.text, (int) (floatingText.position.x * scale), (int) (floatingText.position.y * scale));
+            Font font = itemInfoFont;
+            int x = (int) ((floatingText.position.x) * scale);
+            int y = (int) ((floatingText.position.y) * scale);
+
+            // SHADOW
+            drawColoredText(g2d, floatingText.text, (int) (x + MainRenderer.textShadow),
+                (int) (y + MainRenderer.textShadow), font, floatingTextShadow, false);
+
+            // REGULAR
+            drawColoredText(g2d, floatingText.text, x, y, font, floatingText.color, false);
         }
     }
 
