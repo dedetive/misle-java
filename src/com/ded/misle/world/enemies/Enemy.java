@@ -5,6 +5,7 @@ import com.ded.misle.world.boxes.HPBox;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.GamePanel.player;
@@ -23,6 +24,7 @@ public class Enemy extends HPBox {
     private static List<Enemy> enemyBoxes = new ArrayList<>();
 
     private double xpDrop = 0;
+    private int[] coinDrop = new int[]{0, 0};
 
     // INITIALIZATION
 
@@ -69,21 +71,29 @@ public class Enemy extends HPBox {
                 this.setTexture("solid");
                 this.setColor(new Color(0xA02020));
                 this.setDropTableName("mountain");
-                this.xpDrop = 100;
+                this.xpDrop = 50;
+                this.coinDrop = new int[]{0, 20};
             }
             case GOBLIN -> {
+                // Attributes
                 maxHP = 20;
                 damage = 3;
                 damageRate = 400;
 
+                // Structural
                 this.setHasCollision(false);
 //                this.setTexture("solid");
 //                this.setColor(new Color(0x106000));
                 this.setTexture("../characters/enemy/goblin");
                 this.setBoxScaleHorizontal(0.75);
                 this.setBoxScaleVertical(0.75);
+
+                // Drops
                 this.setDropTableName("goblin");
                 this.xpDrop = 1;
+                this.coinDrop = new int[]{1, 3};
+
+                // Breadcrumbs
                 this.maxPersonalBreadcrumbs = (int) (Math.random() * (5 - 2) + 2);
                 this.personalBreadcrumbUpdateInterval = (long) (Math.random() * (1400 - 200) + 200);
                 updatePersonalBreadcrumbs();
@@ -117,6 +127,8 @@ public class Enemy extends HPBox {
     public EnemyType getEnemyType() { return enemyType; }
 
     public double getXPDrop() { return xpDrop; }
+
+    public int getCoinDrop() { return ThreadLocalRandom.current().nextInt(coinDrop[0], coinDrop[1] + 1); }
 
     // BREADCRUMBS
 

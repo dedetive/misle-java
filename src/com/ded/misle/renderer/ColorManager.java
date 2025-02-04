@@ -19,6 +19,7 @@ public class ColorManager {
     public final static Color healColor = new Color(0x50EE50);
     public final static Color entropyGainColor = new Color(0xA0A0FF);
     public final static Color xpGainColor = new Color(0xC07DE4);
+    public final static Color coinGainColor = new Color(0xFFF989);
     public final static Color floatingTextShadow = defaultShadowColor;
 
     // Boxes

@@ -7,15 +7,20 @@ import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.world.player.Player;
 import com.ded.misle.world.player.PlayerAttributes;
 
+import java.awt.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.ded.misle.core.GamePanel.getWindow;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.PhysicsEngine.ObjectType.HP_BOX;
+import static com.ded.misle.renderer.FontManager.itemInfoFont;
+import static com.ded.misle.renderer.ImageRenderer.ImageName.COIN;
+import static com.ded.misle.renderer.ImageRenderer.cachedImages;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.boxes.BoxManipulation.moveCollisionBox;
 import static com.ded.misle.world.chests.DropTable.getDropTableItemID;
@@ -108,13 +113,26 @@ public class HPBox extends Box {
                     if (this instanceof Enemy) {
                         double xpGain = ((Enemy) this).getXPDrop();
                         player.attr.addXP(xpGain);
+
                         int playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()) / scale);
                         int playerScreenY = (int) ((player.getY() - player.pos.getCameraOffsetY()) / scale);
                         int randomPosX = (int) ((Math.random() * (40 + 40)) - 40);
                         int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
                         DecimalFormat df = new DecimalFormat("#.##");
-                        String formattedXPGain = df.format(xpGain);
-                        new FloatingText("+" + formattedXPGain + LanguageManager.getText("xp"), xpGainColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+                        String formattedXPGain = "+" + df.format(xpGain) + LanguageManager.getText("xp");
+                        new FloatingText(formattedXPGain, xpGainColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+
+                        int coinGain = ((Enemy) this).getCoinDrop();
+                        player.attr.addBalance(coinGain);
+
+                        FontMetrics fm = getWindow().getFontMetrics(itemInfoFont);
+                        int newY = playerScreenY + randomPosY + fm.getHeight() / 4;
+                        String formattedCoinGain = "+" + coinGain;
+                        new FloatingText(formattedCoinGain, coinGainColor, playerScreenX + randomPosX, newY, true);
+//                        int textWidth = fm.stringWidth(formattedCoinGain);
+//                        int newX = playerScreenX + randomPosX + textWidth;
+//                        Graphics2D g2d = (Graphics2D) getWindow().getGraphics();
+//                        g2d.drawImage(cachedImages.get(COIN), (int) (newX * scale), (int) (newY * scale), fm.getHeight(), fm.getHeight(), null);
                     }
                 }
 
