@@ -92,6 +92,7 @@ public class ColorManager {
     public final static Color buttonTextColor = new Color(0xe3c2a1);
     public final static Color buttonTextShadowColor = defaultShadowColor;
     public final static Color buttonBorderColor = defaultShadowColor;
+    public final static Color buttonFadingColor = new Color(0xdfdaba);
         // Menus themselves
     public final static Color menuBackgroundColor = new Color(0x9d7a53);
     public final static Color menuTitleColor = new Color(0xd1d1ab);

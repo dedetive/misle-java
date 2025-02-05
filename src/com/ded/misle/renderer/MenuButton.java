@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.ded.misle.core.GamePanel.deltaTime;
 import static com.ded.misle.core.GamePanel.gameState;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.MainRenderer.textShadow;
@@ -27,6 +28,8 @@ public class MenuButton {
     String text;
     int id;
     boolean needsToUpdate;
+    MainRenderer.FadingState fadingState;
+    float fadingProgress = 0F;
 
     private static final List<MenuButton> buttons = new ArrayList<>();
 
@@ -65,6 +68,8 @@ public class MenuButton {
                 Point clickPoint = e.getPoint();
                 for (MenuButton button : buttons) {
                     if (button.bounds.contains(clickPoint)) {
+//                        button.fadingState = MainRenderer.FadingState.FADING_OUT;
+//                        button.fadingProgress = 0.75F;
                         button.action.run();
                         panel.setCursor(Cursor.getDefaultCursor());
                         clearButtons();
@@ -167,6 +172,21 @@ public class MenuButton {
 
             // ACTUAL TEXT
             drawColoredText(g2d, button.text, textX, textY, g2d.getFont(), buttonTextColor, false);
+
+            // FADING
+            if (button.fadingState == MainRenderer.FadingState.FADING_OUT || button.fadingState == MainRenderer.FadingState.SLOWLY_FADING_OUT
+            || button.fadingState == MainRenderer.FadingState.FADED) {
+                Color fadingColor = new Color((float) buttonFadingColor.getRed() / 256, (float) buttonFadingColor.getGreen() / 256,
+                    (float) buttonFadingColor.getBlue() / 256, button.fadingProgress);
+                g2d.setColor(fadingColor);
+                g2d.fillRoundRect(button.bounds.x, button.bounds.y, button.bounds.width, button.bounds.height,
+                    buttonBorderSize, buttonBorderSize);
+
+                button.fadingProgress = Math.max((float) (button.fadingProgress - 0.03 * deltaTime * 80), 0);
+                if (button.fadingProgress <= 0) {
+                    button.fadingState = MainRenderer.FadingState.UNFADED;
+                }
+            }
         }
     }
 
