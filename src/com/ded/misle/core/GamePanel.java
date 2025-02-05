@@ -343,7 +343,7 @@ public class GamePanel extends JPanel implements Runnable {
 		for (HPBox box : getHPBoxes()) {
 			box.updateRegenerationHP(currentTime);
 		}
-		keyH.updateKeys(mouseHandler);  // Check for player input and update position accordingly
+		keyH.updateKeys(mouseHandler);
 		mouseHandler.updateMouse();
 		}
 

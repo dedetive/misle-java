@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -27,7 +28,7 @@ public class Item {
 	private final String rarity;
 	private final String type;
 	private final String displayType;
-	private int resourceID;
+	private BufferedImage icon;
 	private final Map<String, Object> attributes; // Holds dynamic attributes
 	private int count;
 	private long timeToDelay;
@@ -38,6 +39,8 @@ public class Item {
 	private double animationX;
 	private double animationY;
 	private double animationBulk;
+
+	HashMap<Integer, BufferedImage> iconCache = new HashMap<>();
 
 	// Constructor that takes only ID and sets default count to 1
 	public Item(int id) throws Exception {
@@ -57,7 +60,6 @@ public class Item {
 			this.type = itemDetails.getType();
 			this.displayType = LanguageManager.getText("TYPE_" + itemDetails.getType());
 			this.displayEffect = LanguageManager.getText(normalizedName + "_EFFECT");
-			this.resourceID = itemDetails.getResourceID();
 			this.attributes = itemDetails.getAttributes();
 			this.timeToDelay = currentTimeMillis();
 			this.active = true;
@@ -66,6 +68,27 @@ public class Item {
 			this.animationX = 0;
 			this.animationY = 0;
 			this.animationBulk = 1;
+			if (iconCache.containsKey(id)) {
+				this.icon = iconCache.get(id);
+			} else {
+				Path basePath = getPath().resolve("resources/images/items");
+				Path filePath = basePath.resolve(itemDetails.getResourceID() + ".png");
+
+				try {
+					this.icon = ImageIO.read(filePath.toFile());
+					iconCache.put(id, this.icon);
+				} catch (IOException e) {
+					System.out.println("Can't find item texture " + filePath + "!");
+					try {
+						this.icon = ImageIO.read(basePath.resolve(1 + ".png").toFile());
+						iconCache.put(id, this.icon);
+					} catch (IOException exc) {
+						System.out.println("Can't find base item texture " + filePath + "!");
+						this.icon = null;
+					}
+				}
+			}
+
 		} else {
 			throw new Exception("Item with ID " + id + " not found.");
 		}
@@ -135,19 +158,30 @@ public class Item {
 	}
 
 	public BufferedImage getIcon() {
-		Path basePath = getPath().resolve("resources/images/items"); // Directory where images are stored
-		Path filePath = basePath.resolve(resourceID + ".png");  // Assuming the icon files are named based on resourceID
-
-		try {
-			return ImageIO.read(filePath.toFile());
-		} catch (IOException e) {
-			System.out.println("Can't find item texture " + filePath + "!");
-			return null; // Return null if image fails to load
-		}
+		return this.icon;
 	}
 
 	public void setIcon(int resourceID) {
-		this.resourceID = resourceID;
+		if (iconCache.containsKey(id)) {
+			this.icon = iconCache.get(id);
+		} else {
+			Path basePath = getPath().resolve("resources/images/items");
+			Path filePath = basePath.resolve(resourceID + ".png");
+
+			try {
+				this.icon = ImageIO.read(filePath.toFile());
+				iconCache.put(id, this.icon);
+			} catch (IOException e) {
+				System.out.println("Can't find item texture " + filePath + "!");
+				try {
+					this.icon = ImageIO.read(basePath.resolve(1 + ".png").toFile());
+					iconCache.put(id, this.icon);
+				} catch (IOException exc) {
+					System.out.println("Can't find base item texture " + filePath + "!");
+					this.icon = null;
+				}
+			}
+		}
 	}
 
 	public static Box createDroppedItem(double x, double y, int id, int count) {
