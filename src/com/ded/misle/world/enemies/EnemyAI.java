@@ -73,14 +73,27 @@ public class EnemyAI  {
         double rand = (Math.random() * (7 - 1) + 1);
         double moveX = Math.clamp(distanceX, -1, 1) * rand;
         double moveY = Math.clamp(distanceY, -1, 1) * rand;
-        if (!isPixelOccupied(enemy, enemy.getX() + moveX, enemy.getY() + moveY,
-            tileSize, 7, PlayerAttributes.KnockbackDirection.NONE, Enemy.EnemyType.GOBLIN)) {
-            if (!(enemy.isMoving) &&
-                Math.abs(distanceX) < 140 &&
-                Math.abs(distanceY) < 140) {
-                moveCollisionBox(enemy, moveX, moveY, rand * 4);
-                isPixelOccupied(player, tileSize, 8, PlayerAttributes.KnockbackDirection.NONE);
+        if (!(enemy.isMoving)) {
+            boolean withinDistance = Math.abs(distanceX) < 140 && Math.abs(distanceY) < 140;
+
+            if (!isPixelOccupied(enemy, enemy.getX() + moveX, enemy.getY(),
+                tileSize, 7, PlayerAttributes.KnockbackDirection.NONE, Enemy.EnemyType.GOBLIN)) {
+                if (withinDistance) {
+                    moveCollisionBox(enemy, moveX, 0, rand * 4);
+                    isPixelOccupied(player, tileSize, 8, PlayerAttributes.KnockbackDirection.NONE);
+                }
+            }
+            if (!isPixelOccupied(enemy, enemy.getX(), enemy.getY() + moveY,
+                tileSize, 7, PlayerAttributes.KnockbackDirection.NONE, Enemy.EnemyType.GOBLIN)) {
+                if (withinDistance) {
+                    moveCollisionBox(enemy, 0, moveY, rand * 4);
+                    isPixelOccupied(player, tileSize, 8, PlayerAttributes.KnockbackDirection.NONE);
+                }
             }
         }
+    }
+
+    private static void moveEnemy() {
+
     }
 }

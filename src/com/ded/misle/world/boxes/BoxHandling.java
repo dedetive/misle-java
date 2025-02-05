@@ -8,6 +8,7 @@ import com.ded.misle.world.player.Player;
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import static com.ded.misle.core.GamePanel.player;
@@ -522,15 +523,19 @@ public class BoxHandling {
 	}
 
 	public static List<NPC> getNPCsInRange(double x, double y, double range) {
-		List<NPC> npcsInRange = new ArrayList<>();
-		for (Box box : getCachedBoxes(9)) {
-			if (box.getObjectType() != PhysicsEngine.ObjectType.NPC) continue;
+		try {
+			List<NPC> npcsInRange = new ArrayList<>();
+			for (Box box : getCachedBoxes(9)) {
+				if (box.getObjectType() != PhysicsEngine.ObjectType.NPC) continue;
 
-			if (checkIfBoxInRange(box, x, y, range)) {
-				npcsInRange.add((NPC) box);
+				if (checkIfBoxInRange(box, x, y, range)) {
+					npcsInRange.add((NPC) box);
+				}
 			}
+			return npcsInRange;
+		} catch (ConcurrentModificationException e) {
+			return new ArrayList<>();
 		}
-		return npcsInRange;
 	}
 
 	public static List<NPC> getInteractableNPCsInRange(double x, double y, double range) {
