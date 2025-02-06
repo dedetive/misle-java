@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,8 +29,8 @@ public class MenuButton {
     String text;
     int id;
     boolean needsToUpdate;
-    MainRenderer.FadingState fadingState;
-    float fadingProgress = 0F;
+    static HashMap<Integer, MainRenderer.FadingState> fadingState = new HashMap<>();
+    static HashMap<Integer, Float> fadingProgress = new HashMap<>();
 
     private static final List<MenuButton> buttons = new ArrayList<>();
 
@@ -65,17 +66,17 @@ public class MenuButton {
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Point clickPoint = e.getPoint();
-                for (MenuButton button : buttons) {
-                    if (button.bounds.contains(clickPoint)) {
-//                        button.fadingState = MainRenderer.FadingState.FADING_OUT;
-//                        button.fadingProgress = 0.75F;
-                        button.action.run();
-                        panel.setCursor(Cursor.getDefaultCursor());
-                        clearButtons();
-                        break;
-                    }
+            Point clickPoint = e.getPoint();
+            for (MenuButton button : buttons) {
+                if (button.bounds.contains(clickPoint)) {
+                    fadingState.put(button.id, MainRenderer.FadingState.FADING_OUT);
+                    fadingProgress.put(button.id, 0.75F);
+                    button.action.run();
+                    panel.setCursor(Cursor.getDefaultCursor());
+                    clearButtons();
+                    break;
                 }
+            }
             }
         });
         button.needsToUpdate = false;
@@ -174,23 +175,25 @@ public class MenuButton {
             drawColoredText(g2d, button.text, textX, textY, g2d.getFont(), buttonTextColor, false);
 
             // FADING
-            if (button.fadingState == MainRenderer.FadingState.FADING_OUT || button.fadingState == MainRenderer.FadingState.SLOWLY_FADING_OUT
-            || button.fadingState == MainRenderer.FadingState.FADED) {
+            if (fadingState.containsKey(button.id)) {
+                float progress = fadingProgress.get(button.id);
                 Color fadingColor = new Color((float) buttonFadingColor.getRed() / 256, (float) buttonFadingColor.getGreen() / 256,
-                    (float) buttonFadingColor.getBlue() / 256, button.fadingProgress);
+                    (float) buttonFadingColor.getBlue() / 256, progress);
                 g2d.setColor(fadingColor);
                 g2d.fillRoundRect(button.bounds.x, button.bounds.y, button.bounds.width, button.bounds.height,
                     buttonBorderSize, buttonBorderSize);
 
-                button.fadingProgress = Math.max((float) (button.fadingProgress - 0.03 * deltaTime * 80), 0);
-                if (button.fadingProgress <= 0) {
-                    button.fadingState = MainRenderer.FadingState.UNFADED;
+                fadingProgress.put(button.id, Math.max((float) (progress - 0.015 * deltaTime * 80), 0));
+                if (progress <= 0) {
+                    fadingState.put(button.id, MainRenderer.FadingState.UNFADED);
                 }
             }
         }
     }
 
 
-    public static void clearButtons() { buttons.clear(); }
+    public static void clearButtons() {
+        buttons.clear();
+    }
 }
 
