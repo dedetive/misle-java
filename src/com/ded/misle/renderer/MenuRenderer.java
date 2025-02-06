@@ -50,6 +50,7 @@ public class MenuRenderer {
         MainRenderer.previousMenu = MainRenderer.currentMenu;
         MainRenderer.currentMenu = OPTIONS_MENU;
         gameState = OPTIONS_MENU;
+        clearButtonFading();
     }
 
     public static void goToPreviousMenu() {
@@ -58,6 +59,7 @@ public class MenuRenderer {
         gameState = newGameState;
         MainRenderer.previousMenu = MainRenderer.currentMenu;
         currentMenu = newGameState;
+        clearButtonFading();
     }
 
     public static void goToMainMenu() {
@@ -66,14 +68,16 @@ public class MenuRenderer {
         player.unloadPlayer();
         MainRenderer.previousMenu = MainRenderer.currentMenu;
         gameState = MAIN_MENU;
-        fadingProgress = 0F;
+        MainRenderer.fadingProgress = 0F;
         isFading = FadingState.UNFADED;
+        clearButtonFading();
     }
 
     public static void pauseGame() {
         MainRenderer.previousMenu = MainRenderer.currentMenu;
         MainRenderer.currentMenu = PAUSE_MENU;
         gameState = PAUSE_MENU;
+        clearButtonFading();
     }
 
     public static void renderMainMenu(Graphics g, JPanel panel) {
