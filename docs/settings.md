@@ -5,7 +5,7 @@ To modify default settings, either change in-game options or edit `misle-java-ma
 Each setting uses the format:  
 `parameterName = value`
 
-## Available Parameters:
+## Available Parameters
 
 | Setting              | Explanation                                                  | Options                                                       | Default  |
 |----------------------|--------------------------------------------------------------|---------------------------------------------------------------|----------|

@@ -40,5 +40,5 @@ Again, I profoundly thank you and everyone who is reading this.
 - [Settings](docs/settings.md)
 - [Known Issues](docs/known_issues.md)
 - [How to Add New Items](docs/adding_items.md)
-- 
+
 [//]: # (- [How to Add New Rooms]&#40;docs/adding_rooms.md&#41;)
