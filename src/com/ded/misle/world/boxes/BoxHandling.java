@@ -13,7 +13,6 @@ import java.util.List;
 
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.GamePanel.tileSize;
-import static com.ded.misle.Launcher.levelDesigner;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.world.boxes.HPBox.clearHPBoxes;
 import static com.ded.misle.world.boxes.HPBox.getHPBoxes;

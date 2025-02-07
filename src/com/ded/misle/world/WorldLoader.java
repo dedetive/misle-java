@@ -2,6 +2,7 @@ package com.ded.misle.world;
 
 import com.ded.misle.world.enemies.Enemy;
 import com.ded.misle.world.npcs.NPC;
+import com.ded.misle.world.player.PlayerPosition;
 
 import java.awt.*;
 
@@ -12,6 +13,7 @@ import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.boxes.BoxHandling.EditBoxKeys.*;
 import static com.ded.misle.world.boxes.BoxHandling.LineAddBoxModes.FILL;
 import static com.ded.misle.world.boxes.BoxHandling.LineAddBoxModes.HOLLOW;
+import static com.ded.misle.world.enemies.Enemy.EnemyType.GOBLIN;
 import static com.ded.misle.world.npcs.NPC.InteractionType.DIALOG;
 import static com.ded.misle.world.npcs.NPC.InteractionType.NONE;
 
@@ -20,7 +22,48 @@ public class WorldLoader {
 		System.out.println("Loading room: " + roomIDToName(player.pos.getRoomID()));
 		switch (roomIDToName(player.pos.getRoomID())) {
 			case VOID -> {
-				;
+				// Setup
+					int worldWidth = 0;
+					int worldHeight = 0;
+					setupWorld(worldWidth, worldHeight);
+				// Building Boxes
+					// Here is where structural boxes should be placed, such as walls.
+					lineAddBox(0, 0, 4, 4, "wall_default", HOLLOW);
+					// Typically, more specific structures such as houses inside a city should be left to the bottom of this section.
+
+				// Chests
+					// Type of chest must be specified.
+					addBox(20, 20, "mountain_chest");
+
+				// Spawnpoint Box
+					///  There should ideally be either 0 or 1 spawnpoint per room,
+					/// and where player should spawn is specified in [PlayerPosition#reloadSpawnpoint()].
+					addBox(40, 20, "spawnpoint");
+
+				// Travel Boxes
+					///  First line is to add the boxes with the travel preset,
+					/// second line is to edit the boxes to have the specified travel property (room to travel to, position).
+					/// All of which are specified in the [RoomManager.TravelTransition].
+					int travelBoxesAdded = lineAddBox(60, 60, 3, 1, "travel", FILL);
+					editLastBox(EFFECT, "{travel, TUANI_CITY_TO_1}", travelBoxesAdded);
+
+				// Enemies
+					/// Valid enemies are specified in [Enemy.EnemyType].
+					/// Magnification affects only MAX HP and DAMAGE.
+					new Enemy(200, 200, GOBLIN, 1);
+
+				// NPCs
+					/// Valid NPC types are specified in [NPC.InteractionType].
+					/// Dialogs can be modified in the language property files, such as
+					/// resources/lang/messages_en_US.properties. They are written in the format
+					/// DIALOG_{ID}.{DIALOG_NUMBER_ORDER}. The DIALOG_{ID} without the number order
+					/// must be an integer that represents the final ID to be shown to the player.
+					/// Alternatively to the COLOR, there should be their TEXTURE.
+					NPC magentaBlock = new NPC(240, 200, DIALOG);
+					editBox(magentaBlock, COLOR, "#FF00FF");
+					magentaBlock.setDialogID(2);
+					magentaBlock.setName("Magenta block");
+					magentaBlock.setNameColor(new Color(0xFF00FF));
 			}
 			case TUANI_CITY -> {
 				//Setup
@@ -62,7 +105,7 @@ public class WorldLoader {
 				addBox(382, 502);
 				editLastBox(EditBoxKeys.COLOR, "#A02020");
 
-				// For travelling to cliff
+				// Travel Boxes
 				int travelBoxesAdded = lineAddBox(440, 10, 6, 1, "travel", FILL);
 				editLastBox(EFFECT, "{travel, TUANI_CITY_TO_1}", travelBoxesAdded);
 
@@ -145,15 +188,24 @@ public class WorldLoader {
 				lineAddBox(1170, -7, 1, 500 / 20 - 5, "wall_default", FILL);
 				editLastBox(TEXTURE, "wall_default", 1);
 
+				// Travel Boxes
+					// TUANI_1_TO_CITY
 				int travelBoxesAdded = lineAddBox(250, 460, 6, 1, "travel", FILL);
 				editLastBox(EFFECT, "{travel, TUANI_1_TO_CITY}", travelBoxesAdded);
+					// TUANI_1_TO_2
+				travelBoxesAdded = lineAddBox(((double) 1190 / 20 - 8) * 20, 10, 7, 1, "travel", FILL);
+				editLastBox(EFFECT, "{travel, TUANI_1_TO_2}", travelBoxesAdded);
 
 				// Enemies
-				new Enemy(300, 200, Enemy.EnemyType.GOBLIN, 0.5);
-				new Enemy(380, 240, Enemy.EnemyType.GOBLIN, 0.5);
-				new Enemy(570, 320, Enemy.EnemyType.GOBLIN, 0.5);
-				new Enemy(620, 220, Enemy.EnemyType.GOBLIN, 0.5);
+				new Enemy(300, 200, GOBLIN, 0.5);
+				new Enemy(380, 240, GOBLIN, 0.5);
+				new Enemy(570, 320, GOBLIN, 0.5);
+				new Enemy(620, 220, GOBLIN, 0.5);
 			}
+//			case TUANI_2 -> {
+//				// Setup
+//				setupWorld(1190, 490);
+//			}
 
 
 			case null -> {}
