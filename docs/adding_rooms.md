@@ -42,12 +42,13 @@ Now, in `WorldLoader`, choose the `Room` you want to add the travel box to, and 
     int travelBoxesAdded = lineAddBox(startX, startY, numBoxesInXDirection, numBoxesInYDirection, "travel", FILL);
     editLastBox(EFFECT, "{travel, TRAVEL_TRANSITION}", travelBoxesAdded);
 ```
-And modify only:
+Whereas:
 1. startX: X world unit where travel boxes will start.
 2. startY: Y world unit where travel boxes will start.
 3. numBoxesInXDirection: How many boxes in the X direction.
 4. numBoxesInYDirection: How many boxes in the Y direction. (usually it's just a line, so choose one of them to be equal to 1)
 5. TRAVEL_TRANSITION: The exact name of the TravelTransition you chose earlier.
+6. The rest must remain unchanged.
 
 ## Creating Spawnpoints
 
@@ -62,37 +63,41 @@ Finally, in `WorldLoader`, choose the `Room` you want to add the spawnpoint box 
 ```java
     addBox(X, Y, "spawnpoint");
 ```
-And modify only:
+Whereas:
 1. X: X world unit the spawnpoint will be in.
 2. Y: Y world unit the spawnpoint will be in.
+3. The rest must remain unchanged.
 
 Take note that it is ideal that the X and Y positions of the box are the same as the spawnpoint will spawn the player in. This is not mandatory, however.
 
-[//]: # (## Creating Enemies)
+## Creating Enemies
 
-[//]: # ()
-[//]: # (Enemies are creatures that can damage the player, drop items, move by themselves, and more.)
+Enemies are creatures that can damage the player, drop items, move by themselves, and more. This can be more advanced than the others due to having to write the enemy's AI.
 
-[//]: # ()
-[//]: # (To create a new Enemy, you must go to `world/enemies/Enemy`'s EnemyType and add a new entry. )
+To create a new Enemy, you must go to `world/enemies/Enemy`'s EnemyType and add a new entry. 
+Then, go to the `loadEnemy()` method in the same class and add your new EnemyType to the switch.
+There, you can modify base `Attributes` (`HP`, `Damage`, `DamageRate`), 
+`Structural` changes (`texture`, `collision`, `size`, etc.),
+`Drop` changes (`drop table`, `XP`, `coin interval`),
+and `Breadcrumb` information, which is basically the memory and how the AI will work if it uses breadcrumbs.
 
-[//]: # (Then, go to the `loadEnemy&#40;&#41;` method in the same class and add your new EnemyType to the switch.)
+> **Note:** To add an item to the enemy's drop table, follow the instructions related to `Bundles` in [Adding Items](adding_items.md).
 
-[//]: # (There, you can modify base Attributes &#40;HP, Damage, DamageRate&#41;, )
+After creating the Enemy entry, locate `world/enemies/EnemyAI` and add a new entry to `updateEnemyAI()` method's switch and write the AI code for the enemy.
 
-[//]: # (Structural changes &#40;texture, collision, size, etc.&#41;,)
+To add your own textures, in the `Enemy` class's `loadEnemy()`, use `this.setTexture("../characters/enemy/TEXTURE_NAME.png");`. Modify the TEXTURE_NAME as needed.
+Then, go to `resources/images/characters/enemy/` directory and add the textures, named exactly as you modified in the last step.
 
-[//]: # (Drop changes &#40;drop table, XP, coin interval&#41;,)
+To insert the enemy into a `Room`, use the following:
+```java
+    new Enemy(X, Y, ENEMY_TYPE, MAGNIFICATION);
+```
+Whereas:
+1. X: X world unit the enemy will spawn in.
+2. Y: Y world unit the enemy will spawn in.
+3. ENEMY_TYPE: The `EnemyType` you previously set it to.
+4. MAGNIFICATION: The multiplier of the Max HP and Damage of the instance.
 
-[//]: # (and Breadcrumb information, which is basically the memory and how the AI will work if it uses breadcrumbs.)
-
-[//]: # ()
-[//]: # (After creating the Enemy entry, locate `world/enemies/EnemyAI` and add a new entry to `updateEnemyAI&#40;&#41;` method's switch.)
-
-[//]: # ()
-[//]: # (> **Note:** To add an item to the enemy's drop table, follow the instructions of `Bundles` in [Adding Items]&#40;adding_items.md&#41;.)
-
-[//]: # ()
 [//]: # (## Creating NPCs)
 
 ## Ordering Conventions
