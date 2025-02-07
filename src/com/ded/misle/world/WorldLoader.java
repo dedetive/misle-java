@@ -2,7 +2,6 @@ package com.ded.misle.world;
 
 import com.ded.misle.world.enemies.Enemy;
 import com.ded.misle.world.npcs.NPC;
-import com.ded.misle.world.player.Player;
 
 import java.awt.*;
 
@@ -23,7 +22,7 @@ public class WorldLoader {
 			case VOID -> {
 				;
 			}
-			case CITY_TUANI -> {
+			case TUANI_CITY -> {
 				//Setup
 				int worldWidth = 1000;
 				int worldHeight = 990;
@@ -55,7 +54,7 @@ public class WorldLoader {
 					// Door
 				addBox(426, 483, "travel");
 				editLastBox(HAS_COLLISION, "true");
-				editLastBox(EFFECT, "{travel, entering_tuani_house1}");
+				editLastBox(EFFECT, "{travel, ENTERING_TUANI_HOUSE_1}");
 					// Chest and spawnpoint
 				addBox(321, 441, "spawnpoint");
 				addBox(341, 441, "mountain_chest");
@@ -65,7 +64,7 @@ public class WorldLoader {
 
 				// For travelling to cliff
 				int travelBoxesAdded = lineAddBox(440, 10, 6, 1, "travel", FILL);
-				editLastBox(EFFECT, "{travel, tuani_to_cliff}", travelBoxesAdded);
+				editLastBox(EFFECT, "{travel, TUANI_CITY_TO_1}", travelBoxesAdded);
 
 				// NPC testing
 				NPC yellowBlock = new NPC(500, 300, DIALOG);
@@ -82,7 +81,7 @@ public class WorldLoader {
 				NPC cyanBlock = new NPC(460, 340, NONE);
 				editBox(cyanBlock, COLOR, "#00FFFF");
 			}
-			case TUANI_HOUSE1 -> {
+			case TUANI_HOUSE_1 -> {
 				//Setup
 				int worldWidth = 500;
 				int worldHeight = 400;
@@ -98,7 +97,7 @@ public class WorldLoader {
 
 				addBox(405, 104, "travel");
 				editLastBox(HAS_COLLISION, "true");
-				editLastBox(EFFECT, "{travel, leaving_tuani_house1}");
+				editLastBox(EFFECT, "{travel, LEAVING_TUANI_HOUSE_1}");
 
 				// Floor
 				int boxesAdded = lineAddBox(261, 41, 7, 7, "wall_default", FILL);
@@ -117,7 +116,7 @@ public class WorldLoader {
 				// Corner block
 				addEnemyBox(365, 145, Enemy.EnemyType.RED_BLOCK, 0.5);
 			}
-			case CLIFF -> {
+			case TUANI_1 -> {
 				// Setup
 				setupWorld(1190, 490);
 
@@ -147,7 +146,7 @@ public class WorldLoader {
 				editLastBox(TEXTURE, "wall_default", 1);
 
 				int travelBoxesAdded = lineAddBox(250, 460, 6, 1, "travel", FILL);
-				editLastBox(EFFECT, "{travel, cliff_to_tuani}", travelBoxesAdded);
+				editLastBox(EFFECT, "{travel, TUANI_1_TO_CITY}", travelBoxesAdded);
 
 				// Enemies
 				new Enemy(300, 200, Enemy.EnemyType.GOBLIN, 0.5);
@@ -155,6 +154,7 @@ public class WorldLoader {
 				new Enemy(570, 320, Enemy.EnemyType.GOBLIN, 0.5);
 				new Enemy(620, 220, Enemy.EnemyType.GOBLIN, 0.5);
 			}
+
 
 			case null -> {}
 			default -> throw new IllegalStateException("Unexpected value: " + roomIDToName(player.pos.getRoomID()) + ", ID: " + player.pos.getRoomID());

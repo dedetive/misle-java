@@ -1,11 +1,14 @@
 package com.ded.misle.world;
 
+import static com.ded.misle.world.RoomManager.Room.*;
+
 public class RoomManager {
     public enum Room {
         VOID(0),
-        CITY_TUANI(1),
-        TUANI_HOUSE1(2),
-        CLIFF(3),
+        TUANI_CITY(1),
+        TUANI_HOUSE_1(2),
+        TUANI_1(3),
+        TUANI_2(4),
         ;
 
         public final int id;
@@ -16,10 +19,12 @@ public class RoomManager {
     }
 
     public enum TravelTransition {
-        leaving_tuani_house1(1, 460, 483),
-        entering_tuani_house1(2, 350, 110),
-        tuani_to_cliff(3, 300, 440),
-        cliff_to_tuani(1, 500, 31),
+        LEAVING_TUANI_HOUSE_1(TUANI_CITY, 460, 483),
+        ENTERING_TUANI_HOUSE_1(TUANI_HOUSE_1, 350, 110),
+        TUANI_CITY_TO_1(TUANI_1, 300, 440),
+        TUANI_1_TO_CITY(TUANI_CITY, 500, 31),
+        TUANI_1_TO_2(TUANI_2, 700, 1000),
+        TUANI_2_TO_1(TUANI_1, 1110, 31),
 
         ;
 
@@ -27,8 +32,8 @@ public class RoomManager {
         public final double x;
         public final double y;
 
-        TravelTransition(int enteringRoomID, double x, double y) {
-            this.enteringRoomID = enteringRoomID;
+        TravelTransition(Room enteringRoom, double x, double y) {
+            this.enteringRoomID = enteringRoom.id;
             this.x = x;
             this.y = y;
         }
