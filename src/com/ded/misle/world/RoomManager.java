@@ -9,6 +9,7 @@ public class RoomManager {
         TUANI_HOUSE_1(2),
         TUANI_1(3),
         TUANI_2(4),
+
         ;
 
         public final int id;

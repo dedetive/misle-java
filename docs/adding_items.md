@@ -1,13 +1,15 @@
 # How-to of adding new items
 
-> **TL;DR:**
->
+## TL;DR
+
 > Assuming you're in the directory `src/com/ded/misle`:
 > 1. In `items/items.json`, create a new entry by following the same pattern.
 > 2. In `resources/lang/`, choose a language and write down your item name, item description and item effect following the same pattern.
 > 3. In `resources/images/items/`, insert your item icons named after same item's resourceID.
 
-Inside of the `src/com/ded/misle` directory, locate the folder `items` and reach for the JSON file `items.json`. All the item data is stored inside of this JSON. An example entry is:
+## How-to
+
+Inside the `src/com/ded/misle` directory, locate the folder `items` and reach for the JSON file `items.json`. All the item data is stored inside of this JSON. An example entry is:
 
 ```json
     {

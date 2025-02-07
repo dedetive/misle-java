@@ -23,8 +23,8 @@ public class WorldLoader {
 		switch (roomIDToName(player.pos.getRoomID())) {
 			case VOID -> {
 				// Setup
-					int worldWidth = 0;
-					int worldHeight = 0;
+					int worldWidth = 400;
+					int worldHeight = 400;
 					setupWorld(worldWidth, worldHeight);
 				// Building Boxes
 					// Here is where structural boxes should be placed, such as walls.
