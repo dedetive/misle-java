@@ -1,4 +1,4 @@
-### How-to of adding new items
+# How-to of adding new items
 
 > **TL;DR:**
 >
@@ -54,7 +54,7 @@ Each item requires the following parameters, all in snake_case except for the ad
 
 And finally, add the .png icon for the item in `resources/images/items/`. The name of the file must be the resourceID previously used in the creation of the item JSON entry. IDs and resourceIDs are separate because I plan on items that change textures without changing the item itself.
 
-#### Additional notes:
+## Additional notes:
 
 - Mandatory Fields:
     - The following fields must be included for every item:
@@ -85,7 +85,7 @@ And finally, add the .png icon for the item in `resources/images/items/`. The na
     - The field `countLimit` allows for variables, set in the `itemLoader` class. Current officially supported variables are `material` and `consumable`.
     - When `countLimit` is set to 1 or isn't specified, max stack size multiplier does not have effect in it, never going above 1. If it's any number above 1, max stack size multiplier will take effect.
 
-#### Example:
+## Example:
 
 1. Edit items.json:
     1. Locate the file `src/com/ded/misle/items/items.json`

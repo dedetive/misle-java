@@ -1,4 +1,4 @@
-### Controls
+# Controls
 
 - **Arrow keys:** Move the player (white square).
 - **Escape key:** Pause and unpause.

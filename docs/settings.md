@@ -1,11 +1,11 @@
-### Settings
+# Settings
 
 To modify default settings, either change in-game options or edit `misle-java-master/src/com/ded/misle/resources/settings.config`.
 
 Each setting uses the format:  
 `parameterName = value`
 
-#### Available Parameters:
+## Available Parameters:
 
 | Setting              | Explanation                                                  | Options                                                       | Default  |
 |----------------------|--------------------------------------------------------------|---------------------------------------------------------------|----------|
