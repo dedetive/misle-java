@@ -26,19 +26,6 @@ java com.ded.misle.Launcher
 
 Alternatively, you can use your preferred IDE with a compiler to run the code automatically, always using `Launcher` as the base.
 
-### Controls
-
-- **Arrow keys:** Move the player (white square).
-- **Escape key:** Pause and unpause.
-- **E:** Open inventory.
-- **Z** or **left-click:** Use held item.
-- **Left-click in the inventory**: Move item around. Click again to fill the empty slot with the selected item or swap it with a filled slot. Click anywhere out of the inventory to drop held item.
-- **Q:** Drop held item or hovered item in inventory.
-- **Ctrl in the inventory**: The shift key adds some functionalities to the inventory, such as quick equipping an item when left-clicking or dropping an entire stack along with Q.  
-- **C:** Dodge (become immune to damage for a fraction of time).
-- **1-7** or **left-click an inventory bar slot:** Select slot.
-- **\[** and **\]:** Test keys with functionality that varies by version; these can be customized in KeyHandler.java at the end of the updateKeys() method.
-
 ### Donations
 
 To donate to the project and help me and my team, which consists of solely me and Glacy, the graphical artist, use the following link:
@@ -49,8 +36,8 @@ https://pixie.gg/ded/
 Again, I profoundly thank you and everyone who is reading this.
 
 ### Additional Developer Documentation
-- [How to Add New Items](docs/adding_items.md)
-
-[//]: # (- [How to Add New Rooms]&#40;docs/adding_rooms.md&#41;)
+- [Controls](docs/controls.md)
 - [Settings](docs/settings.md)
 - [Known Issues](docs/known_issues.md)
+- [How to Add New Items](docs/adding_items.md)
+[//]: # (- [How to Add New Rooms]&#40;docs/adding_rooms.md&#41;)
