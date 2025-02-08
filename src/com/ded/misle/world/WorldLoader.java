@@ -60,7 +60,7 @@ public class WorldLoader {
 					/// must be an integer that represents the final ID to be shown to the player.
 					/// Alternatively to the COLOR, there should be their TEXTURE.
 					NPC magentaBlock = new NPC(240, 200, DIALOG);
-					editBox(magentaBlock, COLOR, "#FF00FF");
+					magentaBlock.setColor(new Color(0xFF00FF));
 					magentaBlock.setDialogID(2);
 					magentaBlock.setName("Magenta block");
 					magentaBlock.setNameColor(new Color(0xFF00FF));

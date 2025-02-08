@@ -72,7 +72,7 @@ Take note that it is ideal that the X and Y positions of the box are the same as
 
 ## Creating Enemies
 
-Enemies are creatures that can damage the player, drop items, move by themselves, and more. This can be more advanced than the others due to having to write the enemy's AI.
+Enemies are boxes that can damage the player, drop items, move by themselves, and more. This can be more advanced than the others due to having to write the enemy's AI.
 
 To create a new Enemy, you must go to `world/enemies/Enemy`'s EnemyType and add a new entry. 
 Then, go to the `loadEnemy()` method in the same class and add your new EnemyType to the switch.
@@ -98,7 +98,74 @@ Whereas:
 3. ENEMY_TYPE: The `EnemyType` you previously set it to.
 4. MAGNIFICATION: The multiplier of the Max HP and Damage of the instance.
 
-[//]: # (## Creating NPCs)
+## Creating NPCs and Dialogs
+
+NPCs are boxes that (currently) can do either nothing or be talked to. They may or may not have HP.
+
+The NPC creation is done entirely inside the `Room` loader. If the NPC is of DIALOG interaction type, then dialog must be added in the language properties file.
+In the `Room` you want to add the NPC in, here's how it works for an NPC that does nothing:
+```java
+    NPC exampleNPC = new NPC(X, Y, NONE);
+    exampleNPC.setColor(new Color(0xCOLOR_HEX_CODE));
+```
+Whereas:
+1. X: X world unit the NPC will spawn in.
+2. Y: Y world unit the NPC will spawn in.
+3. COLOR_HEX_CODE: The hexadecimal code for the color. Can be textures too with `exampleNPC.setTexture(TEXTURE_LOCATION)`.
+
+Now, an NPC with dialog would be:
+```java
+     NPC exampleNPC = new NPC(X, Y, DIALOG);
+     exampleNPC.setColor(new Color(0xCOLOR_HEX_CODE));
+     exampleNPC.setDialogID(DIALOG_ID);
+     exampleNPC.setName(DIALOG_BOX_NAME);
+     exampleNPC.setNameColor(new Color(0xNAME_HEX_CODE));
+```
+Whereas:
+1. X: X world unit the NPC will spawn in.
+2. Y: Y world unit the NPC will spawn in.
+3. COLOR_HEX_CODE: The hexadecimal code for the color. Can be textures too with `exampleNPC.setTexture(TEXTURE_LOCATION)`.
+4. DIALOG_ID: The ID of the dialog. This will be explained later.
+5. NAME_IN_DIALOG_BOX: The name to appear in the dialog box.
+6. NAME_HEX_CODE: The color of the name in the dialog box.
+
+#### Dialogs
+
+In the NPC creation you should choose a DIALOG ID. This ID is then used in the language properties file, in the format:
+`"DIALOG_" + ID + "=" + LAST_SUB_ID`, where those that are contained within quotation marks must be as is, while others are the following variables:
+1. ID: The dialog ID chosen earlier.
+2. LAST_SUB_ID: The last sub-ID within the ID. Examples will be given later.
+> **Note:** This step is necessary to assert the last ID and must be equal to the last sub-ID of the ID, otherwise dialog will be either blank or missing. Be sure to not include anything other than the positive integer number. If this step is ignored, it will default to 0 being the last step, showing only the first dialog.
+
+Next, the dialog itself is done through the format:
+`"DIALOG_" + ID + "." + SUB_ID + "=" + CONTENT`, where those that are contained within quotation marks must be as is, while others are the following variables:
+1. ID: The dialog ID used earlier.
+2. SUB_ID: The order the dialog will take. It starts at 0 and must only be incremented by 1.
+3. CONTENT: The message the NPC will convey. Note it automatically wraps.
+
+- Example 1:
+```java
+DIALOG_1.0=Hello
+DIALOG_1.1=Spinach
+```
+Here, the ID is 1 and the last sub-ID wasn't given. In this example, the NPC will say "Hello", but won't say "Spinach" because the last sub-ID defaults to 0.
+
+- Example 2:
+```java
+DIALOG_2=2
+DIALOG_2.0=3.1415926535
+DIALOG_2.1=2.7182818284
+DIALOG_2.2=You've played for c{#FF0000, f{totalPlaytimeHours}}h:c{#00FF00, f{totalPlaytimeMinutes}}m:c{#0000FF, f{totalPlaytimeSeconds}}s
+```
+In this example, the ID is 2 and the last sub-ID was 2. It will first say the first digits of pi, then after a click say the first digits of Euler's number, and only then it will say the player's playtime with the RGB colors.
+Notice how I've not only used multiple dialogs within an ID, but also used variables and colors. These will be explained next.
+
+#### Colors and variables
+
+These can be used in dialog through using a letter and color codes.
+- For colors, you use `c{#VALID_HEX_COLOR, CONTENT}`.
+- For variables, you use `f{VARIABLE_NAME}`. These variables must be valid within `renderer/DialogRenderer`'s `renderDialog()` method.
+- For colored constants, such as `STR` or `HP`, you use `r{CONSTANT_NAME}`. Valid codes can be seen within `renderer/ColorManager`'s `StringToColorCode` enum. The codes are the enums entries, and they contain their text value and color in the parenthesis. 
 
 ## Ordering Conventions
 
