@@ -216,4 +216,4 @@ There's a convention to create `Room` boxes, which is to add them in this order:
 
     i. Valid NPC types are specific in `world/npcs/NPC`'s InteractionType enum.
     
-    ii. Read [Creating NPCs](#creating-npcs) for better understanding.
+    ii. Read [Creating NPCs](#creating-npcs-and-dialogs) for better understanding.
