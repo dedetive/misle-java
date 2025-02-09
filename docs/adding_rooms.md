@@ -27,6 +27,29 @@ Moving to the `WorldLoader` class, also inside the `world/` directory, locate th
 Each case represents a `Room`. All `Room`s should have a case, otherwise they'd be devoid of anything and just a black space.
 Follow the [ordering conventions](#ordering-conventions) rules in order to create a `Room`.
 
+## Creating Chests
+
+Chests are boxes that spawn items when touched with a certain interval. These items are defined by a bundle (a drop table).
+Currently, only the preset `mountain_chest` is available for chests, which can only drop potions.
+To spawn a `mountain_chest` in your `Room`, use the following:
+```java
+    addBox(X, Y, "mountain_chest");
+```
+Whereas:
+1. X: The X position the box will be.
+2. Y: The Y position the box will be.
+
+If instead you desire to spawn a custom chest, use the following:
+```java
+    addBox(X, Y, "mountain_chest");
+    editLastBox(EFFECT, "{chest, COOLDOWN, BUNDLE}");
+```
+Whereas:
+1. X: The X position the box will be.
+2. Y: The Y position the box will be.
+3. COOLDOWN: The interval in __seconds__ to reopen it.
+4. BUNDLE: The bundle used in the item entry bundles line. See [Adding Items](adding_items.md) for more information on item editing.
+
 ## Creating Travel Boxes
 
 Travel boxes are what's used to have a transition between two different areas. Whenever a new area is entered, the previous boxes are deleted and the new boxes of the area are created.
