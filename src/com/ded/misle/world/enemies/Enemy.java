@@ -14,6 +14,8 @@ import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 import static com.ded.misle.world.boxes.BoxHandling.EditBoxKeys.EFFECT;
 import static com.ded.misle.world.boxes.BoxHandling.addBoxToCache;
 import static com.ded.misle.world.boxes.BoxHandling.editBox;
+import static com.ded.misle.world.enemies.EnemyAI.AIState.STILL;
+import static com.ded.misle.world.enemies.EnemyAI.AIState.WANDERING;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 
 public class Enemy extends HPBox {
@@ -25,6 +27,9 @@ public class Enemy extends HPBox {
 
     private double xpDrop = 0;
     private int[] coinDrop = new int[]{0, 0};
+    public EnemyAI.AIState AIState;
+    public long lastMoved = 0;
+    public int moveInterval;
 
     // INITIALIZATION
 
@@ -64,13 +69,19 @@ public class Enemy extends HPBox {
 
         switch (enemyType) {
             case RED_BLOCK -> {
+                // Attributes
                 maxHP = 50;
                 damage = 5;
                 damageRate = 300;
 
+                // Structural
                 this.setTexture("solid");
                 this.setColor(new Color(0xA02020));
                 this.setDropTableName("mountain");
+                this.AIState = STILL;
+                this.moveInterval = 0;
+
+                // Drops
                 this.xpDrop = 50;
                 this.coinDrop = new int[]{0, 20};
             }
@@ -87,11 +98,13 @@ public class Enemy extends HPBox {
                 this.setTexture("../characters/enemy/goblin");
                 this.setBoxScaleHorizontal(0.75);
                 this.setBoxScaleVertical(0.75);
+                this.AIState = WANDERING;
 
                 // Drops
                 this.setDropTableName("goblin");
                 this.xpDrop = 1;
                 this.coinDrop = new int[]{1, 3};
+                this.moveInterval = ThreadLocalRandom.current().nextInt(2000, 7000 + 1);
 
                 // Breadcrumbs
                 this.maxPersonalBreadcrumbs = (int) (Math.random() * (5 - 2) + 2);
@@ -99,6 +112,7 @@ public class Enemy extends HPBox {
                 updatePersonalBreadcrumbs();
             }
             default -> {
+                this.AIState = STILL;
                 this.setTexture("solid");
                 this.setColor(defaultBoxColor);
             }

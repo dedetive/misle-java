@@ -5,6 +5,7 @@ import com.ded.misle.world.player.PlayerAttributes;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.GamePanel.player;
@@ -70,30 +71,68 @@ public class EnemyAI  {
         double enemyY = enemy.getY();
         double distanceX = (playerX - enemyX);
         double distanceY = (playerY - enemyY);
-        double rand = (Math.random() * (7 - 1) + 1);
-        double moveX = Math.clamp(distanceX, -1, 1) * rand;
-        double moveY = Math.clamp(distanceY, -1, 1) * rand;
-        if (!(enemy.isMoving)) {
-            boolean withinDistance = Math.abs(distanceX) < 140 && Math.abs(distanceY) < 140;
+        int maxDistance = 140;
+        boolean withinDistance = Math.abs(distanceX) < maxDistance && Math.abs(distanceY) < maxDistance;
 
-            if (!isPixelOccupied(enemy, enemy.getX() + moveX, enemy.getY(),
-                tileSize, 7, PlayerAttributes.KnockbackDirection.NONE, Enemy.EnemyType.GOBLIN)) {
-                if (withinDistance) {
-                    moveCollisionBox(enemy, moveX, 0, rand * 4);
-                    isPixelOccupied(player, tileSize, 8, PlayerAttributes.KnockbackDirection.NONE);
+
+        if (!(enemy.isMoving)) {
+            switch (enemy.AIState) {
+                case STILL -> {
+                    if (enemy.lastMoved + enemy.moveInterval < System.currentTimeMillis()) {
+                        enemy.AIState = AIState.WANDERING;
+                    }
                 }
-            }
-            if (!isPixelOccupied(enemy, enemy.getX(), enemy.getY() + moveY,
-                tileSize, 7, PlayerAttributes.KnockbackDirection.NONE, Enemy.EnemyType.GOBLIN)) {
-                if (withinDistance) {
-                    moveCollisionBox(enemy, 0, moveY, rand * 4);
-                    isPixelOccupied(player, tileSize, 8, PlayerAttributes.KnockbackDirection.NONE);
+                case WANDERING -> {
+                    enemy.lastMoved = System.currentTimeMillis();
+                    enemy.AIState = AIState.STILL;
+                    if (withinDistance) {
+                        enemy.AIState = AIState.PURSUING;
+                    } else {
+                        double rand = (Math.random() * (7 - 1) + 1);
+                        double moveX = Math.clamp(distanceX, -1, 1) * rand;
+                        double moveY = Math.clamp(distanceY, -1, 1) * rand;
+
+                        if (!isPixelOccupied(enemy, enemy.getX() + moveX, enemy.getY(),
+                            tileSize, 7, PlayerAttributes.KnockbackDirection.NONE, Enemy.EnemyType.GOBLIN)) {
+                            moveCollisionBox(enemy, moveX, 0, rand * 4);
+                            isPixelOccupied(player, tileSize, 8, PlayerAttributes.KnockbackDirection.NONE);
+                        }
+                        if (!isPixelOccupied(enemy, enemy.getX(), enemy.getY() + moveY,
+                            tileSize, 7, PlayerAttributes.KnockbackDirection.NONE, Enemy.EnemyType.GOBLIN)) {
+                            moveCollisionBox(enemy, 0, moveY, rand * 4);
+                            isPixelOccupied(player, tileSize, 8, PlayerAttributes.KnockbackDirection.NONE);
+                        }
+                    }
+                }
+                case PURSUING -> {
+                    if (!withinDistance) {
+                        enemy.lastMoved = System.currentTimeMillis();
+                        enemy.AIState = AIState.WANDERING;
+                        break;
+                    }
+
+                    double rand = (Math.random() * (7 - 1) + 1);
+                    double moveX = Math.clamp(distanceX, -1, 1) * rand;
+                    double moveY = Math.clamp(distanceY, -1, 1) * rand;
+
+                    if (!isPixelOccupied(enemy, enemy.getX() + moveX, enemy.getY(),
+                        tileSize, 7, PlayerAttributes.KnockbackDirection.NONE, Enemy.EnemyType.GOBLIN)) {
+                        moveCollisionBox(enemy, moveX, 0, rand * 4);
+                        isPixelOccupied(player, tileSize, 8, PlayerAttributes.KnockbackDirection.NONE);
+                    }
+                    if (!isPixelOccupied(enemy, enemy.getX(), enemy.getY() + moveY,
+                        tileSize, 7, PlayerAttributes.KnockbackDirection.NONE, Enemy.EnemyType.GOBLIN)) {
+                        moveCollisionBox(enemy, 0, moveY, rand * 4);
+                        isPixelOccupied(player, tileSize, 8, PlayerAttributes.KnockbackDirection.NONE);
+                    }
                 }
             }
         }
     }
 
-    private static void moveEnemy() {
-
+    public enum AIState {
+        STILL,
+        WANDERING,
+        PURSUING
     }
 }
