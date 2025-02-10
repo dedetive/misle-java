@@ -104,7 +104,7 @@ public class Enemy extends HPBox {
                 this.setDropTableName("goblin");
                 this.xpDrop = 1;
                 this.coinDrop = new int[]{1, 3};
-                this.moveInterval = ThreadLocalRandom.current().nextInt(2000, 7000 + 1);
+                this.moveInterval = ThreadLocalRandom.current().nextInt(500, 2500 + 1);
 
                 // Breadcrumbs
                 this.maxPersonalBreadcrumbs = (int) (Math.random() * (5 - 2) + 2);
