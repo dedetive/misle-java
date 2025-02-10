@@ -90,8 +90,9 @@ public class EnemyAI  {
                     } else {
                         enemy.moveInterval = ThreadLocalRandom.current().nextInt(500, 2500 + 1);
                         double rand = (Math.random() * (7 - 1) + 1);
-                        double moveX = Math.clamp(distanceX, -1, 1) * rand;
-                        double moveY = Math.clamp(distanceY, -1, 1) * rand;
+                        double randomPos = ThreadLocalRandom.current().nextInt(-1, 1 + 1);
+                        double moveX = Math.clamp(randomPos, -1, 1) * rand;
+                        double moveY = Math.clamp(randomPos, -1, 1) * rand;
 
                         if (!isPixelOccupied(enemy, enemy.getX() + moveX, enemy.getY(),
                             tileSize, 7, PlayerAttributes.KnockbackDirection.NONE, Enemy.EnemyType.GOBLIN)) {
