@@ -158,6 +158,24 @@ public class WorldLoader {
 
 				// Corner block
 				addEnemyBox(365, 145, Enemy.EnemyType.RED_BLOCK, 0.5);
+
+
+				// TESTING
+				int boxesX = 10;
+				int boxesY = 10;
+				int index = boxesY + boxesY / 2 + (boxesX - 1) * 2 - 1;
+				lineAddBox(40, 20, boxesX, boxesY, "wall_default", HOLLOW);
+				editBoxNegativeIndex(TEXTURE, "invisible", index);
+
+				// LINEADDBOX BOXES ARE ADDED FROM LEFT-TOP TO RIGHT-BOTTOM
+				// For example: in a 7x7 hollow, the right-bottom-most box that is not a corner
+				// would be 8 (height + 1) and the top equivalent would be 9 (height + 2)
+				// The left equivalents would be 7 + 5 * 2 - 1 (height + (length - 2) * 2) - 1 for bottom and
+				// add +1 for top.
+				// For the middle bottom, it is 7 + 6 * 2 - 7 (height + (length - 1) * 2 - length)
+				// For the top, add +1. It will look wrong for even-numbered X's though.
+				// For the middle right side, it is height / 2 + 1.
+				// For the left, it is height + height / 2 + (length - 1) * 2 - 1
 			}
 			case TUANI_1 -> {
 				// Setup
