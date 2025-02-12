@@ -289,6 +289,19 @@
   "nameColor": "#DB2525"
   },
   {
+    "id": 22,
+    "resourceID": 22,
+    "name": "Ring Lord",
+    "rarity": "A",
+    "vit": 50,
+    "str": 15,
+    "ent": 15,
+    "def": 15,
+    "type": "armor",
+    "subtype": "ring",
+    "nameColor": "#B8B6A7"
+  },
+  {
     "id": -1,
     "resourceID": -1,
     "name": "",
