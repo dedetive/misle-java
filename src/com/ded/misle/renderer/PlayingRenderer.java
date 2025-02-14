@@ -455,7 +455,7 @@ public class PlayingRenderer {
         }
     }
 
-    public static void drawCoins(Graphics2D g2d) {
+    private static void drawCoins(Graphics2D g2d) {
         int coinTextX = (int) (468 * scale);
         int coinTextY = (int) (222 * scale);
         g2d.setColor(coinTextShadowColor);
@@ -474,10 +474,28 @@ public class PlayingRenderer {
             g2d.getFontMetrics().getHeight(), g2d.getFontMetrics().getHeight(), null);
     }
 
+    private static void drawLevel(Graphics2D g2d) {
+        int level = player.attr.getLevel();
+        int x = (int) (screenWidth / 2);
+        int xpBarHeight = (int) (4 * scale);
+        int xpBarY = inventoryBarImageY - 2 - xpBarHeight;
+
+        int y = (int) (xpBarY + 3 * scale);
+
+        g2d.setColor(levelTextShadowColor);
+        g2d.setFont(coinTextFont);
+        g2d.drawString(String.valueOf(level), (int) (x + textShadow), (int)(y + textShadow));
+
+        g2d.setColor(levelTextUI);
+        g2d.drawString(String.valueOf(level), x, y);
+
+    }
+
     private static void drawUIElements(Graphics2D g2d) {
         drawHealthBar(g2d);
         drawEntropyBar(g2d);
         drawXPBar(g2d);
+        drawLevel(g2d);
 //        drawCoins(g2d);
         drawInventoryBar(g2d);
         drawSelectedItemName(g2d);

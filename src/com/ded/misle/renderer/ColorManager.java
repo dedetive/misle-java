@@ -80,6 +80,9 @@ public class ColorManager {
         // XP UI
     public final static Color xpBarTextShadow = defaultShadowColor;
     public final static Color xpBarText = new Color(225, 210, 170);
+        // LEVEL
+    public final static Color levelTextUI = new Color(225, 210, 170);
+    public final static Color levelTextShadowColor = defaultShadowColor;
         // Coins
     public final static Color coinTextUI = new Color(225, 210, 170);
     public final static Color coinTextShadowColor = defaultShadowColor;
