@@ -479,6 +479,8 @@ public class PlayingRenderer {
         int x = (int) (screenWidth / 2);
         int xpBarHeight = (int) (4 * scale);
         int xpBarY = inventoryBarImageY - 2 - xpBarHeight;
+        FontMetrics fm = g2d.getFontMetrics(coinTextFont);
+        x -= fm.stringWidth(String.valueOf(level)) / 2;
 
         int y = (int) (xpBarY + 3 * scale);
 
