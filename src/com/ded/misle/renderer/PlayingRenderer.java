@@ -498,7 +498,7 @@ public class PlayingRenderer {
         drawEntropyBar(g2d);
         drawXPBar(g2d);
         drawLevel(g2d);
-//        drawCoins(g2d);
+        drawCoins(g2d);
         drawInventoryBar(g2d);
         drawSelectedItemName(g2d);
     }
