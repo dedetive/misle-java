@@ -12,9 +12,11 @@ import static com.ded.misle.renderer.ImageRenderer.cachedImages;
 
 public class ColorManager {
 
-    // Shadows
+    // Default colors
 
     public final static Color defaultShadowColor = Color.BLACK;
+    public final static Color defaultLighterYellow = new Color(230, 230, 180);
+    public final static Color defaultLightYellow = new Color(225, 210, 170);
 
     // Floating text
 
@@ -43,7 +45,7 @@ public class ColorManager {
 
     public final static Color selectedSlotOverlay = new Color(255, 255, 255, 100);
     public final static Color backgroundOverlay = new Color(15, 15, 15, 130);
-    public final static Color statColor = new Color(230, 230, 180);
+    public final static Color statColor = defaultLighterYellow;
     public final static Color statShadowColor = defaultShadowColor;
     public final static Color itemCountShadowColor = defaultShadowColor;
     public final static Color itemCountColor = Color.WHITE;
@@ -51,9 +53,9 @@ public class ColorManager {
     public final static Color slotIndicator = new Color(100, 50, 30, 140);
         // Tooltip
     public final static Color hoveredTooltipBackground = new Color(84, 84, 84, 190);
-    public final static Color itemTypeTooltip = new Color(0xE0DE9B);
+    public final static Color itemTypeTooltip = defaultLighterYellow;
     public final static Color itemCountTooltip = new Color(0xFFFFFF);
-    public final static Color itemEffectTooltip = new Color(0xE0DE9B);
+    public final static Color itemEffectTooltip = defaultLightYellow;
     public final static Color itemDescriptionTooltip = new Color(0xA0A0A0);
     public final static Color tooltipTextShadowColor = defaultShadowColor;
         // XP bar
@@ -68,23 +70,23 @@ public class ColorManager {
     public final static Color healthBarCurrent = new Color(0x50EE50);
     public final static Color healthBarLockedHP = Color.DARK_GRAY;
     public final static Color healthBarTextShadow = defaultShadowColor;
-    public final static Color healthBarText = new Color(225, 210, 170);
+    public final static Color healthBarText = defaultLightYellow;
     public final static Color healthBarTextCritical = new Color(255, 100, 80);
         // Entropy UI
     public final static Color entropyBarShadow = defaultShadowColor;
     public final static Color entropyBarBackground = new Color(0xA0A0A0);
     public final static Color entropyBarCurrent = entropyColor;
     public final static Color entropyBarTextShadow = defaultShadowColor;
-    public final static Color entropyBarText = new Color(225, 210, 170);
+    public final static Color entropyBarText = defaultLighterYellow;
     public final static Color entropyBarTextCritical = new Color(255, 100, 80);
         // XP UI
     public final static Color xpBarTextShadow = defaultShadowColor;
-    public final static Color xpBarText = new Color(225, 210, 170);
+    public final static Color xpBarText = defaultLightYellow;
         // LEVEL
-    public final static Color levelTextUI = new Color(225, 210, 170);
+    public final static Color levelTextUI = defaultLightYellow;
     public final static Color levelTextShadowColor = defaultShadowColor;
         // Coins
-    public final static Color coinTextUI = new Color(225, 210, 170);
+    public final static Color coinTextUI = defaultLightYellow;
     public final static Color coinTextShadowColor = defaultShadowColor;
 
     // Menus
@@ -98,7 +100,7 @@ public class ColorManager {
     public final static Color buttonFadingColor = new Color(0xdfdaba);
         // Menus themselves
     public final static Color menuBackgroundColor = new Color(0x9d7a53);
-    public final static Color menuTitleColor = new Color(0xd1d1ab);
+    public final static Color menuTitleColor = defaultLightYellow;
     public final static Color menuTitleShadowColor = defaultShadowColor;
     public final static Color menuVersionColor = new Color(217, 217, 217);
     public final static Color menuVersionShadowColor = defaultShadowColor;
