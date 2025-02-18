@@ -110,7 +110,8 @@ public class MenuRenderer {
             Rectangle playButton = new Rectangle(playButtonX, playButtonY, playButtonWidth, playButtonHeight);
 
             if (!levelDesigner) {
-                createButton(playButton, LanguageManager.getText("main_menu_play"), MainRenderer::gameStart, panel, 12838);
+//                createButton(playButton, LanguageManager.getText("main_menu_play"), MainRenderer::gameStart, panel, 12838);
+                createButton(playButton, LanguageManager.getText("main_menu_play"), SaveSelector::saveSelectorMenu, panel, 12838);
             } else {
                 createButton(playButton, LanguageManager.getText("main_menu_level_designer"), MainRenderer::enterLevelDesigner, panel, 12839);
             }

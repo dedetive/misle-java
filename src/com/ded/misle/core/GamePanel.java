@@ -68,8 +68,9 @@ public class GamePanel extends JPanel implements Runnable {
 		PAUSE_MENU,
 		OPTIONS_MENU,
 		LOADING_MENU,
+		SAVE_SELECTOR,
 		LEVEL_DESIGNER,
-		FROZEN_PLAYING
+		FROZEN_PLAYING,
 	}
 
 	public static GameState gameState = GameState.MAIN_MENU; // Start in MAIN_MENU by default
@@ -375,6 +376,9 @@ public class GamePanel extends JPanel implements Runnable {
 				break;
 			case GameState.LEVEL_DESIGNER:
 				LevelDesignerRenderer.renderLevelDesigner(g, this, mouseHandler);
+				break;
+			case GameState.SAVE_SELECTOR:
+				SaveSelector.renderSaveSelector(g, this);
 				break;
 		}
 
