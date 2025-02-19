@@ -96,6 +96,13 @@ public class SaveSelector {
 
                     if (saveExists) {
                         g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.PLAYER_FRONT0), (int) (buttonX + buttonWidth * 0.8), (int) (buttonY + buttonHeight * 0.8), 135, 135, null);
+                    } else {
+                        // Plus sign
+                        g2d.setColor(saveSelectorTextBackground);
+                        g2d.fillRoundRect((int) (buttonX + buttonWidth + 2 * scale), (int) (buttonY + buttonHeight * 0.6),
+                            (int) (4 * scale), (int) (buttonHeight * 1.3), (int) (3 * scale), (int) (3 * scale));
+                        g2d.fillRoundRect((int) (buttonX + buttonWidth  * 0.75), (int) (buttonY + buttonHeight + 5 * scale),
+                            (int) (buttonHeight * 1.25), (int) (4 * scale), (int) (3 * scale), (int) (3 * scale));
                     }
 
                     buttonX += buttonWidth * 2 + buttonSpacing;
