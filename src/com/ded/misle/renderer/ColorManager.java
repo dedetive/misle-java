@@ -112,6 +112,10 @@ public class ColorManager {
     public final static Color settingsSeparatingBarBottom = new Color(40, 25, 1, 100);
     public final static Color FPSColor = new Color(50, 255, 50);
     public final static Color FPSShadowColor = defaultShadowColor;
+        // Save selector
+    public final static Color saveSelectorNumber = defaultLightYellow;
+    public final static Color saveSelectorTextShadow = defaultShadowColor;
+    public final static Color saveSelectorTextBackground = new Color(0x362714);
 
     // Fading
 

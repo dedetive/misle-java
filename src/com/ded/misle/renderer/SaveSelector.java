@@ -10,8 +10,9 @@ import static com.ded.misle.Launcher.antiAliasing;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.GamePanel.GameState.SAVE_SELECTOR;
 import static com.ded.misle.core.GamePanel.gameState;
-import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.MainRenderer.gameStart;
+import static com.ded.misle.renderer.MainRenderer.textShadow;
 import static com.ded.misle.renderer.MenuButton.*;
 import static com.ded.misle.renderer.MenuRenderer.createTitle;
 import static com.ded.misle.renderer.MenuRenderer.drawMenuBackground;
@@ -52,7 +53,7 @@ public class SaveSelector {
                 button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
                 int finalI = i;
                 Runnable runnable = () -> gameStart(finalI);
-                createButton(button, LanguageManager.getText("Save " + i), runnable, panel, id);
+                createButton(button, "", runnable, panel, id);
                 buttonX += buttonWidth + buttonSpacing;
                 id++;
             }
@@ -68,6 +69,28 @@ public class SaveSelector {
 
             try {
                 drawButtons(g2d, scale / 3.75);
+
+                buttonX = (int) (64 * scale);
+                buttonY = (int) (106 * scale);
+                buttonWidth = (int) (120 * scale / 2);
+                int backgroundSize = (int) (14 * scale);
+
+                for (int i = 0; i < 3; i++) {
+
+                    // Background
+                    g2d.setColor(saveSelectorTextBackground);
+                    g2d.fillRoundRect((int) (buttonX + buttonWidth - backgroundSize * 0.25), (int) (buttonY - backgroundSize * 0.8),
+                        backgroundSize, backgroundSize, (int) (4 * scale), (int) (4 * scale));
+
+                    // Shadow
+                    g2d.setColor(saveSelectorTextShadow);
+                    g2d.drawString(String.valueOf(i), (int) (buttonX + (double) buttonWidth + textShadow), (int) (buttonY + textShadow));
+                    // Number
+                    g2d.setColor(saveSelectorNumber);
+                    g2d.drawString(String.valueOf(i), buttonX + buttonWidth, buttonY);
+
+                    buttonX += buttonWidth * 2 + buttonSpacing;
+                }
             } catch (ConcurrentModificationException e) {
                 //
             }
