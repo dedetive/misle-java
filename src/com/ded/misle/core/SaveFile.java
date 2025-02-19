@@ -591,4 +591,29 @@ public class SaveFile {
 	private static int getLow(long value) {
 		return (int) (value % 255);
 	}
+
+	public enum SaveScreenOption {
+		EXISTS,
+		LEVEL,
+		PLAYTIME,
+		FIRST_ITEM,
+	}
+
+	public static Object loadSaveScreenInformation(SaveScreenOption option, int saveSlot) {
+		return switch (option) {
+			case EXISTS -> {
+				yield SaveFile.save[saveSlot].exists();
+			}
+			case LEVEL -> {
+				yield 0;
+			}
+			case PLAYTIME -> {
+				yield 0;
+			}
+			case FIRST_ITEM -> {
+				yield 0;
+			}
+			default -> 0;
+		};
+	}
 }

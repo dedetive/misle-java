@@ -1,6 +1,7 @@
 package com.ded.misle.renderer;
 
 import com.ded.misle.core.LanguageManager;
+import com.ded.misle.core.SaveFile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +12,7 @@ import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.GamePanel.GameState.SAVE_SELECTOR;
 import static com.ded.misle.core.GamePanel.gameState;
 import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.core.SaveFile.loadSaveScreenInformation;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.ImageRenderer.cachedImages;
 import static com.ded.misle.renderer.MainRenderer.gameStart;
@@ -78,6 +80,7 @@ public class SaveSelector {
                 int backgroundSize = (int) (14 * scale);
 
                 for (int i = 0; i < 3; i++) {
+                    boolean saveExists = (boolean) loadSaveScreenInformation(SaveFile.SaveScreenOption.EXISTS, i);
 
                     // Background
                     g2d.setColor(saveSelectorTextBackground);
@@ -91,7 +94,9 @@ public class SaveSelector {
                     g2d.setColor(saveSelectorNumber);
                     g2d.drawString(String.valueOf(i), buttonX + buttonWidth, buttonY);
 
-                    g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.PLAYER_FRONT0), (int) (buttonX + buttonWidth * 0.8), (int) (buttonY + buttonHeight * 0.8), 135, 135, null);
+                    if (saveExists) {
+                        g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.PLAYER_FRONT0), (int) (buttonX + buttonWidth * 0.8), (int) (buttonY + buttonHeight * 0.8), 135, 135, null);
+                    }
 
                     buttonX += buttonWidth * 2 + buttonSpacing;
                 }
