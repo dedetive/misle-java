@@ -88,8 +88,8 @@ public class PlayingRenderer {
         int playerScreenY = (int) (player.getY() - player.pos.getCameraOffsetY());
 
         // Draw the player above every box
-        g2d.setColor(player.getColor());
-        Rectangle playerRect = new Rectangle(playerScreenX, playerScreenY, (int) player.getBoxScaleHorizontal(), (int) player.getBoxScaleVertical());
+//        g2d.setColor(player.getColor());
+//        Rectangle playerRect = new Rectangle(playerScreenX, playerScreenY, (int) player.getBoxScaleHorizontal(), (int) player.getBoxScaleVertical());
 //        drawRotatedRect(g2d, playerRect, player.pos.getRotation()); // CUBE PLAYER
 
         long precision = 50;

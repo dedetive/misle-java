@@ -10,7 +10,9 @@ import static com.ded.misle.Launcher.antiAliasing;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.GamePanel.GameState.SAVE_SELECTOR;
 import static com.ded.misle.core.GamePanel.gameState;
+import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.renderer.ColorManager.*;
+import static com.ded.misle.renderer.ImageRenderer.cachedImages;
 import static com.ded.misle.renderer.MainRenderer.gameStart;
 import static com.ded.misle.renderer.MainRenderer.textShadow;
 import static com.ded.misle.renderer.MenuButton.*;
@@ -88,6 +90,8 @@ public class SaveSelector {
                     // Number
                     g2d.setColor(saveSelectorNumber);
                     g2d.drawString(String.valueOf(i), buttonX + buttonWidth, buttonY);
+
+                    g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.PLAYER_FRONT0), (int) (buttonX + buttonWidth * 0.8), (int) (buttonY + buttonHeight * 0.8), 135, 135, null);
 
                     buttonX += buttonWidth * 2 + buttonSpacing;
                 }
