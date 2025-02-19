@@ -2,6 +2,8 @@ package com.ded.misle.renderer;
 
 import com.ded.misle.core.LanguageManager;
 import com.ded.misle.core.SaveFile;
+import com.ded.misle.items.Item;
+import com.ded.misle.world.player.HandItemAnimator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,11 +17,11 @@ import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.SaveFile.loadSaveScreenInformation;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.ImageRenderer.cachedImages;
-import static com.ded.misle.renderer.MainRenderer.gameStart;
-import static com.ded.misle.renderer.MainRenderer.textShadow;
+import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.renderer.MenuButton.*;
 import static com.ded.misle.renderer.MenuRenderer.createTitle;
 import static com.ded.misle.renderer.MenuRenderer.drawMenuBackground;
+import static com.ded.misle.renderer.PlayingRenderer.isFacingRight;
 
 public class SaveSelector {
 
@@ -117,6 +119,13 @@ public class SaveSelector {
                         x = buttonX + buttonWidth - textWidth / 2;
                         y = (int) (buttonY + 20 * scale + (double) buttonHeight / 2 + fm.getHeight());
                         g2d.drawString(text, x, y);
+                    // Draw hand item
+                        Item item = (Item) loadSaveScreenInformation(SaveFile.SaveScreenOption.FIRST_ITEM, i);
+
+                        if (item.getId() != 0) {
+                            drawRotatedImage(g2d, item.getIcon(), buttonX + buttonWidth * 1.1, buttonY - 37 * scale + (double) buttonHeight / 2,
+                                (int) (100 * scale / 3.75), (int) (100 * scale / 3.75), 0, false);
+                        }
 
                     } else {
                         // Plus sign

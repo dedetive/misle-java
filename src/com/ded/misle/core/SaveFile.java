@@ -620,13 +620,20 @@ public class SaveFile {
 					yield time;
 				}
 				case FIRST_ITEM -> {
-					yield 0;
+					image = ImageIO.read(SaveFile.save[saveSlot]);
+					int idHigh = loadThis(RED, 0, 15);
+					int idLow = loadThis(GREEN, 0, 15);
+					int itemID = idHigh * 255 + idLow;
+
+					yield new Item(itemID);
 				}
 				default -> 0;
 			};
 		} catch (IOException e) {
 			System.out.println("Could not load the save screen information!");
-		}
-		return 0;
+		} catch (Exception e) {
+			System.out.println("Item in save selection screen failed to load!");
+        }
+        return 0;
 	}
 }
