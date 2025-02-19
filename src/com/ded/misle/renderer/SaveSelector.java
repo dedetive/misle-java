@@ -92,10 +92,10 @@ public class SaveSelector {
 
                     // Shadow
                     g2d.setColor(saveSelectorTextShadow);
-                    g2d.drawString(String.valueOf(i), (int) (buttonX + (double) buttonWidth + textShadow), (int) (buttonY + textShadow));
+                    g2d.drawString(String.valueOf(i + 1), (int) (buttonX + (double) buttonWidth + textShadow), (int) (buttonY + textShadow));
                     // Number
                     g2d.setColor(saveSelectorNumber);
-                    g2d.drawString(String.valueOf(i), buttonX + buttonWidth, buttonY);
+                    g2d.drawString(String.valueOf(i + 1), buttonX + buttonWidth, buttonY);
 
                     if (saveExists) {
                     // Player
