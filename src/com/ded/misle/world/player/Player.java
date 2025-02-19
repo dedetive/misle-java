@@ -1,8 +1,10 @@
 package com.ded.misle.world.player;
 
 import com.ded.misle.core.PhysicsEngine;
+import com.ded.misle.input.KeyHandler;
 import com.ded.misle.world.boxes.HPBox;
 
+import static com.ded.misle.core.GamePanel.keyH;
 import static com.ded.misle.core.GamePanel.tileSize;
 import static com.ded.misle.world.boxes.BoxHandling.addBoxToCache;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
@@ -15,6 +17,8 @@ public class Player extends HPBox {
 	public final PlayerAttributes attr;
 	public final PlayerStats stats;
 	public final Inventory inv;
+
+	public int currentSaveSlot;
 
 	public Player() {
 		this.setTexture("invisible");

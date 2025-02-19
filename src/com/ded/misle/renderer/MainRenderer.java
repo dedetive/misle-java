@@ -1,5 +1,7 @@
 package com.ded.misle.renderer;
 
+import com.ded.misle.input.KeyHandler;
+import com.ded.misle.world.player.Player;
 import com.ded.misle.world.player.PlayerAttributes;
 
 import static com.ded.misle.core.GamePanel.*;
@@ -27,11 +29,17 @@ public class MainRenderer {
 
 	public static double textShadow = 1 * scale;
 
-	public static void gameStart() {
+	public static void gameStart(int saveSlot) {
+		player = new Player();
+		player.currentSaveSlot = saveSlot;
+
+		keyH = new KeyHandler();
+
 		previousMenu = currentMenu;
 		currentMenu = PLAYING;
 		startTime = currentTimeMillis();
 		gameState = GameState.LOADING_MENU;
+
 
 		loadSaveFile();
 		loadBoxes();
@@ -39,6 +47,7 @@ public class MainRenderer {
 		player.attr.updateStat(PlayerAttributes.Stat.ALL);
 		player.setHP(player.getMaxHP());
 		player.attr.fillEntropy();
+		player.currentSaveSlot = saveSlot;
 		clearBreadcrumbs();
 
 		Timer fadeTimer = new Timer(LOADING_DURATION, e -> { fadeIn(); });

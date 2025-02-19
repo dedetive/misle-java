@@ -10,6 +10,8 @@ import static com.ded.misle.Launcher.antiAliasing;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.GamePanel.GameState.SAVE_SELECTOR;
 import static com.ded.misle.core.GamePanel.gameState;
+import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.renderer.MainRenderer.gameStart;
 import static com.ded.misle.renderer.MenuButton.*;
 import static com.ded.misle.renderer.MenuRenderer.createTitle;
 import static com.ded.misle.renderer.MenuRenderer.drawMenuBackground;
@@ -48,7 +50,9 @@ public class SaveSelector {
             int id = 300;
             for (int i = 0; i < 3; i++) {
                 button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-                createButton(button, LanguageManager.getText("Save " + i), MainRenderer::gameStart, panel, id);
+                int finalI = i;
+                Runnable runnable = () -> gameStart(finalI);
+                createButton(button, LanguageManager.getText("Save " + i), runnable, panel, id);
                 buttonX += buttonWidth + buttonSpacing;
                 id++;
             }

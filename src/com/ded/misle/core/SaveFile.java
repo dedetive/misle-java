@@ -24,8 +24,13 @@ public class SaveFile {
 	private static final Object fileLock = new Object();
 
 	// FILE PATH FOR .PNG
-	private static final Path filePath = getPath().resolve("savefile.png");
-	private static final File save = filePath.toFile();
+	private static final Path filePath = getPath().resolve("savefile");
+	private static final File[] save = new File[3];
+	static {
+		for (int i = 0; i < 3; i++) {
+			save[i] = (Path.of(filePath + String.valueOf(i) + ".png")).toFile();
+		}
+	}
 
 	// IMAGE
 
@@ -196,13 +201,15 @@ public class SaveFile {
 	}
 
 	public static void loadSaveFile() {
+		int saveSlot = player.currentSaveSlot;
+		System.out.println(saveSlot);
 
 		synchronized (fileLock) {
-			boolean fileExists = checkIfSaveFileExists();
+			boolean fileExists = checkIfSaveFileExists(saveSlot);
 
 			if (fileExists) {
 				try {
-					image = ImageIO.read(save);
+					image = ImageIO.read(save[saveSlot]);
 
 					// Spawnpoint
 
@@ -358,6 +365,7 @@ public class SaveFile {
 	}
 
 	public static void saveEverything() {
+		int saveSlot = player.currentSaveSlot;
 
 		synchronized (fileLock) {
 
@@ -486,7 +494,7 @@ public class SaveFile {
 			ImageWriteParam param = writer.getDefaultWriteParam();
 			param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
 			param.setCompressionQuality(1.0f); // Maximum quality (lossless)
-			try (ImageOutputStream ios = ImageIO.createImageOutputStream(save)) {
+			try (ImageOutputStream ios = ImageIO.createImageOutputStream(save[saveSlot])) {
 				writer.setOutput(ios);
 				writer.write(null, new IIOImage(image, null, null), param);
 				writer.dispose();
@@ -547,15 +555,15 @@ public class SaveFile {
 		brandIntoSaveFile(getLow(value), low);
 	}
 
-	private static boolean checkIfSaveFileExists() {
-		if (!SaveFile.save.exists()) {
+	private static boolean checkIfSaveFileExists(int saveSlot) {
+		if (!SaveFile.save[saveSlot].exists()) {
 			System.out.println("Save file not found. Creating a new empty file...");
 
 			try {
 				// Write the image to a file
-				ImageIO.write(image, "png", SaveFile.save);
+				ImageIO.write(image, "png", SaveFile.save[saveSlot]);
 
-				System.out.println("PNG save file created: " + SaveFile.filePath);
+				System.out.println("PNG save file created: " + save[saveSlot].getPath());
 				return false;
 			} catch (IOException e) {
 				System.err.println("Failed to create the base PNG save file.");
@@ -563,7 +571,7 @@ public class SaveFile {
 				return false;
 			}
 		} else {
-			System.out.println("Save file found: " + SaveFile.filePath);
+			System.out.println("Save file found: " + save[saveSlot].getPath());
 			return true;
 		}
 	}

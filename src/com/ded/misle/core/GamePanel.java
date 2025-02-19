@@ -33,7 +33,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private final JFrame window;
 	private static volatile boolean running = true;
 	private JLabel fpsLabel;
-	KeyHandler keyH = new KeyHandler();
+	public static KeyHandler keyH;
 	public MouseHandler mouseHandler;
 	Thread gameThread;
 
@@ -56,6 +56,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public static Player player;
 	static {
 		player = new Player();
+		keyH = new KeyHandler();
 	}
 
 	// GAMESTATE
