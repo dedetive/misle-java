@@ -77,6 +77,7 @@ public class SaveSelector {
                 buttonX = (int) (64 * scale);
                 buttonY = (int) (106 * scale);
                 buttonWidth = (int) (120 * scale / 2);
+                buttonHeight = (int) (120 * scale);
                 int backgroundSize = (int) (14 * scale);
 
                 for (int i = 0; i < 3; i++) {
@@ -95,14 +96,35 @@ public class SaveSelector {
                     g2d.drawString(String.valueOf(i), buttonX + buttonWidth, buttonY);
 
                     if (saveExists) {
-                        g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.PLAYER_FRONT0), (int) (buttonX + buttonWidth * 0.8), (int) (buttonY + buttonHeight * 0.8), 135, 135, null);
+                    // Player
+                        g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.PLAYER_FRONT0), (int) (buttonX + buttonWidth * 0.8),
+                            (int) (buttonY - 40 * scale + (double) buttonHeight / 2), 135, 135, null);
+                    // Level
+                        int level = (int) loadSaveScreenInformation(SaveFile.SaveScreenOption.LEVEL, i);
+
+                        String text = LanguageManager.getText("save_selector_level") + " " + level;
+                        FontMetrics fm = g2d.getFontMetrics();
+                        int textWidth = fm.stringWidth(text);
+
+                        int x = buttonX + buttonWidth - textWidth / 2;
+                        int y = (int) (buttonY + 20 * scale + (double) buttonHeight / 2);
+                        g2d.drawString(text, x, y);
+                    // Playtime
+                        text = String.valueOf(loadSaveScreenInformation(SaveFile.SaveScreenOption.PLAYTIME, i));
+
+                        textWidth = fm.stringWidth(text);
+
+                        x = buttonX + buttonWidth - textWidth / 2;
+                        y = (int) (buttonY + 20 * scale + (double) buttonHeight / 2 + fm.getHeight());
+                        g2d.drawString(text, x, y);
+
                     } else {
                         // Plus sign
                         g2d.setColor(saveSelectorTextBackground);
-                        g2d.fillRoundRect((int) (buttonX + buttonWidth + 2 * scale), (int) (buttonY + buttonHeight * 0.6),
-                            (int) (4 * scale), (int) (buttonHeight * 1.3), (int) (3 * scale), (int) (3 * scale));
-                        g2d.fillRoundRect((int) (buttonX + buttonWidth  * 0.75), (int) (buttonY + buttonHeight + 5 * scale),
-                            (int) (buttonHeight * 1.25), (int) (4 * scale), (int) (3 * scale), (int) (3 * scale));
+                        g2d.fillRoundRect((int) (buttonX + buttonWidth + 2 * scale), buttonY + buttonHeight / 5,
+                            (int) (4 * scale), buttonHeight / 4, (int) (3 * scale), (int) (3 * scale));
+                        g2d.fillRoundRect((int) (buttonX + buttonWidth  * 0.8), (int) (buttonY + (double) buttonHeight / 4 + 7 * scale),
+                            buttonHeight / 4, (int) (4 * scale), (int) (3 * scale), (int) (3 * scale));
                     }
 
                     buttonX += buttonWidth * 2 + buttonSpacing;

@@ -600,20 +600,33 @@ public class SaveFile {
 	}
 
 	public static Object loadSaveScreenInformation(SaveScreenOption option, int saveSlot) {
-		return switch (option) {
-			case EXISTS -> {
-				yield SaveFile.save[saveSlot].exists();
-			}
-			case LEVEL -> {
-				yield 0;
-			}
-			case PLAYTIME -> {
-				yield 0;
-			}
-			case FIRST_ITEM -> {
-				yield 0;
-			}
-			default -> 0;
-		};
+		try {
+			return switch (option) {
+				case EXISTS -> {
+					yield SaveFile.save[saveSlot].exists();
+				}
+				case LEVEL -> {
+					image = ImageIO.read(SaveFile.save[saveSlot]);
+
+                    yield loadAttribute(PixelData.LEVEL_M, PixelData.LEVEL_L);
+				}
+				case PLAYTIME -> {
+					image = ImageIO.read(SaveFile.save[saveSlot]);
+					long seconds = (loadAttribute(PixelData.TOTAL_PLAYTIME_E, PixelData.TOTAL_PLAYTIME_H, PixelData.TOTAL_PLAYTIME_M, PixelData.TOTAL_PLAYTIME_L));
+					long minutes = seconds / 60;
+					long hours = minutes / 60;
+					String time = hours + "h:" + minutes + "m:" + seconds + "s";
+
+					yield time;
+				}
+				case FIRST_ITEM -> {
+					yield 0;
+				}
+				default -> 0;
+			};
+		} catch (IOException e) {
+			System.out.println("Could not load the save screen information!");
+		}
+		return 0;
 	}
 }
