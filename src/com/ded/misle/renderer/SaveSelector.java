@@ -14,6 +14,7 @@ import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.GamePanel.GameState.SAVE_SELECTOR;
 import static com.ded.misle.core.GamePanel.gameState;
 import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.core.SaveFile.deleteSaveFile;
 import static com.ded.misle.core.SaveFile.loadSaveScreenInformation;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.ImageRenderer.cachedImages;
@@ -55,11 +56,22 @@ public class SaveSelector {
             int buttonSpacing = (int) (12 * scale);
             Rectangle button;
             int id = 300;
+            boolean[] existingSaves = new boolean[3];
             for (int i = 0; i < 3; i++) {
+                boolean saveExists = (boolean) loadSaveScreenInformation(SaveFile.SaveScreenOption.EXISTS, i);
+                existingSaves[i] = saveExists;
+
                 button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
                 int finalI = i;
                 Runnable runnable = () -> gameStart(finalI);
                 createButton(button, "", runnable, panel, id);
+
+                if (saveExists) {
+                    button = new Rectangle(buttonX, (int) (buttonY + buttonHeight + 4 * scale), buttonWidth, (int) (15 * scale));
+                    runnable = () -> deleteSaveFile(finalI);
+                    createButton(button, "c{#DE4040,Delete}", runnable, panel, id + 3);
+                }
+
                 buttonX += buttonWidth + buttonSpacing;
                 id++;
             }
@@ -83,8 +95,6 @@ public class SaveSelector {
                 int backgroundSize = (int) (14 * scale);
 
                 for (int i = 0; i < 3; i++) {
-                    boolean saveExists = (boolean) loadSaveScreenInformation(SaveFile.SaveScreenOption.EXISTS, i);
-
                     // Background
                     g2d.setColor(saveSelectorTextBackground);
                     g2d.fillRoundRect((int) (buttonX + buttonWidth - backgroundSize * 0.25), (int) (buttonY - backgroundSize * 0.8),
@@ -97,7 +107,7 @@ public class SaveSelector {
                     g2d.setColor(saveSelectorNumber);
                     g2d.drawString(String.valueOf(i + 1), buttonX + buttonWidth, buttonY);
 
-                    if (saveExists) {
+                    if (existingSaves[i]) {
                     // Player
                         g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.PLAYER_FRONT0), (int) (buttonX + buttonWidth * 0.8),
                             (int) (buttonY - 40 * scale + (double) buttonHeight / 2), 135, 135, null);

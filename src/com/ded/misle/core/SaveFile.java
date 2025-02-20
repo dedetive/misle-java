@@ -627,13 +627,20 @@ public class SaveFile {
 
 					yield new Item(itemID);
 				}
-				default -> 0;
-			};
+            };
 		} catch (IOException e) {
 			System.out.println("Could not load the save screen information!");
 		} catch (Exception e) {
 			System.out.println("Item in save selection screen failed to load!");
         }
         return 0;
+	}
+
+	public static void deleteSaveFile(int saveSlot) {
+		try {
+			SaveFile.save[saveSlot].delete();
+		} catch (SecurityException e) {
+			System.out.println("Could not delete " + SaveFile.save[saveSlot].getPath());
+		}
 	}
 }
