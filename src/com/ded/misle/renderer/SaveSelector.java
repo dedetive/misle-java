@@ -183,6 +183,53 @@ public class SaveSelector {
         g2d.fillRoundRect(previewX, previewY, previewWidth, previewHeight,
             buttonBorderSize, buttonBorderSize);
 
+        int backgroundSize = (int) (14 * scale);
+
+
+        g2d.setColor(buttonTextColor);
+        g2d.setFont(buttonFont);
+
+        // Background
+        g2d.setColor(saveSelectorTextBackground);
+        g2d.fillRoundRect((int) (previewX + (double) (previewWidth) / 2 - backgroundSize * 0.25), (int) (previewY - backgroundSize * 0.8 + 18 * scale),
+            backgroundSize, backgroundSize, (int) (4 * scale), (int) (4 * scale));
+
+        // Shadow
+        g2d.setColor(saveSelectorTextShadow);
+        g2d.drawString(String.valueOf(saveSlot + 1), (int) (previewX + (double) (previewWidth / 2) + textShadow), (int) (previewY + textShadow + 18 * scale));
+        // Number
+        g2d.setColor(saveSelectorNumber);
+        g2d.drawString(String.valueOf(saveSlot + 1), previewX + previewWidth / 2, (int) (previewY + 18 * scale));
+
+        // Player
+        g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.PLAYER_FRONT0), previewX + 2 * previewWidth / 5,
+            (int) (previewY - 25 * scale + (double) previewHeight / 2), 135, 135, null);
+        // Level
+        int level = (int) loadSaveScreenInformation(SaveFile.SaveScreenOption.LEVEL, saveSlot);
+
+        String text = LanguageManager.getText("save_selector_level") + " " + level;
+        FontMetrics fm = g2d.getFontMetrics();
+        int textWidth = fm.stringWidth(text);
+
+        int x = previewX + previewWidth / 2 - 2 * textWidth / 5;
+        int y = (int) (previewY + 40 * scale + (double) previewHeight / 2);
+        g2d.drawString(text, x, y);
+        // Playtime
+        text = String.valueOf(loadSaveScreenInformation(SaveFile.SaveScreenOption.PLAYTIME, saveSlot));
+
+        textWidth = fm.stringWidth(text);
+
+        x = previewX + previewWidth / 2 - 2 * textWidth / 5;
+        y = (int) (previewY + 40 * scale + (double) previewHeight / 2 + fm.getHeight());
+        g2d.drawString(text, x, y);
+        // Draw hand item
+        Item item = (Item) loadSaveScreenInformation(SaveFile.SaveScreenOption.FIRST_ITEM, saveSlot);
+
+        if (item.getId() != 0) {
+            drawRotatedImage(g2d, item.getIcon(), previewX + previewWidth * 1.1, previewY - 37 * scale + (double) previewHeight / 2,
+                (int) (100 * scale / 3.75), (int) (100 * scale / 3.75), 0, false);
+        }
+
 
 
         int buttonX = (int) (261 * scale);
@@ -193,7 +240,7 @@ public class SaveSelector {
         int id = 310;
 
         // TEXT
-        FontMetrics fm = g2d.getFontMetrics(buttonFont);
+        fm = g2d.getFontMetrics(buttonFont);
         g2d.setColor(buttonBorderColor);
         g2d.fillRoundRect(buttonX - buttonBorderOffsetPos, (int) (buttonY - buttonHeight - 4 * scale) - buttonBorderOffsetPos - fm.getHeight(),
             buttonWidth + buttonBorderOffsetSize, buttonHeight + buttonBorderOffsetSize,
