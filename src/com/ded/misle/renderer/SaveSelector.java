@@ -253,13 +253,17 @@ public class SaveSelector {
         drawColoredText(g2d, "Delete this save?", (int) (buttonX + 4 * scale), (int) (buttonY - buttonHeight - 1 * scale), buttonFont, buttonTextColor, true);
 
         button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-        Runnable runnable = () -> askingToDelete = -1;
+        Runnable runnable = () -> {
+            askingToDelete = -1;
+            clearButtonFading();
+        };
         createButton(button, "Cancel", runnable, panel, id);
 
         button = new Rectangle(buttonX, (int) (buttonY + buttonHeight + 4 * scale), buttonWidth, buttonHeight);
         runnable = () -> {
             deleteSaveFile(saveSlot);
             askingToDelete = -1;
+            clearButtonFading();
         };
         createButton(button, "c{#DE4040,Delete}", runnable, panel, id + 1);
     }
