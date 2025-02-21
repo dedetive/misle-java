@@ -640,7 +640,7 @@ public class SaveFile {
 		try {
 			String path = String.valueOf(SaveFile.save[saveSlot]);
 			path = path.substring(0, path.lastIndexOf("."));
-			SaveFile.save[saveSlot].renameTo(new File(path + "Backup.png"));
+			SaveFile.save[saveSlot].renameTo(new File(path + "B.png"));
 		} catch (SecurityException e) {
 			System.out.println("Could not delete " + SaveFile.save[saveSlot].getPath());
 		}

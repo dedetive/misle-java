@@ -273,6 +273,7 @@ public class SaveSelector {
         };
         createButton(button, LanguageManager.getText("save_selector_deletion_delete"), runnable, panel, id + 1);
 
+        // WARNING
         g2d.setFont(backupAdvisorFont);
         fm = g2d.getFontMetrics(backupAdvisorFont);
         String[] texts = wrapText(LanguageManager.getText("save_selector_deletion_warning1") + saveSlot + LanguageManager.getText("save_selector_deletion_warning2"), buttonWidth * 3 / 2, fm);
