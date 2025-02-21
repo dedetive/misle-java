@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Objects;
 import javax.imageio.IIOImage;
@@ -270,6 +271,23 @@ public class SaveFile {
 
 					player.attr.setBalance(loadAttribute(PixelData.BALANCE_E, PixelData.BALANCE_H, PixelData.BALANCE_M, PixelData.BALANCE_L));
 
+					// Name
+
+                    byte[] nameBytes = new byte[16];
+					PixelColor pixelColor;
+
+					for (int i = 0; i < 16; i++) {
+						if (i % 3 == 0) pixelColor = RED;
+						else if (i % 3 == 1) pixelColor = GREEN;
+						else pixelColor = BLUE;
+
+						nameBytes[i] = (byte) loadThis(pixelColor, i / 3, 127);
+					}
+
+					String playerName = new String(nameBytes, StandardCharsets.UTF_8);
+					player.name = playerName.trim();
+					System.out.println("loading: " + player.name);
+
 					// Load inventory
 
 					int[][][] tempInventory = new int[4][7][4];
@@ -438,7 +456,7 @@ public class SaveFile {
 
 			// Name
 
-			String name = player.name.substring(0, Math.min(15, player.name.length() - 1));
+			String name = player.name.substring(0, Math.min(15, player.name.length()));
 
 			int charPos = 0;
 			PixelColor pixelColor;
