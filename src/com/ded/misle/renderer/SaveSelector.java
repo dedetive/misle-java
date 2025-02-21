@@ -15,8 +15,9 @@ import static com.ded.misle.core.GamePanel.gameState;
 import static com.ded.misle.core.SaveFile.deleteSaveFile;
 import static com.ded.misle.core.SaveFile.loadSaveScreenInformation;
 import static com.ded.misle.renderer.ColorManager.*;
-import static com.ded.misle.renderer.FontManager.buttonFont;
+import static com.ded.misle.renderer.FontManager.*;
 import static com.ded.misle.renderer.ImageRenderer.cachedImages;
+import static com.ded.misle.renderer.InventoryRenderer.wrapText;
 import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.renderer.MenuButton.*;
 import static com.ded.misle.renderer.MenuRenderer.createTitle;
@@ -271,5 +272,15 @@ public class SaveSelector {
             clearButtonFading();
         };
         createButton(button, LanguageManager.getText("save_selector_deletion_delete"), runnable, panel, id + 1);
+
+        g2d.setFont(backupAdvisorFont);
+        fm = g2d.getFontMetrics(backupAdvisorFont);
+        String[] texts = wrapText("This will be saved as 'c{#CECE38,savefile" + (saveSlot) + "Backup}' in the game files!", buttonWidth * 3 / 2, fm);
+        double extraY = 15 * scale;
+        int fontHeight = fm.getHeight();
+        for (String s : texts) {
+            drawColoredText(g2d, s, buttonX + buttonWidth * 3 / 8 - fm.stringWidth(s) / 3, (int) (buttonY + buttonHeight * 2 + extraY), backupAdvisorFont, backupAdvisor, false);
+            extraY += fontHeight;
+        }
     }
 }

@@ -24,6 +24,7 @@ public class FontManager {
     public static Font dialogNPCName = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (85 * scale / 3.75));
     public static Font dialogNPCText = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (52 * scale / 3.75));
     public static Font coinTextFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (72 * scale / 3.75));
+    public static Font backupAdvisorFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (24 * scale / 3.75));
     static {
         updateFontSizes();
     }
@@ -56,6 +57,7 @@ public class FontManager {
                 buttonFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
                 dialogNPCName = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (85 * scale / 3.75));
                 dialogNPCText = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (52 * scale / 3.75));
+                backupAdvisorFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (24 * scale / 3.75));
             }
             case GREEK, CYRILLIC -> {
                 titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
@@ -64,6 +66,7 @@ public class FontManager {
                 itemInfoFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
                 dialogNPCName = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (85 * scale / 3.75));
                 dialogNPCText = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (52 * scale / 3.75));
+                backupAdvisorFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (24 * scale / 3.75));
             }
             case SIMPLIFIED_HAN -> {
                 titleFont = loadFont("/fonts/NotoSansSC-SemiBold.ttf", (float) (96 * scale / 3.75));
@@ -72,6 +75,7 @@ public class FontManager {
                 buttonFont = loadFont("/fonts/NotoSansSC-SemiBold.ttf", (float) (44 * scale / 3.75));
                 dialogNPCName = loadFont("/fonts/NotoSansSC-SemiBold.ttf", (float) (85 * scale / 3.75));
                 dialogNPCText = loadFont("/fonts/NotoSansSC-Regular.ttf", (float) (52 * scale / 3.75));
+                backupAdvisorFont = loadFont("/fonts/NotoSansSC-Regular.ttf", (float) (24 * scale / 3.75));
             }
         }
 
