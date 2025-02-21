@@ -250,14 +250,14 @@ public class SaveSelector {
         g2d.fillRoundRect(buttonX, (int) (buttonY - buttonHeight - 4 * scale) - fm.getHeight(), buttonWidth, buttonHeight,
             buttonBorderSize, buttonBorderSize);
 
-        drawColoredText(g2d, "Delete this save?", (int) (buttonX + 4 * scale), (int) (buttonY - buttonHeight - 1 * scale), buttonFont, buttonTextColor, true);
+        drawColoredText(g2d, LanguageManager.getText("save_selector_deletion_confirmation"), (int) (buttonX + 4 * scale), (int) (buttonY - buttonHeight - 1 * scale), buttonFont, buttonTextColor, true);
 
         button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
         Runnable runnable = () -> {
             askingToDelete = -1;
             clearButtonFading();
         };
-        createButton(button, "Cancel", runnable, panel, id);
+        createButton(button, LanguageManager.getText("save_selector_deletion_cancel"), runnable, panel, id);
 
         button = new Rectangle(buttonX, (int) (buttonY + buttonHeight + 4 * scale), buttonWidth, buttonHeight);
         runnable = () -> {
@@ -265,6 +265,6 @@ public class SaveSelector {
             askingToDelete = -1;
             clearButtonFading();
         };
-        createButton(button, "c{#DE4040,Delete}", runnable, panel, id + 1);
+        createButton(button, LanguageManager.getText("save_selector_deletion_delete"), runnable, panel, id + 1);
     }
 }
