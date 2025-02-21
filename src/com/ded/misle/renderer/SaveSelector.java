@@ -73,7 +73,7 @@ public class SaveSelector {
                     if (saveExists) {
                         button = new Rectangle(buttonX, (int) (buttonY + buttonHeight + 4 * scale), buttonWidth, (int) (15 * scale));
                         runnable = () -> askingToDelete = finalI;
-                        createButton(button, "c{#DE4040,Delete}", runnable, panel, id + 3);
+                        createButton(button, LanguageManager.getText("save_selector_delete"), runnable, panel, id + 3);
                     }
 
                     buttonX += buttonWidth + buttonSpacing;
