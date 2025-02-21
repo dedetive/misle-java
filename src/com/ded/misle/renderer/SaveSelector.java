@@ -239,7 +239,7 @@ public class SaveSelector {
         Rectangle button;
         int id = 310;
 
-        // TEXT
+        // CONFIRMATION TEXT
         fm = g2d.getFontMetrics(buttonFont);
         g2d.setColor(buttonBorderColor);
         g2d.fillRoundRect(buttonX - buttonBorderOffsetPos, (int) (buttonY - buttonHeight - 4 * scale) - buttonBorderOffsetPos - fm.getHeight(),
@@ -250,8 +250,12 @@ public class SaveSelector {
         g2d.fillRoundRect(buttonX, (int) (buttonY - buttonHeight - 4 * scale) - fm.getHeight(), buttonWidth, buttonHeight,
             buttonBorderSize, buttonBorderSize);
 
-        drawColoredText(g2d, LanguageManager.getText("save_selector_deletion_confirmation"), (int) (buttonX + 4 * scale), (int) (buttonY - buttonHeight - 1 * scale), buttonFont, buttonTextColor, true);
+        text = LanguageManager.getText("save_selector_deletion_confirmation");
+        fm = g2d.getFontMetrics(buttonFont);
 
+        drawColoredText(g2d, text, buttonX - fm.stringWidth(text) / 2 + buttonWidth / 2, (int) (buttonY - buttonHeight - 1 * scale), buttonFont, buttonTextColor, true);
+
+        // CANCEL
         button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
         Runnable runnable = () -> {
             askingToDelete = -1;
@@ -259,6 +263,7 @@ public class SaveSelector {
         };
         createButton(button, LanguageManager.getText("save_selector_deletion_cancel"), runnable, panel, id);
 
+        // DELETE
         button = new Rectangle(buttonX, (int) (buttonY + buttonHeight + 4 * scale), buttonWidth, buttonHeight);
         runnable = () -> {
             deleteSaveFile(saveSlot);
