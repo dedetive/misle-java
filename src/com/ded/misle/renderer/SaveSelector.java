@@ -233,7 +233,7 @@ public class SaveSelector {
 
 
         int buttonX = (int) (261 * scale);
-        int buttonY = (int) (152 * scale);
+        int buttonY = (int) (140 * scale);
         int buttonWidth = (int) (100 * scale);
         int buttonHeight = (int) (25 * scale);
         Rectangle button;
