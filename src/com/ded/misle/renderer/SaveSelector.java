@@ -275,7 +275,7 @@ public class SaveSelector {
 
         g2d.setFont(backupAdvisorFont);
         fm = g2d.getFontMetrics(backupAdvisorFont);
-        String[] texts = wrapText("This will be saved as 'c{#CECE38,savefile" + (saveSlot) + "Backup}' in the game files!", buttonWidth * 3 / 2, fm);
+        String[] texts = wrapText(LanguageManager.getText("save_selector_deletion_warning1") + saveSlot + LanguageManager.getText("save_selector_deletion_warning2"), buttonWidth * 3 / 2, fm);
         double extraY = 15 * scale;
         int fontHeight = fm.getHeight();
         for (String s : texts) {
