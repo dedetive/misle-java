@@ -98,23 +98,32 @@ public class SaveSelector {
                     int backgroundSize = (int) (14 * scale);
 
                     for (int i = 0; i < 3; i++) {
+
                         // Background
+
                         g2d.setColor(saveSelectorTextBackground);
-                        g2d.fillRoundRect((int) (buttonX + buttonWidth - backgroundSize * 0.25), (int) (buttonY - backgroundSize * 0.8),
+                        g2d.fillRoundRect((int) (buttonX + buttonWidth * 0.975 - backgroundSize * 0.25), (int) (buttonY - backgroundSize * 0.8),
                             backgroundSize, backgroundSize, (int) (4 * scale), (int) (4 * scale));
 
                         // Shadow
+
                         g2d.setColor(saveSelectorTextShadow);
-                        g2d.drawString(String.valueOf(i + 1), (int) (buttonX + (double) buttonWidth + textShadow), (int) (buttonY + textShadow));
+                        g2d.drawString(String.valueOf(i + 1), (int) (buttonX + (double) buttonWidth * 0.975 + textShadow), (int) (buttonY + textShadow));
+
                         // Number
+
                         g2d.setColor(saveSelectorNumber);
-                        g2d.drawString(String.valueOf(i + 1), buttonX + buttonWidth, buttonY);
+                        g2d.drawString(String.valueOf(i + 1), (int) (buttonX + buttonWidth * 0.975), buttonY);
 
                         if (existingSaves[i]) {
+
                             // Player
-                            g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.PLAYER_FRONT0), (int) (buttonX + buttonWidth * 0.8),
+
+                            g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.PLAYER_FRONT0), (int) (buttonX + buttonWidth * 0.75),
                                 (int) (buttonY - 40 * scale + (double) buttonHeight / 2), 135, 135, null);
+
                             // Level
+
                             int level = (int) loadSaveScreenInformation(SaveFile.SaveScreenOption.LEVEL, i);
 
                             String text = LanguageManager.getText("save_selector_level") + " " + level;
@@ -124,6 +133,7 @@ public class SaveSelector {
                             int x = buttonX + buttonWidth - textWidth / 2;
                             int y = (int) (buttonY + 20 * scale + (double) buttonHeight / 2);
                             g2d.drawString(text, x, y);
+
                             // Playtime
                             text = String.valueOf(loadSaveScreenInformation(SaveFile.SaveScreenOption.PLAYTIME, i));
 
@@ -132,7 +142,18 @@ public class SaveSelector {
                             x = buttonX + buttonWidth - textWidth / 2;
                             y = (int) (buttonY + 20 * scale + (double) buttonHeight / 2 + fm.getHeight());
                             g2d.drawString(text, x, y);
+
+                            // Name
+                            text = String.valueOf(loadSaveScreenInformation(SaveFile.SaveScreenOption.NAME, i));
+
+                            textWidth = fm.stringWidth(text);
+
+                            x = buttonX + buttonWidth - textWidth / 2;
+                            y = (int) (buttonY + 14 * scale);
+                            g2d.drawString(text, x, y);
+
                             // Draw hand item
+
                             Item item = (Item) loadSaveScreenInformation(SaveFile.SaveScreenOption.FIRST_ITEM, i);
 
                             if (item.getId() != 0) {
@@ -141,7 +162,9 @@ public class SaveSelector {
                             }
 
                         } else {
+
                             // Plus sign
+
                             g2d.setColor(saveSelectorTextBackground);
                             g2d.fillRoundRect((int) (buttonX + buttonWidth + 2 * scale), buttonY + buttonHeight / 5,
                                 (int) (4 * scale), buttonHeight / 4, (int) (3 * scale), (int) (3 * scale));

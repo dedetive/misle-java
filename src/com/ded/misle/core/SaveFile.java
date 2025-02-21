@@ -630,6 +630,7 @@ public class SaveFile {
 		LEVEL,
 		PLAYTIME,
 		FIRST_ITEM,
+		NAME,
 	}
 
 	public static Object loadSaveScreenInformation(SaveScreenOption option, int saveSlot) {
@@ -659,6 +660,11 @@ public class SaveFile {
 					int itemID = idHigh * 255 + idLow;
 
 					yield new Item(itemID);
+				}
+				case NAME -> {
+					image = ImageIO.read(SaveFile.save[saveSlot]);
+
+					yield player.name;
 				}
             };
 		} catch (IOException e) {
