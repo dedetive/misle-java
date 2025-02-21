@@ -615,7 +615,7 @@ public class SaveFile {
 					long seconds = (loadAttribute(PixelData.TOTAL_PLAYTIME_E, PixelData.TOTAL_PLAYTIME_H, PixelData.TOTAL_PLAYTIME_M, PixelData.TOTAL_PLAYTIME_L));
 					long minutes = seconds / 60;
 					long hours = minutes / 60;
-					String time = hours + "h:" + minutes + "m:" + seconds + "s";
+					String time = hours + "h:" + minutes % 60 + "m:" + seconds % 60 + "s";
 
 					yield time;
 				}
