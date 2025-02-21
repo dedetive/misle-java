@@ -226,7 +226,7 @@ public class SaveSelector {
         Item item = (Item) loadSaveScreenInformation(SaveFile.SaveScreenOption.FIRST_ITEM, saveSlot);
 
         if (item.getId() != 0) {
-            drawRotatedImage(g2d, item.getIcon(), previewX + previewWidth * 1.1, previewY - 37 * scale + (double) previewHeight / 2,
+            drawRotatedImage(g2d, item.getIcon(), previewX + (double) previewWidth / 2 + 6 * scale, previewY - (double) previewHeight / 2 + 37.5 * scale + (double) previewHeight / 2,
                 (int) (100 * scale / 3.75), (int) (100 * scale / 3.75), 0, false);
         }
 
