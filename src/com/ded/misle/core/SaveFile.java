@@ -436,7 +436,19 @@ public class SaveFile {
 			int balance = player.attr.getBalance();
 			brandValue(balance, PixelData.BALANCE_E, PixelData.BALANCE_H, PixelData.BALANCE_M, PixelData.BALANCE_L);
 
+			// Name
 
+			String name = player.name.substring(0, Math.min(15, player.name.length() - 1));
+
+			int charPos = 0;
+			PixelColor pixelColor;
+			for (byte s : name.getBytes()) {
+				if (charPos % 3 == 0) pixelColor = RED;
+				else if (charPos % 3 == 1) pixelColor = GREEN;
+				else pixelColor = BLUE;
+				brandIntoSaveFile(s, pixelColor, charPos / 3, 127);
+				charPos++;
+			}
 
 			// Inventory
 
