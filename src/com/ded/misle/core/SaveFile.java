@@ -645,4 +645,8 @@ public class SaveFile {
 			System.out.println("Could not delete " + SaveFile.save[saveSlot].getPath());
 		}
 	}
+
+	public static boolean backupExists(int saveSlot) {
+		return new File(String.valueOf(SaveFile.save[saveSlot]).substring(0, String.valueOf(SaveFile.save[saveSlot]).lastIndexOf(".")) + "B.png").exists();
+	}
 }

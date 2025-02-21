@@ -12,8 +12,7 @@ import static com.ded.misle.Launcher.antiAliasing;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.GamePanel.GameState.SAVE_SELECTOR;
 import static com.ded.misle.core.GamePanel.gameState;
-import static com.ded.misle.core.SaveFile.deleteSaveFile;
-import static com.ded.misle.core.SaveFile.loadSaveScreenInformation;
+import static com.ded.misle.core.SaveFile.*;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.*;
 import static com.ded.misle.renderer.ImageRenderer.cachedImages;
@@ -280,8 +279,24 @@ public class SaveSelector {
         double extraY = 15 * scale;
         int fontHeight = fm.getHeight();
         for (String s : texts) {
-            drawColoredText(g2d, s, buttonX + buttonWidth * 3 / 8 - fm.stringWidth(s) / 3, (int) (buttonY + buttonHeight * 2 + extraY), backupAdvisorFont, backupAdvisor, false);
+            drawColoredText(g2d, s, buttonX + buttonWidth * 3 / 8 - fm.stringWidth(s) / 3, (int) (buttonY + buttonHeight * 2 + extraY),
+                backupAdvisorFont, backupAdvisor, false);
             extraY += fontHeight;
+        }
+
+        // Backup deletion warning
+        if (backupExists(saveSlot)) {
+            g2d.setFont(backupAdvisorFont);
+            fm = g2d.getFontMetrics(backupAdvisorFont);
+            texts = wrapText(LanguageManager.getText("save_selector_deletion_warning3"), buttonWidth * 3 / 2, fm);
+            fontHeight = fm.getHeight();
+            for (String s : texts) {
+                drawColoredText(g2d, s, (int) (buttonX + (double) buttonWidth / 2 - (double) fm.stringWidth(s) / 2 + textShadow), (int) ((int) (buttonY + buttonHeight * 2 + extraY) + textShadow),
+                    backupAdvisorFont, backupWarningShadow, true);
+                drawColoredText(g2d, s, buttonX + buttonWidth / 2 - fm.stringWidth(s) / 2, (int) (buttonY + buttonHeight * 2 + extraY),
+                    backupAdvisorFont, backupWarning, false);
+                extraY += fontHeight;
+            }
         }
     }
 }

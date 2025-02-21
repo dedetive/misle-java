@@ -117,6 +117,9 @@ public class ColorManager {
     public final static Color saveSelectorTextShadow = defaultShadowColor;
     public final static Color saveSelectorTextBackground = new Color(0x362714);
     public final static Color backupAdvisor = new Color(0, 0, 0);
+    public final static Color backupAdvisorShadow = defaultShadowColor;
+    public final static Color backupWarning = new Color(0xFE4040);
+    public final static Color backupWarningShadow = defaultShadowColor;
 
     // Fading
 
