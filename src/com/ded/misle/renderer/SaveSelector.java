@@ -135,6 +135,7 @@ public class SaveSelector {
                             g2d.drawString(text, x, y);
 
                             // Playtime
+
                             text = String.valueOf(loadSaveScreenInformation(SaveFile.SaveScreenOption.PLAYTIME, i));
 
                             textWidth = fm.stringWidth(text);
@@ -144,6 +145,7 @@ public class SaveSelector {
                             g2d.drawString(text, x, y);
 
                             // Name
+
                             text = String.valueOf(loadSaveScreenInformation(SaveFile.SaveScreenOption.NAME, i));
 
                             textWidth = fm.stringWidth(text);

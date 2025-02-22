@@ -456,7 +456,8 @@ public class SaveFile {
 
 			// Name
 
-			String name = player.name.substring(0, Math.min(15, player.name.length()));
+			int maxLength = 15;
+			String name = player.name.substring(0, Math.min(maxLength - 1, player.name.length()));
 
 			int charPos = 0;
 			PixelColor pixelColor;
@@ -466,6 +467,15 @@ public class SaveFile {
 				else pixelColor = BLUE;
 				brandIntoSaveFile(s, pixelColor, charPos / 3, 127);
 				charPos++;
+			}
+			// Remove trailing
+			if (player.name.length() < maxLength) {
+				for (int i = player.name.length(); i < maxLength - player.name.length(); i++) {
+					if (i % 3 == 0) pixelColor = RED;
+					else if (i % 3 == 1) pixelColor = GREEN;
+					else pixelColor = BLUE;
+					brandIntoSaveFile(0, pixelColor, i / 3, 127);
+				}
 			}
 
 			// Inventory
