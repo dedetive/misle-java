@@ -468,6 +468,7 @@ public class SaveFile {
 				brandIntoSaveFile(s, pixelColor, charPos / 3, 127);
 				charPos++;
 			}
+
 			// Remove trailing
 			if (player.name.length() < maxLength) {
 				for (int i = player.name.length(); i < maxLength - player.name.length(); i++) {

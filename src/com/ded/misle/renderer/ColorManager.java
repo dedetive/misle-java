@@ -17,6 +17,7 @@ public class ColorManager {
     public final static Color defaultShadowColor = Color.BLACK;
     public final static Color defaultLighterYellow = new Color(230, 230, 180);
     public final static Color defaultLightYellow = new Color(225, 210, 170);
+    public final static Color defaultWhite = new Color(255, 255, 255);
 
     // Floating text
 
@@ -29,7 +30,7 @@ public class ColorManager {
 
     // Boxes
 
-    public final static Color defaultBoxColor = new Color(0xFFFFFF);
+    public final static Color defaultBoxColor = defaultWhite;
 
     // Attribute colors
 
@@ -54,7 +55,7 @@ public class ColorManager {
         // Tooltip
     public final static Color hoveredTooltipBackground = new Color(84, 84, 84, 190);
     public final static Color itemTypeTooltip = defaultLighterYellow;
-    public final static Color itemCountTooltip = new Color(0xFFFFFF);
+    public final static Color itemCountTooltip = defaultWhite;
     public final static Color itemEffectTooltip = defaultLightYellow;
     public final static Color itemDescriptionTooltip = new Color(0xA0A0A0);
     public final static Color tooltipTextShadowColor = defaultShadowColor;
@@ -132,7 +133,7 @@ public class ColorManager {
     // Dialog
 
     public final static Color dialogWindowBackground = new Color(140, 110, 70, 245);
-    public final static Color dialogTextColor = new Color(255, 255, 255);
+    public final static Color dialogTextColor = defaultWhite;
 
     // Level Designer
 
