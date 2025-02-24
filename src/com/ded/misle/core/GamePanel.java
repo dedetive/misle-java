@@ -69,6 +69,7 @@ public class GamePanel extends JPanel implements Runnable {
 		PAUSE_MENU,
 		OPTIONS_MENU,
 		LOADING_MENU,
+		SAVE_CREATOR,
 		SAVE_SELECTOR,
 		LEVEL_DESIGNER,
 		FROZEN_PLAYING,
@@ -380,6 +381,9 @@ public class GamePanel extends JPanel implements Runnable {
 				break;
 			case GameState.SAVE_SELECTOR:
 				SaveSelector.renderSaveSelector(g, this);
+				break;
+			case SAVE_CREATOR:
+				SaveSelector.renderSaveCreator(g, this);
 				break;
 		}
 
