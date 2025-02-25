@@ -44,10 +44,10 @@ public class MenuButton {
         this.needsToUpdate = true;
     }
 
-    public static void createButton(Rectangle bounds, String text, Runnable action, JPanel panel, int id) {
+    public static MenuButton createButton(Rectangle bounds, String text, Runnable action, JPanel panel, int id) {
         for (MenuButton button : buttons) {
             if (button.id == id && !button.needsToUpdate) {
-                return;
+                return button;
             }
         }
         MenuButton button = new MenuButton(bounds, buttonDefaultColor, action, text, id);
@@ -80,6 +80,7 @@ public class MenuButton {
             }
         });
         button.needsToUpdate = false;
+        return button;
     }
 
     private enum ButtonTextColorUpdater {

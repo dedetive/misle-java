@@ -10,6 +10,7 @@ import java.util.ConcurrentModificationException;
 
 import static com.ded.misle.Launcher.antiAliasing;
 import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.core.GamePanel.GameState.SAVE_CREATOR;
 import static com.ded.misle.core.GamePanel.GameState.SAVE_SELECTOR;
 import static com.ded.misle.core.GamePanel.gameState;
 import static com.ded.misle.core.SaveFile.*;
@@ -58,29 +59,41 @@ public class SaveSelector {
                 int buttonWidth = (int) (120 * scale);
                 int buttonHeight = (int) (120 * scale);
                 int buttonSpacing = (int) (12 * scale);
-                Rectangle button;
+                Rectangle buttonRect;
                 int id = 300;
                 boolean[] existingSaves = new boolean[3];
                 for (int i = 0; i < 3; i++) {
                     boolean saveExists = (boolean) loadSaveScreenInformation(SaveFile.SaveScreenOption.EXISTS, i);
                     existingSaves[i] = saveExists;
 
-                    button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
+                    buttonRect = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
                     int finalI = i;
-                    Runnable runnable = () -> gameStart(finalI);
-                    createButton(button, "", runnable, panel, id);
+
+                    Runnable runnable;
+
+                    if (!saveExists) {
+                        runnable = () -> {
+                            creatingSave = finalI;
+                            gameState = SAVE_CREATOR;
+                        };
+                    } else {
+                        runnable = () -> gameStart(finalI);
+                    }
+
+
+                    createButton(buttonRect, "", runnable, panel, id);
 
                     if (saveExists) {
-                        button = new Rectangle(buttonX, (int) (buttonY + buttonHeight + 4 * scale), buttonWidth, (int) (15 * scale));
+                        buttonRect = new Rectangle(buttonX, (int) (buttonY + buttonHeight + 4 * scale), buttonWidth, (int) (15 * scale));
                         runnable = () -> askingToDelete = finalI;
-                        createButton(button, LanguageManager.getText("save_selector_delete"), runnable, panel, id + 3);
+                        createButton(buttonRect, LanguageManager.getText("save_selector_delete"), runnable, panel, id + 3);
                     }
 
                     buttonX += buttonWidth + buttonSpacing;
                     id++;
                 }
 
-                // Go back button
+                // Go back buttonRect
                 createGoBackButton(panel, 400);
 
                 try {
@@ -180,7 +193,6 @@ public class SaveSelector {
     }
 
     private static int askingToDelete = -1;
-
     public static void askToDeleteSave(int saveSlot, JPanel panel, Graphics2D g2d) {
 
         int previewX = (int) (112 * scale);
@@ -320,6 +332,7 @@ public class SaveSelector {
         }
     }
 
+    private static int creatingSave = -1;
     public static void renderSaveCreator(Graphics g, JPanel panel) {
         if (g instanceof Graphics2D g2d) {
 
