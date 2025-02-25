@@ -10,8 +10,7 @@ import java.util.ConcurrentModificationException;
 
 import static com.ded.misle.Launcher.antiAliasing;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.core.GamePanel.GameState.SAVE_CREATOR;
-import static com.ded.misle.core.GamePanel.GameState.SAVE_SELECTOR;
+import static com.ded.misle.core.GamePanel.GameState.*;
 import static com.ded.misle.core.GamePanel.gameState;
 import static com.ded.misle.core.SaveFile.*;
 import static com.ded.misle.renderer.ColorManager.*;
@@ -74,7 +73,10 @@ public class SaveSelector {
                     if (!saveExists) {
                         runnable = () -> {
                             creatingSave = finalI;
+                            MainRenderer.previousMenu = MainRenderer.currentMenu;
+                            MainRenderer.currentMenu = MAIN_MENU;
                             gameState = SAVE_CREATOR;
+                            clearButtonFading();
                         };
                     } else {
                         runnable = () -> gameStart(finalI);
@@ -356,6 +358,8 @@ public class SaveSelector {
 
                 // Go back button
             createGoBackButton(panel, 400);
+
+            drawButtons(g2d);
         }
     }
 }
