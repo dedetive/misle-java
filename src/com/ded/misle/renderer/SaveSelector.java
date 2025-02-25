@@ -81,12 +81,7 @@ public class SaveSelector {
                 }
 
                 // Go back button
-                buttonX = (int) (356 * scale);
-                buttonY = (int) (220 * Math.pow(scale, 1.04));
-                buttonWidth = (int) (109 * scale);
-                buttonHeight = (int) (31 * scale);
-                button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-                createButton(button, LanguageManager.getText("settings_menu_go_back"), MenuRenderer::goToPreviousMenu, panel, 400);
+                createGoBackButton(panel, 400);
 
                 try {
                     drawButtons(g2d, scale / 3.75);
@@ -337,9 +332,17 @@ public class SaveSelector {
             drawMenuBackground(g2d);
 
             // MENU ITSELF
-            // Title
+                // Title
             createTitle("New Game", g2d);
 
+            int buttonX;
+            int buttonY;
+            int buttonWidth;
+            int buttonHeight;
+            Rectangle button;
+
+                // Go back button
+            createGoBackButton(panel, 400);
         }
     }
 }

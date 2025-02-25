@@ -13,8 +13,7 @@ import static com.ded.misle.core.GamePanel.screenWidth;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.dialogNPCText;
 import static com.ded.misle.renderer.MainRenderer.textShadow;
-import static com.ded.misle.renderer.MenuButton.createButton;
-import static com.ded.misle.renderer.MenuButton.drawButtons;
+import static com.ded.misle.renderer.MenuButton.*;
 import static com.ded.misle.renderer.MenuRenderer.drawMenuBackground;
 import static com.ded.misle.renderer.SettingsMenuRenderer.SettingPos.*;
 
@@ -74,10 +73,7 @@ public class SettingsMenuRenderer {
             }
 
             // Go back button
-            buttonX = (int) (356 * scale);
-            buttonWidth = (int) (109 * scale);
-            button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-            createButton(button, LanguageManager.getText("settings_menu_go_back"), MenuRenderer::goToPreviousMenu, panel, 40);
+            createGoBackButton(panel, 40);
 
             // Text with setting state below title
             g2d.setFont(dialogNPCText);

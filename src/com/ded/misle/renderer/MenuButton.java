@@ -191,6 +191,15 @@ public class MenuButton {
         }
     }
 
+    public static void createGoBackButton(JPanel panel, int id) {
+        int buttonX = (int) (356 * scale);
+        int buttonY = (int) (220 * Math.pow(scale, 1.04));
+        int buttonWidth = (int) (109 * scale);
+        int buttonHeight = (int) (31 * scale);
+        Rectangle button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
+        createButton(button, LanguageManager.getText("settings_menu_go_back"), MenuRenderer::goToPreviousMenu, panel, id);
+    }
+
 
     public static void clearButtons() {
         buttons.clear();
