@@ -96,7 +96,7 @@ public class SettingsMenuRenderer {
             }
 
             try {
-                drawButtons(g2d, scaleByScreenSize);
+                drawButtons(g2d);
             } catch (ConcurrentModificationException e) {
                 //
             }

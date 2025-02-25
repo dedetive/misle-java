@@ -143,9 +143,9 @@ public class MenuButton {
     private final static int buttonBorderOffsetPos = 4;
     private final static int buttonBorderOffsetSize = buttonBorderOffsetPos * 2;
 
-    public static void drawButtons(Graphics2D g2d, double scaleByScreenSize) {
+    public static void drawButtons(Graphics2D g2d) {
         for (MenuButton button : buttons) {
-            int buttonBorderSize = (int) (69 * scaleByScreenSize);
+            int buttonBorderSize = (int) (18.4 * scale);
 
             // BORDER
             g2d.setColor(buttonBorderColor);

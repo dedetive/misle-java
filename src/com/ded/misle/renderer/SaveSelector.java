@@ -50,7 +50,7 @@ public class SaveSelector {
 
             if (askingToDelete != -1) {
                 askToDeleteSave(askingToDelete, panel, g2d);
-                drawButtons(g2d, scale / 3.75);
+                drawButtons(g2d);
 
             } else {
                 // Save buttons
@@ -97,7 +97,7 @@ public class SaveSelector {
                 createGoBackButton(panel, 400);
 
                 try {
-                    drawButtons(g2d, scale / 3.75);
+                    drawButtons(g2d);
 
                     buttonX = (int) (64 * scale);
                     buttonY = (int) (106 * scale);

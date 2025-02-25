@@ -137,7 +137,7 @@ public class MenuRenderer {
 
             createButton(optionsButton, LanguageManager.getText("main_menu_options"), MenuRenderer::optionsMenu, panel, 12783);
 
-            drawButtons(g2d, scaleByScreenSize);
+            drawButtons(g2d);
 
             // Version
 
@@ -194,7 +194,7 @@ public class MenuRenderer {
 
             createButton(optionsButton, LanguageManager.getText("pause_menu_settings"), MenuRenderer::optionsMenu, panel, 8734);
 
-            drawButtons(g2d, scaleByScreenSize);
+            drawButtons(g2d);
         }
     }
 
