@@ -72,7 +72,7 @@ public class SaveSelector {
 
                     if (!saveExists) {
                         runnable = () -> {
-                            creatingSave = finalI;
+                            SaveCreator.creatingSave = finalI;
                             MainRenderer.previousMenu = MainRenderer.currentMenu;
                             MainRenderer.currentMenu = MAIN_MENU;
                             gameState = SAVE_CREATOR;
@@ -331,35 +331,6 @@ public class SaveSelector {
                     backupAdvisorFont, backupWarning, false);
                 extraY += fontHeight;
             }
-        }
-    }
-
-    private static int creatingSave = -1;
-    public static void renderSaveCreator(Graphics g, JPanel panel) {
-        if (g instanceof Graphics2D g2d) {
-
-            // ANTI-ALIASING
-            if (antiAliasing) {
-                g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            }
-
-            // BACKGROUND
-            drawMenuBackground(g2d);
-
-            // MENU ITSELF
-                // Title
-            createTitle("New Game", g2d);
-
-            int buttonX;
-            int buttonY;
-            int buttonWidth;
-            int buttonHeight;
-            Rectangle button;
-
-                // Go back button
-            createGoBackButton(panel, 400);
-
-            drawButtons(g2d);
         }
     }
 }

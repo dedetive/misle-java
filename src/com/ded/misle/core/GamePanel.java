@@ -383,7 +383,7 @@ public class GamePanel extends JPanel implements Runnable {
 				SaveSelector.renderSaveSelector(g, this);
 				break;
 			case SAVE_CREATOR:
-				SaveSelector.renderSaveCreator(g, this);
+				SaveCreator.renderSaveCreator(g, this);
 				break;
 		}
 
