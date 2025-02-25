@@ -45,7 +45,7 @@ public class SaveSelector {
 
             // MENU ITSELF
                 // Title
-            createTitle("Saves", g2d, scale / 3.75);
+            createTitle("Saves", g2d);
 
             if (askingToDelete != -1) {
                 askToDeleteSave(askingToDelete, panel, g2d);
@@ -338,7 +338,7 @@ public class SaveSelector {
 
             // MENU ITSELF
             // Title
-            createTitle("New Game", g2d, scale / 3.75);
+            createTitle("New Game", g2d);
 
         }
     }

@@ -46,7 +46,7 @@ public class SettingsMenuRenderer {
             g2d.fillRect(0, separatingBarY + separatingBarHeight, (int) screenWidth, (int) (screenHeight - (separatingBarY + separatingBarHeight)));
 
             // MENU ITSELF
-            MenuRenderer.createTitle("settings_menu_options", g2d, scaleByScreenSize);
+            MenuRenderer.createTitle("settings_menu_options", g2d);
 
             int buttonX;
             int buttonY = (int) (220 * Math.pow(scale, 1.04));

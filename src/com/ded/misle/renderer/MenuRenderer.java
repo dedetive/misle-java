@@ -22,13 +22,13 @@ import static com.ded.misle.core.GamePanel.screenWidth;
 import static com.ded.misle.core.GamePanel.screenHeight;
 
 public class MenuRenderer {
-    static void createTitle(String text, Graphics2D g2d, double scaleByScreenSize) {
+    static void createTitle(String text, Graphics2D g2d) {
         g2d.setFont(FontManager.titleFont);
         FontMetrics fm = g2d.getFontMetrics();
         String titleText = LanguageManager.getText(text);
         int textWidth = fm.stringWidth(titleText);
         int centerX = (int) ((screenWidth - textWidth) / 2);
-        int textY = (int) (182 * scaleByScreenSize);
+        int textY = (int) (48 * scale);
         g2d.setColor(menuTitleShadowColor);
         g2d.drawString(titleText, (int) (centerX - MainRenderer.textShadow), textY); // Left
         g2d.drawString(titleText, (int) (centerX + MainRenderer.textShadow), textY); // Right
@@ -99,7 +99,7 @@ public class MenuRenderer {
 
             // Centering the title
 
-            createTitle("misle", g2d, scaleByScreenSize);
+            createTitle("misle", g2d);
 
             // Play button
 
@@ -162,7 +162,7 @@ public class MenuRenderer {
 
             // MENU ITSELF
 
-            createTitle("pause_menu_paused", g2d, scaleByScreenSize);
+            createTitle("pause_menu_paused", g2d);
 
             // Resume button
 
@@ -212,7 +212,7 @@ public class MenuRenderer {
             drawMenuBackground(g2d);
 
             // MENU ITSELF
-            createTitle("loading_menu_loading", g2d, scaleByScreenSize);
+            createTitle("loading_menu_loading", g2d);
             g2d.setFont(FontManager.titleFont);
             FontMetrics fm = g2d.getFontMetrics();
             String titleText = LanguageManager.getText("loading_menu_loading");
