@@ -17,7 +17,7 @@ public class Player extends HPBox {
 	public final Inventory inv;
 
 	public int currentSaveSlot;
-	public String name = "Player";
+	public String name = "";
 
 	public Player() {
 		this.setTexture("invisible");

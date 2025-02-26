@@ -72,8 +72,8 @@ public class SaveCreator {
             buttonX = (int) ((double) 512 / 2 * scale) - buttonWidth / 2;
             buttonY = (int) (140 * scale);
             Rectangle buttonRect = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-            Runnable runnable = SaveCreator::confirmName
-                ;
+            Runnable runnable = SaveCreator::confirmName;
+
             createButton(buttonRect, "Confirm Name", runnable, panel, 120);
 
             // Go back button

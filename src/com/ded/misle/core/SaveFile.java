@@ -286,7 +286,6 @@ public class SaveFile {
 
 					String playerName = new String(nameBytes, StandardCharsets.UTF_8);
 					player.name = playerName.trim();
-					System.out.println("loading: " + player.name);
 
 					// Load inventory
 
@@ -674,8 +673,20 @@ public class SaveFile {
 				}
 				case NAME -> {
 					image = ImageIO.read(SaveFile.save[saveSlot]);
+					byte[] nameBytes = new byte[16];
+					PixelColor pixelColor;
 
-					yield player.name;
+					for (int i = 0; i < 16; i++) {
+						if (i % 3 == 0) pixelColor = RED;
+						else if (i % 3 == 1) pixelColor = GREEN;
+						else pixelColor = BLUE;
+
+						nameBytes[i] = (byte) loadThis(pixelColor, i / 3, 127);
+					}
+
+					String playerName = new String(nameBytes, StandardCharsets.UTF_8);
+
+					yield playerName.trim();
 				}
             };
 		} catch (IOException e) {
