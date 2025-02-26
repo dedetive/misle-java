@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.renderer.MenuButton.clearButtonFading;
+import static com.ded.misle.renderer.MenuButton.clearButtons;
 import static com.ded.misle.renderer.MenuRenderer.goToPreviousMenu;
 import static com.ded.misle.renderer.SaveSelector.askingToDelete;
 import static com.ded.misle.world.npcs.NPC.getDialogNPCs;
@@ -423,10 +425,13 @@ public class KeyHandler implements KeyListener {
 			// Options
 		if (gameState == GameState.OPTIONS_MENU || gameState == GameState.SAVE_SELECTOR) {
 			if (player.keys.keyPressed.get(PAUSE)) {
-				if (gameState == GameState.SAVE_SELECTOR) {
+				if (gameState == GameState.SAVE_SELECTOR && askingToDelete > -1) {
 					askingToDelete = -1;
+					clearButtonFading();
+					clearButtons();
+				} else {
+					goToPreviousMenu();
 				}
-				goToPreviousMenu();
 			}
 		}
 
