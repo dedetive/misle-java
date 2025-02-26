@@ -18,6 +18,8 @@ public class ColorManager {
     public final static Color defaultLighterYellow = new Color(230, 230, 180);
     public final static Color defaultLightYellow = new Color(225, 210, 170);
     public final static Color defaultWhite = new Color(255, 255, 255);
+    public final static Color defaultDarkBrown = new Color(0x422807);
+    public final static Color defaultBrown = new Color(0x5a4020);
 
     // Floating text
 
@@ -92,8 +94,8 @@ public class ColorManager {
 
     // Menus
         // Buttons
-    public final static Color buttonDefaultColor = new Color(0x5a4020);
-    public final static Color buttonHoveredColor = new Color(0x422807);
+    public final static Color buttonDefaultColor = defaultBrown;
+    public final static Color buttonHoveredColor = defaultDarkBrown;
     public final static Color buttonCurrentMenu = new Color(40, 25, 1);
     public final static Color buttonTextColor = new Color(0xe3c2a1);
     public final static Color buttonTextShadowColor = defaultShadowColor;
@@ -121,6 +123,10 @@ public class ColorManager {
     public final static Color backupAdvisorShadow = defaultShadowColor;
     public final static Color backupWarning = new Color(0xFE4040);
     public final static Color backupWarningShadow = defaultShadowColor;
+        // Save creator
+    public final static Color saveCreatorTextBackground = defaultLightYellow;
+    public final static Color saveCreatorText = defaultDarkBrown;
+    public final static Color saveCreatorTextShadow = defaultShadowColor;
 
     // Fading
 
