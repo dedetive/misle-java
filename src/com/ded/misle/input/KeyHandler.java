@@ -420,7 +420,7 @@ public class KeyHandler implements KeyListener {
 
 		// OTHER MENUS
 			// Options
-		if (gameState == GameState.OPTIONS_MENU) {
+		if (gameState == GameState.OPTIONS_MENU || gameState == GameState.SAVE_SELECTOR) {
 			if (player.keys.keyPressed.get(PAUSE)) {
 				goToPreviousMenu();
 			}
