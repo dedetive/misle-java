@@ -127,6 +127,8 @@ public class ColorManager {
     public final static Color saveCreatorTextBackground = defaultLightYellow;
     public final static Color saveCreatorText = defaultDarkBrown;
     public final static Color saveCreatorTextShadow = defaultShadowColor;
+    public final static Color saveCreatorInsertName = defaultLighterYellow;
+    public final static Color saveCreatorInsertNameShadow = defaultShadowColor;
 
     // Fading
 

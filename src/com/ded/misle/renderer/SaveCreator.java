@@ -39,10 +39,10 @@ public class SaveCreator {
             Rectangle button;
 
                 // Text background
-
             g2d.setFont(dialogNPCText);
             FontMetrics fm = g2d.getFontMetrics();
-            int textWidth = fm.stringWidth(playerName.toString());
+            String text = playerName.toString();
+            int textWidth = fm.stringWidth(text);
             int textX = (int) (((double) 512 / 2) * scale - (double) textWidth / 2);
             int textY = (int) (100 * scale);
 
@@ -52,9 +52,18 @@ public class SaveCreator {
 
                 // Text
             g2d.setColor(saveCreatorTextShadow);
-            g2d.drawString(playerName.toString(), (int) (textX + textShadow), (int) (textY + textShadow));
+            g2d.drawString(text, (int) (textX + textShadow), (int) (textY + textShadow));
             g2d.setColor(saveCreatorText);
-            g2d.drawString(playerName.toString(), textX, textY);
+            g2d.drawString(text, textX, textY);
+
+                // Insert name text
+            text = "How are you known here?";
+            textWidth = fm.stringWidth(text);
+            textX = (int) (((double) 512 / 2) * scale - (double) textWidth / 2);
+            g2d.setColor(saveCreatorInsertNameShadow);
+            g2d.drawString(text, (int) (textX + textShadow), (int) (textY - 20 * scale + textShadow));
+            g2d.setColor(saveCreatorInsertName);
+            g2d.drawString(text, textX, (int) (textY - 20 * scale));
 
             // Go back button
             createGoBackButton(panel, 400);
