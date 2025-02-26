@@ -15,6 +15,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.renderer.MenuRenderer.goToPreviousMenu;
+import static com.ded.misle.renderer.SaveSelector.askingToDelete;
 import static com.ded.misle.world.npcs.NPC.getDialogNPCs;
 import static com.ded.misle.world.npcs.NPC.getSelectedNPCs;
 import static com.ded.misle.world.npcs.NPCDialog.getCurrentTalkingTo;
@@ -422,6 +423,9 @@ public class KeyHandler implements KeyListener {
 			// Options
 		if (gameState == GameState.OPTIONS_MENU || gameState == GameState.SAVE_SELECTOR) {
 			if (player.keys.keyPressed.get(PAUSE)) {
+				if (gameState == GameState.SAVE_SELECTOR) {
+					askingToDelete = -1;
+				}
 				goToPreviousMenu();
 			}
 		}

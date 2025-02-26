@@ -194,7 +194,7 @@ public class SaveSelector {
         }
     }
 
-    private static int askingToDelete = -1;
+    public static int askingToDelete = -1;
     public static void askToDeleteSave(int saveSlot, JPanel panel, Graphics2D g2d) {
 
         int previewX = (int) (112 * scale);
