@@ -423,7 +423,7 @@ public class KeyHandler implements KeyListener {
 
 		// OTHER MENUS
 			// Options
-		if (gameState == GameState.OPTIONS_MENU || gameState == GameState.SAVE_SELECTOR) {
+		if (gameState == GameState.OPTIONS_MENU || gameState == GameState.SAVE_SELECTOR || gameState == GameState.SAVE_CREATOR) {
 			if (player.keys.keyPressed.get(PAUSE)) {
 				if (gameState == GameState.SAVE_SELECTOR && askingToDelete > -1) {
 					askingToDelete = -1;
