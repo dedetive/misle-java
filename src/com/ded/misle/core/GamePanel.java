@@ -75,6 +75,15 @@ public class GamePanel extends JPanel implements Runnable {
 		FROZEN_PLAYING,
 	}
 
+	public enum PlayingGameState {
+		DIALOG,
+		PLAYING,
+		INVENTORY,
+		PAUSE_MENU,
+		LEVEL_DESIGNER,
+		FROZEN_PLAYING,
+	}
+
 	public static GameState gameState = GameState.MAIN_MENU; // Start in MAIN_MENU by default
 
 	// CAMERA WORLD BOUNDARIES
@@ -131,7 +140,11 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public static void quitGame() {
-		saveEverything();
+		for (PlayingGameState playingGameState : PlayingGameState.values()) {
+			if (gameState == GameState.valueOf(String.valueOf(playingGameState))) {
+				saveEverything();
+			}
+		}
 		running = false;
 		Timer timer = new Timer(10, e -> {
 			System.exit(0);
