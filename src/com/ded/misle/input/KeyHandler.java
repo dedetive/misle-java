@@ -17,6 +17,7 @@ import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.renderer.MenuButton.clearButtonFading;
 import static com.ded.misle.renderer.MenuButton.clearButtons;
 import static com.ded.misle.renderer.MenuRenderer.goToPreviousMenu;
+import static com.ded.misle.renderer.SaveCreator.playerName;
 import static com.ded.misle.renderer.SaveSelector.askingToDelete;
 import static com.ded.misle.world.npcs.NPC.getDialogNPCs;
 import static com.ded.misle.world.npcs.NPC.getSelectedNPCs;
@@ -53,6 +54,7 @@ public class KeyHandler implements KeyListener {
 		EQUAL(VK_EQUALS),
 		MINUS(VK_MINUS),
 		GRID(VK_G),
+		BACKSPACE(VK_BACK_SPACE),
 		NUM_0(VK_0),
 		NUM_1(VK_1),
 		NUM_2(VK_2),
@@ -60,7 +62,9 @@ public class KeyHandler implements KeyListener {
 		NUM_4(VK_4),
 		NUM_5(VK_5),
 		NUM_6(VK_6),
-		NUM_7(VK_7);
+		NUM_7(VK_7),
+
+		;
 
 		Key(int keyEvent) {
 			keyCodes.put(this, keyEvent);
@@ -89,7 +93,7 @@ public class KeyHandler implements KeyListener {
 		LEFT,
 		RIGHT,
 		CTRL,
-		SHIFT
+		SHIFT,
 	};
 
 	Key[] outputOnRelease = new Key[] {
@@ -111,7 +115,8 @@ public class KeyHandler implements KeyListener {
 
 	Key[] cooldownOnPress = new Key[]{
 		DEBUG1,
-		DEBUG2
+		DEBUG2,
+		BACKSPACE,
 	};
 
 	Key[] cooldownOnRelease = new Key[] {
@@ -153,6 +158,12 @@ public class KeyHandler implements KeyListener {
 				handleCooldownPress(key);
 				return;
 			}
+		}
+
+		// SAVE CREATOR EXCLUSIVE
+
+		if (gameState == GameState.SAVE_CREATOR) {
+			playerName.append(e.getKeyChar());
 		}
 	}
 
@@ -410,6 +421,14 @@ public class KeyHandler implements KeyListener {
 			}
 			if (player.keys.keyPressed.get(GRID)) {
 				levelDesignerGrid = !levelDesignerGrid;
+			}
+		}
+
+		// SAVE CREATOR EXCLUSIVE
+
+		if (gameState == GameState.SAVE_CREATOR) {
+			if (player.keys.keyPressed.get(BACKSPACE)) {
+				playerName.setLength(Math.max(playerName.length() - 1, 0));
 			}
 		}
 
