@@ -163,7 +163,9 @@ public class KeyHandler implements KeyListener {
 		// SAVE CREATOR EXCLUSIVE
 
 		if (gameState == GameState.SAVE_CREATOR) {
-			playerName.append(e.getKeyChar());
+			if (playerName.length() < 14) {
+				playerName.append(e.getKeyChar());
+			}
 		}
 	}
 
