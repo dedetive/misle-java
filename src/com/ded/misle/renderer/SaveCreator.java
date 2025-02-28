@@ -16,7 +16,7 @@ import static com.ded.misle.renderer.MenuRenderer.drawMenuBackground;
 
 public class SaveCreator {
     public static int creatingSave = -1;
-    public static StringBuilder playerName = new StringBuilder("PlayerName");
+    public static StringBuilder playerName = new StringBuilder();
 
     public static void renderSaveCreator(Graphics g, JPanel panel) {
         if (g instanceof Graphics2D g2d) {
