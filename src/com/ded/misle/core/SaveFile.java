@@ -276,7 +276,7 @@ public class SaveFile {
                     byte[] nameBytes = new byte[16];
 					PixelColor pixelColor;
 
-					for (int i = 0; i < 16; i++) {
+					for (int i = 0; i < 17; i++) {
 						if (i % 3 == 0) pixelColor = RED;
 						else if (i % 3 == 1) pixelColor = GREEN;
 						else pixelColor = BLUE;
@@ -455,7 +455,7 @@ public class SaveFile {
 
 			// Name
 
-			int maxLength = 15;
+			int maxLength = 17;
 			String name = player.name.substring(0, Math.min(maxLength - 1, player.name.length()));
 
 			int charPos = 0;
