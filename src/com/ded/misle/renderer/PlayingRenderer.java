@@ -113,8 +113,10 @@ public class PlayingRenderer {
         }
 
         drawRotatedImage(g2d, playerSprite,
-            playerScreenX - player.getBoxScaleHorizontal() * 0.25, playerScreenY - player.getBoxScaleVertical() * 0.25,
-            (int) (player.getBoxScaleHorizontal() * 1.5), (int) (player.getBoxScaleVertical() * 1.5), player.pos.getRotation(), playerMirror);
+            playerScreenX - player.getBoxScaleHorizontal() * 0.25 * tileSize,
+            playerScreenY - player.getBoxScaleVertical() * 0.25 * tileSize,
+            (int) (player.getBoxScaleHorizontal() * 1.5 * tileSize),
+            (int) (player.getBoxScaleVertical() * 1.5 * tileSize), player.pos.getRotation(), playerMirror);
 
         drawHandItem(g2d, playerScreenX, playerScreenY, scaleByScreenSize, mouseHandler);
 
@@ -172,7 +174,7 @@ public class PlayingRenderer {
                 mirror = true;
             }
 
-            double distance = playerScreenX + (player.getBoxScaleHorizontal() / 2) * 2 * isFacingRight * scaleByScreenSize;
+            double distance = playerScreenX + (player.getBoxScaleHorizontal() / 2 * tileSize) * 2 * isFacingRight * scaleByScreenSize;
 
             Item selectedItem = player.inv.getSelectedItem();
 

@@ -237,8 +237,8 @@ public class GamePanel extends JPanel implements Runnable {
 		// Update game variables for resizing
 		updateTileSize();
 		player.attr.updateStat(PlayerAttributes.Stat.SPEED);
-		player.setBoxScaleHorizontal(tileSize * 0.91);
-		player.setBoxScaleVertical(tileSize * 0.91);
+		player.setBoxScaleHorizontal(0.91);
+		player.setBoxScaleVertical(0.91);
 		worldWidth = originalWorldWidth * scale;
 		worldHeight = originalWorldHeight * scale;
 
@@ -304,8 +304,8 @@ public class GamePanel extends JPanel implements Runnable {
 						}
 					}
 					case LEVEL_DESIGNER -> {
-						player.pos.setCameraOffsetX(player.getX() - screenWidth / 2 + player.getBoxScaleHorizontal() / 2);
-						player.pos.setCameraOffsetY(player.getY() - screenHeight / 2 + player.getBoxScaleVertical() / 2);
+						player.pos.setCameraOffsetX(player.getX() - screenWidth / 2 + player.getBoxScaleHorizontal() / 2 * tileSize);
+						player.pos.setCameraOffsetY(player.getY() - screenHeight / 2 + player.getBoxScaleVertical() / 2 * tileSize);
 
 						player.pos.setCameraOffsetX(Math.max(0, Math.min(player.pos.getCameraOffsetX(), worldWidth - screenWidth)));
 						player.pos.setCameraOffsetY(Math.max(0, Math.min(player.pos.getCameraOffsetY(), worldHeight - screenHeight)));

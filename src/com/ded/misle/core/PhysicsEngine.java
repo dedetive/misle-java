@@ -42,8 +42,8 @@ public class PhysicsEngine {
 
 		if (!levelDesigner) {
 			// Select or unselect NPCs
-			double playerCenterX = (player.getX() + player.getBoxScaleHorizontal() / 2);
-			double playerCenterY = (player.getY() + player.getBoxScaleVertical() / 2);
+			double playerCenterX = (player.getX() + player.getBoxScaleHorizontal() / 2 * tileSize);
+			double playerCenterY = (player.getY() + player.getBoxScaleVertical() / 2 * tileSize);
 			List<NPC> distantNPCs = BoxHandling.getInteractableNPCsInRange(playerCenterX, playerCenterY, 196);
 			for (NPC npc : distantNPCs)
 				npc.setSelected(false);
@@ -66,13 +66,8 @@ public class PhysicsEngine {
 	public static boolean isPixelOccupied(Box responsibleBox, double pixelX, double pixelY, double range, int level, PlayerAttributes.KnockbackDirection direction) {
 		double objectWidth;
 		double objectHeight;
-		if (responsibleBox instanceof Player) {
-			objectWidth = responsibleBox.getBoxScaleHorizontal();
-			objectHeight = responsibleBox.getBoxScaleVertical();
-		} else {
-			objectWidth = responsibleBox.getBoxScaleHorizontal() * tileSize;
-			objectHeight = responsibleBox.getBoxScaleVertical() * tileSize;
-		}
+		objectWidth = responsibleBox.getBoxScaleHorizontal() * tileSize;
+		objectHeight = responsibleBox.getBoxScaleVertical() * tileSize;
 
 		List<Box> nearbyNonCollisionBoxes = ((BoxHandling.getNonCollisionBoxesInRange(player.getX(), player.getY(), range)));
 		for (Box nonColBox : nearbyNonCollisionBoxes) {
