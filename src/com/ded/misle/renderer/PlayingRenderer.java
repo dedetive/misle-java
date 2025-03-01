@@ -174,7 +174,8 @@ public class PlayingRenderer {
                 mirror = true;
             }
 
-            double distance = playerScreenX + (player.getBoxScaleHorizontal() / 2 * tileSize) * 2 * isFacingRight * scaleByScreenSize;
+            double distance = playerScreenX + player.getBoxScaleHorizontal() * tileSize
+                * isFacingRight * scaleByScreenSize;
 
             Item selectedItem = player.inv.getSelectedItem();
 
