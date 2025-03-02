@@ -11,9 +11,11 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.renderer.FontManager.dialogNPCText;
 import static com.ded.misle.renderer.MenuButton.clearButtonFading;
 import static com.ded.misle.renderer.MenuButton.clearButtons;
 import static com.ded.misle.renderer.MenuRenderer.goToPreviousMenu;
@@ -164,9 +166,15 @@ public class KeyHandler implements KeyListener {
 
 		if (gameState == GameState.SAVE_CREATOR) {
 			if (playerName.length() < 16) {
-				playerName.append(e.getKeyChar());
+				playerName.append(removeExtraChars(e.getKeyChar()));
 			}
 		}
+	}
+
+	public static char removeExtraChars(char s) {
+		if (dialogNPCText.canDisplay(s)) return s;
+		else return '\0';
+
 	}
 
 	@Override
