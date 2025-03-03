@@ -84,8 +84,18 @@ public class SaveCreator {
     }
 
     public static void confirmName() {
-        clearButtons();
-        gameStart(creatingSave);
-        player.name = playerName.toString();
+        boolean canConfirm = isNameValid();
+
+        if (canConfirm) {
+            clearButtons();
+            gameStart(creatingSave);
+            player.name = playerName.toString();
+        }
+    }
+
+    private static boolean isNameValid() {
+        if (playerName.isEmpty()) return false;
+
+        return true;
     }
 }
