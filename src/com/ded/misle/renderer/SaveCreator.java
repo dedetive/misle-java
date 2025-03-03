@@ -102,7 +102,7 @@ public class SaveCreator {
     }
 
     private static boolean isNameValid() {
-        if (playerName.toString().trim().length() <= 1) return false;
+        if (playerName.toString().trim().isEmpty()) return false;
 
         return true;
     }
