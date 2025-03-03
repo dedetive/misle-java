@@ -2,6 +2,7 @@ package com.ded.misle.input;
 
 import com.ded.misle.core.GamePanel;
 import com.ded.misle.core.PhysicsEngine;
+import com.ded.misle.renderer.SaveCreator;
 import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.world.player.PlayerAttributes;
 
@@ -19,6 +20,7 @@ import static com.ded.misle.renderer.FontManager.dialogNPCText;
 import static com.ded.misle.renderer.MenuButton.clearButtonFading;
 import static com.ded.misle.renderer.MenuButton.clearButtons;
 import static com.ded.misle.renderer.MenuRenderer.goToPreviousMenu;
+import static com.ded.misle.renderer.SaveCreator.confirmName;
 import static com.ded.misle.renderer.SaveCreator.playerName;
 import static com.ded.misle.renderer.SaveSelector.askingToDelete;
 import static com.ded.misle.world.npcs.NPC.getDialogNPCs;
@@ -57,6 +59,7 @@ public class KeyHandler implements KeyListener {
 		MINUS(VK_MINUS),
 		GRID(VK_G),
 		BACKSPACE(VK_BACK_SPACE),
+		ENTER(VK_ENTER),
 		NUM_0(VK_0),
 		NUM_1(VK_1),
 		NUM_2(VK_2),
@@ -112,7 +115,8 @@ public class KeyHandler implements KeyListener {
 		DROP,
 		EQUAL,
 		MINUS,
-		GRID
+		GRID,
+		ENTER,
 	};
 
 	Key[] cooldownOnPress = new Key[]{
@@ -439,6 +443,9 @@ public class KeyHandler implements KeyListener {
 		if (gameState == GameState.SAVE_CREATOR) {
 			if (player.keys.keyPressed.get(BACKSPACE)) {
 				playerName.setLength(Math.max(playerName.length() - 1, 0));
+			}
+			if (player.keys.keyPressed.get(ENTER)) {
+				confirmName();
 			}
 		}
 

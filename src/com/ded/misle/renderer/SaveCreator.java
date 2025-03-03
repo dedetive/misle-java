@@ -83,7 +83,7 @@ public class SaveCreator {
         }
     }
 
-    private static void confirmName() {
+    public static void confirmName() {
         gameStart(creatingSave);
         player.name = playerName.toString();
     }
