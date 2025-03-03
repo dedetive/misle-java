@@ -84,6 +84,7 @@ public class SaveCreator {
     }
 
     public static void confirmName() {
+        clearButtons();
         gameStart(creatingSave);
         player.name = playerName.toString();
     }
