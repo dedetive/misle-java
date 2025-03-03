@@ -22,6 +22,8 @@ import static com.ded.misle.renderer.MenuButton.*;
 import static com.ded.misle.renderer.MenuRenderer.createTitle;
 import static com.ded.misle.renderer.MenuRenderer.drawMenuBackground;
 import static com.ded.misle.renderer.PlayingRenderer.scaleByScreenSize;
+import static com.ded.misle.renderer.SaveCreator.saveCreationWarning;
+import static com.ded.misle.renderer.SaveCreator.playerName;
 
 public class SaveSelector {
 
@@ -76,6 +78,8 @@ public class SaveSelector {
                             MainRenderer.previousMenu = MainRenderer.currentMenu;
                             MainRenderer.currentMenu = MAIN_MENU;
                             gameState = SAVE_CREATOR;
+                            saveCreationWarning = "";
+                            playerName = new StringBuilder();
                             clearButtonFading();
                         };
                     } else {
@@ -339,7 +343,7 @@ public class SaveSelector {
             extraY += fontHeight;
         }
 
-        // Backup deletion warning
+        // Backup deletion saveCreationWarning
         if (backupExists(saveSlot)) {
             g2d.setFont(backupAdvisorFont);
             fm = g2d.getFontMetrics(backupAdvisorFont);

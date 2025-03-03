@@ -17,7 +17,7 @@ import static com.ded.misle.renderer.MenuRenderer.drawMenuBackground;
 public class SaveCreator {
     public static int creatingSave = -1;
     public static StringBuilder playerName = new StringBuilder();
-    public static String warning = "";
+    public static String saveCreationWarning = "";
 
     public static void renderSaveCreator(Graphics g, JPanel panel) {
         if (g instanceof Graphics2D g2d) {
@@ -60,8 +60,8 @@ public class SaveCreator {
 
                 // Warning
             g2d.setColor(saveCreatorWarning);
-            textWidth = fm.stringWidth(warning);
-            g2d.drawString(warning, (int) (textX - (double) textWidth / 2), textY + fm.getHeight());
+            textWidth = fm.stringWidth(saveCreationWarning);
+            g2d.drawString(saveCreationWarning, (int) (textX - (double) textWidth / 2), textY + fm.getHeight());
 
                 // Insert name text
             text = "How are you known here?";
@@ -97,7 +97,7 @@ public class SaveCreator {
             gameStart(creatingSave);
             player.name = playerName.toString();
         } else {
-            warning = "The name cannot be empty.";
+            saveCreationWarning = "The name cannot be empty.";
         }
     }
 
