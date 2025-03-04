@@ -1,5 +1,7 @@
 package com.ded.misle.renderer;
 
+import com.ded.misle.core.LanguageManager;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -32,7 +34,7 @@ public class SaveCreator {
 
             // MENU ITSELF
                 // Title
-            createTitle("New Game", g2d);
+            createTitle(LanguageManager.getText("save_creator_title"), g2d);
 
             int buttonX;
             int buttonY;
@@ -64,7 +66,7 @@ public class SaveCreator {
             g2d.drawString(saveCreationWarning, (int) (textX - (double) textWidth / 2), textY + fm.getHeight());
 
                 // Insert name text
-            text = "How are you known here?";
+            text = LanguageManager.getText("save_creator_instruction");
             textWidth = fm.stringWidth(text);
             textX = (int) (((double) 512 / 2) * scale - (double) textWidth / 2);
             g2d.setColor(saveCreatorInsertNameShadow);
@@ -80,7 +82,7 @@ public class SaveCreator {
             Rectangle buttonRect = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
             Runnable runnable = SaveCreator::confirmName;
 
-            createButton(buttonRect, "Confirm Name", runnable, panel, 120);
+            createButton(buttonRect, LanguageManager.getText("save_creator_confirm_button"), runnable, panel, 120);
 
             // Go back button
             createGoBackButton(panel, 400);
@@ -97,7 +99,7 @@ public class SaveCreator {
             gameStart(creatingSave);
             player.name = playerName.toString();
         } else {
-            saveCreationWarning = "The name cannot be empty.";
+            saveCreationWarning = LanguageManager.getText("save_creator_warning1");
         }
     }
 

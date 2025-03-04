@@ -47,7 +47,7 @@ public class SaveSelector {
 
             // MENU ITSELF
                 // Title
-            createTitle("Saves", g2d);
+            createTitle(LanguageManager.getText("save_selector_title"), g2d);
 
             if (askingToDelete != -1) {
                 askToDeleteSave(askingToDelete, panel, g2d);
