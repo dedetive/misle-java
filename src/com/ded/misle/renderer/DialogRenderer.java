@@ -46,6 +46,7 @@ public class DialogRenderer {
             placeholders.put("totalPlaytimeMinutes", Long.toString(player.stats.getCurrentTotalPlaytime(MINUTES) % 60));
             placeholders.put("totalPlaytimeSeconds", Long.toString(player.stats.getCurrentTotalPlaytime(SECONDS) % 60));
             placeholders.put("name", player.name);
+            placeholders.put("npcName", npc.getName());
 
             // Regex to match placeholders in the format f{...}
             Pattern pattern = Pattern.compile("f\\{(.*?)}");
