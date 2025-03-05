@@ -355,11 +355,14 @@ public class InventoryRenderer {
         StringBuilder line = new StringBuilder();
 
         for (String word : text.split(" ")) {
-            if (fm.stringWidth(removeColorIndicators(line + word)) > maxWidth) {
+            boolean containsEscape = word.contains("\\n");
+            if (fm.stringWidth(removeColorIndicators(line + word)) > maxWidth || containsEscape) {
                 lines.add(line.toString());
                 line = new StringBuilder();
             }
-            line.append(word).append(" ");
+            if (!containsEscape) {
+                line.append(word).append(" ");
+            }
         }
         lines.add(line.toString().trim());
 
