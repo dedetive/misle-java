@@ -210,8 +210,8 @@ public class WorldLoader {
 				int travelBoxesAdded = lineAddBox(250, 460, 6, 1, "travel", FILL);
 				editLastBox(EFFECT, "{travel, TUANI_1_TO_CITY}", travelBoxesAdded);
 					// TUANI_1_TO_2
-				travelBoxesAdded = lineAddBox(((double) 1190 / 20 - 8) * 20, 10, 7, 1, "travel", FILL);
-				editLastBox(EFFECT, "{travel, TUANI_1_TO_2}", travelBoxesAdded);
+//				travelBoxesAdded = lineAddBox(((double) 1190 / 20 - 8) * 20, 10, 7, 1, "travel", FILL);
+//				editLastBox(EFFECT, "{travel, TUANI_1_TO_2}", travelBoxesAdded);
 
 				// Enemies
 				new Enemy(300, 200, GOBLIN, 0.5);
