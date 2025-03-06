@@ -31,9 +31,9 @@ public class DialogRenderer {
 
         // NPC name
         NPC npc = getCurrentTalkingTo();
-        g2d.setColor(npc.getNameColor());
+        g2d.setColor(npc.nameColor);
         g2d.setFont(dialogNPCName);
-        String npcName = npc.getName();
+        String npcName = npc.name;
         g2d.drawString(npcName, (int) (32 * scale), (int) (174 * scale));
 
         // Dialog itself
@@ -46,7 +46,7 @@ public class DialogRenderer {
             placeholders.put("totalPlaytimeMinutes", Long.toString(player.stats.getCurrentTotalPlaytime(MINUTES) % 60));
             placeholders.put("totalPlaytimeSeconds", Long.toString(player.stats.getCurrentTotalPlaytime(SECONDS) % 60));
             placeholders.put("name", player.name);
-            placeholders.put("npcName", npc.getName());
+            placeholders.put("npcName", npc.name);
 
             // Regex to match placeholders in the format f{...}
             Pattern pattern = Pattern.compile("f\\{(.*?)}");

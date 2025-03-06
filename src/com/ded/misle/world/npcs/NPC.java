@@ -19,8 +19,8 @@ public class NPC extends HPBox {
     private int dialogID;
     private int dialogIndex;
     private int dialogMaxIndex;
-    private String name;
-    private Color nameColor;
+    public String name;
+    public Color nameColor;
     public enum InteractionType {
         NONE,
         DIALOG,
@@ -120,23 +120,4 @@ public class NPC extends HPBox {
     public int getDialogIndex() {
         return dialogIndex;
     }
-
-    // Name related
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Color getNameColor() {
-        return nameColor;
-    }
-
-    public void setNameColor(Color nameColor) {
-        this.nameColor = nameColor;
-    }
-
 }

@@ -79,8 +79,8 @@ public class WorldLoader {
 					NPC magentaBlock = new NPC(240, 200, DIALOG);
 					magentaBlock.setColor(new Color(0xFF00FF));
 					magentaBlock.setDialogID(2);
-					magentaBlock.setName("Magenta block");
-					magentaBlock.setNameColor(new Color(0xFF00FF));
+					magentaBlock.name = "Magenta block";
+					magentaBlock.nameColor = new Color(0xFF00FF);
 			}
 			case TUANI_CITY -> {
 				//Setup
@@ -129,14 +129,14 @@ public class WorldLoader {
 				// NPC testing
 				NPC yellowBlock = new NPC(500, 300, DIALOG);
 				yellowBlock.setDialogID(1);
-				yellowBlock.setName("Yellow block");
-				yellowBlock.setNameColor(new Color(0xFFFF00));
+				yellowBlock.name = "Yellow block";
+				yellowBlock.nameColor = new Color(0xFFFF00);
 
 				NPC magentaBlock = new NPC(540, 340, DIALOG);
 				editBox(magentaBlock, COLOR, "#FF00FF");
 				magentaBlock.setDialogID(2);
-				magentaBlock.setName("Magenta block");
-				magentaBlock.setNameColor(new Color(0xFF00FF));
+				magentaBlock.name = "Magenta block";
+				magentaBlock.nameColor = new Color(0xFF00FF);
 
 				NPC cyanBlock = new NPC(460, 340, NONE);
 				editBox(cyanBlock, COLOR, "#00FFFF");
