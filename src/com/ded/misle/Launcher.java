@@ -2,9 +2,11 @@ package com.ded.misle;
 
 import com.ded.misle.core.GamePanel;
 import com.ded.misle.core.LanguageManager;
+import com.ded.misle.core.Setting;
 
 import javax.swing.*;
 
+import static com.ded.misle.core.Setting.screenSize;
 import static com.ded.misle.core.SettingsManager.getSetting;
 
 /**
@@ -17,7 +19,6 @@ public class Launcher {
 	// VARIABLE INITIALIZATIONS
 
 	public static String windowTitle;
-	public static String screenSize;
 	public static boolean isFullscreen;
 	public static String fullscreenMode;
 	public static boolean displayFPS;
@@ -42,7 +43,7 @@ public class Launcher {
 
 		// SETTINGS GETTERS
 
-		screenSize = getSetting("screenSize");
+		screenSize.value = getSetting("screenSize");
 		isFullscreen = Boolean.parseBoolean(getSetting("isFullscreen"));
 		fullscreenMode = getSetting("fullscreenMode");
 		displayFPS = Boolean.parseBoolean(getSetting("displayFPS"));

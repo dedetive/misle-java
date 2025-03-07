@@ -10,6 +10,7 @@ import java.util.ConcurrentModificationException;
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.GamePanel.screenHeight;
 import static com.ded.misle.core.GamePanel.screenWidth;
+import static com.ded.misle.core.Setting.screenSize;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.dialogNPCText;
 import static com.ded.misle.renderer.MainRenderer.textShadow;
@@ -157,7 +158,7 @@ public class SettingsMenuRenderer {
 
         // screenSize
         pos = BOTTOM_LEFT.pos;
-        createSetting("settings_graphics_screenSize", String.valueOf(screenSize),
+        createSetting("settings_graphics_screenSize", String.valueOf(screenSize.value),
             pos[0], pos[1], SettingsManager::cycleScreenSize, panel, 44);
 
         // antiAliasing

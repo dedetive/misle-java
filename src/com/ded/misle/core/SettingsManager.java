@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.core.Setting.screenSize;
 import static com.ded.misle.renderer.FontManager.updateFontSizes;
 
 /**
@@ -118,7 +119,11 @@ public class SettingsManager {
 		return result;
 	}
 
+	private static String getDefault(Setting setting) {
+		return setting.defaultValue.toString();
+	}
 
+	@Deprecated
 	private static String getDefault(String args) {
 		String defaultSetting = "";
 		switch (args) {
@@ -161,15 +166,15 @@ public class SettingsManager {
 	// Graphics
 	public static void cycleScreenSize() {
 		String[] screenSizes = new String[]{"small", "medium", "big", "huge"};
-		screenSize = cycleThroughSetting(screenSizes, screenSize);
+		screenSize.value = cycleThroughSetting(screenSizes, String.valueOf(screenSize.value));
 
-		changeSetting("screenSize", screenSize);
-		forceResize(screenSize);
+		changeSetting("screenSize", (String) screenSize.value);
+		forceResize((String) screenSize.value);
 	}
 
 	public static void cycleIsFullscreen() {
 		isFullscreen = cycleBoolean("isFullscreen", isFullscreen);
-		forceResize(screenSize);
+		forceResize((String) screenSize.value);
 	}
 
 	public static void cycleFullscreenMode() {
@@ -177,7 +182,7 @@ public class SettingsManager {
 		fullscreenMode = cycleThroughSetting(modes, fullscreenMode);
 
 		changeSetting("fullscreenMode", fullscreenMode);
-		forceResize(screenSize);
+		forceResize((String) screenSize.value);
 	}
 
 	public static void cycleDisplayFPS() {

@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.ded.misle.core.Setting.screenSize;
 import static com.ded.misle.renderer.FontManager.buttonFont;
 import static com.ded.misle.world.boxes.HPBox.getHPBoxes;
 import static com.ded.misle.renderer.ColorManager.*;
@@ -109,9 +110,9 @@ public class GamePanel extends JPanel implements Runnable {
 		window.setSize((int) screenWidth, (int) screenHeight);
 		setWindow(window);
 		try {
-			forceResize(screenSize);
+			forceResize((String) screenSize.value);
 		} catch (IllegalArgumentException e) {
-			forceResize("medium");
+			forceResize((String) screenSize.defaultValue);
 		}
 
 		window.add(this);
@@ -128,7 +129,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		updateMouseVariableScales();
 
-		forceResize(screenSize);
+		forceResize((String) screenSize.value);
 
 		// Handle window close event
 		window.addWindowListener(new WindowAdapter() {
