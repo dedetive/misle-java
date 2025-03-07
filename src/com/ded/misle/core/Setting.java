@@ -11,7 +11,7 @@ public class Setting<T> {
         this.defaultValue = defaultValue;
     }
 
-    public static Setting screenSize = new Setting("".getClass(), "medium");
+    public static Setting screenSize = new Setting(String.class, "medium");
 
 //    screenSize = getSetting("screenSize");
 //    isFullscreen = Boolean.parseBoolean(getSetting("isFullscreen"));
