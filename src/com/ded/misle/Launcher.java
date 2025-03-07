@@ -6,6 +6,7 @@ import com.ded.misle.core.Setting;
 
 import javax.swing.*;
 
+import static com.ded.misle.core.Setting.isFullscreen;
 import static com.ded.misle.core.Setting.screenSize;
 import static com.ded.misle.core.SettingsManager.getSetting;
 import static com.ded.misle.core.SettingsManager.updateSetting;
@@ -20,7 +21,6 @@ public class Launcher {
 	// VARIABLE INITIALIZATIONS
 
 	public static String windowTitle;
-	public static boolean isFullscreen;
 	public static String fullscreenMode;
 	public static boolean displayFPS;
 	public static int frameRateCap;
@@ -44,9 +44,8 @@ public class Launcher {
 
 		// SETTINGS GETTERS
 
-//		screenSize.value = getSetting("screenSize");
 		updateSetting(screenSize);
-		isFullscreen = Boolean.parseBoolean(getSetting("isFullscreen"));
+		updateSetting(isFullscreen);
 		fullscreenMode = getSetting("fullscreenMode");
 		displayFPS = Boolean.parseBoolean(getSetting("displayFPS"));
 		antiAliasing = Boolean.parseBoolean(getSetting("antiAliasing"));

@@ -10,6 +10,7 @@ import java.util.ConcurrentModificationException;
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.GamePanel.screenHeight;
 import static com.ded.misle.core.GamePanel.screenWidth;
+import static com.ded.misle.core.Setting.isFullscreen;
 import static com.ded.misle.core.Setting.screenSize;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.dialogNPCText;
@@ -138,7 +139,7 @@ public class SettingsMenuRenderer {
     public static void renderGraphicsMenu(JPanel panel) {
         // isFullscreen
         int[] pos = TOP_LEFT.pos;
-        createSetting("settings_graphics_isFullscreen", String.valueOf(isFullscreen),
+        createSetting("settings_graphics_isFullscreen", String.valueOf(isFullscreen.value),
             pos[0], pos[1], SettingsManager::cycleIsFullscreen, panel, 46);
 
         // fullscreenMode

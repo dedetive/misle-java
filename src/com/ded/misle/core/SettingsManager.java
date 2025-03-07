@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.core.Setting.isFullscreen;
 import static com.ded.misle.core.Setting.screenSize;
 import static com.ded.misle.renderer.FontManager.updateFontSizes;
 
@@ -87,7 +88,7 @@ public class SettingsManager {
 		}
 	}
 
-	public static void updateSetting(Setting setting) {
+	public static void updateSetting(Setting<?> setting) {
 		Path file = getPath().resolve("resources/settings.config");
 		String result = "";
 
@@ -109,7 +110,12 @@ public class SettingsManager {
 		if (result.isEmpty()) {
 			result = setting.defaultValue.toString();
 		}
-		setting.value = result;
+
+		try {
+			setting.value = result;
+		} catch (ClassCastException e) {
+			setting.value = setting.defaultValue;
+		}
 	}
 
 	/**
@@ -193,7 +199,7 @@ public class SettingsManager {
 	}
 
 	public static void cycleIsFullscreen() {
-		isFullscreen = cycleBoolean("isFullscreen", isFullscreen);
+		isFullscreen.value = cycleBoolean("isFullscreen", Boolean.parseBoolean(String.valueOf(isFullscreen.value)));
 		forceResize((String) screenSize.value);
 	}
 

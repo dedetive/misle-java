@@ -3,15 +3,16 @@ package com.ded.misle.core;
 public class Setting<T> {
 
     public Class<T> valueType;
-    public T value;
-    public T defaultValue;
+    public Object value;
+    public Object defaultValue;
 
     public Setting(Class<T> valueType, T defaultValue) {
         this.valueType = valueType;
         this.defaultValue = defaultValue;
     }
 
-    public static Setting screenSize = new Setting(String.class, "medium");
+    public static Setting<String> screenSize = new Setting<>(String.class, "medium");
+    public static Setting<Boolean> isFullscreen = new Setting<>(boolean.class, true);
 
 //    screenSize = getSetting("screenSize");
 //    isFullscreen = Boolean.parseBoolean(getSetting("isFullscreen"));
