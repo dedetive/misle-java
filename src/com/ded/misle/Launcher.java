@@ -8,6 +8,7 @@ import javax.swing.*;
 
 import static com.ded.misle.core.Setting.screenSize;
 import static com.ded.misle.core.SettingsManager.getSetting;
+import static com.ded.misle.core.SettingsManager.updateSetting;
 
 /**
  * This launches the game. Only ever run the game from this class.
@@ -43,7 +44,8 @@ public class Launcher {
 
 		// SETTINGS GETTERS
 
-		screenSize.value = getSetting("screenSize");
+//		screenSize.value = getSetting("screenSize");
+		updateSetting(screenSize);
 		isFullscreen = Boolean.parseBoolean(getSetting("isFullscreen"));
 		fullscreenMode = getSetting("fullscreenMode");
 		displayFPS = Boolean.parseBoolean(getSetting("displayFPS"));

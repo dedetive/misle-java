@@ -87,6 +87,30 @@ public class SettingsManager {
 		}
 	}
 
+	public static void updateSetting(Setting setting) {
+		Path file = getPath().resolve("resources/settings.config");
+		String result = "";
+
+		try (BufferedReader reader = Files.newBufferedReader(file)) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if (line.contains(setting.toString())) {
+					try {
+						result = line.split("= ")[1];
+					} catch (ArrayIndexOutOfBoundsException e) {
+						System.out.println("Setting " + setting.toString() + " not found in settings.config file.");
+					}
+				}
+			}
+		} catch (IOException e) {
+			result = "";
+		}
+
+		if (result.isEmpty()) {
+			result = setting.defaultValue.toString();
+		}
+		setting.value = result;
+	}
 
 	/**
 	 * Receives a setting you want to know the value of and returns it's value in a String format. The parameter writing has to be exact.
@@ -117,10 +141,6 @@ public class SettingsManager {
 			result = getDefault(args);
 		}
 		return result;
-	}
-
-	private static String getDefault(Setting setting) {
-		return setting.defaultValue.toString();
 	}
 
 	@Deprecated
