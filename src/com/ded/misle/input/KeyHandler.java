@@ -20,7 +20,7 @@ import static com.ded.misle.renderer.MenuRenderer.goToPreviousMenu;
 import static com.ded.misle.renderer.SaveCreator.confirmName;
 import static com.ded.misle.renderer.SaveCreator.playerName;
 import static com.ded.misle.renderer.SaveSelector.askingToDelete;
-import static com.ded.misle.renderer.SettingsMenuRenderer.moveSettingMenu;
+import static com.ded.misle.renderer.SettingsMenuRenderer.*;
 import static com.ded.misle.world.npcs.NPC.getDialogNPCs;
 import static com.ded.misle.world.npcs.NPC.getSelectedNPCs;
 import static com.ded.misle.world.npcs.NPCDialog.getCurrentTalkingTo;
@@ -480,9 +480,11 @@ public class KeyHandler implements KeyListener {
 
 					if (player.keys.keyPressed.get(LEFT_MENU)) {
 						moveSettingMenu(-1);
+						leftKeyIndicatorWidth = 19;
 					}
 					if (player.keys.keyPressed.get(RIGHT_MENU)) {
 						moveSettingMenu(1);
+						rightKeyIndicatorWidth = 19;
 					}
 
 				}

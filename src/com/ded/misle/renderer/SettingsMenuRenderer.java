@@ -123,13 +123,20 @@ public class SettingsMenuRenderer {
             }
 
             for (int i = 0; i < 2; i++) {
-                g2d.setColor(settingsMoveKeyHint);
-                int width = buttonWidth / 3;
+                int width;
+                if (i == 0) {
+                    width = (int) (leftKeyIndicatorWidth * scale);
+                } else {
+                    width = (int) (rightKeyIndicatorWidth * scale);
+                }
                 int height = width;
-                int x = (int) ((38 + i * 269) * scale) - width;
+                int x = (int) ((30 + i * 269) * scale) - width / 2;
                 int y = (int) (220 * Math.pow(scale, 1.04)) + buttonHeight / 2 - height / 2;
+                int fixedX = (int) ((int) ((30 + i * 269) * scale) - 16 * scale / 2);
+                int fixedY = (int) ((int) (220 * Math.pow(scale, 1.04)) + (double) buttonHeight / 2 - 16 * scale / 2);
                 int arcW = width / 4;
                 int arcH = arcW;
+                g2d.setColor(settingsMoveKeyHint);
                 g2d.fillRoundRect(x, y, width, height, arcW, arcH);
 
                 if (i == 0) {
@@ -141,8 +148,11 @@ public class SettingsMenuRenderer {
                 textWidth = fm.stringWidth(text);
 
                 g2d.setColor(settingsMoveKeyHintText);
-                g2d.drawString(text, x + width / 2 - textWidth / 2, y + height - fm.getHeight() / 5);
+                g2d.drawString(text, (int) (fixedX + 8 * scale - (double) textWidth / 2), (int) (fixedY + 16 * scale - (double) fm.getHeight() / 5));
             }
+
+            if (leftKeyIndicatorWidth > 16.05) leftKeyIndicatorWidth = Math.max(leftKeyIndicatorWidth - 0.05, 16);
+            if (rightKeyIndicatorWidth > 16.05) rightKeyIndicatorWidth = Math.max(rightKeyIndicatorWidth - 0.05, 16);
 
             try {
                 drawButtons(g2d);
@@ -151,6 +161,9 @@ public class SettingsMenuRenderer {
             }
         }
     }
+
+    public static double leftKeyIndicatorWidth = 16;
+    public static double rightKeyIndicatorWidth = 16;
 
     private static final int LEFTX = 42;
     private static final int RIGHTX = 282;
