@@ -12,6 +12,7 @@ import static com.ded.misle.core.GamePanel.screenHeight;
 import static com.ded.misle.core.GamePanel.screenWidth;
 import static com.ded.misle.core.Setting.isFullscreen;
 import static com.ded.misle.core.Setting.screenSize;
+import static com.ded.misle.input.KeyHandler.Key.LEFT_MENU;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.dialogNPCText;
 import static com.ded.misle.renderer.MainRenderer.textShadow;
@@ -119,8 +120,27 @@ public class SettingsMenuRenderer {
                 case GAMEPLAY -> renderGameplayMenu(panel);
             }
 
+            for (int i = 0; i < 2; i++) {
+                g2d.setColor(settingsMoveKeyHint);
+                int width = buttonWidth / 3;
+                int height = width;
+                int x = (int) ((38 + i * 269) * scale) - width;
+                int y = (int) (220 * Math.pow(scale, 1.04)) + buttonHeight / 2 - height / 2;
+                int arcW = width / 4;
+                int arcH = arcW;
+                g2d.fillRoundRect(x, y, width, height, arcW, arcH);
 
+                if (i == 0) {
+                    text = "A";
+                }
+                else if (i == 1) {
+                    text = "D";
+                }
+                textWidth = fm.stringWidth(text);
 
+                g2d.setColor(settingsMoveKeyHintText);
+                g2d.drawString(text, x + width / 2 - textWidth / 2, y + height - fm.getHeight() / 5);
+            }
 
             try {
                 drawButtons(g2d);

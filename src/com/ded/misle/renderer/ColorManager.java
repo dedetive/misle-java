@@ -115,6 +115,8 @@ public class ColorManager {
         // Settings
     public final static Color settingsSeparatingBar = new Color(40, 25, 1);
     public final static Color settingsSeparatingBarBottom = new Color(40, 25, 1, 100);
+    public final static Color settingsMoveKeyHint = new Color(35, 20, 40);
+    public final static Color settingsMoveKeyHintText = defaultLighterYellow;
         // FPS
     public final static Color FPSColor = new Color(50, 255, 50);
     public final static Color FPSShadowColor = defaultShadowColor;
