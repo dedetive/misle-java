@@ -119,6 +119,8 @@ public class SettingsMenuRenderer {
                 case GAMEPLAY -> renderGameplayMenu(panel);
             }
 
+
+
             try {
                 drawButtons(g2d);
             } catch (ConcurrentModificationException e) {
@@ -227,4 +229,15 @@ public class SettingsMenuRenderer {
     public static void switchToAudio() { settingState = SettingState.AUDIO; }
 
     public static void switchToGameplay() { settingState = SettingState.GAMEPLAY; }
+
+    public static void moveSettingMenu(int offset) {
+        int nextMenu = settingState.order + offset;
+
+        int buttonId = SettingsMenuRenderer.SettingState.getStateByOrder(nextMenu).buttonId;
+
+        fadingState.put(buttonId, MainRenderer.FadingState.FADING_OUT);
+        fadingProgress.put(buttonId, 0.75F);
+        settingState = SettingsMenuRenderer.SettingState.getStateByOrder(nextMenu);
+        clearButtons();
+    }
 }

@@ -22,6 +22,7 @@ import static com.ded.misle.renderer.MenuRenderer.goToPreviousMenu;
 import static com.ded.misle.renderer.SaveCreator.confirmName;
 import static com.ded.misle.renderer.SaveCreator.playerName;
 import static com.ded.misle.renderer.SaveSelector.askingToDelete;
+import static com.ded.misle.renderer.SettingsMenuRenderer.moveSettingMenu;
 import static com.ded.misle.renderer.SettingsMenuRenderer.settingState;
 import static com.ded.misle.world.npcs.NPC.getDialogNPCs;
 import static com.ded.misle.world.npcs.NPC.getSelectedNPCs;
@@ -477,21 +478,13 @@ public class KeyHandler implements KeyListener {
 			if (gameState == GameState.OPTIONS_MENU) {
 				if (player.keys.keyPressed.get(LEFT_MENU) || player.keys.keyPressed.get(RIGHT_MENU)) {
 
-					int nextMenu = settingState.order;
 					if (player.keys.keyPressed.get(LEFT_MENU)) {
-						nextMenu--;
+						moveSettingMenu(-1);
 					}
 					if (player.keys.keyPressed.get(RIGHT_MENU)) {
-						nextMenu++;
+						moveSettingMenu(1);
 					}
 
-
-					int buttonId = SettingsMenuRenderer.SettingState.getStateByOrder(nextMenu).buttonId;
-
-					fadingState.put(buttonId, MainRenderer.FadingState.FADING_OUT);
-					fadingProgress.put(buttonId, 0.75F);
-					settingState = SettingsMenuRenderer.SettingState.getStateByOrder(nextMenu);
-					clearButtons();
 				}
 			}
 		}
