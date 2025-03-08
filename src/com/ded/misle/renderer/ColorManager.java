@@ -101,24 +101,28 @@ public class ColorManager {
     public final static Color buttonTextShadowColor = defaultShadowColor;
     public final static Color buttonBorderColor = defaultShadowColor;
     public final static Color buttonFadingColor = new Color(0xdfdaba);
-        // Menus themselves
+        // Main menu
     public final static Color menuBackgroundColor = new Color(0x9d7a53);
     public final static Color menuTitleColor = defaultLightYellow;
     public final static Color menuTitleShadowColor = defaultShadowColor;
     public final static Color menuVersionColor = new Color(217, 217, 217);
     public final static Color menuVersionShadowColor = defaultShadowColor;
+        // Loading
     public final static Color progressBarShadowColor = defaultShadowColor;
     public final static Color progressBarColor = new Color(100, 200, 100);
     public final static Color progressBarPercentage = new Color(191, 191, 191);
     public final static Color progressBarPercentageShadow = defaultShadowColor;
+        // Settings
     public final static Color settingsSeparatingBar = new Color(40, 25, 1);
     public final static Color settingsSeparatingBarBottom = new Color(40, 25, 1, 100);
+        // FPS
     public final static Color FPSColor = new Color(50, 255, 50);
     public final static Color FPSShadowColor = defaultShadowColor;
         // Save selector
     public final static Color saveSelectorNumber = defaultLightYellow;
     public final static Color saveSelectorTextShadow = defaultShadowColor;
     public final static Color saveSelectorTextBackground = new Color(0x362714);
+        // Save deletion
     public final static Color backupAdvisor = new Color(0, 0, 0);
     public final static Color backupAdvisorShadow = defaultShadowColor;
     public final static Color backupWarning = new Color(0xFE4040);
