@@ -2,6 +2,7 @@ package com.ded.misle.renderer;
 
 import com.ded.misle.core.LanguageManager;
 import com.ded.misle.core.SettingsManager;
+import com.ded.misle.input.KeyHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +14,7 @@ import static com.ded.misle.core.GamePanel.screenWidth;
 import static com.ded.misle.core.Setting.isFullscreen;
 import static com.ded.misle.core.Setting.screenSize;
 import static com.ded.misle.input.KeyHandler.Key.LEFT_MENU;
+import static com.ded.misle.input.KeyHandler.Key.RIGHT_MENU;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.dialogNPCText;
 import static com.ded.misle.renderer.MainRenderer.textShadow;
@@ -131,10 +133,10 @@ public class SettingsMenuRenderer {
                 g2d.fillRoundRect(x, y, width, height, arcW, arcH);
 
                 if (i == 0) {
-                    text = "A";
+                    text = KeyHandler.getChar(LEFT_MENU);
                 }
-                else if (i == 1) {
-                    text = "D";
+                else {
+                    text = KeyHandler.getChar(RIGHT_MENU);
                 }
                 textWidth = fm.stringWidth(text);
 

@@ -2,8 +2,6 @@ package com.ded.misle.input;
 
 import com.ded.misle.core.GamePanel;
 import com.ded.misle.core.PhysicsEngine;
-import com.ded.misle.renderer.MainRenderer;
-import com.ded.misle.renderer.SettingsMenuRenderer;
 import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.world.player.PlayerAttributes;
 
@@ -23,7 +21,6 @@ import static com.ded.misle.renderer.SaveCreator.confirmName;
 import static com.ded.misle.renderer.SaveCreator.playerName;
 import static com.ded.misle.renderer.SaveSelector.askingToDelete;
 import static com.ded.misle.renderer.SettingsMenuRenderer.moveSettingMenu;
-import static com.ded.misle.renderer.SettingsMenuRenderer.settingState;
 import static com.ded.misle.world.npcs.NPC.getDialogNPCs;
 import static com.ded.misle.world.npcs.NPC.getSelectedNPCs;
 import static com.ded.misle.world.npcs.NPCDialog.getCurrentTalkingTo;
@@ -74,8 +71,11 @@ public class KeyHandler implements KeyListener {
 
 		;
 
+		public final int keyCode;
+
 		Key(int keyEvent) {
 			keyCodes.put(this, keyEvent);
+			keyCode = keyEvent;
 		}
 	}
 
@@ -544,5 +544,9 @@ public class KeyHandler implements KeyListener {
 				startDialog(npc);
 			}
 		}
+	}
+
+	public static String getChar(Key key) {
+		return KeyEvent.getKeyText(key.keyCode);
 	}
 }
