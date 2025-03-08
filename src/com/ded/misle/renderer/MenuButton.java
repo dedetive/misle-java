@@ -29,8 +29,8 @@ public class MenuButton {
     String text;
     int id;
     boolean needsToUpdate;
-    private static final HashMap<Integer, MainRenderer.FadingState> fadingState = new HashMap<>();
-    private static final HashMap<Integer, Float> fadingProgress = new HashMap<>();
+    public static final HashMap<Integer, MainRenderer.FadingState> fadingState = new HashMap<>();
+    public static final HashMap<Integer, Float> fadingProgress = new HashMap<>();
 
     private static final List<MenuButton> buttons = new ArrayList<>();
 

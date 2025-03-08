@@ -21,10 +21,32 @@ import static com.ded.misle.renderer.SettingsMenuRenderer.SettingPos.*;
 
 public class SettingsMenuRenderer {
     public enum SettingState {
-        GENERAL,
-        GRAPHICS,
-        AUDIO,
-        GAMEPLAY,
+        GENERAL(0, 100),
+        GRAPHICS(1, 138),
+        AUDIO(2, 176),
+        GAMEPLAY(3, 214),
+
+        ;
+
+        public final int order;
+        public final int buttonId;
+
+        SettingState(int order, int buttonId) {
+            this.order = order;
+            this.buttonId = buttonId;
+        }
+
+        public static SettingState getStateByOrder(int order) {
+            return switch (order) {
+                case -1: yield GAMEPLAY;
+                case 0: yield GENERAL;
+                case 1: yield GRAPHICS;
+                case 2: yield AUDIO;
+                case 3: yield GAMEPLAY;
+                case 4: yield GENERAL;
+                default: yield GENERAL;
+            };
+        }
     }
     public static SettingState settingState = SettingState.GENERAL;
 

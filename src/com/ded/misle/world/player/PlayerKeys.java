@@ -17,6 +17,9 @@ public class PlayerKeys {
 		this.setKeyMaxCooldown(BACKSPACE, 75);
 		this.setKeyMaxCooldown(DODGE, 1000);
 		this.setKeyMaxCooldown(USE, 100);
+		this.setKeyMaxCooldown(RIGHT_MENU, 150);
+		this.setKeyMaxCooldown(LEFT_MENU, 150);
+
 	}
 
 	public HashMap<Key, Boolean> getKeyPressed() {

@@ -2,7 +2,8 @@ package com.ded.misle.input;
 
 import com.ded.misle.core.GamePanel;
 import com.ded.misle.core.PhysicsEngine;
-import com.ded.misle.renderer.SaveCreator;
+import com.ded.misle.renderer.MainRenderer;
+import com.ded.misle.renderer.SettingsMenuRenderer;
 import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.world.player.PlayerAttributes;
 
@@ -12,17 +13,16 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.renderer.FontManager.dialogNPCText;
-import static com.ded.misle.renderer.MenuButton.clearButtonFading;
-import static com.ded.misle.renderer.MenuButton.clearButtons;
+import static com.ded.misle.renderer.MenuButton.*;
 import static com.ded.misle.renderer.MenuRenderer.goToPreviousMenu;
 import static com.ded.misle.renderer.SaveCreator.confirmName;
 import static com.ded.misle.renderer.SaveCreator.playerName;
 import static com.ded.misle.renderer.SaveSelector.askingToDelete;
+import static com.ded.misle.renderer.SettingsMenuRenderer.settingState;
 import static com.ded.misle.world.npcs.NPC.getDialogNPCs;
 import static com.ded.misle.world.npcs.NPC.getSelectedNPCs;
 import static com.ded.misle.world.npcs.NPCDialog.getCurrentTalkingTo;
@@ -45,7 +45,9 @@ public class KeyHandler implements KeyListener {
 		PAUSE(VK_ESCAPE),
 		UP(VK_UP),
 		DOWN(VK_DOWN),
+		LEFT_MENU(VK_A),
 		LEFT(VK_LEFT),
+		RIGHT_MENU(VK_D),
 		RIGHT(VK_RIGHT),
 		DEBUG1(VK_OPEN_BRACKET),
 		DEBUG2(VK_CLOSE_BRACKET),
@@ -123,6 +125,8 @@ public class KeyHandler implements KeyListener {
 		DEBUG1,
 		DEBUG2,
 		BACKSPACE,
+		LEFT_MENU,
+		RIGHT_MENU,
 	};
 
 	Key[] cooldownOnRelease = new Key[] {
@@ -458,7 +462,7 @@ public class KeyHandler implements KeyListener {
 		}
 
 		// OTHER MENUS
-			// Options
+			// Options, save selector and save creator
 		if (gameState == GameState.OPTIONS_MENU || gameState == GameState.SAVE_SELECTOR || gameState == GameState.SAVE_CREATOR) {
 			if (player.keys.keyPressed.get(PAUSE)) {
 				if (gameState == GameState.SAVE_SELECTOR && askingToDelete > -1) {
@@ -467,6 +471,27 @@ public class KeyHandler implements KeyListener {
 					clearButtons();
 				} else {
 					goToPreviousMenu();
+				}
+			}
+
+			if (gameState == GameState.OPTIONS_MENU) {
+				if (player.keys.keyPressed.get(LEFT_MENU) || player.keys.keyPressed.get(RIGHT_MENU)) {
+
+					int nextMenu = settingState.order;
+					if (player.keys.keyPressed.get(LEFT_MENU)) {
+						nextMenu--;
+					}
+					if (player.keys.keyPressed.get(RIGHT_MENU)) {
+						nextMenu++;
+					}
+
+
+					int buttonId = SettingsMenuRenderer.SettingState.getStateByOrder(nextMenu).buttonId;
+
+					fadingState.put(buttonId, MainRenderer.FadingState.FADING_OUT);
+					fadingProgress.put(buttonId, 0.75F);
+					settingState = SettingsMenuRenderer.SettingState.getStateByOrder(nextMenu);
+					clearButtons();
 				}
 			}
 		}
