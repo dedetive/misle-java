@@ -4,6 +4,7 @@ import com.ded.misle.core.LanguageManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 import static com.ded.misle.Launcher.antiAliasing;
 import static com.ded.misle.Launcher.scale;
@@ -104,8 +105,12 @@ public class SaveCreator {
     }
 
     private static boolean isNameValid() {
-        if (playerName.toString().trim().isEmpty()) return false;
+        boolean isValid = true;
 
-        return true;
+        if (playerName.toString().trim().isEmpty()) isValid = false;
+        if (Objects.equals(playerName.toString().trim(), LanguageManager.getText("save_creator_cannot_be"))) isValid = false;
+        System.out.println(playerName.toString().trim() + ", " + LanguageManager.getText("save_creator_cannot_be") + " = " + isValid);
+
+        return isValid;
     }
 }
