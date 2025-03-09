@@ -138,7 +138,7 @@ public class KeyHandler implements KeyListener {
 	static HashMap<Key, Integer> keyCodes = new HashMap<>();
 
 	public KeyHandler() {
-		for (Key key : Key.values()) {
+		for (Key key : values()) {
 			player.keys.keyPressed.put(key, false);
 		}
 	}
@@ -160,14 +160,18 @@ public class KeyHandler implements KeyListener {
 		for (Key key : continuousInput) {
 			if (code == keyCodes.get(key)) {
 				player.keys.keyPressed.put(key, true);
-				return;
+				if (!(gameState == GameState.SAVE_CREATOR && e.getKeyCode() != VK_BACK_SPACE)) {
+					return;
+				}
 			}
 		}
 
 		for (Key key : cooldownOnPress) {
 			if (code == keyCodes.get(key)) {
 				handleCooldownPress(key);
-				return;
+				if (!(gameState == GameState.SAVE_CREATOR && e.getKeyCode() != VK_BACK_SPACE)) {
+					return;
+				}
 			}
 		}
 
@@ -237,7 +241,7 @@ public class KeyHandler implements KeyListener {
 
 		if (gameState == GameState.PLAYING) {
 			for (NumberKey numberKey : NumberKey.values()) {
-				if (player.keys.keyPressed.get(Key.valueOf(String.valueOf(numberKey)))) {
+				if (player.keys.keyPressed.get(valueOf(String.valueOf(numberKey)))) {
 					player.inv.setSelectedSlot(numberKey.slot);
 				}
 			}
@@ -324,10 +328,10 @@ public class KeyHandler implements KeyListener {
 		// EITHER PLAYING OR INVENTORY
 
 		if (player.keys.keyPressed.get(INVENTORY)) {
-			if (gameState == GamePanel.GameState.PLAYING) {
-				gameState = GamePanel.GameState.INVENTORY;
-			} else if (gameState == GamePanel.GameState.INVENTORY) {
-				gameState = GamePanel.GameState.PLAYING;
+			if (gameState == GameState.PLAYING) {
+				gameState = GameState.INVENTORY;
+			} else if (gameState == GameState.INVENTORY) {
+				gameState = GameState.PLAYING;
 			}
 		}
 
@@ -339,7 +343,7 @@ public class KeyHandler implements KeyListener {
 
 			if (hoveredRow >= 0 && hoveredCol >= 0) {
 				for (NumberKey numberKey : NumberKey.values()) {
-					if (player.keys.keyPressed.get(Key.valueOf(String.valueOf(numberKey)))) {
+					if (player.keys.keyPressed.get(valueOf(String.valueOf(numberKey)))) {
 						player.inv.setTempItem(player.inv.getItem(hoveredRow, hoveredCol));
 						player.inv.bruteSetItem(player.inv.getItem(0, numberKey.slot), hoveredRow, hoveredCol);
 						player.inv.bruteSetItem(player.inv.getTempItem(), 0, numberKey.slot);
@@ -350,7 +354,7 @@ public class KeyHandler implements KeyListener {
 			}
 
 			if (player.keys.keyPressed.get(PAUSE)) {
-				gameState = GamePanel.GameState.PLAYING;
+				gameState = GameState.PLAYING;
 			}
 
 			if (player.keys.keyPressed.get(DROP)) {
@@ -549,6 +553,6 @@ public class KeyHandler implements KeyListener {
 	}
 
 	public static String getChar(Key key) {
-		return KeyEvent.getKeyText(key.keyCode);
+		return getKeyText(key.keyCode);
 	}
 }
