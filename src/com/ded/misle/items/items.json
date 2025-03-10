@@ -302,6 +302,42 @@
     "nameColor": "#B8B6A7"
   },
   {
+    "id": 23,
+    "resourceID": 23,
+    "name": "Cactus Boots",
+    "rarity": "F",
+    "type": "armor",
+    "subtype": "boots",
+    "nameColor": "#B8B6A7"
+  },
+  {
+    "id": 24,
+    "resourceID": 24,
+    "name": "Cactus Leggings",
+    "rarity": "F",
+    "type": "armor",
+    "subtype": "leggings",
+    "nameColor": "#B8B6A7"
+  },
+  {
+    "id": 25,
+    "resourceID": 25,
+    "name": "Cactus Chestplate",
+    "rarity": "F",
+    "type": "armor",
+    "subtype": "chestplate",
+    "nameColor": "#B8B6A7"
+  },
+  {
+    "id": 26,
+    "resourceID": 26,
+    "name": "Cactus Helmet",
+    "rarity": "F",
+    "type": "armor",
+    "subtype": "helmet",
+    "nameColor": "#B8B6A7"
+  },
+  {
     "id": -1,
     "resourceID": -1,
     "name": "",
