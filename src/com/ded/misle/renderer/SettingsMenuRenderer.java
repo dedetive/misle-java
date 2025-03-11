@@ -11,8 +11,7 @@ import java.util.ConcurrentModificationException;
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.GamePanel.screenHeight;
 import static com.ded.misle.core.GamePanel.screenWidth;
-import static com.ded.misle.core.Setting.isFullscreen;
-import static com.ded.misle.core.Setting.screenSize;
+import static com.ded.misle.core.Setting.*;
 import static com.ded.misle.input.KeyHandler.Key.LEFT_MENU;
 import static com.ded.misle.input.KeyHandler.Key.RIGHT_MENU;
 import static com.ded.misle.renderer.ColorManager.*;
@@ -204,7 +203,7 @@ public class SettingsMenuRenderer {
 
         // fullscreenMode
         pos = TOP_RIGHT.pos;
-        createSetting("settings_graphics_fullscreenMode", fullscreenMode,
+        createSetting("settings_graphics_fullscreenMode", String.valueOf(fullscreenMode.value),
             pos[0], pos[1], SettingsManager::cycleFullscreenMode, panel, 48);
 
         // frameRateCap

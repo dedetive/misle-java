@@ -10,8 +10,7 @@ import java.nio.file.Paths;
 
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.GamePanel.*;
-import static com.ded.misle.core.Setting.isFullscreen;
-import static com.ded.misle.core.Setting.screenSize;
+import static com.ded.misle.core.Setting.*;
 import static com.ded.misle.renderer.FontManager.updateFontSizes;
 
 /**
@@ -205,9 +204,9 @@ public class SettingsManager {
 
 	public static void cycleFullscreenMode() {
 		String[] modes = new String[]{"windowed", "exclusive"};
-		fullscreenMode = cycleThroughSetting(modes, fullscreenMode);
+		fullscreenMode.value = cycleThroughSetting(modes, String.valueOf(fullscreenMode.value));
 
-		changeSetting("fullscreenMode", fullscreenMode);
+		changeSetting("fullscreenMode", String.valueOf(fullscreenMode.value));
 		forceResize((String) screenSize.value);
 	}
 

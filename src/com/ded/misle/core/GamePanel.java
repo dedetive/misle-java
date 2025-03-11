@@ -12,8 +12,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static com.ded.misle.core.Setting.isFullscreen;
-import static com.ded.misle.core.Setting.screenSize;
+import static com.ded.misle.core.Setting.*;
 import static com.ded.misle.renderer.FontManager.buttonFont;
 import static com.ded.misle.world.boxes.HPBox.getHPBoxes;
 import static com.ded.misle.renderer.ColorManager.*;
@@ -199,7 +198,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		// Handle fullscreen logic
 		if (Boolean.parseBoolean(String.valueOf(isFullscreen.value))) {
-			if (fullscreenMode.equals("windowed")) {
+			if (fullscreenMode.value.equals("windowed")) {
 				// Set window to borderless and maximize
 				window.dispose();
 				window.setUndecorated(true);
