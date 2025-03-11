@@ -9,6 +9,7 @@ import java.awt.*;
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.core.GamePanel.GameState.*;
+import static com.ded.misle.core.Setting.antiAliasing;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.itemInfoFont;
 import static com.ded.misle.renderer.ImageRenderer.ImageName.MAIN_MENU_BACKGROUND;
@@ -84,7 +85,7 @@ public class MenuRenderer {
         if (g instanceof Graphics2D g2d) {
 
             // ANTI-ALIASING
-            if (antiAliasing) {
+            if (Boolean.parseBoolean(String.valueOf(antiAliasing.value))) {
                 g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             }
 
@@ -151,7 +152,7 @@ public class MenuRenderer {
         if (g instanceof Graphics2D g2d) {
 
             // ANTI-ALIASING
-            if (antiAliasing) {
+            if (Boolean.parseBoolean(String.valueOf(antiAliasing.value))) {
                 g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             }
 
@@ -202,7 +203,7 @@ public class MenuRenderer {
         if (g instanceof Graphics2D g2d) {
 
             // ANTI-ALIASING
-            if (antiAliasing) {
+            if (Boolean.parseBoolean(String.valueOf(antiAliasing.value))) {
                 g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             }
 

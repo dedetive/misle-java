@@ -228,7 +228,7 @@ public class SettingsManager {
 	}
 
 	public static void cycleAntiAliasing() {
-		antiAliasing = cycleBoolean("antiAliasing", antiAliasing);
+		antiAliasing.value = cycleBoolean("antiAliasing", Boolean.parseBoolean(String.valueOf(antiAliasing.value)));
 	}
 
 	// Gameplay

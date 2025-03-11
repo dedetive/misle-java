@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.core.Setting.antiAliasing;
 import static com.ded.misle.core.Setting.displayFPS;
 import static com.ded.misle.renderer.FloatingText.drawFloatingTexts;
 import static com.ded.misle.renderer.FontManager.*;
@@ -64,7 +65,7 @@ public class PlayingRenderer {
         Graphics2D g2d = (Graphics2D) g;
 
         // ANTI-ALIASING
-        if (antiAliasing) {
+        if (Boolean.parseBoolean(String.valueOf(antiAliasing))) {
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         }
 

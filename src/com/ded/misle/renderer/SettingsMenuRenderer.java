@@ -223,7 +223,7 @@ public class SettingsMenuRenderer {
 
         // antiAliasing
         pos = BOTTOM_RIGHT.pos;
-        createSetting("settings_graphics_antiAliasing", String.valueOf(antiAliasing),
+        createSetting("settings_graphics_antiAliasing", String.valueOf(antiAliasing.value),
             pos[0], pos[1], SettingsManager::cycleAntiAliasing, panel, 56);
     }
 

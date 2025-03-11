@@ -6,8 +6,8 @@ import com.ded.misle.world.boxes.BoxHandling;
 import javax.swing.*;
 import java.awt.*;
 
-import static com.ded.misle.Launcher.antiAliasing;
 import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.core.Setting.antiAliasing;
 import static com.ded.misle.renderer.ColorManager.gridColor;
 
 public class LevelDesignerRenderer {
@@ -18,7 +18,7 @@ public class LevelDesignerRenderer {
         double scaleByScreenSize = gameScale / 3.75;
 
         // ANTI-ALIASING
-        if (antiAliasing) {
+        if (Boolean.parseBoolean(String.valueOf(antiAliasing))) {
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         }
 
