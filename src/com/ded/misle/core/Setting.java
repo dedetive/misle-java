@@ -14,8 +14,8 @@ public class Setting<T> {
     public static Setting<String> screenSize = new Setting<>(String.class, "medium");
     public static Setting<Boolean> isFullscreen = new Setting<>(boolean.class, true);
     public static Setting<String> fullscreenMode = new Setting<>(String.class, "windowed");
+    public static Setting<Boolean> displayFPS = new Setting<>(boolean.class, true);
 
-//    displayFPS = Boolean.parseBoolean(getSetting("displayFPS"));
 //    antiAliasing = Boolean.parseBoolean(getSetting("antiAliasing"));
 //    frameRateCap = Integer.parseInt(getSetting("frameRateCap"));
 //    languageCode = getSetting("language");

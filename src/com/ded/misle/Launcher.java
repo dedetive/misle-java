@@ -20,7 +20,6 @@ public class Launcher {
 	// VARIABLE INITIALIZATIONS
 
 	public static String windowTitle;
-	public static boolean displayFPS;
 	public static int frameRateCap;
 	public static double scale;
 	public static boolean levelDesigner;
@@ -45,7 +44,7 @@ public class Launcher {
 		updateSetting(screenSize);
 		updateSetting(isFullscreen);
 		updateSetting(fullscreenMode);
-		displayFPS = Boolean.parseBoolean(getSetting("displayFPS"));
+		updateSetting(displayFPS);
 		antiAliasing = Boolean.parseBoolean(getSetting("antiAliasing"));
 		frameRateCap = Integer.parseInt(getSetting("frameRateCap"));
 		languageCode = getSetting("language");

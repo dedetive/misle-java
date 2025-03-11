@@ -213,7 +213,7 @@ public class SettingsMenuRenderer {
 
         // displayFPS
         pos = MID_RIGHT.pos;
-        createSetting("settings_graphics_displayFPS", String.valueOf(displayFPS),
+        createSetting("settings_graphics_displayFPS", String.valueOf(displayFPS.value),
             pos[0], pos[1], SettingsManager::cycleDisplayFPS, panel, 54);
 
         // screenSize

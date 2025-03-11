@@ -211,7 +211,7 @@ public class SettingsManager {
 	}
 
 	public static void cycleDisplayFPS() {
-		displayFPS = cycleBoolean("displayFPS", displayFPS);
+		displayFPS.value = cycleBoolean("displayFPS", Boolean.parseBoolean(String.valueOf(displayFPS.value)));
 	}
 
 	public static void cycleFrameRateCap() {

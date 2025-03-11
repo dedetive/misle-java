@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.core.Setting.displayFPS;
 import static com.ded.misle.renderer.FloatingText.drawFloatingTexts;
 import static com.ded.misle.renderer.FontManager.*;
 import static com.ded.misle.renderer.FontManager.buttonFont;
@@ -147,7 +148,7 @@ public class PlayingRenderer {
 
         if (isFading != FadingState.UNFADED) drawFading(g2d);
 
-        if (displayFPS) {
+        if (Boolean.parseBoolean(String.valueOf(displayFPS.value))) {
             g2d.setFont(buttonFont);
             String text = "FPS: " + frameCount;
             FontMetrics fm = g2d.getFontMetrics(buttonFont);
