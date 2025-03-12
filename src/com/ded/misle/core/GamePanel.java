@@ -401,10 +401,9 @@ public class GamePanel extends JPanel implements Runnable {
 				break;
 		}
 
-		boolean d = displayFPS.bool();
 
-		if (d && gameState != GameState.PLAYING && gameState != GameState.INVENTORY &&
-			gameState != GameState.FROZEN_PLAYING && gameState != GameState.DIALOG && gameState != GameState.LEVEL_DESIGNER) {
+
+		if (displayFPS.bool()) {
 			g2d.setFont(buttonFont);
 			String text = "FPS: " + frameCount;
 			FontMetrics fm = g2d.getFontMetrics(buttonFont);

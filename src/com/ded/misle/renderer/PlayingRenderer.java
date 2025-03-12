@@ -149,20 +149,20 @@ public class PlayingRenderer {
 
         if (isFading != FadingState.UNFADED) drawFading(g2d);
 
-        if (displayFPS.bool()) {
-            g2d.setFont(buttonFont);
-            String text = "FPS: " + frameCount;
-            FontMetrics fm = g2d.getFontMetrics(buttonFont);
-            int textWidth = fm.stringWidth(text);
-            int textX = (int) (screenWidth - textWidth) - 8;
-            int textY = fm.getHeight() - 8;
-            g2d.setColor(FPSShadowColor);
-            g2d.drawString(text, (int) (textX + textShadow), (int) (textY + textShadow));
-            g2d.setColor(FPSColor);
-            g2d.drawString(text, textX, textY);
-        }
+//        if (displayFPS.bool()) {
+//            g2d.setFont(buttonFont);
+//            String text = "FPS: " + frameCount;
+//            FontMetrics fm = g2d.getFontMetrics(buttonFont);
+//            int textWidth = fm.stringWidth(text);
+//            int textX = (int) (screenWidth - textWidth) - 8;
+//            int textY = fm.getHeight() - 8;
+//            g2d.setColor(FPSShadowColor);
+//            g2d.drawString(text, (int) (textX + textShadow), (int) (textY + textShadow));
+//            g2d.setColor(FPSColor);
+//            g2d.drawString(text, textX, textY);
+//        }
 
-        g2d.dispose();
+//        g2d.dispose();
     }
 
     private static void drawHandItem(Graphics2D g2d, double playerScreenX, double playerScreenY, double scaleByScreenSize, MouseHandler mouseHandler) {

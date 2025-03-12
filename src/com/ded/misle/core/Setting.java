@@ -40,7 +40,6 @@ public class Setting<T> {
     public static Setting<Boolean> antiAliasing = new Setting<>(boolean.class, true, "antiAliasing");
     public static Setting<Integer> frameRateCap = new Setting<>(int.class, 60, "frameRateCap");
 
-//    frameRateCap = Integer.parseInt(getSetting("frameRateCap"));
 //    languageCode = getSetting("language");
 //    languageManager = new LanguageManager(languageCode);
 //    levelDesigner = Boolean.parseBoolean(getSetting("levelDesigner"));
