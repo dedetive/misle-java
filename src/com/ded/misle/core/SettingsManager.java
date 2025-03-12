@@ -94,11 +94,11 @@ public class SettingsManager {
 		try (BufferedReader reader = Files.newBufferedReader(file)) {
 			String line;
 			while ((line = reader.readLine()) != null) {
-				if (line.contains(setting.toString())) {
+				if (line.contains(setting.name)) {
 					try {
 						result = line.split("= ")[1];
 					} catch (ArrayIndexOutOfBoundsException e) {
-						System.out.println("Setting " + setting.toString() + " not found in settings.config file.");
+						System.out.println("Setting " + setting.name + " not found in settings.config file.");
 					}
 				}
 			}
