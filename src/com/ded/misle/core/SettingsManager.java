@@ -191,27 +191,27 @@ public class SettingsManager {
 	// Graphics
 	public static void cycleScreenSize() {
 		String[] screenSizes = new String[]{"small", "medium", "big", "huge"};
-		screenSize.value = cycleThroughSetting(screenSizes, String.valueOf(screenSize.value));
+		screenSize.value = cycleThroughSetting(screenSizes, screenSize.str());
 
-		changeSetting("screenSize", (String) screenSize.value);
-		forceResize((String) screenSize.value);
+		changeSetting("screenSize", screenSize.str());
+		forceResize(screenSize.str());
 	}
 
 	public static void cycleIsFullscreen() {
-		isFullscreen.value = cycleBoolean("isFullscreen", Boolean.parseBoolean(String.valueOf(isFullscreen.value)));
-		forceResize((String) screenSize.value);
+		isFullscreen.value = cycleBoolean("isFullscreen", isFullscreen.bool());
+		forceResize(screenSize.str());
 	}
 
 	public static void cycleFullscreenMode() {
 		String[] modes = new String[]{"windowed", "exclusive"};
-		fullscreenMode.value = cycleThroughSetting(modes, String.valueOf(fullscreenMode.value));
+		fullscreenMode.value = cycleThroughSetting(modes, fullscreenMode.str());
 
-		changeSetting("fullscreenMode", String.valueOf(fullscreenMode.value));
-		forceResize((String) screenSize.value);
+		changeSetting("fullscreenMode", fullscreenMode.str());
+		forceResize(screenSize.str());
 	}
 
 	public static void cycleDisplayFPS() {
-		displayFPS.value = cycleBoolean("displayFPS", Boolean.parseBoolean(String.valueOf(displayFPS.value)));
+		displayFPS.value = cycleBoolean("displayFPS", displayFPS.bool());
 	}
 
 	public static void cycleFrameRateCap() {
@@ -228,7 +228,7 @@ public class SettingsManager {
 	}
 
 	public static void cycleAntiAliasing() {
-		antiAliasing.value = cycleBoolean("antiAliasing", Boolean.parseBoolean(String.valueOf(antiAliasing.value)));
+		antiAliasing.value = cycleBoolean("antiAliasing", antiAliasing.bool());
 	}
 
 	// Gameplay

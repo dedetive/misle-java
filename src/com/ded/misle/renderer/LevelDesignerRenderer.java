@@ -18,7 +18,7 @@ public class LevelDesignerRenderer {
         double scaleByScreenSize = gameScale / 3.75;
 
         // ANTI-ALIASING
-        if (Boolean.parseBoolean(String.valueOf(antiAliasing))) {
+        if (antiAliasing.bool()) {
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         }
 

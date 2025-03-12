@@ -11,6 +11,21 @@ public class Setting<T> {
         this.defaultValue = defaultValue;
     }
 
+    public boolean bool() {
+        return Boolean.parseBoolean(String.valueOf(this.value));
+    }
+
+    public boolean boolDefault() {
+        return Boolean.parseBoolean(String.valueOf(this.value));
+    }
+
+    public String str() {
+        return String.valueOf(this.value);
+    }
+
+    public String strDefault() {
+        return String.valueOf(this.value);
+    }
     public static Setting<String> screenSize = new Setting<>(String.class, "medium");
     public static Setting<Boolean> isFullscreen = new Setting<>(boolean.class, true);
     public static Setting<String> fullscreenMode = new Setting<>(String.class, "windowed");

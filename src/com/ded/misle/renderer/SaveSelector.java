@@ -38,7 +38,7 @@ public class SaveSelector {
         if (g instanceof Graphics2D g2d) {
 
             // ANTI-ALIASING
-            if (Boolean.parseBoolean(String.valueOf(antiAliasing.value))) {
+            if (antiAliasing.bool()) {
                 g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             }
 

@@ -110,9 +110,9 @@ public class GamePanel extends JPanel implements Runnable {
 		window.setSize((int) screenWidth, (int) screenHeight);
 		setWindow(window);
 		try {
-			forceResize((String) screenSize.value);
+			forceResize(screenSize.str());
 		} catch (IllegalArgumentException e) {
-			forceResize((String) screenSize.defaultValue);
+			forceResize(screenSize.strDefault());
 		}
 
 		window.add(this);
@@ -129,7 +129,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		updateMouseVariableScales();
 
-		forceResize((String) screenSize.value);
+		forceResize(screenSize.str());
 
 		// Handle window close event
 		window.addWindowListener(new WindowAdapter() {
@@ -197,7 +197,7 @@ public class GamePanel extends JPanel implements Runnable {
 		JFrame window = getWindow();
 
 		// Handle fullscreen logic
-		if (Boolean.parseBoolean(String.valueOf(isFullscreen.value))) {
+		if (isFullscreen.bool()) {
 			if (fullscreenMode.value.equals("windowed")) {
 				// Set window to borderless and maximize
 				window.dispose();
@@ -209,7 +209,7 @@ public class GamePanel extends JPanel implements Runnable {
 				gameScale = scale;
 				GamePanel.screenWidth = window.getWidth();
 				GamePanel.screenHeight = window.getHeight();
-			} else if (fullscreenMode.equals("exclusive")) {
+			} else if (fullscreenMode.value.equals("exclusive")) {
 				// Switch to exclusive fullscreen mode
 				GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 				if (device.isFullScreenSupported()) {
@@ -401,7 +401,7 @@ public class GamePanel extends JPanel implements Runnable {
 				break;
 		}
 
-		boolean d = Boolean.parseBoolean(String.valueOf(displayFPS.value));
+		boolean d = displayFPS.bool();
 
 		if (d && gameState != GameState.PLAYING && gameState != GameState.INVENTORY &&
 			gameState != GameState.FROZEN_PLAYING && gameState != GameState.DIALOG && gameState != GameState.LEVEL_DESIGNER) {

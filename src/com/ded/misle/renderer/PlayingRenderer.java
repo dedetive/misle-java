@@ -65,7 +65,7 @@ public class PlayingRenderer {
         Graphics2D g2d = (Graphics2D) g;
 
         // ANTI-ALIASING
-        if (Boolean.parseBoolean(String.valueOf(antiAliasing))) {
+        if (antiAliasing.bool()) {
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         }
 
@@ -149,7 +149,7 @@ public class PlayingRenderer {
 
         if (isFading != FadingState.UNFADED) drawFading(g2d);
 
-        if (Boolean.parseBoolean(String.valueOf(displayFPS.value))) {
+        if (displayFPS.bool()) {
             g2d.setFont(buttonFont);
             String text = "FPS: " + frameCount;
             FontMetrics fm = g2d.getFontMetrics(buttonFont);

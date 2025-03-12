@@ -198,12 +198,12 @@ public class SettingsMenuRenderer {
     public static void renderGraphicsMenu(JPanel panel) {
         // isFullscreen
         int[] pos = TOP_LEFT.pos;
-        createSetting("settings_graphics_isFullscreen", String.valueOf(isFullscreen.value),
+        createSetting("settings_graphics_isFullscreen", isFullscreen.str(),
             pos[0], pos[1], SettingsManager::cycleIsFullscreen, panel, 46);
 
         // fullscreenMode
         pos = TOP_RIGHT.pos;
-        createSetting("settings_graphics_fullscreenMode", String.valueOf(fullscreenMode.value),
+        createSetting("settings_graphics_fullscreenMode", fullscreenMode.str(),
             pos[0], pos[1], SettingsManager::cycleFullscreenMode, panel, 48);
 
         // frameRateCap
@@ -213,17 +213,17 @@ public class SettingsMenuRenderer {
 
         // displayFPS
         pos = MID_RIGHT.pos;
-        createSetting("settings_graphics_displayFPS", String.valueOf(displayFPS.value),
+        createSetting("settings_graphics_displayFPS", displayFPS.str(),
             pos[0], pos[1], SettingsManager::cycleDisplayFPS, panel, 54);
 
         // screenSize
         pos = BOTTOM_LEFT.pos;
-        createSetting("settings_graphics_screenSize", String.valueOf(screenSize.value),
+        createSetting("settings_graphics_screenSize", screenSize.str(),
             pos[0], pos[1], SettingsManager::cycleScreenSize, panel, 44);
 
         // antiAliasing
         pos = BOTTOM_RIGHT.pos;
-        createSetting("settings_graphics_antiAliasing", String.valueOf(antiAliasing.value),
+        createSetting("settings_graphics_antiAliasing", antiAliasing.str(),
             pos[0], pos[1], SettingsManager::cycleAntiAliasing, panel, 56);
     }
 
