@@ -20,7 +20,6 @@ public class Launcher {
 	// VARIABLE INITIALIZATIONS
 
 	public static String windowTitle;
-	public static int frameRateCap;
 	public static double scale;
 	public static boolean levelDesigner;
 	public static String languageCode;
@@ -45,7 +44,7 @@ public class Launcher {
 		updateSetting(fullscreenMode);
 		updateSetting(displayFPS);
 		updateSetting(antiAliasing);
-		frameRateCap = Integer.parseInt(getSetting("frameRateCap"));
+		updateSetting(frameRateCap);
 		languageCode = getSetting("language");
         languageManager = new LanguageManager(languageCode);
         levelDesigner = Boolean.parseBoolean(getSetting("levelDesigner"));

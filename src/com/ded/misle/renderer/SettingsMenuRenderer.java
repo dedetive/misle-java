@@ -208,7 +208,7 @@ public class SettingsMenuRenderer {
 
         // frameRateCap
         pos = MID_LEFT.pos;
-        createSetting("settings_graphics_frameRateCap", String.valueOf(frameRateCap),
+        createSetting("settings_graphics_frameRateCap", frameRateCap.str(),
             pos[0], pos[1], SettingsManager::cycleFrameRateCap, panel, 50);
 
         // displayFPS

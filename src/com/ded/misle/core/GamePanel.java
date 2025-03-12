@@ -278,7 +278,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public void run() {
 		long lastTime = System.nanoTime(); // Using nanoTime for precision with delta time
 		double delta = 0;
-		nsPerFrame = 1000000000.0 / Math.clamp(frameRateCap, 30, 144);
+		nsPerFrame = 1000000000.0 / Math.clamp(frameRateCap.integer(), 30, 144);
 
 		// GAME LOOP
 

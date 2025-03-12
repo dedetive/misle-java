@@ -216,10 +216,10 @@ public class SettingsManager {
 
 	public static void cycleFrameRateCap() {
 		String[] modes = new String[]{"30", "60", "90", "120", "160"};
-		frameRateCap = Integer.parseInt(cycleThroughSetting(modes, String.valueOf(frameRateCap)));
+		frameRateCap.value = Integer.parseInt(cycleThroughSetting(modes, frameRateCap.str()));
 
-		changeSetting("frameRateCap", String.valueOf(frameRateCap));
-		nsPerFrame = 1000000000.0 / Math.clamp((double) frameRateCap, 30, 144);
+		changeSetting("frameRateCap", frameRateCap.str());
+		nsPerFrame = 1000000000.0 / Math.clamp(frameRateCap.integer(), 30, 144);
 		Timer wait = new Timer(500, e -> {
 			player.attr.updateStat(PlayerAttributes.Stat.SPEED);
 		});

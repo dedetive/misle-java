@@ -26,11 +26,17 @@ public class Setting<T> {
     public String strDefault() {
         return String.valueOf(this.value);
     }
+
+    public int integer() {
+        return Integer.parseInt(this.value.toString());
+    }
+
     public static Setting<String> screenSize = new Setting<>(String.class, "medium");
     public static Setting<Boolean> isFullscreen = new Setting<>(boolean.class, true);
     public static Setting<String> fullscreenMode = new Setting<>(String.class, "windowed");
     public static Setting<Boolean> displayFPS = new Setting<>(boolean.class, true);
     public static Setting<Boolean> antiAliasing = new Setting<>(boolean.class, true);
+    public static Setting<Integer> frameRateCap = new Setting<>(int.class, 60);
 
 //    frameRateCap = Integer.parseInt(getSetting("frameRateCap"));
 //    languageCode = getSetting("language");
