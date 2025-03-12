@@ -5,15 +5,23 @@ import com.ded.misle.core.PhysicsEngine;
 import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.world.player.PlayerAttributes;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.renderer.FontManager.dialogNPCText;
 import static com.ded.misle.renderer.MenuButton.*;
 import static com.ded.misle.renderer.MenuRenderer.goToPreviousMenu;
@@ -31,6 +39,7 @@ import static com.ded.misle.input.KeyHandler.Key.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.items.Item.createItem;
 import static java.awt.event.KeyEvent.*;
+import static java.nio.file.Files.createDirectories;
 
 public class KeyHandler implements KeyListener {
 
@@ -517,7 +526,25 @@ public class KeyHandler implements KeyListener {
 			}
 			if (player.keys.keyPressed.get(DEBUG2)) {
 
-				player.inv.clearInventory();
+				try {
+					// Image getter
+					JFrame frame = getWindow();
+					BufferedImage img = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_RGB);
+					frame.printAll(img.getGraphics());
+
+					// File creator
+					String t = LocalDateTime.now().toString();
+					t = t.substring(0, t.indexOf("."));
+					t = t.replace("T", ".");
+
+					createDirectories(Path.of(getPath() + "/resources/screenshots"));
+					ImageIO.write(img, "png", (getPath().resolve("resources/screenshots/" + t + ".png")).toFile());
+//					System.out.println("screenshot saved at " + getPath().resolve("resources/screenshots/" + t + ".png"));
+				} catch (IOException e) {
+					System.out.println("failed to take a screenshot");
+				}
+
+//				player.inv.clearInventory();
 
 			}
 		}

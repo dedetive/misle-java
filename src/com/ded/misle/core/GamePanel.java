@@ -7,12 +7,16 @@ import com.ded.misle.world.player.Player;
 import com.ded.misle.world.player.PlayerAttributes;
 import com.ded.misle.renderer.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static com.ded.misle.core.Setting.*;
+import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.renderer.FontManager.buttonFont;
 import static com.ded.misle.world.boxes.HPBox.getHPBoxes;
 import static com.ded.misle.renderer.ColorManager.*;
@@ -400,8 +404,6 @@ public class GamePanel extends JPanel implements Runnable {
 				SaveCreator.renderSaveCreator(g, this);
 				break;
 		}
-
-
 
 		if (displayFPS.bool()) {
 			g2d.setFont(buttonFont);
