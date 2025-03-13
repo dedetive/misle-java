@@ -1,6 +1,5 @@
 package com.ded.misle.input;
 
-import com.ded.misle.core.GamePanel;
 import com.ded.misle.core.PhysicsEngine;
 import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.world.player.PlayerAttributes;
@@ -10,10 +9,8 @@ import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,6 +55,7 @@ public class KeyHandler implements KeyListener {
 		RIGHT(VK_RIGHT),
 		DEBUG1(VK_OPEN_BRACKET),
 		DEBUG2(VK_CLOSE_BRACKET),
+		SCREENSHOT(VK_F2),
 		INVENTORY(VK_E),
 		DROP(VK_Q),
 		CTRL(VK_CONTROL),
@@ -129,6 +127,7 @@ public class KeyHandler implements KeyListener {
 		MINUS,
 		GRID,
 		ENTER,
+		SCREENSHOT,
 	};
 
 	Key[] cooldownOnPress = new Key[]{
@@ -504,6 +503,10 @@ public class KeyHandler implements KeyListener {
 			}
 		}
 
+		if (player.keys.keyPressed.get(SCREENSHOT)) {
+			takeScreenshot();
+		}
+
 		// DEBUG KEYS '[' AND ']'
 
 		if (gameState != GameState.LEVEL_DESIGNER) {
@@ -526,30 +529,32 @@ public class KeyHandler implements KeyListener {
 			}
 			if (player.keys.keyPressed.get(DEBUG2)) {
 
-				try {
-					// Image getter
-					JFrame frame = getWindow();
-					BufferedImage img = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_RGB);
-					frame.printAll(img.getGraphics());
-
-					// File creator
-					String t = LocalDateTime.now().toString();
-					t = t.substring(0, t.indexOf("."));
-					t = t.replace("T", ".");
-
-					createDirectories(Path.of(getPath() + "/resources/screenshots"));
-					ImageIO.write(img, "png", (getPath().resolve("resources/screenshots/" + t + ".png")).toFile());
-//					System.out.println("screenshot saved at " + getPath().resolve("resources/screenshots/" + t + ".png"));
-				} catch (IOException e) {
-					System.out.println("failed to take a screenshot");
-				}
-
-//				player.inv.clearInventory();
+				player.inv.clearInventory();
 
 			}
 		}
 
 		setKeysToFalse();
+	}
+
+	public static void takeScreenshot() {
+		try {
+			// Image getter
+			JFrame frame = getWindow();
+			BufferedImage img = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_RGB);
+			frame.printAll(img.getGraphics());
+
+			// File creator
+			String t = LocalDateTime.now().toString();
+			t = t.substring(0, t.indexOf("."));
+			t = t.replace("T", ".");
+
+			createDirectories(Path.of(getPath() + "/resources/screenshots"));
+			ImageIO.write(img, "png", (getPath().resolve("resources/screenshots/" + t + ".png")).toFile());
+//					System.out.println("Screenshot saved at " + getPath().resolve("resources/screenshots/" + t + ".png"));
+		} catch (IOException e) {
+			System.out.println("Failed to take a screenshot");
+		}
 	}
 
 	public void setKeysToFalse() {
