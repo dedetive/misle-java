@@ -1,15 +1,18 @@
 package com.ded.misle.renderer;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
 
 import static com.ded.misle.core.SettingsManager.getPath;
+import static com.ded.misle.renderer.ColorManager.getRandomColor;
 
 public class ImageRenderer {
     public static final java.util.Map<ImageName, BufferedImage> cachedImages = new HashMap<>();
+    public static final java.util.Map<ImageName, BufferedImage> editedImages = new HashMap<>();
 
     public enum ImageName {
         // UI
@@ -34,9 +37,22 @@ public class ImageRenderer {
             Path fullPath = basePath.resolve(category + "/" + fileName);
             try {
                 cachedImages.put(this, ImageIO.read(fullPath.toFile()));
+                editedImages.put(this, ImageIO.read(fullPath.toFile()));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+
+        public void editImage() {
+            BufferedImage img = cachedImages.get(this);
+            for (int i = 0; i < img.getWidth(); i++) {
+                for (int j = 0; j < img.getHeight(); j++) {
+                    if (img.getRGB(i, j) != 16777215) {
+                        img.setRGB(i, j, getRandomColor().getRGB());
+                    }
+                }
+            }
+            editedImages.put(this, img);
         }
     }
 }

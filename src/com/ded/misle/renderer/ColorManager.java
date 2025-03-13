@@ -333,4 +333,8 @@ public class ColorManager {
     public static String removeColorIndicators(String text) {
         return text.replaceAll("c\\{.*?,\\s*(.*?)}", "$1").replaceAll("r\\{}", "$1");
     }
+
+    public static Color getRandomColor() {
+        return new Color((int) (Math.random() * 0xFFFFFF));
+    }
 }
