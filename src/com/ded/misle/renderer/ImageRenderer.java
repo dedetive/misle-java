@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import static com.ded.misle.core.SettingsManager.getPath;
@@ -13,6 +15,13 @@ import static com.ded.misle.renderer.ColorManager.getRandomColor;
 public class ImageRenderer {
     public static final java.util.Map<ImageName, BufferedImage> cachedImages = new HashMap<>();
     public static final java.util.Map<ImageName, BufferedImage> editedImages = new HashMap<>();
+    public static final java.util.ArrayList<ImageName> playerImages = new ArrayList<>();
+
+    static {
+        Collections.addAll(playerImages,
+            ImageName.PLAYER_FRONT0, ImageName.PLAYER_FRONT1,
+            ImageName.PLAYER_WALK0, ImageName.PLAYER_WALK1, ImageName.PLAYER_WALK2);
+    }
 
     public enum ImageName {
         // UI

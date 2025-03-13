@@ -19,6 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.core.SettingsManager.getPath;
+import static com.ded.misle.renderer.ColorManager.getRandomColor;
 import static com.ded.misle.renderer.FontManager.dialogNPCText;
 import static com.ded.misle.renderer.MenuButton.*;
 import static com.ded.misle.renderer.MenuRenderer.goToPreviousMenu;
@@ -529,7 +530,9 @@ public class KeyHandler implements KeyListener {
 			}
 			if (player.keys.keyPressed.get(DEBUG2)) {
 
-				player.inv.clearInventory();
+//				player.inv.clearInventory();
+
+				player.setColor(getRandomColor());
 
 			}
 		}

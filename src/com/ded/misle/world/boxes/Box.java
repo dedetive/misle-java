@@ -1,6 +1,7 @@
 package com.ded.misle.world.boxes;
 
 import com.ded.misle.core.PhysicsEngine;
+import com.ded.misle.renderer.ImageRenderer;
 import com.ded.misle.world.player.Player;
 import com.ded.misle.world.player.PlayerAttributes;
 import com.ded.misle.renderer.MainRenderer;
@@ -19,6 +20,7 @@ import static com.ded.misle.audio.AudioPlayer.AudioFile.collect_item;
 import static com.ded.misle.audio.AudioPlayer.playThis;
 import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.renderer.ImageRenderer.playerImages;
 import static com.ded.misle.world.enemies.EnemyAI.clearBreadcrumbs;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
@@ -267,6 +269,11 @@ public class Box {
 
 	public void setColor(Color color) {
 		this.color = color;
+		if (this instanceof Player) {
+			for (ImageRenderer.ImageName img : playerImages) {
+				img.editImage(color);
+			}
+		}
 	}
 
 	public Color getColor() { return color; }
