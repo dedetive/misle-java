@@ -43,16 +43,20 @@ public class ImageRenderer {
             }
         }
 
-        public void editImage() {
+        public void editImage(Color color) {
             BufferedImage img = cachedImages.get(this);
             for (int i = 0; i < img.getWidth(); i++) {
                 for (int j = 0; j < img.getHeight(); j++) {
                     if (img.getRGB(i, j) != 16777215) {
-                        img.setRGB(i, j, getRandomColor().getRGB());
+                        img.setRGB(i, j, color.getRGB());
                     }
                 }
             }
             editedImages.put(this, img);
+        }
+
+        public void randomizeImageColors() {
+            this.editImage(getRandomColor());
         }
     }
 }
