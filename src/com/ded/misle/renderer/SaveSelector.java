@@ -15,7 +15,7 @@ import static com.ded.misle.core.SaveFile.*;
 import static com.ded.misle.core.Setting.antiAliasing;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.*;
-import static com.ded.misle.renderer.ImageRenderer.cachedImages;
+import static com.ded.misle.renderer.ImageManager.cachedImages;
 import static com.ded.misle.renderer.InventoryRenderer.wrapText;
 import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.renderer.MenuButton.*;
@@ -133,7 +133,7 @@ public class SaveSelector {
 
                             // Player
 
-                            g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.PLAYER_FRONT0), (int) (buttonX + buttonWidth * 0.75),
+                            g2d.drawImage(cachedImages.get(ImageManager.ImageName.PLAYER_FRONT0), (int) (buttonX + buttonWidth * 0.75),
                                 (int) (buttonY - 40 * scale + (double) buttonHeight / 2), 135, 135, null);
 
                             // Level
@@ -245,7 +245,7 @@ public class SaveSelector {
 
             // Player
 
-        g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.PLAYER_FRONT0), previewX + 2 * previewWidth / 5,
+        g2d.drawImage(cachedImages.get(ImageManager.ImageName.PLAYER_FRONT0), previewX + 2 * previewWidth / 5,
             (int) (previewY - 25 * scale + (double) previewHeight / 2), 135, 135, null);
 
             // Level

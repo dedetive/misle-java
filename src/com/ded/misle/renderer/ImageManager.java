@@ -12,7 +12,7 @@ import java.util.HashMap;
 import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.renderer.ColorManager.getRandomColor;
 
-public class ImageRenderer {
+public class ImageManager {
     public static final java.util.Map<ImageName, BufferedImage> cachedImages = new HashMap<>();
     public static final java.util.Map<ImageName, BufferedImage> editedImages = new HashMap<>();
     public static final java.util.ArrayList<ImageName> playerImages = new ArrayList<>();

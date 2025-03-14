@@ -8,13 +8,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
-import static com.ded.misle.Launcher.displayMoreInfo;
 import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.renderer.ColorManager.*;
-import static com.ded.misle.renderer.ImageRenderer.cachedImages;
+import static com.ded.misle.renderer.ImageManager.cachedImages;
 
 public class InventoryRenderer {
     // [0] = Inventory and inventory bar
@@ -49,7 +47,7 @@ public class InventoryRenderer {
 
         // Start the grid
 
-        g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.INVENTORY_MENU), 0, 0, (int) screenWidth, (int) screenHeight, null);
+        g2d.drawImage(cachedImages.get(ImageManager.ImageName.INVENTORY_MENU), 0, 0, (int) screenWidth, (int) screenHeight, null);
 
         // Draw slots and item icons in the row order {1, 2, 3, 0}
         int[] rowOrder = {1, 2, 3, 0};
@@ -91,7 +89,7 @@ public class InventoryRenderer {
 
                 Item item = player.inv.getItem(i * 2 + j);
                 if (item != null) {
-                    g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.INVENTORY_RINGLESS_EXTRA_SLOT), slotX, slotY, slotSize[1], slotSize[1], null);
+                    g2d.drawImage(cachedImages.get(ImageManager.ImageName.INVENTORY_RINGLESS_EXTRA_SLOT), slotX, slotY, slotSize[1], slotSize[1], null);
                     g2d.drawImage(item.getIcon(), slotX, slotY, slotSize[1], slotSize[1], null);
                     int itemCount = item.getCount();
                     if (itemCount > 1) {

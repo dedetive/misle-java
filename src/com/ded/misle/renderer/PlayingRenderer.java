@@ -1,6 +1,5 @@
 package com.ded.misle.renderer;
 
-import com.ded.misle.core.GamePanel;
 import com.ded.misle.core.LanguageManager;
 import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.input.MouseHandler;
@@ -17,16 +16,14 @@ import java.util.Objects;
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.core.Setting.antiAliasing;
-import static com.ded.misle.core.Setting.displayFPS;
 import static com.ded.misle.renderer.FloatingText.drawFloatingTexts;
 import static com.ded.misle.renderer.FontManager.*;
-import static com.ded.misle.renderer.FontManager.buttonFont;
 import static com.ded.misle.world.boxes.Box.getTexture;
 import static com.ded.misle.world.npcs.NPC.getSelectedNPCs;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.DialogRenderer.renderDialog;
 import static com.ded.misle.renderer.MainRenderer.*;
-import static com.ded.misle.renderer.ImageRenderer.cachedImages;
+import static com.ded.misle.renderer.ImageManager.cachedImages;
 import static com.ded.misle.renderer.InventoryRenderer.*;
 import static com.ded.misle.world.player.PlayerStats.Direction.*;
 import static java.lang.System.currentTimeMillis;
@@ -103,15 +100,15 @@ public class PlayingRenderer {
 
         // Draw player sprite
         if (totalDirection == NONE) {
-            playerSprite = cachedImages.get(ImageRenderer.ImageName.PLAYER_FRONT0);
+            playerSprite = cachedImages.get(ImageManager.ImageName.PLAYER_FRONT0);
         } else if (horizontalDirection != NONE) {
             int animationFrame = (int) ((System.currentTimeMillis() / 150) % 3);
 
-            playerSprite = cachedImages.get(ImageRenderer.ImageName.valueOf("PLAYER_WALK" + animationFrame));
+            playerSprite = cachedImages.get(ImageManager.ImageName.valueOf("PLAYER_WALK" + animationFrame));
         } else if (verticalDirection != NONE) {
             int animationFrame = (int) ((System.currentTimeMillis() / 100) % 2);
 
-            playerSprite = cachedImages.get(ImageRenderer.ImageName.valueOf("PLAYER_FRONT" + animationFrame));
+            playerSprite = cachedImages.get(ImageManager.ImageName.valueOf("PLAYER_FRONT" + animationFrame));
         }
 
         drawRotatedImage(g2d, playerSprite,
@@ -368,7 +365,7 @@ public class PlayingRenderer {
     static int inventoryBarImageY =(int) (screenHeight - 82 * Math.pow(scale, (double) 1 /2));
     private static void drawInventoryBar(Graphics2D g2d) {
 
-        g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.INVENTORY_BAR), 0, inventoryBarImageY,
+        g2d.drawImage(cachedImages.get(ImageManager.ImageName.INVENTORY_BAR), 0, inventoryBarImageY,
             (int) (512 * scale), (int) (35 * scale), null);
 
         // Slots info
@@ -475,7 +472,7 @@ public class PlayingRenderer {
         int coinPosX = coinTextX + textWidth;
         int coinPosY = (int) (coinTextY - g2d.getFontMetrics().getHeight() + 4 * scale);
 
-        g2d.drawImage(cachedImages.get(ImageRenderer.ImageName.COIN), coinPosX, coinPosY,
+        g2d.drawImage(cachedImages.get(ImageManager.ImageName.COIN), coinPosX, coinPosY,
             g2d.getFontMetrics().getHeight(), g2d.getFontMetrics().getHeight(), null);
     }
 

@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.ded.misle.renderer.ImageRenderer.cachedImages;
+import static com.ded.misle.renderer.ImageManager.cachedImages;
 
 public class ColorManager {
 
@@ -253,7 +253,7 @@ public class ColorManager {
             for (String[] part : parts) {
                 String snippet = part[0];
 
-                HashMap<Integer, ImageRenderer.ImageName> skipPos = new HashMap<>();
+                HashMap<Integer, ImageManager.ImageName> skipPos = new HashMap<>();
 
                 if (snippet.contains("i{")) {
                     StringBuilder cleanText = new StringBuilder();
@@ -268,7 +268,7 @@ public class ColorManager {
                         } else {
                             if (fragment.contains("}")) {
                                 String[] insideImageIndicator = fragment.split("}");
-                                ImageRenderer.ImageName imageName = ImageRenderer.ImageName.valueOf(insideImageIndicator[0]);
+                                ImageManager.ImageName imageName = ImageManager.ImageName.valueOf(insideImageIndicator[0]);
 
                                 skipPos.put(offset, imageName);
                                 offset += 1; // Placeholder for image
@@ -297,7 +297,7 @@ public class ColorManager {
                 int charX = x;
                 for (int i = 0; i < snippet.length(); i++) {
                     if (skipPos.containsKey(i)) {
-                        ImageRenderer.ImageName imageName = skipPos.get(i);
+                        ImageManager.ImageName imageName = skipPos.get(i);
                         Image img = cachedImages.get(imageName);
 
                         if (img != null) {

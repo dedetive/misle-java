@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.renderer.ImageRenderer.cachedImages;
 import static com.ded.misle.world.npcs.NPCDialog.getCurrentTalkingTo;
 import static com.ded.misle.world.player.PlayerStats.PlaytimeMode.*;
 import static com.ded.misle.renderer.ColorManager.*;
