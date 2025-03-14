@@ -338,6 +338,16 @@
     "nameColor": "#B8B6A7"
   },
   {
+    "id": 27,
+    "resourceID": 27,
+    "name": "Void Wand",
+    "rarity": "A",
+    "type": "weapon",
+    "subtype": "wand",
+    "kind": "void",
+    "nameColor": "#B8B6A7"
+  },
+  {
     "id": -1,
     "resourceID": -1,
     "name": "",

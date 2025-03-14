@@ -514,7 +514,7 @@ public class KeyHandler implements KeyListener {
 		if (gameState != GameState.LEVEL_DESIGNER) {
 			if (player.keys.keyPressed.get(DEBUG1)) {
 				if (!player.keys.keyPressed.get(SHIFT)) {
-					for (int i = 1; i <= 22; i++) {
+					for (int i = 1; i <= 27; i++) {
 						if (i != 5) {
 							player.inv.addItem(createItem(i, 1));
 						}
