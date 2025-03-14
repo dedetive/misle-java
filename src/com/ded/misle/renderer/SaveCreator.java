@@ -83,12 +83,29 @@ public class SaveCreator {
             Rectangle buttonRect = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
             Runnable runnable = SaveCreator::confirmName;
 
-            createButton(buttonRect, LanguageManager.getText("save_creator_confirm_button"), runnable, panel, 120);
+            createButton(buttonRect, LanguageManager.getText("save_creator_confirm_button"), runnable, panel, 127);
 
-            // Go back button
+                // Add image
+            buttonWidth = (int) (40 * scale);
+            buttonHeight = buttonWidth;
+            buttonY = (int) (184 * scale);
+            buttonRect = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
+            createButton(buttonRect, "", runnable, panel, 120);
+
+                // Go back button
             createGoBackButton(panel, 400);
 
             drawButtons(g2d);
+
+                // Add image plus
+            g2d.setColor(saveSelectorTextBackground);
+            g2d.fillRoundRect((int) (buttonX + (double) buttonWidth / 2 - 1 * scale),
+                (int) (buttonY + (double) buttonHeight / 5 + 1 * scale),
+                (int) (4 * scale), buttonHeight / 2, (int) (3 * scale), (int) (3 * scale));
+
+            g2d.fillRoundRect((int) (buttonX + (double) buttonWidth / 2 - 9 * scale),
+                (int) (buttonY + (double) buttonHeight / 4 + 8 * scale),
+                buttonHeight / 2, (int) (4 * scale), (int) (3 * scale), (int) (3 * scale));
         }
     }
 
