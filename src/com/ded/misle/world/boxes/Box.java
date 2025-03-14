@@ -271,7 +271,7 @@ public class Box {
 		this.color = color;
 		if (this instanceof Player) {
 			for (ImageRenderer.ImageName img : playerImages) {
-				img.editImage(color);
+				img.editImageColor(color);
 			}
 		}
 	}

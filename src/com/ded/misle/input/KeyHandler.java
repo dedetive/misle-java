@@ -1,6 +1,7 @@
 package com.ded.misle.input;
 
 import com.ded.misle.core.PhysicsEngine;
+import com.ded.misle.renderer.ImageRenderer;
 import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.world.player.PlayerAttributes;
 
@@ -21,6 +22,8 @@ import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.renderer.ColorManager.getRandomColor;
 import static com.ded.misle.renderer.FontManager.dialogNPCText;
+import static com.ded.misle.renderer.ImageRenderer.cachedImages;
+import static com.ded.misle.renderer.ImageRenderer.playerImages;
 import static com.ded.misle.renderer.MenuButton.*;
 import static com.ded.misle.renderer.MenuRenderer.goToPreviousMenu;
 import static com.ded.misle.renderer.SaveCreator.confirmName;
@@ -532,7 +535,17 @@ public class KeyHandler implements KeyListener {
 
 //				player.inv.clearInventory();
 
-				player.setColor(getRandomColor());
+//				player.setColor(getRandomColor());
+
+				for (ImageRenderer.ImageName img : playerImages) {
+					try {
+						Path path = getPath();
+						path = path.resolve(path + "/resources/images/ui/img.png");
+						img.mergeImages(ImageIO.read(path.toFile()));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
 
 			}
 		}

@@ -52,7 +52,7 @@ public class ImageRenderer {
             }
         }
 
-        public void editImage(Color color) {
+        public void editImageColor(Color color) {
             BufferedImage img = cachedImages.get(this);
             for (int i = 0; i < img.getWidth(); i++) {
                 for (int j = 0; j < img.getHeight(); j++) {
@@ -64,8 +64,27 @@ public class ImageRenderer {
             editedImages.put(this, img);
         }
 
+        public void mergeImages(BufferedImage target) {
+            BufferedImage img = cachedImages.get(this);
+            Image targetImage = target.getScaledInstance(img.getWidth(), img.getHeight(), Image.SCALE_DEFAULT);
+            int width = targetImage.getWidth(null);
+            int height = targetImage.getHeight(null);
+            target = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            target.getGraphics().drawImage(targetImage, 0, 0, null);
+
+            for (int i = 0; i < img.getWidth(); i++) {
+                for (int j = 0; j < img.getHeight(); j++) {
+                    if (img.getRGB(i, j) != 16777215 &&
+                        target.getRGB(i, j) != 0) {
+                        img.setRGB(i, j, target.getRGB(i, j));
+                    }
+                }
+            }
+            editedImages.put(this, img);
+        }
+
         public void randomizeImageColors() {
-            this.editImage(getRandomColor());
+            this.editImageColor(getRandomColor());
         }
     }
 }
