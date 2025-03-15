@@ -1,21 +1,24 @@
 package com.ded.misle.renderer;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.renderer.ColorManager.getRandomColor;
 
 public class ImageManager {
-    public static final java.util.Map<ImageName, BufferedImage> cachedImages = new HashMap<>();
-    public static final java.util.Map<ImageName, BufferedImage> editedImages = new HashMap<>();
-    public static final java.util.ArrayList<ImageName> playerImages = new ArrayList<>();
+    public static final Map<ImageName, BufferedImage> cachedImages = new HashMap<>();
+    public static final Map<ImageName, BufferedImage> editedImages = new HashMap<>();
+    public static final ArrayList<ImageName> playerImages = new ArrayList<>();
 
     static {
         Collections.addAll(playerImages,
@@ -86,5 +89,28 @@ public class ImageManager {
         public void randomizeImageColors() {
             this.editImageColor(getRandomColor());
         }
+    }
+
+    public static BufferedImage requestImage() {
+        File file = null;
+        BufferedImage img = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+
+        JFileChooser jfc = new JFileChooser();
+        jfc.setCurrentDirectory(new File("."));
+
+        int result = jfc.showOpenDialog(null);
+        boolean exists = result == JFileChooser.APPROVE_OPTION;
+        if (exists) {
+            file = jfc.getSelectedFile();
+        }
+
+        try {
+            assert file != null;
+            img = ImageIO.read(file);
+        } catch (IOException e) {
+            //
+        }
+
+        return img;
     }
 }

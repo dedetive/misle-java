@@ -4,6 +4,9 @@ import com.ded.misle.core.LanguageManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 import static com.ded.misle.Launcher.scale;
@@ -90,6 +93,7 @@ public class SaveCreator {
             buttonHeight = buttonWidth;
             buttonY = (int) (184 * scale);
             buttonRect = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
+            runnable = SaveCreator::handleIcon;
             createButton(buttonRect, "", runnable, panel, 120);
 
                 // Go back button
@@ -97,15 +101,22 @@ public class SaveCreator {
 
             drawButtons(g2d);
 
+            if (!isIconActive) {
                 // Add image plus
-            g2d.setColor(saveSelectorTextBackground);
-            g2d.fillRoundRect((int) (buttonX + (double) buttonWidth / 2 - 1 * scale),
-                (int) (buttonY + (double) buttonHeight / 5 + 1 * scale),
-                (int) (4 * scale), buttonHeight / 2, (int) (3 * scale), (int) (3 * scale));
+                g2d.setColor(saveSelectorTextBackground);
+                g2d.fillRoundRect((int) (buttonX + (double) buttonWidth / 2 - 1 * scale),
+                    (int) (buttonY + (double) buttonHeight / 5 + 1 * scale),
+                    (int) (4 * scale), buttonHeight / 2, (int) (3 * scale), (int) (3 * scale));
 
-            g2d.fillRoundRect((int) (buttonX + (double) buttonWidth / 2 - 9 * scale),
-                (int) (buttonY + (double) buttonHeight / 4 + 8 * scale),
-                buttonHeight / 2, (int) (4 * scale), (int) (3 * scale), (int) (3 * scale));
+                g2d.fillRoundRect((int) (buttonX + (double) buttonWidth / 2 - 9 * scale),
+                    (int) (buttonY + (double) buttonHeight / 4 + 8 * scale),
+                    buttonHeight / 2, (int) (4 * scale), (int) (3 * scale), (int) (3 * scale));
+            } else {
+                RoundRectangle2D clip = new RoundRectangle2D.Double(buttonX, buttonY, buttonWidth, buttonHeight, 17 * scale, 17 * scale);
+                g2d.setClip(clip);
+                g2d.drawImage(icon, buttonX, buttonY, buttonWidth, buttonHeight, null);
+                g2d.setClip(null);
+            }
         }
     }
 
@@ -129,5 +140,21 @@ public class SaveCreator {
         System.out.println(playerName.toString().trim() + ", " + LanguageManager.getText("save_creator_cannot_be") + " = " + isValid);
 
         return isValid;
+    }
+
+    private static BufferedImage icon = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+    private static boolean isIconActive = false;
+
+    private static void handleIcon() {
+            // Get image from user input
+        icon = ImageManager.requestImage();
+            // Modify to be 16x16
+        Image targetImage = icon.getScaledInstance(16, 16, Image.SCALE_DEFAULT);
+        int width = targetImage.getWidth(null);
+        int height = targetImage.getHeight(null);
+        icon = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        icon.getGraphics().drawImage(targetImage, 0, 0, null);
+            // Activate icon image
+        isIconActive = true;
     }
 }
