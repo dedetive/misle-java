@@ -6,6 +6,7 @@ import com.ded.misle.items.Item;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ConcurrentModificationException;
 
 import static com.ded.misle.Launcher.scale;
@@ -176,6 +177,10 @@ public class SaveSelector {
                                 drawRotatedImage(g2d, item.getIcon(), buttonX + buttonWidth * 1.1, buttonY - 37 * scale + (double) buttonHeight / 2,
                                     (int) (100 * scale / 3.75), (int) (100 * scale / 3.75), 0, false);
                             }
+
+                            g2d.drawImage((BufferedImage) loadSaveScreenInformation(SaveScreenOption.ICON, i),
+                                (int) (x + textWidth + 4 * scale), buttonY + fm.getHeight() / 8,
+                                (int) (16 * scale), (int) (16 * scale), null);
 
                         } else {
 

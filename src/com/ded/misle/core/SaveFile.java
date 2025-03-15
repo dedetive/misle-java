@@ -533,10 +533,17 @@ public class SaveFile {
 				// If the game hadn't been started before quitting, this just means the inventory was not loaded yet.
 			}
 
+			if (player.isIconActive) image.setRGB(0, 110,
+				new Color(new Color(image.getRGB(0, 110)).getRed(),
+					new Color(image.getRGB(0, 110)).getGreen(),
+						1).getRGB());
+			else image.setRGB(0, 110,
+				new Color(new Color(image.getRGB(0, 110)).getRed(),
+					new Color(image.getRGB(0, 110)).getGreen(),
+					0).getRGB());
 			if (player.isIconActive) {
 				for (int i = 0; i < player.icon.getWidth(); i++) {
 					for (int j = 0; j < player.icon.getHeight(); j++) {
-						System.out.println("saved " + i + ", " + j);
 						image.setRGB(i, j + 111, player.icon.getRGB(i, j));
 					}
 				}
@@ -650,6 +657,7 @@ public class SaveFile {
 		PLAYTIME,
 		FIRST_ITEM,
 		NAME,
+		ICON,
 	}
 
 	public static Object loadSaveScreenInformation(SaveScreenOption option, int saveSlot) {
@@ -697,11 +705,29 @@ public class SaveFile {
 
 					yield playerName.trim();
 				}
+				case ICON -> {
+					image = ImageIO.read(SaveFile.save[saveSlot]);
+					BufferedImage output = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+					boolean isIconActive = new Color(image.getRGB(0, 110)).getBlue() % 2 == 1;
+
+					if (isIconActive) {
+
+						for (int i = 0; i < 16; i++) {
+							for (int j = 0; j < 16; j++) {
+								int color = image.getRGB(i, j + 111);
+								if (color == -16777216) continue;
+								output.setRGB(i, j, color);
+							}
+						}
+					}
+
+					yield output;
+				}
             };
 		} catch (IOException e) {
 			System.out.println("Could not load the save screen information!");
 		} catch (Exception e) {
-			System.out.println("Item in save selection screen failed to load!");
+			System.out.println(option.toString() + " in save selection screen failed to load!");
         }
         return 0;
 	}
