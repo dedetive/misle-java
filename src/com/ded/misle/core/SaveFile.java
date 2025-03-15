@@ -533,6 +533,15 @@ public class SaveFile {
 				// If the game hadn't been started before quitting, this just means the inventory was not loaded yet.
 			}
 
+			if (player.isIconActive) {
+				for (int i = 0; i < player.icon.getWidth(); i++) {
+					for (int j = 0; j < player.icon.getHeight(); j++) {
+						System.out.println("saved " + i + ", " + j);
+						image.setRGB(i, j + 111, player.icon.getRGB(i, j));
+					}
+				}
+			}
+
 			ImageWriter writer = ImageIO.getImageWritersByFormatName("png").next();
 			ImageWriteParam param = writer.getDefaultWriteParam();
 			param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);

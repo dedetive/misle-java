@@ -3,6 +3,8 @@ package com.ded.misle.world.player;
 import com.ded.misle.core.PhysicsEngine;
 import com.ded.misle.world.boxes.HPBox;
 
+import java.awt.image.BufferedImage;
+
 import static com.ded.misle.core.GamePanel.tileSize;
 import static com.ded.misle.world.boxes.BoxHandling.addBoxToCache;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
@@ -18,6 +20,8 @@ public class Player extends HPBox {
 
 	public int currentSaveSlot;
 	public String name = "";
+	public BufferedImage icon;
+	public boolean isIconActive;
 
 	public Player() {
 		this.setTexture("invisible");

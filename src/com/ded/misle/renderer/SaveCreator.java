@@ -127,6 +127,10 @@ public class SaveCreator {
             clearButtons();
             gameStart(creatingSave);
             player.name = playerName.toString();
+            if (isIconActive) {
+                player.icon = icon;
+                player.isIconActive = true;
+            }
         } else {
             saveCreationWarning = LanguageManager.getText("save_creator_warning1");
         }
