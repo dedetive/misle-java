@@ -178,6 +178,8 @@ public class SaveSelector {
                                     (int) (100 * scale / 3.75), (int) (100 * scale / 3.75), 0, false);
                             }
 
+                            // Draw icon
+
                             g2d.drawImage((BufferedImage) loadSaveScreenInformation(SaveScreenOption.ICON, i),
                                 (int) (x + textWidth + 4 * scale), buttonY + fm.getHeight() / 8,
                                 (int) (16 * scale), (int) (16 * scale), null);
@@ -290,11 +292,15 @@ public class SaveSelector {
         Item item = (Item) loadSaveScreenInformation(SaveFile.SaveScreenOption.FIRST_ITEM, saveSlot);
 
         if (item.getId() != 0) {
-            drawRotatedImage(g2d, item.getIcon(), previewX + (double) previewWidth / 2 + 6 * scale, previewY - (double) previewHeight / 2 + 37.5 * scale + (double) previewHeight / 2,
-                (int) (100 * scale / 3.75), (int) (100 * scale / 3.75), 0, false);
+            drawRotatedImage(g2d, item.getIcon(), previewX + (double) previewWidth / 2 + 6 * scale,
+                    previewY - (double) previewHeight / 2 + 37.5 * scale + (double) previewHeight / 2,
+                       (int) (100 * scale / 3.75), (int) (100 * scale / 3.75), 0, false);
         }
 
-
+        g2d.drawImage((BufferedImage) loadSaveScreenInformation(SaveScreenOption.ICON, saveSlot),
+            x + textWidth,
+            (int) (y - 100 * scale + (double) fm.getHeight() / 3),
+            (int) (16 * scale), (int) (16 * scale), null);
 
         int buttonX = (int) (261 * scale);
         int buttonY = (int) (140 * scale);
