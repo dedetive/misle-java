@@ -21,7 +21,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.renderer.FontManager.dialogNPCText;
-import static com.ded.misle.renderer.ImageManager.playerImages;
+import static com.ded.misle.renderer.ImageManager.*;
 import static com.ded.misle.renderer.MenuButton.*;
 import static com.ded.misle.renderer.MenuRenderer.goToPreviousMenu;
 import static com.ded.misle.renderer.SaveCreator.confirmName;
@@ -539,7 +539,7 @@ public class KeyHandler implements KeyListener {
 					try {
 						Path path = getPath();
 						path = path.resolve(path + "/resources/images/ui/img.png");
-						img.mergeImages(ImageIO.read(path.toFile()));
+						mergeImages(cachedImages.get(img), ImageIO.read(path.toFile()));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

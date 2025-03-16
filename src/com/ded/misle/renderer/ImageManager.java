@@ -49,29 +49,9 @@ public class ImageManager {
             Path fullPath = basePath.resolve(category + "/" + fileName);
             try {
                 cachedImages.put(this, ImageIO.read(fullPath.toFile()));
-                editedImages.put(this, ImageIO.read(fullPath.toFile()));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }
-
-        public void mergeImages(BufferedImage target) {
-            BufferedImage img = cachedImages.get(this);
-            Image targetImage = target.getScaledInstance(img.getWidth(), img.getHeight(), Image.SCALE_DEFAULT);
-            int width = targetImage.getWidth(null);
-            int height = targetImage.getHeight(null);
-            target = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-            target.getGraphics().drawImage(targetImage, 0, 0, null);
-
-            for (int i = 0; i < img.getWidth(); i++) {
-                for (int j = 0; j < img.getHeight(); j++) {
-                    if (img.getRGB(i, j) != 16777215 &&
-                        target.getRGB(i, j) != 0) {
-                        img.setRGB(i, j, target.getRGB(i, j));
-                    }
-                }
-            }
-            editedImages.put(this, img);
         }
     }
 
@@ -111,5 +91,23 @@ public class ImageManager {
 
     public static BufferedImage randomizeImageColors(BufferedImage img) {
         return editImageColor(img, getRandomColor());
+    }
+
+    public static BufferedImage mergeImages(BufferedImage img, BufferedImage target) {
+        Image targetImage = target.getScaledInstance(img.getWidth(), img.getHeight(), Image.SCALE_DEFAULT);
+        int width = targetImage.getWidth(null);
+        int height = targetImage.getHeight(null);
+        target = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        target.getGraphics().drawImage(targetImage, 0, 0, null);
+
+        for (int i = 0; i < img.getWidth(); i++) {
+            for (int j = 0; j < img.getHeight(); j++) {
+                if (img.getRGB(i, j) != 16777215 &&
+                    target.getRGB(i, j) != 0) {
+                    img.setRGB(i, j, target.getRGB(i, j));
+                }
+            }
+        }
+        return img;
     }
 }
