@@ -17,7 +17,6 @@ import static com.ded.misle.renderer.ColorManager.getRandomColor;
 
 public class ImageManager {
     public static final Map<ImageName, BufferedImage> cachedImages = new HashMap<>();
-    public static final Map<ImageName, BufferedImage> editedImages = new HashMap<>();
     public static final ArrayList<ImageName> playerImages = new ArrayList<>();
 
     static {
