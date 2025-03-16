@@ -55,18 +55,6 @@ public class ImageManager {
             }
         }
 
-        public void editImageColor(Color color) {
-            BufferedImage img = cachedImages.get(this);
-            for (int i = 0; i < img.getWidth(); i++) {
-                for (int j = 0; j < img.getHeight(); j++) {
-                    if (img.getRGB(i, j) != 16777215) {
-                        img.setRGB(i, j, color.getRGB());
-                    }
-                }
-            }
-            editedImages.put(this, img);
-        }
-
         public void mergeImages(BufferedImage target) {
             BufferedImage img = cachedImages.get(this);
             Image targetImage = target.getScaledInstance(img.getWidth(), img.getHeight(), Image.SCALE_DEFAULT);
@@ -84,10 +72,6 @@ public class ImageManager {
                 }
             }
             editedImages.put(this, img);
-        }
-
-        public void randomizeImageColors() {
-            this.editImageColor(getRandomColor());
         }
     }
 
@@ -112,5 +96,20 @@ public class ImageManager {
         }
 
         return img;
+    }
+
+    public static BufferedImage editImageColor(BufferedImage img, Color color) {
+        for (int i = 0; i < img.getWidth(); i++) {
+            for (int j = 0; j < img.getHeight(); j++) {
+                if (img.getRGB(i, j) != 16777215) {
+                    img.setRGB(i, j, color.getRGB());
+                }
+            }
+        }
+        return img;
+    }
+
+    public static BufferedImage randomizeImageColors(BufferedImage img) {
+        return editImageColor(img, getRandomColor());
     }
 }
