@@ -241,7 +241,7 @@ public class KeyHandler implements KeyListener {
 
 		// GLOBAL
 
-		if (player.keys.keyPressed.get(CTRL) && player.keys.keyPressed.get(SHIFT) && player.keys.keyPressed.get(MINUS)) {
+		if (isPressed(CTRL) && isPressed(SHIFT) && isPressed(MINUS)) {
 			// Ctrl + Shift + - results in crashing without saving
 
 			System.exit(0);
@@ -251,48 +251,48 @@ public class KeyHandler implements KeyListener {
 
 		if (gameState == GameState.PLAYING) {
 			for (NumberKey numberKey : NumberKey.values()) {
-				if (player.keys.keyPressed.get(valueOf(String.valueOf(numberKey)))) {
+				if (isPressed(valueOf(String.valueOf(numberKey)))) {
 					player.inv.setSelectedSlot(numberKey.slot);
 				}
 			}
-			if (player.keys.keyPressed.get(PAUSE)) {
+			if (isPressed(PAUSE)) {
 				pauseGame();
 			}
 			double[] willMovePlayer = {0, 0};
-			if (player.keys.keyPressed.get(UP)) {
-				if (!player.keys.keyPressed.get(LEFT) || !player.keys.keyPressed.get(RIGHT)) {
+			if (isPressed(UP)) {
+				if (!isPressed(LEFT) || !isPressed(RIGHT)) {
 					willMovePlayer[1] -= player.attr.getSpeed();
 				} else {
 					willMovePlayer[1] -= Math.sqrt(player.attr.getSpeed());
 				}
 			}
-			if (player.keys.keyPressed.get(DOWN)) {
-				if (!player.keys.keyPressed.get(LEFT) || !player.keys.keyPressed.get(RIGHT)) {
+			if (isPressed(DOWN)) {
+				if (!isPressed(LEFT) || !isPressed(RIGHT)) {
 					willMovePlayer[1] += player.attr.getSpeed();
 				} else {
 					willMovePlayer[1] += Math.sqrt(player.attr.getSpeed());
 				}
 			}
-			if (player.keys.keyPressed.get(LEFT)) {
-				if (!player.keys.keyPressed.get(UP) || !player.keys.keyPressed.get(DOWN)) {
+			if (isPressed(LEFT)) {
+				if (!isPressed(UP) || !isPressed(DOWN)) {
 					willMovePlayer[0] -= player.attr.getSpeed();
 				} else {
 					willMovePlayer[0] -= Math.sqrt(player.attr.getSpeed());
 				}
 			}
-			if (player.keys.keyPressed.get(RIGHT)) {
+			if (isPressed(RIGHT)) {
 				willMovePlayer[0] += player.attr.getSpeed();
 			}
-			if (player.keys.keyPressed.get(DROP)) {
+			if (isPressed(DROP)) {
 				if (player.inv.hasHeldItem()) {
-					if (player.keys.keyPressed.get(CTRL)) {
+					if (isPressed(CTRL)) {
 						player.inv.dropItem(0, player.inv.getSelectedSlot(), player.inv.getSelectedItem().getCount());
 					} else {
 						player.inv.dropItem(0, player.inv.getSelectedSlot(), 1);
 					}
 				}
 			}
-			if (player.keys.keyPressed.get(DODGE)) {
+			if (isPressed(DODGE)) {
 				int delay = 100;
 				player.pos.delayedRotate(-360, delay * 5);
 				player.setIsInvulnerable(true);
@@ -303,7 +303,7 @@ public class KeyHandler implements KeyListener {
 				timer.start();
 
 			}
-			if (player.keys.keyPressed.get(USE)) {
+			if (isPressed(USE)) {
 				pressUseButton(mouseHandler);
 				player.keys.keyPressed.put(USE, false);
 			}
@@ -337,7 +337,7 @@ public class KeyHandler implements KeyListener {
 
 		// EITHER PLAYING OR INVENTORY
 
-		if (player.keys.keyPressed.get(INVENTORY)) {
+		if (isPressed(INVENTORY)) {
 			if (gameState == GameState.PLAYING) {
 				gameState = GameState.INVENTORY;
 			} else if (gameState == GameState.INVENTORY) {
@@ -353,7 +353,7 @@ public class KeyHandler implements KeyListener {
 
 			if (hoveredRow >= 0 && hoveredCol >= 0) {
 				for (NumberKey numberKey : NumberKey.values()) {
-					if (player.keys.keyPressed.get(valueOf(String.valueOf(numberKey)))) {
+					if (isPressed(valueOf(String.valueOf(numberKey)))) {
 						player.inv.setTempItem(player.inv.getItem(hoveredRow, hoveredCol));
 						player.inv.bruteSetItem(player.inv.getItem(0, numberKey.slot), hoveredRow, hoveredCol);
 						player.inv.bruteSetItem(player.inv.getTempItem(), 0, numberKey.slot);
@@ -363,19 +363,19 @@ public class KeyHandler implements KeyListener {
 				}
 			}
 
-			if (player.keys.keyPressed.get(PAUSE)) {
+			if (isPressed(PAUSE)) {
 				gameState = GameState.PLAYING;
 			}
 
-			if (player.keys.keyPressed.get(DROP)) {
+			if (isPressed(DROP)) {
 				if (mouseHandler.getHoveredSlot()[0] >= 0 && mouseHandler.getHoveredSlot()[1] >= 0 && player.inv.getItem(mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1]) != null) {
-					if (player.keys.keyPressed.get(CTRL)) {
+					if (isPressed(CTRL)) {
 						player.inv.dropItem(mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1], player.inv.getItem(mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1]).getCount());
 					} else {
 						player.inv.dropItem(mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1], 1);
 					}
 				} else if (mouseHandler.getExtraHoveredSlot()[0] >= 0 && mouseHandler.getExtraHoveredSlot()[1] >= 0 && player.inv.getItem(mouseHandler.getExtraHoveredSlot()[0] * 2 + mouseHandler.getExtraHoveredSlot()[1]) != null) {
-					if (player.keys.keyPressed.get(CTRL)) {
+					if (isPressed(CTRL)) {
 						player.inv.dropItem(mouseHandler.getExtraHoveredSlot()[1] * 2 + mouseHandler.getExtraHoveredSlot()[0], player.inv.getItem(mouseHandler.getExtraHoveredSlot()[0] * 2 + mouseHandler.getExtraHoveredSlot()[1]).getCount());
 					} else {
 						player.inv.dropItem(mouseHandler.getExtraHoveredSlot()[1] * 2 + mouseHandler.getExtraHoveredSlot()[0], 1);
@@ -390,8 +390,8 @@ public class KeyHandler implements KeyListener {
 
 			// Designer speed manipulation
 
-			if (player.keys.keyPressed.get(DEBUG1)) {
-				if (!player.keys.keyPressed.get(SHIFT)) {
+			if (isPressed(DEBUG1)) {
+				if (!isPressed(SHIFT)) {
 					baseDesignerSpeed = Math.min(3, baseDesignerSpeed + 0.4);
 					updateDesignerSpeed();
 				} else {
@@ -404,28 +404,28 @@ public class KeyHandler implements KeyListener {
 
 			double[] willMovePlayer = {0, 0};
 
-			if (player.keys.keyPressed.get(UP)) {
-				if (!player.keys.keyPressed.get(LEFT) || !player.keys.keyPressed.get(RIGHT)) {
+			if (isPressed(UP)) {
+				if (!isPressed(LEFT) || !isPressed(RIGHT)) {
 					willMovePlayer[1] -= designerSpeed;
 				} else {
 					willMovePlayer[1] -= (designerSpeed * Math.sqrt(2) / 3);
 				}
 			}
-			if (player.keys.keyPressed.get(DOWN)) {
-				if (!player.keys.keyPressed.get(LEFT) || !player.keys.keyPressed.get(RIGHT)) {
+			if (isPressed(DOWN)) {
+				if (!isPressed(LEFT) || !isPressed(RIGHT)) {
 					willMovePlayer[1] += designerSpeed;
 				} else {
 					willMovePlayer[1] += designerSpeed * Math.sqrt(2) / 3;
 				}
 			}
-			if (player.keys.keyPressed.get(LEFT)) {
-				if (!player.keys.keyPressed.get(UP) || !player.keys.keyPressed.get(DOWN)) {
+			if (isPressed(LEFT)) {
+				if (!isPressed(UP) || !isPressed(DOWN)) {
 					willMovePlayer[0] -= designerSpeed;
 				} else {
 					willMovePlayer[0] -= designerSpeed * Math.sqrt(2) / 3;
 				}
 			}
-			if (player.keys.keyPressed.get(RIGHT)) {
+			if (isPressed(RIGHT)) {
 				willMovePlayer[0] += designerSpeed;
 			}
 
@@ -435,24 +435,24 @@ public class KeyHandler implements KeyListener {
 
 			// Pause
 
-			if (player.keys.keyPressed.get(PAUSE)) {
+			if (isPressed(PAUSE)) {
 				pauseGame();
 			}
 
 			// Zooming
 
-			if (player.keys.keyPressed.get(EQUAL)) {
+			if (isPressed(EQUAL)) {
 				gameScale = Math.min(8, gameScale + 0.25);
 				updateTileSize();
 			}
-			if (player.keys.keyPressed.get(MINUS)) {
+			if (isPressed(MINUS)) {
 				gameScale = Math.max(0.75, gameScale - 0.25);
 				updateTileSize();
 			}
-			if (player.keys.keyPressed.get(NUM_0) && player.keys.keyPressed.get(CTRL)) {
+			if (isPressed(NUM_0) && isPressed(CTRL)) {
 				gameScale = scale;
 			}
-			if (player.keys.keyPressed.get(GRID)) {
+			if (isPressed(GRID)) {
 				levelDesignerGrid = !levelDesignerGrid;
 			}
 		}
@@ -460,10 +460,10 @@ public class KeyHandler implements KeyListener {
 		// SAVE CREATOR EXCLUSIVE
 
 		if (gameState == GameState.SAVE_CREATOR) {
-			if (player.keys.keyPressed.get(BACKSPACE)) {
+			if (isPressed(BACKSPACE)) {
 				playerName.setLength(Math.max(playerName.length() - 1, 0));
 			}
-			if (player.keys.keyPressed.get(ENTER)) {
+			if (isPressed(ENTER)) {
 				confirmName();
 			}
 		}
@@ -471,7 +471,7 @@ public class KeyHandler implements KeyListener {
 		// DIALOG EXCLUSIVE
 
 		if (gameState == GameState.DIALOG) {
-			if (player.keys.keyPressed.get(USE)) {
+			if (isPressed(USE)) {
 				getCurrentTalkingTo().incrementDialogIndex();
 			}
 		}
@@ -479,7 +479,7 @@ public class KeyHandler implements KeyListener {
 		// OTHER MENUS
 			// Options, save selector and save creator
 		if (gameState == GameState.OPTIONS_MENU || gameState == GameState.SAVE_SELECTOR || gameState == GameState.SAVE_CREATOR) {
-			if (player.keys.keyPressed.get(PAUSE)) {
+			if (isPressed(PAUSE)) {
 				if (gameState == GameState.SAVE_SELECTOR && askingToDelete > -1) {
 					askingToDelete = -1;
 					clearButtonFading();
@@ -490,13 +490,13 @@ public class KeyHandler implements KeyListener {
 			}
 
 			if (gameState == GameState.OPTIONS_MENU) {
-				if (player.keys.keyPressed.get(LEFT_MENU) || player.keys.keyPressed.get(RIGHT_MENU)) {
+				if (isPressed(LEFT_MENU) || isPressed(RIGHT_MENU)) {
 
-					if (player.keys.keyPressed.get(LEFT_MENU)) {
+					if (isPressed(LEFT_MENU)) {
 						moveSettingMenu(-1);
 						leftKeyIndicatorWidth = 19;
 					}
-					if (player.keys.keyPressed.get(RIGHT_MENU)) {
+					if (isPressed(RIGHT_MENU)) {
 						moveSettingMenu(1);
 						rightKeyIndicatorWidth = 19;
 					}
@@ -505,22 +505,22 @@ public class KeyHandler implements KeyListener {
 			}
 		}
 
-		if (player.keys.keyPressed.get(SCREENSHOT)) {
+		if (isPressed(SCREENSHOT)) {
 			takeScreenshot();
 		}
 
 		// DEBUG KEYS '[' AND ']'
 
 		if (gameState != GameState.LEVEL_DESIGNER) {
-			if (player.keys.keyPressed.get(DEBUG1)) {
-				if (!player.keys.keyPressed.get(SHIFT)) {
+			if (isPressed(DEBUG1)) {
+				if (!isPressed(SHIFT)) {
 					for (int i = 1; i <= 27; i++) {
 						if (i != 5) {
 							player.inv.addItem(createItem(i, 1));
 						}
 					}
 				} else {
-					if (player.keys.keyPressed.get(CTRL)) {
+					if (isPressed(CTRL)) {
 						player.attr.setLevel(1);
 					} else {
 						player.attr.addXP(player.attr.getXPtoLevelUp() * 9 / 10);
@@ -529,7 +529,7 @@ public class KeyHandler implements KeyListener {
 
 
 			}
-			if (player.keys.keyPressed.get(DEBUG2)) {
+			if (isPressed(DEBUG2)) {
 
 //				player.inv.clearInventory();
 
@@ -600,5 +600,9 @@ public class KeyHandler implements KeyListener {
 
 	public static String getChar(Key key) {
 		return getKeyText(key.keyCode);
+	}
+
+	public static boolean isPressed(Key key) {
+		return player.keys.keyPressed.get(key);
 	}
 }
