@@ -17,6 +17,7 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 
+import static com.ded.misle.core.SaveFile.SaveScreenOption.ICON;
 import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.SaveFile.PixelColor.*;
@@ -188,6 +189,7 @@ public class SaveFile {
 		BALANCE_H					(GREEN, 0, 0),
 		BALANCE_M					(BLUE, 0, 0),
 		BALANCE_L					(GREEN, 0, 1),
+		ICON_ACTIVE_L				(BLUE, 0, 110),
 
 		;
 
@@ -204,7 +206,6 @@ public class SaveFile {
 
 	public static void loadSaveFile() {
 		int saveSlot = player.currentSaveSlot;
-		System.out.println(saveSlot);
 
 		synchronized (fileLock) {
 			boolean fileExists = checkIfSaveFileExists(saveSlot);
@@ -326,6 +327,11 @@ public class SaveFile {
 							player.inv.bruteSetItem(Item.createItem(itemID, itemCount), i * 2 + j);
 						}
 					}
+
+					player.isIconActive = (getLow(loadThis(PixelData.ICON_ACTIVE_L)) % 2) == 1;
+					player.icon = (BufferedImage) loadSaveScreenInformation(ICON, saveSlot);
+
+
 				} catch (IOException e) {
 					System.out.println("Failed to load save file!");
 					player.unloadPlayer();
