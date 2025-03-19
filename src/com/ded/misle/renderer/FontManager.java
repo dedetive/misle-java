@@ -77,6 +77,15 @@ public class FontManager {
                 dialogNPCText = loadFont("/fonts/NotoSansSC-Regular.ttf", (float) (52 * scale / 3.75));
                 backupAdvisorFont = loadFont("/fonts/NotoSansSC-Regular.ttf", (float) (24 * scale / 3.75));
             }
+            case PRASPOMIC -> {
+                titleFont = loadFont("/fonts/Praspomia-Regular.otf", (float) (96 * scale / 3.75));
+                selectedItemNameFont = loadFont("/fonts/Praspomia-Regular.otf", (float) (35 * scale / 3.75));
+                itemInfoFont = loadFont("/fonts/Praspomia-Regular.otf", (float) (40 * scale / 3.75));
+                buttonFont = loadFont("/fonts/Praspomia-Regular.otf", (float) (44 * scale / 3.75));
+                dialogNPCName = loadFont("/fonts/Praspomia-Regular.otf", (float) (85 * scale / 3.75));
+                dialogNPCText = loadFont("/fonts/Praspomia-Regular.otf", (float) (52 * scale / 3.75));
+                backupAdvisorFont = loadFont("/fonts/Praspomia-Regular.otf", (float) (24 * scale / 3.75));
+            }
         }
 
         MainRenderer.textShadow = 1 * scale;
