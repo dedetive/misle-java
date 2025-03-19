@@ -99,10 +99,10 @@ public class SaveCreator {
                 // Go back button
             createGoBackButton(panel, 400);
 
-            drawButtons(g2d);
-
             if (!isIconActive) {
-                // Add image plus
+                drawButtons(g2d);
+
+                    // Add image plus
                 g2d.setColor(saveSelectorTextBackground);
                 g2d.fillRoundRect((int) (buttonX + (double) buttonWidth / 2 - 1 * scale),
                     (int) (buttonY + (double) buttonHeight / 5 + 1 * scale),
@@ -112,6 +112,14 @@ public class SaveCreator {
                     (int) (buttonY + (double) buttonHeight / 4 + 8 * scale),
                     buttonHeight / 2, (int) (4 * scale), (int) (3 * scale), (int) (3 * scale));
             } else {
+                    // Clear icon
+                buttonRect = new Rectangle(buttonX, buttonY + 9 * buttonHeight / 8, buttonWidth, buttonHeight / 4);
+                runnable = SaveCreator::clearIcon;
+
+                createButton(buttonRect, LanguageManager.getText("save_creator_clear_icon"), runnable, panel, 129);
+
+                drawButtons(g2d);
+
                 RoundRectangle2D clip = new RoundRectangle2D.Double(buttonX, buttonY, buttonWidth, buttonHeight, 17 * scale, 17 * scale);
                 g2d.setClip(clip);
                 g2d.drawImage(icon, buttonX, buttonY, buttonWidth, buttonHeight, null);
