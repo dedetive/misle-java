@@ -83,6 +83,7 @@ public class SaveSelector {
                             saveCreationWarning = "";
                             playerName = new StringBuilder();
                             clearButtonFading();
+                            clearIcon();
                         };
                     } else {
                         runnable = () -> gameStart(finalI);
