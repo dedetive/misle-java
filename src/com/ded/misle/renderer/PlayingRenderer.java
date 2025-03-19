@@ -103,8 +103,6 @@ public class PlayingRenderer {
         BufferedImage playerSprite = null;
         boolean playerMirror = player.stats.getHorizontalDirection() == LEFT;
 
-        boolean isPlayerTextureIcon = (boolean) loadSaveScreenInformation(SaveFile.SaveScreenOption.IS_PLAYER_TEXTURE_ICON, player.currentSaveSlot);
-
         // Draw player sprite
         if (totalDirection == NONE) {
             playerSprite = cachedImages.get(ImageManager.ImageName.PLAYER_FRONT0_EDIT);
@@ -118,7 +116,7 @@ public class PlayingRenderer {
             playerSprite = cachedImages.get(ImageManager.ImageName.valueOf("PLAYER_FRONT" + animationFrame + "_EDIT"));
         }
 
-        playerSprite = isPlayerTextureIcon ?
+        playerSprite = player.isIconTexture ?
             mergeImages(playerSprite, player.icon) :
             playerSprite;
 
