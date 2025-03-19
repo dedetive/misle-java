@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Objects;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
@@ -18,6 +19,7 @@ import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 
 import static com.ded.misle.core.SaveFile.SaveScreenOption.ICON;
+import static com.ded.misle.core.SaveFile.SaveScreenOption.IS_PLAYER_TEXTURE_ICON;
 import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.SaveFile.PixelColor.*;
@@ -191,6 +193,7 @@ public class SaveFile {
 		BALANCE_M					(BLUE, 0, 0),
 		BALANCE_L					(GREEN, 0, 1),
 		ICON_ACTIVE_L				(BLUE, 0, 110),
+		IS_PLAYER_TEXTURE_ICON_L	(BLUE, 0, 110),
 
 		;
 
@@ -331,9 +334,9 @@ public class SaveFile {
 
 					player.isIconActive = (getLow(loadThis(PixelData.ICON_ACTIVE_L)) % 2) == 1;
 					player.icon = (BufferedImage) loadSaveScreenInformation(ICON, saveSlot);
-					boolean playerTextureIsIcon = (boolean) loadSaveScreenInformation(SaveScreenOption.IS_PLAYER_TEXTURE_ICON, saveSlot);
+					player.isIconTexture = (boolean) loadSaveScreenInformation(SaveScreenOption.IS_PLAYER_TEXTURE_ICON, saveSlot);
 
-					if (playerTextureIsIcon) {
+					if (player.isIconTexture) {
 						for (ImageManager.ImageName img : playerImages) {
 							mergeImages(cachedImages.get(img), player.icon);
 						}
@@ -546,14 +549,19 @@ public class SaveFile {
 				// If the game hadn't been started before quitting, this just means the inventory was not loaded yet.
 			}
 
-			if (player.isIconActive) image.setRGB(0, 110,
-				new Color(new Color(image.getRGB(0, 110)).getRed(),
-					new Color(image.getRGB(0, 110)).getGreen(),
-						1).getRGB());
-			else image.setRGB(0, 110,
-				new Color(new Color(image.getRGB(0, 110)).getRed(),
-					new Color(image.getRGB(0, 110)).getGreen(),
-					0).getRGB());
+			Color px = new Color(image.getRGB(0, 110));
+			int value = px.getBlue();
+			value = value - value % 2;
+			value = value - value % 4;
+
+			if (player.isIconActive) value++;
+			if (player.isIconTexture) value += 2;
+
+			image.setRGB(0, 110,
+				new Color(px.getRed(),
+					px.getGreen(),
+					value).getRGB());
+
 			if (player.isIconActive) {
 				for (int i = 0; i < player.icon.getWidth(); i++) {
 					for (int j = 0; j < player.icon.getHeight(); j++) {
@@ -738,7 +746,9 @@ public class SaveFile {
 					yield output;
 				}
 				case IS_PLAYER_TEXTURE_ICON -> {
-					yield true;
+					image = ImageIO.read(SaveFile.save[saveSlot]);
+
+					yield Objects.equals(((loadAttribute(PixelData.IS_PLAYER_TEXTURE_ICON_L) / 2) % 2), 1);
 				}
             };
 		} catch (IOException e) {

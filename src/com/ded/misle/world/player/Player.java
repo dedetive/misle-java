@@ -22,6 +22,7 @@ public class Player extends HPBox {
 	public String name = "";
 	public BufferedImage icon;
 	public boolean isIconActive;
+	public boolean isIconTexture;
 
 	public Player() {
 		this.setTexture("invisible");
