@@ -4,6 +4,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -21,8 +23,8 @@ public class ImageManager {
 
     static {
         Collections.addAll(playerImages,
-            ImageName.PLAYER_FRONT0, ImageName.PLAYER_FRONT1,
-            ImageName.PLAYER_WALK0, ImageName.PLAYER_WALK1, ImageName.PLAYER_WALK2);
+            ImageName.PLAYER_FRONT0_EDIT, ImageName.PLAYER_FRONT1_EDIT,
+            ImageName.PLAYER_WALK0_EDIT, ImageName.PLAYER_WALK1_EDIT, ImageName.PLAYER_WALK2_EDIT);
     }
 
     public enum ImageName {
@@ -40,6 +42,11 @@ public class ImageManager {
                 PLAYER_WALK0("characters/player", "player_walk0.png"),
                 PLAYER_WALK1("characters/player", "player_walk1.png"),
                 PLAYER_WALK2("characters/player", "player_walk2.png"),
+                PLAYER_FRONT0_EDIT("characters/player", "player_front0.png"),
+                PLAYER_FRONT1_EDIT("characters/player", "player_front1.png"),
+                PLAYER_WALK0_EDIT("characters/player", "player_walk0.png"),
+                PLAYER_WALK1_EDIT("characters/player", "player_walk1.png"),
+                PLAYER_WALK2_EDIT("characters/player", "player_walk2.png"),
 
         ;
 
@@ -78,6 +85,8 @@ public class ImageManager {
     }
 
     public static BufferedImage editImageColor(BufferedImage img, Color color) {
+        img = deepCopy(img);
+
         for (int i = 0; i < img.getWidth(); i++) {
             for (int j = 0; j < img.getHeight(); j++) {
                 if (img.getRGB(i, j) != 16777215) {
@@ -93,6 +102,8 @@ public class ImageManager {
     }
 
     public static BufferedImage mergeImages(BufferedImage img, BufferedImage target) {
+        img = deepCopy(img);
+
         Image targetImage = target.getScaledInstance(img.getWidth(), img.getHeight(), Image.SCALE_DEFAULT);
         int width = targetImage.getWidth(null);
         int height = targetImage.getHeight(null);
@@ -108,5 +119,12 @@ public class ImageManager {
             }
         }
         return img;
+    }
+
+    static BufferedImage deepCopy(BufferedImage img) {
+        ColorModel cm = img.getColorModel();
+        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+        WritableRaster raster = img.copyData(null);
+        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
     }
 }

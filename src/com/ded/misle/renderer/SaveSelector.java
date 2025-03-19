@@ -16,7 +16,9 @@ import static com.ded.misle.core.SaveFile.*;
 import static com.ded.misle.core.Setting.antiAliasing;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.*;
-import static com.ded.misle.renderer.ImageManager.cachedImages;
+import static com.ded.misle.renderer.ImageManager.*;
+import static com.ded.misle.renderer.ImageManager.ImageName.PLAYER_FRONT0;
+import static com.ded.misle.renderer.ImageManager.ImageName.PLAYER_FRONT0_EDIT;
 import static com.ded.misle.renderer.InventoryRenderer.wrapText;
 import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.renderer.MenuButton.*;
@@ -134,7 +136,15 @@ public class SaveSelector {
 
                             // Player
 
-                            g2d.drawImage(cachedImages.get(ImageManager.ImageName.PLAYER_FRONT0), (int) (buttonX + buttonWidth * 0.75),
+                            boolean isPlayerTextureIcon = (boolean) loadSaveScreenInformation(SaveScreenOption.IS_PLAYER_TEXTURE_ICON, i);
+
+                            BufferedImage icon = (BufferedImage) loadSaveScreenInformation(SaveScreenOption.ICON, i);
+
+                            BufferedImage img = isPlayerTextureIcon ?
+                                mergeImages(cachedImages.get(PLAYER_FRONT0_EDIT), icon) :
+                                cachedImages.get(PLAYER_FRONT0);
+
+                            g2d.drawImage(img, (int) (buttonX + buttonWidth * 0.75),
                                 (int) (buttonY - 40 * scale + (double) buttonHeight / 2), 135, 135, null);
 
                             // Level
@@ -252,7 +262,15 @@ public class SaveSelector {
 
             // Player
 
-        g2d.drawImage(cachedImages.get(ImageManager.ImageName.PLAYER_FRONT0), previewX + 2 * previewWidth / 5,
+        boolean isPlayerTextureIcon = (boolean) loadSaveScreenInformation(SaveScreenOption.IS_PLAYER_TEXTURE_ICON, saveSlot);
+
+        BufferedImage icon = (BufferedImage) loadSaveScreenInformation(SaveScreenOption.ICON, saveSlot);
+
+        BufferedImage img = isPlayerTextureIcon ?
+            mergeImages(cachedImages.get(PLAYER_FRONT0_EDIT), icon) :
+            cachedImages.get(PLAYER_FRONT0);
+
+        g2d.drawImage(img, previewX + 2 * previewWidth / 5,
             (int) (previewY - 25 * scale + (double) previewHeight / 2), 135, 135, null);
 
             // Level
@@ -297,8 +315,7 @@ public class SaveSelector {
                        (int) (100 * scale / 3.75), (int) (100 * scale / 3.75), 0, false);
         }
 
-        g2d.drawImage((BufferedImage) loadSaveScreenInformation(SaveScreenOption.ICON, saveSlot),
-            x + textWidth,
+        g2d.drawImage(icon, x + textWidth,
             (int) (y - 100 * scale + (double) fm.getHeight() / 3),
             (int) (16 * scale), (int) (16 * scale), null);
 

@@ -1,6 +1,7 @@
 package com.ded.misle.core;
 
 import com.ded.misle.items.Item;
+import com.ded.misle.renderer.ImageManager;
 import com.ded.misle.world.player.PlayerAttributes;
 import com.ded.misle.world.player.PlayerStats;
 
@@ -10,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.Objects;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
@@ -21,6 +21,7 @@ import static com.ded.misle.core.SaveFile.SaveScreenOption.ICON;
 import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.SaveFile.PixelColor.*;
+import static com.ded.misle.renderer.ImageManager.*;
 
 public class SaveFile {
 
@@ -330,7 +331,13 @@ public class SaveFile {
 
 					player.isIconActive = (getLow(loadThis(PixelData.ICON_ACTIVE_L)) % 2) == 1;
 					player.icon = (BufferedImage) loadSaveScreenInformation(ICON, saveSlot);
+					boolean playerTextureIsIcon = (boolean) loadSaveScreenInformation(SaveScreenOption.IS_PLAYER_TEXTURE_ICON, saveSlot);
 
+					if (playerTextureIsIcon) {
+						for (ImageManager.ImageName img : playerImages) {
+							mergeImages(cachedImages.get(img), player.icon);
+						}
+					}
 
 				} catch (IOException e) {
 					System.out.println("Failed to load save file!");
@@ -664,6 +671,7 @@ public class SaveFile {
 		FIRST_ITEM,
 		NAME,
 		ICON,
+		IS_PLAYER_TEXTURE_ICON,
 	}
 
 	public static Object loadSaveScreenInformation(SaveScreenOption option, int saveSlot) {
@@ -728,6 +736,9 @@ public class SaveFile {
 					}
 
 					yield output;
+				}
+				case IS_PLAYER_TEXTURE_ICON -> {
+					yield true;
 				}
             };
 		} catch (IOException e) {
