@@ -1,6 +1,7 @@
 package com.ded.misle.renderer;
 
 import com.ded.misle.core.LanguageManager;
+import com.ded.misle.core.SaveFile;
 import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.input.MouseHandler;
 import com.ded.misle.world.boxes.BoxHandling;
@@ -15,9 +16,13 @@ import java.util.Objects;
 
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.core.SaveFile.loadSaveScreenInformation;
 import static com.ded.misle.core.Setting.antiAliasing;
 import static com.ded.misle.renderer.FloatingText.drawFloatingTexts;
 import static com.ded.misle.renderer.FontManager.*;
+import static com.ded.misle.renderer.ImageManager.ImageName.PLAYER_FRONT0;
+import static com.ded.misle.renderer.ImageManager.ImageName.PLAYER_FRONT0_EDIT;
+import static com.ded.misle.renderer.ImageManager.mergeImages;
 import static com.ded.misle.world.boxes.Box.getTexture;
 import static com.ded.misle.world.npcs.NPC.getSelectedNPCs;
 import static com.ded.misle.renderer.ColorManager.*;
@@ -98,6 +103,8 @@ public class PlayingRenderer {
         BufferedImage playerSprite = null;
         boolean playerMirror = player.stats.getHorizontalDirection() == LEFT;
 
+        boolean isPlayerTextureIcon = (boolean) loadSaveScreenInformation(SaveFile.SaveScreenOption.IS_PLAYER_TEXTURE_ICON, player.currentSaveSlot);
+
         // Draw player sprite
         if (totalDirection == NONE) {
             playerSprite = cachedImages.get(ImageManager.ImageName.PLAYER_FRONT0_EDIT);
@@ -110,6 +117,10 @@ public class PlayingRenderer {
 
             playerSprite = cachedImages.get(ImageManager.ImageName.valueOf("PLAYER_FRONT" + animationFrame + "_EDIT"));
         }
+
+        playerSprite = isPlayerTextureIcon ?
+            mergeImages(playerSprite, player.icon) :
+            playerSprite;
 
         drawRotatedImage(g2d, playerSprite,
             playerScreenX - player.getBoxScaleHorizontal() * 0.25 * tileSize,
