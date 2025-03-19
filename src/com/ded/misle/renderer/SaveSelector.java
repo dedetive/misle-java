@@ -25,8 +25,7 @@ import static com.ded.misle.renderer.MenuButton.*;
 import static com.ded.misle.renderer.MenuRenderer.createTitle;
 import static com.ded.misle.renderer.MenuRenderer.drawMenuBackground;
 import static com.ded.misle.renderer.PlayingRenderer.scaleByScreenSize;
-import static com.ded.misle.renderer.SaveCreator.saveCreationWarning;
-import static com.ded.misle.renderer.SaveCreator.playerName;
+import static com.ded.misle.renderer.SaveCreator.*;
 
 public class SaveSelector {
 

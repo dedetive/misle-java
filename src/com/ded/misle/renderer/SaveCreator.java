@@ -161,4 +161,8 @@ public class SaveCreator {
             // Activate icon image
         isIconActive = true;
     }
+
+    public static void clearIcon() {
+        isIconActive = false;
+    }
 }
