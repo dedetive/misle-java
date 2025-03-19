@@ -114,7 +114,7 @@ public class SaveSelector {
                     buttonHeight = (int) (120 * scale);
                     int backgroundSize = (int) (14 * scale);
 
-                    for (int i = 0; i < 3; i++) {
+                    for (int saveSlot = 0; saveSlot < 3; saveSlot++) {
 
                         // Background
 
@@ -125,20 +125,20 @@ public class SaveSelector {
                         // Shadow
 
                         g2d.setColor(saveSelectorTextShadow);
-                        g2d.drawString(String.valueOf(i + 1), (int) (buttonX + (double) buttonWidth * 0.975 + textShadow), (int) (buttonY + textShadow));
+                        g2d.drawString(String.valueOf(saveSlot + 1), (int) (buttonX + (double) buttonWidth * 0.975 + textShadow), (int) (buttonY + textShadow));
 
                         // Number
 
                         g2d.setColor(saveSelectorNumber);
-                        g2d.drawString(String.valueOf(i + 1), (int) (buttonX + buttonWidth * 0.975), buttonY);
+                        g2d.drawString(String.valueOf(saveSlot + 1), (int) (buttonX + buttonWidth * 0.975), buttonY);
 
-                        if (existingSaves[i]) {
+                        if (existingSaves[saveSlot]) {
 
                             // Player
 
-                            boolean isPlayerTextureIcon = (boolean) loadSaveScreenInformation(SaveScreenOption.IS_PLAYER_TEXTURE_ICON, i);
+                            boolean isPlayerTextureIcon = (boolean) loadSaveScreenInformation(SaveScreenOption.IS_PLAYER_TEXTURE_ICON, saveSlot);
 
-                            BufferedImage icon = (BufferedImage) loadSaveScreenInformation(SaveScreenOption.ICON, i);
+                            BufferedImage icon = (BufferedImage) loadSaveScreenInformation(SaveScreenOption.ICON, saveSlot);
 
                             BufferedImage img = isPlayerTextureIcon ?
                                 mergeImages(cachedImages.get(PLAYER_FRONT0_EDIT), icon) :
@@ -149,7 +149,7 @@ public class SaveSelector {
 
                             // Level
 
-                            int level = (int) loadSaveScreenInformation(SaveFile.SaveScreenOption.LEVEL, i);
+                            int level = (int) loadSaveScreenInformation(SaveFile.SaveScreenOption.LEVEL, saveSlot);
 
                             String text = LanguageManager.getText("save_selector_level") + " " + level;
                             FontMetrics fm = g2d.getFontMetrics();
@@ -161,7 +161,7 @@ public class SaveSelector {
 
                             // Playtime
 
-                            text = String.valueOf(loadSaveScreenInformation(SaveFile.SaveScreenOption.PLAYTIME, i));
+                            text = String.valueOf(loadSaveScreenInformation(SaveFile.SaveScreenOption.PLAYTIME, saveSlot));
 
                             textWidth = fm.stringWidth(text);
 
@@ -171,7 +171,7 @@ public class SaveSelector {
 
                             // Name
 
-                            text = String.valueOf(loadSaveScreenInformation(SaveFile.SaveScreenOption.NAME, i));
+                            text = String.valueOf(loadSaveScreenInformation(SaveFile.SaveScreenOption.NAME, saveSlot));
 
                             textWidth = fm.stringWidth(text);
 
@@ -181,7 +181,7 @@ public class SaveSelector {
 
                             // Draw hand item
 
-                            Item item = (Item) loadSaveScreenInformation(SaveFile.SaveScreenOption.FIRST_ITEM, i);
+                            Item item = (Item) loadSaveScreenInformation(SaveFile.SaveScreenOption.FIRST_ITEM, saveSlot);
 
                             if (item.getId() != 0) {
                                 drawRotatedImage(g2d, item.getIcon(), buttonX + buttonWidth * 1.1, buttonY - 37 * scale + (double) buttonHeight / 2,
@@ -190,7 +190,7 @@ public class SaveSelector {
 
                             // Draw icon
 
-                            g2d.drawImage((BufferedImage) loadSaveScreenInformation(SaveScreenOption.ICON, i),
+                            g2d.drawImage((BufferedImage) loadSaveScreenInformation(SaveScreenOption.ICON, saveSlot),
                                 (int) (x + textWidth + 4 * scale), buttonY + fm.getHeight() / 8,
                                 (int) (16 * scale), (int) (16 * scale), null);
 
