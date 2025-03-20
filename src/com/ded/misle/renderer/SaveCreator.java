@@ -161,13 +161,17 @@ public class SaveCreator {
             // Get image from user input
         icon = ImageManager.requestImage();
             // Modify to be 16x16
-        Image targetImage = icon.getScaledInstance(16, 16, Image.SCALE_DEFAULT);
-        int width = targetImage.getWidth(null);
-        int height = targetImage.getHeight(null);
-        icon = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        icon.getGraphics().drawImage(targetImage, 0, 0, null);
+        try {
+            Image targetImage = icon.getScaledInstance(16, 16, Image.SCALE_DEFAULT);
+            int width = targetImage.getWidth(null);
+            int height = targetImage.getHeight(null);
+            icon = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            icon.getGraphics().drawImage(targetImage, 0, 0, null);
             // Activate icon image
-        isIconActive = true;
+            isIconActive = true;
+        } catch (NullPointerException e) {
+            // This means image request was cancelled
+        }
     }
 
     public static void clearIcon() {

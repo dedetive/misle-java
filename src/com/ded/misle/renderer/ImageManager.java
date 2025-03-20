@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.ded.misle.core.GamePanel.getWindow;
 import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.renderer.ColorManager.getRandomColor;
 
@@ -63,22 +64,24 @@ public class ImageManager {
 
     public static BufferedImage requestImage() {
         File file = null;
-        BufferedImage img = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage img;
 
-        JFileChooser jfc = new JFileChooser();
-        jfc.setCurrentDirectory(new File("."));
+        FileDialog fd = new FileDialog(getWindow(), "Choose an image", FileDialog.LOAD);
+        fd.setFile("*.png");
+        fd.setVisible(true);
 
-        int result = jfc.showOpenDialog(null);
-        boolean exists = result == JFileChooser.APPROVE_OPTION;
+        String result = fd.getFile();
+        boolean exists = result != null;
         if (exists) {
-            file = jfc.getSelectedFile();
+            file = fd.getFiles()[0];
         }
 
         try {
             assert file != null;
             img = ImageIO.read(file);
-        } catch (IOException e) {
+        } catch (IOException | IllegalArgumentException e) {
             //
+            return null;
         }
 
         return img;
