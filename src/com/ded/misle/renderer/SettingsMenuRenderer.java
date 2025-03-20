@@ -23,6 +23,7 @@ import static com.ded.misle.renderer.SettingsMenuRenderer.SettingPos.*;
 
 public class SettingsMenuRenderer {
     public enum SettingState {
+        EMPTY(-1, 0),
         GENERAL(0, 100),
         GRAPHICS(1, 138),
         AUDIO(2, 176),
@@ -256,6 +257,8 @@ public class SettingsMenuRenderer {
         button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
         createButton(button, LanguageManager.getText(value), action, panel, id + 1);
     }
+
+    public static void switchToEmpty() { settingState = SettingState.EMPTY; }
 
     public static void switchToGeneral() { settingState = SettingState.GENERAL; }
 

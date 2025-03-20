@@ -17,7 +17,7 @@ import static com.ded.misle.renderer.ImageManager.cachedImages;
 import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.core.SaveFile.saveEverything;
 import static com.ded.misle.renderer.MenuButton.*;
-import static com.ded.misle.renderer.SettingsMenuRenderer.switchToGeneral;
+import static com.ded.misle.renderer.SettingsMenuRenderer.switchToEmpty;
 import static com.ded.misle.world.WorldLoader.unloadBoxes;
 import static java.lang.System.currentTimeMillis;
 import static com.ded.misle.core.GamePanel.screenWidth;
@@ -53,7 +53,7 @@ public class MenuRenderer {
         MainRenderer.currentMenu = OPTIONS_MENU;
         gameState = OPTIONS_MENU;
         clearButtonFading();
-        switchToGeneral();
+        switchToEmpty();
     }
 
     public static void goToPreviousMenu() {
