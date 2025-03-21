@@ -4,7 +4,6 @@ import com.ded.misle.core.LanguageManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
@@ -86,6 +85,14 @@ public class SaveCreator {
                 textX = (int) (((double) 512 / 2) * scale - (double) textWidth / 2);
                 g2d.setColor(saveCreatorPlayerName);
                 g2d.drawString(text, textX, textY);
+            } else {
+
+                // Caret
+
+                int x = (int) (((double) 512 / 2) * scale + (double) fm.stringWidth(playerName.toString()) / 2 + 2 * scale);
+                int y = textY - 2 * fm.getHeight() / 3;
+                g2d.setColor(saveCreatorCaret);
+                g2d.fillRect(x, y, (int) (1 * scale), 4 * fm.getHeight() / 5);
             }
 
                 // Confirm name button
