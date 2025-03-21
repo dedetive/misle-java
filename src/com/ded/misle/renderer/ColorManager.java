@@ -136,6 +136,7 @@ public class ColorManager {
     public final static Color saveCreatorWarning = new Color(0xFE4040);
     public final static Color saveCreatorInsertName = defaultLighterYellow;
     public final static Color saveCreatorInsertNameShadow = defaultShadowColor;
+    public final static Color saveCreatorPlayerName = new Color(90, 64, 32, 160);
 
     // Fading
 

@@ -45,7 +45,7 @@ public class SaveCreator {
             int buttonWidth;
             int buttonHeight;
 
-            // Text background
+                // Text background
             g2d.setFont(dialogNPCText);
             FontMetrics fm = g2d.getFontMetrics();
             String text = playerName.toString();
@@ -77,6 +77,16 @@ public class SaveCreator {
             g2d.drawString(text, (int) (textX + textShadow), (int) (textY - 20 * scale + textShadow));
             g2d.setColor(saveCreatorInsertName);
             g2d.drawString(text, textX, (int) (textY - 20 * scale));
+
+                // Transparent 'Player name'
+
+            if (playerName.isEmpty()) {
+                text = LanguageManager.getText("save_creator_player_name");
+                textWidth = fm.stringWidth(text);
+                textX = (int) (((double) 512 / 2) * scale - (double) textWidth / 2);
+                g2d.setColor(saveCreatorPlayerName);
+                g2d.drawString(text, textX, textY);
+            }
 
                 // Confirm name button
             buttonWidth = (int) (width * 1.05);
