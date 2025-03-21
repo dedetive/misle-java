@@ -89,10 +89,15 @@ public class SaveCreator {
 
                 // Caret
 
-                int x = (int) (((double) 512 / 2) * scale + (double) fm.stringWidth(playerName.toString()) / 2 + 2 * scale);
-                int y = textY - 2 * fm.getHeight() / 3;
-                g2d.setColor(saveCreatorCaret);
-                g2d.fillRect(x, y, (int) (1 * scale), 4 * fm.getHeight() / 5);
+                if (System.currentTimeMillis() % 1600 <= 800) {
+
+                    int x = (int) (((double) 512 / 2) * scale + (double) fm.stringWidth(playerName.toString()) / 2 + 2 * scale);
+                    int y = textY - 2 * fm.getHeight() / 3;
+                    g2d.setColor(saveCreatorCaret);
+                    g2d.fillRect(x, y, (int) (1 * scale), 4 * fm.getHeight() / 5);
+
+                }
+
             }
 
                 // Confirm name button
