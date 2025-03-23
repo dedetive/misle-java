@@ -192,7 +192,7 @@ public class SettingsMenuRenderer {
 
         // language
         int[] pos = TOP_LEFT.pos;
-        createSetting("settings_general_language", String.valueOf(languageCode),
+        createSetting("settings_general_language", String.valueOf(languageCode.str()),
             pos[0], pos[1], SettingsManager::cycleLanguage, panel, 42);
     }
 

@@ -1,5 +1,7 @@
 package com.ded.misle.core;
 
+import static com.ded.misle.core.LanguageManager.Language.en_US;
+
 public class Setting<T> {
 
     public Class<T> valueType;
@@ -39,6 +41,7 @@ public class Setting<T> {
     public static Setting<Boolean> displayFPS = new Setting<>(boolean.class, true, "displayFPS");
     public static Setting<Boolean> antiAliasing = new Setting<>(boolean.class, true, "antiAliasing");
     public static Setting<Integer> frameRateCap = new Setting<>(int.class, 60, "frameRateCap");
+    public static Setting<LanguageManager.Language> languageCode = new Setting<>(LanguageManager.Language.class, en_US, "languageCode");
 
 //    languageCode = getSetting("language");
 //    languageManager = new LanguageManager(languageCode);

@@ -181,10 +181,11 @@ public class SettingsManager {
 	// General
 	public static void cycleLanguage() {
 		String[] languageCodes = new String[]{"de_DE", "el_GR", "en_US", "es_ES", "pt_BR", "ru_RU", "zh_CN"};
-		languageCode = cycleThroughSetting(languageCodes, languageCode);
+		languageCode.value =
+			LanguageManager.Language.valueOf(cycleThroughSetting(languageCodes, languageCode.str()));
 
-		changeSetting("language", languageCode);
-		languageManager = new LanguageManager(languageCode);
+		changeSetting("language", languageCode.str());
+		languageManager = new LanguageManager(languageCode.str());
 		updateFontSizes();
 	}
 
