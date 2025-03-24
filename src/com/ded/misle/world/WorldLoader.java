@@ -19,12 +19,15 @@ import static com.ded.misle.world.npcs.NPC.InteractionType.NONE;
 
 public class WorldLoader {
 	public static void loadBoxes() {
-		switch (roomIDToName(player.pos.getRoomID())) {
+		World world;
+		RoomManager.Room room = roomIDToName(player.pos.getRoomID());
+
+		switch (room) {
 			case VOID -> {
 				// Setup
 					int worldWidth = 400;
 					int worldHeight = 400;
-					setupWorld(worldWidth, worldHeight);
+					world = new World(worldWidth, worldHeight);
 				// Building Boxes
 					// Here is where structural boxes should be placed, such as walls.
 					lineAddBox(0, 0, 4, 4, "wall_default", HOLLOW);
@@ -85,7 +88,7 @@ public class WorldLoader {
 				//Setup
 				int worldWidth = 1000;
 				int worldHeight = 990;
-				setupWorld(worldWidth, worldHeight);
+				world = new World(worldWidth, worldHeight);
 
 				// Top left section
 				lineAddBox(0, -2, (worldWidth / 20 - 2) / 2 - 3, 5, "wall_default", FILL);
@@ -144,7 +147,7 @@ public class WorldLoader {
 				//Setup
 				int worldWidth = 500;
 				int worldHeight = 400;
-				setupWorld(worldWidth, worldHeight);
+				world = new World(worldWidth, worldHeight);
 
 				// Walls
 				lineAddBox(240, 20, 9, 9, "wall_default", HOLLOW);
@@ -177,7 +180,9 @@ public class WorldLoader {
 			}
 			case TUANI_1 -> {
 				// Setup
-				setupWorld(1190, 490);
+				int worldWidth = 1190;
+				int worldHeight = 490;
+				world = new World(worldWidth, worldHeight);
 
 				// Bottom left section
 				lineAddBox(-10, 390, 12, 5, "wall_default", FILL);
@@ -220,26 +225,15 @@ public class WorldLoader {
 			}
 //			case TUANI_2 -> {
 //				// Setup
-//				setupWorld(1190, 490);
+//			int worldWidth;
+//			int worldHeight;
+//			world = new World(worldWidth, worldHeight);
 //			}
 
 
 			case null -> {}
 			default -> throw new IllegalStateException("Unexpected value: " + roomIDToName(player.pos.getRoomID()) + ", ID: " + player.pos.getRoomID());
 		}
-	}
-
-	private static void fillGrass(int worldWidth, int worldHeight) {
-		double interval = 2.05;
-		lineAddScaledBox(0, 0, (int) Math.ceil((double) worldWidth / (interval * 20)), (int) Math.ceil((double) worldHeight / (interval * 20)), "fill", interval, "grass");
-	}
-
-	private static World setupWorld(int worldWidth, int worldHeight) {
-		fillGrass(worldWidth, worldHeight);
-		World world = new World(worldWidth, worldHeight);
-
-		System.out.println("Loading room: " + world.room);
-		return world;
 	}
 
 	public static void unloadBoxes() {
