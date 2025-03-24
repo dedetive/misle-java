@@ -19,7 +19,6 @@ import static com.ded.misle.world.npcs.NPC.InteractionType.NONE;
 
 public class WorldLoader {
 	public static void loadBoxes() {
-		System.out.println("Loading room: " + roomIDToName(player.pos.getRoomID()));
 		switch (roomIDToName(player.pos.getRoomID())) {
 			case VOID -> {
 				// Setup
@@ -235,9 +234,12 @@ public class WorldLoader {
 		lineAddScaledBox(0, 0, (int) Math.ceil((double) worldWidth / (interval * 20)), (int) Math.ceil((double) worldHeight / (interval * 20)), "fill", interval, "grass");
 	}
 
-	private static void setupWorld(int worldWidth, int worldHeight) {
-		setWorldBorders(worldWidth, worldHeight);
+	private static World setupWorld(int worldWidth, int worldHeight) {
 		fillGrass(worldWidth, worldHeight);
+		World world = new World(worldWidth, worldHeight);
+
+		System.out.println("Loading room: " + world.room);
+		return world;
 	}
 
 	public static void unloadBoxes() {
