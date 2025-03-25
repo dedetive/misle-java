@@ -1,5 +1,7 @@
 package com.ded.misle.world.player;
 
+import com.ded.misle.world.World;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +17,7 @@ public class PlayerPosition {
 	private Region region = Region.VOID;
 	private int roomID;
 	private double rotation;
+	public World world;
 	public enum Region {
 		VOID,
 		CHAIN_OF_LIES

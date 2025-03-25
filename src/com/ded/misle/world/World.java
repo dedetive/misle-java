@@ -7,8 +7,8 @@ import static com.ded.misle.core.GamePanel.setWorldBorders;
 import static com.ded.misle.world.boxes.BoxHandling.lineAddScaledBox;
 
 public class World {
-    int width;
-    int height;
+    public int width;
+    public int height;
     Box[][] world;
     RoomManager.Room room;
 
@@ -21,6 +21,8 @@ public class World {
 
         this.room = RoomManager.roomIDToName(player.pos.getRoomID());
         System.out.println("Loading room: " + this.room);
+
+        player.pos.world = this;
 
         fillGrass();
     }
