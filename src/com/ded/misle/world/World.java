@@ -27,6 +27,14 @@ public class World {
         fillGrass();
     }
 
+    public void setPos(Box box, int x, int y, boolean force) {
+        if (force) {
+            this.grid[x][y] = box;
+        } else if (this.grid[x][y] == null) {
+            this.grid[x][y] = box;
+        }
+    }
+
     private void fillGrass() {
         double interval = 2.05;
         lineAddScaledBox(0, 0, (int) Math.ceil((double) width / (interval)),

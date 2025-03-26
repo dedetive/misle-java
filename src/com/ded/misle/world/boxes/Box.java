@@ -95,6 +95,8 @@ public class Box {
 		this.y = y;
 		worldX = (int) (x / 20);
 		worldY = (int) (y / 20);
+		World world = player.pos.world;
+		world.setPos(this, worldX, worldY, false);
 		this.color = color;
 		this.texture = texture;
 		this.hasCollision = hasCollision;
@@ -112,6 +114,8 @@ public class Box {
 		this.y = y;
 		worldX = (int) (x / 20);
 		worldY = (int) (y / 20);
+		World world = player.pos.world;
+		world.setPos(this, worldX, worldY, false);
 		this.color = defaultBoxColor;
 		this.texture = "solid";
 		this.hasCollision = false;
