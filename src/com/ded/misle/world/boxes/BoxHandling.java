@@ -1,6 +1,7 @@
 package com.ded.misle.world.boxes;
 
 import com.ded.misle.core.PhysicsEngine;
+import com.ded.misle.world.World;
 import com.ded.misle.world.enemies.Enemy;
 import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.world.player.Player;

@@ -27,7 +27,7 @@ public class WorldLoader {
 				// Setup
 					int worldWidth = 400;
 					int worldHeight = 400;
-					world = new World(worldWidth, worldHeight);
+					world = new World(worldWidth / 20, worldHeight / 20);
 				// Building Boxes
 					// Here is where structural boxes should be placed, such as walls.
 					lineAddBox(0, 0, 4, 4, "wall_default", HOLLOW);
@@ -88,7 +88,7 @@ public class WorldLoader {
 				//Setup
 				int worldWidth = 1000;
 				int worldHeight = 990;
-				world = new World(worldWidth, worldHeight);
+				world = new World(worldWidth / 20, worldHeight / 20);
 
 				// Top left section
 				lineAddBox(0, -2, (worldWidth / 20 - 2) / 2 - 3, 5, "wall_default", FILL);
@@ -147,7 +147,7 @@ public class WorldLoader {
 				//Setup
 				int worldWidth = 500;
 				int worldHeight = 400;
-				world = new World(worldWidth, worldHeight);
+				world = new World(worldWidth / 20, worldHeight / 20);
 
 				// Walls
 				lineAddBox(240, 20, 9, 9, "wall_default", HOLLOW);
@@ -182,7 +182,7 @@ public class WorldLoader {
 				// Setup
 				int worldWidth = 1190;
 				int worldHeight = 490;
-				world = new World(worldWidth, worldHeight);
+				world = new World(worldWidth / 20, worldHeight / 20);
 
 				// Bottom left section
 				lineAddBox(-10, 390, 12, 5, "wall_default", FILL);

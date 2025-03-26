@@ -2,6 +2,7 @@ package com.ded.misle.world.boxes;
 
 import com.ded.misle.core.PhysicsEngine;
 import com.ded.misle.renderer.ImageManager;
+import com.ded.misle.world.World;
 import com.ded.misle.world.player.Player;
 import com.ded.misle.world.player.PlayerAttributes;
 import com.ded.misle.renderer.MainRenderer;
@@ -39,6 +40,9 @@ import static java.lang.System.currentTimeMillis;
 public class Box {
 	private double x; // The current world position (unscaled)
 	private double y; // The current world position (unscaled)
+	private int worldX;
+	private int worldY;
+
 	private Color color;
 	private String texture;
 	private boolean hasCollision;
@@ -89,6 +93,8 @@ public class Box {
 	public Box(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, PhysicsEngine.ObjectType objectType, boolean interactsWithPlayer) {
 		this.x = x;
 		this.y = y;
+		worldX = (int) (x / 20);
+		worldY = (int) (y / 20);
 		this.color = color;
 		this.texture = texture;
 		this.hasCollision = hasCollision;
@@ -104,6 +110,8 @@ public class Box {
 	public Box(double x, double y) {
 		this.x = x;
 		this.y = y;
+		worldX = (int) (x / 20);
+		worldY = (int) (y / 20);
 		this.color = defaultBoxColor;
 		this.texture = "solid";
 		this.hasCollision = false;
@@ -390,7 +398,6 @@ public class Box {
 	public void setLastEffectTime(long lastDamageTime) {
 		this.lastDamageTime = lastDamageTime;
 	}
-
 
 	public BufferedImage getTexture() {
 		String fileName = this.texture + ".png";

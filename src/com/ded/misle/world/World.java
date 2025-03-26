@@ -9,13 +9,13 @@ import static com.ded.misle.world.boxes.BoxHandling.lineAddScaledBox;
 public class World {
     public int width;
     public int height;
-    Box[][] world;
+    public Box[][] grid;
     RoomManager.Room room;
 
     World(int worldWidth, int worldHeight) {
         this.width = worldWidth;
         this.height = worldHeight;
-        this.world = new Box[worldWidth][worldHeight];
+        this.grid = new Box[worldWidth + 1][worldHeight + 1];
 
         setWorldBorders(worldWidth, worldHeight);
 
@@ -29,7 +29,7 @@ public class World {
 
     private void fillGrass() {
         double interval = 2.05;
-        lineAddScaledBox(0, 0, (int) Math.ceil((double) width / (interval * 20)),
-            (int) Math.ceil((double) height / (interval * 20)), "fill", interval, "grass");
+        lineAddScaledBox(0, 0, (int) Math.ceil((double) width / (interval)),
+            (int) Math.ceil((double) height / (interval)), "fill", interval, "grass");
     }
 }
