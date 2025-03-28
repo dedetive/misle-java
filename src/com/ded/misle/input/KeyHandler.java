@@ -12,7 +12,6 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +37,6 @@ import static com.ded.misle.input.KeyHandler.Key.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.items.Item.createItem;
 import static java.awt.event.KeyEvent.*;
-import static java.nio.file.Files.createDirectories;
 
 public class KeyHandler implements KeyListener {
 
@@ -550,31 +548,6 @@ public class KeyHandler implements KeyListener {
 		}
 
 		setKeysToFalse();
-	}
-
-	public static BufferedImage takeScreenshot() {
-        // Image getter
-        JFrame frame = getWindow();
-        BufferedImage img = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_RGB);
-        frame.printAll(img.getGraphics());
-
-		return img;
-    }
-
-	public static void saveScreenshot(BufferedImage img) {
-		try {
-			// File creator
-			String t = LocalDateTime.now().toString();
-			t = t.substring(0, t.indexOf("."));
-			t = t.replace("T", ".");
-
-			createDirectories(Path.of(getPath() + "/resources/screenshots"));
-			ImageIO.write(img, "png", (getPath().resolve("resources/screenshots/" + t + ".png")).toFile());
-	//					System.out.println("Screenshot saved at " + getPath().resolve("resources/screenshots/" + t + ".png"));
-
-		} catch (IOException e) {
-			System.out.println("Failed to take a screenshot");
-		}
 	}
 
 	public void setKeysToFalse() {
