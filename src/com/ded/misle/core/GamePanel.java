@@ -409,9 +409,9 @@ public class GamePanel extends JPanel implements Runnable {
 			int textX = (int) (screenWidth - textWidth) - 8;
 			int textY = fm.getHeight() - 8;
 			g2d.setColor(FPSShadowColor);
-			g2d.drawString(text, (int) (textX + textShadow), (int) (textY + textShadow));
+			drawColoredText(g2d, text, (int) (textX + textShadow), (int) (textY + textShadow));
 			g2d.setColor(FPSColor);
-			g2d.drawString(text, textX, textY);
+			drawColoredText(g2d, text, textX, textY);
 		}
 	}
 
