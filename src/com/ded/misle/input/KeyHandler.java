@@ -506,7 +506,8 @@ public class KeyHandler implements KeyListener {
 		}
 
 		if (isPressed(SCREENSHOT)) {
-			takeScreenshot();
+			BufferedImage ss = takeScreenshot();
+			saveScreenshot(ss);
 		}
 
 		// DEBUG KEYS '[' AND ']'
@@ -551,13 +552,17 @@ public class KeyHandler implements KeyListener {
 		setKeysToFalse();
 	}
 
-	public static void takeScreenshot() {
-		try {
-			// Image getter
-			JFrame frame = getWindow();
-			BufferedImage img = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_RGB);
-			frame.printAll(img.getGraphics());
+	public static BufferedImage takeScreenshot() {
+        // Image getter
+        JFrame frame = getWindow();
+        BufferedImage img = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_RGB);
+        frame.printAll(img.getGraphics());
 
+		return img;
+    }
+
+	public static void saveScreenshot(BufferedImage img) {
+		try {
 			// File creator
 			String t = LocalDateTime.now().toString();
 			t = t.substring(0, t.indexOf("."));
@@ -565,7 +570,8 @@ public class KeyHandler implements KeyListener {
 
 			createDirectories(Path.of(getPath() + "/resources/screenshots"));
 			ImageIO.write(img, "png", (getPath().resolve("resources/screenshots/" + t + ".png")).toFile());
-//					System.out.println("Screenshot saved at " + getPath().resolve("resources/screenshots/" + t + ".png"));
+	//					System.out.println("Screenshot saved at " + getPath().resolve("resources/screenshots/" + t + ".png"));
+
 		} catch (IOException e) {
 			System.out.println("Failed to take a screenshot");
 		}
