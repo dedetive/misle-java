@@ -3,6 +3,7 @@ package com.ded.misle.world.npcs;
 import com.ded.misle.core.GamePanel;
 
 import static com.ded.misle.core.GamePanel.gameState;
+import static com.ded.misle.renderer.DialogRenderer.resetLetterDisplay;
 import static com.ded.misle.world.npcs.NPC.getDialogNPCs;
 
 public class NPCDialog {
@@ -13,6 +14,7 @@ public class NPCDialog {
         if (npc.getDialogID() != 0) {
             currentTalkingTo = npc;
             gameState = GamePanel.GameState.DIALOG;
+            resetLetterDisplay();
         }
     }
 

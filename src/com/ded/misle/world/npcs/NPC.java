@@ -7,6 +7,7 @@ import com.ded.misle.world.boxes.HPBox;
 import java.awt.*;
 import java.util.ArrayList;
 
+import static com.ded.misle.renderer.DialogRenderer.resetLetterDisplay;
 import static com.ded.misle.world.boxes.BoxHandling.addBoxToCache;
 import static com.ded.misle.world.npcs.NPCDialog.endDialog;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
@@ -111,6 +112,7 @@ public class NPC extends HPBox {
 
     public void incrementDialogIndex() {
         this.dialogIndex++;
+        resetLetterDisplay();
         if (this.dialogIndex >= this.dialogMaxIndex + 1) {
             this.resetDialogIndex();
             endDialog();

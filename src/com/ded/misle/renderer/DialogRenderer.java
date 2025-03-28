@@ -19,6 +19,10 @@ import static com.ded.misle.renderer.InventoryRenderer.wrapText;
 
 public class DialogRenderer {
 
+    private static long lastTimeMillis;
+    private static int currentLetter;
+    private final static int CHARACTER_INTERVAL_MS = 15;
+
     public static void renderDialog(Graphics2D g2d) {
         // Background
         int dialogX = (int) (24 * scale);
@@ -62,11 +66,28 @@ public class DialogRenderer {
         }
 
         FontMetrics fm = g2d.getFontMetrics(dialogNPCText);
+
+        // Display text character by character
+        int length = text.length();
+        long currentTime = System.currentTimeMillis();
+        boolean canIncreaseLetter = currentTime > lastTimeMillis + CHARACTER_INTERVAL_MS;
+        if (canIncreaseLetter && currentLetter < length) {
+            currentLetter++;
+            lastTimeMillis = currentTime;
+        }
+        text = text.substring(0, currentLetter);
+
         String[] wrappedText = wrapText(text, (int) ((512 - 64) * scale), fm);
+
         int height = (int) (192 * scale);
         for (String line : wrappedText) {
             drawColoredText(g2d, line, (int) (40 * scale), height, dialogNPCText, dialogTextColor, false);
             height += fm.getHeight();
         }
+    }
+
+    public static void resetLetterDisplay() {
+        currentLetter = 0;
+        lastTimeMillis = 0;
     }
 }
