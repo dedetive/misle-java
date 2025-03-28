@@ -603,6 +603,10 @@ public class KeyHandler implements KeyListener {
 	}
 
 	public static boolean isPressed(Key key) {
-		return player.keys.keyPressed.get(key);
+		try {
+			return player.keys.keyPressed.get(key);
+		} catch (NullPointerException e) {
+			return false;
+		}
 	}
 }
