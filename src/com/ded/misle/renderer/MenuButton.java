@@ -2,6 +2,7 @@ package com.ded.misle.renderer;
 
 import com.ded.misle.core.GamePanel;
 import com.ded.misle.core.LanguageManager;
+import com.ded.misle.core.PraspomiaNumberConverter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +16,9 @@ import java.util.Objects;
 
 import static com.ded.misle.core.GamePanel.deltaTime;
 import static com.ded.misle.core.GamePanel.gameState;
+import static com.ded.misle.core.LanguageManager.getCurrentScript;
+import static com.ded.misle.core.PraspomiaNumberConverter.ConvertMode.TO_PRASPOMIA;
+import static com.ded.misle.core.PraspomiaNumberConverter.impureConvertNumberSystem;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.MainRenderer.textShadow;
 import static com.ded.misle.renderer.FontManager.buttonFont;
@@ -161,7 +165,12 @@ public class MenuButton {
             // TEXT SHADOW
             g2d.setFont(buttonFont);
             FontMetrics fm = g2d.getFontMetrics();
-            int textWidth = fm.stringWidth(removeColorIndicators(button.text));
+            int textWidth;
+            if (getCurrentScript() == LanguageManager.Script.PRASPOMIC) {
+                textWidth = fm.stringWidth(removeColorIndicators(impureConvertNumberSystem(button.text, TO_PRASPOMIA)));
+            } else {
+                textWidth = fm.stringWidth(removeColorIndicators(button.text));
+            }
             int textHeight = fm.getAscent();
             int textX = button.bounds.x + (button.bounds.width - textWidth) / 2;
             int textY = button.bounds.y + (button.bounds.height + textHeight) / 2 - fm.getDescent() + (int) (2 * scale);
