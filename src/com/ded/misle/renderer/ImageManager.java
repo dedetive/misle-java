@@ -133,7 +133,7 @@ public class ImageManager {
         return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
     }
 
-    public static BufferedImage takeScreenshot() {
+    public static BufferedImage getCurrentScreen() {
         // Image getter
         JFrame frame = getWindow();
         BufferedImage img = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_RGB);
