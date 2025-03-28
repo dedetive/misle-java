@@ -83,7 +83,7 @@ public class DialogRenderer {
         int pastLength = 0;
         for (String line : wrappedText) {
             boolean hasColorIndicators = line.length() != removeColorIndicators(line).length();
-            int currentLineLetter = currentLetter - pastLength;
+            int currentLineLetter = Math.min(currentLetter - pastLength, line.length());
             String extra = "";
 
             if (hasColorIndicators) {
@@ -101,7 +101,6 @@ public class DialogRenderer {
                     line.indexOf('}', currentLineLetter) <= currentLineLetter + 2) {
                     extra = "}";
                 }
-
             }
 
             line = line.substring(0, currentLineLetter).concat(extra);
