@@ -3,6 +3,10 @@ package com.ded.misle.core;
 import java.math.BigInteger;
 import java.util.HashMap;
 
+import static com.ded.misle.core.LanguageManager.getCurrentScript;
+import static com.ded.misle.core.PraspomiaNumberConverter.ConvertMode.TO_PRASPOMIA;
+import static com.ded.misle.renderer.ColorManager.removeColorIndicators;
+
 public class PraspomiaNumberConverter {
     static HashMap<String, Integer> praspomiaNumbers = new HashMap<>();
     static {
@@ -66,5 +70,15 @@ public class PraspomiaNumberConverter {
         }
 
         return outputNumber;
+    }
+
+    public static String impureConvertNumberSystem(String text, ConvertMode mode) {
+        if (getCurrentScript() == LanguageManager.Script.PRASPOMIC) {
+            for (String c : removeColorIndicators(text).toLowerCase().split("[^0-9]+")) {
+                text = text.replaceFirst(c,
+                    convertNumberSystem(c, mode));
+            }
+        }
+        return text;
     }
 }
