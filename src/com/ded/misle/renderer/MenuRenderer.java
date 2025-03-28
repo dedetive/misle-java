@@ -32,16 +32,16 @@ public class MenuRenderer {
         int centerX = (int) ((screenWidth - textWidth) / 2);
         int textY = (int) (48 * scale);
         g2d.setColor(menuTitleShadowColor);
-        g2d.drawString(titleText, (int) (centerX - MainRenderer.textShadow), textY); // Left
-        g2d.drawString(titleText, (int) (centerX + MainRenderer.textShadow), textY); // Right
-        g2d.drawString(titleText, centerX, (int) (textY - MainRenderer.textShadow)); // Up
-        g2d.drawString(titleText, centerX, (int) (textY + MainRenderer.textShadow)); // Down
-        g2d.drawString(titleText, (int) (centerX - MainRenderer.textShadow), (int) (textY - MainRenderer.textShadow)); // Left-up corner
-        g2d.drawString(titleText, (int) (centerX + MainRenderer.textShadow), (int) (textY - MainRenderer.textShadow)); // Right-up corner
-        g2d.drawString(titleText, (int) (centerX - MainRenderer.textShadow), (int) (textY + MainRenderer.textShadow)); // Left-down corner
-        g2d.drawString(titleText, (int) (centerX - MainRenderer.textShadow), (int) (textY - MainRenderer.textShadow)); // Right-down corner
+        drawColoredText(g2d, titleText, (int) (centerX - MainRenderer.textShadow), textY); // Left
+        drawColoredText(g2d, titleText, (int) (centerX + MainRenderer.textShadow), textY); // Right
+        drawColoredText(g2d, titleText, centerX, (int) (textY - MainRenderer.textShadow)); // Up
+        drawColoredText(g2d, titleText, centerX, (int) (textY + MainRenderer.textShadow)); // Down
+        drawColoredText(g2d, titleText, (int) (centerX - MainRenderer.textShadow), (int) (textY - MainRenderer.textShadow)); // Left-up corner
+        drawColoredText(g2d, titleText, (int) (centerX + MainRenderer.textShadow), (int) (textY - MainRenderer.textShadow)); // Right-up corner
+        drawColoredText(g2d, titleText, (int) (centerX - MainRenderer.textShadow), (int) (textY + MainRenderer.textShadow)); // Left-down corner
+        drawColoredText(g2d, titleText, (int) (centerX - MainRenderer.textShadow), (int) (textY - MainRenderer.textShadow)); // Right-down corner
         g2d.setColor(menuTitleColor);
-        g2d.drawString(titleText, centerX, textY);
+        drawColoredText(g2d, titleText, centerX, textY);
     }
 
     public static void quitGame() {
@@ -251,9 +251,9 @@ public class MenuRenderer {
             int centerX = (int) ((screenWidth - textWidth) / 2);
             textY = (int) ((progressBarY) - 20 * scaleByScreenSize);
             g2d.setColor(progressBarPercentageShadow);
-            g2d.drawString(percentage, (int) (centerX + MainRenderer.textShadow), (int) (textY + MainRenderer.textShadow));
+            drawColoredText(g2d, percentage, (int) (centerX + MainRenderer.textShadow), (int) (textY + MainRenderer.textShadow));
             g2d.setColor(progressBarPercentage);
-            g2d.drawString(percentage, centerX, textY);
+            drawColoredText(g2d, percentage, centerX, textY);
 
             if (isFading != MainRenderer.FadingState.UNFADED) drawFading(g2d);
         }
