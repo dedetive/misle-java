@@ -73,9 +73,9 @@ public class InventoryRenderer {
                         int textX = slotX - textWidth + slotSize[0];
                         int countY = slotY + slotSize[0];
                         g2d.setColor(itemCountShadowColor);
-                        g2d.drawString(Integer.toString(itemCount), (int) (textX + MainRenderer.textShadow), (int) (countY + MainRenderer.textShadow));
+                        drawColoredText(g2d, Integer.toString(itemCount), (int) (textX + MainRenderer.textShadow), (int) (countY + MainRenderer.textShadow));
                         g2d.setColor(itemCountColor);
-                        g2d.drawString(Integer.toString(itemCount), textX, countY);
+                        drawColoredText(g2d, Integer.toString(itemCount), textX, countY);
                     }
                 }
             }
@@ -99,9 +99,9 @@ public class InventoryRenderer {
                         int textX = slotX - textWidth + slotSize[1];
                         int countY = slotY + slotSize[1];
                         g2d.setColor(itemCountShadowColor);
-                        g2d.drawString(Integer.toString(itemCount), (int) (textX + MainRenderer.textShadow), (int) (countY + MainRenderer.textShadow));
+                        drawColoredText(g2d, Integer.toString(itemCount), (int) (textX + MainRenderer.textShadow), (int) (countY + MainRenderer.textShadow));
                         g2d.setColor(itemCountColor);
-                        g2d.drawString(Integer.toString(itemCount), textX, countY);
+                        drawColoredText(g2d, Integer.toString(itemCount), textX, countY);
                     }
                 }
             }
@@ -178,11 +178,11 @@ public class InventoryRenderer {
 
         // Draw text shadow
         g2d.setColor(shadowColor);
-        g2d.drawString(statText, (int) (startX + MainRenderer.textShadow), (int) (y + MainRenderer.textShadow));
+        drawColoredText(g2d, statText, (int) (startX + MainRenderer.textShadow), (int) (y + MainRenderer.textShadow));
 
         // Draw text
         g2d.setColor(textColor);
-        g2d.drawString(statText, startX, y);
+        drawColoredText(g2d, statText, startX, y);
     }
 
     private static void drawStat(Graphics2D g2d, String statText, int centerX, int y) {
@@ -311,9 +311,9 @@ public class InventoryRenderer {
             // Item count
         int itemNameWidth = fm.stringWidth(itemName);
         g2d.setColor(tooltipTextShadowColor);
-        g2d.drawString(itemCount, (int) (textX + itemNameWidth + MainRenderer.textShadow), (int) (textY + MainRenderer.textShadow));
+        drawColoredText(g2d, itemCount, (int) (textX + itemNameWidth + MainRenderer.textShadow), (int) (textY + MainRenderer.textShadow));
         g2d.setColor(itemCountTooltip);
-        g2d.drawString(itemCount, textX + itemNameWidth, textY);
+        drawColoredText(g2d, itemCount, textX + itemNameWidth, textY);
 
         textY += lineHeight;
 
