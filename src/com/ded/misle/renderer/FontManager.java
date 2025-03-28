@@ -13,6 +13,7 @@ public class FontManager {
      *  Comfortaa, Ubuntu -> Supports Latin, Cyrillic and Greek
      *  Basic -> Supports only Latin
      *  NotoSansSC -> Supports Simplified Han, Hiragana, Katakana, Latin, Cyrillic, Greek and Hangul
+     *  Praspomia -> Supports only Praspomia (uses Greek characters), converts Latin into Praspomia equivalents (though limited)
      *
      */
 
@@ -85,6 +86,8 @@ public class FontManager {
                 dialogNPCName = loadFont("/fonts/Praspomia-Regular.otf", (float) (85 * scale / 3.75));
                 dialogNPCText = loadFont("/fonts/Praspomia-Regular.otf", (float) (52 * scale / 3.75));
                 backupAdvisorFont = loadFont("/fonts/Praspomia-Regular.otf", (float) (24 * scale / 3.75));
+                coinTextFont = loadFont("/fonts/Praspomia-Regular.otf", (float) (62 * scale / 3.75));
+                itemCountFont = loadFont("/fonts/Praspomia-Regular.otf", (float) (50 * scale / 3.75));
             }
         }
 
