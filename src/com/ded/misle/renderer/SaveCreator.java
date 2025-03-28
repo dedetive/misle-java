@@ -49,7 +49,7 @@ public class SaveCreator {
             FontMetrics fm = g2d.getFontMetrics();
             String text = playerName.toString();
             int textWidth = fm.stringWidth(text);
-            int width = fm.stringWidth("WWWWWWWWWWWWWWWW");
+            int width = (int) (220 * scale);
             int textX = (int) (((double) 512 / 2) * scale);
             int textY = (int) (100 * scale);
 
