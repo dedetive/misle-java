@@ -245,6 +245,7 @@ public class PlayerAttributes {
 
 	public void setLevel(int level) {
 		this.level = level;
+		updateXPtoLevelUp();
 	}
 
 	public void incrementLevel() {
