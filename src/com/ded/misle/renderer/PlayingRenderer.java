@@ -155,20 +155,6 @@ public class PlayingRenderer {
 
         if (isFading != FadingState.UNFADED) drawFading(g2d);
 
-//        if (displayFPS.bool()) {
-//            g2d.setFont(buttonFont);
-//            String text = "FPS: " + frameCount;
-//            FontMetrics fm = g2d.getFontMetrics(buttonFont);
-//            int textWidth = fm.stringWidth(text);
-//            int textX = (int) (screenWidth - textWidth) - 8;
-//            int textY = fm.getHeight() - 8;
-//            g2d.setColor(FPSShadowColor);
-//            g2d.drawString(text, (int) (textX + textShadow), (int) (textY + textShadow));
-//            g2d.setColor(FPSColor);
-//            g2d.drawString(text, textX, textY);
-//        }
-
-//        g2d.dispose();
     }
 
     private static void drawHandItem(Graphics2D g2d, double playerScreenX, double playerScreenY, double scaleByScreenSize, MouseHandler mouseHandler) {
@@ -255,13 +241,13 @@ public class PlayingRenderer {
             int y = (int) (healthBarY + healthBarHeight * 1.2);
 
             g2d.setColor(healthBarTextShadow);
-            g2d.drawString(str, (int) (x + textShadow), (int) (y + textShadow));
+            drawColoredText(g2d, str, (int) (x + textShadow), (int) (y + textShadow));
 
             if (healthPercentage <= 0.25)
                 g2d.setColor(healthBarTextCritical);
             else g2d.setColor(healthBarText);
 
-            g2d.drawString(str, x, y);
+            drawColoredText(g2d, str, x, y);
         }
     }
 
@@ -309,13 +295,13 @@ public class PlayingRenderer {
             int y = (int) (entropyBarY + entropyBarHeight * 1.2);
 
             g2d.setColor(entropyBarTextShadow);
-            g2d.drawString(str, (int) (x + textShadow), (int) (y + textShadow));
+            drawColoredText(g2d, str, (int) (x + textShadow), (int) (y + textShadow));
 
             if (entropyPercentage <= 0.25)
                 g2d.setColor(entropyBarTextCritical);
             else g2d.setColor(entropyBarText);
 
-            g2d.drawString(str, x, y);
+            drawColoredText(g2d, str, x, y);
         }
     }
 
@@ -364,10 +350,10 @@ public class PlayingRenderer {
             int y = (int) (xpBarY + xpBarHeight * 1.2);
 
             g2d.setColor(xpBarTextShadow);
-            g2d.drawString(str, (int) (x + textShadow), (int) (y + textShadow));
+            drawColoredText(g2d, str, (int) (x + textShadow), (int) (y + textShadow));
 
             g2d.setColor(xpBarText);
-            g2d.drawString(str, x, y);
+            drawColoredText(g2d, str, x, y);
         }
     }
 
@@ -391,7 +377,7 @@ public class PlayingRenderer {
             if (!Objects.equals(displayMoreInfo, "false")) {
                 g2d.setFont(FontManager.coinTextFont);
                 g2d.setColor(slotIndicator);
-                g2d.drawString(String.valueOf(i + 1), slotX + slotSize[0] / 3, slotY + slotSize[1]);
+                drawColoredText(g2d, String.valueOf(i + 1), slotX + slotSize[0] / 3, slotY + slotSize[1]);
             }
 
             Item item = player.inv.getItem(0, i);
@@ -406,9 +392,9 @@ public class PlayingRenderer {
                     int textX = slotX - textWidth + slotSize[0];
                     int textY = slotY + 8 * slotSize[0] / 9;
                     g2d.setColor(itemCountShadowColor);
-                    g2d.drawString(Integer.toString(itemCount), (int) (textX + textShadow), (int) (textY + textShadow));
+                    drawColoredText(g2d, Integer.toString(itemCount), (int) (textX + textShadow), (int) (textY + textShadow));
                     g2d.setColor(itemCountColor);
-                    g2d.drawString(Integer.toString(itemCount), textX, textY);
+                    drawColoredText(g2d, Integer.toString(itemCount), textX, textY);
                 }
             }
 
@@ -471,10 +457,10 @@ public class PlayingRenderer {
         int coinTextY = (int) (222 * scale);
         g2d.setColor(coinTextShadowColor);
         g2d.setFont(coinTextFont);
-        g2d.drawString(String.valueOf(player.attr.getBalance()), (int) (coinTextX + textShadow), (int)(coinTextY + textShadow));
+        drawColoredText(g2d, String.valueOf(player.attr.getBalance()), (int) (coinTextX + textShadow), (int)(coinTextY + textShadow));
 
         g2d.setColor(coinTextUI);
-        g2d.drawString(String.valueOf(player.attr.getBalance()), coinTextX, coinTextY);
+        drawColoredText(g2d, String.valueOf(player.attr.getBalance()), coinTextX, coinTextY);
 
         FontMetrics fm = g2d.getFontMetrics();
         int textWidth = fm.stringWidth(String.valueOf(player.attr.getBalance()));
@@ -497,10 +483,10 @@ public class PlayingRenderer {
 
         g2d.setColor(levelTextShadowColor);
         g2d.setFont(coinTextFont);
-        g2d.drawString(String.valueOf(level), (int) (x + textShadow), (int)(y + textShadow));
+        drawColoredText(g2d, String.valueOf(level), (int) (x + textShadow), (int)(y + textShadow));
 
         g2d.setColor(levelTextUI);
-        g2d.drawString(String.valueOf(level), x, y);
+        drawColoredText(g2d, String.valueOf(level), x, y);
 
     }
 
