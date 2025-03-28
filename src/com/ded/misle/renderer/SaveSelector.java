@@ -125,12 +125,13 @@ public class SaveSelector {
                         // Shadow
 
                         g2d.setColor(saveSelectorTextShadow);
-                        g2d.drawString(String.valueOf(saveSlot + 1), (int) (buttonX + (double) buttonWidth * 0.975 + textShadow), (int) (buttonY + textShadow));
+                        drawColoredText(g2d, String.valueOf(saveSlot + 1),
+                            (int) (buttonX + (double) buttonWidth * 0.975 + textShadow), (int) (buttonY + textShadow));
 
                         // Number
 
                         g2d.setColor(saveSelectorNumber);
-                        g2d.drawString(String.valueOf(saveSlot + 1), (int) (buttonX + buttonWidth * 0.975), buttonY);
+                        drawColoredText(g2d, String.valueOf(saveSlot + 1), (int) (buttonX + buttonWidth * 0.975), buttonY);
 
                         if (existingSaves[saveSlot]) {
 
@@ -157,7 +158,7 @@ public class SaveSelector {
 
                             int x = buttonX + buttonWidth - textWidth / 2;
                             int y = (int) (buttonY + 20 * scale + (double) buttonHeight / 2);
-                            g2d.drawString(text, x, y);
+                            drawColoredText(g2d, text, x, y);
 
                             // Playtime
 
@@ -167,7 +168,7 @@ public class SaveSelector {
 
                             x = buttonX + buttonWidth - textWidth / 2;
                             y = (int) (buttonY + 20 * scale + (double) buttonHeight / 2 + fm.getHeight());
-                            g2d.drawString(text, x, y);
+                            drawColoredText(g2d, text, x, y);
 
                             // Name
 
@@ -177,7 +178,7 @@ public class SaveSelector {
 
                             x = buttonX + buttonWidth - textWidth / 2;
                             y = (int) (buttonY + 14 * scale);
-                            g2d.drawString(text, x, y);
+                            drawColoredText(g2d, text, x, y);
 
                             // Draw hand item
 
@@ -253,12 +254,12 @@ public class SaveSelector {
             // Shadow
 
         g2d.setColor(saveSelectorTextShadow);
-        g2d.drawString(String.valueOf(saveSlot + 1), (int) (previewX + (double) (previewWidth / 2) + textShadow), (int) (previewY + textShadow + 18 * scale));
+        drawColoredText(g2d, String.valueOf(saveSlot + 1), (int) (previewX + (double) (previewWidth / 2) + textShadow), (int) (previewY + textShadow + 18 * scale));
 
             // Number
 
         g2d.setColor(saveSelectorNumber);
-        g2d.drawString(String.valueOf(saveSlot + 1), previewX + previewWidth / 2, (int) (previewY + 18 * scale));
+        drawColoredText(g2d, String.valueOf(saveSlot + 1), previewX + previewWidth / 2, (int) (previewY + 18 * scale));
 
             // Player
 
@@ -283,7 +284,7 @@ public class SaveSelector {
 
         int x = previewX + previewWidth / 2 - 2 * textWidth / 5;
         int y = (int) (previewY + 40 * scale + (double) previewHeight / 2);
-        g2d.drawString(text, x, y);
+        drawColoredText(g2d, text, x, y);
 
             // Name
 
@@ -293,7 +294,7 @@ public class SaveSelector {
 
         x = (int) (previewX + (double) previewWidth / 2 - (double) textWidth / 2 + 3 * scale);
         y = (int) (previewY + 32 * scale);
-        g2d.drawString(text, x, y);
+        drawColoredText(g2d, text, x, y);
 
             // Playtime
 
@@ -303,7 +304,7 @@ public class SaveSelector {
 
         x = previewX + previewWidth / 2 - 2 * textWidth / 5;
         y = (int) (previewY + 40 * scale + (double) previewHeight / 2 + fm.getHeight());
-        g2d.drawString(text, x, y);
+        drawColoredText(g2d, text, x, y);
 
             // Draw hand item
 

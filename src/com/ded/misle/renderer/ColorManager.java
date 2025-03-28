@@ -196,6 +196,10 @@ public class ColorManager {
         return "c{#" + Integer.toHexString(color.getRGB()).substring(2) + "," + text + "}";
     }
 
+    public static void drawColoredText(Graphics2D g2d, String text, int x, int y) {
+        drawColoredText(g2d, text, x, y, g2d.getFont(), g2d.getColor(), false);
+    }
+
     public static void drawColoredText(Graphics2D g2d, String text, int x, int y, Font font, Color baseColor, boolean forceBaseColor) {
         g2d.setFont(font);
 
