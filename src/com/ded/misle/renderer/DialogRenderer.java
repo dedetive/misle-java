@@ -21,7 +21,7 @@ public class DialogRenderer {
 
     private static long lastTimeMillis;
     private static int currentLetter;
-    private final static int CHARACTER_INTERVAL_MS = 15;
+    private final static int CHARACTER_INTERVAL_MS = 10;
 
     public static void renderDialog(Graphics2D g2d) {
         // Background
@@ -75,14 +75,40 @@ public class DialogRenderer {
             currentLetter++;
             lastTimeMillis = currentTime;
         }
-        text = text.substring(0, currentLetter);
+//        text = text.substring(0, currentLetter);
 
         String[] wrappedText = wrapText(text, (int) ((512 - 64) * scale), fm);
 
         int height = (int) (192 * scale);
+        int pastLength = 0;
         for (String line : wrappedText) {
+            boolean hasColorIndicators = line.length() != removeColorIndicators(line).length();
+            int currentLineLetter = currentLetter - pastLength;
+            String extra = "";
+
+            if (hasColorIndicators) {
+                boolean sectionContainsFormatKey = line.substring(currentLineLetter, Math.min(currentLineLetter + 1, line.length())).contains("{");
+
+                if (sectionContainsFormatKey) {
+                    String subLineExtra = line.substring(currentLineLetter, line.indexOf('}', currentLineLetter));
+                    String subLineText = subLineExtra.replaceAll(".*?,\\s*(.*?)", "$1");
+
+                    currentLetter += Math.max(subLineExtra.length() - subLineText.length(), 0);
+                    currentLineLetter = currentLetter - pastLength;
+                }
+
+                if (currentLineLetter - 1 < line.lastIndexOf('}') &&
+                    line.indexOf('}', currentLineLetter) <= currentLineLetter + 2) {
+                    extra = "}";
+                }
+
+            }
+
+            line = line.substring(0, currentLineLetter).concat(extra);
+
             drawColoredText(g2d, line, (int) (40 * scale), height, dialogNPCText, dialogTextColor, false);
             height += fm.getHeight();
+            pastLength += line.length();
         }
     }
 
