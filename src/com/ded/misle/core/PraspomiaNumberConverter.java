@@ -6,9 +6,9 @@ import java.util.HashMap;
 public class PraspomiaNumberConverter {
     static HashMap<String, Integer> praspomiaNumbers = new HashMap<>();
     static {
-        praspomiaNumbers.put(".", 1);
-        praspomiaNumbers.put("|", 2);
-        praspomiaNumbers.put("7", 3);
+        praspomiaNumbers.put("ζ", 1);
+        praspomiaNumbers.put("η", 2);
+        praspomiaNumbers.put("ξ", 3);
         praspomiaNumbers.put(";", 0);
     }
 
@@ -17,7 +17,7 @@ public class PraspomiaNumberConverter {
         TO_ARABIC,
     }
 
-    static final char[] PRASPOMIA_SYMBOLS = {'.', '|', '7'};
+    static final char[] PRASPOMIA_SYMBOLS = {'ζ', 'η', 'ξ'};
 
     public static String convertNumberSystem(String inputNumber, ConvertMode mode) {
         switch (mode) {
@@ -43,7 +43,7 @@ public class PraspomiaNumberConverter {
 
     private static String convertToPraspomia(BigInteger number) {
         if (number.compareTo(BigInteger.ZERO) <= 0) {
-            return "Invalid input!";
+            return "";
         }
 
         StringBuilder praspomia = new StringBuilder();

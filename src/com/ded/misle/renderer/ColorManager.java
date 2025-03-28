@@ -1,6 +1,7 @@
 package com.ded.misle.renderer;
 
 import com.ded.misle.core.LanguageManager;
+import com.ded.misle.core.PraspomiaNumberConverter;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -8,6 +9,9 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.ded.misle.core.LanguageManager.getCurrentScript;
+import static com.ded.misle.core.PraspomiaNumberConverter.ConvertMode.TO_PRASPOMIA;
+import static com.ded.misle.core.PraspomiaNumberConverter.convertNumberSystem;
 import static com.ded.misle.renderer.ImageManager.cachedImages;
 
 public class ColorManager {
@@ -194,6 +198,13 @@ public class ColorManager {
 
     public static void drawColoredText(Graphics2D g2d, String text, int x, int y, Font font, Color baseColor, boolean forceBaseColor) {
         g2d.setFont(font);
+
+        if (getCurrentScript() == LanguageManager.Script.PRASPOMIC) {
+            for (String c : removeColorIndicators(text).toLowerCase().split("[^0-9]+")) {
+                text = text.replaceFirst(c,
+                    convertNumberSystem(c, TO_PRASPOMIA));
+            }
+        }
 
         if (text.contains("r{")) {
             String[] separatedText = text.split("r\\{");
