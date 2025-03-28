@@ -504,7 +504,7 @@ public class KeyHandler implements KeyListener {
 		}
 
 		if (isPressed(SCREENSHOT)) {
-			BufferedImage ss = takeScreenshot();
+			BufferedImage ss = getCurrentScreen();
 			saveScreenshot(ss);
 		}
 
