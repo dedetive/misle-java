@@ -119,7 +119,7 @@ public class DialogRenderer {
     public static boolean isLetterDisplayFull() {
         NPC npc = getCurrentTalkingTo();
         String dialog = LanguageManager.getText("DIALOG_" + npc.getDialogID() + "." + npc.getDialogIndex());
-        return currentLetter == dialog.length();
+        return currentLetter >= dialog.length();
     }
 
     public static void fillLetterDisplay() {
