@@ -13,6 +13,8 @@ import java.util.Objects;
 
 import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.renderer.DialogRenderer.fillLetterDisplay;
+import static com.ded.misle.renderer.DialogRenderer.isLetterDisplayFull;
 import static com.ded.misle.world.boxes.Box.clearSelectedBoxes;
 import static com.ded.misle.input.KeyHandler.pressUseButton;
 import static com.ded.misle.world.npcs.NPCDialog.getCurrentTalkingTo;
@@ -321,7 +323,11 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
             }
 			case GameState.DIALOG -> {
 				if (isLeftPressed()) {
-					getCurrentTalkingTo().incrementDialogIndex();
+					if (isLetterDisplayFull()) {
+						getCurrentTalkingTo().incrementDialogIndex();
+					} else {
+						fillLetterDisplay();
+					}
 				}
 			}
         }
