@@ -115,4 +115,16 @@ public class DialogRenderer {
         currentLetter = 0;
         lastTimeMillis = 0;
     }
+
+    public static boolean isLetterDisplayFull() {
+        NPC npc = getCurrentTalkingTo();
+        String dialog = LanguageManager.getText("DIALOG_" + npc.getDialogID() + "." + npc.getDialogIndex());
+        return currentLetter == dialog.length();
+    }
+
+    public static void fillLetterDisplay() {
+        NPC npc = getCurrentTalkingTo();
+        String dialog = LanguageManager.getText("DIALOG_" + npc.getDialogID() + "." + npc.getDialogIndex());
+        currentLetter = dialog.length();
+    }
 }
