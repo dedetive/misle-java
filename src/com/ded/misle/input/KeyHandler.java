@@ -19,6 +19,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.core.SettingsManager.getPath;
+import static com.ded.misle.renderer.DialogRenderer.fillLetterDisplay;
+import static com.ded.misle.renderer.DialogRenderer.isLetterDisplayFull;
 import static com.ded.misle.renderer.FontManager.dialogNPCText;
 import static com.ded.misle.renderer.ImageManager.*;
 import static com.ded.misle.renderer.MenuButton.*;
@@ -470,7 +472,11 @@ public class KeyHandler implements KeyListener {
 
 		if (gameState == GameState.DIALOG) {
 			if (isPressed(USE)) {
-				getCurrentTalkingTo().incrementDialogIndex();
+				if (isLetterDisplayFull()) {
+					getCurrentTalkingTo().incrementDialogIndex();
+				} else {
+					fillLetterDisplay();
+				}
 			}
 		}
 
