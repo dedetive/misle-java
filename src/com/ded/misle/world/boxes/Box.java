@@ -132,7 +132,7 @@ public class Box {
 	public Box() {}
 
 	// Method to render the box with the current tileSize and scale the position
-	public void draw(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY, double scale, int tileSize, double boxScaleHorizontal, double boxScaleVertical) {
+	public void draw(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY, double boxScaleHorizontal, double boxScaleVertical) {
 		// Scale the position based on the current scale
 		double scaledX = x * scale;
 		double scaledY = y * scale;

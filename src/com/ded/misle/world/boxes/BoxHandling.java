@@ -1,10 +1,8 @@
 package com.ded.misle.world.boxes;
 
 import com.ded.misle.core.PhysicsEngine;
-import com.ded.misle.world.World;
 import com.ded.misle.world.enemies.Enemy;
 import com.ded.misle.world.npcs.NPC;
-import com.ded.misle.world.player.Player;
 
 import java.awt.*;
 import java.io.File;
@@ -366,12 +364,12 @@ public class BoxHandling {
 	}
 
 	// Render boxes with camera offset, scale, and tileSize
-	public static void renderBoxes(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY, double gameScale, int tileSize) {
+	public static void renderBoxes(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY) {
 		List<Box> nearbyBoxes;
         nearbyBoxes = getCachedBoxesNearPlayer(11);
 
         for (Box box : nearbyBoxes) {
-			box.draw(g2d, cameraOffsetX, cameraOffsetY, gameScale, tileSize, box.getBoxScaleHorizontal(), box.getBoxScaleVertical());
+			box.draw(g2d, cameraOffsetX, cameraOffsetY, box.getBoxScaleHorizontal(), box.getBoxScaleVertical());
 		}
 	}
 

@@ -23,7 +23,7 @@ public class LevelDesignerRenderer {
         }
 
         // Draw game components
-        BoxHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), gameScale, tileSize);
+        BoxHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY());
 
         if (levelDesignerGrid) {
             int timesToRepeatHorizontal = panel.getWidth() / tileSize;

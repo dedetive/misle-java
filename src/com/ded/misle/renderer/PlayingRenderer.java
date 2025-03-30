@@ -1,8 +1,6 @@
 package com.ded.misle.renderer;
 
 import com.ded.misle.core.LanguageManager;
-import com.ded.misle.core.SaveFile;
-import com.ded.misle.world.World;
 import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.input.MouseHandler;
 import com.ded.misle.world.boxes.BoxHandling;
@@ -17,11 +15,9 @@ import java.util.Objects;
 
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.GamePanel.*;
-import static com.ded.misle.core.SaveFile.loadSaveScreenInformation;
 import static com.ded.misle.core.Setting.antiAliasing;
 import static com.ded.misle.renderer.FloatingText.drawFloatingTexts;
 import static com.ded.misle.renderer.FontManager.*;
-import static com.ded.misle.renderer.ImageManager.ImageName.*;
 import static com.ded.misle.renderer.ImageManager.mergeImages;
 import static com.ded.misle.world.boxes.Box.getTexture;
 import static com.ded.misle.world.npcs.NPC.getSelectedNPCs;
@@ -72,7 +68,7 @@ public class PlayingRenderer {
         }
 
         // Draw boxes
-        BoxHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY(), scale, tileSize);
+        BoxHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY());
 
         // Draw selected NPC indicator
         ArrayList<NPC> selectedNPCs = getSelectedNPCs();
