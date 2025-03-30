@@ -38,7 +38,9 @@ import static com.ded.misle.renderer.MainRenderer.*;
 import static java.lang.System.currentTimeMillis;
 
 public class Box {
+	@Deprecated(forRemoval = true)
 	private double x; // The current world position (unscaled)
+	@Deprecated(forRemoval = true)
 	private double y; // The current world position (unscaled)
 	private int worldX;
 	private int worldY;
@@ -136,10 +138,12 @@ public class Box {
 		// Scale the position based on the current scale
 		double scaledX = x * scale;
 		double scaledY = y * scale;
+		double xVisual = worldX * tileSize;
+		double yVisual = worldY * tileSize;
 
 		// Apply the camera offset to the scaled position
-		int screenX = (int) (scaledX - cameraOffsetX);
-		int screenY = (int) (scaledY - cameraOffsetY);
+		int screenX = (int) (xVisual - cameraOffsetX);
+		int screenY = (int) (yVisual - cameraOffsetY);
 
 		// Draw the box with the scaled position and tileSize
 		if (Objects.equals(this.texture, "solid")) {
