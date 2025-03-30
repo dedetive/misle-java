@@ -33,7 +33,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private final JFrame window;
 	private static volatile boolean running = true;
-	private JLabel fpsLabel;
 	public static KeyHandler keyH;
 	public MouseHandler mouseHandler;
 	Thread gameThread;
@@ -42,14 +41,15 @@ public class GamePanel extends JPanel implements Runnable {
 
 	static final int originalTileSize = 64; // 64x64 tiles
 	public static double gameScale = scale;
-	public static int tileSize = (int) (originalTileSize * gameScale) / 3;
+	public static int tileSize = updateTileSize();
 	static final double maxScreenCol = 24; // Horizontal
 	static final double maxScreenRow = 13.5; // Vertical
 	public static double screenWidth = maxScreenCol * tileSize;
 	public static double screenHeight = maxScreenRow * tileSize;
 
-	public static void updateTileSize() {
-		tileSize = (int) (originalTileSize * gameScale) / 3;
+	public static int updateTileSize() {
+		tileSize = (int) (originalTileSize * gameScale) / 2;
+		return tileSize;
 	}
 
 	// INITIALIZING PLAYER
