@@ -165,19 +165,19 @@ public class SettingsMenuRenderer {
     public static double leftKeyIndicatorWidth = 16;
     public static double rightKeyIndicatorWidth = 16;
 
-    private static final int LEFTX = 42;
-    private static final int RIGHTX = 282;
-    private static final int TOPY = 82;
-    private static final int MIDY = 112;
-    private static final int BOTTOMY = 142;
+    private static final int LEFT_X = 42;
+    private static final int RIGHT_X = 282;
+    private static final int TOP_Y = 82;
+    private static final int MID_Y = 112;
+    private static final int BOTTOM_Y = 142;
 
     enum SettingPos {
-        TOP_LEFT(new int[]{LEFTX, TOPY}),
-        TOP_RIGHT(new int[]{RIGHTX, TOPY}),
-        MID_LEFT(new int[]{LEFTX, MIDY}),
-        MID_RIGHT(new int[]{RIGHTX, MIDY}),
-        BOTTOM_LEFT(new int[]{LEFTX, BOTTOMY}),
-        BOTTOM_RIGHT(new int[]{RIGHTX, BOTTOMY}),
+        TOP_LEFT(new int[]{LEFT_X, TOP_Y}),
+        TOP_RIGHT(new int[]{RIGHT_X, TOP_Y}),
+        MID_LEFT(new int[]{LEFT_X, MID_Y}),
+        MID_RIGHT(new int[]{RIGHT_X, MID_Y}),
+        BOTTOM_LEFT(new int[]{LEFT_X, BOTTOM_Y}),
+        BOTTOM_RIGHT(new int[]{RIGHT_X, BOTTOM_Y}),
 
         ;
 
