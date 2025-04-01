@@ -93,7 +93,7 @@ public class WorldLoader {
 				// Top left section
 				lineAddBox(0, -2, (worldWidth / 20 - 2) / 2 - 3, 5, "wall_default", FILL);
 				// Top Right section
-				lineAddBox((double) worldWidth / 2 + 70, -2, (worldWidth / 20 - 2) / 2 - 3, 5, "wall_default", FILL);
+				lineAddBox(worldWidth / 2 + 70, -2, (worldWidth / 20 - 2) / 2 - 3, 5, "wall_default", FILL);
 				// Left column
 				int boxesAdded = lineAddBox(0, 100, 1, worldHeight / 20 - 7, "wall_default", HOLLOW);
 				editBoxNegativeIndex(TEXTURE, "wall_default.AD", boxesAdded); // Intersection fix
@@ -190,21 +190,21 @@ public class WorldLoader {
 				lineAddBox(18 * 20 + 10, 390, 40, 5, "wall_default", FILL);
 				// Top row
 				lineAddBox(0, 0, 1190 / 20 - 24, 6, "wall_default", FILL);
-				int boxesAdded = lineAddBox(((double) 1190 / 20 - 23) * 20, 104, 15, 1, "wall_default", FILL);
+				int boxesAdded = lineAddBox((1190 / 20 - 23) * 20, 104, 15, 1, "wall_default", FILL);
 				editLastBox(TEXTURE, "wall_default.WS", boxesAdded);
 				editBoxNegativeIndex(TEXTURE, "wall_default.S.W", 2);
 				editLastBox(TEXTURE, "wall_default.SD");
-				lineAddBox(((double) 1190 / 20 - 9) * 20 - 9, 0, 2, 5, "wall_default", FILL);
+				lineAddBox((1190 / 20 - 9) * 20 - 9, 0, 2, 5, "wall_default", FILL);
 				editBoxNegativeIndex(TEXTURE, "wall_default.D", 1);
 				editBoxNegativeIndex(TEXTURE, "wall_default.A", 6);
 				// CHEST AREA
-				lineAddBox(((double) 1190 / 20 - 23) * 20 - 2, 0, 5, 2, "wall_default", FILL);
+				lineAddBox((1190 / 20 - 23) * 20 - 2, 0, 5, 2, "wall_default", FILL);
 				editLastBox(TEXTURE, "wall_default.SD");
 				editBoxNegativeIndex(TEXTURE, "wall_default@Deco.W", 10);
 				for (int i = 3; i < 10; i += 2) {
 					editBoxNegativeIndex(TEXTURE, "wall_default.S", i);
 				}
-				addBox(((double) 1190 / 20 - 23) * 20 + 20, 60, "mountain_chest");
+				addBox((1190 / 20 - 23) * 20 + 20, 60, "mountain_chest");
 				// Right column
 				lineAddBox(1170, -7, 1, 500 / 20 - 5, "wall_default", FILL);
 				editLastBox(TEXTURE, "wall_default", 1);
