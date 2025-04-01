@@ -184,7 +184,7 @@ public class Item {
 		}
 	}
 
-	public static Box createDroppedItem(double x, double y, int id, int count) {
+	public static Box createDroppedItem(int x, int y, int id, int count) {
 		return addBoxItem(x, y, id, count);
 	}
 
