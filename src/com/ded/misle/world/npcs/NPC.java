@@ -28,7 +28,7 @@ public class NPC extends HPBox {
         SHOP
     }
 
-    public NPC(double x, double y, InteractionType interactionType) {
+    public NPC(int x, int y, InteractionType interactionType) {
         this.setTexture("solid");
         this.setColor(new Color(0xFFFF00));
         this.setObjectType(PhysicsEngine.ObjectType.NPC);

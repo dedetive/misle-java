@@ -33,7 +33,7 @@ public class Enemy extends HPBox {
 
     // INITIALIZATION
 
-    public Enemy(double x, double y, EnemyType enemyType, double magnification) {
+    public Enemy(int x, int y, EnemyType enemyType, double magnification) {
         this.setBoxScaleHorizontal(1);
         this.setBoxScaleVertical(1);
         this.setEffect(new String[]{""});

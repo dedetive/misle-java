@@ -48,7 +48,7 @@ public class HPBox extends Box {
         HPBoxes.add(player);
     }
 
-    public HPBox(double x, double y) {
+    public HPBox(int x, int y) {
         this.setX(x);
         this.setY(y);
         this.setColor(defaultBoxColor);

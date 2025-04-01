@@ -24,7 +24,6 @@ public class BoxHandling {
 
 	private static final List<Box> boxes = new ArrayList<>();
 	private static final List<String> presetsWithSides = List.of(new String[]{"wall_default"});
-	private static final double boxBaseSize = 20.9;
 	public static int maxLevel = 19;
 	private static final List<Box>[] cachedBoxes = new ArrayList[maxLevel + 1];
 	public enum LineAddBoxModes {
@@ -57,24 +56,24 @@ public class BoxHandling {
 	 *  ...
 	 *
 	 */
-	public static void addBox(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, PhysicsEngine.ObjectType objectType, boolean interactsWithPlayer) {
+	public static void addBox(int x, int y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, PhysicsEngine.ObjectType objectType, boolean interactsWithPlayer) {
 		boxes.add(new Box(x, y, color, texture, hasCollision, boxScaleHorizontal, boxScaleVertical, effect, rotation, objectType, interactsWithPlayer));
 		addBoxToCache(boxes.getLast());
 	}
 
-	public static Box addBox(double x, double y) {
+	public static Box addBox(int x, int y) {
 		boxes.add(new Box(x, y));
 		addBoxToCache(boxes.getLast());
 		return boxes.getLast();
 	}
 
-	public static HPBox addHPBox(double x, double y) {
+	public static HPBox addHPBox(int x, int y) {
 		boxes.add(new HPBox(x, y));
 		addBoxToCache(boxes.getLast());
 		return getHPBoxes().getLast();
 	}
 
-	public static Enemy addEnemyBox(double x, double y, Enemy.EnemyType enemyType, double magnification) {
+	public static Enemy addEnemyBox(int x, int y, Enemy.EnemyType enemyType, double magnification) {
 		boxes.add(new Enemy(x, y, enemyType, magnification));
 		addBoxToCache(boxes.getLast());
 		return getEnemyBoxes().getLast();
@@ -91,7 +90,7 @@ public class BoxHandling {
 	 * - travel
 	 *
 	 */
-	public static void addBox(double x, double y, String preset) {
+	public static void addBox(int x, int y, String preset) {
 		boxes.add(new Box(x, y));
 		loadPreset(boxes.getLast(), preset);
 		if (checkIfPresetHasSides(preset)) {
@@ -100,7 +99,7 @@ public class BoxHandling {
 		addBoxToCache(boxes.getLast());
 	}
 
-	public static Box addBoxItem(double x, double y, int id, int count) {
+	public static Box addBoxItem(int x, int y, int id, int count) {
 		if (id > 0) {
 			boxes.add(new Box(x, y));
 			editLastBox(EditBoxKeys.EFFECT, "{item, " + id + ", " + count + ", true}");
@@ -116,22 +115,14 @@ public class BoxHandling {
 		}
 	}
 
-	public static int lineCoordinatedAddBox(double startX, double startY, int boxesX, int boxesY, String preset, LineAddBoxModes mode) {
-		return lineAddBox(startX * boxBaseSize, startY * boxBaseSize, boxesX, boxesY, preset, mode);
-	}
-
-	public static int lineCoordinatedAddScaledBox(double startX, double startY, int boxesX, int boxesY, String mode, double scale, String preset) {
-		return lineAddScaledBox(startX * boxBaseSize, startY * boxBaseSize, boxesX, boxesY, mode, scale, preset);
-	}
-
-	public static int lineAddBox(double startX, double startY, int boxesX, int boxesY, String preset, LineAddBoxModes mode) {
+	public static int lineAddBox(int startX, int startY, int boxesX, int boxesY, String preset, LineAddBoxModes mode) {
 		int Counter = 0;
 		for (int i = 0; i < boxesX; i++) {
 			for (int j = 0; j < boxesY; j++) {
 				switch (mode) {
 					case HOLLOW:
 						if ((i == 0 || i == boxesX - 1) || (j == 0 || j == boxesY - 1)) {
-							boxes.add(new Box(startX + i * boxBaseSize, startY + j * boxBaseSize));
+							boxes.add(new Box(startX + i, startY + j));
 							addBoxToCache(boxes.getLast());
 							if (preset.contains("@")) { loadPreset(boxes.getLast(), preset.substring(0, preset.indexOf("@"))); }
 							else { loadPreset(boxes.getLast(), preset); }
@@ -178,7 +169,7 @@ public class BoxHandling {
 						break;
 					case FILL:
 					default:
-						boxes.add(new Box(startX + i * boxBaseSize, startY + j * boxBaseSize));
+						boxes.add(new Box(startX + i, startY + j));
 						addBoxToCache(boxes.getLast());
 						if (preset.contains("@")) { loadPreset(boxes.getLast(), preset.substring(0, preset.indexOf("@"))); }
 						else { loadPreset(boxes.getLast(), preset); }
@@ -230,14 +221,14 @@ public class BoxHandling {
 		return Counter;
 	}
 
-	public static int lineAddScaledBox(double startX, double startY, int boxesX, int boxesY, String mode, double boxScale, String preset) {
+	public static int lineAddScaledBox(int startX, int startY, int boxesX, int boxesY, String mode, double boxScale, String preset) {
 		int Counter = 0;
 		for (int i = 0; i < boxesX; i++) {
 			for (int j = 0; j < boxesY; j++) {
 				switch (mode) {
 					case "hollow":
 						if ((i == 0 || i == boxesX - 1) || (j == 0 || j == boxesY - 1)) {
-							boxes.add(new Box(startX + i * boxBaseSize * boxScale, startY + j * boxBaseSize * boxScale));
+							boxes.add(new Box((int) (startX + i * boxScale), (int) (startY + j * boxScale)));
 							addBoxToCache(boxes.getLast());
 							editLastBox(EditBoxKeys.BOX_SCALE_HORIZONTAL, String.valueOf(boxScale));
 							editLastBox(EditBoxKeys.BOX_SCALE_VERTICAL, String.valueOf(boxScale));
@@ -247,7 +238,7 @@ public class BoxHandling {
 						break;
 					case "fill":
 					default:
-						boxes.add(new Box(startX + i * boxBaseSize * (boxScale - 0.05), startY + j * boxBaseSize * (boxScale - 0.05)));
+						boxes.add(new Box((int) (startX + i * (boxScale - 0.05)), (int) (startY + j * (boxScale - 0.05))));
 						addBoxToCache(boxes.getLast());
 						editLastBox(EditBoxKeys.BOX_SCALE_HORIZONTAL, String.valueOf(boxScale));
 						editLastBox(EditBoxKeys.BOX_SCALE_VERTICAL, String.valueOf(boxScale));
@@ -298,10 +289,10 @@ public class BoxHandling {
 	public static void editBox(Box box, EditBoxKeys key, String value) {
 		switch (key) {
 			case X:
-				box.setX(Double.parseDouble(value));
+				box.setX(Integer.parseInt(value));
 				break;
 			case Y:
-				box.setY(Double.parseDouble(value));
+				box.setY(Integer.parseInt(value));
 				break;
 			case COLOR:
 				box.setColor(Color.decode(value));

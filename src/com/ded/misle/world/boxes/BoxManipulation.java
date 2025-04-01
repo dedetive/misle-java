@@ -21,7 +21,7 @@ public class BoxManipulation {
 	 * @param y position in pixels in y axis
 	 * @return new position
 	 */
-	public static double[] teleportBox(Box box, double x, double y) {
+	public static double[] teleportBox(Box box, int x, int y) {
 		box.setX(x);
 		box.setY(y);
 
@@ -35,10 +35,10 @@ public class BoxManipulation {
 	 * @param y how many pixels in the y axis
 	 * @param delay how long it takes in milliseconds for the box to be fully moved
 	 */
-	public static void moveBox(Box box, double x, double y, double delay) {
-		int frames = (int)(delay / 1000 * 60);
-		double dx = x / (double) frames;
-		double dy = y / (double) frames;
+	public static void moveBox(Box box, int x, int y, double delay) {
+		int frames = (int) (delay / 1000 * 60);
+		int dx = x / frames;
+		int dy = y / frames;
 
 		box.isMoving = true;
 		Timer timer = new Timer(1000 / 60, new ActionListener() {
@@ -64,10 +64,10 @@ public class BoxManipulation {
 	 * @param y how many pixels in the y axis
 	 * @param delay how long it takes in milliseconds for the box to be fully moved
 	 */
-	public static void moveCollisionBox(Box box, double x, double y, double delay) {
+	public static void moveCollisionBox(Box box, int x, int y, double delay) {
 		int frames = Math.max((int)(delay / 1000 * 60), 1);
-		double dx = x / (double) frames;
-		double dy = y / (double) frames;
+		int dx = x / frames;
+		int dy = y / frames;
 
 		PlayerAttributes.KnockbackDirection direction = NONE;
 		if (dx > 0 && dy == 0) {
