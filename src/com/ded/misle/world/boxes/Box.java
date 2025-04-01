@@ -241,6 +241,7 @@ public class Box {
 	public void setX(int x) {
 		this.worldX = x;
 		World world = player.pos.world;
+
 		try {
 			world.setPos(this, x, worldY, false);
 		} catch (NullPointerException e) {
