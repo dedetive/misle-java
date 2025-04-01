@@ -243,9 +243,6 @@ public class GamePanel extends JPanel implements Runnable {
 		worldWidth = originalWorldWidth * scale;
 		worldHeight = originalWorldHeight * scale;
 
-		player.setX(player.getX() * scale / previousScale);
-		player.setY(player.getY() * scale / previousScale);
-
 		clearButtons();
 		FontManager.updateFontSizes();
 		updateRendererVariableScales();
