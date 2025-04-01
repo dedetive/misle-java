@@ -40,17 +40,17 @@ public class PhysicsEngine {
 		player.setY(player.getY() + y);
 		player.stats.increaseDistance(x, y);
 
-		if (!levelDesigner) {
-			// Select or unselect NPCs
-			double playerCenterX = (player.getX() + player.getBoxScaleHorizontal() / 2 * tileSize);
-			double playerCenterY = (player.getY() + player.getBoxScaleVertical() / 2 * tileSize);
-			List<NPC> distantNPCs = BoxHandling.getInteractableNPCsInRange(playerCenterX, playerCenterY, 196);
-			for (NPC npc : distantNPCs)
-				npc.setSelected(false);
-			List<NPC> nearbyNPCs = BoxHandling.getInteractableNPCsInRange(playerCenterX, playerCenterY, 96);
-			for (NPC npc : nearbyNPCs)
-				npc.setSelected(true);
-		}
+//		if (!levelDesigner) {
+//			// Select or unselect NPCs
+//			double playerCenterX = (player.getX() + player.getBoxScaleHorizontal() / 2 * tileSize);
+//			double playerCenterY = (player.getY() + player.getBoxScaleVertical() / 2 * tileSize);
+//			List<NPC> distantNPCs = BoxHandling.getInteractableNPCsInRange(playerCenterX, playerCenterY, 196);
+//			for (NPC npc : distantNPCs)
+//				npc.setSelected(false);
+//			List<NPC> nearbyNPCs = BoxHandling.getInteractableNPCsInRange(playerCenterX, playerCenterY, 96);
+//			for (NPC npc : nearbyNPCs)
+//				npc.setSelected(true);
+//		}
 	}
 
 	/**
