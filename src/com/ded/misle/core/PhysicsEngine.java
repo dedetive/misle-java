@@ -35,7 +35,7 @@ public class PhysicsEngine {
 	 * @param x double - How many pixels in x direction (this is not based on scale).
 	 * @param y double - How many pixels in y direction (this is not based on scale).
 	 */
-	public static void movePlayer(double x, double y) {
+	public static void movePlayer(int x, int y) {
 		player.setX(player.getX() + x);
 		player.setY(player.getY() + y);
 		player.stats.increaseDistance(x, y);
@@ -95,10 +95,10 @@ public class PhysicsEngine {
 
 			// If it is a regular box (scales above 1)
 			if ((box.getBoxScaleHorizontal() >= 1 && box.getBoxScaleVertical() >= 1) && (responsibleBox.getBoxScaleHorizontal() >= 1 && responsibleBox.getBoxScaleVertical() >= 1)) {
-				if (box.isPointColliding(pixelX, pixelY, scale, objectWidth, objectHeight) || // Up-left corner
-					(box.isPointColliding(pixelX + objectWidth, pixelY, scale, objectWidth, objectHeight)) || // Up-right corner
-					(box.isPointColliding(pixelX, pixelY + objectHeight, scale, objectWidth, objectHeight)) || // Bottom-left corner
-					(box.isPointColliding(pixelX + objectWidth, pixelY + objectHeight, scale, objectWidth, objectHeight)) // Bottom-right corner
+				if (box.isPointColliding(pixelX, pixelY, objectWidth, objectHeight) || // Up-left corner
+					(box.isPointColliding(pixelX + objectWidth, pixelY, objectWidth, objectHeight)) || // Up-right corner
+					(box.isPointColliding(pixelX, pixelY + objectHeight, objectWidth, objectHeight)) || // Bottom-left corner
+					(box.isPointColliding(pixelX + objectWidth, pixelY + objectHeight, objectWidth, objectHeight)) // Bottom-right corner
 				) {
 					// Touching box gets effect
 					if (responsibleBox instanceof HPBox && !box.getEffect().isEmpty()) {
@@ -127,15 +127,15 @@ public class PhysicsEngine {
 					(1 / Math.min(responsibleBox.getBoxScaleHorizontal(), responsibleBox.getBoxScaleVertical()))) + 1;
 				for (int i = 0; i <= inverseBoxScale; i++) {
 					// Check for each edge for box and responsible box
-					if ((box.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY, scale, objectWidth, objectHeight)) || // Top edge
-						(box.isPointColliding(pixelX, pixelY + i * objectHeight / inverseBoxScale, scale, objectWidth, objectHeight)) || // Left edge
-						(box.isPointColliding(pixelX + objectWidth, pixelY + i * objectHeight / inverseBoxScale, scale, objectWidth, objectHeight)) || // Right edge
-						(box.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY + objectHeight, scale, objectWidth, objectHeight) || // Bottom edge
+					if ((box.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY, objectWidth, objectHeight)) || // Top edge
+						(box.isPointColliding(pixelX, pixelY + i * objectHeight / inverseBoxScale, objectWidth, objectHeight)) || // Left edge
+						(box.isPointColliding(pixelX + objectWidth, pixelY + i * objectHeight / inverseBoxScale, objectWidth, objectHeight)) || // Right edge
+						(box.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY + objectHeight, objectWidth, objectHeight) || // Bottom edge
 
-						(responsibleBox.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY, scale, objectWidth, objectHeight)) || // Top edge
-						(responsibleBox.isPointColliding(pixelX, pixelY + i * objectHeight / inverseBoxScale, scale, objectWidth, objectHeight)) || // Left edge
-						(responsibleBox.isPointColliding(pixelX + objectWidth, pixelY + i * objectHeight / inverseBoxScale, scale, objectWidth, objectHeight)) || // Right edge
-						(responsibleBox.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY + objectHeight, scale, objectWidth, objectHeight))
+						(responsibleBox.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY, objectWidth, objectHeight)) || // Top edge
+						(responsibleBox.isPointColliding(pixelX, pixelY + i * objectHeight / inverseBoxScale, objectWidth, objectHeight)) || // Left edge
+						(responsibleBox.isPointColliding(pixelX + objectWidth, pixelY + i * objectHeight / inverseBoxScale, objectWidth, objectHeight)) || // Right edge
+						(responsibleBox.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY + objectHeight, objectWidth, objectHeight))
 						)
 					) {
 						// Touching box gets effect
@@ -229,10 +229,10 @@ public class PhysicsEngine {
 
 			// If it is a regular box (scales above 1)
 			if ((box.getBoxScaleHorizontal() >= 1 && box.getBoxScaleVertical() >= 1) && (responsibleBox.getBoxScaleHorizontal() >= 1 && responsibleBox.getBoxScaleVertical() >= 1)) {
-				if (box.isPointColliding(pixelX, pixelY, scale, objectWidth, objectHeight) || // Up-left corner
-					(box.isPointColliding(pixelX + objectWidth, pixelY, scale, objectWidth, objectHeight)) || // Up-right corner
-					(box.isPointColliding(pixelX, pixelY + objectHeight, scale, objectWidth, objectHeight)) || // Bottom-left corner
-					(box.isPointColliding(pixelX + objectWidth, pixelY + objectHeight, scale, objectWidth, objectHeight)) // Bottom-right corner
+				if (box.isPointColliding(pixelX, pixelY, objectWidth, objectHeight) || // Up-left corner
+					(box.isPointColliding(pixelX + objectWidth, pixelY, objectWidth, objectHeight)) || // Up-right corner
+					(box.isPointColliding(pixelX, pixelY + objectHeight, objectWidth, objectHeight)) || // Bottom-left corner
+					(box.isPointColliding(pixelX + objectWidth, pixelY + objectHeight, objectWidth, objectHeight)) // Bottom-right corner
 				) {
 					// Touching box gets effect
 					if (responsibleBox instanceof HPBox && !box.getEffect().isEmpty()) {
@@ -261,15 +261,15 @@ public class PhysicsEngine {
 					(1 / Math.min(responsibleBox.getBoxScaleHorizontal(), responsibleBox.getBoxScaleVertical()))) + 1;
 				for (int i = 0; i <= inverseBoxScale; i++) {
 					// Check for each edge for box and responsible box
-					if ((box.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY, scale, objectWidth, objectHeight)) || // Top edge
-						(box.isPointColliding(pixelX, pixelY + i * objectHeight / inverseBoxScale, scale, objectWidth, objectHeight)) || // Left edge
-						(box.isPointColliding(pixelX + objectWidth, pixelY + i * objectHeight / inverseBoxScale, scale, objectWidth, objectHeight)) || // Right edge
-						(box.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY + objectHeight, scale, objectWidth, objectHeight) || // Bottom edge
+					if ((box.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY, objectWidth, objectHeight)) || // Top edge
+						(box.isPointColliding(pixelX, pixelY + i * objectHeight / inverseBoxScale, objectWidth, objectHeight)) || // Left edge
+						(box.isPointColliding(pixelX + objectWidth, pixelY + i * objectHeight / inverseBoxScale, objectWidth, objectHeight)) || // Right edge
+						(box.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY + objectHeight, objectWidth, objectHeight) || // Bottom edge
 
-							(responsibleBox.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY, scale, objectWidth, objectHeight)) || // Top edge
-							(responsibleBox.isPointColliding(pixelX, pixelY + i * objectHeight / inverseBoxScale, scale, objectWidth, objectHeight)) || // Left edge
-							(responsibleBox.isPointColliding(pixelX + objectWidth, pixelY + i * objectHeight / inverseBoxScale, scale, objectWidth, objectHeight)) || // Right edge
-							(responsibleBox.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY + objectHeight, scale, objectWidth, objectHeight))
+							(responsibleBox.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY, objectWidth, objectHeight)) || // Top edge
+							(responsibleBox.isPointColliding(pixelX, pixelY + i * objectHeight / inverseBoxScale, objectWidth, objectHeight)) || // Left edge
+							(responsibleBox.isPointColliding(pixelX + objectWidth, pixelY + i * objectHeight / inverseBoxScale, objectWidth, objectHeight)) || // Right edge
+							(responsibleBox.isPointColliding(pixelX + i * objectWidth / inverseBoxScale, pixelY + objectHeight, objectWidth, objectHeight))
 						)
 					) {
 						// Touching box gets effect

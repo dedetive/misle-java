@@ -88,11 +88,9 @@ public class Box {
 	 * @param boxScaleVertical how many tilesizes is the box in the y axis
 	 * @param effect first value is the type of effect. See above for a list of effects. Set "" if none
 	 */
-	public Box(double x, double y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, PhysicsEngine.ObjectType objectType, boolean interactsWithPlayer) {
-		this.x = x;
-		this.y = y;
-		worldX = (int) (x / 20);
-		worldY = (int) (y / 20);
+	public Box(int x, int y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, PhysicsEngine.ObjectType objectType, boolean interactsWithPlayer) {
+		worldX = x;
+		worldY = y;
 		World world = player.pos.world;
 		world.setPos(this, worldX, worldY, false);
 		this.color = color;
@@ -107,11 +105,9 @@ public class Box {
 		this.interactsWithPlayer = interactsWithPlayer;
 	}
 
-	public Box(double x, double y) {
-		this.x = x;
-		this.y = y;
-		worldX = (int) (x / 20);
-		worldY = (int) (y / 20);
+	public Box(int x, int y) {
+		worldX = x;
+		worldY = y;
 		World world = player.pos.world;
 		world.setPos(this, worldX, worldY, false);
 		this.color = defaultBoxColor;
@@ -131,15 +127,12 @@ public class Box {
 
 	// Method to render the box with the current tileSize and scale the position
 	public void draw(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY, double boxScaleHorizontal, double boxScaleVertical) {
-		// Scale the position based on the current scale
-		double scaledX = x * scale;
-		double scaledY = y * scale;
-		double xVisual = worldX * tileSize;
-		double yVisual = worldY * tileSize;
+		double scaledX = worldX * tileSize;
+		double scaledY = worldY * tileSize;
 
 		// Apply the camera offset to the scaled position
-		int screenX = (int) (xVisual - cameraOffsetX);
-		int screenY = (int) (yVisual - cameraOffsetY);
+		int screenX = (int) (scaledX - cameraOffsetX);
+		int screenY = (int) (scaledY - cameraOffsetY);
 
 		// Draw the box with the scaled position and tileSize
 		if (Objects.equals(this.texture, "solid")) {
@@ -224,9 +217,9 @@ public class Box {
 	// COLLISION
 
 	// Check if a point is inside this box
-	public boolean isPointColliding(double pointX, double pointY, double scale, double objectWidth, double objectHeight) {
-		double scaledX = this.x * scale;
-		double scaledY = this.y * scale;
+	public boolean isPointColliding(double pointX, double pointY, double objectWidth, double objectHeight) {
+		double scaledX = worldX * tileSize;
+		double scaledY = worldY * tileSize;
 		return  pointX >= scaledX && pointX <= scaledX + objectWidth &&
 				pointY >= scaledY && pointY <= scaledY + objectHeight;
 	}
@@ -237,32 +230,24 @@ public class Box {
 
 	// BOX POSITION AND SCALING
 
-	/**
-	 * Is unscaled.
-	 */
-	public double getX() {
-		return x;
+	public int getX() {
+		return worldX;
 	}
 
-	/**
-	 * Is unscaled.
-	 */
-	public double getY() {
-		return y;
+	public int getY() {
+		return worldY;
 	}
 
-	/**
-	 * Is unscaled.
-	 */
-	public void setX(double x) {
-		this.x = x;
+	public void setX(int x) {
+		this.worldX = x;
+		World world = player.pos.world;
+		world.setPos(this, x, worldY, false);
 	}
 
-	/**
-	 * Is unscaled.
-	 */
-	public void setY(double y) {
-		this.y = y;
+	public void setY(int y) {
+		this.worldY = y;
+		World world = player.pos.world;
+		world.setPos(this, worldX, y, false);
 	}
 
 	public double getBoxScaleHorizontal() {
@@ -499,10 +484,10 @@ public class Box {
 			int count = results[1];
 			boolean canGoMinus = false;
 			boolean canGoPlus = false;
-			if (getCollisionBoxesInRange(this.x - 20, this.y, 10, 6).isEmpty()) {
+			if (getCollisionBoxesInRange(this.worldX - 1, this.worldY, 10, 6).isEmpty()) {
 				canGoMinus = true;
 			}
-			if (getCollisionBoxesInRange(this.x + 20, this.y, 10, 6).isEmpty()) {
+			if (getCollisionBoxesInRange(this.worldX + 1, this.worldY, 10, 6).isEmpty()) {
 				canGoPlus = true;
 			}
 
@@ -577,8 +562,8 @@ public class Box {
 
 				player.pos.setRoomID(room.enteringRoomID);
 
-				player.setX(scale * room.x);
-				player.setY(scale * room.y);
+				player.setX(room.x);
+				player.setY(room.y);
 				unloadBoxes();
 				loadBoxes();
 				clearBreadcrumbs();

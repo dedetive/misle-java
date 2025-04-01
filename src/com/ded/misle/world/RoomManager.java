@@ -30,10 +30,10 @@ public class RoomManager {
         ;
 
         public final int enteringRoomID;
-        public final double x;
-        public final double y;
+        public final int x;
+        public final int y;
 
-        TravelTransition(Room enteringRoom, double x, double y) {
+        TravelTransition(Room enteringRoom, int x, int y) {
             this.enteringRoomID = enteringRoom.id;
             this.x = x;
             this.y = y;
