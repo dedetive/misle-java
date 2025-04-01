@@ -38,10 +38,6 @@ import static com.ded.misle.renderer.MainRenderer.*;
 import static java.lang.System.currentTimeMillis;
 
 public class Box {
-	@Deprecated(forRemoval = true)
-	private double x; // The current world position (unscaled)
-	@Deprecated(forRemoval = true)
-	private double y; // The current world position (unscaled)
 	private int worldX;
 	private int worldY;
 
