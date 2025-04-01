@@ -258,30 +258,26 @@ public class KeyHandler implements KeyListener {
 			if (isPressed(PAUSE)) {
 				pauseGame();
 			}
-			double[] willMovePlayer = {0, 0};
+			int[] willMovePlayer = {0, 0};
 			if (isPressed(UP)) {
 				if (!isPressed(LEFT) || !isPressed(RIGHT)) {
 					willMovePlayer[1] -= player.attr.getSpeed();
-				} else {
-					willMovePlayer[1] -= Math.sqrt(player.attr.getSpeed());
 				}
 			}
 			if (isPressed(DOWN)) {
 				if (!isPressed(LEFT) || !isPressed(RIGHT)) {
 					willMovePlayer[1] += player.attr.getSpeed();
-				} else {
-					willMovePlayer[1] += Math.sqrt(player.attr.getSpeed());
 				}
 			}
 			if (isPressed(LEFT)) {
 				if (!isPressed(UP) || !isPressed(DOWN)) {
 					willMovePlayer[0] -= player.attr.getSpeed();
-				} else {
-					willMovePlayer[0] -= Math.sqrt(player.attr.getSpeed());
 				}
 			}
 			if (isPressed(RIGHT)) {
-				willMovePlayer[0] += player.attr.getSpeed();
+				if (!isPressed(UP) || !isPressed(DOWN)) {
+					willMovePlayer[0] += player.attr.getSpeed();
+				}
 			}
 			if (isPressed(DROP)) {
 				if (player.inv.hasHeldItem()) {
