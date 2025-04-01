@@ -1,6 +1,7 @@
 package com.ded.misle.world.boxes;
 
 import com.ded.misle.core.PhysicsEngine;
+import com.ded.misle.world.World;
 import com.ded.misle.world.enemies.Enemy;
 import com.ded.misle.world.npcs.NPC;
 
@@ -356,8 +357,19 @@ public class BoxHandling {
 
 	// Render boxes with camera offset, scale, and tileSize
 	public static void renderBoxes(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY) {
-		List<Box> nearbyBoxes;
-        nearbyBoxes = getCachedBoxesNearPlayer(11);
+//		List<Box> nearbyBoxes;
+//        nearbyBoxes = getCachedBoxesNearPlayer(11);
+
+		List<Box> nearbyBoxes = new ArrayList<>();
+		World world = player.pos.world;
+		for (int i = 0; i < world.grid[0].length; i++) {
+			for (int j = 0; j < world.grid[1].length; j++) {
+				Box box = world.grid[i][j];
+				if (box != null) {
+					nearbyBoxes.add(world.grid[i][j]);
+				}
+			}
+		}
 
         for (Box box : nearbyBoxes) {
 			box.draw(g2d, cameraOffsetX, cameraOffsetY, box.getBoxScaleHorizontal(), box.getBoxScaleVertical());
