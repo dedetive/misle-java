@@ -15,7 +15,7 @@ public class World {
     public World(int worldWidth, int worldHeight) {
         this.width = worldWidth;
         this.height = worldHeight;
-        this.grid = new Box[worldWidth + 1][worldHeight + 1];
+        this.grid = new Box[worldWidth][worldHeight];
 
         setWorldBorders(worldWidth, worldHeight);
 
