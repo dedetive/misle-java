@@ -19,7 +19,7 @@ public class PlayerAttributes {
 
 	// BASE ATTRIBUTES
 
-	private double playerSpeed;
+	private int playerSpeed;
 
 	// STATS ATTRIBUTES
 
@@ -123,7 +123,7 @@ public class PlayerAttributes {
 
 	// PLAYER SPEED
 
-	public double getSpeed() {
+	public int getSpeed() {
 		return playerSpeed;
 	}
 
