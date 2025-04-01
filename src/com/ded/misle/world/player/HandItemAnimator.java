@@ -116,8 +116,8 @@ public class HandItemAnimator {
             }
         }
 
-        double attackX = player.getX() / scale + XComponent;
-        double attackY = player.getY() / scale + YComponent;
+        int attackX = (int) (player.getX() / scale + XComponent);
+        int attackY = (int) (player.getY() / scale + YComponent);
 
 //        Box attack = addBox(attackX, attackY);
         int boxCount = lineAddBox(attackX, attackY, Math.max((int) (Math.ceil(range / 20) * clamp(abs(XComponent), 0, 1)), 1),
