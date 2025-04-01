@@ -241,13 +241,25 @@ public class Box {
 	public void setX(int x) {
 		this.worldX = x;
 		World world = player.pos.world;
-		world.setPos(this, x, worldY, false);
+		try {
+			world.setPos(this, x, worldY, false);
+		} catch (NullPointerException e) {
+			loadBoxes();
+			world = player.pos.world;
+			world.setPos(this, x, worldY, false);
+		}
 	}
 
 	public void setY(int y) {
 		this.worldY = y;
 		World world = player.pos.world;
-		world.setPos(this, worldX, y, false);
+		try {
+			world.setPos(this, worldX, y, false);
+		} catch (NullPointerException e) {
+			loadBoxes();
+			world = player.pos.world;
+			world.setPos(this, worldX, y, false);
+		}
 	}
 
 	public double getBoxScaleHorizontal() {

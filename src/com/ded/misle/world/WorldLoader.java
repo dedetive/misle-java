@@ -25,9 +25,9 @@ public class WorldLoader {
 		switch (room) {
 			case VOID -> {
 				// Setup
-					int worldWidth = 400;
-					int worldHeight = 400;
-					world = new World(worldWidth / 20, worldHeight / 20);
+					int worldWidth = 20;
+					int worldHeight = 20;
+					world = new World(worldWidth, worldHeight);
 				// Building Boxes
 					// Here is where structural boxes should be placed, such as walls.
 					lineAddBox(0, 0, 4, 4, "wall_default", HOLLOW);
@@ -86,22 +86,22 @@ public class WorldLoader {
 			}
 			case TUANI_CITY -> {
 				//Setup
-				int worldWidth = 1000;
-				int worldHeight = 990;
-				world = new World(worldWidth / 20, worldHeight / 20);
+				int worldWidth = 50;
+				int worldHeight = 50;
+				world = new World(worldWidth, worldHeight);
 
 				// Top left section
-				lineAddBox(0, -2, (worldWidth / 20 - 2) / 2 - 3, 5, "wall_default", FILL);
+				lineAddBox(0, 0, (worldWidth - 2) / 2, 5, "wall_default", FILL);
 				// Top Right section
-				lineAddBox(worldWidth / 2 + 70, -2, (worldWidth / 20 - 2) / 2 - 3, 5, "wall_default", FILL);
+				lineAddBox(worldWidth / 2 + 3, 0, (worldWidth - 2) / 2, 5, "wall_default", FILL);
 				// Left column
-				int boxesAdded = lineAddBox(0, 100, 1, worldHeight / 20 - 7, "wall_default", HOLLOW);
+				int boxesAdded = lineAddBox(0, 100, 1, worldHeight - 7, "wall_default", HOLLOW);
 				editBoxNegativeIndex(TEXTURE, "wall_default.AD", boxesAdded); // Intersection fix
 				// Right column
-				boxesAdded = lineAddBox(worldWidth - 20, 100, 1, worldHeight / 20 - 7, "wall_default", HOLLOW);
+				boxesAdded = lineAddBox(worldWidth - 20, 100, 1, worldHeight - 7, "wall_default", HOLLOW);
 				editBoxNegativeIndex(TEXTURE, "wall_default.AD", boxesAdded); // Intersection fix
 				// Bottom row
-				boxesAdded = lineAddBox(0, worldHeight - 30, worldWidth / 20 - 2, 1, "wall_default", HOLLOW);
+				boxesAdded = lineAddBox(0, worldHeight - 30, worldWidth - 2, 1, "wall_default", HOLLOW);
 				editBoxNegativeIndex(TEXTURE, "wall_default.AS.D", boxesAdded); // Intersection fix
 				editLastBox(TEXTURE, "wall_default.SD.W"); // Intersection fix
 

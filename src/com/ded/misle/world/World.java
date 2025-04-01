@@ -12,7 +12,7 @@ public class World {
     public Box[][] grid;
     RoomManager.Room room;
 
-    World(int worldWidth, int worldHeight) {
+    public World(int worldWidth, int worldHeight) {
         this.width = worldWidth;
         this.height = worldHeight;
         this.grid = new Box[worldWidth + 1][worldHeight + 1];
@@ -28,10 +28,14 @@ public class World {
     }
 
     public void setPos(Box box, int x, int y, boolean force) {
-        if (force) {
-            this.grid[x][y] = box;
-        } else if (this.grid[x][y] == null) {
-            this.grid[x][y] = box;
+        try {
+            if (force) {
+                this.grid[x][y] = box;
+            } else if (this.grid[x][y] == null) {
+                this.grid[x][y] = box;
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Index " + x + ", " + y + " is out of bounds for length " + this.grid[0].length + ", " + this.grid[1].length);
         }
     }
 

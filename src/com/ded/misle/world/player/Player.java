@@ -5,7 +5,6 @@ import com.ded.misle.world.boxes.HPBox;
 
 import java.awt.image.BufferedImage;
 
-import static com.ded.misle.core.GamePanel.tileSize;
 import static com.ded.misle.world.boxes.BoxHandling.addBoxToCache;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
