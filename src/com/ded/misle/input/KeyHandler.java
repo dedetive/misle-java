@@ -51,10 +51,10 @@ public class KeyHandler implements KeyListener {
 		PAUSE(VK_ESCAPE),
 		UP(VK_UP),
 		DOWN(VK_DOWN),
-		LEFT_MENU(VK_A),
 		LEFT(VK_LEFT),
-		RIGHT_MENU(VK_D),
 		RIGHT(VK_RIGHT),
+		LEFT_MENU(VK_A),
+		RIGHT_MENU(VK_D),
 		DEBUG1(VK_OPEN_BRACKET),
 		DEBUG2(VK_CLOSE_BRACKET),
 		SCREENSHOT(VK_F2),
@@ -105,15 +105,15 @@ public class KeyHandler implements KeyListener {
 	}
 
 	Key[] continuousInput = new Key[]{
-		UP,
-		DOWN,
-		LEFT,
-		RIGHT,
 		CTRL,
 		SHIFT,
 	};
 
 	Key[] outputOnRelease = new Key[] {
+		UP,
+		DOWN,
+		LEFT,
+		RIGHT,
 		NUM_0,
 		NUM_1,
 		NUM_2,
