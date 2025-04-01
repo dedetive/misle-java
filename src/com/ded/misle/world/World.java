@@ -24,7 +24,7 @@ public class World {
 
         player.pos.world = this;
 
-        fillGrass();
+//        fillGrass();
     }
 
     public void setPos(Box box, int x, int y, boolean force) {
