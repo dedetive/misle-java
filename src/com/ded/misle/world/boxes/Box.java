@@ -217,11 +217,8 @@ public class Box {
 	// COLLISION
 
 	// Check if a point is inside this box
-	public boolean isPointColliding(double pointX, double pointY, double objectWidth, double objectHeight) {
-		double scaledX = worldX * tileSize;
-		double scaledY = worldY * tileSize;
-		return  pointX >= scaledX && pointX <= scaledX + objectWidth &&
-				pointY >= scaledY && pointY <= scaledY + objectHeight;
+	public boolean isPointColliding(int pointX, int pointY) {
+		return pointX == worldX && pointY == worldY;
 	}
 
 	public boolean getHasCollision() {

@@ -86,7 +86,7 @@ public class BoxManipulation {
 			int count = 0;
 			public void actionPerformed(ActionEvent evt) {
 				if (count < frames) {
-					if (!PhysicsEngine.isPixelOccupied(box, box.getX() * scale + dx, box.getY() * scale + dy, tileSize, 10, finalDirection)) {
+					if (!PhysicsEngine.isPixelOccupied(box, box.getX() + dx, box.getY() + dy, tileSize, 10, finalDirection)) {
 						box.setX(box.getX() + dx);
 						box.setY(box.getY() + dy);
 					} else {

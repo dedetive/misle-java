@@ -30,7 +30,7 @@ public class WorldLoader {
 					world = new World(worldWidth, worldHeight);
 				// Building Boxes
 					// Here is where structural boxes should be placed, such as walls.
-					lineAddBox(0, 0, 4, 4, "wall_default", HOLLOW);
+//					lineAddBox(0, 0, 4, 4, "wall_default", HOLLOW);
 					// Typically, more specific structures such as houses inside a city should be left to the bottom of this section.
 
 					// TESTING
@@ -64,12 +64,12 @@ public class WorldLoader {
 					/// second line is to edit the boxes to have the specified travel property (room to travel to, position).
 					/// All of which are specified in the [RoomManager.TravelTransition].
 					int travelBoxesAdded = lineAddBox(3, 3, 3, 1, "travel", FILL);
-					editLastBox(EFFECT, "{travel, TUANI_CITY_TO_1}", travelBoxesAdded);
+//					editLastBox(EFFECT, "{travel, TUANI_CITY_TO_1}", travelBoxesAdded);
 
 				// Enemies
 					/// Valid enemies are specified in [Enemy.EnemyType].
 					/// Magnification affects only MAX HP and DAMAGE.
-					new Enemy(10, 10, GOBLIN, 1);
+//					new Enemy(10, 10, GOBLIN, 1);
 
 				// NPCs
 					/// Valid NPC types are specified in [NPC.InteractionType].
