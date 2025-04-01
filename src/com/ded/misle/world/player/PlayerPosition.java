@@ -67,8 +67,8 @@ public class PlayerPosition {
 			case 2 -> new int[]{261, 41};
 			default -> new int[]{0, 0};
 		};
-		player.setX(spawnpointCoordinates[0] * scale);
-		player.setY(spawnpointCoordinates[1] * scale);
+		player.setX(spawnpointCoordinates[0]);
+		player.setY(spawnpointCoordinates[1]);
 	}
 
 	public Region getRegion() {
