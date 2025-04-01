@@ -154,13 +154,13 @@ public class KeyHandler implements KeyListener {
 	}
 
 	static double baseDesignerSpeed = 1.67;
-	static double designerSpeed = baseDesignerSpeed * scale;
+	static int designerSpeed = (int) (baseDesignerSpeed * scale);
 	static {
 		updateDesignerSpeed();
 	}
 
 	public static void updateDesignerSpeed() {
-		designerSpeed = baseDesignerSpeed * scale;
+		designerSpeed = (int) (baseDesignerSpeed * scale);
 	}
 
 	@Override
@@ -398,27 +398,21 @@ public class KeyHandler implements KeyListener {
 
 			// Movement
 
-			double[] willMovePlayer = {0, 0};
+			int[] willMovePlayer = {0, 0};
 
 			if (isPressed(UP)) {
 				if (!isPressed(LEFT) || !isPressed(RIGHT)) {
 					willMovePlayer[1] -= designerSpeed;
-				} else {
-					willMovePlayer[1] -= (designerSpeed * Math.sqrt(2) / 3);
 				}
 			}
 			if (isPressed(DOWN)) {
 				if (!isPressed(LEFT) || !isPressed(RIGHT)) {
 					willMovePlayer[1] += designerSpeed;
-				} else {
-					willMovePlayer[1] += designerSpeed * Math.sqrt(2) / 3;
 				}
 			}
 			if (isPressed(LEFT)) {
 				if (!isPressed(UP) || !isPressed(DOWN)) {
 					willMovePlayer[0] -= designerSpeed;
-				} else {
-					willMovePlayer[0] -= designerSpeed * Math.sqrt(2) / 3;
 				}
 			}
 			if (isPressed(RIGHT)) {
