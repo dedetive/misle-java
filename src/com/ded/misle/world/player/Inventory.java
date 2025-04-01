@@ -381,7 +381,7 @@ public class Inventory {
 	}
 
 	public void dropDraggedItem(int count) {
-		Box droppedItem = BoxHandling.addBoxItem(player.getX() / scale, player.getY() / scale, getDraggedItem().getId(), count);
+		Box droppedItem = BoxHandling.addBoxItem(player.getX(), player.getY(), getDraggedItem().getId(), count);
 		editBox(droppedItem, BoxHandling.EditBoxKeys.COLLECTIBLE, "false");
 		playThis(drop_item);
 		setTempItem(getDraggedItem());
@@ -390,23 +390,24 @@ public class Inventory {
 		if (draggedItem.getCount() == 0) destroyGrabbedItem();
 		destroyTempItem();
 		PlayingRenderer.updateSelectedItemNamePosition();
-		double dropSpeed = player.attr.getSpeedModifier() * player.attr.getEnvironmentSpeedModifier() * 20 * 2.25;
+//		double dropSpeed = player.attr.getSpeedModifier() * player.attr.getEnvironmentSpeedModifier() * 20 * 2.25;
+		int dropSpeed = 1;
 		switch (player.stats.getWalkingDirection()) {
 			case UP -> {
 				moveCollisionBox(droppedItem, 0, -dropSpeed, 300);
-				moveCollisionBox(droppedItem, 0, -dropSpeed / 2, 50);
+//				moveCollisionBox(droppedItem, 0, -dropSpeed / 2, 50);
 			}
 			case DOWN -> {
 				moveCollisionBox(droppedItem, 0, dropSpeed, 300);
-				moveCollisionBox(droppedItem, 0, dropSpeed / 2, 50);
+//				moveCollisionBox(droppedItem, 0, dropSpeed / 2, 50);
 			}
 			case LEFT -> {
 				moveCollisionBox(droppedItem, -dropSpeed, 0, 300);
-				moveCollisionBox(droppedItem, -dropSpeed / 2, 0, 50);
+//				moveCollisionBox(droppedItem, -dropSpeed / 2, 0, 50);
 			}
 			case RIGHT -> {
 				moveCollisionBox(droppedItem, dropSpeed, 0, 300);
-				moveCollisionBox(droppedItem, dropSpeed / 2, 0, 50);
+//				moveCollisionBox(droppedItem, dropSpeed / 2, 0, 50);
 			}
 			case null, default -> {
 			}
