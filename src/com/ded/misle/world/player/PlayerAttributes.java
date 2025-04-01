@@ -392,7 +392,8 @@ public class PlayerAttributes {
 					double modifiers = this.playerSpeedModifier * this.environmentSpeedModifier;
 					double progressModifiers = Math.log10(1 + this.levelSpeed + this.equipmentSpeed);
 
-					this.playerSpeed = delta * (scaleFactor * modifiers + progressModifiers);
+					this.playerSpeed = 1;
+//						delta * (scaleFactor * modifiers + progressModifiers);
 				}
 				case INVERSION -> player.setInversion(this.equipmentInversion);
 				case STRENGTH -> this.strength = this.equipmentStrength + this.levelStrength;
