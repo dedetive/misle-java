@@ -52,24 +52,24 @@ public class WorldLoader {
 
 				// Chests
 					// Type of chest must be specified.
-					addBox(20, 20, "mountain_chest");
+					addBox(1, 1, "mountain_chest");
 
 				// Spawnpoint Box
 					///  There should ideally be either 0 or 1 spawnpoint per room,
 					/// and where player should spawn is specified in [PlayerPosition#reloadSpawnpoint()].
-					addBox(40, 20, "spawnpoint");
+					addBox(2, 2, "spawnpoint");
 
 				// Travel Boxes
 					///  First line is to add the boxes with the travel preset,
 					/// second line is to edit the boxes to have the specified travel property (room to travel to, position).
 					/// All of which are specified in the [RoomManager.TravelTransition].
-					int travelBoxesAdded = lineAddBox(60, 60, 3, 1, "travel", FILL);
+					int travelBoxesAdded = lineAddBox(3, 3, 3, 1, "travel", FILL);
 					editLastBox(EFFECT, "{travel, TUANI_CITY_TO_1}", travelBoxesAdded);
 
 				// Enemies
 					/// Valid enemies are specified in [Enemy.EnemyType].
 					/// Magnification affects only MAX HP and DAMAGE.
-					new Enemy(200, 200, GOBLIN, 1);
+					new Enemy(10, 10, GOBLIN, 1);
 
 				// NPCs
 					/// Valid NPC types are specified in [NPC.InteractionType].
@@ -78,7 +78,7 @@ public class WorldLoader {
 					/// DIALOG_{ID}.{DIALOG_NUMBER_ORDER}. The DIALOG_{ID} without the number order
 					/// must be an integer that represents the final ID to be shown to the player.
 					/// Alternatively to the COLOR, there should be their TEXTURE.
-					NPC magentaBlock = new NPC(240, 200, DIALOG);
+					NPC magentaBlock = new NPC(22, 10, DIALOG);
 					magentaBlock.setColor(new Color(0xFF00FF));
 					magentaBlock.setDialogID(2);
 					magentaBlock.name = "Magenta block";
