@@ -23,8 +23,6 @@ public class World {
         System.out.println("Loading room: " + this.room);
 
         player.pos.world = this;
-
-//        fillGrass();
     }
 
     public void setPos(Box box, int x, int y, boolean force) {
@@ -39,7 +37,7 @@ public class World {
         }
     }
 
-    private void fillGrass() {
+    public void fillGrass() {
         double interval = 2.05;
         lineAddScaledBox(0, 0, (int) Math.ceil((double) width / (interval)),
             (int) Math.ceil((double) height / (interval)), "fill", interval, "grass");

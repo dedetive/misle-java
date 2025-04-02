@@ -19,7 +19,7 @@ import static com.ded.misle.world.npcs.NPC.InteractionType.NONE;
 
 public class WorldLoader {
 	public static void loadBoxes() {
-		World world;
+		World world = null;
 		RoomManager.Room room = roomIDToName(player.pos.getRoomID());
 
 		switch (room) {
@@ -295,6 +295,10 @@ public class WorldLoader {
 				magentaBlock.nameColor = new Color(0xFF00FF);
 			}
 
+		}
+
+		if (world != null) {
+			world.fillGrass();
 		}
 	}
 
