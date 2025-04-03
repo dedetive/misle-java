@@ -91,13 +91,16 @@ public class BoxHandling {
 	 * - travel
 	 *
 	 */
-	public static void addBox(int x, int y, String preset) {
+	public static Box addBox(int x, int y, String preset) {
 		boxes.add(new Box(x, y));
-		loadPreset(boxes.getLast(), preset);
+		Box box = boxes.getLast();
+		loadPreset(box, preset);
 		if (checkIfPresetHasSides(preset)) {
 			editLastBox(EditBoxKeys.TEXTURE, preset + "0");
 		}
-		addBoxToCache(boxes.getLast());
+		addBoxToCache(box);
+
+		return box;
 	}
 
 	public static Box addBoxItem(int x, int y, int id, int count) {
