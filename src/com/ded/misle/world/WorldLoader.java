@@ -9,6 +9,7 @@ import java.awt.*;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.GamePanel.setWorldBorders;
 import static com.ded.misle.world.RoomManager.roomIDToName;
+import static com.ded.misle.world.World.Background.GRASS;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.boxes.BoxHandling.EditBoxKeys.*;
 import static com.ded.misle.world.boxes.BoxHandling.LineAddBoxModes.FILL;
@@ -27,7 +28,7 @@ public class WorldLoader {
 				// Setup
 					int worldWidth = 20;
 					int worldHeight = 20;
-					world = new World(worldWidth, worldHeight);
+					world = new World(worldWidth, worldHeight, GRASS);
 				// Building Boxes
 					// Here is where structural boxes should be placed, such as walls.
 //					lineAddBox(0, 0, 4, 4, "wall_default", HOLLOW);
@@ -237,7 +238,7 @@ public class WorldLoader {
 				// Setup
 				int worldWidth = 20;
 				int worldHeight = 20;
-				world = new World(worldWidth, worldHeight);
+				world = new World(worldWidth, worldHeight, GRASS);
 				// Building Boxes
 				// Here is where structural boxes should be placed, such as walls.
 //					lineAddBox(0, 0, 4, 4, "wall_default", HOLLOW);
@@ -295,10 +296,6 @@ public class WorldLoader {
 				magentaBlock.nameColor = new Color(0xFF00FF);
 			}
 
-		}
-
-		if (world != null) {
-			world.fillGrass();
 		}
 	}
 

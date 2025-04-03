@@ -4,12 +4,13 @@ import com.ded.misle.world.boxes.Box;
 
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.GamePanel.setWorldBorders;
-import static com.ded.misle.world.boxes.BoxHandling.lineAddScaledBox;
+import static com.ded.misle.world.boxes.BoxHandling.addBox;
 
 public class World {
     public int width;
     public int height;
     public Box[][] grid;
+    public Background background;
     RoomManager.Room room;
 
     public World(int worldWidth, int worldHeight) {
@@ -25,6 +26,11 @@ public class World {
         player.pos.world = this;
     }
 
+    public World(int worldWidth, int worldHeight, Background background) {
+        this(worldWidth, worldHeight);
+        this.background = background;
+    }
+
     public void setPos(Box box, int x, int y, boolean force) {
         try {
             if (force) {
@@ -37,9 +43,15 @@ public class World {
         }
     }
 
-    public void fillGrass() {
-        double interval = 2.05;
-        lineAddScaledBox(0, 0, (int) Math.ceil((double) width / (interval)),
-            (int) Math.ceil((double) height / (interval)), "fill", interval, "grass");
+    public enum Background {
+        GRASS(addBox(0, 0, "grass")),
+
+        ;
+
+        public final Box box;
+
+        Background(Box box) {
+            this.box = box;
+        }
     }
 }
