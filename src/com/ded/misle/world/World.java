@@ -4,7 +4,7 @@ import com.ded.misle.world.boxes.Box;
 
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.GamePanel.setWorldBorders;
-import static com.ded.misle.world.boxes.BoxHandling.addBox;
+import static com.ded.misle.world.boxes.BoxHandling.*;
 
 public class World {
     public int width;
@@ -29,6 +29,7 @@ public class World {
     public World(int worldWidth, int worldHeight, Background background) {
         this(worldWidth, worldHeight);
         this.background = background;
+        this.background.updateBackground();
     }
 
     public void setPos(Box box, int x, int y, boolean force) {
@@ -44,14 +45,25 @@ public class World {
     }
 
     public enum Background {
-        GRASS(addBox(0, 0, "grass")),
+        GRASS(createDummyBox(), new Runnable() {
+            @Override
+            public void run() {
+                loadPreset(GRASS.box, "grass");
+            }
+        }),
 
         ;
 
         public final Box box;
+        public final Runnable updateBackground;
 
-        Background(Box box) {
+        public void updateBackground() {
+            this.updateBackground.run();
+        }
+
+        Background(Box box, Runnable updateBackground) {
             this.box = box;
+            this.updateBackground = updateBackground;
         }
     }
 }
