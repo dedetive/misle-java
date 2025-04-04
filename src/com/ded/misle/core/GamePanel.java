@@ -355,14 +355,14 @@ public class GamePanel extends JPanel implements Runnable {
 		double dy = targetCameraY - cameraY;
 
 		// Damping: 0 < alpha < 1, lower values = smoother
-		float alpha = (float) (1 - Math.pow(0.0005, deltaTime));
+		float alpha = (float) (1 - Math.pow(0.15, deltaTime));
 
 		if (Math.abs(dx) > deadZoneWidth) {
-			cameraX += dx * alpha;
+			cameraX += 1.5 * dx * alpha;
 			player.pos.setCameraOffsetX(cameraX);
 		}
 		if (Math.abs(dy) > deadZoneHeight) {
-			cameraY += dy * alpha;
+			cameraY += 1.5 * dy * alpha;
 			player.pos.setCameraOffsetY(cameraY);
 		}
 
