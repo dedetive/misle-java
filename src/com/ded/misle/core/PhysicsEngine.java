@@ -1,5 +1,6 @@
 package com.ded.misle.core;
 
+import com.ded.misle.world.World;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.boxes.BoxHandling;
 import com.ded.misle.world.boxes.HPBox;
@@ -7,6 +8,7 @@ import com.ded.misle.world.enemies.Enemy;
 import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.world.player.Player;
 import com.ded.misle.world.player.PlayerAttributes;
+import com.ded.misle.world.player.PlayerStats;
 
 import java.util.List;
 import java.util.Objects;
@@ -53,6 +55,48 @@ public class PhysicsEngine {
 //			for (NPC npc : nearbyNPCs)
 //				npc.setSelected(true);
 //		}
+	}
+
+	public static boolean isSpaceOccupied(int targetX, int targetY, Box responsibleBox) {
+		World world = player.pos.world;
+		boolean result;
+
+		try {
+			Box box = world.grid[targetX][targetY];
+			result = box != null;
+
+			if (result) {
+				handleEffect(box, responsibleBox, responsibleBox.getKnockbackDirection());
+			}
+
+		} catch (NullPointerException | NegativeArraySizeException | ArrayIndexOutOfBoundsException e) {
+			result = true;
+		}
+
+
+		return result;
+	}
+
+	private static void handleEffect(Box box, Box responsibleBox, PlayerAttributes.KnockbackDirection direction) {
+		// Touching box gets effect
+		if (responsibleBox instanceof HPBox && !box.getEffect().isEmpty()) {
+			if (Objects.equals(box.getEffect(), "damage")) {
+				box.setKnockbackDirection(direction);
+			}
+			box.handleEffect((HPBox) responsibleBox);
+		}
+		// Responsible box gets effect
+		if (box instanceof HPBox && !responsibleBox.getEffect().isEmpty()) {
+			if (Objects.equals(responsibleBox.getEffect(), "damage")) {
+				responsibleBox.setKnockbackDirection(direction.getOppositeDirection());
+			}
+			responsibleBox.handleEffect((HPBox) box);
+		}
+
+		if (player.attr.getLastVelocityBox() != null) {
+			player.attr.setEnvironmentSpeedModifier(1.0); // Reset to default speed
+			player.attr.setLastVelocityBox(null); // Clear the last velocity box
+		}
 	}
 
 	/**
