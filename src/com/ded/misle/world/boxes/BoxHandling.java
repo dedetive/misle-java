@@ -266,7 +266,7 @@ public class BoxHandling {
 		return presetsWithSides.contains(preset);
 	}
 
-	private static void loadPreset(Box box, String preset) {
+	public static void loadPreset(Box box, String preset) {
 		switch (preset) {
 			case "spawnpoint":
 				editBox(box, EditBoxKeys.EFFECT, "{spawnpoint, -1}");
