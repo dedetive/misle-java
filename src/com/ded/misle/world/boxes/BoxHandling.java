@@ -103,6 +103,10 @@ public class BoxHandling {
 		return box;
 	}
 
+	public static Box createDummyBox() {
+		return new Box();
+	}
+
 	public static Box addBoxItem(int x, int y, int id, int count) {
 		if (id > 0) {
 			boxes.add(new Box(x, y));

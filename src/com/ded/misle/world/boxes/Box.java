@@ -122,7 +122,7 @@ public class Box {
 		this.interactsWithPlayer = true;
 	}
 
-	// For player creation
+	// For player creation or dummy box
 	public Box() {}
 
 	// Method to render the box with the current tileSize and scale the position
