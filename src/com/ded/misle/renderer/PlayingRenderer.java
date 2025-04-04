@@ -1,6 +1,7 @@
 package com.ded.misle.renderer;
 
 import com.ded.misle.core.LanguageManager;
+import com.ded.misle.world.World;
 import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.input.MouseHandler;
 import com.ded.misle.world.boxes.BoxHandling;
@@ -65,6 +66,15 @@ public class PlayingRenderer {
         // ANTI-ALIASING
         if (antiAliasing.bool()) {
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        }
+
+        // Draw background
+        World world = player.pos.world;
+
+        for (int i = 0; i < world.grid.length; i++) {
+            for (int j = 0; j < world.grid[0].length; j++) {
+                g2d.drawImage(world.background.box.getTexture(), i * tileSize, j * tileSize, tileSize, tileSize, null);
+            }
         }
 
         // Draw boxes
