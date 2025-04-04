@@ -91,12 +91,12 @@ public class GamePanel extends JPanel implements Runnable {
 
 	static double originalWorldWidth = 1;
 	static double originalWorldHeight = 1;
-	static double worldWidth = originalWorldWidth * scale;
-	static double worldHeight = originalWorldHeight * scale;
+	public static double worldWidth = originalWorldWidth * scale;
+	public static double worldHeight = originalWorldHeight * scale;
 
 	public static void setWorldBorders(int width, int height) {
-		originalWorldWidth = width * 20;
-		originalWorldHeight = height * 20;
+		originalWorldWidth = width * originalTileSize;
+		originalWorldHeight = height * originalTileSize;
 		worldWidth = originalWorldWidth * scale;
 		worldHeight = originalWorldHeight * scale;
 	}
@@ -339,16 +339,12 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 	}
 
-
 	public void updateGame() {
 		long currentTime = System.currentTimeMillis();
 
 		// Update the camera offset to center the player in the view
-		player.pos.setCameraOffsetX(player.getX() - screenWidth / 2 + player.getBoxScaleHorizontal() / 2);
-		player.pos.setCameraOffsetY(player.getY() - screenHeight / 2 + player.getBoxScaleVertical() / 2);
-
-		player.pos.setCameraOffsetX(Math.max(0, Math.min(player.pos.getCameraOffsetX(), worldWidth - screenWidth)));
-		player.pos.setCameraOffsetY(Math.max(0, Math.min(player.pos.getCameraOffsetY(), worldHeight - screenHeight)));
+		player.pos.setCameraOffsetX(player.pos.calculateCameraOffsetX());
+		player.pos.setCameraOffsetY(player.pos.calculateCameraOffsetY());
 
 		player.attr.checkIfLevelUp();
 

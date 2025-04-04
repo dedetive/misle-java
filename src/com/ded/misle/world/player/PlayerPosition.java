@@ -6,8 +6,8 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.core.GamePanel.*;
 
 public class PlayerPosition {
 
@@ -47,6 +47,13 @@ public class PlayerPosition {
 
 	public void setCameraOffsetY(double cameraOffsetY) {
 		this.cameraOffsetY = cameraOffsetY;
+	}
+
+	public double calculateCameraOffsetX() {
+		return Math.clamp(0, player.getX() * tileSize - screenWidth / 2 + player.getBoxScaleHorizontal() / 2, worldWidth - screenWidth);
+	}
+	public double calculateCameraOffsetY() {
+		return Math.clamp(0, player.getY() * tileSize - screenWidth / 2 + player.getBoxScaleVertical() / 2, worldHeight - screenHeight);
 	}
 
 	public int getSpawnpoint() {
