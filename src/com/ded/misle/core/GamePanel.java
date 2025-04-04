@@ -342,9 +342,30 @@ public class GamePanel extends JPanel implements Runnable {
 	public void updateGame() {
 		long currentTime = System.currentTimeMillis();
 
-		// Update the camera offset to center the player in the view
-		player.pos.setCameraOffsetX(player.pos.calculateCameraOffsetX());
-		player.pos.setCameraOffsetY(player.pos.calculateCameraOffsetY());
+		// Camera dead zone
+		double deadZoneWidth = tileSize;
+		double deadZoneHeight = tileSize * 9 / 16d;
+
+		double cameraX = player.pos.getCameraOffsetX();
+		double targetCameraX = player.pos.calculateCameraOffsetX();
+		double dx = targetCameraX - cameraX;
+
+		double cameraY = player.pos.getCameraOffsetY();
+		double targetCameraY = player.pos.calculateCameraOffsetY();
+		double dy = targetCameraY - cameraY;
+
+		// Damping: 0 < alpha < 1, lower values = smoother
+		float alpha = (float) (1 - Math.pow(0.0005, deltaTime));
+
+		if (Math.abs(dx) > deadZoneWidth) {
+			cameraX += dx * alpha;
+			player.pos.setCameraOffsetX(cameraX);
+		}
+		if (Math.abs(dy) > deadZoneHeight) {
+			cameraY += dy * alpha;
+			player.pos.setCameraOffsetY(cameraY);
+		}
+
 
 		player.attr.checkIfLevelUp();
 
