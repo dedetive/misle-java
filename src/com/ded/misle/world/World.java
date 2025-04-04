@@ -2,6 +2,8 @@ package com.ded.misle.world;
 
 import com.ded.misle.world.boxes.Box;
 
+import java.util.Arrays;
+
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.GamePanel.setWorldBorders;
 import static com.ded.misle.world.boxes.BoxHandling.*;
@@ -33,16 +35,36 @@ public class World {
     }
 
     public void setPos(Box box, int x, int y, boolean force) {
+        int previousX = box.getX();
+        int previousY = box.getY();
+
         try {
+            for (int i = 0; i < this.grid.length; i++) {
+                for (int j = 0; j < this.grid[0].length; j++) {
+                    if (this.grid[i][j] == box) {
+                        previousX = i;
+                        previousY = j;
+                    }
+                }
+            }
+
             if (force) {
                 this.grid[x][y] = box;
             } else if (this.grid[x][y] == null) {
                 this.grid[x][y] = box;
             }
+
+            boolean hasMoved = !Arrays.equals(new int[]{previousX, previousY}, new int[]{x, y});
+
+            if (hasMoved) {
+                this.grid[previousX][previousY] = null;
+            }
+
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Index " + x + ", " + y + " is out of bounds for length " + this.grid[0].length + ", " + this.grid[1].length);
         }
     }
+
 
     public enum Background {
         GRASS(createDummyBox(), new Runnable() {
