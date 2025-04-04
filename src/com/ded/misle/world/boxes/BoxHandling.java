@@ -369,8 +369,8 @@ public class BoxHandling {
 
 		List<Box> nearbyBoxes = new ArrayList<>();
 		World world = player.pos.world;
-		for (int i = 0; i < world.grid[0].length; i++) {
-			for (int j = 0; j < world.grid[1].length; j++) {
+		for (int i = 0; i < world.grid.length; i++) {
+			for (int j = 0; j < world.grid[0].length; j++) {
 				Box box = world.grid[i][j];
 				if (box != null) {
 					nearbyBoxes.add(world.grid[i][j]);
