@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.core.PhysicsEngine.isSpaceOccupied;
 import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.renderer.DialogRenderer.fillLetterDisplay;
 import static com.ded.misle.renderer.DialogRenderer.isLetterDisplayFull;
@@ -321,11 +322,10 @@ public class KeyHandler implements KeyListener {
 					} else {
 						verticalDirection = PlayerAttributes.KnockbackDirection.UP;
 					}
-					if (!PhysicsEngine.isPixelOccupied(player, (player.getX() + willMovePlayer[0] * 2), player.getY(), range, 12, horizontalDirection)) {
-						PhysicsEngine.movePlayer(willMovePlayer[0], 0);
-					}
-					if (!PhysicsEngine.isPixelOccupied(player, player.getX(), (player.getY() + willMovePlayer[1] * 2), range, 12, verticalDirection)) {
-						PhysicsEngine.movePlayer(0, willMovePlayer[1]);
+					int targetX = player.getX() + willMovePlayer[0];
+					int targetY = player.getY() + willMovePlayer[1];
+					if (!isSpaceOccupied(targetX, targetY, player)) {
+						PhysicsEngine.movePlayer(willMovePlayer[0], willMovePlayer[1]);
 					}
 				}
 			}
