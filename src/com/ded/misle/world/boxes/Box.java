@@ -236,27 +236,24 @@ public class Box {
 	}
 
 	public void setX(int x) {
-		this.worldX = x;
-		World world = player.pos.world;
-
-		try {
-			world.setPos(this, x, worldY, false);
-		} catch (NullPointerException e) {
-			loadBoxes();
-			world = player.pos.world;
-			world.setPos(this, x, worldY, false);
-		}
+		setPos(x, worldY);
 	}
 
 	public void setY(int y) {
+		setPos(worldX, y);
+	}
+
+	public void setPos(int x, int y) {
+		this.worldX = x;
 		this.worldY = y;
 		World world = player.pos.world;
+
 		try {
-			world.setPos(this, worldX, y, false);
+			world.setPos(this, x, y, false);
 		} catch (NullPointerException e) {
 			loadBoxes();
 			world = player.pos.world;
-			world.setPos(this, worldX, y, false);
+			world.setPos(this, x, y, false);
 		}
 	}
 
