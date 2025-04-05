@@ -388,6 +388,8 @@ public class BoxHandling {
     }
 
 	public static boolean deleteBox(Box box) {
+		World world = player.pos.world;
+		world.grid[box.getX()][box.getY()] = null;
 		removeBoxFromCache(box);
 		return boxes.remove(box);
 	}
