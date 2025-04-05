@@ -524,8 +524,8 @@ public class Box {
 			this.setTexture("chest_open");
 		}
 
-		droppedItem = createDroppedItem(this.getX(), this.getY() - 10, id, count);
-		moveBox(droppedItem, multiplier * 20, 10, delay);
+		droppedItem = createDroppedItem(this.getX(), this.getY() - 1, id, count);
+		moveBox(droppedItem, multiplier, 10, delay);
 
 		editLastBox(EditBoxKeys.COLLECTIBLE, "false");
 

@@ -63,11 +63,13 @@ public class PhysicsEngine {
 
 		try {
 			Box box = world.grid[targetX][targetY];
-			result = box != null && box.getHasCollision();
+			result = box != null;
 
 			if (result) {
 				handleEffect(box, responsibleBox, responsibleBox.getKnockbackDirection());
 			}
+
+			result = result && box.getHasCollision();
 
 		} catch (NullPointerException | NegativeArraySizeException | ArrayIndexOutOfBoundsException e) {
 			result = true;
