@@ -8,6 +8,7 @@ import java.awt.*;
 
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.GamePanel.setWorldBorders;
+import static com.ded.misle.world.RoomManager.Room.TUANI_2;
 import static com.ded.misle.world.RoomManager.roomIDToName;
 import static com.ded.misle.world.World.Background.GRASS;
 import static com.ded.misle.world.boxes.BoxHandling.*;
@@ -85,70 +86,70 @@ public class WorldLoader {
 					magentaBlock.name = "Magenta block";
 					magentaBlock.nameColor = new Color(0xFF00FF);
 			}
-//			case TUANI_CITY -> {
-//				//Setup
-//				int worldWidth = 50;
-//				int worldHeight = 50;
-//				world = new World(worldWidth, worldHeight);
-//
-//				// Top left section
-//				lineAddBox(0, 0, (worldWidth - 2) / 2, 5, "wall_default", FILL);
-//				// Top Right section
-//				lineAddBox(worldWidth / 2 + 3, 0, (worldWidth - 2) / 2, 5, "wall_default", FILL);
-//				// Left column
-//				int boxesAdded = lineAddBox(0, 100, 1, worldHeight - 7, "wall_default", HOLLOW);
-//				editBoxNegativeIndex(TEXTURE, "wall_default.AD", boxesAdded); // Intersection fix
-//				// Right column
-//				boxesAdded = lineAddBox(worldWidth - 20, 100, 1, worldHeight - 7, "wall_default", HOLLOW);
-//				editBoxNegativeIndex(TEXTURE, "wall_default.AD", boxesAdded); // Intersection fix
-//				// Bottom row
-//				boxesAdded = lineAddBox(0, worldHeight - 30, worldWidth - 2, 1, "wall_default", HOLLOW);
-//				editBoxNegativeIndex(TEXTURE, "wall_default.AS.D", boxesAdded); // Intersection fix
-//				editLastBox(TEXTURE, "wall_default.SD.W"); // Intersection fix
-//
-//				// House 1
-//				lineAddBox(300, 420, 7, 7, "wall_default", HOLLOW);
-//				deleteBox(4);
-//				editBoxNegativeIndex(TEXTURE, "wall_default@Deco.AWD..@", 3);
-//				editBoxNegativeIndex(TEXTURE, "wall_default@Deco.ASD..@", 4);
-//					// Interior
-//				boxesAdded = lineAddBox(321, 441, 5, 5, "wall_default", FILL);
-//				editLastBox(HAS_COLLISION, "false", boxesAdded);
-//					// Door
-//				addBox(426, 483, "travel");
-//				editLastBox(HAS_COLLISION, "true");
-//				editLastBox(EFFECT, "{travel, ENTERING_TUANI_HOUSE_1}");
-//					// Chest and spawnpoint
-//				addBox(321, 441, "spawnpoint");
-//				addBox(341, 441, "mountain_chest");
-//					// Corner block
-//				addBox(382, 502);
-//				editLastBox(EditBoxKeys.COLOR, "#A02020");
-//
-//				// Travel Boxes
-//				int travelBoxesAdded = lineAddBox(440, 10, 6, 1, "travel", FILL);
-//				editLastBox(EFFECT, "{travel, TUANI_CITY_TO_1}", travelBoxesAdded);
-//
-//				// NPC testing
-//				NPC yellowBlock = new NPC(500, 300, DIALOG);
-//				yellowBlock.setDialogID(1);
-//				yellowBlock.name = "Yellow block";
-//				yellowBlock.nameColor = new Color(0xFFFF00);
-//
-//				NPC magentaBlock = new NPC(540, 340, DIALOG);
-//				editBox(magentaBlock, COLOR, "#FF00FF");
-//				magentaBlock.setDialogID(2);
-//				magentaBlock.name = "Magenta block";
-//				magentaBlock.nameColor = new Color(0xFF00FF);
-//
-//				NPC cyanBlock = new NPC(460, 340, NONE);
-//				editBox(cyanBlock, COLOR, "#00FFFF");
-//			}
+			case TUANI_CITY -> {
+				//Setup
+				int worldWidth = 45;
+				int worldHeight = 45;
+				world = new World(worldWidth, worldHeight);
+
+				// Top left section
+				lineAddBox(0, 0, (worldWidth - 2) / 2, 5, "wall_default", FILL);
+				// Top Right section
+				lineAddBox(worldWidth / 2, 0, (worldWidth - 2) / 2, 5, "wall_default", FILL);
+				// Left column
+				int boxesAdded = lineAddBox(0, 5, 1, worldHeight - 7, "wall_default", HOLLOW);
+				editBoxNegativeIndex(TEXTURE, "wall_default.AD", boxesAdded); // Intersection fix
+				// Right column
+				boxesAdded = lineAddBox(worldWidth - 1, 5, 1, worldHeight - 7, "wall_default", HOLLOW);
+				editBoxNegativeIndex(TEXTURE, "wall_default.AD", boxesAdded); // Intersection fix
+				// Bottom row
+				boxesAdded = lineAddBox(0, worldHeight - 1, worldWidth - 2, 1, "wall_default", HOLLOW);
+				editBoxNegativeIndex(TEXTURE, "wall_default.AS.D", boxesAdded); // Intersection fix
+				editLastBox(TEXTURE, "wall_default.SD.W"); // Intersection fix
+
+				// House 1
+				lineAddBox(15, 21, 7, 7, "wall_default", HOLLOW);
+				deleteBox(4);
+				editBoxNegativeIndex(TEXTURE, "wall_default@Deco.AWD..@", 3);
+				editBoxNegativeIndex(TEXTURE, "wall_default@Deco.ASD..@", 4);
+					// Interior
+				boxesAdded = lineAddBox(16, 22, 5, 5, "wall_default", FILL);
+				editLastBox(HAS_COLLISION, "false", boxesAdded);
+					// Door
+				addBox(21, 24, "travel");
+				editLastBox(HAS_COLLISION, "true");
+				editLastBox(EFFECT, "{travel, ENTERING_TUANI_HOUSE_1}");
+					// Chest and spawnpoint
+				addBox(16, 22, "spawnpoint");
+				addBox(17, 22, "mountain_chest");
+					// Corner block
+				addBox(19, 25);
+				editLastBox(EditBoxKeys.COLOR, "#A02020");
+
+				// Travel Boxes
+				int travelBoxesAdded = lineAddBox(22, 0, 6, 1, "travel", FILL);
+				editLastBox(EFFECT, "{travel, TUANI_CITY_TO_1}", travelBoxesAdded);
+
+				// NPC testing
+				NPC yellowBlock = new NPC(25, 15, DIALOG);
+				yellowBlock.setDialogID(1);
+				yellowBlock.name = "Yellow block";
+				yellowBlock.nameColor = new Color(0xFFFF00);
+
+				NPC magentaBlock = new NPC(27, 17, DIALOG);
+				editBox(magentaBlock, COLOR, "#FF00FF");
+				magentaBlock.setDialogID(2);
+				magentaBlock.name = "Magenta block";
+				magentaBlock.nameColor = new Color(0xFF00FF);
+
+				NPC cyanBlock = new NPC(23, 17, NONE);
+				editBox(cyanBlock, COLOR, "#00FFFF");
+			}
 //			case TUANI_HOUSE_1 -> {
 //				//Setup
 //				int worldWidth = 500;
 //				int worldHeight = 400;
-//				world = new World(worldWidth / 20, worldHeight / 20);
+//				world = new World(worldWidth, worldHeight);
 //
 //				// Walls
 //				lineAddBox(240, 20, 9, 9, "wall_default", HOLLOW);
@@ -226,75 +227,14 @@ public class WorldLoader {
 //			}
 //			case TUANI_2 -> {
 //				// Setup
-//			int worldWidth;
-//			int worldHeight;
+//			int worldWidth = 1;
+//			int worldHeight = 1;
 //			world = new World(worldWidth, worldHeight);
 //			}
 
 
 			case null -> {}
-//			default -> throw new IllegalStateException("Unexpected value: " + roomIDToName(player.pos.getRoomID()) + ", ID: " + player.pos.getRoomID());
-			default -> {
-				// Setup
-				int worldWidth = 20;
-				int worldHeight = 20;
-				world = new World(worldWidth, worldHeight, GRASS);
-				// Building Boxes
-				// Here is where structural boxes should be placed, such as walls.
-//					lineAddBox(0, 0, 4, 4, "wall_default", HOLLOW);
-				// Typically, more specific structures such as houses inside a city should be left to the bottom of this section.
-
-				// TESTING
-				//				int boxesX = 10;
-				//				int boxesY = 10;
-				//				int index = boxesY + boxesY / 2 + (boxesX - 1) * 2 - 1;
-				//				lineAddBox(40, 20, boxesX, boxesY, "wall_default", HOLLOW);
-				//				editBoxNegativeIndex(TEXTURE, "invisible", index);
-
-				// LINEADDBOX BOXES ARE ADDED FROM LEFT-TOP TO RIGHT-BOTTOM
-				// For example: in a 7x7 hollow, the right-bottom-most box that is not a corner
-				// would be 8 (height + 1) and the top equivalent would be 9 (height + 2)
-				// The left equivalents would be 7 + 5 * 2 - 1 (height + (length - 2) * 2) - 1 for bottom and
-				// add +1 for top.
-				// For the middle bottom, it is 7 + 6 * 2 - 7 (height + (length - 1) * 2 - length)
-				// For the top, add +1. It will look wrong for even-numbered X's though.
-				// For the middle right side, it is height / 2 + 1.
-				// For the left, it is height + height / 2 + (length - 1) * 2 - 1
-
-				// Chests
-				// Type of chest must be specified.
-				addBox(1, 1, "mountain_chest");
-
-				// Spawnpoint Box
-				///  There should ideally be either 0 or 1 spawnpoint per room,
-				/// and where player should spawn is specified in [PlayerPosition#reloadSpawnpoint()].
-				addBox(2, 2, "spawnpoint");
-
-				// Travel Boxes
-				///  First line is to add the boxes with the travel preset,
-				/// second line is to edit the boxes to have the specified travel property (room to travel to, position).
-				/// All of which are specified in the [RoomManager.TravelTransition].
-				int travelBoxesAdded = lineAddBox(3, 3, 3, 1, "travel", FILL);
-//					editLastBox(EFFECT, "{travel, TUANI_CITY_TO_1}", travelBoxesAdded);
-
-				// Enemies
-				/// Valid enemies are specified in [Enemy.EnemyType].
-				/// Magnification affects only MAX HP and DAMAGE.
-//					new Enemy(10, 10, GOBLIN, 1);
-
-				// NPCs
-				/// Valid NPC types are specified in [NPC.InteractionType].
-				/// Dialogs can be modified in the language property files, such as
-				/// resources/lang/messages_en_US.properties. They are written in the format
-				/// DIALOG_{ID}.{DIALOG_NUMBER_ORDER}. The DIALOG_{ID} without the number order
-				/// must be an integer that represents the final ID to be shown to the player.
-				/// Alternatively to the COLOR, there should be their TEXTURE.
-				NPC magentaBlock = new NPC(22, 10, DIALOG);
-				magentaBlock.setColor(new Color(0xFF00FF));
-				magentaBlock.setDialogID(2);
-				magentaBlock.name = "Magenta block";
-				magentaBlock.nameColor = new Color(0xFF00FF);
-			}
+			default -> throw new IllegalStateException("Unexpected value: " + roomIDToName(player.pos.getRoomID()) + ", ID: " + player.pos.getRoomID());
 
 		}
 	}
