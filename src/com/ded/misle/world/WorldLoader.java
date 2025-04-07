@@ -9,6 +9,7 @@ import java.awt.*;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.GamePanel.setWorldBorders;
 import static com.ded.misle.world.RoomManager.Room.TUANI_2;
+import static com.ded.misle.world.RoomManager.Room.TUANI_CITY;
 import static com.ded.misle.world.RoomManager.roomIDToName;
 import static com.ded.misle.world.World.Background.GRASS;
 import static com.ded.misle.world.boxes.BoxHandling.*;
@@ -23,6 +24,7 @@ public class WorldLoader {
 	public static void loadBoxes() {
 		World world = null;
 		RoomManager.Room room = roomIDToName(player.pos.getRoomID());
+		room = roomIDToName(TUANI_CITY.id);
 
 		switch (room) {
 			case VOID -> {
@@ -93,14 +95,14 @@ public class WorldLoader {
 				world = new World(worldWidth, worldHeight);
 
 				// Top left section
-				lineAddBox(0, 0, (worldWidth - 2) / 2, 5, "wall_default", FILL);
+				lineAddBox(0, 0, 14, 5, "wall_default", FILL);
 				// Top Right section
-				lineAddBox(worldWidth / 2, 0, (worldWidth - 2) / 2, 5, "wall_default", FILL);
+				lineAddBox(17, 0, 12, 5, "wall_default", FILL);
 				// Left column
 				int boxesAdded = lineAddBox(0, 5, 1, worldHeight - 7, "wall_default", HOLLOW);
 				editBoxNegativeIndex(TEXTURE, "wall_default.AD", boxesAdded); // Intersection fix
 				// Right column
-				boxesAdded = lineAddBox(worldWidth - 1, 5, 1, worldHeight - 7, "wall_default", HOLLOW);
+				boxesAdded = lineAddBox(28, 5, 1, worldHeight - 7, "wall_default", HOLLOW);
 				editBoxNegativeIndex(TEXTURE, "wall_default.AD", boxesAdded); // Intersection fix
 				// Bottom row
 				boxesAdded = lineAddBox(0, worldHeight - 1, worldWidth - 2, 1, "wall_default", HOLLOW);
@@ -116,9 +118,9 @@ public class WorldLoader {
 				boxesAdded = lineAddBox(16, 22, 5, 5, "wall_default", FILL);
 				editLastBox(HAS_COLLISION, "false", boxesAdded);
 					// Door
-				addBox(21, 24, "travel");
-				editLastBox(HAS_COLLISION, "true");
-				editLastBox(EFFECT, "{travel, ENTERING_TUANI_HOUSE_1}");
+//				addBox(21, 24, "travel");
+//				editLastBox(HAS_COLLISION, "true");
+//				editLastBox(EFFECT, "{travel, ENTERING_TUANI_HOUSE_1}");
 					// Chest and spawnpoint
 				addBox(16, 22, "spawnpoint");
 				addBox(17, 22, "mountain_chest");
@@ -127,8 +129,8 @@ public class WorldLoader {
 				editLastBox(EditBoxKeys.COLOR, "#A02020");
 
 				// Travel Boxes
-				int travelBoxesAdded = lineAddBox(22, 0, 6, 1, "travel", FILL);
-				editLastBox(EFFECT, "{travel, TUANI_CITY_TO_1}", travelBoxesAdded);
+//				int travelBoxesAdded = lineAddBox(22, 0, 6, 1, "travel", FILL);
+//				editLastBox(EFFECT, "{travel, TUANI_CITY_TO_1}", travelBoxesAdded);
 
 				// NPC testing
 				NPC yellowBlock = new NPC(25, 15, DIALOG);
