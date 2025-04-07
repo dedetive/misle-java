@@ -16,7 +16,7 @@ public class World {
     RoomManager.Room room;
 
     public World(int worldWidth, int worldHeight) {
-        this.background = Background.GRASS;
+        this.background = Background.DEFAULT;
 
         this.width = worldWidth;
         this.height = worldHeight;
@@ -78,6 +78,7 @@ public class World {
 
         ;
 
+        public static final Background DEFAULT = GRASS;
         public final Box box;
         public final Runnable updateBackground;
 
