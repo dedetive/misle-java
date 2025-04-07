@@ -424,6 +424,8 @@ public class BoxHandling {
 		clearHPBoxes();
 		clearEnemyBoxes();
 		clearNPCs();
+		World world = player.pos.world;
+		world.grid = new Box[][]{};
 	}
 
 	public static int getBoxesCount() {
