@@ -16,7 +16,7 @@ public class World {
     RoomManager.Room room;
 
     public World(int worldWidth, int worldHeight) {
-        this.background = Background.DEFAULT;
+        this.setBackground(Background.DEFAULT);
 
         this.width = worldWidth;
         this.height = worldHeight;
@@ -32,8 +32,7 @@ public class World {
 
     public World(int worldWidth, int worldHeight, Background background) {
         this(worldWidth, worldHeight);
-        this.background = background;
-        this.background.updateBackground();
+        this.setBackground(background);
     }
 
     public void setPos(Box box, int x, int y, boolean force) {
@@ -90,5 +89,10 @@ public class World {
             this.box = box;
             this.updateBackground = updateBackground;
         }
+    }
+
+    public void setBackground(Background background) {
+        this.background = background;
+        this.background.updateBackground();
     }
 }
