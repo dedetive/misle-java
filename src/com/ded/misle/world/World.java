@@ -16,6 +16,8 @@ public class World {
     RoomManager.Room room;
 
     public World(int worldWidth, int worldHeight) {
+        this.background = Background.GRASS;
+
         this.width = worldWidth;
         this.height = worldHeight;
         this.grid = new Box[worldWidth][worldHeight];
