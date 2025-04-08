@@ -343,12 +343,4 @@ public class PhysicsEngine {
 		}
 		return false;
 	}
-
-	public static double coordinateToPixel(int coordinate) {
-		return coordinate * GamePanel.tileSize;
-	}
-
-	public static int pixelToCoordinate(double pixel) {
-		return (int) (pixel / GamePanel.tileSize);
-	}
 }
