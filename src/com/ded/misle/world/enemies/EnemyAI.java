@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.GamePanel.tileSize;
-import static com.ded.misle.core.PhysicsEngine.isPixelOccupied;
+import static com.ded.misle.core.PhysicsEngine.isSpaceOccupied;
 import static com.ded.misle.world.boxes.BoxManipulation.moveCollisionBox;
 import static com.ded.misle.world.enemies.Enemy.getEnemyBoxes;
 
@@ -94,15 +94,11 @@ public class EnemyAI  {
                         int moveX = (int) (Math.clamp(randomPos, -1, 1) * rand);
                         int moveY = (int) (Math.clamp(randomPos, -1, 1) * rand);
 
-                        if (!isPixelOccupied(enemy, enemy.getX() + moveX, enemy.getY(),
-                            tileSize, 7, PlayerAttributes.KnockbackDirection.NONE, Enemy.EnemyType.GOBLIN)) {
+                        if (!isSpaceOccupied(enemy.getX() + moveX, enemy.getY(), enemy)) {
                             moveCollisionBox(enemy, moveX, 0, rand * 4);
-                            isPixelOccupied(player, tileSize, 8, PlayerAttributes.KnockbackDirection.NONE);
                         }
-                        if (!isPixelOccupied(enemy, enemy.getX(), enemy.getY() + moveY,
-                            tileSize, 7, PlayerAttributes.KnockbackDirection.NONE, Enemy.EnemyType.GOBLIN)) {
+                        if (!isSpaceOccupied(enemy.getX(), enemy.getY() + moveY, enemy)) {
                             moveCollisionBox(enemy, 0, moveY, rand * 4);
-                            isPixelOccupied(player, tileSize, 8, PlayerAttributes.KnockbackDirection.NONE);
                         }
                     }
                 }
@@ -117,15 +113,11 @@ public class EnemyAI  {
                     int moveX = (int) (Math.clamp(distanceX, -1, 1) * rand);
                     int moveY = (int) (Math.clamp(distanceY, -1, 1) * rand);
 
-                    if (!isPixelOccupied(enemy, enemy.getX() + moveX, enemy.getY(),
-                        tileSize, 7, PlayerAttributes.KnockbackDirection.NONE, Enemy.EnemyType.GOBLIN)) {
+                    if (!isSpaceOccupied(enemy.getX() + moveX, enemy.getY(), enemy)) {
                         moveCollisionBox(enemy, moveX, 0, rand * 4);
-                        isPixelOccupied(player, tileSize, 8, PlayerAttributes.KnockbackDirection.NONE);
                     }
-                    if (!isPixelOccupied(enemy, enemy.getX(), enemy.getY() + moveY,
-                        tileSize, 7, PlayerAttributes.KnockbackDirection.NONE, Enemy.EnemyType.GOBLIN)) {
+                    if (!isSpaceOccupied(enemy.getX(), enemy.getY() + moveY, enemy)) {
                         moveCollisionBox(enemy, 0, moveY, rand * 4);
-                        isPixelOccupied(player, tileSize, 8, PlayerAttributes.KnockbackDirection.NONE);
                     }
                 }
             }
