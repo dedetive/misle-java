@@ -17,8 +17,8 @@ public class BoxManipulation {
 	/**
 	 *
 	 * @param box the box to be teleported
-	 * @param x position in pixels in x axis
-	 * @param y position in pixels in y axis
+	 * @param x position in pixels in x-axis
+	 * @param y position in pixels in y-axis
 	 * @return new position
 	 */
 	public static double[] teleportBox(Box box, int x, int y) {
@@ -31,8 +31,8 @@ public class BoxManipulation {
 	/**
 	 *
 	 * @param box the box to b
-	 * @param x how many pixels in the x axis
-	 * @param y how many pixels in the y axis
+	 * @param x how many pixels in the x-axis
+	 * @param y how many pixels in the y-axis
 	 * @param delay how long it takes in milliseconds for the box to be fully moved
 	 */
 	public static void moveBox(Box box, int x, int y, double delay) {
@@ -60,8 +60,8 @@ public class BoxManipulation {
 	/**
 	 *
 	 * @param box the box to b
-	 * @param x how many pixels in the x axis
-	 * @param y how many pixels in the y axis
+	 * @param x how many pixels in the x-axis
+	 * @param y how many pixels in the y-axis
 	 * @param delay how long it takes in milliseconds for the box to be fully moved
 	 */
 	public static void moveCollisionBox(Box box, int x, int y, double delay) {
@@ -86,7 +86,7 @@ public class BoxManipulation {
 			int count = 0;
 			public void actionPerformed(ActionEvent evt) {
 				if (count < frames) {
-					if (!PhysicsEngine.isPixelOccupied(box, box.getX() + dx, box.getY() + dy, tileSize, 10, finalDirection)) {
+					if (!PhysicsEngine.isSpaceOccupied(box.getX() + dx, box.getY() + dy, box)) {
 						box.setX(box.getX() + dx);
 						box.setY(box.getY() + dy);
 					} else {
