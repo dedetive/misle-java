@@ -14,7 +14,7 @@ import java.util.List;
 import static com.ded.misle.Launcher.heldItemFollowsMouse;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.core.PhysicsEngine.isPixelOccupied;
+import static com.ded.misle.core.PhysicsEngine.isSpaceOccupied;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 import static java.lang.Math.abs;
@@ -132,8 +132,10 @@ public class HandItemAnimator {
         List<Box> attack = new ArrayList<>(List.of());
 
         for (int i = 0; i < boxCount; i++) {
-            attack.add(boxes.get(boxes.size() - 1 - i));
-            isPixelOccupied(boxes.get(boxes.size() - 1 - i), range, 15, direction);
+            Box currentBox = boxes.get(boxes.size() - 1 - i);
+
+            attack.add(currentBox); // Add box to list to be deleted
+            isSpaceOccupied(attackX, attackY, currentBox); // Handle damage detection
         }
 
         scheduleAnimation(60, () -> {
