@@ -7,8 +7,6 @@ import com.ded.misle.world.player.PlayerPosition;
 import java.awt.*;
 
 import static com.ded.misle.core.GamePanel.player;
-import static com.ded.misle.core.GamePanel.setWorldBorders;
-import static com.ded.misle.world.RoomManager.Room.TUANI_2;
 import static com.ded.misle.world.RoomManager.Room.TUANI_CITY;
 import static com.ded.misle.world.RoomManager.roomIDToName;
 import static com.ded.misle.world.World.Background.GRASS;
@@ -16,7 +14,6 @@ import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.boxes.BoxHandling.EditBoxKeys.*;
 import static com.ded.misle.world.boxes.BoxHandling.LineAddBoxModes.FILL;
 import static com.ded.misle.world.boxes.BoxHandling.LineAddBoxModes.HOLLOW;
-import static com.ded.misle.world.enemies.Enemy.EnemyType.GOBLIN;
 import static com.ded.misle.world.npcs.NPC.InteractionType.DIALOG;
 import static com.ded.misle.world.npcs.NPC.InteractionType.NONE;
 

@@ -6,7 +6,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.GamePanel.*;
 
 public class PlayerPosition {
