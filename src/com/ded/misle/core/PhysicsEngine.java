@@ -63,7 +63,7 @@ public class PhysicsEngine {
 
 		try {
 			Box box = world.grid[targetX][targetY];
-			result = box != null;
+			result = box != null && box != responsibleBox;
 
 			if (result) {
 				handleEffect(box, responsibleBox, responsibleBox.getKnockbackDirection());
