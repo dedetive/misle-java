@@ -24,7 +24,7 @@ public class WorldLoader {
 	public static void loadBoxes() {
 		World world = null;
 		RoomManager.Room room = roomIDToName(player.pos.getRoomID());
-		room = roomIDToName(TUANI_CITY.id);
+		room = roomIDToName(TUANI_CITY.id); // TEMPORARILY FORCING TUANI_CITY
 
 		switch (room) {
 			case VOID -> {
