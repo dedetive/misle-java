@@ -97,8 +97,8 @@ public class GamePanel extends JPanel implements Runnable {
 	public static void setWorldBorders(int width, int height) {
 		originalWorldWidth = width * originalTileSize;
 		originalWorldHeight = height * originalTileSize;
-		worldWidth = originalWorldWidth;
-		worldHeight = originalWorldHeight;
+		worldWidth = width * tileSize;
+		worldHeight = height * tileSize;
 	}
 
 	public GamePanel() {

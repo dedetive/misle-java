@@ -50,10 +50,10 @@ public class PlayerPosition {
 	}
 
 	public double calculateCameraOffsetX() {
-		return Math.clamp(player.getX() * tileSize - screenWidth / 2, -tileSize, Math.abs(worldWidth - screenWidth) - (double) tileSize / 2);
+		return Math.clamp(player.getX() * tileSize - screenWidth / 2, -tileSize, worldWidth - screenWidth + tileSize);
 	}
 	public double calculateCameraOffsetY() {
-		return Math.clamp(player.getY() * tileSize - screenHeight / 2, (double) -tileSize / 2, 2 * scale * Math.abs(worldHeight - screenHeight) - tileSize);
+		return Math.clamp(player.getY() * tileSize - screenHeight / 2, (double) -tileSize / 2, worldHeight - screenHeight + (double) tileSize / 2);
 	}
 
 	public int getSpawnpoint() {
