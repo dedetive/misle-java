@@ -1,9 +1,16 @@
 package com.ded.misle.world;
 
+import com.ded.misle.world.boxes.Box;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.file.Path;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Callable;
 
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.SettingsManager.getPath;
@@ -33,6 +40,26 @@ public class WorldLoader {
 		int worldWidth = roomImage.getWidth();
 		int worldHeight = roomImage.getHeight();
 		world = new World(worldWidth, worldHeight, GRASS);
+
+		// Read values and set as boxes
+		for (int x = 0; x < worldWidth; x++) {
+			for (int y = 0; y < worldHeight; y++) {
+				int rgb = roomImage.getRGB(x, y);
+
+                Box box = null;
+                try {
+					// Gets the created box
+                    box = RGBToBox.get(rgb).call();
+                } catch (Exception e) {
+                    // This would mean it failed to create the box, so ignore
+                }
+
+                // Ignore null boxes
+				if (box == null) continue;
+
+				box.setPos(x, y);
+			}
+		}
 
 
 //		switch (room) {
@@ -249,6 +276,10 @@ public class WorldLoader {
 //
 //		}
 	}
+
+	private static final Map<Integer, Callable<Box>> RGBToBox = Map.of(
+		-3881788, () -> addBox("wall_default")
+    );
 
 	public static void unloadBoxes() {
 		clearAllBoxes();
