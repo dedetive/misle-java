@@ -71,9 +71,11 @@ public class BoxHandling {
 	public static Box addBox(String preset) {
 		Box box = new Box();
 
+		box.setBoxScaleHorizontal(1);
+		box.setBoxScaleVertical(1);
 		boolean loaded = loadPreset(box, preset);
 		if (checkIfPresetHasSides(preset)) {
-			editBox(box, EditBoxKeys.TEXTURE, preset);
+			editBox(box, EditBoxKeys.TEXTURE, preset + ".");
 		}
 
 		if (loaded) {
