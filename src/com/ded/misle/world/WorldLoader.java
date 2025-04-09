@@ -46,11 +46,12 @@ public class WorldLoader {
 		for (int x = 0; x < worldWidth; x++) {
 			for (int y = 0; y < worldHeight; y++) {
 				Color color = new Color(roomImage.getRGB(x, y));
+				int rgb = color.getRGB() & 0xFFFFFF;
 
                 Box box = null;
                 try {
 					// Gets the created box
-                    box = RGBToBox.get(color).call();
+                    box = RGBToBox.get(rgb).call();
                 } catch (Exception e) {
                     // This would mean it failed to create the box, so ignore
                 }
@@ -278,8 +279,8 @@ public class WorldLoader {
 //		}
 	}
 
-	private static final Map<Color, Callable<Box>> RGBToBox = Map.of(
-		new Color(0xC4C4C4), () -> addBox("wall_default")
+	private static final Map<Integer, Callable<Box>> RGBToBox = Map.of(
+		0xC4C4C4, () -> addBox("wall_default")
     );
 
 	public static void unloadBoxes() {
