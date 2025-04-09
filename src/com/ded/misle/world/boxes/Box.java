@@ -141,7 +141,7 @@ public class Box {
 			drawRotatedRect(g2d, solidBox, this.rotation);
 		} else if (texture.equals("invisible")) {
 			;
-		} else if (BoxHandling.checkIfPresetHasSides(texture.split("\\.")[0])) {
+        } else if (BoxHandling.checkIfPresetHasSides(texture.split("\\.")[0])) {
 			// Split texture once and reuse the result
 			String[] textureParts = texture.split("\\.");
 			String textureName = textureParts[0];
@@ -152,7 +152,7 @@ public class Box {
 					textureExtra = textureName.substring(textureName.indexOf("@") + 1);
 					textureName = textureName.substring(0, textureName.indexOf("@"));
 				} else {
-					drawRotatedImage(g2d, this.getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
+					drawRotatedImage(g2d, getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
 				}
 
 				// Draw extras if any
@@ -160,11 +160,11 @@ public class Box {
 					if (textureParts[3].equals("@")) {
 						switch (textureExtra) {
 							case "Deco":
-								drawRotatedImage(g2d, this.getTexture(textureName + textureExtra), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
+								drawRotatedImage(g2d, getTexture(textureName + textureExtra), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
 						}
 					}
 				} else {
-					drawRotatedImage(g2d, this.getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
+					drawRotatedImage(g2d, getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
 				}
 
 				// Draw sides if they exist
