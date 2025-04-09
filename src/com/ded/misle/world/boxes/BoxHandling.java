@@ -69,22 +69,19 @@ public class BoxHandling {
 	}
 
 	public static Box addBox(String preset) {
-		try {
-			boxes.add(new Box());
-			Box box = boxes.getLast();
+		Box box = new Box();
+
+		boolean loaded = loadPreset(box, preset);
+		if (checkIfPresetHasSides(preset)) {
+			editLastBox(EditBoxKeys.TEXTURE, preset + ".");
+		}
+
+		if (loaded) {
+			boxes.add(box);
 			addBoxToCache(box);
 
-			loadPreset(box, preset);
-			if (checkIfPresetHasSides(preset)) {
-				editLastBox(EditBoxKeys.TEXTURE, preset);
-			}
-
-			assert box != null;
-
-			System.out.println(box.getEffectArgs().length);
-
 			return box;
-		} catch (AssertionError e) {
+		} else {
 			return null;
 		}
 	}
@@ -287,7 +284,9 @@ public class BoxHandling {
 		return presetsWithSides.contains(preset);
 	}
 
-	public static void loadPreset(Box box, String preset) {
+	public static boolean loadPreset(Box box, String preset) {
+		boolean loaded = true;
+
 		switch (preset) {
 			case "spawnpoint":
 				editBox(box, EditBoxKeys.EFFECT, "{spawnpoint, -1}");
@@ -310,7 +309,11 @@ public class BoxHandling {
 				editBox(box, EditBoxKeys.HAS_COLLISION, "true");
 				editBox(box, EditBoxKeys.TEXTURE, "invisible");
 				break;
+			default:
+				loaded = false;
 		}
+
+		return loaded;
 	}
 
 	public static void editBox(Box box, EditBoxKeys key, String value) {
