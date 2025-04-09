@@ -48,18 +48,11 @@ public class WorldLoader {
 				Color color = new Color(roomImage.getRGB(x, y));
 				int rgb = color.getRGB() & 0xFFFFFF;
 
-                Box box = null;
                 try {
-					// Gets the created box
-                    box = RGBToBox.get(rgb).call();
-                } catch (Exception e) {
-                    // This would mean it failed to create the box, so ignore
-                }
-
-                // Ignore null boxes
-				if (box == null) continue;
-
-				box.setPos(x, y);
+					// Gets the box from pixel RGB and maps it to the image x and y
+                    Box box = RGBToBox.get(rgb).call();
+					box.setPos(x, y);
+                } catch (Exception ignored) {}
 			}
 		}
 
