@@ -73,7 +73,7 @@ public class BoxHandling {
 
 		boolean loaded = loadPreset(box, preset);
 		if (checkIfPresetHasSides(preset)) {
-			editLastBox(EditBoxKeys.TEXTURE, preset + ".");
+			editBox(box, EditBoxKeys.TEXTURE, preset);
 		}
 
 		if (loaded) {
