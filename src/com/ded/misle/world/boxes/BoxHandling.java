@@ -69,14 +69,24 @@ public class BoxHandling {
 	}
 
 	public static Box addBox(String preset) {
-		boxes.add(new Box());
-		Box box = boxes.getLast();
-		addBoxToCache(box);
-		loadPreset(box, preset);
-		if (checkIfPresetHasSides(preset)) {
-			editLastBox(EditBoxKeys.TEXTURE, preset);
+		try {
+			boxes.add(new Box());
+			Box box = boxes.getLast();
+			addBoxToCache(box);
+
+			loadPreset(box, preset);
+			if (checkIfPresetHasSides(preset)) {
+				editLastBox(EditBoxKeys.TEXTURE, preset);
+			}
+
+			assert box != null;
+
+			System.out.println(box.getEffectArgs().length);
+
+			return box;
+		} catch (AssertionError e) {
+			return null;
 		}
-		return box;
 	}
 
 	public static HPBox addHPBox(int x, int y) {
