@@ -74,7 +74,7 @@ public class BoxHandling {
 		addBoxToCache(box);
 		loadPreset(box, preset);
 		if (checkIfPresetHasSides(preset)) {
-			editLastBox(EditBoxKeys.TEXTURE, preset + "0");
+			editLastBox(EditBoxKeys.TEXTURE, preset);
 		}
 		return box;
 	}
@@ -107,7 +107,7 @@ public class BoxHandling {
 		Box box = boxes.getLast();
 		loadPreset(box, preset);
 		if (checkIfPresetHasSides(preset)) {
-			editLastBox(EditBoxKeys.TEXTURE, preset + "0");
+			editLastBox(EditBoxKeys.TEXTURE, preset);
 		}
 		addBoxToCache(box);
 
