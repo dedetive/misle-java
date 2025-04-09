@@ -68,6 +68,17 @@ public class BoxHandling {
 		return boxes.getLast();
 	}
 
+	public static Box addBox(String preset) {
+		boxes.add(new Box());
+		Box box = boxes.getLast();
+		addBoxToCache(box);
+		loadPreset(box, preset);
+		if (checkIfPresetHasSides(preset)) {
+			editLastBox(EditBoxKeys.TEXTURE, preset + "0");
+		}
+		return box;
+	}
+
 	public static HPBox addHPBox(int x, int y) {
 		boxes.add(new HPBox(x, y));
 		addBoxToCache(boxes.getLast());
