@@ -29,6 +29,11 @@ public class WorldLoader {
 			throw new RuntimeException(e);
 		}
 
+		// Set dimensions based on image dimensions
+		int worldWidth = roomImage.getWidth();
+		int worldHeight = roomImage.getHeight();
+		world = new World(worldWidth, worldHeight, GRASS);
+
 
 //		switch (room) {
 //			case VOID -> {
