@@ -6,10 +6,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -28,7 +25,7 @@ public class WorldLoader {
         assert room != null;
 
 		Path basePath = getPath().resolve("resources/worlds/");
-        Path fullPath = basePath.resolve(room.toString());
+        Path fullPath = basePath.resolve(room + ".png");
 		BufferedImage roomImage;
 		try {
 			roomImage = ImageIO.read(fullPath.toFile());
