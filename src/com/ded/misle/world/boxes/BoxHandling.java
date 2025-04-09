@@ -309,8 +309,6 @@ public class BoxHandling {
 			case "travel":
 				editBox(box, EditBoxKeys.HAS_COLLISION, "true");
 				editBox(box, EditBoxKeys.TEXTURE, "invisible");
-				// Should also manually add room ID, X and Y positions (in this order)
-				// Effect should look like: {travel, 1, 500, 20}
 				break;
 		}
 	}
