@@ -3,15 +3,13 @@ package com.ded.misle.world;
 import static com.ded.misle.world.RoomManager.Room.*;
 
 public class RoomManager {
-    public enum Room {
-        VOID(0),
-        TUANI_CITY(1),
-        TUANI_HOUSE_1(2),
-        TUANI_1(3),
-        TUANI_2(4),
+    public static Room VOID = new Room(0);
+    public static Room TUANI_CITY = new Room(1);
+    public static Room TUANI_HOUSE_1 = new Room(2);
+    public static Room TUANI_1 = new Room(3);
+    public static Room TUANI_2 = new Room(4);
 
-        ;
-
+    public static class Room {
         public final int id;
 
         Room(int id) {

@@ -12,7 +12,7 @@ import java.util.concurrent.Callable;
 
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.SettingsManager.getPath;
-import static com.ded.misle.world.RoomManager.Room.TUANI_CITY;
+import static com.ded.misle.world.RoomManager.TUANI_CITY;
 import static com.ded.misle.world.RoomManager.roomIDToName;
 import static com.ded.misle.world.World.Background.GRASS;
 import static com.ded.misle.world.boxes.BoxHandling.*;
