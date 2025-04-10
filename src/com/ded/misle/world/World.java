@@ -25,7 +25,7 @@ public class World {
         setWorldBorders(worldWidth, worldHeight);
 
         this.room = RoomManager.roomIDToName(player.pos.getRoomID());
-        System.out.println("Loading room: " + this.room);
+        System.out.println("Loading room: " + this.room.name);
 
         player.pos.world = this;
     }

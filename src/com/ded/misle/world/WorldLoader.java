@@ -12,20 +12,19 @@ import java.util.concurrent.Callable;
 
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.SettingsManager.getPath;
-import static com.ded.misle.world.RoomManager.TUANI_CITY;
-import static com.ded.misle.world.RoomManager.roomIDToName;
+import static com.ded.misle.world.RoomManager.*;
 import static com.ded.misle.world.World.Background.GRASS;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 
 public class WorldLoader {
 	public static void loadBoxes() {
 		World world = null;
-		RoomManager.Room room = roomIDToName(player.pos.getRoomID());
-		room = roomIDToName(TUANI_CITY.id); // TEMPORARILY FORCING TUANI_CITY
+		RoomManager.Room room;
+		room = findRoom("TUANI_CITY"); // TEMPORARILY FORCING TUANI_CITY
         assert room != null;
 
 		Path basePath = getPath().resolve("resources/worlds/");
-        Path fullPath = basePath.resolve(room + ".png");
+        Path fullPath = basePath.resolve(room.name + ".png");
 		BufferedImage roomImage;
 		try {
 			roomImage = ImageIO.read(fullPath.toFile());
