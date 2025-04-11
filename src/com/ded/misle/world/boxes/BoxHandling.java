@@ -24,7 +24,9 @@ import static com.ded.misle.world.npcs.NPC.getInteractableNPCs;
 public class BoxHandling {
 
 	private static final List<Box> boxes = new ArrayList<>();
-	private static final List<String> presetsWithSides = List.of(new String[]{"wall_default"});
+	private static final List<String> presetsWithSides = List.of(new String[]{
+		"wall_default"
+	});
 	public static int maxLevel = 19;
 	private static final List<Box>[] cachedBoxes = new ArrayList[maxLevel + 1];
 	public enum LineAddBoxModes {

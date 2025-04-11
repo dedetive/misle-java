@@ -52,6 +52,8 @@ public class WorldLoader {
 			}
 		}
 
+		fixSides();
+
 
 //		switch (room) {
 //			case VOID -> {
@@ -271,6 +273,61 @@ public class WorldLoader {
 	private static final Map<Integer, Callable<Box>> RGBToBox = Map.of(
 		0xC4C4C4, () -> addBox("wall_default")
     );
+
+	private static void fixSides() {
+		World world = player.pos.world;
+		int worldWidth = world.width;
+		int worldHeight = world.height;
+
+		for (int x = 0; x < worldWidth; x++) {
+			for (int y = 0; y < worldHeight; y++) {
+				Box box = world.grid[x][y];
+				if (box == null) continue;
+				String textureName = box.textureName;
+				String normalizedName = textureName.substring(0, textureName.indexOf("."));
+
+				boolean hasSides = checkIfPresetHasSides(normalizedName);
+				if (hasSides) {
+					String sides = "";
+					Box[][] b = new Box[3][3];
+					for (int i = 0; i < 3; i++) {
+						for (int j = 0; j < 3; j++) {
+							try {
+								b[i][j] = world.grid[i + box.getX() - 1][j + box.getY() - 1];
+							} catch (ArrayIndexOutOfBoundsException ignored) {}
+						}
+					}
+
+
+					if (!isSameTexture(b[0][1], box) &&
+						!isSameTexture(b[1][0], box) &&
+						!isSameTexture(b[1][2], box) &&
+						!isSameTexture(b[2][1], box)) {
+
+						sides = ".WASD";
+					}
+
+					editBox(box, EditBoxKeys.TEXTURE, normalizedName + sides);
+				}
+
+			}
+		}
+	}
+
+	private static String normalizeTextureName(Box box) {
+		int index = (box.textureName.indexOf("."));
+		if (index == -1) index = box.textureName.length();
+		return box.textureName.substring(0, index);
+	}
+
+	private static boolean isSameTexture(Box target, Box box) {
+		if (target == null) return false;
+
+		String normalizedName = normalizeTextureName(box);
+		String normalizedTarget = normalizeTextureName(target);
+
+        return normalizedTarget.equals(normalizedName);
+	}
 
 	public static void unloadBoxes() {
 		clearAllBoxes();
