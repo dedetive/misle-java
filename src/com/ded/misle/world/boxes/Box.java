@@ -42,7 +42,7 @@ public class Box {
 	private int worldY;
 
 	private Color color;
-	private String texture;
+	public String textureName;
 	private boolean hasCollision;
 	private double boxScaleHorizontal;
 	private double boxScaleVertical;
@@ -94,7 +94,7 @@ public class Box {
 		World world = player.pos.world;
 		world.setPos(this, worldX, worldY, false);
 		this.color = color;
-		this.texture = texture;
+		this.textureName = texture;
 		this.hasCollision = hasCollision;
 		this.boxScaleHorizontal = boxScaleHorizontal;
 		this.boxScaleVertical = boxScaleVertical;
@@ -111,7 +111,7 @@ public class Box {
 		World world = player.pos.world;
 		world.setPos(this, worldX, worldY, false);
 		this.color = defaultBoxColor;
-		this.texture = "solid";
+		this.textureName = "solid";
 		this.hasCollision = false;
 		this.boxScaleHorizontal = 1;
 		this.boxScaleVertical = 1;
@@ -135,15 +135,15 @@ public class Box {
 		int screenY = (int) (scaledY - cameraOffsetY);
 
 		// Draw the box with the scaled position and tileSize
-		if (Objects.equals(this.texture, "solid")) {
+		if (Objects.equals(this.textureName, "solid")) {
 			g2d.setColor(color);
 			Rectangle solidBox = new Rectangle(screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical));
 			drawRotatedRect(g2d, solidBox, this.rotation);
-		} else if (texture.equals("invisible")) {
+		} else if (textureName.equals("invisible")) {
 			;
-        } else if (BoxHandling.checkIfPresetHasSides(texture.split("\\.")[0])) {
+        } else if (BoxHandling.checkIfPresetHasSides(textureName.split("\\.")[0])) {
 			// Split texture once and reuse the result
-			String[] textureParts = texture.split("\\.");
+			String[] textureParts = textureName.split("\\.");
 			String textureName = textureParts[0];
 			String textureExtra = "";
 
@@ -195,8 +195,8 @@ public class Box {
 				// This is fine and not an error; IndexOutOfBounds here mean object has no sides and thus is base image
 			}
 		} else {
-			if (texture.contains("@")) {
-				texture = texture.replace("@", "");
+			if (textureName.contains("@")) {
+				textureName = textureName.replace("@", "");
 			}
 			drawRotatedImage(g2d, this.getTexture(), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
 		}
@@ -295,7 +295,7 @@ public class Box {
 	}
 
 	public void setTexture(String texture) {
-		this.texture = texture;
+		this.textureName = texture;
 	}
 
 	// EFFECTS
@@ -396,7 +396,7 @@ public class Box {
 	}
 
 	public BufferedImage getTexture() {
-		String fileName = this.texture + ".png";
+		String fileName = this.textureName + ".png";
 		Path fullPath = getPath().resolve("resources/images/boxes/").resolve(fileName);
 
 		// Only reload the texture if the cached texture doesn't match the current texture
@@ -520,7 +520,7 @@ public class Box {
 			multiplier = -1;
 		}
 
-		if (Objects.equals(this.texture, "chest")) {
+		if (Objects.equals(this.textureName, "chest")) {
 			this.setTexture("chest_open");
 		}
 
@@ -531,7 +531,7 @@ public class Box {
 
 		Timer timer = new Timer((int) (delay * 1.5), e -> {
 			editBox(droppedItem, EditBoxKeys.COLLECTIBLE, "true");
-			if (Objects.equals(this.texture, "chest_open")) {
+			if (Objects.equals(this.textureName, "chest_open")) {
 				this.setTexture("chest");
 			}
 		});
