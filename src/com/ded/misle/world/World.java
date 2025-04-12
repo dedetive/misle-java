@@ -66,6 +66,17 @@ public class World {
         }
     }
 
+    public Box[][] getNeighborhood(int centerX, int centerY, int radius) {
+        Box[][] b = new Box[radius][radius];
+        for (int i = 0; i < radius; i++) {
+            for (int j = 0; j < radius; j++) {
+                try {
+                    b[i][j] = this.grid[i + centerX - radius / 2][j + centerY - radius / 2];
+                } catch (ArrayIndexOutOfBoundsException ignored) {}
+            }
+        }
+        return b;
+    }
 
     public enum Background {
         GRASS(createDummyBox(), new Runnable() {

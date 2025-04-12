@@ -290,13 +290,7 @@ public class WorldLoader {
 				boolean hasSides = checkIfPresetHasSides(normalizedName);
 				if (hasSides) {
 					b = new Box[3][3];
-					for (int i = 0; i < 3; i++) {
-						for (int j = 0; j < 3; j++) {
-							try {
-								b[i][j] = world.grid[i + currentBox.getX() - 1][j + currentBox.getY() - 1];
-							} catch (ArrayIndexOutOfBoundsException ignored) {}
-						}
-					}
+					b = world.getNeighborhood(currentBox.getX(), currentBox.getY(), 3);
 
                     String corners = ".WASD";
                     String sides = ".WASD";
