@@ -306,10 +306,10 @@ public class WorldLoader {
 					sides = checkSide(EAST, sides, "S");
 					sides = checkSide(SOUTH, sides, "D");
 
-					corners = checkCorner(NORTHWEST, NORTH, WEST, corners, "W");
-					corners = checkCorner(NORTHEAST, NORTH, EAST, corners, "A");
-					corners = checkCorner(SOUTHWEST, SOUTH, WEST, corners, "D");
-					corners = checkCorner(SOUTHEAST, SOUTH, EAST, corners, "S");
+					corners = checkCorner(NORTHWEST, corners, "W");
+					corners = checkCorner(NORTHEAST, corners, "A");
+					corners = checkCorner(SOUTHWEST, corners, "D");
+					corners = checkCorner(SOUTHEAST, corners, "S");
 
 					editBox(currentBox, EditBoxKeys.TEXTURE, normalizedName + sides + corners);
 				}
@@ -322,10 +322,11 @@ public class WorldLoader {
 		return side;
 	}
 
-	private static String checkCorner(SideGridDirection cornerDirection, SideGridDirection adjacent1, SideGridDirection adjacent2, String corner, String toReplace) {
+	private static String checkCorner(SideGridDirection cornerDirection, String corner, String toReplace) {
 		if (isSameTexture(cornerDirection)) return corner.replaceFirst(toReplace, "");
-		if (!isSameTexture(adjacent1)) return corner.replaceFirst(toReplace, "");
-		if (!isSameTexture(adjacent2)) return corner.replaceFirst(toReplace, "");
+		for (SideGridDirection direction : cornerDirection.breakdown) {
+			if (!isSameTexture(direction)) return corner.replaceFirst(toReplace, "");
+		}
 		return corner;
 	}
 
@@ -333,24 +334,26 @@ public class WorldLoader {
 	private static Box currentBox;
 
 	enum SideGridDirection {
-		NORTHWEST(0, 0),
-		NORTH(0, 1),
-		NORTHEAST(0, 2),
-		WEST(1, 0),
-		CENTER(1, 1),
-		EAST(1, 2),
-		SOUTHWEST(2, 0),
-		SOUTH(2, 1),
-		SOUTHEAST(2, 2),
+		NORTH(0, 1, new SideGridDirection[]{}),
+		WEST(1, 0, new SideGridDirection[]{}),
+		CENTER(1, 1, new SideGridDirection[]{}),
+		EAST(1, 2, new SideGridDirection[]{}),
+		SOUTH(2, 1, new SideGridDirection[]{}),
+		NORTHWEST(0, 0, new SideGridDirection[]{NORTH, WEST}),
+		NORTHEAST(0, 2, new SideGridDirection[]{NORTH, EAST}),
+		SOUTHWEST(2, 0, new SideGridDirection[]{SOUTH, WEST}),
+		SOUTHEAST(2, 2, new SideGridDirection[]{SOUTH, EAST}),
 
 		;
 
 		final int x;
 		final int y;
+		final SideGridDirection[] breakdown;
 
-		SideGridDirection(int x, int y) {
+		SideGridDirection(int x, int y, SideGridDirection[] breakdown) {
 			this.x = x;
 			this.y = y;
+			this.breakdown = breakdown;
 		}
 	}
 
