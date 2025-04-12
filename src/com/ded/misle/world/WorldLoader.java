@@ -282,9 +282,9 @@ public class WorldLoader {
 
 		for (int x = 0; x < worldWidth; x++) {
 			for (int y = 0; y < worldHeight; y++) {
-				Box box = world.grid[x][y];
-				if (box == null) continue;
-				String textureName = box.textureName;
+				currentBox = world.grid[x][y];
+				if (currentBox == null) continue;
+				String textureName = currentBox.textureName;
 				String normalizedName = textureName.substring(0, textureName.indexOf("."));
 
 				boolean hasSides = checkIfPresetHasSides(normalizedName);
@@ -294,21 +294,21 @@ public class WorldLoader {
 					for (int i = 0; i < 3; i++) {
 						for (int j = 0; j < 3; j++) {
 							try {
-								b[i][j] = world.grid[i + box.getX() - 1][j + box.getY() - 1];
+								b[i][j] = world.grid[i + currentBox.getX() - 1][j + currentBox.getY() - 1];
 							} catch (ArrayIndexOutOfBoundsException ignored) {}
 						}
 					}
 
 
-					if (!isSameTexture(box, NORTH) &&
-						!isSameTexture(box, WEST) &&
-						!isSameTexture(box, EAST) &&
-						!isSameTexture(box, SOUTH)) {
+					if (!isSameTexture(NORTH) &&
+						!isSameTexture(WEST) &&
+						!isSameTexture(EAST) &&
+						!isSameTexture(SOUTH)) {
 
 						sides = ".WASD";
 					}
 
-					editBox(box, EditBoxKeys.TEXTURE, normalizedName + sides);
+					editBox(currentBox, EditBoxKeys.TEXTURE, normalizedName + sides);
 				}
 
 			}
@@ -316,6 +316,7 @@ public class WorldLoader {
 	}
 
 	private static Box[][] b = new Box[3][3];
+	private static Box currentBox;
 
 	enum SideGridDirection {
 		NORTHWEST(0, 0),
@@ -345,12 +346,12 @@ public class WorldLoader {
 		return box.textureName.substring(0, index);
 	}
 
-	private static boolean isSameTexture(Box box, SideGridDirection direction) {
+	private static boolean isSameTexture(SideGridDirection direction) {
 		Box target = b[direction.x][direction.y];
 
 		if (target == null) return false;
 
-		String normalizedName = normalizeTextureName(box);
+		String normalizedName = normalizeTextureName(currentBox);
 		String normalizedTarget = normalizeTextureName(target);
 
 		return normalizedTarget.equals(normalizedName);
