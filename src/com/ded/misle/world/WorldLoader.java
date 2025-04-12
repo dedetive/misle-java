@@ -22,10 +22,10 @@ public class WorldLoader {
 		World world = null;
 		RoomManager.Room room;
 		room = findRoom("TUANI_CITY"); // TEMPORARILY FORCING TUANI_CITY
-        assert room != null;
+		assert room != null;
 
 		Path basePath = getPath().resolve("resources/worlds/");
-        Path fullPath = basePath.resolve(room.name + ".png");
+		Path fullPath = basePath.resolve(room.name + ".png");
 		BufferedImage roomImage;
 		try {
 			roomImage = ImageIO.read(fullPath.toFile());
@@ -45,11 +45,11 @@ public class WorldLoader {
 				Color color = new Color(roomImage.getRGB(x, y));
 				int rgb = color.getRGB() & 0xFFFFFF;
 
-                try {
+				try {
 					// Gets the box from pixel RGB and maps it to the image x and y
-                    Box box = RGBToBox.get(rgb).call();
+					Box box = RGBToBox.get(rgb).call();
 					box.setPos(x, y);
-                } catch (Exception ignored) {}
+				} catch (Exception ignored) {}
 			}
 		}
 
@@ -273,7 +273,7 @@ public class WorldLoader {
 
 	private static final Map<Integer, Callable<Box>> RGBToBox = Map.of(
 		0xC4C4C4, () -> addBox("wall_default")
-    );
+	);
 
 	private static void fixSides() {
 		World world = player.pos.world;
@@ -290,7 +290,7 @@ public class WorldLoader {
 				boolean hasSides = checkIfPresetHasSides(normalizedName);
 				if (hasSides) {
 					String sides = "";
-					Box[][] b = new Box[3][3];
+					b = new Box[3][3];
 					for (int i = 0; i < 3; i++) {
 						for (int j = 0; j < 3; j++) {
 							try {
@@ -300,10 +300,10 @@ public class WorldLoader {
 					}
 
 
-					if (!isSameTexture(b, box, NORTH) &&
-						!isSameTexture(b, box, WEST) &&
-						!isSameTexture(b, box, EAST) &&
-						!isSameTexture(b, box, SOUTH)) {
+					if (!isSameTexture(box, NORTH) &&
+						!isSameTexture(box, WEST) &&
+						!isSameTexture(box, EAST) &&
+						!isSameTexture(box, SOUTH)) {
 
 						sides = ".WASD";
 					}
@@ -314,6 +314,8 @@ public class WorldLoader {
 			}
 		}
 	}
+
+	private static Box[][] b = new Box[3][3];
 
 	enum SideGridDirection {
 		NORTHWEST(0, 0),
@@ -343,15 +345,15 @@ public class WorldLoader {
 		return box.textureName.substring(0, index);
 	}
 
-	private static boolean isSameTexture(Box[][] grid, Box box, SideGridDirection direction) {
-		Box target = grid[direction.x][direction.y];
+	private static boolean isSameTexture(Box box, SideGridDirection direction) {
+		Box target = b[direction.x][direction.y];
 
 		if (target == null) return false;
 
 		String normalizedName = normalizeTextureName(box);
 		String normalizedTarget = normalizeTextureName(target);
 
-        return normalizedTarget.equals(normalizedName);
+		return normalizedTarget.equals(normalizedName);
 	}
 
 	public static void unloadBoxes() {
