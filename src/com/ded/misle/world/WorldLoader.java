@@ -1,6 +1,5 @@
 package com.ded.misle.world;
 
-import com.ded.misle.renderer.DialogRenderer;
 import com.ded.misle.world.boxes.Box;
 
 import javax.imageio.ImageIO;
@@ -290,7 +289,6 @@ public class WorldLoader {
 
 				boolean hasSides = checkIfPresetHasSides(normalizedName);
 				if (hasSides) {
-					String sides = "";
 					b = new Box[3][3];
 					for (int i = 0; i < 3; i++) {
 						for (int j = 0; j < 3; j++) {
@@ -300,22 +298,35 @@ public class WorldLoader {
 						}
 					}
 
-					sides = ".WASD";
+                    String corners = ".WASD";
+                    String sides = ".WASD";
 
 					sides = checkSide(NORTH, sides, "A");
 					sides = checkSide(WEST, sides, "W");
 					sides = checkSide(EAST, sides, "S");
 					sides = checkSide(SOUTH, sides, "D");
 
-					editBox(currentBox, EditBoxKeys.TEXTURE, normalizedName + sides);
+					corners = checkCorner(NORTHWEST, NORTH, WEST, corners, "W");
+					corners = checkCorner(NORTHEAST, NORTH, EAST, corners, "A");
+					corners = checkCorner(SOUTHWEST, SOUTH, WEST, corners, "D");
+					corners = checkCorner(SOUTHEAST, SOUTH, EAST, corners, "S");
+
+					editBox(currentBox, EditBoxKeys.TEXTURE, normalizedName + sides + corners);
 				}
 			}
 		}
 	}
 
-	private static String checkSide(SideGridDirection direction, String sides, String toReplace) {
-		if (isSameTexture(direction)) return sides.replaceFirst(toReplace, "");
-		return sides;
+	private static String checkSide(SideGridDirection direction, String side, String toReplace) {
+		if (isSameTexture(direction)) return side.replaceFirst(toReplace, "");
+		return side;
+	}
+
+	private static String checkCorner(SideGridDirection cornerDirection, SideGridDirection adjacent1, SideGridDirection adjacent2, String corner, String toReplace) {
+		if (isSameTexture(cornerDirection)) return corner.replaceFirst(toReplace, "");
+		if (!isSameTexture(adjacent1)) return corner.replaceFirst(toReplace, "");
+		if (!isSameTexture(adjacent2)) return corner.replaceFirst(toReplace, "");
+		return corner;
 	}
 
 	private static Box[][] b = new Box[3][3];
