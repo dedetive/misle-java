@@ -173,6 +173,7 @@ public class Box {
 					String[] eachSide = sides.split("");
 
 					for (String side : eachSide) {
+						if (side.isEmpty()) continue;
 						drawRotatedImage(g2d, getTexture(textureName + "_overlayW"), screenX, screenY,
 								(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), rotationInstruction.get(side) + this.rotation);
 					}
