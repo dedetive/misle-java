@@ -299,18 +299,15 @@ public class WorldLoader {
 						}
 					}
 
+					sides = ".WASD";
 
-					if (!isSameTexture(NORTH) &&
-						!isSameTexture(WEST) &&
-						!isSameTexture(EAST) &&
-						!isSameTexture(SOUTH)) {
-
-						sides = ".WASD";
-					}
+                    if (isSameTexture(NORTH)) sides = sides.replaceFirst("A", "");
+                    if (isSameTexture(WEST)) sides = sides.replaceFirst("W", "");
+                    if (isSameTexture(EAST)) sides = sides.replaceFirst("S", "");
+					if (isSameTexture(SOUTH)) sides = sides.replaceFirst("D", "");
 
 					editBox(currentBox, EditBoxKeys.TEXTURE, normalizedName + sides);
 				}
-
 			}
 		}
 	}
