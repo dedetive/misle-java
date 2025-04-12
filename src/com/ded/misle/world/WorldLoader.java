@@ -14,6 +14,7 @@ import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.world.RoomManager.*;
 import static com.ded.misle.world.World.Background.GRASS;
+import static com.ded.misle.world.WorldLoader.SideGridDirection.*;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 
 public class WorldLoader {
@@ -299,10 +300,10 @@ public class WorldLoader {
 					}
 
 
-					if (!isSameTexture(b[0][1], box) &&
-						!isSameTexture(b[1][0], box) &&
-						!isSameTexture(b[1][2], box) &&
-						!isSameTexture(b[2][1], box)) {
+					if (!isSameTexture(b, box, NORTH) &&
+						!isSameTexture(b, box, WEST) &&
+						!isSameTexture(b, box, EAST) &&
+						!isSameTexture(b, box, SOUTH)) {
 
 						sides = ".WASD";
 					}
@@ -314,13 +315,37 @@ public class WorldLoader {
 		}
 	}
 
+	enum SideGridDirection {
+		NORTHWEST(0, 0),
+		NORTH(0, 1),
+		NORTHEAST(0, 2),
+		WEST(1, 0),
+		CENTER(1, 1),
+		EAST(1, 2),
+		SOUTHWEST(2, 0),
+		SOUTH(2, 1),
+		SOUTHEAST(2, 2),
+
+		;
+
+		final int x;
+		final int y;
+
+		SideGridDirection(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+	}
+
 	private static String normalizeTextureName(Box box) {
 		int index = (box.textureName.indexOf("."));
 		if (index == -1) index = box.textureName.length();
 		return box.textureName.substring(0, index);
 	}
 
-	private static boolean isSameTexture(Box target, Box box) {
+	private static boolean isSameTexture(Box[][] grid, Box box, SideGridDirection direction) {
+		Box target = grid[direction.x][direction.y];
+
 		if (target == null) return false;
 
 		String normalizedName = normalizeTextureName(box);
