@@ -1,5 +1,6 @@
 package com.ded.misle.world;
 
+import com.ded.misle.renderer.DialogRenderer;
 import com.ded.misle.world.boxes.Box;
 
 import javax.imageio.ImageIO;
@@ -301,15 +302,20 @@ public class WorldLoader {
 
 					sides = ".WASD";
 
-                    if (isSameTexture(NORTH)) sides = sides.replaceFirst("A", "");
-                    if (isSameTexture(WEST)) sides = sides.replaceFirst("W", "");
-                    if (isSameTexture(EAST)) sides = sides.replaceFirst("S", "");
-					if (isSameTexture(SOUTH)) sides = sides.replaceFirst("D", "");
+					sides = checkSide(NORTH, sides, "A");
+					sides = checkSide(WEST, sides, "W");
+					sides = checkSide(EAST, sides, "S");
+					sides = checkSide(SOUTH, sides, "D");
 
 					editBox(currentBox, EditBoxKeys.TEXTURE, normalizedName + sides);
 				}
 			}
 		}
+	}
+
+	private static String checkSide(SideGridDirection direction, String sides, String toReplace) {
+		if (isSameTexture(direction)) return sides.replaceFirst(toReplace, "");
+		return sides;
 	}
 
 	private static Box[][] b = new Box[3][3];
