@@ -54,6 +54,8 @@ public class Box {
 	private boolean interactsWithPlayer;
 	public boolean isMoving = false;
 	private double visualRotation = 0;
+	public double visualOffsetX = 0;
+	public double visualOffsetY = 0;
 
 	private static BufferedImage cachedTexture1;
 	private static String cachedTexture1Name;
@@ -131,8 +133,8 @@ public class Box {
 		double scaledY = worldY * tileSize;
 
 		// Apply the camera offset to the scaled position
-		int screenX = (int) (scaledX - cameraOffsetX);
-		int screenY = (int) (scaledY - cameraOffsetY);
+		int screenX = (int) (scaledX - cameraOffsetX + this.visualOffsetX * tileSize);
+		int screenY = (int) (scaledY - cameraOffsetY + this.visualOffsetY * tileSize);
 
 		// Draw the box with the scaled position and tileSize
 		if (Objects.equals(this.textureName, "solid")) {
