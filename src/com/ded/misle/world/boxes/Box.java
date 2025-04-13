@@ -133,8 +133,8 @@ public class Box {
 		double scaledY = worldY * tileSize;
 
 		// Apply the camera offset to the scaled position
-		int screenX = (int) (scaledX - cameraOffsetX + this.visualOffsetX * tileSize);
-		int screenY = (int) (scaledY - cameraOffsetY + this.visualOffsetY * tileSize);
+		int screenX = (int) (scaledX - cameraOffsetX - this.visualOffsetX * tileSize);
+		int screenY = (int) (scaledY - cameraOffsetY - this.visualOffsetY * tileSize);
 
 		// Draw the box with the scaled position and tileSize
 		if (Objects.equals(this.textureName, "solid")) {
