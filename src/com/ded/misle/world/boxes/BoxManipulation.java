@@ -7,9 +7,6 @@ import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.core.GamePanel.*;
-import static com.ded.misle.world.boxes.BoxHandling.getCachedBoxes;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.*;
 
 public class BoxManipulation {
@@ -109,7 +106,7 @@ public class BoxManipulation {
 			int count = 0;
 			public void actionPerformed(ActionEvent evt) {
 				if (count < frames) {
-					box.setRotation(box.getRotation() + dangle);
+					box.setVisualRotation(box.getVisualRotation() + dangle);
 					count++;
 				} else {
 					((Timer) evt.getSource()).stop();  // Stop the timer when done

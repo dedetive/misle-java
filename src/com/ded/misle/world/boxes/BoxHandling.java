@@ -216,7 +216,7 @@ public class BoxHandling {
 				box.setEffectReason(value);
 				break;
 			case ROTATION:
-				box.setRotation(Double.parseDouble(value));
+				box.setVisualRotation(Double.parseDouble(value));
 				break;
 			case INTERACTS_WITH_PLAYER:
 				box.setInteractsWithPlayer(Boolean.parseBoolean(value));

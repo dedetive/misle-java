@@ -86,7 +86,7 @@ public class PlayingRenderer {
             for (NPC npc : selectedNPCs) {
                 for (int i = 0; i <= 270; i += 90) {
                     drawRotatedImage(g2d, getTexture("wall_default_overlayW"), npc.getX() * scale - player.pos.getCameraOffsetX(), npc.getY() * scale - player.pos.getCameraOffsetY(),
-                        (int) (tileSize * npc.getBoxScaleHorizontal()), (int) (tileSize * npc.getBoxScaleVertical()), i + npc.getRotation());
+                        (int) (tileSize * npc.getBoxScaleHorizontal()), (int) (tileSize * npc.getBoxScaleVertical()), i + npc.getVisualRotation());
                 }
             }
         } catch (ConcurrentModificationException e) {
@@ -100,7 +100,7 @@ public class PlayingRenderer {
         // Draw the player above every box
 //        g2d.setColor(player.getColor());
 //        Rectangle playerRect = new Rectangle(playerScreenX, playerScreenY, (int) player.getBoxScaleHorizontal(), (int) player.getBoxScaleVertical());
-//        drawRotatedRect(g2d, playerRect, player.pos.getRotation()); // CUBE PLAYER
+//        drawRotatedRect(g2d, playerRect, player.pos.getVisualRotation()); // CUBE PLAYER
 
         long precision = 50;
         PlayerStats.Direction horizontalDirection = player.stats.getCurrentHorizontalDirection(precision);

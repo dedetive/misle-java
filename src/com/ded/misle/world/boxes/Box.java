@@ -48,12 +48,12 @@ public class Box {
 	private double boxScaleVertical;
 	private String[] effect;
 	private long lastDamageTime = 0;
-	private double rotation = 0;
 	private static ArrayList<Box> selectedBoxes;
 	private PhysicsEngine.ObjectType objectType;
 	private PlayerAttributes.KnockbackDirection knockbackDirection;
 	private boolean interactsWithPlayer;
 	public boolean isMoving = false;
+	private double visualRotation = 0;
 
 	private static BufferedImage cachedTexture1;
 	private static String cachedTexture1Name;
@@ -99,7 +99,7 @@ public class Box {
 		this.boxScaleHorizontal = boxScaleHorizontal;
 		this.boxScaleVertical = boxScaleVertical;
 		this.effect = effect;
-		this.rotation = rotation;
+		this.visualRotation = rotation;
 		this.objectType = objectType;
 		this.knockbackDirection = NONE;
 		this.interactsWithPlayer = interactsWithPlayer;
@@ -116,7 +116,7 @@ public class Box {
 		this.boxScaleHorizontal = 1;
 		this.boxScaleVertical = 1;
 		this.effect = new String[]{""};
-		this.rotation = 0;
+		this.visualRotation = 0;
 		this.objectType = BOX;
 		this.knockbackDirection = NONE;
 		this.interactsWithPlayer = true;
@@ -138,7 +138,7 @@ public class Box {
 		if (Objects.equals(this.textureName, "solid")) {
 			g2d.setColor(color);
 			Rectangle solidBox = new Rectangle(screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical));
-			drawRotatedRect(g2d, solidBox, this.rotation);
+			drawRotatedRect(g2d, solidBox, this.visualRotation);
 		} else if (textureName.equals("invisible")) {
 			;
         } else if (BoxHandling.checkIfPresetHasSides(textureName.split("\\.")[0])) {
@@ -152,7 +152,7 @@ public class Box {
 					textureExtra = textureName.substring(textureName.indexOf("@") + 1);
 					textureName = textureName.substring(0, textureName.indexOf("@"));
 				} else {
-					drawRotatedImage(g2d, getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
+					drawRotatedImage(g2d, getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.visualRotation);
 				}
 
 				// Draw extras if any
@@ -160,11 +160,11 @@ public class Box {
 					if (textureParts[3].equals("@")) {
 						switch (textureExtra) {
 							case "Deco":
-								drawRotatedImage(g2d, getTexture(textureName + textureExtra), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
+								drawRotatedImage(g2d, getTexture(textureName + textureExtra), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.visualRotation);
 						}
 					}
 				} else {
-					drawRotatedImage(g2d, getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
+					drawRotatedImage(g2d, getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.visualRotation);
 				}
 
 				// Draw sides if they exist
@@ -175,7 +175,7 @@ public class Box {
 					for (String side : eachSide) {
 						if (side.isEmpty()) continue;
 						drawRotatedImage(g2d, getTexture(textureName + "_overlayW"), screenX, screenY,
-								(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), rotationInstruction.get(side) + this.rotation);
+								(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), rotationInstruction.get(side) + this.visualRotation);
 					}
 				}
 
@@ -188,7 +188,7 @@ public class Box {
 							continue;
 						}
 						drawRotatedImage(g2d, getTexture(textureName + "_overlayC"), screenX, screenY,
-								(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), rotationInstruction.get(corner) + this.rotation);
+								(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), rotationInstruction.get(corner) + this.visualRotation);
 					}
 				}
 
@@ -199,7 +199,7 @@ public class Box {
 			if (textureName.contains("@")) {
 				textureName = textureName.replace("@", "");
 			}
-			drawRotatedImage(g2d, this.getTexture(), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.rotation);
+			drawRotatedImage(g2d, this.getTexture(), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.visualRotation);
 		}
 
 		try {
@@ -207,7 +207,7 @@ public class Box {
 				for (int i = 0; i <= 270; i += 90) {
 					System.out.println(i);
 					drawRotatedImage(g2d, getTexture("wall_default_overlayW"), screenX, screenY,
-							(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), i + this.rotation);
+							(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), i + this.visualRotation);
 				}
 			}
 		} catch (NullPointerException e) {
@@ -266,9 +266,9 @@ public class Box {
 		return boxScaleVertical;
 	}
 
-	public void setRotation(double rotation) { this.rotation = rotation; }
+	public void setVisualRotation(double visualRotation) { this.visualRotation = visualRotation; }
 
-	public double getRotation() { return rotation; }
+	public double getVisualRotation() { return visualRotation; }
 
 	// BOX CHARACTERISTICS
 

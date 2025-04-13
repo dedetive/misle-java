@@ -37,7 +37,7 @@ public class Enemy extends HPBox {
         this.setBoxScaleHorizontal(1);
         this.setBoxScaleVertical(1);
         this.setEffect(new String[]{""});
-        this.setRotation(0);
+        this.setVisualRotation(0);
         this.setInteractsWithPlayer(true);
         this.magnification = magnification;
 
