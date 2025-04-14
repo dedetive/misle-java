@@ -80,24 +80,26 @@ public class PhysicsEngine {
 	}
 
 	private static void handleEffect(Box box, Box responsibleBox, PlayerAttributes.KnockbackDirection direction) {
-		// Touching box gets effect
-		if (responsibleBox instanceof HPBox && !box.getEffect().isEmpty()) {
-			if (Objects.equals(box.getEffect(), "damage")) {
-				box.setKnockbackDirection(direction);
+		try {
+			// Touching box gets effect
+			if (responsibleBox instanceof HPBox && !box.getEffect().isEmpty()) {
+				if (Objects.equals(box.getEffect(), "damage")) {
+					box.setKnockbackDirection(direction);
+				}
+				box.handleEffect((HPBox) responsibleBox);
 			}
-			box.handleEffect((HPBox) responsibleBox);
-		}
-		// Responsible box gets effect
-		if (box instanceof HPBox && !responsibleBox.getEffect().isEmpty()) {
-			if (Objects.equals(responsibleBox.getEffect(), "damage")) {
-				responsibleBox.setKnockbackDirection(direction.getOppositeDirection());
+			// Responsible box gets effect
+			if (box instanceof HPBox && !responsibleBox.getEffect().isEmpty()) {
+				if (Objects.equals(responsibleBox.getEffect(), "damage")) {
+					responsibleBox.setKnockbackDirection(direction.getOppositeDirection());
+				}
+				responsibleBox.handleEffect((HPBox) box);
 			}
-			responsibleBox.handleEffect((HPBox) box);
-		}
 
-		if (player.attr.getLastVelocityBox() != null) {
-			player.attr.setEnvironmentSpeedModifier(1.0); // Reset to default speed
-			player.attr.setLastVelocityBox(null); // Clear the last velocity box
-		}
+			if (player.attr.getLastVelocityBox() != null) {
+				player.attr.setEnvironmentSpeedModifier(1.0); // Reset to default speed
+				player.attr.setLastVelocityBox(null); // Clear the last velocity box
+			}
+		} catch (NullPointerException ignored) {}
 	}
 }
