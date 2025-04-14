@@ -428,11 +428,11 @@ public class Box {
 				BufferedImage texture = ImageIO.read(fullPath.toFile());
 				cachedTexture2.put(boxTextureName, texture); // Cache the loaded image
 			} catch (IOException e) {
-				e.printStackTrace();
+				System.out.println("Can't read Box texture input file: " + fullPath);
 				return null; // Return null if image fails to load
 			}
 		}
-		return cachedTexture2.get(boxTextureName); // Return the cached image
+		return cachedTexture2.get(boxTextureName); // Return the cached imageaddBox(BoxPreset.WALL_DEFAULT)
 	}
 
 	// EFFECT HANDLING
