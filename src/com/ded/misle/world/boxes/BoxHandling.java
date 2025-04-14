@@ -25,9 +25,6 @@ import static com.ded.misle.world.npcs.NPC.getInteractableNPCs;
 public class BoxHandling {
 
 	private static final List<Box> boxes = new ArrayList<>();
-	private static final List<BoxPreset> presetsWithSides = List.of(new BoxPreset[] {
-		BoxPreset.WALL_DEFAULT
-	});
 	public static int maxLevel = 19;
 	private static final List<Box>[] cachedBoxes = new ArrayList[maxLevel + 1];
 	public enum LineAddBoxModes {
@@ -78,7 +75,17 @@ public class BoxHandling {
 		box.setBoxScaleVertical(1);
 		boolean loaded = loadPreset(box, preset);
 		if (checkIfPresetHasSides(preset)) {
-			editBox(box, EditBoxKeys.TEXTURE, preset + ".");
+			editBox(box, EditBoxKeys.TEXTURE, box.textureName + ".");
+		}
+
+		if (hasExtra(preset)) {
+			String s = preset.toString();
+			int index = (s.lastIndexOf("_"));
+			char[] p = s.toCharArray();
+			p[index] = '@';
+			s = String.copyValueOf(p);
+			s = s.substring(0, index) + s.substring(index, index + 2).toUpperCase() + s.substring(index + 2).toLowerCase();
+			editLastBox(EditBoxKeys.TEXTURE, s);
 		}
 
 		if (loaded) {
@@ -108,17 +115,38 @@ public class BoxHandling {
 		MOUNTAIN_CHEST,
 		WALL_DEFAULT,
 		WALL_DEFAULT_DECO,
+		FLOOR_DEFAULT,
 		GRASS,
 		TRAVEL,
 
 		;
 	}
 
+	private static final List<BoxPreset> presetsWithSides = List.of(new BoxPreset[] {
+		BoxPreset.WALL_DEFAULT,
+		BoxPreset.FLOOR_DEFAULT,
+	});
+
+	public static boolean checkIfPresetHasSides(BoxPreset preset) {
+		String presetName = preset.toString();
+		if (hasExtra(preset)) {
+			return presetsWithSides.contains(BoxPreset.valueOf(presetName.substring(0, presetName.indexOf("_DECO"))));
+		}
+		return presetsWithSides.contains(preset);
+	}
+
+	public static boolean hasExtra(BoxPreset preset) {
+		BoxPreset[] presetsWithExtra = new BoxPreset[]{
+			BoxPreset.WALL_DEFAULT_DECO
+		};
+		return Arrays.stream(presetsWithExtra).anyMatch(boxPreset -> boxPreset == preset);
+	}
+
 	public static Box addBox(int x, int y, BoxPreset preset) {
 		boxes.add(new Box(x, y));
 		Box box = boxes.getLast();
 		loadPreset(box, preset);
-		if (checkIfPresetHasSides(preset)) {
+		if (hasExtra(preset)) {
 			String s = preset.toString();
 			int index = (s.lastIndexOf("_"));
 			char[] p = s.toCharArray();
@@ -152,14 +180,6 @@ public class BoxHandling {
 		}
 	}
 
-	public static boolean checkIfPresetHasSides(BoxPreset preset) {
-		String presetName = preset.toString();
-		if (presetName.contains("_DECO")) {
-			return presetsWithSides.contains(BoxPreset.valueOf(presetName.substring(0, presetName.indexOf("_DECO"))));
-		}
-		return presetsWithSides.contains(preset);
-	}
-
 	public static boolean loadPreset(Box box, BoxPreset preset) {
 		boolean loaded = true;
 
@@ -175,6 +195,9 @@ public class BoxHandling {
 				break;
 			case WALL_DEFAULT:
 				editBox(box, EditBoxKeys.HAS_COLLISION, "true");
+				editBox(box, EditBoxKeys.TEXTURE, "wall_default");
+				break;
+			case FLOOR_DEFAULT:
 				editBox(box, EditBoxKeys.TEXTURE, "wall_default");
 				break;
 			case GRASS:

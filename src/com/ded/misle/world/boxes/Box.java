@@ -143,7 +143,7 @@ public class Box {
 			drawRotatedRect(g2d, solidBox, this.visualRotation);
 		} else if (textureName.equals("invisible")) {
 			;
-        } else if (BoxHandling.checkIfPresetHasSides(BoxPreset.valueOf(textureName.split("\\.")[0]))) {
+        } else if (BoxHandling.checkIfPresetHasSides(BoxPreset.valueOf(textureName.toUpperCase().split("\\.")[0]))) {
 			// Split texture once and reuse the result
 			String[] textureParts = textureName.split("\\.");
 			String textureName = textureParts[0].toLowerCase();
