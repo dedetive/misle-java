@@ -8,6 +8,7 @@ import com.ded.misle.world.npcs.NPC;
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 
@@ -24,8 +25,8 @@ import static com.ded.misle.world.npcs.NPC.getInteractableNPCs;
 public class BoxHandling {
 
 	private static final List<Box> boxes = new ArrayList<>();
-	private static final List<String> presetsWithSides = List.of(new String[]{
-		"wall_default"
+	private static final List<BoxPreset> presetsWithSides = List.of(new BoxPreset[] {
+		BoxPreset.WALL_DEFAULT
 	});
 	public static int maxLevel = 19;
 	private static final List<Box>[] cachedBoxes = new ArrayList[maxLevel + 1];
@@ -70,7 +71,7 @@ public class BoxHandling {
 		return boxes.getLast();
 	}
 
-	public static Box addBox(String preset) {
+	public static Box addBox(BoxPreset preset) {
 		Box box = new Box();
 
 		box.setBoxScaleHorizontal(1);
@@ -102,23 +103,29 @@ public class BoxHandling {
 		return getEnemyBoxes().getLast();
 	}
 
-	/**
-	 *
-	 * Valid presets are:<br>
-	 * - spawnpoint<br>
-	 * - mountain_chest<br>
-	 * - wall_default<br>
-	 * - wall_default@Deco<br>
-	 * - grass
-	 * - travel
-	 *
-	 */
-	public static Box addBox(int x, int y, String preset) {
+	public enum BoxPreset {
+		SPAWNPOINT,
+		MOUNTAIN_CHEST,
+		WALL_DEFAULT,
+		WALL_DEFAULT_DECO,
+		GRASS,
+		TRAVEL,
+
+		;
+	}
+
+	public static Box addBox(int x, int y, BoxPreset preset) {
 		boxes.add(new Box(x, y));
 		Box box = boxes.getLast();
 		loadPreset(box, preset);
 		if (checkIfPresetHasSides(preset)) {
-			editLastBox(EditBoxKeys.TEXTURE, preset);
+			String s = preset.toString();
+			int index = (s.lastIndexOf("_"));
+			char[] p = s.toCharArray();
+			p[index] = '@';
+			s = String.copyValueOf(p);
+			s = s.substring(0, index) + s.substring(index, index + 2).toUpperCase() + s.substring(index + 2).toLowerCase();
+			editLastBox(EditBoxKeys.TEXTURE, s);
 		}
 		addBoxToCache(box);
 
@@ -145,35 +152,36 @@ public class BoxHandling {
 		}
 	}
 
-	public static boolean checkIfPresetHasSides(String preset) {
-		if (preset.contains("@")) {
-			return presetsWithSides.contains(preset.substring(0, preset.indexOf("@")));
+	public static boolean checkIfPresetHasSides(BoxPreset preset) {
+		String presetName = preset.toString();
+		if (presetName.contains("_DECO")) {
+			return presetsWithSides.contains(BoxPreset.valueOf(presetName.substring(0, presetName.indexOf("_DECO"))));
 		}
 		return presetsWithSides.contains(preset);
 	}
 
-	public static boolean loadPreset(Box box, String preset) {
+	public static boolean loadPreset(Box box, BoxPreset preset) {
 		boolean loaded = true;
 
 		switch (preset) {
-			case "spawnpoint":
+			case SPAWNPOINT:
 				editBox(box, EditBoxKeys.EFFECT, "{spawnpoint, -1}");
 				editBox(box, EditBoxKeys.TEXTURE, "spawnpoint");
 				break;
-			case "mountain_chest":
+			case BoxPreset.MOUNTAIN_CHEST:
 				editBox(box, EditBoxKeys.EFFECT, "{chest, 3, mountain}");
 				editBox(box, EditBoxKeys.HAS_COLLISION, "true");
 				editBox(box, EditBoxKeys.TEXTURE, "chest");
 				break;
-			case "wall_default":
+			case WALL_DEFAULT:
 				editBox(box, EditBoxKeys.HAS_COLLISION, "true");
 				editBox(box, EditBoxKeys.TEXTURE, "wall_default");
 				break;
-			case "grass":
+			case GRASS:
 				editBox(box, EditBoxKeys.HAS_COLLISION, "false");
 				editBox(box, EditBoxKeys.TEXTURE, "grass");
 				break;
-			case "travel":
+			case TRAVEL:
 				editBox(box, EditBoxKeys.HAS_COLLISION, "true");
 				editBox(box, EditBoxKeys.TEXTURE, "invisible");
 				break;

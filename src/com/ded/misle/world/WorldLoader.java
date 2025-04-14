@@ -272,7 +272,7 @@ public class WorldLoader {
 	}
 
 	private static final Map<Integer, Callable<Box>> RGBToBox = Map.of(
-		0xC4C4C4, () -> addBox("wall_default")
+		0xC4C4C4, () -> addBox(BoxPreset.WALL_DEFAULT)
 	);
 
 	private static void fixSides() {
@@ -287,7 +287,7 @@ public class WorldLoader {
 				String textureName = currentBox.textureName;
 				String normalizedName = textureName.substring(0, textureName.indexOf("."));
 
-				boolean hasSides = checkIfPresetHasSides(normalizedName);
+				boolean hasSides = checkIfPresetHasSides(BoxPreset.valueOf(normalizedName));
 				if (hasSides) {
 					b = new Box[3][3];
 					b = world.getNeighborhood(currentBox.getX(), currentBox.getY(), 3);

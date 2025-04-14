@@ -82,7 +82,7 @@ public class World {
         GRASS(createDummyBox(), new Runnable() {
             @Override
             public void run() {
-                loadPreset(GRASS.box, "grass");
+                loadPreset(GRASS.box, BoxPreset.GRASS);
             }
         }),
 
