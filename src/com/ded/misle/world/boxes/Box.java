@@ -147,6 +147,11 @@ public class Box {
 			// Split texture once and reuse the result
 			String[] textureParts = textureName.split("\\.");
 			String textureName = textureParts[0].toLowerCase();
+
+			// TODO
+			// This is temporary and I know this is a very bad approach. Please sanitize this later
+			if (Objects.equals(textureName, "floor_default")) textureName = "wall_default";
+
 			String textureExtra = "";
 
 			try {
