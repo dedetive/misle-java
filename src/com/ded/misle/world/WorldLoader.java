@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -20,36 +21,47 @@ import static com.ded.misle.world.boxes.BoxHandling.*;
 public class WorldLoader {
 	public static void loadBoxes() {
 		World world = null;
-		RoomManager.Room room;
+		Room room;
 		room = findRoom("TUANI_CITY"); // TEMPORARILY FORCING TUANI_CITY
 		assert room != null;
 
 		Path basePath = getPath().resolve("resources/worlds/");
-		Path fullPath = basePath.resolve(room.name + ".png");
-		BufferedImage roomImage;
-		try {
-			roomImage = ImageIO.read(fullPath.toFile());
-		} catch (IOException e) {
-			System.out.println(fullPath);
-			throw new RuntimeException(e);
+		int fileCount = room.fileNames.length;
+		Path[] fullPaths = new Path[fileCount];
+		BufferedImage[] roomImages = new BufferedImage[fileCount];
+
+		int i = 0;
+		// That mess reads all files contained within room.fileNames json and put them as images in roomImages
+		for (String fileName : room.fileNames) {
+			fullPaths[i] = basePath.resolve(fileName + ".png");
+			try {
+				roomImages[i] = ImageIO.read(fullPaths[i].toFile());
+			} catch (IOException e) {
+				System.out.println(fullPaths[i] + " is missing");
+				throw new RuntimeException(e);
+			}
+			i++;
 		}
 
 		// Set dimensions based on image dimensions
-		int worldWidth = roomImage.getWidth();
-		int worldHeight = roomImage.getHeight();
+		int worldWidth = roomImages[0].getWidth();
+		int worldHeight = roomImages[0].getHeight();
 		world = new World(worldWidth, worldHeight, GRASS);
 
 		// Read values and set as boxes
 		for (int x = 0; x < worldWidth; x++) {
 			for (int y = 0; y < worldHeight; y++) {
-				Color color = new Color(roomImage.getRGB(x, y));
-				int rgb = color.getRGB() & 0xFFFFFF;
+				for (int z = 0; z < fileCount; z++) {
+					Color color = new Color(roomImages[z].getRGB(x, y));
+					int rgb = color.getRGB() & 0xFFFFFF;
 
-				try {
-					// Gets the box from pixel RGB and maps it to the image x and y
-					Box box = RGBToBox.get(rgb).call();
-					box.setPos(x, y);
-				} catch (Exception ignored) {}
+					try {
+						// Gets the box from pixel RGB and maps it to the image x and y
+						Box box = RGBToBox.get(rgb).call();
+						box.setPos(x, y);
+					} catch (Exception ignored) {
+					}
+				}
 			}
 		}
 

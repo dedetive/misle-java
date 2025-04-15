@@ -1,9 +1,12 @@
 package com.ded.misle.world;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.function.Function;
 
 import static com.ded.misle.core.SettingsManager.getPath;
 
@@ -12,26 +15,54 @@ public class RoomManager {
     static {
         Path basePath = getPath().resolve("resources/worlds/");
 
-        // TEMPORARY ARRANGEMENT
-        // TODO: Change this to a text file with explicit order to ID mapping
-        // As it is, IDs are not fixed in place
+        // TODO: Put all this junk in some separate more generic method and maybe reuse in ItemLoader
+        StringBuilder jsonContent = new StringBuilder();
+        Path worldsJson = basePath.resolve("worlds.json");
+        try (BufferedReader reader = Files.newBufferedReader(worldsJson)) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                jsonContent.append(line.trim());
+            }
+        } catch (IOException e) { e.printStackTrace(); }
 
-        for (File file : Objects.requireNonNull(basePath.toFile().listFiles())) {
-            String normalizedName = file.getName();
-            normalizedName = normalizedName.substring(0, normalizedName.lastIndexOf("."));
-            normalizedName = normalizedName.toUpperCase();
-            rooms.add(new Room(normalizedName, rooms.size()));
-            System.out.println(rooms.getLast().name);
+        String jsonText = jsonContent.toString();
+        jsonText = jsonText.substring(1, jsonText.length() - 1); // Remove "[" and "]"
+        String[] itemBlocks = jsonText.split("},\\s*\\{");
+        for (String block : itemBlocks) {
+            block = block.replace("{", "").replace("}", "").replace("\"", "");
+            System.out.println(block);
+
+            String[] parts = block.split(",id:");
+
+            String roomAndFiles = parts[0].trim(); // ROOM_NAME: [ROOM_PNG1,ROOM_PNG2...]
+            int id = Integer.parseInt(parts[1].trim());
+            System.out.println(id);
+
+            String[] nameAndFiles = roomAndFiles.split(":\\s*\\[");
+            String roomName = nameAndFiles[0].trim();
+            String filesPart = nameAndFiles[1].replace("]", "").trim();
+
+            String[] fileNames = filesPart.isEmpty() ? new String[]{} : filesPart.split(",");
+            for (String name: fileNames) System.out.println(name);
+
+            new Room(
+                roomName,
+                fileNames,
+                id
+            );
         }
     }
 
     public static class Room {
         public final String name;
+        public final String[] fileNames;
         public final int id;
 
-        Room(String name, int id) {
+        Room(String name, String[] fileNames, int id) {
             this.name = name;
+            this.fileNames = fileNames;
             this.id = id;
+            rooms.add(this);
         }
     }
 
