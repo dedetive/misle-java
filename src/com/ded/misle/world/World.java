@@ -11,16 +11,18 @@ import static com.ded.misle.world.boxes.BoxHandling.*;
 public class World {
     public int width;
     public int height;
-    public Box[][] grid;
+    public int layers;
+    public Box[][][] grid;
     public Background background;
     RoomManager.Room room;
 
-    public World(int worldWidth, int worldHeight) {
+    public World(int worldWidth, int worldHeight, int worldLayers) {
         this.setBackground(Background.DEFAULT);
 
         this.width = worldWidth;
         this.height = worldHeight;
-        this.grid = new Box[worldWidth][worldHeight];
+        this.layers = worldLayers;
+        this.grid = new Box[worldWidth][worldHeight][worldLayers];
 
         setWorldBorders(worldWidth, worldHeight);
 
@@ -30,35 +32,45 @@ public class World {
         player.pos.world = this;
     }
 
-    public World(int worldWidth, int worldHeight, Background background) {
-        this(worldWidth, worldHeight);
+    public World(int worldWidth, int worldHeight, int worldLayers, Background background) {
+        this(worldWidth, worldHeight, worldLayers);
         this.setBackground(background);
     }
 
     public void setPos(Box box, int x, int y, boolean force) {
         int previousX = box.getX();
         int previousY = box.getY();
+        int previousLayer = box.worldLayer;
 
         try {
             for (int i = 0; i < this.grid.length; i++) {
                 for (int j = 0; j < this.grid[0].length; j++) {
-                    if (this.grid[i][j] == box) {
-                        previousX = i;
-                        previousY = j;
+                    for (int k = 0; k < this.grid[0][0].length; k++) {
+                        if (this.grid[i][j][k] == box) {
+                            previousX = i;
+                            previousY = j;
+                            previousLayer = k;
+                        }
                     }
                 }
             }
 
-            if (force) {
-                this.grid[x][y] = box;
-            } else if (this.grid[x][y] == null) {
-                this.grid[x][y] = box;
-            }
+            for (int k = 0; k < this.grid[0][0].length; k++) {
+                boolean isLast = k == this.grid[0][0].length - 1;
+                if (force && isLast) {
+                    this.grid[x][y][k] = box;
+                    break;
+                } else if (this.grid[x][y][k] == null) {
+                    this.grid[x][y][k] = box;
+                    break;
+                }
 
-            boolean hasMoved = !Arrays.equals(new int[]{previousX, previousY}, new int[]{x, y});
 
-            if (hasMoved) {
-                this.grid[previousX][previousY] = null;
+                boolean hasMoved = !Arrays.equals(new int[]{previousX, previousY, previousLayer}, new int[]{x, y, k});
+
+                if (hasMoved) {
+                    this.grid[previousX][previousY][previousLayer] = null;
+                }
             }
 
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -66,13 +78,16 @@ public class World {
         }
     }
 
-    public Box[][] getNeighborhood(int centerX, int centerY, int radius) {
-        Box[][] b = new Box[radius][radius];
+    public Box[][][] getNeighborhood(int centerX, int centerY, int radius) {
+        Box[][][] b = new Box[radius][radius][layers];
         for (int i = 0; i < radius; i++) {
             for (int j = 0; j < radius; j++) {
-                try {
-                    b[i][j] = this.grid[i + centerX - radius / 2][j + centerY - radius / 2];
-                } catch (ArrayIndexOutOfBoundsException ignored) {}
+                for (int k = 0; k < this.layers; k++) {
+                    try {
+                        b[i][j][k] = this.grid[i + centerX - radius / 2][j + centerY - radius / 2][k];
+                    } catch (ArrayIndexOutOfBoundsException ignored) {
+                    }
+                }
             }
         }
         return b;

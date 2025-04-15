@@ -40,6 +40,7 @@ import static java.lang.System.currentTimeMillis;
 public class Box {
 	private int worldX;
 	private int worldY;
+	public int worldLayer;
 
 	private Color color;
 	public String textureName;
@@ -258,7 +259,7 @@ public class Box {
 
 		try {
 			world.setPos(this, x, y, false);
-		} catch (NullPointerException e) {
+		} catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
 			loadBoxes();
 			world = player.pos.world;
 			world.setPos(this, x, y, false);

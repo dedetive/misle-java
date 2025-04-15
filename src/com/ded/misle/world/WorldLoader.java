@@ -46,7 +46,8 @@ public class WorldLoader {
 		// Set dimensions based on image dimensions
 		int worldWidth = roomImages[0].getWidth();
 		int worldHeight = roomImages[0].getHeight();
-		world = new World(worldWidth, worldHeight, GRASS);
+		int worldLayers = roomImages.length;
+		world = new World(worldWidth, worldHeight, worldLayers, GRASS);
 
 		// Read values and set as boxes
 		for (int x = 0; x < worldWidth; x++) {
@@ -295,49 +296,51 @@ public class WorldLoader {
 
 		for (int x = 0; x < worldWidth; x++) {
 			for (int y = 0; y < worldHeight; y++) {
-				currentBox = world.grid[x][y];
-				if (currentBox == null) continue;
-				String textureName = currentBox.textureName;
-				String normalizedName = textureName.substring(0, textureName.indexOf("."));
+				for (int layer = 0; layer < world.layers; layer++) {
+					currentBox = world.grid[x][y][layer];
+					if (currentBox == null) continue;
+					String textureName = currentBox.textureName;
+					String normalizedName = textureName.substring(0, textureName.indexOf("."));
 
-				boolean hasSides = checkIfPresetHasSides(BoxPreset.valueOf(normalizedName.toUpperCase()));
-				if (hasSides) {
-					b = new Box[3][3];
-					b = world.getNeighborhood(currentBox.getX(), currentBox.getY(), 3);
+					boolean hasSides = checkIfPresetHasSides(BoxPreset.valueOf(normalizedName.toUpperCase()));
+					if (hasSides) {
+						b = new Box[3][3][world.layers];
+						b = world.getNeighborhood(currentBox.getX(), currentBox.getY(), 3);
 
-                    String corners = ".WASD";
-                    String sides = ".WASD";
+						String corners = ".WASD";
+						String sides = ".WASD";
 
-					sides = checkSide(NORTH, sides, "A");
-					sides = checkSide(WEST, sides, "W");
-					sides = checkSide(EAST, sides, "S");
-					sides = checkSide(SOUTH, sides, "D");
+						sides = checkSide(NORTH, sides, "A", layer);
+						sides = checkSide(WEST, sides, "W", layer);
+						sides = checkSide(EAST, sides, "S", layer);
+						sides = checkSide(SOUTH, sides, "D", layer);
 
-					corners = checkCorner(NORTHWEST, corners, "W");
-					corners = checkCorner(NORTHEAST, corners, "A");
-					corners = checkCorner(SOUTHWEST, corners, "D");
-					corners = checkCorner(SOUTHEAST, corners, "S");
+						corners = checkCorner(NORTHWEST, corners, "W", layer);
+						corners = checkCorner(NORTHEAST, corners, "A", layer);
+						corners = checkCorner(SOUTHWEST, corners, "D", layer);
+						corners = checkCorner(SOUTHEAST, corners, "S", layer);
 
-					editBox(currentBox, EditBoxKeys.TEXTURE, normalizedName + sides + corners);
+						editBox(currentBox, EditBoxKeys.TEXTURE, normalizedName + sides + corners);
+					}
 				}
 			}
 		}
 	}
 
-	private static String checkSide(SideGridDirection direction, String side, String toReplace) {
-		if (isSameTexture(direction)) return side.replaceFirst(toReplace, "");
+	private static String checkSide(SideGridDirection direction, String side, String toReplace, int layer) {
+		if (isSameTexture(direction, layer)) return side.replaceFirst(toReplace, "");
 		return side;
 	}
 
-	private static String checkCorner(SideGridDirection cornerDirection, String corner, String toReplace) {
-		if (isSameTexture(cornerDirection)) return corner.replaceFirst(toReplace, "");
+	private static String checkCorner(SideGridDirection cornerDirection, String corner, String toReplace, int layer) {
+		if (isSameTexture(cornerDirection, layer)) return corner.replaceFirst(toReplace, "");
 		for (SideGridDirection direction : cornerDirection.breakdown) {
-			if (!isSameTexture(direction)) return corner.replaceFirst(toReplace, "");
+			if (!isSameTexture(direction, layer)) return corner.replaceFirst(toReplace, "");
 		}
 		return corner;
 	}
 
-	private static Box[][] b = new Box[3][3];
+	private static Box[][][] b = new Box[3][3][0];
 	private static Box currentBox;
 
 	enum SideGridDirection {
@@ -370,8 +373,8 @@ public class WorldLoader {
 		return box.textureName.substring(0, index);
 	}
 
-	private static boolean isSameTexture(SideGridDirection direction) {
-		Box target = b[direction.x][direction.y];
+	private static boolean isSameTexture(SideGridDirection direction, int layer) {
+		Box target = b[direction.x][direction.y][layer];
 
 		if (target == null) return false;
 

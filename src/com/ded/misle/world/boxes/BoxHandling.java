@@ -293,9 +293,11 @@ public class BoxHandling {
 		World world = player.pos.world;
 		for (int i = 0; i < world.grid.length; i++) {
 			for (int j = 0; j < world.grid[0].length; j++) {
-				Box box = world.grid[i][j];
-				if (box != null) {
-					nearbyBoxes.add(world.grid[i][j]);
+				for (int k = 0; k < world.layers; k++) {
+					Box box = world.grid[i][j][k];
+					if (box != null) {
+						nearbyBoxes.add(world.grid[i][j][k]);
+					}
 				}
 			}
 		}
@@ -347,7 +349,7 @@ public class BoxHandling {
 		clearEnemyBoxes();
 		clearNPCs();
 		World world = player.pos.world;
-		world.grid = new Box[][]{};
+		world.grid = new Box[][][]{};
 	}
 
 	public static int getBoxesCount() {

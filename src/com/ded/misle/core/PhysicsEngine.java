@@ -59,21 +59,25 @@ public class PhysicsEngine {
 
 	public static boolean isSpaceOccupied(int targetX, int targetY, Box responsibleBox) {
 		World world = player.pos.world;
-		boolean result;
+		boolean result = true;
 
-		try {
-			Box box = world.grid[targetX][targetY];
-			result = box != null && box != responsibleBox;
+		for (int layer = 0; layer < world.layers; layer++) {
+			try {
+				Box box = world.grid[targetX][targetY][layer];
+				result = box != null && box != responsibleBox;
 
-			if (result) {
-				handleEffect(box, responsibleBox, responsibleBox.getKnockbackDirection());
+				if (result) {
+					handleEffect(box, responsibleBox, responsibleBox.getKnockbackDirection());
+				}
+
+				result = result && box.getHasCollision();
+				if (result) return true;
+
+			} catch (NullPointerException | NegativeArraySizeException | ArrayIndexOutOfBoundsException e) {
+				result = true;
 			}
-
-			result = result && box.getHasCollision();
-
-		} catch (NullPointerException | NegativeArraySizeException | ArrayIndexOutOfBoundsException e) {
-			result = true;
 		}
+
 
 
 		return result;
