@@ -138,76 +138,18 @@ public class Box {
 		int screenY = (int) (scaledY - cameraOffsetY - this.visualOffsetY * tileSize);
 
 		// Draw the box with the scaled position and tileSize
-		if (Objects.equals(this.textureName, "solid")) {
-			g2d.setColor(color);
-			Rectangle solidBox = new Rectangle(screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical));
-			drawRotatedRect(g2d, solidBox, this.visualRotation);
-		} else if (textureName.equals("invisible")) {
-			;
-        } else if (BoxHandling.checkIfPresetHasSides(BoxPreset.valueOf(textureName.toUpperCase().split("\\.")[0]))) {
-			// Split texture once and reuse the result
-			String[] textureParts = textureName.split("\\.");
-			String textureName = textureParts[0].toLowerCase();
-
-			// TODO
-			// This is temporary and I know this is a very bad approach. Please sanitize this later
-			if (Objects.equals(textureName, "floor_default")) textureName = "wall_default";
-
-			String textureExtra = "";
-
-			try {
-				if (textureName.contains("@")) {
-					textureExtra = textureName.substring(textureName.indexOf("@") + 1);
-					textureName = textureName.substring(0, textureName.indexOf("@"));
-				} else {
-					drawRotatedImage(g2d, getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.visualRotation);
-				}
-
-				// Draw extras if any
-				if (textureParts.length > 3) {
-					if (textureParts[3].equals("@")) {
-						switch (textureExtra) {
-							case "Deco":
-								drawRotatedImage(g2d, getTexture(textureName + textureExtra), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.visualRotation);
-						}
-					}
-				} else {
-					drawRotatedImage(g2d, getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.visualRotation);
-				}
-
-				// Draw sides if they exist
-				if (textureParts.length > 1) {
-					String sides = textureParts[1];
-					String[] eachSide = sides.split("");
-
-					for (String side : eachSide) {
-						if (side.isEmpty()) continue;
-						drawRotatedImage(g2d, getTexture(textureName + "_overlayW"), screenX, screenY,
-								(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), rotationInstruction.get(side) + this.visualRotation);
-					}
-				}
-
-				// Draw corners if they exist
-				if (textureParts.length > 2) {
-					String[] eachCorner = textureParts[2].split("");
-
-					for (String corner : eachCorner) {
-						if (Objects.equals(corner, "")) {
-							continue;
-						}
-						drawRotatedImage(g2d, getTexture(textureName + "_overlayC"), screenX, screenY,
-								(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), rotationInstruction.get(corner) + this.visualRotation);
-					}
-				}
-
-			} catch (IndexOutOfBoundsException e) {
-				// This is fine and not an error; IndexOutOfBounds here mean object has no sides and thus is base image
+		try {
+			if (Objects.equals(this.textureName, "solid")) {
+				drawSolid(g2d, screenX, screenY);
+			} else if (textureName.equals("invisible")) {
+				;
+			} else if (BoxHandling.checkIfPresetHasSides(BoxPreset.valueOf(textureName.toUpperCase().split("\\.")[0]))) {
+				drawPresetWithSides(g2d, screenX, screenY);
+			} else {
+				drawRawTexture(g2d, screenX, screenY);
 			}
-		} else {
-			if (textureName.contains("@")) {
-				textureName = textureName.replace("@", "");
-			}
-			drawRotatedImage(g2d, this.getTexture(), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.visualRotation);
+		} catch (IllegalArgumentException e) {
+			drawRawTexture(g2d, screenX, screenY);
 		}
 
 		try {
@@ -223,6 +165,79 @@ public class Box {
 		}
 	}
 
+	private void drawSolid(Graphics2D g2d, int screenX, int screenY) {
+		g2d.setColor(color);
+		Rectangle solidBox = new Rectangle(screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical));
+		drawRotatedRect(g2d, solidBox, this.visualRotation);
+	}
+
+	private void drawPresetWithSides(Graphics2D g2d, int screenX, int screenY) {
+		// Split texture once and reuse the result
+		String[] textureParts = textureName.split("\\.");
+		String textureName = textureParts[0].toLowerCase();
+
+		// TODO
+		// This is temporary and I know this is a very bad approach. Please sanitize this later
+		if (Objects.equals(textureName, "floor_default")) textureName = "wall_default";
+
+		String textureExtra = "";
+
+		try {
+			if (textureName.contains("@")) {
+				textureExtra = textureName.substring(textureName.indexOf("@") + 1);
+				textureName = textureName.substring(0, textureName.indexOf("@"));
+			} else {
+				drawRotatedImage(g2d, getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.visualRotation);
+			}
+
+			// Draw extras if any
+			if (textureParts.length > 3) {
+				if (textureParts[3].equals("@")) {
+					switch (textureExtra) {
+						case "Deco":
+							drawRotatedImage(g2d, getTexture(textureName + textureExtra), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.visualRotation);
+					}
+				}
+			} else {
+				drawRotatedImage(g2d, getTexture(textureName), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.visualRotation);
+			}
+
+			// Draw sides if they exist
+			if (textureParts.length > 1) {
+				String sides = textureParts[1];
+				String[] eachSide = sides.split("");
+
+				for (String side : eachSide) {
+					if (side.isEmpty()) continue;
+					drawRotatedImage(g2d, getTexture(textureName + "_overlayW"), screenX, screenY,
+						(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), rotationInstruction.get(side) + this.visualRotation);
+				}
+			}
+
+			// Draw corners if they exist
+			if (textureParts.length > 2) {
+				String[] eachCorner = textureParts[2].split("");
+
+				for (String corner : eachCorner) {
+					if (Objects.equals(corner, "")) {
+						continue;
+					}
+					drawRotatedImage(g2d, getTexture(textureName + "_overlayC"), screenX, screenY,
+						(int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), rotationInstruction.get(corner) + this.visualRotation);
+				}
+			}
+
+		} catch (IndexOutOfBoundsException e) {
+			// This is fine and not an error; IndexOutOfBounds here mean object has no sides and thus is base image
+		}
+	}
+
+	private void drawRawTexture(Graphics2D g2d, int screenX, int screenY) {
+		if (textureName.contains("@")) {
+			textureName = textureName.replace("@", "");
+		}
+		drawRotatedImage(g2d, this.getTexture(), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.visualRotation);
+	}
 	// COLLISION
 
 	// Check if a point is inside this box
