@@ -30,20 +30,17 @@ public class RoomManager {
         String[] itemBlocks = jsonText.split("},\\s*\\{");
         for (String block : itemBlocks) {
             block = block.replace("{", "").replace("}", "").replace("\"", "");
-            System.out.println(block);
 
             String[] parts = block.split(",id:");
 
             String roomAndFiles = parts[0].trim(); // ROOM_NAME: [ROOM_PNG1,ROOM_PNG2...]
             int id = Integer.parseInt(parts[1].trim());
-            System.out.println(id);
 
             String[] nameAndFiles = roomAndFiles.split(":\\s*\\[");
             String roomName = nameAndFiles[0].trim();
             String filesPart = nameAndFiles[1].replace("]", "").trim();
 
             String[] fileNames = filesPart.isEmpty() ? new String[]{} : filesPart.split(",");
-            for (String name: fileNames) System.out.println(name);
 
             new Room(
                 roomName,
