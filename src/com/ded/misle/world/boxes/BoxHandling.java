@@ -7,9 +7,7 @@ import com.ded.misle.world.npcs.NPC;
 
 import java.awt.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.ConcurrentModificationException;
+import java.util.*;
 import java.util.List;
 
 import static com.ded.misle.core.GamePanel.player;
@@ -295,7 +293,7 @@ public class BoxHandling {
 			for (int j = 0; j < world.grid[0].length; j++) {
 				for (int k = 0; k < world.layers; k++) {
 					Box box = world.grid[i][j][k];
-					if (box != null) {
+					if (box != null && !Objects.equals(box.textureName, "invisible")) {
 						nearbyBoxes.add(world.grid[i][j][k]);
 					}
 				}
