@@ -571,16 +571,10 @@ public class Box {
 			deleteBox(this);
 		}
 
-		double xDistance = Math.abs(this.getX() - player.getX() / scale);
-		double yDistance = Math.abs(this.getY() - player.getY() / scale);
-		double totalDistance = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
-
-		if (totalDistance < 30) {
-			if (player.inv.addItem(createItem(Integer.parseInt(this.effect[1]), Integer.parseInt(this.effect[2])))) {
-				playThis(collect_item);
-				PlayingRenderer.updateSelectedItemNamePosition();
-				deleteBox(this);
-			}
+		if (player.inv.addItem(createItem(Integer.parseInt(this.effect[1]), Integer.parseInt(this.effect[2])))) {
+			playThis(collect_item);
+			PlayingRenderer.updateSelectedItemNamePosition();
+			deleteBox(this);
 		}
 	}
 
