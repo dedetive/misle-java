@@ -62,9 +62,11 @@ public class World {
                 boolean isLast = k == this.layers - 1;
                 if (force && isLast) {
                     this.grid[x][y][k] = box;
+                    box.worldLayer = k;
                     break;
                 } else if (this.grid[x][y][k] == null) {
                     this.grid[x][y][k] = box;
+                    box.worldLayer = k;
                     break;
                 }
 
