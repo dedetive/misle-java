@@ -43,9 +43,9 @@ public class World {
         int previousLayer = box.worldLayer;
 
         try {
-            for (int i = 0; i < this.grid.length; i++) {
-                for (int j = 0; j < this.grid[0].length; j++) {
-                    for (int k = 0; k < this.grid[0][0].length; k++) {
+            for (int i = 0; i < this.width; i++) {
+                for (int j = 0; j < this.height; j++) {
+                    for (int k = 0; k < this.layers; k++) {
                         if (this.grid[i][j][k] == box) {
                             previousX = i;
                             previousY = j;
@@ -55,8 +55,8 @@ public class World {
                 }
             }
 
-            for (int k = 0; k < this.grid[0][0].length; k++) {
-                boolean isLast = k == this.grid[0][0].length - 1;
+            for (int k = 0; k < this.layers; k++) {
+                boolean isLast = k == this.layers - 1;
                 if (force && isLast) {
                     this.grid[x][y][k] = box;
                     break;
@@ -74,7 +74,7 @@ public class World {
             }
 
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Index " + x + ", " + y + " is out of bounds for length " + this.grid[0].length + ", " + this.grid[1].length);
+            System.out.println("Index " + x + ", " + y + " is out of bounds for length " + this.width + ", " + this.height);
         }
     }
 

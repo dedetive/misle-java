@@ -289,8 +289,8 @@ public class BoxHandling {
 
 		List<Box> nearbyBoxes = new ArrayList<>();
 		World world = player.pos.world;
-		for (int i = 0; i < world.grid.length; i++) {
-			for (int j = 0; j < world.grid[0].length; j++) {
+		for (int i = 0; i < world.width; i++) {
+			for (int j = 0; j < world.height; j++) {
 				for (int k = 0; k < world.layers; k++) {
 					Box box = world.grid[i][j][k];
 					if (box != null && !Objects.equals(box.textureName, "invisible")) {
