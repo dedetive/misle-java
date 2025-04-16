@@ -45,8 +45,7 @@ public class WorldLoader {
 		// Set dimensions based on image dimensions
 		int worldWidth = roomImages[0].getWidth();
 		int worldHeight = roomImages[0].getHeight();
-		int worldLayers = roomImages.length;
-		world = new World(worldWidth, worldHeight, worldLayers, GRASS);
+		world = new World(worldWidth, worldHeight, GRASS);
 
 		// Read values and set as boxes
 		for (int x = 0; x < worldWidth; x++) {

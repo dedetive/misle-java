@@ -12,17 +12,18 @@ public class World {
     public int width;
     public int height;
     public int layers;
+    public final int LAYER_COUNT = 5;
     public Box[][][] grid;
     public Background background;
     RoomManager.Room room;
 
-    public World(int worldWidth, int worldHeight, int worldLayers) {
+    public World(int worldWidth, int worldHeight) {
         this.setBackground(Background.DEFAULT);
 
         this.width = worldWidth;
         this.height = worldHeight;
-        this.layers = worldLayers;
-        this.grid = new Box[worldWidth][worldHeight][worldLayers];
+        this.layers = LAYER_COUNT;
+        this.grid = new Box[worldWidth][worldHeight][layers];
 
         setWorldBorders(worldWidth, worldHeight);
 
@@ -32,8 +33,8 @@ public class World {
         player.pos.world = this;
     }
 
-    public World(int worldWidth, int worldHeight, int worldLayers, Background background) {
-        this(worldWidth, worldHeight, worldLayers);
+    public World(int worldWidth, int worldHeight, Background background) {
+        this(worldWidth, worldHeight);
         this.setBackground(background);
     }
 
@@ -55,6 +56,8 @@ public class World {
                 }
             }
 
+            boolean relevantPrevious = this.grid[previousX][previousY][previousLayer] == box;
+
             for (int k = 0; k < this.layers; k++) {
                 boolean isLast = k == this.layers - 1;
                 if (force && isLast) {
@@ -68,7 +71,7 @@ public class World {
 
                 boolean hasMoved = !Arrays.equals(new int[]{previousX, previousY, previousLayer}, new int[]{x, y, k});
 
-                if (hasMoved) {
+                if (hasMoved && relevantPrevious) {
                     this.grid[previousX][previousY][previousLayer] = null;
                 }
             }
