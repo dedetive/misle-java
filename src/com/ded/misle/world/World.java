@@ -60,22 +60,23 @@ public class World {
 
             for (int k = 0; k < this.layers; k++) {
                 boolean isLast = k == this.layers - 1;
+                boolean result = false;
                 if (force && isLast) {
                     this.grid[x][y][k] = box;
                     box.worldLayer = k;
-                    break;
+                    result = true;
                 } else if (this.grid[x][y][k] == null) {
                     this.grid[x][y][k] = box;
                     box.worldLayer = k;
-                    break;
+                    result = true;
                 }
-
 
                 boolean hasMoved = !Arrays.equals(new int[]{previousX, previousY, previousLayer}, new int[]{x, y, k});
 
-                if (hasMoved && relevantPrevious) {
+                if (result && hasMoved && relevantPrevious) {
                     this.grid[previousX][previousY][previousLayer] = null;
                 }
+                if (result) return;
             }
 
         } catch (ArrayIndexOutOfBoundsException e) {
