@@ -12,7 +12,7 @@ public class World {
     public int width;
     public int height;
     public int layers;
-    public final int LAYER_COUNT = 5;
+    public final int LAYER_COUNT = 30;
     public Box[][][] grid;
     public Background background;
     RoomManager.Room room;
