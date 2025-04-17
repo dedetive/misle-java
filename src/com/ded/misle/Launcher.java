@@ -1,11 +1,12 @@
 package com.ded.misle;
 
+import com.ded.misle.audio.AudioPlayer;
 import com.ded.misle.core.GamePanel;
 import com.ded.misle.core.LanguageManager;
-import com.ded.misle.core.Setting;
 
 import javax.swing.*;
 
+import static com.ded.misle.audio.AudioPlayer.AudioFile.consume_small_pot;
 import static com.ded.misle.core.Setting.*;
 import static com.ded.misle.core.SettingsManager.getSetting;
 import static com.ded.misle.core.SettingsManager.updateSetting;
@@ -60,6 +61,7 @@ public class Launcher {
 	public static void main(String[] args) {
 
 		loadMainMenu();
+		AudioPlayer.AudioFile loadDummy = consume_small_pot; // Preloading AudioFile enum so it doesn't lag when first using it
 
 		SwingUtilities.invokeLater(() -> {
 			GamePanel panel = new GamePanel();
