@@ -1,8 +1,10 @@
 package com.ded.misle.audio;
 
 import javax.sound.sampled.*;
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static com.ded.misle.core.SettingsManager.getPath;
 
@@ -29,9 +31,14 @@ public class AudioPlayer {
 		;
 
 		public final String path;
+		public final ArrayList<AudioPlayer> audioPlayerList = new ArrayList<>();
 
-		AudioFile () {
+        AudioFile () {
+            int AUDIO_PLAYER_COUNT = 8;
 			this.path = getPath().resolve("resources/audio/" + this + ".wav").toString();
+            for (int i = 0; i < AUDIO_PLAYER_COUNT; i++) {
+				this.audioPlayerList.add(new AudioPlayer(this.path));
+			}
 		}
 	}
 
@@ -41,7 +48,14 @@ public class AudioPlayer {
 	 * @param audio
 	 */
 	public static void playThis(AudioFile audio) {
-		new AudioPlayer(audio.path).play();
+		for (AudioPlayer audioPlayer : audio.audioPlayerList) {
+			boolean isFree = !audioPlayer.clip.isRunning();
+			if (isFree) {
+				audioPlayer.play();
+
+				break;
+			}
+		}
 	}
 
 	public static void stopThis(AudioFile audio) {
