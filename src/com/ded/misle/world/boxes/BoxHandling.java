@@ -197,7 +197,7 @@ public class BoxHandling {
 				break;
 			case FLOOR_DEFAULT:
 				editBox(box, EditBoxKeys.HAS_COLLISION, "false");
-				editBox(box, EditBoxKeys.TEXTURE, "floor_default");
+				editBox(box, EditBoxKeys.TEXTURE, "wall_default");
 				break;
 			case GRASS:
 				editBox(box, EditBoxKeys.HAS_COLLISION, "false");

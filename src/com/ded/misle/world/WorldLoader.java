@@ -56,7 +56,7 @@ public class WorldLoader {
 					try {
 						// Gets the box from pixel RGB and maps it to the image x and y
 						Box box = RGBToBox.get(rgb).call();
-						box.setPos(x, y);
+						box.setPos(x, y, z);
 					} catch (Exception ignored) {
 					}
 				}

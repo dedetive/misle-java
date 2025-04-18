@@ -27,9 +27,6 @@ public class World {
 
         setWorldBorders(worldWidth, worldHeight);
 
-//        this.room = RoomManager.roomIDToName(player.pos.getRoomID());
-//        System.out.println("Loading room: " + this.room.name);
-
         player.pos.world = this;
     }
 
@@ -38,7 +35,11 @@ public class World {
         this.setBackground(background);
     }
 
-    public void setPos(Box box, int x, int y, boolean force) {
+    public void setPos(Box box, int x, int y) {
+        setPos(box, x, y, 0, false);
+    }
+
+    public void setPos(Box box, int x, int y, int z, boolean force) {
         int previousX = box.getX();
         int previousY = box.getY();
         int previousLayer = box.worldLayer;
@@ -61,11 +62,18 @@ public class World {
             for (int k = 0; k < this.layers; k++) {
                 boolean isLast = k == this.layers - 1;
                 boolean result = false;
-                if (force && isLast) {
+
+                if (this.grid[x][y][z] == null) {
+                    this.grid[x][y][z] = box;
+                    box.worldLayer = k;
+                    result = true;
+                }
+
+                if (force && isLast && !result) {
                     this.grid[x][y][k] = box;
                     box.worldLayer = k;
                     result = true;
-                } else if (this.grid[x][y][k] == null) {
+                } else if (this.grid[x][y][k] == null && !result) {
                     this.grid[x][y][k] = box;
                     box.worldLayer = k;
                     result = true;

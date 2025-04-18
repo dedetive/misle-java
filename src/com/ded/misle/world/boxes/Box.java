@@ -25,7 +25,6 @@ import static com.ded.misle.renderer.ImageManager.*;
 import static com.ded.misle.world.enemies.EnemyAI.clearBreadcrumbs;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
-import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.PhysicsEngine.ObjectType.BOX;
 import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.world.boxes.BoxHandling.*;
@@ -95,7 +94,7 @@ public class Box {
 		worldX = x;
 		worldY = y;
 		World world = player.pos.world;
-		world.setPos(this, worldX, worldY, false);
+		world.setPos(this, worldX, worldY);
 		this.color = color;
 		this.textureName = texture;
 		this.hasCollision = hasCollision;
@@ -112,7 +111,7 @@ public class Box {
 		worldX = x;
 		worldY = y;
 		World world = player.pos.world;
-		world.setPos(this, worldX, worldY, false);
+		world.setPos(this, worldX, worldY);
 		this.color = defaultBoxColor;
 		this.textureName = "solid";
 		this.hasCollision = false;
@@ -175,10 +174,6 @@ public class Box {
 		// Split texture once and reuse the result
 		String[] textureParts = textureName.split("\\.");
 		String textureName = textureParts[0].toLowerCase();
-
-		// TODO
-		// This is temporary and I know this is a very bad approach. Please sanitize this later
-		if (Objects.equals(textureName, "floor_default")) textureName = "wall_default";
 
 		String textureExtra = "";
 
@@ -268,16 +263,20 @@ public class Box {
 	}
 
 	public void setPos(int x, int y) {
+		setPos(x, y, 0);
+	}
+
+	public void setPos(int x, int y, int layer) {
 		this.worldX = x;
 		this.worldY = y;
 		World world = player.pos.world;
 
 		try {
-			world.setPos(this, x, y, false);
+			world.setPos(this, x, y, layer, false);
 		} catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
 			loadBoxes();
 			world = player.pos.world;
-			world.setPos(this, x, y, false);
+			world.setPos(this, x, y, layer, false);
 		}
 	}
 
