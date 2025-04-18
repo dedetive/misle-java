@@ -23,7 +23,6 @@ public class Launcher {
 	public static String windowTitle;
 	public static double scale;
 	public static boolean levelDesigner;
-	public static boolean heldItemFollowsMouse;
 	public static LanguageManager languageManager;
 	public static String displayMoreInfo;
 
@@ -48,7 +47,6 @@ public class Launcher {
 		updateSetting(languageCode);
         languageManager = new LanguageManager(languageCode.str());
         levelDesigner = Boolean.parseBoolean(getSetting("levelDesigner"));
-		heldItemFollowsMouse = Boolean.parseBoolean(getSetting("heldItemFollowsMouse"));
 		displayMoreInfo = getSetting("displayMoreInfo");
 
 		// WINDOW CONFIGS

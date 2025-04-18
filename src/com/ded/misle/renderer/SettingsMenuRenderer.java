@@ -233,13 +233,8 @@ public class SettingsMenuRenderer {
     }
 
     public static void renderGameplayMenu(JPanel panel) {
-        // heldItemFollowsMouse
-        int[] pos = TOP_LEFT.pos;
-        createSetting("settings_gameplay_heldItemFollowsMouse", String.valueOf(heldItemFollowsMouse),
-            pos[0], pos[1], SettingsManager::cycleHeldItemFollowsMouse, panel, 52);
-
         // DisplayMoreInfo
-        pos = TOP_RIGHT.pos;
+        int[] pos = TOP_LEFT.pos;
         createSetting("settings_gameplay_displayMoreInfo", String.valueOf(displayMoreInfo),
             pos[0], pos[1], SettingsManager::cycleDisplayMoreInfo, panel, 58);
     }

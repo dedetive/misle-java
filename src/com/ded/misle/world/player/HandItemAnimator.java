@@ -3,22 +3,17 @@ package com.ded.misle.world.player;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.input.MouseHandler;
 import com.ded.misle.items.Item;
-import com.ded.misle.world.boxes.BoxHandling;
 
 import javax.swing.*;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ded.misle.Launcher.heldItemFollowsMouse;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.PhysicsEngine.isSpaceOccupied;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
-import static java.lang.Math.abs;
-import static java.lang.Math.clamp;
 
 public class HandItemAnimator {
     private static void scheduleAnimation(int delay, Runnable action) {
@@ -68,51 +63,28 @@ public class HandItemAnimator {
 
         PlayerAttributes.KnockbackDirection direction;
 
-        if (heldItemFollowsMouse) {
-            mouseHandler.updateCurrentMouseRotation();
+        direction = PlayerAttributes.KnockbackDirection.valueOf(player.stats.getWalkingDirection().toString()).getOppositeDirection();
 
-            double angleRadians = Math.toRadians(mouseHandler.getRelativeMouseRotation());
-
-            XComponent = Math.cos(angleRadians) * range;
-            YComponent = Math.sin(angleRadians) * range;
-
-            if (mouseHandler.getRelativeMouseRotation() >= 0 && mouseHandler.getRelativeMouseRotation() < 60)
-                direction = PlayerAttributes.KnockbackDirection.LEFT;
-            else if (mouseHandler.getRelativeMouseRotation() >= 60 && mouseHandler.getRelativeMouseRotation() < 120)
-                direction = PlayerAttributes.KnockbackDirection.UP;
-            else if (mouseHandler.getRelativeMouseRotation() >= 120 && mouseHandler.getRelativeMouseRotation() < 240)
-                direction = PlayerAttributes.KnockbackDirection.RIGHT;
-            else if (mouseHandler.getRelativeMouseRotation() >= 240 && mouseHandler.getRelativeMouseRotation() < 330)
-                direction = PlayerAttributes.KnockbackDirection.DOWN;
-            else if (mouseHandler.getRelativeMouseRotation() >= 330 && mouseHandler.getRelativeMouseRotation() < 360)
-                direction = PlayerAttributes.KnockbackDirection.RIGHT;
-            else {
-                direction = NONE;
+        switch (direction) {
+            case LEFT -> {
+                XComponent = range / 2;
+                YComponent = 0;
             }
-        } else {
-            direction = PlayerAttributes.KnockbackDirection.valueOf(player.stats.getWalkingDirection().toString()).getOppositeDirection();
-
-            switch (direction) {
-                case LEFT -> {
-                    XComponent = range / 2;
-                    YComponent = 0;
-                }
-                case RIGHT -> {
-                    XComponent = -range;
-                    YComponent = 0;
-                }
-                case UP -> {
-                    XComponent = 0;
-                    YComponent = range / 2;
-                }
-                case DOWN -> {
-                    XComponent = 0;
-                    YComponent = -range;
-                }
-                default -> {
-                    XComponent = range / 2;
-                    YComponent = 0;
-                }
+            case RIGHT -> {
+                XComponent = -range;
+                YComponent = 0;
+            }
+            case UP -> {
+                XComponent = 0;
+                YComponent = range / 2;
+            }
+            case DOWN -> {
+                XComponent = 0;
+                YComponent = -range;
+            }
+            default -> {
+                XComponent = range / 2;
+                YComponent = 0;
             }
         }
 

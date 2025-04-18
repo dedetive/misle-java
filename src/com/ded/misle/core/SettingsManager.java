@@ -233,9 +233,6 @@ public class SettingsManager {
 	}
 
 	// Gameplay
-	public static void cycleHeldItemFollowsMouse() {
-		heldItemFollowsMouse = cycleBoolean("heldItemFollowsMouse", heldItemFollowsMouse);
-	}
 
 	// General-use methods
 	public static boolean cycleBoolean(String setting, boolean currentValue) {

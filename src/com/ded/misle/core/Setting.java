@@ -42,7 +42,6 @@ public class Setting<T> {
     public static Setting<LanguageManager.Language> languageCode = new Setting<>(en_US, "language");
 
 //    levelDesigner = Boolean.parseBoolean(getSetting("levelDesigner"));
-//    heldItemFollowsMouse = Boolean.parseBoolean(getSetting("heldItemFollowsMouse"));
 //    displayMoreInfo = getSetting("displayMoreInfo");
 
 }
