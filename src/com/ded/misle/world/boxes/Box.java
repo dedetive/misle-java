@@ -20,7 +20,6 @@ import static com.ded.misle.renderer.ImageManager.*;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 import static com.ded.misle.core.PhysicsEngine.ObjectType.BOX;
-import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.WorldLoader.loadBoxes;
 import static com.ded.misle.items.Item.createDroppedItem;
@@ -381,7 +380,6 @@ public class Box {
 		}
 
 		droppedItem = createDroppedItem(this.getX(), this.getY() - 1, id, count);
-		moveBox(droppedItem, multiplier, 10, delay);
 
 		((Effect.Collectible) droppedItem.effect).collectible = false;
 
