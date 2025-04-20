@@ -109,7 +109,7 @@ public class Enemy extends HPBox {
         maxHP *= magnification;
 
         if (defaultDamageType) {
-            editBox(this, EFFECT, "{damage, " + damage + ", " + damageRate + ", normal, 0}");
+            this.effect = new Effect.Damage(damage, damageRate);
         }
         this.setMaxHP(maxHP);
         this.setHP(this.getMaxHP());

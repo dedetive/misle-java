@@ -25,14 +25,22 @@ import static java.lang.System.currentTimeMillis;
 public abstract class Effect {
     public static class Damage extends Effect {
         public double damageRate;
-        public double damageValue;
+        public double damage;
         public long lastDamageTime;
-        public String reason;
-        public String[] args;
+        public String reason = "normal";
+        public String[] args = new String[]{};
 
-        public Damage(double damageRate, double damageValue) {
+        public Damage(double damage, double damageRate) {
             this.damageRate = damageRate;
-            this.damageValue = damageValue;
+            this.damage = damage;
+            lastDamageTime = 0;
+        }
+
+        public Damage(double damage, double damageRate, String reason, String[] args) {
+            this.damageRate = damageRate;
+            this.damage = damage;
+            this.reason = reason;
+            this.args = args;
             lastDamageTime = 0;
         }
 
@@ -51,7 +59,7 @@ public abstract class Effect {
             // Check if enough time has passed since the last damage was dealt
             if (currentTime - lastDamageTime >= cooldownDuration) {
                 lastDamageTime = currentTime;
-                victim.takeDamage(damageValue, reason, args, victim.getKnockbackDirection());
+                victim.takeDamage(damage, reason, args, victim.getKnockbackDirection());
 //			System.out.println(box.getEffectValue() + " " + box.getEffectReason() + " damage dealt! Now at " + player.attr.getHP() + " HP.");
             }
         }
