@@ -215,22 +215,22 @@ public abstract class Effect {
 
         @Override
         public void run(Box culprit, Box victim) {
-            if (!(culprit instanceof Player)) return;
+            if (!(victim instanceof Player)) return;
 
-            handleBoxItemCollectible(victim);
+            handleBoxItemCollectible(culprit);
         }
 
-        private void handleBoxItemCollectible(Box victim) {
+        private void handleBoxItemCollectible(Box culprit) {
             if (!collectible) return;
 
             if (id == 0) {
-                deleteBox(victim);
+                deleteBox(culprit);
             }
 
             if (player.inv.addItem(createItem(id, count))) {
                 playThis(collect_item);
                 PlayingRenderer.updateSelectedItemNamePosition();
-                deleteBox(victim);
+                deleteBox(culprit);
             }
         }
     }
