@@ -1,21 +1,21 @@
 package com.ded.misle.world;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.function.Function;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.ded.misle.core.SettingsManager.getPath;
 
 public class RoomManager {
     public static ArrayList<Room> rooms = new ArrayList<>();
+
     static {
         Path basePath = getPath().resolve("resources/worlds/");
 
-        // TODO: Put all this junk in some separate more generic method and maybe reuse in ItemLoader
         StringBuilder jsonContent = new StringBuilder();
         Path worldsJson = basePath.resolve("worlds.json");
         try (BufferedReader reader = Files.newBufferedReader(worldsJson)) {
@@ -26,27 +26,39 @@ public class RoomManager {
         } catch (IOException e) { e.printStackTrace(); }
 
         String jsonText = jsonContent.toString();
-        jsonText = jsonText.substring(1, jsonText.length() - 1); // Remove "[" and "]"
+        jsonText = jsonText.substring(1, jsonText.length() - 1);
         String[] itemBlocks = jsonText.split("},\\s*\\{");
+
         for (String block : itemBlocks) {
             block = block.replace("{", "").replace("}", "").replace("\"", "");
 
-            String[] parts = block.split(",id:");
+            Map<Integer, String> colorCodeMap = new HashMap<>();
 
-            String roomAndFiles = parts[0].trim(); // ROOM_NAME: [ROOM_PNG1,ROOM_PNG2...]
+            String[] colorPartSplit = block.split("custom_color_code:");
+            String colorPart = null;
+            if (colorPartSplit.length > 1) {
+                block = colorPartSplit[0] + "id:" + colorPartSplit[1].split("id:")[1];
+                colorPart = colorPartSplit[1].split("id:")[0];
+            }
+
+            String[] parts = block.split(",id:");
+            String roomAndFiles = parts[0].split("custom_color_code:")[0].trim();
             int id = Integer.parseInt(parts[1].trim());
 
             String[] nameAndFiles = roomAndFiles.split(":\\s*\\[");
             String roomName = nameAndFiles[0].trim();
             String filesPart = nameAndFiles[1].replace("]", "").trim();
-
             String[] fileNames = filesPart.isEmpty() ? new String[]{} : filesPart.split(",");
 
-            new Room(
-                roomName,
-                fileNames,
-                id
-            );
+            if (colorPart != null) {
+                String[] colorPairs = colorPart.replace("}", "").split(",");
+                for (String pair : colorPairs) {
+                    String[] kv = pair.split(":");
+                    if (kv.length == 2) colorCodeMap.put(Integer.parseInt(kv[0].trim(), 16), kv[1].trim());
+                }
+            }
+
+            new Room(roomName, fileNames, id, colorCodeMap);
         }
     }
 
@@ -54,14 +66,17 @@ public class RoomManager {
         public final String name;
         public final String[] fileNames;
         public final int id;
+        public final Map<Integer, String> colorCodeMap;
 
-        Room(String name, String[] fileNames, int id) {
+        Room(String name, String[] fileNames, int id, Map<Integer, String> colorCodeMap) {
             this.name = name;
             this.fileNames = fileNames;
             this.id = id;
+            this.colorCodeMap = colorCodeMap;
             rooms.add(this);
         }
     }
+
 
     public enum TravelTransition {
 //        LEAVING_TUANI_HOUSE_1(TUANI_CITY, 460, 483),

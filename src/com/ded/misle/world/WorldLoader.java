@@ -55,7 +55,14 @@ public class WorldLoader {
 
 					try {
 						// Gets the box from pixel RGB and maps it to the image x and y
-						Box box = RGBToBox.get(rgb).call();
+						Box box = addBox(BoxPreset.GRASS);
+						if (room.colorCodeMap.containsKey(rgb)) {
+							if (room.colorCodeMap.get(rgb).contains("travel")) {
+								box = addBox(BoxPreset.TRAVEL);
+							}
+						} else {
+							box = RGBToBox.get(rgb).call();
+						}
 						box.setPos(x, y, z);
 					} catch (Exception ignored) {
 					}
@@ -82,7 +89,9 @@ public class WorldLoader {
 					currentBox = world.grid[x][y][layer];
 					if (currentBox == null) continue;
 					String textureName = currentBox.textureName;
-					String normalizedName = textureName.substring(0, textureName.indexOf("."));
+					int dotIndex = textureName.indexOf(".");
+					if (dotIndex == -1) continue; // Is not a box that has sides
+					String normalizedName = textureName.substring(0, dotIndex);
 
 					boolean hasSides = checkIfPresetHasSides(BoxPreset.valueOf(normalizedName.toUpperCase()));
 					if (hasSides) {
