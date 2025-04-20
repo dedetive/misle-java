@@ -261,24 +261,18 @@ public class Inventory {
 		playThis(drop_item);
 		removeItem(position);
 		PlayingRenderer.updateSelectedItemNamePosition();
-//		double dropSpeed = player.attr.getSpeedModifier() * player.attr.getEnvironmentSpeedModifier() * 20 * 2.25;
-		int dropSpeed = 1;
 		switch (player.stats.getWalkingDirection()) {
 			case PlayerStats.Direction.UP -> {
-				moveCollisionBox(droppedItem, 0, -dropSpeed, 300);
-//				moveCollisionBox(droppedItem, 0, -dropSpeed / 2, 50);
+				moveCollisionBox(droppedItem, 0, -3, 300);
 			}
 			case PlayerStats.Direction.DOWN -> {
-				moveCollisionBox(droppedItem, 0, dropSpeed, 300);
-//				moveCollisionBox(droppedItem, 0, dropSpeed / 2, 50);
+				moveCollisionBox(droppedItem, 0, 3, 300);
 			}
 			case PlayerStats.Direction.LEFT -> {
-				moveCollisionBox(droppedItem, -dropSpeed, 0, 300);
-//				moveCollisionBox(droppedItem, -dropSpeed / 2, 0, 50);
+				moveCollisionBox(droppedItem, -3, 0, 300);
 			}
 			case PlayerStats.Direction.RIGHT -> {
-				moveCollisionBox(droppedItem, dropSpeed, 0, 300);
-//				moveCollisionBox(droppedItem, dropSpeed / 2, 0, 50);
+				moveCollisionBox(droppedItem, 3, 0, 300);
 			}
 			case null, default -> {
 			}

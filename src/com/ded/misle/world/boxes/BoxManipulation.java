@@ -1,13 +1,12 @@
 package com.ded.misle.world.boxes;
 
 import com.ded.misle.core.PhysicsEngine;
-import com.ded.misle.world.player.PlayerAttributes;
 
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BoxManipulation {
 
@@ -56,48 +55,53 @@ public class BoxManipulation {
 
 	/**
 	 *
-	 * @param box the box to b
-	 * @param x how many pixels in the x-axis
-	 * @param y how many pixels in the y-axis
+	 * @param box the box to be moved
+	 * @param dx how many coordinates in the x-axis
+	 * @param dy how many coordinates in the y-axis
 	 * @param delay how long it takes in milliseconds for the box to be fully moved
 	 */
-	public static void moveCollisionBox(Box box, int x, int y, double delay) {
-		int frames = Math.max((int)(delay / 1000 * 60), 1);
-		int dx = x / frames;
-		int dy = y / frames;
+	public static void moveCollisionBox(Box box, int dx, int dy, double delay) {
+		int totalSteps = Math.abs(dx) + Math.abs(dy);
+		if (totalSteps == 0) return;
 
-		PlayerAttributes.KnockbackDirection direction = NONE;
-		if (dx > 0 && dy == 0) {
-			direction = RIGHT;
-		} else if (dx < 0 && dy == 0) {
-			direction = LEFT;
-		} else if (dx == 0 && dy > 0) {
-			direction = DOWN;
-		} else if (dx == 0 && dy < 0) {
-			direction = UP;
-		}
+		int stepDuration = (int)(delay / totalSteps);
+		List<int[]> steps = new ArrayList<>();
 
-		PlayerAttributes.KnockbackDirection finalDirection = direction;
+		int xDir = Integer.signum(dx);
+		int yDir = Integer.signum(dy);
+
+		for (int i = 0; i < Math.abs(dx); i++) steps.add(new int[]{xDir, 0});
+		for (int i = 0; i < Math.abs(dy); i++) steps.add(new int[]{0, yDir});
+
 		box.isMoving = true;
-		Timer timer = new Timer(1000 / 60, new ActionListener() {
-			int count = 0;
+		Timer timer = new Timer(stepDuration, new ActionListener() {
+			int stepIndex = 0;
+
 			public void actionPerformed(ActionEvent evt) {
-				if (count < frames) {
-					if (!PhysicsEngine.isSpaceOccupied(box.getX() + dx, box.getY() + dy, box)) {
-						box.setX(box.getX() + dx);
-						box.setY(box.getY() + dy);
-					} else {
-						count = frames; // Force stop
-					}
-					count++;
+				if (stepIndex >= steps.size()) {
+					box.isMoving = false;
+					((Timer) evt.getSource()).stop();
+					return;
+				}
+
+				int[] step = steps.get(stepIndex);
+				int nextX = box.getX() + step[0];
+				int nextY = box.getY() + step[1];
+
+				if (!PhysicsEngine.isSpaceOccupied(nextX, nextY, box)) {
+					box.setX(nextX);
+					box.setY(nextY);
+					stepIndex++;
 				} else {
 					box.isMoving = false;
-					((Timer) evt.getSource()).stop();  // Stop the timer when done
+					((Timer) evt.getSource()).stop();
 				}
 			}
 		});
+
 		timer.start();
 	}
+
 
 	public static void delayedRotateBox(Box box, double angle, double delay) {
 		int frames = (int)(delay / 1000 * 60);
