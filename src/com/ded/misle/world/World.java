@@ -15,7 +15,6 @@ public class World {
     public final int LAYER_COUNT = 30;
     public Box[][][] grid;
     public Background background;
-    RoomManager.Room room;
 
     public World(int worldWidth, int worldHeight) {
         this.setBackground(Background.DEFAULT);

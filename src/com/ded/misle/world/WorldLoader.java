@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -66,8 +67,13 @@ public class WorldLoader {
 			// Gets the box from pixel RGB and maps it to the image x and y
 			Box box = addBox(BoxPreset.GRASS);
 			if (room.colorCodeMap.containsKey(rgb)) {
-				if (room.colorCodeMap.get(rgb).contains("travel")) {
-					box = addBox(BoxPreset.TRAVEL);
+				String v = room.colorCodeMap.get(rgb);
+				String[] parts = v.split(" ");
+				switch (parts[0]) {
+					case "travel" -> {
+						box = addBox(BoxPreset.TRAVEL);
+					}
+					default -> box = addBox(BoxPreset.WALL_DEFAULT);
 				}
 			} else {
 				box = RGBToBox.get(rgb).call();
