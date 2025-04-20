@@ -237,7 +237,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 		// Update game variables for resizing
 		updateTileSize();
-		player.attr.updateStat(PlayerAttributes.Stat.SPEED);
 		player.setBoxScaleHorizontal(0.91);
 		player.setBoxScaleVertical(0.91);
 		worldWidth = originalWorldWidth * scale;

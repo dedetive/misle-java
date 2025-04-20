@@ -221,11 +221,6 @@ public class SettingsManager {
 
 		changeSetting("frameRateCap", frameRateCap.str());
 		nsPerFrame = 1000000000.0 / Math.clamp(frameRateCap.integer(), 30, 144);
-		Timer wait = new Timer(500, e -> {
-			player.attr.updateStat(PlayerAttributes.Stat.SPEED);
-		});
-		wait.setRepeats(false);
-		wait.start();
 	}
 
 	public static void cycleAntiAliasing() {

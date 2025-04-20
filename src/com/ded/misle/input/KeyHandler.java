@@ -260,24 +260,25 @@ public class KeyHandler implements KeyListener {
 				pauseGame();
 			}
 			int[] willMovePlayer = {0, 0};
+			int playerTilesPerStep = 1;
 			if (isPressed(UP)) {
 				if (!isPressed(LEFT) || !isPressed(RIGHT)) {
-					willMovePlayer[1] -= player.attr.getSpeed();
+					willMovePlayer[1] -= playerTilesPerStep;
 				}
 			}
 			if (isPressed(DOWN)) {
 				if (!isPressed(LEFT) || !isPressed(RIGHT)) {
-					willMovePlayer[1] += player.attr.getSpeed();
+					willMovePlayer[1] += playerTilesPerStep;
 				}
 			}
 			if (isPressed(LEFT)) {
 				if (!isPressed(UP) || !isPressed(DOWN)) {
-					willMovePlayer[0] -= player.attr.getSpeed();
+					willMovePlayer[0] -= playerTilesPerStep;
 				}
 			}
 			if (isPressed(RIGHT)) {
 				if (!isPressed(UP) || !isPressed(DOWN)) {
-					willMovePlayer[0] += player.attr.getSpeed();
+					willMovePlayer[0] += playerTilesPerStep;
 				}
 			}
 			if (isPressed(DROP)) {
@@ -308,7 +309,6 @@ public class KeyHandler implements KeyListener {
 			// MOVING
 
 			if (!player.attr.isDead()) {
-				double range = (tileSize + 1) * Math.max(1, player.attr.getSpeed());
 				if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
 					PlayerAttributes.KnockbackDirection horizontalDirection = PlayerAttributes.KnockbackDirection.NONE;
 					PlayerAttributes.KnockbackDirection verticalDirection = PlayerAttributes.KnockbackDirection.NONE;

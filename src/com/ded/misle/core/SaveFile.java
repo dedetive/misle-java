@@ -149,9 +149,6 @@ public class SaveFile {
 		REGENERATION_QUALITY_H		(RED,71,71),
 		REGENERATION_QUALITY_M		(GREEN,71,71),
 		REGENERATION_QUALITY_L		(BLUE,71,71),
-		SPEED_H						(RED,70,71),
-		SPEED_M						(GREEN,70,71),
-		SPEED_L						(BLUE,70,71),
 		TOTAL_DISTANCE_H			(RED,117,63),
 		TOTAL_DISTANCE_M			(RED,118,63),
 		TOTAL_DISTANCE_L			(RED,119,63),
@@ -248,9 +245,6 @@ public class SaveFile {
 
 					int playerRegenerationQuality = loadAttribute(PixelData.REGENERATION_QUALITY_H, PixelData.REGENERATION_QUALITY_M, PixelData.REGENERATION_QUALITY_L);
 					player.attr.setLevelStat(PlayerAttributes.LevelStat.REGENERATION_QUALITY, playerRegenerationQuality);
-
-					int playerSpeed = loadAttribute(PixelData.SPEED_M, PixelData.SPEED_M, PixelData.SPEED_L);
-					player.attr.setLevelStat(PlayerAttributes.LevelStat.SPEED, playerSpeed);
 
 					// Max stack size
 
@@ -432,9 +426,6 @@ public class SaveFile {
 
 			int playerLevelRegenerationQuality = (int) player.attr.getLevelStat(PlayerAttributes.LevelStat.REGENERATION_QUALITY);
 			brandValue(playerLevelRegenerationQuality, PixelData.REGENERATION_QUALITY_H, PixelData.REGENERATION_QUALITY_M, PixelData.REGENERATION_QUALITY_L);
-
-			int playerLevelSpeed = (int) player.attr.getLevelStat(PlayerAttributes.LevelStat.SPEED);
-			brandValue(playerLevelSpeed, PixelData.SPEED_H, PixelData.SPEED_M, PixelData.SPEED_L);
 
 			// Statistics
 

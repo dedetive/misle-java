@@ -135,7 +135,7 @@ public class InventoryRenderer {
         drawStat(g2d, formattedStrength, 384, 79);
             // SPD
         drawStat(g2d, LanguageManager.getText("inventory_speed"), 384, 97);
-        String formattedSpeed = Long.toString(Math.round(player.attr.getSpeed()));
+        String formattedSpeed = Long.toString(1);
         formattedSpeed = formattedSpeed + LanguageManager.getText("inventory_speed_measure_word");
         drawStat(g2d, formattedSpeed, 384, 111);
             // LEVEL

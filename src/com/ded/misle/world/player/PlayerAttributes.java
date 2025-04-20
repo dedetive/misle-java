@@ -17,16 +17,10 @@ import static com.ded.misle.items.Item.updateMaxStackSize;
 
 public class PlayerAttributes {
 
-	// BASE ATTRIBUTES
-
-	private int playerSpeed;
-
 	// STATS ATTRIBUTES
 
 	private double maxEntropy;
-	private double playerSpeedModifier;
 	private double entropy;
-	private double environmentSpeedModifier;
 	private double strength;
 
 	// XP
@@ -40,7 +34,6 @@ public class PlayerAttributes {
 		MAX_ENTROPY,
 		DEFENSE,
 		REGENERATION,
-		SPEED,
 		STRENGTH
 	}
 
@@ -54,7 +47,6 @@ public class PlayerAttributes {
 	double levelMaxEntropy;
 	double levelDefense;
 	double levelRegenerationQuality;
-	double levelSpeed;
 	double levelStrength;
 
 	// EQUIPMENT ATTRIBUTES
@@ -63,7 +55,6 @@ public class PlayerAttributes {
 	double equipmentMaxEntropy;
 	double equipmentDefense;
 	double equipmentRegenerationQuality;
-	double equipmentSpeed;
 	double equipmentInversion;
 	double equipmentStrength;
 
@@ -72,7 +63,6 @@ public class PlayerAttributes {
 		MAX_ENTROPY,
 		DEFENSE,
 		REGENERATION_QUALITY,
-		SPEED,
 		STRENGTH
 	}
 	public enum Stat {
@@ -80,7 +70,6 @@ public class PlayerAttributes {
 		MAX_ENTROPY,
 		DEFENSE,
 		REGENERATION_QUALITY,
-		SPEED,
 		INVERSION,
 		STRENGTH,
 		ALL
@@ -89,7 +78,6 @@ public class PlayerAttributes {
 	// ETC
 
 	private boolean isDead = false;
-	private Box lastVelocityBox = null;
 	private float maxStackSizeMulti;
 	public enum KnockbackDirection {
 		NONE,
@@ -114,44 +102,9 @@ public class PlayerAttributes {
 	}
 
 	public PlayerAttributes() {
-			this.setSpeedModifier(1);
-			this.setEnvironmentSpeedModifier(1);
 			this.updateStat(Stat.ALL);
 			this.updateXPtoLevelUp();
 			this.setMaxStackSizeMulti(1);
-	}
-
-	// PLAYER SPEED
-
-	public int getSpeed() {
-		return playerSpeed;
-	}
-
-	public double getSpeedModifier() {
-		return playerSpeedModifier;
-	}
-
-	public double getEnvironmentSpeedModifier() {
-		return this.environmentSpeedModifier;
-	}
-
-	public void setEnvironmentSpeedModifier(double environmentSpeedModifier)
-	{
-		this.environmentSpeedModifier = Math.max(environmentSpeedModifier, 0.025);
-		updateStat(Stat.SPEED);
-	}
-
-	public void setSpeedModifier(double playerSpeedModifier) {
-		this.playerSpeedModifier = playerSpeedModifier;
-		updateStat(Stat.SPEED);
-	}
-
-	public Box getLastVelocityBox() {
-		return lastVelocityBox;
-	}
-
-	public void setLastVelocityBox(Box box) {
-		this.lastVelocityBox = box;
 	}
 
 	// HP, DAMAGE AND HEALS
@@ -295,9 +248,6 @@ public class PlayerAttributes {
 			case REGENERATION -> {
 				setLevelStat(LevelStat.REGENERATION_QUALITY,levelRegenerationQuality + 0.5 * levelUpPoints + 0.5 * Math.floor((double) levelUpPoints / 5));
 			}
-			case SPEED -> {
-				setLevelStat(LevelStat.SPEED,levelSpeed + 0.25 * levelUpPoints + 0.25 * Math.floor((double) levelUpPoints / 5));
-			}
 		}
 	}
 
@@ -319,10 +269,6 @@ public class PlayerAttributes {
 				this.levelRegenerationQuality = amount;
 				updateStat(Stat.REGENERATION_QUALITY);
 			}
-			case SPEED -> {
-				this.levelSpeed = amount;
-				updateStat(Stat.SPEED);
-			}
 			case STRENGTH -> {
 				this.levelStrength = amount;
 				updateStat(Stat.STRENGTH);
@@ -336,7 +282,6 @@ public class PlayerAttributes {
 			case MAX_ENTROPY -> this.levelMaxEntropy;
 			case DEFENSE -> this.levelDefense;
 			case REGENERATION_QUALITY -> this.levelRegenerationQuality;
-			case SPEED -> this.levelSpeed;
 			case STRENGTH -> this.levelStrength;
 		};
 	}
@@ -386,15 +331,6 @@ public class PlayerAttributes {
 				case DEFENSE -> player.setDefense(levelDefense + equipmentDefense);
 				case REGENERATION_QUALITY ->
 					player.setRegenerationQuality(startingRegenerationQuality + levelRegenerationQuality + equipmentRegenerationQuality);
-				case SPEED -> {
-					double delta = 120 * deltaTime;
-					double scaleFactor = (scale * 2 + 0.166) / 3;
-					double modifiers = this.playerSpeedModifier * this.environmentSpeedModifier;
-					double progressModifiers = Math.log10(1 + this.levelSpeed + this.equipmentSpeed);
-
-					this.playerSpeed = 1;
-//						delta * (scaleFactor * modifiers + progressModifiers);
-				}
 				case INVERSION -> player.setInversion(this.equipmentInversion);
 				case STRENGTH -> this.strength = this.equipmentStrength + this.levelStrength;
 				case ALL -> {
@@ -453,7 +389,6 @@ public class PlayerAttributes {
 				}
 			}
 			case REGENERATION_QUALITY -> {}
-			case SPEED -> {}
 			case ALL -> {
 				for (Stat argument : Stat.values()) {
 					if (argument == Stat.ALL)
@@ -468,8 +403,6 @@ public class PlayerAttributes {
 	// UNLOAD
 
 	public void unloadAttributes() {
-		this.setSpeedModifier(1);
-		this.setEnvironmentSpeedModifier(1);
 		this.updateStat(Stat.ALL);
 		player.setHP(player.getMaxHP());
 		this.fillEntropy();
