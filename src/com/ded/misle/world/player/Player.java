@@ -31,7 +31,7 @@ public class Player extends HPBox {
 		this.setBoxScaleHorizontal(0.91);
 		this.setBoxScaleVertical(0.91);
 		this.setKnockbackDirection(NONE);
-		this.setEffect(new String[]{""});
+		this.effect = null;
 
 		this.inv = new Inventory();
 		this.keys = new PlayerKeys();
