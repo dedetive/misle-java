@@ -235,11 +235,7 @@ public abstract class Effect {
         }
     }
 
-    public Effect type;
-
-    Effect() {
-        type = Effect.this;
-    }
+    Effect() {}
 
     public abstract void run(Box culprit, Box victim);
 }
