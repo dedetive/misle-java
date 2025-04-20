@@ -88,13 +88,18 @@ public abstract class Effect {
         }
     }
     public static class Chest extends Effect {
+        public enum DropTable {
+            POTION_CHEST
+        }
+
         public double openRate;
         public long lastTimeOpen;
-        public String dropTable;
+        public DropTable dropTable;
 
-        public Chest(long openRate) {
+        public Chest(double openRate, DropTable dropTable) {
             this.openRate = openRate;
             this.lastTimeOpen = 0;
+            this.dropTable = dropTable;
         }
 
         public void run(Box culprit, Box chest) {

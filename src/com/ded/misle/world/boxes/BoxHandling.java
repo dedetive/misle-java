@@ -1,6 +1,7 @@
 package com.ded.misle.world.boxes;
 
 import com.ded.misle.core.PhysicsEngine;
+import com.ded.misle.items.Item;
 import com.ded.misle.world.World;
 import com.ded.misle.world.enemies.Enemy;
 import com.ded.misle.world.npcs.NPC;
@@ -38,8 +39,6 @@ public class BoxHandling {
 		HAS_COLLISION,
 		BOX_SCALE_HORIZONTAL,
 		BOX_SCALE_VERTICAL,
-		EFFECT,
-		COLLECTIBLE,
 		ROTATION,
 		INTERACTS_WITH_PLAYER
 	}
@@ -164,14 +163,16 @@ public class BoxHandling {
 
 	public static Box addBoxItem(int x, int y, int id, int count) {
 		if (id > 0) {
-			boxes.add(new Box(x, y));
-			editLastBox(EditBoxKeys.EFFECT, "{item, " + id + ", " + count + ", true}");
+			Box box = new Box(x, y);
+			boxes.add(box);
+			box.effect = new Effect.Collectible(id, count, true);
 			editLastBox(EditBoxKeys.TEXTURE, (".." + File.separator + "items" + File.separator + id));
 			addBoxToCache(boxes.getLast());
 			return boxes.getLast();
 		} else {
-			boxes.add(new Box(x, y));
-			editLastBox(EditBoxKeys.EFFECT, "{item, " + 1 + ", " + 0 + ", false}");
+			Box box = new Box(x, y);
+			boxes.add(box);
+			box.effect = new Effect.Collectible(1, 0, true);
 			editLastBox(EditBoxKeys.TEXTURE, ("invisible"));
 			addBoxToCache(boxes.getLast());
 			return boxes.getLast();
@@ -183,11 +184,11 @@ public class BoxHandling {
 
 		switch (preset) {
 			case SPAWNPOINT:
-				editBox(box, EditBoxKeys.EFFECT, "{spawnpoint, -1}");
+				box.effect = new Effect.Spawnpoint(-1, new Point());
 				editBox(box, EditBoxKeys.TEXTURE, "spawnpoint");
 				break;
 			case BoxPreset.MOUNTAIN_CHEST:
-				editBox(box, EditBoxKeys.EFFECT, "{chest, 3, mountain}");
+				box.effect = new Effect.Chest(3, Effect.Chest.DropTable.POTION_CHEST);
 				editBox(box, EditBoxKeys.HAS_COLLISION, "true");
 				editBox(box, EditBoxKeys.TEXTURE, "chest");
 				break;
