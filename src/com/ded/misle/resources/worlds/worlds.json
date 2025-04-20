@@ -4,12 +4,18 @@
       "TUANI_CITY1",
       "TUANI_CITY2"
     ],
+    "custom_color_code": {
+      "744700": "travel 1"
+    },
     "id": 0
   },
   {
     "TUANI_CITY_TEST": [
       "TUANI_CITY1"
     ],
+    "custom_color_code": {
+      "744700": "travel 0"
+    },
     "id": 1
   }
 ]
