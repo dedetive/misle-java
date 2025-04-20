@@ -34,24 +34,13 @@ public class Enemy extends HPBox {
     // INITIALIZATION
 
     public Enemy(int x, int y, EnemyType enemyType, double magnification) {
-        this.setBoxScaleHorizontal(1);
-        this.setBoxScaleVertical(1);
-        this.setEffect(new String[]{""});
-        this.setVisualRotation(0);
-        this.setInteractsWithPlayer(true);
+        super(x, y);
         this.magnification = magnification;
-
-        this.setObjectType(HP_BOX);
-        this.setHasCollision(true);
-        this.setKnockbackDirection(NONE);
-        this.setX(x);
-        this.setY(y);
 
         this.enemyType = enemyType;
         this.loadEnemy();
 
         enemyBoxes.add(this);
-        addBoxToCache(this);
     }
 
     // ENEMY LOADER
