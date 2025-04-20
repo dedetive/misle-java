@@ -53,24 +53,31 @@ public class WorldLoader {
 					Color color = new Color(roomImages[z].getRGB(x, y));
 					int rgb = color.getRGB() & 0xFFFFFF;
 
-					try {
-						// Gets the box from pixel RGB and maps it to the image x and y
-						Box box = addBox(BoxPreset.GRASS);
-						if (room.colorCodeMap.containsKey(rgb)) {
-							if (room.colorCodeMap.get(rgb).contains("travel")) {
-								box = addBox(BoxPreset.TRAVEL);
-							}
-						} else {
-							box = RGBToBox.get(rgb).call();
-						}
-						box.setPos(x, y, z);
-					} catch (Exception ignored) {
-					}
+					setRGBToBox(rgb, room, new int[]{x, y, z});
 				}
 			}
 		}
 
 		fixSides();
+	}
+
+	private static void setRGBToBox(int rgb, Room room, int[] point) {
+		try {
+			// Gets the box from pixel RGB and maps it to the image x and y
+			Box box = addBox(BoxPreset.GRASS);
+			if (room.colorCodeMap.containsKey(rgb)) {
+				if (room.colorCodeMap.get(rgb).contains("travel")) {
+					box = addBox(BoxPreset.TRAVEL);
+				}
+			} else {
+				box = RGBToBox.get(rgb).call();
+			}
+			int x = point[0];
+			int y = point[1];
+			int z = point[2];
+			box.setPos(x, y, z);
+		} catch (Exception ignored) {}
+
 	}
 
 	private static final Map<Integer, Callable<Box>> RGBToBox = Map.of(
