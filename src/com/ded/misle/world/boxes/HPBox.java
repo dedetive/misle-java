@@ -49,18 +49,8 @@ public class HPBox extends Box {
     }
 
     public HPBox(int x, int y) {
-        this.setX(x);
-        this.setY(y);
-        this.setColor(defaultBoxColor);
-        this.setTexture("solid");
-        this.setHasCollision(true);
-        this.setBoxScaleHorizontal(1);
-        this.setBoxScaleVertical(1);
-        this.setEffect(new String[]{""});
-        this.setVisualRotation(0);
+        super(x, y);
         this.setObjectType(HP_BOX);
-        this.setKnockbackDirection(NONE);
-        this.setInteractsWithPlayer(true);
         this.HP = 1;
         this.maxHP = 1;
         HPBoxes.add(this);
