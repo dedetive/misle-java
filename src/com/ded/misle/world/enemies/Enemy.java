@@ -1,6 +1,8 @@
 package com.ded.misle.world.enemies;
 
+import com.ded.misle.world.boxes.Effect;
 import com.ded.misle.world.boxes.HPBox;
+import com.ded.misle.world.chests.DropTable;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -9,14 +11,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.GamePanel.player;
-import static com.ded.misle.core.PhysicsEngine.ObjectType.HP_BOX;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
-import static com.ded.misle.world.boxes.BoxHandling.EditBoxKeys.EFFECT;
-import static com.ded.misle.world.boxes.BoxHandling.addBoxToCache;
 import static com.ded.misle.world.boxes.BoxHandling.editBox;
 import static com.ded.misle.world.enemies.EnemyAI.AIState.STILL;
 import static com.ded.misle.world.enemies.EnemyAI.AIState.WANDERING;
-import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 
 public class Enemy extends HPBox {
 
@@ -66,7 +64,7 @@ public class Enemy extends HPBox {
                 // Structural
                 this.setTexture("solid");
                 this.setColor(new Color(0xA02020));
-                this.setDropTableName("mountain");
+                this.setDropTable(DropTable.POTION_CHEST);
                 this.AIState = STILL;
                 this.moveInterval = 0;
 
@@ -90,7 +88,7 @@ public class Enemy extends HPBox {
                 this.AIState = WANDERING;
 
                 // Drops
-                this.setDropTableName("goblin");
+                this.setDropTable(DropTable.GOBLIN);
                 this.xpDrop = 1;
                 this.coinDrop = new int[]{1, 3};
                 this.moveInterval = ThreadLocalRandom.current().nextInt(500, 2500 + 1);

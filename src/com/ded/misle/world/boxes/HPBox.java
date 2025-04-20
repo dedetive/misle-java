@@ -2,6 +2,7 @@ package com.ded.misle.world.boxes;
 
 import com.ded.misle.core.LanguageManager;
 import com.ded.misle.renderer.FloatingText;
+import com.ded.misle.world.chests.DropTable;
 import com.ded.misle.world.enemies.Enemy;
 import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.world.player.Player;
@@ -21,8 +22,6 @@ import static com.ded.misle.core.PhysicsEngine.ObjectType.HP_BOX;
 import static com.ded.misle.renderer.FontManager.itemInfoFont;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.boxes.BoxManipulation.moveCollisionBox;
-import static com.ded.misle.world.chests.DropTable.getDropTableItemID;
-import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.*;
 
 public class HPBox extends Box {
@@ -37,7 +36,7 @@ public class HPBox extends Box {
     private double regenerationQuality;
     private double regenerationRate = 1;
     private boolean isInvulnerable;
-    private String dropTableName;
+    private DropTable dropTable;
     private static List<HPBox> HPBoxes = new ArrayList<>();
 
     public static List<HPBox> getHPBoxes() {
@@ -82,7 +81,7 @@ public class HPBox extends Box {
     public boolean checkIfDead() {
         if (this.HP == 0) {
             if (!(this instanceof Player)) {
-                if (!(this.getDropTableName() == null || this.getDropTableName().isEmpty())) {
+                if (this.dropTable != null) {
                     boolean canGoMinus = false;
                     boolean canGoPlus = false;
                     if (getCollisionBoxesInRange(this.getX() - 20, this.getY(), 10, 6).isEmpty()) {
@@ -92,7 +91,7 @@ public class HPBox extends Box {
                         canGoPlus = true;
                     }
 
-                    int[] results = getDropTableItemID(this.getDropTableName());
+                    int[] results = dropTable.getDropTableItemID();
                     int id = results[0];
                     int count = results[1];
 
@@ -447,12 +446,12 @@ public class HPBox extends Box {
 
     // DROP TABLE
 
-    public String getDropTableName() {
-        return dropTableName;
+    public DropTable getDropTable() {
+        return dropTable;
     }
 
-    public void setDropTableName(String dropTableName) {
-        this.dropTableName = dropTableName;
+    public void setDropTable(DropTable dropTable) {
+        this.dropTable = dropTable;
     }
 
     // OTHER ATTRIBUTES

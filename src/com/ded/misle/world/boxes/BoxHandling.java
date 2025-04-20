@@ -3,6 +3,7 @@ package com.ded.misle.world.boxes;
 import com.ded.misle.core.PhysicsEngine;
 import com.ded.misle.items.Item;
 import com.ded.misle.world.World;
+import com.ded.misle.world.chests.DropTable;
 import com.ded.misle.world.enemies.Enemy;
 import com.ded.misle.world.npcs.NPC;
 
@@ -188,7 +189,7 @@ public class BoxHandling {
 				editBox(box, EditBoxKeys.TEXTURE, "spawnpoint");
 				break;
 			case BoxPreset.MOUNTAIN_CHEST:
-				box.effect = new Effect.Chest(3, Effect.Chest.DropTable.POTION_CHEST);
+				box.effect = new Effect.Chest(3, DropTable.POTION_CHEST);
 				editBox(box, EditBoxKeys.HAS_COLLISION, "true");
 				editBox(box, EditBoxKeys.TEXTURE, "chest");
 				break;

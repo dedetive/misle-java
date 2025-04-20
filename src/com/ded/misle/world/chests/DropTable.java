@@ -10,8 +10,17 @@ import java.util.Random;
 import static com.ded.misle.items.ItemGetter.getParameterizedItems;
 
 public class DropTable {
-	public static int[] getDropTableItemID(String dropTableName) {
-		List<ItemData> itemsInBundle = getParameterizedItems(ItemGetter.ParameterKey.BUNDLE, dropTableName);
+	public static DropTable POTION_CHEST = new DropTable("potion_chest");
+	public static DropTable GOBLIN = new DropTable("goblin");
+
+	String dropTableName;
+
+	DropTable(String dropTableName) {
+		this.dropTableName = dropTableName;
+	}
+
+	public int[] getDropTableItemID() {
+		List<ItemData> itemsInBundle = getParameterizedItems(ItemGetter.ParameterKey.BUNDLE, this.dropTableName);
 		List<ItemData> weightedItems = new ArrayList<>();
 		int count = 1;
 

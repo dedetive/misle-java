@@ -5,8 +5,6 @@ import com.ded.misle.renderer.ImageManager;
 import com.ded.misle.world.World;
 import com.ded.misle.world.player.Player;
 import com.ded.misle.world.player.PlayerAttributes;
-import com.ded.misle.renderer.MainRenderer;
-import com.ded.misle.renderer.PlayingRenderer;
 
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
@@ -16,25 +14,17 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
 
-import com.ded.misle.world.RoomManager.TravelTransition;
-import static com.ded.misle.audio.AudioPlayer.AudioFile.collect_item;
-import static com.ded.misle.audio.AudioPlayer.playThis;
 import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.renderer.ImageManager.*;
-import static com.ded.misle.world.enemies.EnemyAI.clearBreadcrumbs;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 import static com.ded.misle.core.PhysicsEngine.ObjectType.BOX;
 import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.WorldLoader.loadBoxes;
-import static com.ded.misle.world.WorldLoader.unloadBoxes;
-import static com.ded.misle.world.chests.DropTable.getDropTableItemID;
 import static com.ded.misle.items.Item.createDroppedItem;
-import static com.ded.misle.items.Item.createItem;
 import static com.ded.misle.renderer.MainRenderer.*;
-import static java.lang.System.currentTimeMillis;
 
 public class Box {
 	private int worldX;

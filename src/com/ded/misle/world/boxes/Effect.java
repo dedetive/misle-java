@@ -3,6 +3,7 @@ package com.ded.misle.world.boxes;
 import com.ded.misle.core.GamePanel;
 import com.ded.misle.renderer.MainRenderer;
 import com.ded.misle.renderer.PlayingRenderer;
+import com.ded.misle.world.chests.DropTable;
 import com.ded.misle.world.player.Player;
 
 import javax.swing.*;
@@ -18,7 +19,6 @@ import static com.ded.misle.world.WorldLoader.loadBoxes;
 import static com.ded.misle.world.WorldLoader.unloadBoxes;
 import static com.ded.misle.world.boxes.BoxHandling.deleteBox;
 import static com.ded.misle.world.boxes.BoxHandling.getCollisionBoxesInRange;
-import static com.ded.misle.world.chests.DropTable.getDropTableItemID;
 import static com.ded.misle.world.enemies.EnemyAI.clearBreadcrumbs;
 import static java.lang.System.currentTimeMillis;
 
@@ -88,10 +88,6 @@ public abstract class Effect {
         }
     }
     public static class Chest extends Effect {
-        public enum DropTable {
-            POTION_CHEST
-        }
-
         public double openRate;
         public long lastTimeOpen;
         public DropTable dropTable;
@@ -115,7 +111,7 @@ public abstract class Effect {
 
         private void handleBoxChest(Box chest, long currentTime) {
             lastTimeOpen = currentTime;
-            int[] results = getDropTableItemID(dropTable);
+            int[] results = dropTable.getDropTableItemID();
             int id = results[0];
             int count = results[1];
             boolean canGoMinus = false;
