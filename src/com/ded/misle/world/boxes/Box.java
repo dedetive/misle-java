@@ -46,7 +46,7 @@ public class Box {
 	private boolean hasCollision;
 	private double boxScaleHorizontal;
 	private double boxScaleVertical;
-	private Effect effect;
+	public Effect effect;
 	private long lastDamageTime = 0;
 	private static ArrayList<Box> selectedBoxes;
 	private PhysicsEngine.ObjectType objectType;
@@ -368,54 +368,6 @@ public class Box {
 
 	public void setKnockbackDirection(PlayerAttributes.KnockbackDirection knockbackDirection) {
 		this.knockbackDirection = knockbackDirection;
-	}
-
-	private void handleBoxHealCooldown(HPBox box) {
-		long currentTime = currentTimeMillis();
-		long cooldownDuration = (long) this.getEffectRate();
-
-		if (currentTime - this.getLastEffectTime() >= cooldownDuration) {
-			this.setLastEffectTime(currentTime);
-			 box.receiveHeal(this.getEffectValue(), this.getEffectReason());
-//			System.out.println(box.getEffectValue() + " " + box.getEffectReason() + " heal received! Now at " + player.attr.getHP() + " HP.");
-		}
-	}
-
-	private void handleBoxVelocity() {
-		player.attr.setEnvironmentSpeedModifier(this.getEffectValue());
-		player.attr.setLastVelocityBox(this);
-	}
-
-	private void handleBoxSpawnpoint() {
-		if ((Objects.equals(this.effect[1], "-1") || Integer.parseInt(this.effect[1]) > 0) && player.pos.getSpawnpoint() != player.pos.getRoomID()) {
-			player.pos.setSpawnpoint(player.pos.getRoomID());
-			System.out.println("Saved spawnpoint as room " + player.pos.getRoomID());
-			if (Integer.parseInt(this.effect[1]) > 0) {
-				this.effect[1] = String.valueOf(Integer.parseInt(this.effect[1]) - 1);
-			}
-		}
-	}
-
-	private void handleBoxChest() {
-		long currentTime = currentTimeMillis();
-		long cooldownDuration = (long) this.getEffectRate();
-
-		if (currentTime - this.getLastEffectTime() >= cooldownDuration) {
-			this.setLastEffectTime(currentTime);
-			int[] results = getDropTableItemID(this.effect[2]);
-			int id = results[0];
-			int count = results[1];
-			boolean canGoMinus = false;
-			boolean canGoPlus = false;
-			if (getCollisionBoxesInRange(this.worldX - 1, this.worldY, 10, 6).isEmpty()) {
-				canGoMinus = true;
-			}
-			if (getCollisionBoxesInRange(this.worldX + 1, this.worldY, 10, 6).isEmpty()) {
-				canGoPlus = true;
-			}
-
-			this.spawnItem(canGoMinus, canGoPlus, id, count);
-		}
 	}
 
 	public void spawnItem(boolean canGoMinus, boolean canGoPlus, int id, int count) {

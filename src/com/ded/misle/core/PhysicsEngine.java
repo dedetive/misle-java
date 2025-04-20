@@ -81,7 +81,7 @@ public class PhysicsEngine {
 				if (Objects.equals(culprit.getEffect(), "damage")) {
 					culprit.setKnockbackDirection(direction);
 				}
-				culprit.handleEffect((HPBox) victim);
+				culprit.effect.handleEffect((HPBox) victim);
 			}
 			// Responsible culprit gets effect
 			if (culprit instanceof HPBox && !victim.getEffect().isEmpty()) {
