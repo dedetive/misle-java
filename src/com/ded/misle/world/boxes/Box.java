@@ -46,12 +46,12 @@ public class Box {
 	private boolean hasCollision;
 	private double boxScaleHorizontal;
 	private double boxScaleVertical;
-	private String[] effect;
+	private Effect effect;
 	private long lastDamageTime = 0;
 	private static ArrayList<Box> selectedBoxes;
 	private PhysicsEngine.ObjectType objectType;
 	private PlayerAttributes.KnockbackDirection knockbackDirection;
-	private boolean interactsWithPlayer;
+	boolean interactsWithPlayer;
 	public boolean isMoving = false;
 	private double visualRotation = 0;
 	public double visualOffsetX = 0;
@@ -90,7 +90,7 @@ public class Box {
 	 * @param boxScaleVertical how many tilesizes is the box in the y axis
 	 * @param effect first value is the type of effect. See above for a list of effects. Set "" if none
 	 */
-	public Box(int x, int y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, PhysicsEngine.ObjectType objectType, boolean interactsWithPlayer) {
+	public Box(int x, int y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, Effect effect, double rotation, PhysicsEngine.ObjectType objectType, boolean interactsWithPlayer) {
 		worldX = x;
 		worldY = y;
 		World world = player.pos.world;
@@ -117,7 +117,7 @@ public class Box {
 		this.hasCollision = false;
 		this.boxScaleHorizontal = 1;
 		this.boxScaleVertical = 1;
-		this.effect = new String[]{""};
+		this.effect = null;
 		this.visualRotation = 0;
 		this.objectType = BOX;
 		this.knockbackDirection = NONE;
@@ -321,103 +321,6 @@ public class Box {
 		this.textureName = texture;
 	}
 
-	// EFFECTS
-
-	public String getEffect() {
-		return effect[0];
-	}
-
-	public double getEffectValue() {
-		switch (getEffect()) {
-			case "damage":
-			case "velocity":
-			case "heal":
-				return Double.parseDouble(effect[1]);
-			default:
-				return 0;
-		}
-	}
-
-	public double getEffectRate() {
-		switch (getEffect()) {
-			case "damage":
-			case "heal":
-				return Double.parseDouble(effect[2]);
-			case "chest":
-				return 1000 * Double.parseDouble(effect[1]);
-			default:
-				return 0;
-		}
-	}
-
-	public void setEffect(String effect) {
-		this.effect[0] = effect;
-	}
-
-	public void setEffect(String[] effect) {
-		this.effect = effect;
-	}
-
-	public void handleEffect(HPBox box) {
-		if (!this.interactsWithPlayer && box == player) return;
-
-		switch (this.effect[0]) {
-			case "damage" -> this.handleBoxDamageCooldown(box);
-			case "heal" -> this.handleBoxHealCooldown(box);
-			case "velocity" -> this.handleBoxVelocity();
-            case "spawnpoint" -> { if (box instanceof Player) this.handleBoxSpawnpoint(); }
-            case "chest" -> { if (box instanceof Player) this.handleBoxChest(); }
-			case "item" -> { if (box instanceof Player) this.handleBoxItemCollectible(); }
-			case "travel" -> { if (box instanceof Player) this.handleBoxTravel(); }
-		}
-	}
-
-	public void setEffectValue(double effectValue) {
-		this.effect[1] = String.valueOf(effectValue);
-	}
-
-	public void setEffectRate(double effectRate) {
-		this.effect[2] = String.valueOf(effectRate);
-	}
-
-	public String getEffectReason() {
-		return switch (getEffect()) {
-			case "damage" -> this.effect[3];
-			case "heal" -> this.effect[3];
-			case "item" -> this.effect[3];
-			default -> "";
-		};
-	}
-
-	public void setEffectReason(String reason) {
-		switch (reason) {
-			case "damage" -> this.effect[3] = reason;
-			case "heal" -> this.effect[3] = reason;
-			default -> this.effect[3] = reason;
-		}
-	}
-
-	public String[] getEffectArgs() {
-		return switch (getEffect()) {
-			case "damage" -> new String[]{this.effect[4]};
-			default -> new String[]{""};
-		};
-	}
-
-	public void setEffectArgs(String[] args) {
-		switch (getEffect()) {
-			case "damage" -> this.effect[4] = Arrays.toString(args);
-		}
-	}
-
-	public long getLastEffectTime() {
-		return lastDamageTime;
-	}
-
-	public void setLastEffectTime(long lastDamageTime) {
-		this.lastDamageTime = lastDamageTime;
-	}
-
 	public BufferedImage getTexture() {
 		String fileName = this.textureName + ".png";
 		Path fullPath = getPath().resolve("resources/images/boxes/").resolve(fileName);
@@ -457,17 +360,7 @@ public class Box {
 
 	// EFFECT HANDLING
 
-	private void handleBoxDamageCooldown(HPBox box) {
-		long currentTime = currentTimeMillis();
-		long cooldownDuration = (long) this.getEffectRate(); // Use the box's damage rate for cooldown
 
-		// Check if enough time has passed since the last damage was dealt
-		if (currentTime - this.getLastEffectTime() >= cooldownDuration) {
-			this.setLastEffectTime(currentTime); // Update the last damage time
-			box.takeDamage(this.getEffectValue(), this.getEffectReason(), this.getEffectArgs(), getKnockbackDirection());
-//			System.out.println(box.getEffectValue() + " " + box.getEffectReason() + " damage dealt! Now at " + player.attr.getHP() + " HP.");
-		}
-	}
 
 	public PlayerAttributes.KnockbackDirection getKnockbackDirection() {
 		return knockbackDirection;

@@ -2,21 +2,12 @@ package com.ded.misle.core;
 
 import com.ded.misle.world.World;
 import com.ded.misle.world.boxes.Box;
-import com.ded.misle.world.boxes.BoxHandling;
 import com.ded.misle.world.boxes.HPBox;
-import com.ded.misle.world.enemies.Enemy;
-import com.ded.misle.world.npcs.NPC;
-import com.ded.misle.world.player.Player;
 import com.ded.misle.world.player.PlayerAttributes;
-import com.ded.misle.world.player.PlayerStats;
 
-import java.util.List;
 import java.util.Objects;
 
 import static com.ded.misle.core.GamePanel.player;
-import static com.ded.misle.core.GamePanel.tileSize;
-import static com.ded.misle.Launcher.levelDesigner;
-import static com.ded.misle.Launcher.scale;
 
 public class PhysicsEngine {
 
@@ -83,26 +74,26 @@ public class PhysicsEngine {
 		return result;
 	}
 
-	private static void handleEffect(Box box, Box responsibleBox, PlayerAttributes.KnockbackDirection direction) {
+	private static void handleEffect(Box culprit, Box victim, PlayerAttributes.KnockbackDirection direction) {
 		try {
-			// Touching box gets effect
-			if (responsibleBox instanceof HPBox && !box.getEffect().isEmpty()) {
-				if (Objects.equals(box.getEffect(), "damage")) {
-					box.setKnockbackDirection(direction);
+			// Touching culprit gets effect
+			if (victim instanceof HPBox && !culprit.getEffect().isEmpty()) {
+				if (Objects.equals(culprit.getEffect(), "damage")) {
+					culprit.setKnockbackDirection(direction);
 				}
-				box.handleEffect((HPBox) responsibleBox);
+				culprit.handleEffect((HPBox) victim);
 			}
-			// Responsible box gets effect
-			if (box instanceof HPBox && !responsibleBox.getEffect().isEmpty()) {
-				if (Objects.equals(responsibleBox.getEffect(), "damage")) {
-					responsibleBox.setKnockbackDirection(direction.getOppositeDirection());
+			// Responsible culprit gets effect
+			if (culprit instanceof HPBox && !victim.getEffect().isEmpty()) {
+				if (Objects.equals(victim.getEffect(), "damage")) {
+					victim.setKnockbackDirection(direction.getOppositeDirection());
 				}
-				responsibleBox.handleEffect((HPBox) box);
+				victim.handleEffect((HPBox) culprit);
 			}
 
 			if (player.attr.getLastVelocityBox() != null) {
 				player.attr.setEnvironmentSpeedModifier(1.0); // Reset to default speed
-				player.attr.setLastVelocityBox(null); // Clear the last velocity box
+				player.attr.setLastVelocityBox(null); // Clear the last velocity culprit
 			}
 		} catch (NullPointerException ignored) {}
 	}
