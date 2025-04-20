@@ -1,8 +1,8 @@
 package com.ded.misle.world.player;
 
 import com.ded.misle.world.boxes.Box;
-import com.ded.misle.input.MouseHandler;
 import com.ded.misle.items.Item;
+import com.ded.misle.world.boxes.Effect;
 
 import javax.swing.*;
 
@@ -10,10 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ded.misle.core.GamePanel.player;
-import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.PhysicsEngine.isSpaceOccupied;
 import static com.ded.misle.world.boxes.BoxHandling.*;
-import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 
 public class HandItemAnimator {
     private static void scheduleAnimation(int delay, Runnable action) {
@@ -22,7 +20,7 @@ public class HandItemAnimator {
         timer.start();
     }
 
-    public static void animateClaw(MouseHandler mouseHandler) {
+    public static void animateClaw() {
         // PREPARATION (move claw up and swing back)
         Item selectedItem = player.inv.getSelectedItem();
 
@@ -38,7 +36,7 @@ public class HandItemAnimator {
             double damage = Double.parseDouble(selectedItem.getAttributes().get("damage").toString());
             double range = Double.parseDouble(selectedItem.getAttributes().get("range").toString());
 
-            launchAttack(mouseHandler, damage, range);
+            launchAttack(damage, range);
 
             selectedItem.delayedSetAnimationRotation(150, 60);
             selectedItem.delayedChangeAnimationBulk(-0.175, 120);
@@ -57,7 +55,7 @@ public class HandItemAnimator {
         });
     }
 
-    private static void launchAttack(MouseHandler mouseHandler, double damage, double range) {
+    private static void launchAttack(double damage, double range) {
         double XComponent;
         double YComponent;
 
@@ -67,7 +65,7 @@ public class HandItemAnimator {
 
         switch (direction) {
             case LEFT -> {
-                XComponent = range / 2;
+                XComponent = range;
                 YComponent = 0;
             }
             case RIGHT -> {
@@ -76,30 +74,30 @@ public class HandItemAnimator {
             }
             case UP -> {
                 XComponent = 0;
-                YComponent = range / 2;
+                YComponent = range;
             }
             case DOWN -> {
                 XComponent = 0;
                 YComponent = -range;
             }
             default -> {
-                XComponent = range / 2;
+                XComponent = range;
                 YComponent = 0;
             }
         }
 
-        int attackX = (int) (player.getX() / scale + XComponent);
-        int attackY = (int) (player.getY() / scale + YComponent);
+        int attackX = (int) (player.getX() + XComponent);
+        int attackY = (int) (player.getY() + YComponent);
 
-//        Box attack = addBox(attackX, attackY);
+        Box attackBox = addBox(attackX, attackY);
         int boxCount = 1;
+        // TODO: redo this multiple boxes system
 //        int boxCount = lineAddBox(attackX, attackY, Math.max((int) (Math.ceil(range / 20) * clamp(abs(XComponent), 0, 1)), 1),
 //            Math.max((int) (Math.ceil(range / 20) * clamp(abs(YComponent), 0, 1)), 1), "", LineAddBoxModes.FILL);
 //        editLastBox(EditBoxKeys.COLOR, "#DEDE40", boxCount);
         editLastBox(EditBoxKeys.TEXTURE, "invisible", boxCount);
         editLastBox(EditBoxKeys.HAS_COLLISION, "true", boxCount);
         editLastBox(EditBoxKeys.INTERACTS_WITH_PLAYER, "false", boxCount);
-        editLastBox(EditBoxKeys.EFFECT, "{damage, " + Math.max(Math.ceil(Math.floor(Math.pow(damage, 1.1)) * (player.attr.getStrength() * 10/100 + 1)), 1) + ", 1000, normal, 0}", boxCount);
 
         List<Box> boxes = getAllBoxes();
         List<Box> attack = new ArrayList<>(List.of());
@@ -107,6 +105,8 @@ public class HandItemAnimator {
         for (int i = 0; i < boxCount; i++) {
             Box currentBox = boxes.get(boxes.size() - 1 - i);
 
+            double damageDealt = Math.max(Math.ceil(Math.floor(Math.pow(damage, 1.1)) * (player.attr.getStrength() * 10/100 + 1)), 1);
+            currentBox.effect = new Effect.Damage(damageDealt, 1000);
             attack.add(currentBox); // Add box to list to be deleted
             isSpaceOccupied(attackX, attackY, currentBox); // Handle damage detection
         }
