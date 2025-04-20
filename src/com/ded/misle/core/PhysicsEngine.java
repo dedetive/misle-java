@@ -2,6 +2,7 @@ package com.ded.misle.core;
 
 import com.ded.misle.world.World;
 import com.ded.misle.world.boxes.Box;
+import com.ded.misle.world.boxes.Effect;
 import com.ded.misle.world.boxes.HPBox;
 import com.ded.misle.world.player.PlayerAttributes;
 
@@ -76,25 +77,21 @@ public class PhysicsEngine {
 
 	private static void handleEffect(Box culprit, Box victim, PlayerAttributes.KnockbackDirection direction) {
 		try {
-			// Touching culprit gets effect
-			if (victim instanceof HPBox && !culprit.getEffect().isEmpty()) {
-				if (Objects.equals(culprit.getEffect(), "damage")) {
+			// Victim gets effect
+			if (victim instanceof HPBox && culprit.effect != null) {
+				if (culprit.effect instanceof Effect.Damage) {
 					culprit.setKnockbackDirection(direction);
 				}
-				culprit.effect.handleEffect((HPBox) victim);
+				culprit.effect.run(culprit, victim);
 			}
-			// Responsible culprit gets effect
-			if (culprit instanceof HPBox && !victim.getEffect().isEmpty()) {
-				if (Objects.equals(victim.getEffect(), "damage")) {
+			// Culprit gets effect
+			if (culprit instanceof HPBox && victim.effect != null) {
+				if (victim.effect instanceof Effect.Damage) {
 					victim.setKnockbackDirection(direction.getOppositeDirection());
 				}
-				victim.handleEffect((HPBox) culprit);
+				victim.effect.run(victim, culprit);
 			}
 
-			if (player.attr.getLastVelocityBox() != null) {
-				player.attr.setEnvironmentSpeedModifier(1.0); // Reset to default speed
-				player.attr.setLastVelocityBox(null); // Clear the last velocity culprit
-			}
 		} catch (NullPointerException ignored) {}
 	}
 }
