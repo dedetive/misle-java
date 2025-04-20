@@ -55,7 +55,7 @@ public class BoxHandling {
 	 *  ...
 	 *
 	 */
-	public static void addBox(int x, int y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, String[] effect, double rotation, PhysicsEngine.ObjectType objectType, boolean interactsWithPlayer) {
+	public static void addBox(int x, int y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, Effect effect, double rotation, PhysicsEngine.ObjectType objectType, boolean interactsWithPlayer) {
 		boxes.add(new Box(x, y, color, texture, hasCollision, boxScaleHorizontal, boxScaleVertical, effect, rotation, objectType, interactsWithPlayer));
 		addBoxToCache(boxes.getLast());
 	}
@@ -214,6 +214,8 @@ public class BoxHandling {
 		return loaded;
 	}
 
+	// TODO: might remove this later idk
+	@Deprecated(forRemoval = true)
 	public static void editBox(Box box, EditBoxKeys key, String value) {
 		switch (key) {
 			case X:
@@ -236,14 +238,6 @@ public class BoxHandling {
 				break;
 			case BOX_SCALE_VERTICAL:
 				box.setBoxScaleVertical(Double.parseDouble(value));
-				break;
-			case EFFECT:
-				value = value.replaceAll("[{}]", "");
-				String[] effectArray = value.split(",\\s*");
-				box.setEffect(effectArray);
-				break;
-			case COLLECTIBLE:
-				box.setEffectReason(value);
 				break;
 			case ROTATION:
 				box.setVisualRotation(Double.parseDouble(value));
