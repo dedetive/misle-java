@@ -1,12 +1,25 @@
 package com.ded.misle.world.boxes;
 
+import com.ded.misle.core.GamePanel;
+import com.ded.misle.renderer.MainRenderer;
+import com.ded.misle.renderer.PlayingRenderer;
 import com.ded.misle.world.player.Player;
 
+import javax.swing.*;
 import java.awt.*;
 
+import static com.ded.misle.audio.AudioPlayer.AudioFile.collect_item;
+import static com.ded.misle.audio.AudioPlayer.playThis;
+import static com.ded.misle.core.GamePanel.gameState;
 import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.items.Item.createItem;
+import static com.ded.misle.renderer.MainRenderer.*;
+import static com.ded.misle.world.WorldLoader.loadBoxes;
+import static com.ded.misle.world.WorldLoader.unloadBoxes;
+import static com.ded.misle.world.boxes.BoxHandling.deleteBox;
 import static com.ded.misle.world.boxes.BoxHandling.getCollisionBoxesInRange;
 import static com.ded.misle.world.chests.DropTable.getDropTableItemID;
+import static com.ded.misle.world.enemies.EnemyAI.clearBreadcrumbs;
 import static java.lang.System.currentTimeMillis;
 
 public abstract class Effect {
@@ -24,7 +37,7 @@ public abstract class Effect {
         }
 
         @Override
-        public void handle(Box culprit, Box victim) {
+        public void run(Box culprit, Box victim) {
             if (!(victim instanceof HPBox)) return;
             if (!culprit.interactsWithPlayer && victim == player) return;
 
@@ -56,7 +69,7 @@ public abstract class Effect {
         }
 
         @Override
-        public void handle(Box culprit, Box victim) {
+        public void run(Box culprit, Box victim) {
             if (!(victim instanceof HPBox)) return;
             if (!culprit.interactsWithPlayer && victim == player) return;
 
@@ -84,7 +97,7 @@ public abstract class Effect {
             this.lastTimeOpen = 0;
         }
 
-        public void handle(Box culprit, Box chest) {
+        public void run(Box culprit, Box chest) {
             if (!(culprit instanceof Player)) return;
 
             long currentTime = currentTimeMillis();
@@ -113,31 +126,104 @@ public abstract class Effect {
         }
     }
     public static class Spawnpoint extends Effect {
-        int id;
+        int roomID;
         Point coordinates; // TODO: Currently unused please fix
 
         Spawnpoint(int id, Point coordinates) {
-            this.id = id;
+            this.roomID = id;
             this.coordinates = coordinates;
         }
 
         @Override
-        public void handle(Box culprit, Box unused) {
+        public void run(Box culprit, Box unused) {
             if (culprit instanceof Player) handleBoxSpawnpoint((Player) culprit);
         }
 
         private void handleBoxSpawnpoint(Player culprit) {
-            if (id > 0 && culprit.pos.getSpawnpoint() != culprit.pos.getRoomID()) {
+            if (roomID > 0 && culprit.pos.getSpawnpoint() != culprit.pos.getRoomID()) {
                 culprit.pos.setSpawnpoint(culprit.pos.getRoomID());
                 System.out.println("Saved spawnpoint as room " + culprit.pos.getRoomID());
             }
         }
     }
     public static class Travel extends Effect {
+        int roomID;
+        Point coordinates; // TODO: Currently unused please fix
 
+        Travel(int roomID, Point coordinates) {
+            this.roomID = roomID;
+            this.coordinates = coordinates;
+        }
+
+        @Override
+        public void run(Box culprit, Box victim) {
+            if (!(culprit instanceof Player)) return;
+
+            handleBoxTravel();
+        }
+
+        private void handleBoxTravel() {
+            fadeIn();
+            gameState = GamePanel.GameState.FROZEN_PLAYING;
+            Timer fadingIn = new Timer(75, e -> {
+                if (isFading == MainRenderer.FadingState.FADED) {
+
+                    player.pos.setRoomID(roomID);
+
+                    player.setX(coordinates.x);
+                    player.setY(coordinates.y);
+                    unloadBoxes();
+                    loadBoxes();
+                    clearBreadcrumbs();
+
+                    Timer loadWait = new Timer(300, evt -> {
+                        fadeOut();
+                        gameState = GamePanel.GameState.PLAYING;
+                    });
+                    loadWait.setRepeats(false);
+                    loadWait.start();
+
+                    ((Timer) e.getSource()).stop();
+                }
+            });
+            fadingIn.setRepeats(true);
+            fadingIn.start();
+        }
     }
-    public static class Item extends Effect {
+    public static class Collectible extends Effect {
+        boolean collectible = true;
+        int id;
+        int count = 1;
 
+        Collectible(int id) {
+            this.id = id;
+        }
+        Collectible(int id, int count, boolean collectible) {
+            this.collectible = collectible;
+            this.id = id;
+            this.count = count;
+        }
+
+        @Override
+        public void run(Box culprit, Box victim) {
+            if (!(culprit instanceof Player)) return;
+
+            handleBoxItemCollectible(victim);
+        }
+
+        private void handleBoxItemCollectible(Box victim) {
+            if (!collectible) return;
+
+            if (id == 0) {
+                deleteBox(victim);
+            }
+
+            if (player.inv.addItem(createItem(id, count))) {
+                playThis(collect_item);
+                PlayingRenderer.updateSelectedItemNamePosition();
+                deleteBox(victim);
+            }
+        }
     }
 
     public Effect type;
@@ -146,15 +232,5 @@ public abstract class Effect {
         type = Effect.this;
     }
 
-    public abstract void handle(Box culprit, Box victim);
-
-    public void handleEffect(HPBox box) {
-        if (!this.interactsWithPlayer && box == player) return;
-
-        switch (this.effect[0]) {
-            case "spawnpoint" -> { if (box instanceof Player) this.handleBoxSpawnpoint(); }
-            case "item" -> { if (box instanceof Player) this.handleBoxItemCollectible(); }
-            case "travel" -> { if (box instanceof Player) this.handleBoxTravel(); }
-        }
-    }
+    public abstract void run(Box culprit, Box victim);
 }

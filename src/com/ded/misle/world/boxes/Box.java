@@ -358,9 +358,7 @@ public class Box {
 		return cachedTexture2.get(boxTextureName); // Return the cached imageaddBox(BoxPreset.WALL_DEFAULT)
 	}
 
-	// EFFECT HANDLING
-
-
+	// EFFECT RELATED
 
 	public PlayerAttributes.KnockbackDirection getKnockbackDirection() {
 		return knockbackDirection;
@@ -407,49 +405,7 @@ public class Box {
 		timer.start();
 	}
 
-	private void handleBoxItemCollectible() {
-		if (this.getEffectReason().equals("false")) {
-			return;
-		}
-		if (Integer.parseInt(this.effect[2]) == 0) {
-			deleteBox(this);
-		}
-
-		if (player.inv.addItem(createItem(Integer.parseInt(this.effect[1]), Integer.parseInt(this.effect[2])))) {
-			playThis(collect_item);
-			PlayingRenderer.updateSelectedItemNamePosition();
-			deleteBox(this);
-		}
-	}
-
-	private void handleBoxTravel() {
-		fadeIn();
-		gameState = GameState.FROZEN_PLAYING;
-		Timer fadingIn = new Timer(75, e -> {
-			if (isFading == MainRenderer.FadingState.FADED) {
-				TravelTransition room = TravelTransition.valueOf(effect[1]);
-
-				player.pos.setRoomID(room.enteringRoomID);
-
-				player.setX(room.x);
-				player.setY(room.y);
-				unloadBoxes();
-				loadBoxes();
-				clearBreadcrumbs();
-
-				Timer loadWait = new Timer(300, evt -> {
-					fadeOut();
-					gameState = GameState.PLAYING;
-				});
-				loadWait.setRepeats(false);
-				loadWait.start();
-
-				((Timer) e.getSource()).stop();
-			}
-		});
-		fadingIn.setRepeats(true);
-		fadingIn.start();
-	}
+	// Selecting boxes
 
 	public void addSelectedBox() {
 		try {
