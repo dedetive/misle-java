@@ -37,8 +37,7 @@ public class Box {
 	private double boxScaleHorizontal;
 	private double boxScaleVertical;
 	public Effect effect;
-	private long lastDamageTime = 0;
-	private static ArrayList<Box> selectedBoxes;
+    private static ArrayList<Box> selectedBoxes;
 	private PhysicsEngine.ObjectType objectType;
 	private PlayerAttributes.KnockbackDirection knockbackDirection;
 	boolean interactsWithPlayer;
@@ -384,10 +383,10 @@ public class Box {
 		droppedItem = createDroppedItem(this.getX(), this.getY() - 1, id, count);
 		moveBox(droppedItem, multiplier, 10, delay);
 
-		editLastBox(EditBoxKeys.COLLECTIBLE, "false");
+		((Effect.Collectible) droppedItem.effect).collectible = false;
 
 		Timer timer = new Timer((int) (delay * 1.5), e -> {
-			editBox(droppedItem, EditBoxKeys.COLLECTIBLE, "true");
+			((Effect.Collectible) droppedItem.effect).collectible = true;
 			if (Objects.equals(this.textureName, "chest_open")) {
 				this.setTexture("chest");
 			}

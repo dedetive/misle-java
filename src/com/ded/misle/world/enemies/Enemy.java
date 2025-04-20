@@ -12,7 +12,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
-import static com.ded.misle.world.boxes.BoxHandling.editBox;
 import static com.ded.misle.world.enemies.EnemyAI.AIState.STILL;
 import static com.ded.misle.world.enemies.EnemyAI.AIState.WANDERING;
 
@@ -21,7 +20,7 @@ public class Enemy extends HPBox {
     private final EnemyType enemyType;
     private final double magnification;
 
-    private static List<Enemy> enemyBoxes = new ArrayList<>();
+    private static final List<Enemy> enemyBoxes = new ArrayList<>();
 
     private double xpDrop = 0;
     private int[] coinDrop = new int[]{0, 0};
