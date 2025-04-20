@@ -124,7 +124,7 @@ public class WorldLoader {
 						corners = checkCorner(SOUTHWEST, corners, "D", layer);
 						corners = checkCorner(SOUTHEAST, corners, "S", layer);
 
-						editBox(currentBox, EditBoxKeys.TEXTURE, normalizedName + sides + corners);
+						currentBox.setTexture(normalizedName + sides + corners);
 					}
 				}
 			}
