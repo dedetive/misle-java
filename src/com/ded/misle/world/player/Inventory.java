@@ -15,7 +15,6 @@ import static com.ded.misle.audio.AudioPlayer.playThis;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.world.boxes.BoxManipulation.*;
-import static com.ded.misle.world.boxes.BoxHandling.editBox;
 import static com.ded.misle.world.player.HandItemAnimator.animateClaw;
 import static com.ded.misle.world.player.PlayerAttributes.Stat.ALL;
 import static com.ded.misle.renderer.ColorManager.entropyGainColor;
@@ -235,43 +234,30 @@ public class Inventory {
 
 	public void dropItem(int row, int col, int quantity) {
 		Box droppedItem = BoxHandling.addBoxItem(player.getX(), player.getY(), getItem(row, col).getId(), quantity);
-		editBox(droppedItem, BoxHandling.EditBoxKeys.COLLECTIBLE, "false");
 		playThis(drop_item);
 		removeItem(row, col, quantity);
 		PlayingRenderer.updateSelectedItemNamePosition();
-//		double dropSpeed = player.attr.getSpeedModifier() * player.attr.getEnvironmentSpeedModifier() * 20 * 2.25;
-		int dropSpeed = 1;
 		switch (player.stats.getWalkingDirection()) {
 			case PlayerStats.Direction.UP -> {
-				moveCollisionBox(droppedItem, 0, -dropSpeed, 300);
-//				moveCollisionBox(droppedItem, 0, -dropSpeed / 2, 50);
+				moveCollisionBox(droppedItem, 0, -3, 300);
 			}
 			case PlayerStats.Direction.DOWN -> {
-				moveCollisionBox(droppedItem, 0, dropSpeed, 300);
-//				moveCollisionBox(droppedItem, 0, dropSpeed / 2, 50);
+				moveCollisionBox(droppedItem, 0, 3, 300);
 			}
 			case PlayerStats.Direction.LEFT -> {
-				moveCollisionBox(droppedItem, -dropSpeed, 0, 300);
-//				moveCollisionBox(droppedItem, -dropSpeed / 2, 0, 50);
+				moveCollisionBox(droppedItem, -3, 0, 300);
 			}
 			case PlayerStats.Direction.RIGHT -> {
-				moveCollisionBox(droppedItem, dropSpeed, 0, 300);
-//				moveCollisionBox(droppedItem, dropSpeed / 2, 0, 50);
+				moveCollisionBox(droppedItem, 3, 0, 300);
 			}
 			case null, default -> {
 			}
 		}
 		delayedRotateBox(droppedItem, 360, 250);
-		Timer timer = new Timer(1500, e -> {
-			editBox(droppedItem, BoxHandling.EditBoxKeys.COLLECTIBLE, "true");
-		});
-		timer.setRepeats(false);
-		timer.start();
 	}
 
 	public void dropItem(int position, int quantity) {
 		Box droppedItem = BoxHandling.addBoxItem(player.getX(), player.getY(), getItem(position).getId(), quantity);
-		editBox(droppedItem, BoxHandling.EditBoxKeys.COLLECTIBLE, "false");
 		playThis(drop_item);
 		removeItem(position);
 		PlayingRenderer.updateSelectedItemNamePosition();
@@ -298,11 +284,6 @@ public class Inventory {
 			}
 		}
 		delayedRotateBox(droppedItem, 360, 250);
-		Timer timer = new Timer(1500, e -> {
-			editBox(droppedItem, BoxHandling.EditBoxKeys.COLLECTIBLE, "true");
-		});
-		timer.setRepeats(false);
-		timer.start();
 	}
 
 	public void initDraggingItem(int row, int col, int count, boolean isExtra) {
@@ -382,7 +363,6 @@ public class Inventory {
 
 	public void dropDraggedItem(int count) {
 		Box droppedItem = BoxHandling.addBoxItem(player.getX(), player.getY(), getDraggedItem().getId(), count);
-		editBox(droppedItem, BoxHandling.EditBoxKeys.COLLECTIBLE, "false");
 		playThis(drop_item);
 		setTempItem(getDraggedItem());
 		tempItem.setCount(count);
@@ -390,34 +370,23 @@ public class Inventory {
 		if (draggedItem.getCount() == 0) destroyGrabbedItem();
 		destroyTempItem();
 		PlayingRenderer.updateSelectedItemNamePosition();
-//		double dropSpeed = player.attr.getSpeedModifier() * player.attr.getEnvironmentSpeedModifier() * 20 * 2.25;
-		int dropSpeed = 1;
 		switch (player.stats.getWalkingDirection()) {
 			case UP -> {
-				moveCollisionBox(droppedItem, 0, -dropSpeed, 300);
-//				moveCollisionBox(droppedItem, 0, -dropSpeed / 2, 50);
+				moveCollisionBox(droppedItem, 0, -3, 300);
 			}
 			case DOWN -> {
-				moveCollisionBox(droppedItem, 0, dropSpeed, 300);
-//				moveCollisionBox(droppedItem, 0, dropSpeed / 2, 50);
+				moveCollisionBox(droppedItem, 0, 3, 300);
 			}
 			case LEFT -> {
-				moveCollisionBox(droppedItem, -dropSpeed, 0, 300);
-//				moveCollisionBox(droppedItem, -dropSpeed / 2, 0, 50);
+				moveCollisionBox(droppedItem, -3, 0, 300);
 			}
 			case RIGHT -> {
-				moveCollisionBox(droppedItem, dropSpeed, 0, 300);
-//				moveCollisionBox(droppedItem, dropSpeed / 2, 0, 50);
+				moveCollisionBox(droppedItem, 3, 0, 300);
 			}
 			case null, default -> {
 			}
 		}
 		delayedRotateBox(droppedItem, 360, 250);
-		Timer timer = new Timer(1500, e -> {
-			editBox(droppedItem, BoxHandling.EditBoxKeys.COLLECTIBLE, "true");
-		});
-		timer.setRepeats(false);
-		timer.start();
 	}
 
 	public int getEmptySlotCount() {
@@ -560,7 +529,7 @@ public class Inventory {
 			switch (getSelectedItem().getAttributes().get("subtype").toString()) {
 				case "melee" -> {
 					switch (getSelectedItem().getAttributes().get("kind").toString()) {
-						case "claw" -> animateClaw(mouseHandler);
+						case "claw" -> animateClaw();
 						// Weapon goes upward for a bit and then swings downwards
 						// Deals area damage
 						case "ranged" -> {     // throw a box projectile to held direction

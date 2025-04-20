@@ -200,7 +200,7 @@ public abstract class Effect {
         }
     }
     public static class Collectible extends Effect {
-        boolean collectible = true;
+        public boolean collectible = true;
         int id;
         int count = 1;
 
