@@ -29,16 +29,10 @@ public class NPC extends HPBox {
     }
 
     public NPC(int x, int y, InteractionType interactionType) {
-        this.setTexture("solid");
+        super(x, y);
         this.setColor(new Color(0xFFFF00));
         this.setObjectType(PhysicsEngine.ObjectType.NPC);
         this.setHasCollision(true);
-        this.setBoxScaleHorizontal(1);
-        this.setBoxScaleVertical(1);
-        this.setKnockbackDirection(NONE);
-        this.setEffect(new String[]{""});
-        this.setX(x);
-        this.setY(y);
         this.name = "NPC";
         this.nameColor = new Color(0xFFFFFF);
         this.setMaxHP(20);
@@ -50,8 +44,6 @@ public class NPC extends HPBox {
             case SHOP -> shopNPCs.add(this);
             case DIALOG -> dialogNPCs.add(this);
         }
-
-        addBoxToCache(this);
     }
 
     public void setSelected(boolean selected) {
