@@ -122,6 +122,7 @@ public class Box {
 		this.objectType = BOX;
 		this.knockbackDirection = NONE;
 		this.interactsWithPlayer = true;
+		addBoxToCache(this);
 	}
 
 	// For player creation or dummy box
