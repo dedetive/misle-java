@@ -232,6 +232,10 @@ public class Inventory {
 		}
 	}
 
+	private final static int DROP_DISTANCE = 2;
+	private final static int DROP_DELAY = 500;
+	private final static int DROP_ROTATION_DELAY = 150;
+
 	public void dropItem(int row, int col, int quantity) {
 		Box droppedItem = BoxHandling.addBoxItem(player.getX(), player.getY(), getItem(row, col).getId(), quantity);
 		playThis(drop_item);
@@ -239,21 +243,21 @@ public class Inventory {
 		PlayingRenderer.updateSelectedItemNamePosition();
 		switch (player.stats.getWalkingDirection()) {
 			case PlayerStats.Direction.UP -> {
-				moveCollisionBox(droppedItem, 0, -3, 300);
+				moveCollisionBox(droppedItem, 0, -DROP_DISTANCE, DROP_DELAY);
 			}
 			case PlayerStats.Direction.DOWN -> {
-				moveCollisionBox(droppedItem, 0, 3, 300);
+				moveCollisionBox(droppedItem, 0, DROP_DISTANCE, DROP_DELAY);
 			}
 			case PlayerStats.Direction.LEFT -> {
-				moveCollisionBox(droppedItem, -3, 0, 300);
+				moveCollisionBox(droppedItem, -DROP_DISTANCE, 0, DROP_DELAY);
 			}
 			case PlayerStats.Direction.RIGHT -> {
-				moveCollisionBox(droppedItem, 3, 0, 300);
+				moveCollisionBox(droppedItem, DROP_DISTANCE, 0, DROP_DELAY);
 			}
 			case null, default -> {
 			}
 		}
-		delayedRotateBox(droppedItem, 360, 250);
+		delayedRotateBox(droppedItem, 360, DROP_ROTATION_DELAY);
 	}
 
 	public void dropItem(int position, int quantity) {
@@ -263,21 +267,21 @@ public class Inventory {
 		PlayingRenderer.updateSelectedItemNamePosition();
 		switch (player.stats.getWalkingDirection()) {
 			case PlayerStats.Direction.UP -> {
-				moveCollisionBox(droppedItem, 0, -3, 300);
+				moveCollisionBox(droppedItem, 0, -DROP_DISTANCE, DROP_DELAY);
 			}
 			case PlayerStats.Direction.DOWN -> {
-				moveCollisionBox(droppedItem, 0, 3, 300);
+				moveCollisionBox(droppedItem, 0, DROP_DISTANCE, DROP_DELAY);
 			}
 			case PlayerStats.Direction.LEFT -> {
-				moveCollisionBox(droppedItem, -3, 0, 300);
+				moveCollisionBox(droppedItem, -DROP_DISTANCE, 0, DROP_DELAY);
 			}
 			case PlayerStats.Direction.RIGHT -> {
-				moveCollisionBox(droppedItem, 3, 0, 300);
+				moveCollisionBox(droppedItem, DROP_DISTANCE, 0, DROP_DELAY);
 			}
 			case null, default -> {
 			}
 		}
-		delayedRotateBox(droppedItem, 360, 250);
+		delayedRotateBox(droppedItem, 360, DROP_ROTATION_DELAY);
 	}
 
 	public void initDraggingItem(int row, int col, int count, boolean isExtra) {
@@ -366,21 +370,21 @@ public class Inventory {
 		PlayingRenderer.updateSelectedItemNamePosition();
 		switch (player.stats.getWalkingDirection()) {
 			case UP -> {
-				moveCollisionBox(droppedItem, 0, -3, 300);
+				moveCollisionBox(droppedItem, 0, -DROP_DISTANCE, DROP_DELAY);
 			}
 			case DOWN -> {
-				moveCollisionBox(droppedItem, 0, 3, 300);
+				moveCollisionBox(droppedItem, 0, DROP_DISTANCE, DROP_DELAY);
 			}
 			case LEFT -> {
-				moveCollisionBox(droppedItem, -3, 0, 300);
+				moveCollisionBox(droppedItem, -DROP_DISTANCE, 0, DROP_DELAY);
 			}
 			case RIGHT -> {
-				moveCollisionBox(droppedItem, 3, 0, 300);
+				moveCollisionBox(droppedItem, DROP_DISTANCE, 0, DROP_DELAY);
 			}
 			case null, default -> {
 			}
 		}
-		delayedRotateBox(droppedItem, 360, 250);
+		delayedRotateBox(droppedItem, 360, DROP_ROTATION_DELAY);
 	}
 
 	public int getEmptySlotCount() {
