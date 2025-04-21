@@ -8,7 +8,7 @@
     "type": "",
     "subtype": "",
     "kind": "",
-    "bundles": "goblin|0|4",
+    "bundles": "goblin_drop|0|4",
     "nameColor": "#FFFFFF"
   },
   {
@@ -49,7 +49,7 @@
     "kind": "self",
     "size": "small",
     "potionDelay": 1.6,
-    "bundles": "mountain|8|75",
+    "bundles": "potion_chest|8|75",
     "nameColor": "#FF6969"
   },
   {
@@ -64,7 +64,7 @@
     "size": "small",
     "potionDelay": 1.6,
     "kind": "self",
-    "bundles": "mountain|6|62",
+    "bundles": "potion_chest|6|62",
     "nameColor": "#6BC6F5"
   },
   {
@@ -92,7 +92,7 @@
     "kind": "self",
     "size": "medium",
     "potionDelay": 2,
-    "bundles": "mountain|4|24",
+    "bundles": "potion_chest|4|24",
     "nameColor": "#D40000"
   },
   {
@@ -107,7 +107,7 @@
     "kind": "self",
     "size": "big",
     "potionDelay": 2.5,
-    "bundles": "mountain|2|8",
+    "bundles": "potion_chest|2|8",
     "nameColor": "#C70202"
   },
   {
@@ -122,7 +122,7 @@
     "kind": "self",
     "size": "huge",
     "potionDelay": 10,
-    "bundles": "mountain|1|1",
+    "bundles": "potion_chest|1|1",
     "nameColor": "#8F0202"
   },
   {
@@ -137,7 +137,7 @@
     "kind": "self",
     "size": "medium",
     "potionDelay": 2,
-    "bundles": "mountain|2|18",
+    "bundles": "potion_chest|2|18",
     "nameColor": "#5EADD6"
   },
   {
@@ -152,7 +152,7 @@
     "kind": "self",
     "size": "big",
     "potionDelay": 2.5,
-    "bundles": "mountain|1|5",
+    "bundles": "potion_chest|1|5",
     "nameColor": "#8FF8FF"
   },
   {
@@ -167,7 +167,7 @@
     "kind": "self",
     "size": "huge",
     "potionDelay": 5,
-    "bundles": "mountain|1|1",
+    "bundles": "potion_chest|1|1",
     "nameColor": "#8AFFFF"
   },
   {
@@ -189,7 +189,7 @@
   "rarity": "F",
   "type": "material",
   "nameColor": "#088F08",
-  "bundles": "goblin|2|7"
+  "bundles": "goblin_drop|2|7"
   },
   {
     "id": 14,
