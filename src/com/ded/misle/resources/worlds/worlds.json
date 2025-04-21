@@ -17,7 +17,8 @@
     ],
     "custom_color_code": {
       "#36dbdb": "travel, roomID:0, x:10, y:13",
-      "#e04ae7": "spawnpoint, x:1, y:1"
+      "#e04ae7": "spawnpoint, x:1, y:1",
+      "a66c13": "chest, droptable:potion_chest, openRate:300"
     },
     "id": 1
   }

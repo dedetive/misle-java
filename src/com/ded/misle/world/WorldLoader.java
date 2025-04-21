@@ -67,21 +67,36 @@ public class WorldLoader {
 	private static void setRGBToBox(int rgb, Room room, int[] point) {
 		try {
 			// Gets the box from pixel RGB and maps it to the image x and y
-            Box box;
+            Box box = null;
 			boolean isSpecifiedByJsonEntry = room.colorCodeMap.containsKey(rgb);
 			if (isSpecifiedByJsonEntry) {
 				String v = room.colorCodeMap.get(rgb);
 				String[] parts = v.split(", ");
-				switch (parts[0]) {
-					case "travel" -> {
-						Function<String, Integer> getValue = (String val) -> Integer.parseInt(val.split(":")[1].replace(",", ""));
-						int id = getValue.apply(parts[1]);
-						Point coordinates = new Point(getValue.apply(parts[2]), getValue.apply(parts[3]));
-						box = addBox(BoxPreset.TRAVEL);
-						box.effect = new Effect.Travel(id, coordinates);
-					}
-					default -> box = addBox(BoxPreset.WALL_DEFAULT);
+				enum CustomColorCodeOption {
+					travel,
+					chest,
+					spawnpoint
 				}
+				try {
+					Function<String, Integer> getInt = (String val) -> Integer.parseInt(val.split(":")[1].replace(",", ""));
+					Function<String, String> getString = (String val) -> val.split(":")[1].replace(",", "");
+					switch (CustomColorCodeOption.valueOf(parts[0])) {
+						case travel -> {
+							int id = getInt.apply(parts[1]);
+							Point coordinates = new Point(getInt.apply(parts[2]), getInt.apply(parts[3]));
+							box = addBox(BoxPreset.TRAVEL);
+							box.effect = new Effect.Travel(id, coordinates);
+						}
+						case spawnpoint -> {
+							int id = getInt.apply(parts[1]);
+							box = addBox(BoxPreset.SPAWNPOINT);
+							box.effect = new Effect.Spawnpoint(id);
+						}
+						case chest -> {
+
+						}
+					}
+				} catch (IllegalArgumentException e) { box = addBox(BoxPreset.WALL_DEFAULT); }
 			} else {
 				box = RGBToBox.get(rgb).call();
 			}

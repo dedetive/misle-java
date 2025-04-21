@@ -136,11 +136,9 @@ public abstract class Effect {
     }
     public static class Spawnpoint extends Effect {
         int roomID;
-        Point coordinates; // TODO: Currently unused please fix
 
-        Spawnpoint(int id, Box box) {
+        public Spawnpoint(int id) {
             this.roomID = id;
-            this.coordinates = new Point(box.getX(), box.getY());
         }
 
         @Override
@@ -149,7 +147,7 @@ public abstract class Effect {
         }
 
         private void handleBoxSpawnpoint(Player player) {
-            if (roomID > 0 && player.pos.getSpawnpoint() != player.pos.getRoomID()) {
+            if (roomID >= 0 && player.pos.getSpawnpoint() != player.pos.getRoomID()) {
                 player.pos.setSpawnpoint(player.pos.getRoomID());
             }
         }

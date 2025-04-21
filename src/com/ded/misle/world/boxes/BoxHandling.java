@@ -184,7 +184,7 @@ public class BoxHandling {
 
 		switch (preset) {
 			case SPAWNPOINT:
-				box.effect = new Effect.Spawnpoint(-1, box);
+				box.effect = new Effect.Spawnpoint(-1);
 				editBox(box, EditBoxKeys.TEXTURE, "spawnpoint");
 				break;
 			case BoxPreset.MOUNTAIN_CHEST:
