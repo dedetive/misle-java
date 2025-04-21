@@ -5,7 +5,7 @@
       "TUANI_CITY2"
     ],
     "custom_color_code": {
-      "36dbdb": "travel, roomID:1, x:7, y:4"
+      "#36dbdb": "travel, roomID:1, x:7, y:4"
     },
     "id": 0
   },
@@ -16,7 +16,8 @@
       "TUANI_HOUSE3"
     ],
     "custom_color_code": {
-      "36dbdb": "travel, roomID:0, x:10, y:13"
+      "#36dbdb": "travel, roomID:0, x:10, y:13",
+      "#e04ae7": "spawnpoint, x:1, y:1"
     },
     "id": 1
   }

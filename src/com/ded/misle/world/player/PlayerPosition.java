@@ -1,5 +1,6 @@
 package com.ded.misle.world.player;
 
+import com.ded.misle.world.RoomManager;
 import com.ded.misle.world.World;
 
 import javax.swing.*;
@@ -24,7 +25,7 @@ public class PlayerPosition {
 
 	public PlayerPosition() {
 		if (player != null) {
-            spawnpointRoom = 0;
+            spawnpointRoom = 1;
             reloadSpawnpoint();
         }
 		setCameraOffsetX(0);
@@ -65,13 +66,11 @@ public class PlayerPosition {
 
 	public void reloadSpawnpoint() {
 		setRoomID(spawnpointRoom);
-		int[] spawnpointCoordinates = switch (spawnpointRoom) {
+		RoomManager.Room room = RoomManager.roomIDToName(spawnpointRoom);
+		if (room == null) room = RoomManager.roomIDToName(1);
+        assert room != null;
 
-			// These should be the positions the spawnpoints are located
-
-			case 0 -> new int[]{4, 4};
-			default -> new int[]{0, 0};
-		};
+		int[] spawnpointCoordinates = room.spawnpointPos;
 		player.setX(spawnpointCoordinates[0]);
 		player.setY(spawnpointCoordinates[1]);
 	}

@@ -50,15 +50,21 @@ public class RoomManager {
             String filesPart = nameAndFiles[1].replace("]", "").trim();
             String[] fileNames = filesPart.isEmpty() ? new String[]{} : filesPart.split(",");
 
+            int[] spawnpointPos = new int[2];
             if (colorPart != null) {
-                String[] colorPairs = colorPart.replace("}", "").split("\n");
+                String[] colorPairs = colorPart.replace("}", "").split("#");
                 for (String pair : colorPairs) {
-                    String[] kv = pair.split(": ");
+                    if (pair.trim().isEmpty()) continue;
+                    String[] kv = pair.split(": ", 2);
                     if (kv.length == 2) colorCodeMap.put(Integer.parseInt(kv[0].trim(), 16), kv[1].trim());
+                    if (kv[1].contains("spawnpoint")) {
+                        spawnpointPos[0] = Integer.parseInt(kv[1].trim().split(":")[1].split(",", kv[1].trim().split(":")[1].length())[0]);
+                        spawnpointPos[1] = Integer.parseInt(kv[1].trim().split(":")[2].split(",", kv[1].trim().split(":")[1].length())[0]);
+                    }
                 }
             }
 
-            new Room(roomName, fileNames, id, colorCodeMap);
+            new Room(roomName, fileNames, id, colorCodeMap, spawnpointPos);
         }
     }
 
@@ -67,6 +73,7 @@ public class RoomManager {
         public final String[] fileNames;
         public final int id;
         public final Map<Integer, String> colorCodeMap;
+        public final int[] spawnpointPos = new int[2];
 
         Room(String name, String[] fileNames, int id, Map<Integer, String> colorCodeMap) {
             this.name = name;
@@ -74,6 +81,12 @@ public class RoomManager {
             this.id = id;
             this.colorCodeMap = colorCodeMap;
             rooms.add(this);
+        }
+
+        Room(String name, String[] fileNames, int id, Map<Integer, String> colorCodeMap, int[] spawnpointPos) {
+            this(name, fileNames, id, colorCodeMap);
+            this.spawnpointPos[0] = spawnpointPos[0];
+            this.spawnpointPos[1] = spawnpointPos[1];
         }
     }
 
