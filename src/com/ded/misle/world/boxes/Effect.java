@@ -166,7 +166,7 @@ public abstract class Effect {
 
         @Override
         public void run(Box culprit, Box victim) {
-            if (!(culprit instanceof Player)) return;
+            if (!(victim instanceof Player)) return;
 
             handleBoxTravel();
         }
