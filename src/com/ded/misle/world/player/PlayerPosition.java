@@ -49,7 +49,7 @@ public class PlayerPosition {
 	}
 
 	public double calculateCameraOffsetX() {
-		return Math.clamp(player.getX() * tileSize - screenWidth / 2, -tileSize, worldWidth - screenWidth + tileSize);
+		return Math.clamp(player.getX() * tileSize - screenWidth / 2, -tileSize, Math.max(worldWidth - screenWidth + tileSize, 0));
 	}
 	public double calculateCameraOffsetY() {
 		return Math.clamp(player.getY() * tileSize - screenHeight / 2, (double) -tileSize / 2, worldHeight - screenHeight + (double) tileSize / 2);
