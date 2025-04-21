@@ -2,7 +2,7 @@ package com.ded.misle.world.enemies;
 
 import com.ded.misle.world.boxes.Effect;
 import com.ded.misle.world.boxes.HPBox;
-import com.ded.misle.world.chests.DropTable;
+import com.ded.misle.items.DropTable;
 
 import java.awt.*;
 import java.util.ArrayList;

@@ -2,7 +2,7 @@ package com.ded.misle.world.boxes;
 
 import com.ded.misle.core.LanguageManager;
 import com.ded.misle.renderer.FloatingText;
-import com.ded.misle.world.chests.DropTable;
+import com.ded.misle.items.DropTable;
 import com.ded.misle.world.enemies.Enemy;
 import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.world.player.Player;

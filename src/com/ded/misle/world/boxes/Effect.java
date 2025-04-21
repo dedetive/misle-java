@@ -3,7 +3,7 @@ package com.ded.misle.world.boxes;
 import com.ded.misle.core.GamePanel;
 import com.ded.misle.renderer.MainRenderer;
 import com.ded.misle.renderer.PlayingRenderer;
-import com.ded.misle.world.chests.DropTable;
+import com.ded.misle.items.DropTable;
 import com.ded.misle.world.player.Player;
 
 import javax.swing.*;

@@ -1,7 +1,4 @@
-package com.ded.misle.world.chests;
-
-import com.ded.misle.items.ItemData;
-import com.ded.misle.items.ItemGetter;
+package com.ded.misle.items;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +8,7 @@ import static com.ded.misle.items.ItemGetter.getParameterizedItems;
 
 public class DropTable {
 	public static DropTable POTION_CHEST = new DropTable("potion_chest");
-	public static DropTable GOBLIN = new DropTable("goblin");
+	public static DropTable GOBLIN = new DropTable("goblin_drop");
 
 	String dropTableName;
 
