@@ -13,7 +13,7 @@ public class PlayerPosition {
 
     private double cameraOffsetX;
     private double cameraOffsetY;
-	private int spawnpointRoom;
+	private int spawnpointRoom = 1;
 	private Region region = Region.VOID;
 	private int roomID;
 	private double rotation;

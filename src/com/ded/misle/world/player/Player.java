@@ -46,6 +46,6 @@ public class Player extends HPBox {
 		this.attr.unloadAttributes();
 		this.inv.destroyGrabbedItem();
 		this.inv.destroyTempItem();
-		this.pos.setSpawnpoint(2);
+		this.pos.setSpawnpoint(1);
 	}
 }
