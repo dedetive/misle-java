@@ -24,7 +24,7 @@ public class PlayerPosition {
 
 	public PlayerPosition() {
 		if (player != null) {
-            spawnpointRoom = 1;
+            spawnpointRoom = 0;
             reloadSpawnpoint();
         }
 		setCameraOffsetX(0);
@@ -69,8 +69,7 @@ public class PlayerPosition {
 
 			// These should be the positions the spawnpoints are located
 
-			case 1 -> new int[]{25, 27};
-			case 2 -> new int[]{26, 24};
+			case 0 -> new int[]{4, 4};
 			default -> new int[]{0, 0};
 		};
 		player.setX(spawnpointCoordinates[0]);

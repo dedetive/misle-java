@@ -218,7 +218,7 @@ public class SaveFile {
 					// Spawnpoint
 
 					int spawnpoint = loadAttribute(PixelData.SPAWNPOINT_M, PixelData.SPAWNPOINT_L);
-					player.pos.setSpawnpoint(Math.max(spawnpoint, 1));
+					player.pos.setSpawnpoint(Math.max(spawnpoint, 0));
 					player.pos.reloadSpawnpoint();
 
 					// Level and XP related

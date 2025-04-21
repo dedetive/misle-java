@@ -5,16 +5,18 @@
       "TUANI_CITY2"
     ],
     "custom_color_code": {
-      "754701": "travel, roomID:1, x:20, y:20"
+      "36dbdb": "travel, roomID:1, x:20, y:20"
     },
     "id": 0
   },
   {
-    "TUANI_CITY_TEST": [
-      "TUANI_CITY1"
+    "TUANI_HOUSE": [
+      "TUANI_HOUSE1",
+      "TUANI_HOUSE2",
+      "TUANI_HOUSE3"
     ],
     "custom_color_code": {
-      "744700": "travel 0"
+      "36dbdb": "travel, roomID:0, x:10, y:13"
     },
     "id": 1
   }
