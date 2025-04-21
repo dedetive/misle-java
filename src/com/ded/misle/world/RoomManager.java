@@ -51,9 +51,9 @@ public class RoomManager {
             String[] fileNames = filesPart.isEmpty() ? new String[]{} : filesPart.split(",");
 
             if (colorPart != null) {
-                String[] colorPairs = colorPart.replace("}", "").split(",");
+                String[] colorPairs = colorPart.replace("}", "").split("\n");
                 for (String pair : colorPairs) {
-                    String[] kv = pair.split(":");
+                    String[] kv = pair.split(": ");
                     if (kv.length == 2) colorCodeMap.put(Integer.parseInt(kv[0].trim(), 16), kv[1].trim());
                 }
             }

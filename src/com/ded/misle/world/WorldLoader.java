@@ -1,15 +1,16 @@
 package com.ded.misle.world;
 
 import com.ded.misle.world.boxes.Box;
+import com.ded.misle.world.boxes.Effect;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.function.Function;
 
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.SettingsManager.getPath;
@@ -65,13 +66,18 @@ public class WorldLoader {
 	private static void setRGBToBox(int rgb, Room room, int[] point) {
 		try {
 			// Gets the box from pixel RGB and maps it to the image x and y
-			Box box = addBox(BoxPreset.GRASS);
-			if (room.colorCodeMap.containsKey(rgb)) {
+            Box box;
+			boolean isSpecifiedByJsonEntry = room.colorCodeMap.containsKey(rgb);
+			if (isSpecifiedByJsonEntry) {
 				String v = room.colorCodeMap.get(rgb);
-				String[] parts = v.split(" ");
+				String[] parts = v.split(", ");
 				switch (parts[0]) {
 					case "travel" -> {
+						Function<String, Integer> getValue = (String val) -> Integer.parseInt(val.split(":")[1].replace(",", ""));
+						int id = getValue.apply(parts[1]);
+						Point coordinates = new Point(getValue.apply(parts[2]), getValue.apply(parts[3]));
 						box = addBox(BoxPreset.TRAVEL);
+						box.effect = new Effect.Travel(id, coordinates);
 					}
 					default -> box = addBox(BoxPreset.WALL_DEFAULT);
 				}

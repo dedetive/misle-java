@@ -159,7 +159,7 @@ public abstract class Effect {
         int roomID;
         Point coordinates; // TODO: Currently unused please fix
 
-        Travel(int roomID, Point coordinates) {
+        public Travel(int roomID, Point coordinates) {
             this.roomID = roomID;
             this.coordinates = coordinates;
         }
