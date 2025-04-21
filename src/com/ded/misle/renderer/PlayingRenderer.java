@@ -71,8 +71,8 @@ public class PlayingRenderer {
         // Draw background
         World world = player.pos.world;
 
-        for (int i = 0; i < world.width; i++) {
-            for (int j = 0; j < world.height; j++) {
+        for (int i = 0; i < screenWidth / tileSize; i++) {
+            for (int j = 0; j < screenHeight / tileSize; j++) {
                 g2d.drawImage(world.background.box.getTexture(), i * tileSize, j * tileSize, tileSize, tileSize, null);
             }
         }
