@@ -138,26 +138,25 @@ public abstract class Effect {
         int roomID;
         Point coordinates; // TODO: Currently unused please fix
 
-        Spawnpoint(int id, Point coordinates) {
+        Spawnpoint(int id, Box box) {
             this.roomID = id;
-            this.coordinates = coordinates;
+            this.coordinates = new Point(box.getX(), box.getY());
         }
 
         @Override
-        public void run(Box culprit, Box unused) {
-            if (culprit instanceof Player) handleBoxSpawnpoint((Player) culprit);
+        public void run(Box culprit, Box victim) {
+            if (victim instanceof Player) handleBoxSpawnpoint((Player) victim);
         }
 
-        private void handleBoxSpawnpoint(Player culprit) {
-            if (roomID > 0 && culprit.pos.getSpawnpoint() != culprit.pos.getRoomID()) {
-                culprit.pos.setSpawnpoint(culprit.pos.getRoomID());
-                System.out.println("Saved spawnpoint as room " + culprit.pos.getRoomID());
+        private void handleBoxSpawnpoint(Player player) {
+            if (roomID > 0 && player.pos.getSpawnpoint() != player.pos.getRoomID()) {
+                player.pos.setSpawnpoint(player.pos.getRoomID());
             }
         }
     }
     public static class Travel extends Effect {
         int roomID;
-        Point coordinates; // TODO: Currently unused please fix
+        Point coordinates;
 
         public Travel(int roomID, Point coordinates) {
             this.roomID = roomID;
