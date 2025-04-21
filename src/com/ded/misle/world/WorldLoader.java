@@ -22,7 +22,8 @@ import static com.ded.misle.world.boxes.BoxHandling.*;
 public class WorldLoader {
 	public static void loadBoxes() {
         Room room;
-		room = findRoom("TUANI_CITY"); // TEMPORARILY FORCING TUANI_CITY
+		room = roomIDToName(player.pos.getRoomID());
+//		room = findRoom("TUANI_CITY"); // TEMPORARILY FORCING TUANI_CITY
 		assert room != null;
 
 		Path basePath = getPath().resolve("resources/worlds/");
