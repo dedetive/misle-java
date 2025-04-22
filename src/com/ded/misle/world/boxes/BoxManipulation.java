@@ -17,7 +17,19 @@ public class BoxManipulation {
 	 * @param dy how many coordinates in the y-axis
 	 * @param delay how long it takes in milliseconds for the box to be fully moved
 	 */
-	public static void moveCollisionBox(Box box, int dx, int dy, double delay) {
+	public static void moveBox(Box box, int dx, int dy, double delay) {
+		moveBox(box, dx, dy, delay, false);
+	}
+
+	/**
+	 *
+	 * @param box the box to be moved
+	 * @param dx how many coordinates in the x-axis
+	 * @param dy how many coordinates in the y-axis
+	 * @param delay how long it takes in milliseconds for the box to be fully moved
+	 * @param ignoreCollision whether box should ignore collision or not when touching other boxes
+	 */
+	public static void moveBox(Box box, int dx, int dy, double delay, boolean ignoreCollision) {
 		int totalSteps = Math.abs(dx) + Math.abs(dy);
 		if (totalSteps == 0) return;
 
@@ -45,7 +57,7 @@ public class BoxManipulation {
 				int nextX = box.getX() + step[0];
 				int nextY = box.getY() + step[1];
 
-				if (!PhysicsEngine.isSpaceOccupied(nextX, nextY, box)) {
+				if (ignoreCollision || !PhysicsEngine.isSpaceOccupied(nextX, nextY, box)) {
 					box.setX(nextX);
 					box.setY(nextY);
 					stepIndex++;
