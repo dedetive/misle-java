@@ -243,16 +243,16 @@ public class Inventory {
 		PlayingRenderer.updateSelectedItemNamePosition();
 		switch (player.stats.getWalkingDirection()) {
 			case PlayerStats.Direction.UP -> {
-				moveCollisionBox(droppedItem, 0, -DROP_DISTANCE, DROP_DELAY);
+				moveBox(droppedItem, 0, -DROP_DISTANCE, DROP_DELAY);
 			}
 			case PlayerStats.Direction.DOWN -> {
-				moveCollisionBox(droppedItem, 0, DROP_DISTANCE, DROP_DELAY);
+				moveBox(droppedItem, 0, DROP_DISTANCE, DROP_DELAY);
 			}
 			case PlayerStats.Direction.LEFT -> {
-				moveCollisionBox(droppedItem, -DROP_DISTANCE, 0, DROP_DELAY);
+				moveBox(droppedItem, -DROP_DISTANCE, 0, DROP_DELAY);
 			}
 			case PlayerStats.Direction.RIGHT -> {
-				moveCollisionBox(droppedItem, DROP_DISTANCE, 0, DROP_DELAY);
+				moveBox(droppedItem, DROP_DISTANCE, 0, DROP_DELAY);
 			}
 			case null, default -> {
 			}
@@ -267,16 +267,16 @@ public class Inventory {
 		PlayingRenderer.updateSelectedItemNamePosition();
 		switch (player.stats.getWalkingDirection()) {
 			case PlayerStats.Direction.UP -> {
-				moveCollisionBox(droppedItem, 0, -DROP_DISTANCE, DROP_DELAY);
+				moveBox(droppedItem, 0, -DROP_DISTANCE, DROP_DELAY);
 			}
 			case PlayerStats.Direction.DOWN -> {
-				moveCollisionBox(droppedItem, 0, DROP_DISTANCE, DROP_DELAY);
+				moveBox(droppedItem, 0, DROP_DISTANCE, DROP_DELAY);
 			}
 			case PlayerStats.Direction.LEFT -> {
-				moveCollisionBox(droppedItem, -DROP_DISTANCE, 0, DROP_DELAY);
+				moveBox(droppedItem, -DROP_DISTANCE, 0, DROP_DELAY);
 			}
 			case PlayerStats.Direction.RIGHT -> {
-				moveCollisionBox(droppedItem, DROP_DISTANCE, 0, DROP_DELAY);
+				moveBox(droppedItem, DROP_DISTANCE, 0, DROP_DELAY);
 			}
 			case null, default -> {
 			}
@@ -370,16 +370,16 @@ public class Inventory {
 		PlayingRenderer.updateSelectedItemNamePosition();
 		switch (player.stats.getWalkingDirection()) {
 			case UP -> {
-				moveCollisionBox(droppedItem, 0, -DROP_DISTANCE, DROP_DELAY);
+				moveBox(droppedItem, 0, -DROP_DISTANCE, DROP_DELAY);
 			}
 			case DOWN -> {
-				moveCollisionBox(droppedItem, 0, DROP_DISTANCE, DROP_DELAY);
+				moveBox(droppedItem, 0, DROP_DISTANCE, DROP_DELAY);
 			}
 			case LEFT -> {
-				moveCollisionBox(droppedItem, -DROP_DISTANCE, 0, DROP_DELAY);
+				moveBox(droppedItem, -DROP_DISTANCE, 0, DROP_DELAY);
 			}
 			case RIGHT -> {
-				moveCollisionBox(droppedItem, DROP_DISTANCE, 0, DROP_DELAY);
+				moveBox(droppedItem, DROP_DISTANCE, 0, DROP_DELAY);
 			}
 			case null, default -> {
 			}

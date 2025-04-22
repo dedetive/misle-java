@@ -1,7 +1,5 @@
 package com.ded.misle.world.enemies;
 
-import com.ded.misle.world.player.PlayerAttributes;
-
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -9,9 +7,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.GamePanel.player;
-import static com.ded.misle.core.GamePanel.tileSize;
 import static com.ded.misle.core.PhysicsEngine.isSpaceOccupied;
-import static com.ded.misle.world.boxes.BoxManipulation.moveCollisionBox;
+import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.world.enemies.Enemy.getEnemyBoxes;
 
 public class EnemyAI  {
@@ -95,10 +92,10 @@ public class EnemyAI  {
                         int moveY = (int) (Math.clamp(randomPos, -1, 1) * rand);
 
                         if (!isSpaceOccupied(enemy.getX() + moveX, enemy.getY(), enemy)) {
-                            moveCollisionBox(enemy, moveX, 0, rand * 4);
+                            moveBox(enemy, moveX, 0, rand * 4);
                         }
                         if (!isSpaceOccupied(enemy.getX(), enemy.getY() + moveY, enemy)) {
-                            moveCollisionBox(enemy, 0, moveY, rand * 4);
+                            moveBox(enemy, 0, moveY, rand * 4);
                         }
                     }
                 }
@@ -114,10 +111,10 @@ public class EnemyAI  {
                     int moveY = (int) (Math.clamp(distanceY, -1, 1) * rand);
 
                     if (!isSpaceOccupied(enemy.getX() + moveX, enemy.getY(), enemy)) {
-                        moveCollisionBox(enemy, moveX, 0, rand * 4);
+                        moveBox(enemy, moveX, 0, rand * 4);
                     }
                     if (!isSpaceOccupied(enemy.getX(), enemy.getY() + moveY, enemy)) {
-                        moveCollisionBox(enemy, 0, moveY, rand * 4);
+                        moveBox(enemy, 0, moveY, rand * 4);
                     }
                 }
             }

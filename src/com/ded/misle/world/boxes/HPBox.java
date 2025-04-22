@@ -21,7 +21,7 @@ import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.PhysicsEngine.ObjectType.HP_BOX;
 import static com.ded.misle.renderer.FontManager.itemInfoFont;
 import static com.ded.misle.world.boxes.BoxHandling.*;
-import static com.ded.misle.world.boxes.BoxManipulation.moveCollisionBox;
+import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.renderer.ColorManager.*;
 
 public class HPBox extends Box {
@@ -233,10 +233,10 @@ public class HPBox extends Box {
         }
 
         switch (knockbackDirection) {
-            case RIGHT -> moveCollisionBox(this, -30, 0, 50);
-            case LEFT -> moveCollisionBox(this, 30, 0, 50);
-            case DOWN -> moveCollisionBox(this, 0, -30, 50);
-            case UP -> moveCollisionBox(this, 0, 30, 50);
+            case RIGHT -> moveBox(this, -30, 0, 50);
+            case LEFT -> moveBox(this, 30, 0, 50);
+            case DOWN -> moveBox(this, 0, -30, 50);
+            case UP -> moveBox(this, 0, 30, 50);
         }
 
         if (damageToReceive > 0) {
