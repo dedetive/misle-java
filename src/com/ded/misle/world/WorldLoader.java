@@ -1,5 +1,6 @@
 package com.ded.misle.world;
 
+import com.ded.misle.items.DropTable;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.boxes.Effect;
 
@@ -79,7 +80,9 @@ public class WorldLoader {
 				}
 				try {
 					Function<String, Integer> getInt = (String val) -> Integer.parseInt(val.split(":")[1].replace(",", ""));
+					Function<String, Long> getLong = (String val) -> Long.parseLong(val.split(":")[1].replace(",", ""));
 					Function<String, String> getString = (String val) -> val.split(":")[1].replace(",", "");
+					System.out.println(parts[0]);
 					switch (CustomColorCodeOption.valueOf(parts[0])) {
 						case travel -> {
 							int id = getInt.apply(parts[1]);
@@ -93,7 +96,10 @@ public class WorldLoader {
 							box.effect = new Effect.Spawnpoint(id);
 						}
 						case chest -> {
-
+							DropTable dropTable = DropTable.getDropTableByName(getString.apply(parts[1]));
+							box = addBox(BoxPreset.MOUNTAIN_CHEST);
+							long openRate = getLong.apply(parts[2]);
+							box.effect = new Effect.Chest(openRate, dropTable);
 						}
 					}
 				} catch (IllegalArgumentException e) { box = addBox(BoxPreset.WALL_DEFAULT); }
