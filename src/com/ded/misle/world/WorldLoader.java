@@ -97,7 +97,7 @@ public class WorldLoader {
 						}
 						case chest -> {
 							DropTable dropTable = DropTable.getDropTableByName(getString.apply(parts[1]));
-							box = addBox(BoxPreset.MOUNTAIN_CHEST);
+							box = addBox(BoxPreset.CHEST);
 							long openRate = getLong.apply(parts[2]);
 							box.effect = new Effect.Chest(openRate, dropTable);
 						}

@@ -17,6 +17,7 @@ import java.util.*;
 import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.renderer.ImageManager.*;
+import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 import static com.ded.misle.core.PhysicsEngine.ObjectType.BOX;
@@ -380,6 +381,8 @@ public class Box {
 		}
 
 		droppedItem = createDroppedItem(this.getX(), this.getY() - 1, id, count);
+
+		moveBox(droppedItem, multiplier, 1, delay, true);
 
 		((Effect.Collectible) droppedItem.effect).collectible = false;
 

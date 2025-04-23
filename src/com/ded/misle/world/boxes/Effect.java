@@ -13,6 +13,7 @@ import static com.ded.misle.audio.AudioPlayer.AudioFile.collect_item;
 import static com.ded.misle.audio.AudioPlayer.playThis;
 import static com.ded.misle.core.GamePanel.gameState;
 import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.core.PhysicsEngine.isSpaceOccupied;
 import static com.ded.misle.items.Item.createItem;
 import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.world.WorldLoader.loadBoxes;
@@ -106,7 +107,7 @@ public abstract class Effect {
             this.dropTable = dropTable;
         }
 
-        public void run(Box culprit, Box chest) {
+        public void run(Box chest, Box culprit) {
             if (!(culprit instanceof Player)) return;
 
             long currentTime = currentTimeMillis();
@@ -124,10 +125,10 @@ public abstract class Effect {
             int count = results[1];
             boolean canGoMinus = false;
             boolean canGoPlus = false;
-            if (getCollisionBoxesInRange(chest.getX() - 1, chest.getY(), 10, 6).isEmpty()) {
+            if (!isSpaceOccupied(chest.getX() - 1, chest.getY(), new Box())) {
                 canGoMinus = true;
             }
-            if (getCollisionBoxesInRange(chest.getX() + 1, chest.getY(), 10, 6).isEmpty()) {
+            if (!isSpaceOccupied(chest.getX() + 1, chest.getY(), new Box())) {
                 canGoPlus = true;
             }
 

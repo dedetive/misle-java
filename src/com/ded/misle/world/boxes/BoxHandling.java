@@ -109,7 +109,7 @@ public class BoxHandling {
 
 	public enum BoxPreset {
 		SPAWNPOINT,
-		MOUNTAIN_CHEST,
+		CHEST,
 		WALL_DEFAULT,
 		WALL_DEFAULT_DECO,
 		FLOOR_DEFAULT,
@@ -187,8 +187,8 @@ public class BoxHandling {
 				box.effect = new Effect.Spawnpoint(-1);
 				editBox(box, EditBoxKeys.TEXTURE, "spawnpoint");
 				break;
-			case BoxPreset.MOUNTAIN_CHEST:
-				box.effect = new Effect.Chest(3, DropTable.POTION_CHEST);
+			case BoxPreset.CHEST:
+				box.effect = new Effect.Chest(0, null);
 				editBox(box, EditBoxKeys.HAS_COLLISION, "true");
 				editBox(box, EditBoxKeys.TEXTURE, "chest");
 				break;
