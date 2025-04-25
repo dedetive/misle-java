@@ -20,7 +20,7 @@ import static com.ded.misle.world.World.Background.GRASS;
 import static com.ded.misle.world.WorldLoader.SideGridDirection.*;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 
-public class WorldLoader {
+public abstract class WorldLoader {
 	public static void loadBoxes() {
         Room room;
 		room = roomIDToName(player.pos.getRoomID());
