@@ -1,7 +1,6 @@
 package com.ded.misle.audio;
 
 import javax.sound.sampled.*;
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,8 +29,8 @@ public class AudioPlayer {
 
 		;
 
-		public final String path;
-		public final ArrayList<AudioPlayer> audioPlayerList = new ArrayList<>();
+		private final String path;
+		private final ArrayList<AudioPlayer> audioPlayerList = new ArrayList<>();
 
         AudioFile () {
             int AUDIO_PLAYER_COUNT = 8;
