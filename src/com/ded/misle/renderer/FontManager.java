@@ -8,7 +8,7 @@ import java.io.InputStream;
 import static com.ded.misle.core.LanguageManager.getCurrentScript;
 import static com.ded.misle.Launcher.scale;
 
-public class FontManager {
+public abstract class FontManager {
     /**
      *  Comfortaa, Ubuntu -> Supports Latin, Cyrillic and Greek
      *  Basic -> Supports only Latin
