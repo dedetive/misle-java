@@ -30,7 +30,7 @@ import static com.ded.misle.renderer.InventoryRenderer.*;
 import static com.ded.misle.world.player.PlayerStats.Direction.*;
 import static java.lang.System.currentTimeMillis;
 
-public class PlayingRenderer {
+public abstract class PlayingRenderer {
     public static double isFacingRight;
     public static boolean mirror;
 
