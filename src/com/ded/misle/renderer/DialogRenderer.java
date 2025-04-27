@@ -17,7 +17,7 @@ import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.*;
 import static com.ded.misle.renderer.InventoryRenderer.wrapText;
 
-public class DialogRenderer {
+public abstract class DialogRenderer {
 
     private static long lastTimeMillis;
     private static int currentLetter;
