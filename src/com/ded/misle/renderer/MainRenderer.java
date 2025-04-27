@@ -20,7 +20,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 
 
-public class MainRenderer {
+public abstract class MainRenderer {
 	public static GameState previousMenu;
 	public static GameState currentMenu;
 
