@@ -23,7 +23,7 @@ import static java.lang.System.currentTimeMillis;
 import static com.ded.misle.core.GamePanel.screenWidth;
 import static com.ded.misle.core.GamePanel.screenHeight;
 
-public class MenuRenderer {
+public abstract class MenuRenderer {
     static void createTitle(String text, Graphics2D g2d) {
         g2d.setFont(FontManager.titleFont);
         FontMetrics fm = g2d.getFontMetrics();
