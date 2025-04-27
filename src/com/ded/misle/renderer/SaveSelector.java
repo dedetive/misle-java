@@ -27,7 +27,7 @@ import static com.ded.misle.renderer.MenuRenderer.drawMenuBackground;
 import static com.ded.misle.renderer.PlayingRenderer.scaleByScreenSize;
 import static com.ded.misle.renderer.SaveCreator.*;
 
-public class SaveSelector {
+public abstract class SaveSelector {
 
     public static void saveSelectorMenu() {
         MainRenderer.previousMenu = MainRenderer.currentMenu;
