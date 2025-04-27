@@ -10,7 +10,7 @@ import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.core.Setting.antiAliasing;
 import static com.ded.misle.renderer.ColorManager.gridColor;
 
-public class LevelDesignerRenderer {
+public abstract class LevelDesignerRenderer {
     public static boolean levelDesignerGrid;
 
     public static void renderLevelDesigner(Graphics g, JPanel panel, MouseHandler mouseHandler) {
