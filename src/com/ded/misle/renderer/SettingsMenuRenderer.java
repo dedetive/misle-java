@@ -21,7 +21,7 @@ import static com.ded.misle.renderer.MenuButton.*;
 import static com.ded.misle.renderer.MenuRenderer.drawMenuBackground;
 import static com.ded.misle.renderer.SettingsMenuRenderer.SettingPos.*;
 
-public class SettingsMenuRenderer {
+public abstract class SettingsMenuRenderer {
     public enum SettingState {
         EMPTY(-1, 0),
         GENERAL(0, 100),
