@@ -20,7 +20,7 @@ import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.renderer.ColorManager.getRandomColor;
 import static java.nio.file.Files.createDirectories;
 
-public class ImageManager {
+public abstract class ImageManager {
     public static final Map<ImageName, BufferedImage> cachedImages = new HashMap<>();
     public static final ArrayList<ImageName> playerImages = new ArrayList<>();
 
