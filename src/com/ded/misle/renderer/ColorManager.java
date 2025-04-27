@@ -1,7 +1,6 @@
 package com.ded.misle.renderer;
 
 import com.ded.misle.core.LanguageManager;
-import com.ded.misle.core.PraspomiaNumberConverter;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import static com.ded.misle.core.PraspomiaNumberConverter.ConvertMode.TO_PRASPOM
 import static com.ded.misle.core.PraspomiaNumberConverter.convertNumberSystem;
 import static com.ded.misle.renderer.ImageManager.cachedImages;
 
-public class ColorManager {
+public abstract class ColorManager {
 
     // Default colors
 
