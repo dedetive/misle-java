@@ -19,7 +19,7 @@ import static com.ded.misle.renderer.MenuButton.*;
 import static com.ded.misle.renderer.MenuRenderer.createTitle;
 import static com.ded.misle.renderer.MenuRenderer.drawMenuBackground;
 
-public class SaveCreator {
+public abstract class SaveCreator {
     public static int creatingSave = -1;
     public static StringBuilder playerName = new StringBuilder();
     public static String saveCreationWarning = "";
