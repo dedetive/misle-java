@@ -14,7 +14,7 @@ import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.ImageManager.cachedImages;
 
-public class InventoryRenderer {
+public abstract class InventoryRenderer {
     // [0] = Inventory and inventory bar
     // [1] = Rings and trophies
     public final static int[] slotSize = new int[]{(int) (32 * scale), (int) (24 * scale)};
