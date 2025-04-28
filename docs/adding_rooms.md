@@ -1,5 +1,8 @@
 # How-to of adding new rooms
 
+> [!WARNING]
+> THIS IS DOCUMENTATION IS DEPRECATED
+
 ## TL;DR
 
 > Assuming you're in `com.ded.misle`.
