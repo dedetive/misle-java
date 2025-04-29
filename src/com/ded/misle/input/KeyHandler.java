@@ -1,5 +1,6 @@
 package com.ded.misle.input;
 
+import com.ded.misle.core.LogicManager;
 import com.ded.misle.core.PhysicsEngine;
 import com.ded.misle.renderer.ImageManager;
 import com.ded.misle.world.npcs.NPC;
@@ -143,8 +144,26 @@ public class KeyHandler implements KeyListener {
 
 	Key[] cooldownOnRelease = new Key[] {
 		DODGE,
-		USE
+		USE,
 	};
+
+	Key[] triggerLogic = new Key[] {
+		DODGE,
+		DROP,
+		USE,
+		LEFT,
+		RIGHT,
+		DOWN,
+		UP,
+	};
+
+	private void triggerLogicIfNeeded() {
+		for (Key key : triggerLogic) {
+			if (isPressed(key)) {
+				LogicManager.requestNewTurn();
+			}
+		}
+	}
 
 	static HashMap<Key, Integer> keyCodes = new HashMap<>();
 
@@ -543,6 +562,7 @@ public class KeyHandler implements KeyListener {
 			}
 		}
 
+		triggerLogicIfNeeded();
 		setKeysToFalse();
 	}
 

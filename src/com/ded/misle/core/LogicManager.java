@@ -8,7 +8,18 @@ import static com.ded.misle.world.enemies.EnemyAI.updateEnemyAI;
 
 public abstract class LogicManager {
 
+    private static boolean pendingTurn = false;
 
+    public static void requestNewTurn() {
+        pendingTurn = true;
+    }
+
+    public static void updateIfNeeded() {
+        if (pendingTurn) {
+            updateTurn();
+            pendingTurn = false;
+        }
+    }
 
     private static void updateTurn() {
         long currentTime = System.currentTimeMillis();

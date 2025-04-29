@@ -283,7 +283,12 @@ public class GamePanel extends JPanel implements Runnable {
 			// Process updates and rendering while delta is >= 1
 			while (delta >= 1) {
 				switch (gameState) {
-					case PLAYING, INVENTORY -> updateCamera(); // Only update if in the playing state
+					case PLAYING, INVENTORY ->  {
+						keyH.updateKeys(mouseHandler);
+						mouseHandler.updateMouse();
+						LogicManager.updateIfNeeded();
+						updateCamera();
+					} // Only update if in the playing state
 					case PAUSE_MENU -> {
 						if (player.keys.keyPressed.get(KeyHandler.Key.PAUSE)) {
                             if (levelDesigner) {
