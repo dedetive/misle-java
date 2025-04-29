@@ -1,10 +1,8 @@
 package com.ded.misle.core;
 
-import com.ded.misle.world.boxes.HPBox;
 import com.ded.misle.input.KeyHandler;
 import com.ded.misle.input.MouseHandler;
 import com.ded.misle.world.player.Player;
-import com.ded.misle.world.player.PlayerAttributes;
 import com.ded.misle.renderer.*;
 
 import javax.swing.*;
@@ -14,7 +12,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import static com.ded.misle.core.Setting.*;
 import static com.ded.misle.renderer.FontManager.buttonFont;
-import static com.ded.misle.world.boxes.HPBox.getHPBoxes;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.input.KeyHandler.updateDesignerSpeed;
@@ -24,7 +21,6 @@ import static com.ded.misle.renderer.MenuButton.clearButtons;
 import static com.ded.misle.input.MouseHandler.updateMouseVariableScales;
 import static com.ded.misle.core.SaveFile.saveEverything;
 import static com.ded.misle.renderer.PlayingRenderer.updatePlayingVariableScales;
-import static com.ded.misle.world.enemies.EnemyAI.updateEnemyAI;
 
 /**
  * This is for loading and altering how the window behaves. Only do this once, otherwise new screens are created.
@@ -287,15 +283,15 @@ public class GamePanel extends JPanel implements Runnable {
 			// Process updates and rendering while delta is >= 1
 			while (delta >= 1) {
 				switch (gameState) {
-					case PLAYING, INVENTORY -> updateGame(); // Only update if in the playing state
+					case PLAYING, INVENTORY -> updateCamera(); // Only update if in the playing state
 					case PAUSE_MENU -> {
 						if (player.keys.keyPressed.get(KeyHandler.Key.PAUSE)) {
-							if (!levelDesigner) {
-								softGameStart();
-							} else {
-								softEnterLevelDesigner();
-							}
-							clearButtons();
+                            if (levelDesigner) {
+                                softEnterLevelDesigner();
+                            } else {
+                                softGameStart();
+                            }
+                            clearButtons();
 							this.setCursor(Cursor.getDefaultCursor());
 							player.keys.keyPressed.put(KeyHandler.Key.PAUSE, false);
 						}
@@ -338,9 +334,7 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 	}
 
-	public void updateGame() {
-		long currentTime = System.currentTimeMillis();
-
+	public void updateCamera() {
 		// Camera dead zone
 		double deadZoneWidth = tileSize;
 		double deadZoneHeight = tileSize * 9 / 16d;
@@ -364,18 +358,7 @@ public class GamePanel extends JPanel implements Runnable {
 			cameraY += 1.5 * dy * alpha;
 			player.pos.setCameraOffsetY(cameraY);
 		}
-
-
-		player.attr.checkIfLevelUp();
-
-		updateEnemyAI();
-
-		for (HPBox box : getHPBoxes()) {
-			box.updateRegenerationHP(currentTime);
-		}
-		keyH.updateKeys(mouseHandler);
-		mouseHandler.updateMouse();
-		}
+	}
 
 
 	@Override
