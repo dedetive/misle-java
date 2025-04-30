@@ -21,6 +21,8 @@ public abstract class LogicManager {
         private final int turns;
         private final ActionListener listener;
         private boolean repeats;
+        private int timesTriggered = 0;
+        private int stopsAt = 0;
 
         public TurnTimer(int turns, ActionListener listener) {
             this(turns, listener, false);
@@ -57,6 +59,11 @@ public abstract class LogicManager {
 
                     if (timer.repeats) {
                         timer.executionTurn = turnNum + timer.turns;
+                        timer.timesTriggered++;
+                        if (timer.stopsAt != 0 /* default value so ignore */ &&
+                            timer.timesTriggered >= timer.stopsAt) {
+                            it.remove();
+                        }
                     } else {
                         it.remove();
                     }
@@ -76,6 +83,8 @@ public abstract class LogicManager {
             queue.clear();
             turnNum = 0;
         }
+        public int getTimesTriggered() { return timesTriggered; }
+        public void setStopsAt(int stopsAt) { this.stopsAt = stopsAt; }
         protected static void increaseTurn() {
             turnNum++;
         }
