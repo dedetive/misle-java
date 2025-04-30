@@ -22,10 +22,10 @@ public abstract class LogicManager {
         private final ActionListener listener;
         private boolean repeats;
 
-        TurnTimer(int turns, ActionListener listener) {
+        public TurnTimer(int turns, ActionListener listener) {
             this(turns, listener, false);
         }
-        TurnTimer(int turns, ActionListener listener, boolean repeats) {
+        public TurnTimer(int turns, ActionListener listener, boolean repeats) {
             if (turns < 0) throw new NumberFormatException("Negative turns not allowed!");
 
             this.turns = turns;
