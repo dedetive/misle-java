@@ -39,6 +39,11 @@ public abstract class LogicManager {
             timer.start();
             return timer;
         }
+        public static TurnTimer schedule(int turns, ActionListener listener, boolean repeats) {
+            var timer = new TurnTimer(turns, listener, repeats);
+            timer.start();
+            return timer;
+        }
         public void start() {
             queue.add(this);
         }
