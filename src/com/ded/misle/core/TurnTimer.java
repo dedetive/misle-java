@@ -155,7 +155,7 @@ public class TurnTimer {
      * @param it Iterator used to execute all due timers.
      */
     private void forceExecution(Iterator<TurnTimer> it) {
-        ActionEvent e = new ActionEvent(TurnTimer.class, 0, listener.getClass().getName());
+        ActionEvent e = new ActionEvent(TurnTimer.class, ActionEvent.ACTION_PERFORMED, listener.getClass().getName());
         listener.actionPerformed(e);
 
         if (!repeats) {
