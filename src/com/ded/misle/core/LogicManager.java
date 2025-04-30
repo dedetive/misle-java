@@ -15,7 +15,7 @@ public abstract class LogicManager {
 
     public static class TurnTimer {
         private static final ArrayList<TurnTimer> queue = new ArrayList<>();
-        private static int turnNum;
+        private static int turnNum = 0;
 
         private int executionTurn;
         private final int turns;
@@ -74,6 +74,7 @@ public abstract class LogicManager {
         }
         public static void reset() {
             queue.clear();
+            turnNum = 0;
         }
         protected static void increaseTurn() {
             turnNum++;
