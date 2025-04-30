@@ -142,19 +142,7 @@ public class TurnTimer {
      * If the timer is repeating, reschedules the next execution unless {@code stopsAt} has been hit.
      */
     public void forceExecution() {
-        ActionEvent e = new ActionEvent(TurnTimer.class, 0, listener.getClass().getName());
-        listener.actionPerformed(e);
-
-        if (!repeats) {
-            this.kill();
-        } else {
-            executionTurn = turnNum + turns;
-            timesTriggered++;
-            if (stopsAt != 0 &&
-                timesTriggered >= stopsAt) {
-                this.kill();
-            }
-        }
+        forceExecution(queue.iterator());
     }
 
     /**
