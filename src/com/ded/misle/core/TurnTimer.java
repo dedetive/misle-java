@@ -14,6 +14,7 @@ public class TurnTimer {
     private static final ArrayList<TurnTimer> queue = new ArrayList<>();
     private static int turnNum = 0;
 
+    private boolean roomScoped = false;
     private int executionTurn;
     private final int turns;
     private final ActionListener listener;
@@ -140,6 +141,26 @@ public class TurnTimer {
     public static void reset() {
         queue.clear();
         turnNum = 0;
+    }
+
+    /**
+     * Sets whether the timer is dependent on the room. If true, the timer will be cleared
+     * when the room changes. Used to ensure that timers tied to specific room entities are
+     * safely removed when switching rooms.
+     *
+     * @param roomScoped true if the timer is dependent on the room, false otherwise.
+     */
+    public void setRoomScoped(boolean roomScoped) {
+        this.roomScoped = roomScoped;
+    }
+
+    /**
+     * Clears all timers from the queue that are marked as room-dependent (roomScoped).
+     * This method is called when the room changes to ensure that timers tied to the old
+     * room (such as enemy movement timers) are removed.
+     */
+    public static void clearRoomScopedTimers() {
+        queue.removeIf(timer -> timer.roomScoped);
     }
 
     /**

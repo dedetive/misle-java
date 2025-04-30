@@ -1,5 +1,6 @@
 package com.ded.misle.world;
 
+import com.ded.misle.core.TurnTimer;
 import com.ded.misle.items.DropTable;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.boxes.Effect;
@@ -22,6 +23,7 @@ import static com.ded.misle.world.boxes.BoxHandling.*;
 
 public abstract class WorldLoader {
 	public static void loadBoxes() {
+		TurnTimer.clearRoomScopedTimers();
         Room room;
 		room = roomIDToName(player.pos.getRoomID());
 //		room = findRoom("TUANI_CITY"); // TEMPORARILY FORCING TUANI_CITY
