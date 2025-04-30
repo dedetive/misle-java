@@ -22,7 +22,9 @@ public abstract class LogicManager {
         private final ActionListener listener;
         private boolean repeats;
 
-        TurnTimer(int turns, ActionListener listener) { this(turns, listener, false); }
+        TurnTimer(int turns, ActionListener listener) {
+            this(turns, listener, false);
+        }
         TurnTimer(int turns, ActionListener listener, boolean repeats) {
             if (turns < 0) throw new NumberFormatException("Negative turns not allowed!");
 
@@ -32,6 +34,11 @@ public abstract class LogicManager {
             this.executionTurn = turnNum + turns;
         }
 
+        public static TurnTimer schedule(int turns, ActionListener listener) {
+            var timer = new TurnTimer(turns, listener, false);
+            timer.start();
+            return timer;
+        }
         public void start() {
             queue.add(this);
         }
