@@ -11,15 +11,54 @@ import java.util.Iterator;
  * Timers are executed when {@link #executeAllDueTimers()} is called, typically once per turn.
  */
 public class TurnTimer {
+    /**
+     * Global queue of all active timers scheduled for execution.
+     * Timers are added when started and removed when executed or manually killed.
+     */
     private static final ArrayList<TurnTimer> queue = new ArrayList<>();
+
+    /**
+     * The current global turn count.
+     * All timers calculate their execution turn based on this value.
+     */
     private static int turnNum = 0;
 
+    /**
+     * Indicates whether this timer should be automatically removed
+     * when the room changes.
+     */
     private boolean roomScoped = false;
+
+    /**
+     * The specific turn number when this timer is scheduled to execute next.
+     */
     private int executionTurn;
+
+    /**
+     * The number of turns to wait between executions.
+     * Used both for initial scheduling and repeating logic.
+     */
     private final int turns;
+
+    /**
+     * The action to be executed when the timer triggers.
+     */
     private final ActionListener listener;
+
+    /**
+     * Whether this timer should repeat after triggering.
+     */
     private boolean repeats;
+
+    /**
+     * How many times this timer has already been triggered.
+     */
     private int timesTriggered = 0;
+
+    /**
+     * Maximum number of times this timer is allowed to trigger.
+     * A value of 0 means no limit (infinite repetition).
+     */
     private int stopsAt = 0;
 
     /**
