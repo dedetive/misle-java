@@ -3,6 +3,7 @@ package com.ded.misle.core;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -16,7 +17,11 @@ public class TurnTimer {
      * Global queue of all active timers scheduled for execution.
      * Timers are added when started and removed when executed or manually killed.
      */
-    private static final List<TurnTimer> queue = Collections.synchronizedList(new ArrayList<>());
+    private static final List<TurnTimer> queue = Collections.synchronizedList(new ArrayList<>() {
+        @Override public boolean add(TurnTimer e) {
+            return e != null && e.listener != null && super.add(e);
+        }
+    });
 
     /**
      * The current global turn count.
