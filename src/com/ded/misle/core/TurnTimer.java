@@ -92,19 +92,52 @@ public class TurnTimer {
         while (it.hasNext()) {
             TurnTimer timer = it.next();
             if (timer.isTimerDue()) {
-                ActionEvent e = new ActionEvent(TurnTimer.class, 0, timer.listener.getClass().getName());
-                timer.listener.actionPerformed(e);
+                timer.forceExecution(it);
+            }
+        }
+    }
 
-                if (timer.repeats) {
-                    timer.executionTurn = turnNum + timer.turns;
-                    timer.timesTriggered++;
-                    if (timer.stopsAt != 0 &&
-                        timer.timesTriggered >= timer.stopsAt) {
-                        it.remove();
-                    }
-                } else {
-                    it.remove();
-                }
+    /**
+     * Forces this timer to execute immediately, regardless of its scheduled turn.
+     * This does remove it from the queue if it is not a repeating timer.
+     * If the timer is repeating, reschedules the next execution unless {@code stopsAt} has been hit.
+     */
+    public void forceExecution() {
+        ActionEvent e = new ActionEvent(TurnTimer.class, 0, listener.getClass().getName());
+        listener.actionPerformed(e);
+
+        if (!repeats) {
+            this.kill();
+        } else {
+            executionTurn = turnNum + turns;
+            timesTriggered++;
+            if (stopsAt != 0 &&
+                timesTriggered >= stopsAt) {
+                this.kill();
+            }
+        }
+    }
+
+    /**
+     * Forces this timer to execute immediately, regardless of its scheduled turn.
+     * This does remove it from the queue if it is not a repeating timer.
+     * If the timer is repeating, reschedules the next execution unless {@code stopsAt} has been hit.
+     * Should only ever be used in {@link #executeAllDueTimers()}
+     *
+     * @param it Iterator used to execute all due timers.
+     */
+    private void forceExecution(Iterator<TurnTimer> it) {
+        ActionEvent e = new ActionEvent(TurnTimer.class, 0, listener.getClass().getName());
+        listener.actionPerformed(e);
+
+        if (!repeats) {
+            it.remove();
+        } else {
+            executionTurn = turnNum + turns;
+            timesTriggered++;
+            if (stopsAt != 0 &&
+                timesTriggered >= stopsAt) {
+                it.remove();
             }
         }
     }
