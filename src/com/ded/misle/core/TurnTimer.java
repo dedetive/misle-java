@@ -249,7 +249,7 @@ public class TurnTimer {
     /**
      * Increases the turn counter. Should be called once at the end of a turn.
      */
-    protected static void increaseTurn() {
+    public static void increaseTurn() {
         turnNum++;
     }
 }
