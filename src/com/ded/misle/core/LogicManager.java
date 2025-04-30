@@ -26,7 +26,7 @@ public abstract class LogicManager {
             this(turns, listener, false);
         }
         public TurnTimer(int turns, ActionListener listener, boolean repeats) {
-            if (turns < 0) throw new NumberFormatException("Negative turns not allowed!");
+            if (turns < 0) throw new IllegalArgumentException("Negative turns are not allowed!");
 
             this.turns = turns;
             this.repeats = repeats;
