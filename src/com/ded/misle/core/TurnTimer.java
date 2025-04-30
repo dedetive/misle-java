@@ -130,8 +130,9 @@ public class TurnTimer {
      *
      * @param repeats {@code true} to make the timer repeat; {@code false} for one-time use.
      */
-    public void setRepeats(boolean repeats) {
+    public TurnTimer setRepeats(boolean repeats) {
         this.repeats = repeats;
+        return this;
     }
 
     /**
@@ -150,8 +151,9 @@ public class TurnTimer {
      *
      * @param roomScoped true if the timer is dependent on the room, false otherwise.
      */
-    public void setRoomScoped(boolean roomScoped) {
+    public TurnTimer setRoomScoped(boolean roomScoped) {
         this.roomScoped = roomScoped;
+        return this;
     }
 
     /**
@@ -178,8 +180,9 @@ public class TurnTimer {
      *
      * @param stopsAt Number of times the timer is allowed to trigger. 0 means infinite.
      */
-    public void setStopsAt(int stopsAt) {
+    public TurnTimer setStopsAt(int stopsAt) {
         this.stopsAt = stopsAt;
+        return this;
     }
 
     /**
