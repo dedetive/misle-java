@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * A timer system that executes {@link ActionListener}s based on a turn-based counter.
@@ -15,7 +16,7 @@ public class TurnTimer {
      * Global queue of all active timers scheduled for execution.
      * Timers are added when started and removed when executed or manually killed.
      */
-    private static final ArrayList<TurnTimer> queue = new ArrayList<>();
+    private static final List<TurnTimer> queue = new ArrayList<>();
 
     /**
      * The current global turn count.
