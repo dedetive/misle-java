@@ -16,7 +16,7 @@ public class TurnTimer {
      * Global queue of all active timers scheduled for execution.
      * Timers are added when started and removed when executed or manually killed.
      */
-    private static final List<TurnTimer> queue = new ArrayList<>();
+    private static final List<TurnTimer> queue = Collections.synchronizedList(new ArrayList<>());
 
     /**
      * The current global turn count.
