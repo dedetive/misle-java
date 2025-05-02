@@ -224,7 +224,7 @@ public class TurnTimer {
      * Clears all timers and resets the turn counter to 0.
      * Typically used when restarting the game.
      */
-    public static void reset() {
+    public static void resetQueue() {
         queue.clear();
         turnNum = 0;
     }
