@@ -24,6 +24,12 @@ public class TurnTimer {
     });
 
     /**
+     * Indicates whether the timer has been already started.
+     * Should be false when it's not inside {@link #queue}, and true when it is.
+     */
+    private boolean started = false;
+
+    /**
      * The current global turn count.
      * All timers calculate their execution turn based on this value.
      */
@@ -122,8 +128,11 @@ public class TurnTimer {
 
     /**
      * Starts the timer and adds it to the queue for execution.
+     * Only adds it if the timer had not been started yet.
      */
     public TurnTimer start() {
+        if (started) return this;
+        started = true;
         queue.add(this);
         updateExecutionTurn();
         return this;
