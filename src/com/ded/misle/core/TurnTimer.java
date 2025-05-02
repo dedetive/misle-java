@@ -91,7 +91,6 @@ public class TurnTimer {
         this.turns = turns;
         this.repeats = repeats;
         this.listener = listener;
-        this.executionTurn = turnNum + turns;
     }
 
     /**
@@ -126,6 +125,7 @@ public class TurnTimer {
      */
     public void start() {
         queue.add(this);
+        this.executionTurn = turnNum + turns;
     }
 
     /**
