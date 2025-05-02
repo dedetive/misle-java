@@ -109,6 +109,7 @@ public class TurnTimer {
 
     /**
      * Creates and starts a one-time timer.
+     * It is exactly equal to creating a TurnTimer and running {@link #start()} on it.
      *
      * @param turns    Number of turns to wait before triggering.
      * @param listener The action to execute.
