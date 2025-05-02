@@ -139,6 +139,18 @@ public class TurnTimer {
     }
 
     /**
+     * Resets the timer to its constructor state.
+     * Does not automatically start it.
+     */
+    public TurnTimer reset() {
+        started = false;
+        timesTriggered = 0;
+        queue.remove(this);
+
+        return this;
+    }
+
+    /**
      * Updates the timer's next turn to be executed.
      */
     private void updateExecutionTurn() {
