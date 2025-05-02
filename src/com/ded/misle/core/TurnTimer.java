@@ -74,7 +74,7 @@ public class TurnTimer {
      * @param listener The action to execute when the timer triggers.
      */
     public TurnTimer(int turns, ActionListener listener) {
-        this(turns, listener, false);
+        this(turns, false, listener);
     }
 
     /**
@@ -82,11 +82,11 @@ public class TurnTimer {
      * Can be configured to repeat.
      *
      * @param turns    Number of turns to wait before triggering.
-     * @param listener The action to execute when the timer triggers.
      * @param repeats  Whether the timer should repeat after being triggered.
+     * @param listener The action to execute when the timer triggers.
      */
-    public TurnTimer(int turns, ActionListener listener, boolean repeats) {
-        if (turns < 0) throw new IllegalArgumentException("Negative turns are not allowed!");
+    public TurnTimer(int turns, boolean repeats, ActionListener listener) {
+        if (turns <= 0) throw new IllegalArgumentException("Non-positive turns are not allowed!");
 
         this.turns = turns;
         this.repeats = repeats;
@@ -102,7 +102,7 @@ public class TurnTimer {
      * @return The created {@code TurnTimer} instance.
      */
     public static TurnTimer schedule(int turns, ActionListener listener) {
-        var timer = new TurnTimer(turns, listener, false);
+        var timer = new TurnTimer(turns, false, listener);
         timer.start();
         return timer;
     }
@@ -111,12 +111,12 @@ public class TurnTimer {
      * Creates and starts a timer that may repeat.
      *
      * @param turns    Number of turns to wait before triggering.
-     * @param listener The action to execute.
      * @param repeats  Whether the timer should repeat after triggering.
+     * @param listener The action to execute.
      * @return The created {@code TurnTimer} instance.
      */
-    public static TurnTimer schedule(int turns, ActionListener listener, boolean repeats) {
-        var timer = new TurnTimer(turns, listener, repeats);
+    public static TurnTimer schedule(int turns, boolean repeats, ActionListener listener) {
+        var timer = new TurnTimer(turns, repeats, listener);
         timer.start();
         return timer;
     }
