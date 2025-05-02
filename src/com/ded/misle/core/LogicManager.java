@@ -19,7 +19,6 @@ public abstract class LogicManager {
             updateTurn();
             pendingTurn = false;
 
-            TurnTimer.executeAllDueTimers();
             TurnTimer.increaseTurn();
         }
     }

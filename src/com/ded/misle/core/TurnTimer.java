@@ -132,7 +132,7 @@ public class TurnTimer {
      * Executes all timers that are due for the current turn.
      * Should be called once per turn after game logic.
      */
-    public static void executeAllDueTimers() {
+    private static void executeAllDueTimers() {
         Iterator<TurnTimer> it = queue.iterator();
         while (it.hasNext()) {
             TurnTimer timer = it.next();
@@ -257,6 +257,7 @@ public class TurnTimer {
      * Increases the turn counter. Should be called once at the end of a turn.
      */
     public static void increaseTurn() {
+        executeAllDueTimers();
         turnNum++;
     }
 }
