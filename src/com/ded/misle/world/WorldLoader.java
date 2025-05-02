@@ -84,7 +84,6 @@ public abstract class WorldLoader {
 					Function<String, Integer> getInt = (String val) -> Integer.parseInt(val.split(":")[1].replace(",", ""));
 					Function<String, Long> getLong = (String val) -> Long.parseLong(val.split(":")[1].replace(",", ""));
 					Function<String, String> getString = (String val) -> val.split(":")[1].replace(",", "");
-					System.out.println(parts[0]);
 					switch (CustomColorCodeOption.valueOf(parts[0])) {
 						case travel -> {
 							int id = getInt.apply(parts[1]);
