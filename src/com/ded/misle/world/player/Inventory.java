@@ -243,16 +243,16 @@ public class Inventory {
 		PlayingRenderer.updateSelectedItemNamePosition();
 		switch (player.stats.getWalkingDirection()) {
 			case PlayerStats.Direction.UP -> {
-				moveBox(droppedItem, 0, -DROP_DISTANCE, DROP_DELAY);
+				moveBox(droppedItem, 0, -DROP_DISTANCE);
 			}
 			case PlayerStats.Direction.DOWN -> {
-				moveBox(droppedItem, 0, DROP_DISTANCE, DROP_DELAY);
+				moveBox(droppedItem, 0, DROP_DISTANCE);
 			}
 			case PlayerStats.Direction.LEFT -> {
-				moveBox(droppedItem, -DROP_DISTANCE, 0, DROP_DELAY);
+				moveBox(droppedItem, -DROP_DISTANCE, 0);
 			}
 			case PlayerStats.Direction.RIGHT -> {
-				moveBox(droppedItem, DROP_DISTANCE, 0, DROP_DELAY);
+				moveBox(droppedItem, DROP_DISTANCE, 0);
 			}
 			case null, default -> {
 			}
@@ -267,16 +267,16 @@ public class Inventory {
 		PlayingRenderer.updateSelectedItemNamePosition();
 		switch (player.stats.getWalkingDirection()) {
 			case PlayerStats.Direction.UP -> {
-				moveBox(droppedItem, 0, -DROP_DISTANCE, DROP_DELAY);
+				moveBox(droppedItem, 0, -DROP_DISTANCE);
 			}
 			case PlayerStats.Direction.DOWN -> {
-				moveBox(droppedItem, 0, DROP_DISTANCE, DROP_DELAY);
+				moveBox(droppedItem, 0, DROP_DISTANCE);
 			}
 			case PlayerStats.Direction.LEFT -> {
-				moveBox(droppedItem, -DROP_DISTANCE, 0, DROP_DELAY);
+				moveBox(droppedItem, -DROP_DISTANCE, 0);
 			}
 			case PlayerStats.Direction.RIGHT -> {
-				moveBox(droppedItem, DROP_DISTANCE, 0, DROP_DELAY);
+				moveBox(droppedItem, DROP_DISTANCE, 0);
 			}
 			case null, default -> {
 			}
@@ -370,16 +370,16 @@ public class Inventory {
 		PlayingRenderer.updateSelectedItemNamePosition();
 		switch (player.stats.getWalkingDirection()) {
 			case UP -> {
-				moveBox(droppedItem, 0, -DROP_DISTANCE, DROP_DELAY);
+				moveBox(droppedItem, 0, 1);
 			}
 			case DOWN -> {
-				moveBox(droppedItem, 0, DROP_DISTANCE, DROP_DELAY);
+				moveBox(droppedItem, 0, 1);
 			}
 			case LEFT -> {
-				moveBox(droppedItem, -DROP_DISTANCE, 0, DROP_DELAY);
+				moveBox(droppedItem, -DROP_DISTANCE, 1);
 			}
 			case RIGHT -> {
-				moveBox(droppedItem, DROP_DISTANCE, 0, DROP_DELAY);
+				moveBox(droppedItem, DROP_DISTANCE, 1);
 			}
 			case null, default -> {
 			}

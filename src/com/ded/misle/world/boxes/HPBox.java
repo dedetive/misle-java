@@ -233,10 +233,10 @@ public class HPBox extends Box {
         }
 
         switch (knockbackDirection) {
-            case RIGHT -> moveBox(this, -30, 0, 50);
-            case LEFT -> moveBox(this, 30, 0, 50);
-            case DOWN -> moveBox(this, 0, -30, 50);
-            case UP -> moveBox(this, 0, 30, 50);
+            case RIGHT -> moveBox(this, -30, 1);
+            case LEFT -> moveBox(this, 30, 1);
+            case DOWN -> moveBox(this, 0, 1);
+            case UP -> moveBox(this, 0, 1);
         }
 
         if (damageToReceive > 0) {

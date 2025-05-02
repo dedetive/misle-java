@@ -382,7 +382,7 @@ public class Box {
 
 		droppedItem = createDroppedItem(this.getX(), this.getY() - 1, id, count);
 
-		moveBox(droppedItem, multiplier, 1, delay, true);
+		moveBox(droppedItem, multiplier, 1, true);
 
 		((Effect.Collectible) droppedItem.effect).collectible = false;
 

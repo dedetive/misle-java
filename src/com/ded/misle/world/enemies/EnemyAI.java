@@ -92,10 +92,10 @@ public class EnemyAI  {
                         int moveY = (int) (Math.clamp(randomPos, -1, 1) * rand);
 
                         if (!isSpaceOccupied(enemy.getX() + moveX, enemy.getY(), enemy)) {
-                            moveBox(enemy, moveX, 0, rand * 4);
+                            moveBox(enemy, moveX, 1);
                         }
                         if (!isSpaceOccupied(enemy.getX(), enemy.getY() + moveY, enemy)) {
-                            moveBox(enemy, 0, moveY, rand * 4);
+                            moveBox(enemy, 0, 1);
                         }
                     }
                 }
@@ -111,10 +111,10 @@ public class EnemyAI  {
                     int moveY = (int) (Math.clamp(distanceY, -1, 1) * rand);
 
                     if (!isSpaceOccupied(enemy.getX() + moveX, enemy.getY(), enemy)) {
-                        moveBox(enemy, moveX, 0, rand * 4);
+                        moveBox(enemy, moveX, 1);
                     }
                     if (!isSpaceOccupied(enemy.getX(), enemy.getY() + moveY, enemy)) {
-                        moveBox(enemy, 0, moveY, rand * 4);
+                        moveBox(enemy, 0, 1);
                     }
                 }
             }
