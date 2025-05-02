@@ -165,12 +165,14 @@ public class TurnTimer {
 
         if (!repeats) {
             it.remove();
+            kill();
         } else {
             executionTurn = turnNum + turns;
             timesTriggered++;
             if (stopsAt != 0 &&
                 timesTriggered >= stopsAt) {
                 it.remove();
+                kill();
             }
         }
     }
