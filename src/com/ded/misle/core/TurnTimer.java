@@ -257,7 +257,7 @@ public class TurnTimer {
      * Increases the turn counter. Should be called once at the end of a turn.
      */
     public static void increaseTurn() {
-        executeAllDueTimers();
         turnNum++;
+        executeAllDueTimers();
     }
 }
