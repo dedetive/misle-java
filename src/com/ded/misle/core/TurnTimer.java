@@ -151,6 +151,17 @@ public class TurnTimer {
     }
 
     /**
+     * Resets the timer to its constructor state, and then starts it.
+     * @see #reset()
+     * @see #start()
+     */
+    public TurnTimer restart() {
+        this.reset().start();
+
+        return this;
+    }
+
+    /**
      * Updates the timer's next turn to be executed.
      */
     private void updateExecutionTurn() {
