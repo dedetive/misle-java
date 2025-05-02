@@ -10,20 +10,25 @@ import java.awt.event.ActionListener;
 public class BoxManipulation {
 
 	/**
-	 * @param box the box to be moved
-	 * @param dx  how many coordinates in the x-axis
-	 * @param dy  how many coordinates in the y-axis
+	 * Moves the given box by the specified delta along the X and Y axes using the turn-based timer.
+	 * Collision will be checked and respected during movement.
+	 *
+	 * @param box the box to move
+	 * @param dx  how many units to move along the X-axis
+	 * @param dy  how many units to move along the Y-axis
 	 */
 	public static void moveBox(Box box, int dx, int dy) {
 		moveBox(box, dx, dy, false);
 	}
 
 	/**
+	 * Moves the given box by the specified delta along the X and Y axes using the turn-based timer.
+	 * Allows specifying whether to ignore collisions with other boxes during movement.
 	 *
-	 * @param box the box to be moved
-	 * @param dx how many coordinates in the x-axis
-	 * @param dy how many coordinates in the y-axis
-	 * @param ignoreCollision whether box should ignore collision or not when touching other boxes
+	 * @param box             the box to move
+	 * @param dx              how many units to move along the X-axis
+	 * @param dy              how many units to move along the Y-axis
+	 * @param ignoreCollision true to move without checking for collisions; false to stop when blocked
 	 */
 	public static void moveBox(Box box, int dx, int dy, boolean ignoreCollision) {
 		int turns = Math.max(Math.abs(dx), Math.abs(dy));
@@ -38,7 +43,15 @@ public class BoxManipulation {
 		}).setStopsAt(turns).setRoomScoped(true);
 	}
 
-
+	/**
+	 * Attempts to move the given box by one unit along a specific axis (X or Y), taking collision into account.
+	 * This method is designed to be called from within a scheduled loop to gradually move a box over multiple turns.
+	 *
+	 * @param box          the box to move
+	 * @param delta        a single-element array representing the remaining movement along the axis; it will be modified
+	 * @param axisIndex    0 for X-axis, 1 for Y-axis
+	 * @param ignoreCollision whether to skip collision checks when moving
+	 */
 	private static void moveAxis(Box box, int[] delta, int axisIndex, boolean ignoreCollision) {
 		int signum = Integer.signum(delta[0]);
 
