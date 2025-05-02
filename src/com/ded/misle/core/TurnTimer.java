@@ -123,9 +123,10 @@ public class TurnTimer {
     /**
      * Starts the timer and adds it to the queue for execution.
      */
-    public void start() {
+    public TurnTimer start() {
         queue.add(this);
         updateExecutionTurn();
+        return this;
     }
 
     /**
