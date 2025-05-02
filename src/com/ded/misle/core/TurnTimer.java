@@ -11,6 +11,13 @@ import java.util.List;
  * A timer system that executes {@link ActionListener}s based on a turn-based counter.
  * Each timer is scheduled to trigger after a set number of turns and can optionally repeat.
  * Timers are executed when {@link #executeAllDueTimers()} is called, typically once per turn.
+ *
+ *  <p>Example usage:
+ *  <pre>
+ *  TurnTimer.schedule(3, e -> {
+ *      System.out.println("Triggered after 3 turns");
+ *  });
+ *  </pre>
  */
 public class TurnTimer {
     /**
@@ -31,13 +38,14 @@ public class TurnTimer {
 
     /**
      * The current global turn count.
-     * All timers calculate their execution turn based on this value.
+     * This is incremented with {@link #increaseTurn()} and used to determine when timers trigger.
      */
     private static int turnNum = 0;
 
     /**
      * Indicates whether this timer should be automatically removed
-     * when the room changes.
+     * when the room changes. This is useful for timers tied to
+     * specific rooms or entities (like NPC movement timers).
      */
     private boolean roomScoped = false;
 
@@ -128,7 +136,11 @@ public class TurnTimer {
 
     /**
      * Starts the timer and adds it to the queue for execution.
-     * Only adds it if the timer had not been started yet.
+     * If the timer was already started, this method does nothing.
+     * @apiNote Calling this method on an already-started timer has no effect.
+     * To reinitialize a timer, use {@link #restart()} instead.
+     *
+     * @return This {@code TurnTimer} instance for chaining.
      */
     public TurnTimer start() {
         if (started) return this;
@@ -140,7 +152,10 @@ public class TurnTimer {
 
     /**
      * Resets the timer to its constructor state.
-     * Does not automatically start it.
+     * This removes it from the queue and resets the trigger count.
+     * It does not reset the number of turns or the assigned listener.
+     *
+     * @return This {@code TurnTimer} instance for chaining.
      */
     public TurnTimer reset() {
         started = false;
