@@ -125,6 +125,13 @@ public class TurnTimer {
      */
     public void start() {
         queue.add(this);
+        updateExecutionTurn();
+    }
+
+    /**
+     * Updates the timer's next turn to be executed.
+     */
+    private void updateExecutionTurn() {
         this.executionTurn = turnNum + turns;
     }
 
@@ -167,7 +174,7 @@ public class TurnTimer {
             it.remove();
             kill();
         } else {
-            executionTurn = turnNum + turns;
+            this.updateExecutionTurn();
             timesTriggered++;
             if (stopsAt != 0 &&
                 timesTriggered >= stopsAt) {
