@@ -145,7 +145,7 @@ public class TurnTimer {
         while (it.hasNext()) {
             TurnTimer timer = it.next();
             if (timer.isTimerDue()) {
-                timer.forceExecution(it);
+                timer.forceExecution(it, false);
             }
         }
     }
@@ -156,31 +156,31 @@ public class TurnTimer {
      * If the timer is repeating, reschedules the next execution unless {@code stopsAt} has been hit.
      */
     public void forceExecution() {
-        forceExecution(queue.iterator());
+        forceExecution(queue.iterator(), true);
     }
 
     /**
      * Forces this timer to execute immediately, regardless of its scheduled turn.
-     * This does remove it from the queue if it is not a repeating timer.
+     * This removes it from the queue if it is not a repeating timer.
      * If the timer is repeating, reschedules the next execution unless {@code stopsAt} has been hit.
      * Should only ever be used in {@link #executeAllDueTimers()}
      *
      * @param it Iterator used to execute all due timers.
      */
-    private void forceExecution(Iterator<TurnTimer> it) {
+    private void forceExecution(Iterator<TurnTimer> it, boolean removeNow) {
         ActionEvent e = new ActionEvent(TurnTimer.class, ActionEvent.ACTION_PERFORMED, listener.getClass().getName());
         listener.actionPerformed(e);
 
         if (!repeats) {
-            it.remove();
-            kill();
+            if (removeNow) queue.remove(this);
+            else it.remove();
         } else {
             this.updateExecutionTurn();
             timesTriggered++;
             if (stopsAt != 0 &&
                 timesTriggered >= stopsAt) {
-                it.remove();
-                kill();
+                if (removeNow) queue.remove(this);
+                else it.remove();
             }
         }
     }
