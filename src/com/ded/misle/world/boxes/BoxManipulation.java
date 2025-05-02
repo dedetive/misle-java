@@ -28,36 +28,42 @@ public class BoxManipulation {
 	public static void moveBox(Box box, int dx, int dy, boolean ignoreCollision) {
 		int turns = Math.max(Math.abs(dx), Math.abs(dy));
 		box.isMoving = true;
+
 		int[] dxFinal = new int[]{dx};
 		int[] dyFinal = new int[]{dy};
 
 		TurnTimer.schedule(1, true, e -> {
-			int x = box.getX();
-			int y = box.getY();
-			int signumX = Integer.signum(dxFinal[0]);
-			int signumY = Integer.signum(dyFinal[0]);
-			int targetX = x + signumX;
-			int targetY = y + signumY;
-
-			if (!ignoreCollision) {
-				// Check X-axis first
-				if (isDestinationOccupied(targetX, y, box)) {
-					signumX = 0;
-				}
-				// Then check Y-axis separately
-				if (isDestinationOccupied(x, targetY, box)) {
-					signumY = 0;
-				}
-
-				box.setPos(x + signumX, y + signumY);
-			} else {
-				box.setPos(targetX, targetY);
-			}
-
-			dxFinal[0] = dxFinal[0] - signumX;
-			dyFinal[0] = dyFinal[0] - signumY;
+			moveAxis(box, dxFinal, 0, ignoreCollision);
+			moveAxis(box, dyFinal, 1, ignoreCollision);
 		}).setStopsAt(turns).setRoomScoped(true);
 	}
+
+
+	private static void moveAxis(Box box, int[] delta, int axisIndex, boolean ignoreCollision) {
+		int signum = Integer.signum(delta[0]);
+
+		if (signum == 0) return;
+
+		int x = box.getX();
+		int y = box.getY();
+		int targetX = axisIndex == 0 ? x + signum : x;
+		int targetY = axisIndex == 1 ? y + signum : y;
+
+		if (!ignoreCollision) {
+			if (isDestinationOccupied(targetX, targetY, box)) {
+				return;
+			}
+		}
+
+		if (axisIndex == 0) {
+			box.setPos(x + signum, y);
+		} else {
+			box.setPos(x, y + signum);
+		}
+
+		delta[0] -= signum;
+	}
+
 
 	private static boolean isDestinationOccupied(int targetX, int targetY, Box box) {
 		return PhysicsEngine.isSpaceOccupied(targetX, targetY, box);
