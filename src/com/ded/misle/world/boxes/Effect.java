@@ -220,6 +220,7 @@ public abstract class Effect {
 
         private void handleBoxItemCollectible(Box culprit) {
             if (!collectible) return;
+            if (culprit.isMoving) return; // Moving items should not be caught
 
             if (id == 0) {
                 deleteBox(culprit);
