@@ -233,19 +233,32 @@ public class TurnTimer {
         listener.actionPerformed(e);
 
         if (!repeats) {
-            if (removeNow) queue.remove(this);
-            else it.remove();
-            if (onFinish != null) onFinish.actionPerformed(e);
+            cleanupAfterFinalExecution(it, removeNow, e);
         } else {
             this.updateExecutionTurn();
             timesTriggered++;
             if (stopsAt != 0 &&
                 timesTriggered >= stopsAt) {
-                if (removeNow) queue.remove(this);
-                else it.remove();
-                if (onFinish != null) onFinish.actionPerformed(e);
+                cleanupAfterFinalExecution(it, removeNow, e);
             }
         }
+    }
+
+    /**
+     * Finalizes the execution of this timer when it is no longer meant to continue.
+     * <p>
+     * This method removes the timer from the queue, either by invoking {@link #kill()}
+     * or by using the provided iterator, depending on the {@code removeNow} flag.
+     * It also executes the {@code onFinish} listener, if one is set.
+     *
+     * @param it        The iterator used when this method is called from a loop over the queue.
+     * @param removeNow Whether to use {@link #kill()} or {@code it.remove()} to remove the timer.
+     * @param e         The {@link ActionEvent} used for the {@code onFinish} listener.
+     */
+    private void cleanupAfterFinalExecution(Iterator<TurnTimer> it, boolean removeNow, ActionEvent e) {
+        if (removeNow) kill();
+        else it.remove();
+        if (onFinish != null) onFinish.actionPerformed(e);
     }
 
     /**
