@@ -40,7 +40,9 @@ public class BoxManipulation {
 		TurnTimer.schedule(1, true, e -> {
 			moveAxis(box, dxFinal, 0, ignoreCollision);
 			moveAxis(box, dyFinal, 1, ignoreCollision);
-		}).setStopsAt(turns).setRoomScoped(true);
+		}).setStopsAt(turns).setRoomScoped(true).setOnFinish(e ->
+			box.isMoving = false
+		);
 	}
 
 	/**
