@@ -66,6 +66,19 @@ public class TurnTimer {
     private final ActionListener listener;
 
     /**
+     * An action that is triggered exactly once when the {@code TurnTimer} finishes naturally.
+     * <p>
+     * This listener is called only when the timer:
+     * <ul>
+     *   <li>runs with no repeats and reaches the end, or</li>
+     *   <li>runs with repeats and {@code stopsAt} is reached.</li>
+     * </ul>
+     * <p>
+     * It is <b>not</b> called if the timer is forcibly terminated using {@code kill()}.
+     */
+    private ActionListener onFinish;
+
+    /**
      * Whether this timer should repeat after triggering.
      */
     private boolean repeats;
@@ -222,6 +235,7 @@ public class TurnTimer {
         if (!repeats) {
             if (removeNow) queue.remove(this);
             else it.remove();
+            if (onFinish != null) onFinish.actionPerformed(e);
         } else {
             this.updateExecutionTurn();
             timesTriggered++;
@@ -229,6 +243,7 @@ public class TurnTimer {
                 timesTriggered >= stopsAt) {
                 if (removeNow) queue.remove(this);
                 else it.remove();
+                if (onFinish != null) onFinish.actionPerformed(e);
             }
         }
     }
@@ -244,6 +259,9 @@ public class TurnTimer {
 
     /**
      * Stops and removes the timer from the execution queue.
+     * <p>
+     * This method prevents the timer from executing or completing naturally,
+     * and as such, the {@code onFinish} listener (if set) will not be called.
      */
     public void kill() {
         queue.remove(this);
@@ -306,6 +324,24 @@ public class TurnTimer {
      */
     public TurnTimer setStopsAt(int stopsAt) {
         this.stopsAt = stopsAt;
+        return this;
+    }
+
+    /**
+     * Sets a listener to be executed once when this timer finishes naturally.
+     * <p>
+     * The {@code onFinish} action is called:
+     * <ul>
+     *   <li>when a non-repeating timer reaches its scheduled execution turn, or</li>
+     *   <li>when a repeating timer completes and reaches its {@code stopsAt} limit.</li>
+     * </ul>
+     * It will <b>not</b> be called if the timer is terminated using {@link #kill()}.
+     *
+     * @param listener the {@code ActionListener} to execute on natural completion
+     * @return this timer instance, for chaining
+     */
+    public TurnTimer setOnFinish(ActionListener listener) {
+        this.onFinish = listener;
         return this;
     }
 
