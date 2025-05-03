@@ -31,16 +31,16 @@ public class TurnTimer {
     });
 
     /**
-     * Indicates whether the timer has been already started.
-     * Should be false when it's not inside {@link #queue}, and true when it is.
-     */
-    private boolean started = false;
-
-    /**
      * The current global turn count.
      * This is incremented with {@link #increaseTurn()} and used to determine when timers trigger.
      */
     private static int turnNum = 0;
+
+    /**
+     * Indicates whether the timer has been already started.
+     * Should be false when it's not inside {@link #queue}, and true when it is.
+     */
+    private boolean started = false;
 
     /**
      * Indicates whether this timer should be automatically removed
@@ -61,6 +61,22 @@ public class TurnTimer {
     private final int turns;
 
     /**
+     * Whether this timer should repeat after triggering.
+     */
+    private boolean repeats;
+
+    /**
+     * How many times this timer has already been triggered.
+     */
+    private int timesTriggered = 0;
+
+    /**
+     * Maximum number of times this timer is allowed to trigger.
+     * A value of 0 means no limit (infinite repetition).
+     */
+    private int stopsAt = 0;
+
+    /**
      * The action to be executed when the timer triggers.
      */
     private final ActionListener listener;
@@ -77,22 +93,6 @@ public class TurnTimer {
      * It is <b>not</b> called if the timer is forcibly terminated using {@code kill()}.
      */
     private ActionListener onFinish;
-
-    /**
-     * Whether this timer should repeat after triggering.
-     */
-    private boolean repeats;
-
-    /**
-     * How many times this timer has already been triggered.
-     */
-    private int timesTriggered = 0;
-
-    /**
-     * Maximum number of times this timer is allowed to trigger.
-     * A value of 0 means no limit (infinite repetition).
-     */
-    private int stopsAt = 0;
 
     /**
      * Creates a one-time timer that triggers after a given number of turns.
@@ -165,6 +165,17 @@ public class TurnTimer {
     }
 
     /**
+     * Resets the timer to its constructor state, and then starts it.
+     * @see #reset()
+     * @see #start()
+     */
+    public TurnTimer restart() {
+        this.reset().start();
+
+        return this;
+    }
+
+    /**
      * Resets the timer to its constructor state.
      * This removes it from the queue and resets the trigger count.
      * It does not reset the number of turns or the assigned listener.
@@ -180,35 +191,22 @@ public class TurnTimer {
     }
 
     /**
-     * Resets the timer to its constructor state, and then starts it.
-     * @see #reset()
-     * @see #start()
+     * Stops and removes the timer from the execution queue.
+     * <p>
+     * This method prevents the timer from executing or completing naturally,
+     * and as such, the {@code onFinish} listener (if set) will not be called.
      */
-    public TurnTimer restart() {
-        this.reset().start();
-
-        return this;
+    public void kill() {
+        queue.remove(this);
     }
 
     /**
-     * Updates the timer's next turn to be executed.
+     * Checks if the timer is due to execute this turn.
+     *
+     * @return {@code true} if the timer should be triggered now.
      */
-    private void updateExecutionTurn() {
-        this.executionTurn = turnNum + turns;
-    }
-
-    /**
-     * Executes all timers that are due for the current turn.
-     * Should be called once per turn after game logic.
-     */
-    private static void executeAllDueTimers() {
-        Iterator<TurnTimer> it = queue.iterator();
-        while (it.hasNext()) {
-            TurnTimer timer = it.next();
-            if (timer.isTimerDue()) {
-                timer.forceExecution(it, false);
-            }
-        }
+    public boolean isTimerDue() {
+        return executionTurn == turnNum;
     }
 
     /**
@@ -245,6 +243,13 @@ public class TurnTimer {
     }
 
     /**
+     * Updates the timer's next turn to be executed.
+     */
+    private void updateExecutionTurn() {
+        this.executionTurn = turnNum + turns;
+    }
+
+    /**
      * Finalizes the execution of this timer when it is no longer meant to continue.
      * <p>
      * This method removes the timer from the queue, either by invoking {@link #kill()}
@@ -262,22 +267,26 @@ public class TurnTimer {
     }
 
     /**
-     * Checks if the timer is due to execute this turn.
-     *
-     * @return {@code true} if the timer should be triggered now.
+     * Executes all timers that are due for the current turn.
+     * Should be called once per turn after game logic.
      */
-    public boolean isTimerDue() {
-        return executionTurn == turnNum;
+    private static void executeAllDueTimers() {
+        Iterator<TurnTimer> it = queue.iterator();
+        while (it.hasNext()) {
+            TurnTimer timer = it.next();
+            if (timer.isTimerDue()) {
+                timer.forceExecution(it, false);
+            }
+        }
     }
 
     /**
-     * Stops and removes the timer from the execution queue.
-     * <p>
-     * This method prevents the timer from executing or completing naturally,
-     * and as such, the {@code onFinish} listener (if set) will not be called.
+     * Clears all timers and resets the turn counter to 0.
+     * Typically used when restarting the game.
      */
-    public void kill() {
-        queue.remove(this);
+    public static void resetQueue() {
+        queue.clear();
+        turnNum = 0;
     }
 
     /**
@@ -291,15 +300,6 @@ public class TurnTimer {
     }
 
     /**
-     * Clears all timers and resets the turn counter to 0.
-     * Typically used when restarting the game.
-     */
-    public static void resetQueue() {
-        queue.clear();
-        turnNum = 0;
-    }
-
-    /**
      * Sets whether the timer is dependent on the room. If true, the timer will be cleared
      * when the room changes. Used to ensure that timers tied to specific room entities are
      * safely removed when switching rooms.
@@ -309,24 +309,6 @@ public class TurnTimer {
     public TurnTimer setRoomScoped(boolean roomScoped) {
         this.roomScoped = roomScoped;
         return this;
-    }
-
-    /**
-     * Clears all timers from the queue that are marked as room-dependent (roomScoped).
-     * This method is called when the room changes to ensure that timers tied to the old
-     * room (such as enemy movement timers) are removed.
-     */
-    public static void clearRoomScopedTimers() {
-        queue.removeIf(timer -> timer.roomScoped);
-    }
-
-    /**
-     * Returns how many times this timer has triggered.
-     *
-     * @return Number of times the timer has executed.
-     */
-    public int getTimesTriggered() {
-        return timesTriggered;
     }
 
     /**
@@ -356,6 +338,24 @@ public class TurnTimer {
     public TurnTimer setOnFinish(ActionListener listener) {
         this.onFinish = listener;
         return this;
+    }
+
+    /**
+     * Returns how many times this timer has triggered.
+     *
+     * @return Number of times the timer has executed.
+     */
+    public int getTimesTriggered() {
+        return timesTriggered;
+    }
+
+    /**
+     * Clears all timers from the queue that are marked as room-dependent (roomScoped).
+     * This method is called when the room changes to ensure that timers tied to the old
+     * room (such as enemy movement timers) are removed.
+     */
+    public static void clearRoomScopedTimers() {
+        queue.removeIf(timer -> timer.roomScoped);
     }
 
     /**
