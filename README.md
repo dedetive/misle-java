@@ -39,7 +39,7 @@ Again, I profoundly thank you and everyone who is reading this.
 
 - [Controls](docs/controls.md)
 - [Settings](docs/settings.md)
-- [License](LICENSE)
+- [License](LICENSE.md)
 
 ### Additional Developer Documentation
 - [Known Issues](docs/known_issues.md)
