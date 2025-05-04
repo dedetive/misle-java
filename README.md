@@ -35,9 +35,13 @@ https://pixie.gg/ded/
 
 Again, I profoundly thank you and everyone who is reading this.
 
-### Additional Developer Documentation
+### General Helpful Documentation
+
 - [Controls](docs/controls.md)
 - [Settings](docs/settings.md)
+- [License](LICENSE)
+
+### Additional Developer Documentation
 - [Known Issues](docs/known_issues.md)
 - [How to Add New Items](docs/adding_items.md)
 - [How to Add New Rooms](docs/adding_rooms.md)
