@@ -81,6 +81,7 @@ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILIT
 
 - This License shall be governed by and interpreted in accordance with the laws of Brazil, or the country in which the Author legally resides at the time of enforcement, without regard to conflict of law principles.
 - If any provision of this License is found to be invalid or unenforceable, the remaining provisions will remain in effect.
+- Creating and monetizing media content (including, but not limited to, gameplay videos, livestreams, reviews, or screenshots) that showcases the software is permitted, provided such content does not redistribute, repackage, or provide access to the game or its assets in any downloadable or executable form.
 
 ## 11. Acknowledgments
 
