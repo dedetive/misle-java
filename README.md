@@ -12,21 +12,20 @@ This is a game of a project I've had for over two years now. It used to be just 
 
 ### Usage
 
-To open the game, navigate to the directory `misle-java-master/src` in a terminal and copy paste the following lines of code:
-
-In `misle-java-master/`, where you can see the folder `com`:
+To install the game, copy and paste the following in a terminal, in a directory of your choice:
 
 ```bash
-rm -rf out
-mkdir -p out
+git clone https://github.com/dedetive/misle-java/
+cd misle-java/
+mkdir out
 javac -d out $(find . -name "*.java")
-cp -r com/ded/misle/resources out/com/ded/misle/
-cp -r com/ded/misle/items out/com/ded/misle/
+cp -r src/com/ded/misle/resources out/com/ded/misle/
+cp -r src/com/ded/misle/items out/com/ded/misle/
 cd out
 java com.ded.misle.Launcher
 ```
 
-Alternatively, you can use your preferred IDE with a compiler to run the code automatically, always using `Launcher` as the base.
+Alternatively, you can use your preferred IDE with a compiler to run the source-code yourself, always using `Launcher` as the starting point or a preferred Test class.
 
 ### Donations
 
