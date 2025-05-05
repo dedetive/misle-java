@@ -12,7 +12,7 @@ This is a game of a project I've had for over two years now. It used to be just 
 
 ### Usage
 
-To install the game, copy and paste the following in a terminal, in a directory of your choice:
+To install the game, copy and paste the following in a bash terminal, in the directory that you want to install the game in:
 
 ```bash
 git clone https://github.com/dedetive/misle-java/
