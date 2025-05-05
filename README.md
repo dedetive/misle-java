@@ -4,7 +4,13 @@
 
 ### About the game
 
-This is a game of a project I've had for over two years now. It used to be just a world I built for the sake of creating stories and writing a book. However, my writing hobby had died down, and I couldn't keep up with writing as much as I'd like. Thus, I had the idea to create a game based on it. The lore I have planned is huge, but I'm a new developer, so the lore may have to wait until I become more experienced with coding instead of writing text. Up until now, I've tried to make the systems work as intended and create new features, until I reach a point I can safely make the game itself. I'd like to thank everyone who cares and has read this far, as I wholeheartedly agree the community is crucial to the development of things. Thank you, and take care.
+This is a game of a project I've had for over three years now. It started as a world I built for storytelling and writing a book. However, over time, my writing hobby faded, and I couldn’t keep up with it as much as I’d like. Thus, I had the idea to create a game based on it. The lore I have planned is huge, but I'm a new developer, so the lore may have to wait until I become more experienced with coding instead of writing text. Up until now, I've tried to make the systems work as intended and create new features, until I reach a point I can safely make the game itself. I'd like to thank everyone who cares and has read this far, as I wholeheartedly agree the community is crucial to the development of things. Thank you, and take care.
+
+As of the game itself: it is a top-down 2D RPG, with distinct turn-based and real-time strategy gameplay. The game (will!) feature very extensive lore, although still friendly to those who just skip it— Don't be shy about it, I'm fine if you just want the gameplay and barely any storytelling. But to those who do enjoy storytelling, you will love it!
+
+I hope you enjoy discovering this world as much as I’ve enjoyed creating it!!
+
+<sup><sub> Also... I've heard there’s some hidden lore tucked away somewhere, just waiting to be deciphered. You're certainly gonna need linguists for it. </sub></sup>
 
 ### Prerequisites
 
@@ -28,6 +34,11 @@ java com.ded.misle.Launcher
 This process might take some time, usually around a few seconds. The game will automatically launch, but this behavior can be disabled by removing the last bash line.
 
 Alternatively, you can use your preferred IDE with a compiler to run the source-code yourself, always using `Launcher` as the starting point or a preferred Test class.
+
+### Planned Features
+- Top-down tactical combat with turn-based system (partially implemented already!)
+- Extensive original lore and world-building
+- Item and ability system with custom crafting
 
 ### Donations
 
