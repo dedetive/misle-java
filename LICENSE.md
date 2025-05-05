@@ -1,4 +1,4 @@
-# MISLE 1.1 – Misle Independent Software License & Enforcement
+# MISLE 1.2 – Misle Independent Software License & Enforcement
 
 Copyright (c) 2025 dedetive  
 All rights reserved.
@@ -62,6 +62,23 @@ remain the **exclusive intellectual property** of their respective creators.
 - **No Unauthorized Reuse**: You may not reuse any substantial part of the software, code, artistic assets, or narrative in other projects not related to the game.
 - **No Modifications of License**: You may not alter, sublicense, or redistribute the software under a different license. All copies of the software must include the full terms of this License verbatim.
 
+## 6.1. Prohibited Content and Derogatory Use
+
+The Software and any derivative works, modifications, or redistributions thereof, including artistic assets and narrative content, shall not be used to create, promote, or distribute content that:
+
+- Denigrates, harms, or targets any group of individuals based on race, ethnicity, nationality, gender, sexual orientation, religion, disability, or any other protected characteristic, with the intent to cause harm, spread hate, or promote discrimination.
+- Fosters or supports malicious intent towards any group or individuals, particularly with the aim of inciting violence, harassment, or hatred.
+
+## 6.2. Permission for Critical and Derogatory Works
+
+Notwithstanding the above, the creation and distribution of derivative works that engage in critique, satire, or social commentary on controversial or sensitive topics may be permitted, provided that:
+
+- The creator seeking to produce such works must first obtain explicit written consent from the Author (dedetive) prior to the creation or distribution of any such work.
+- The creator must provide a clear, transparent explanation of the nature and intent of the proposed work, including but not limited to: the context, message, and the intended critical or social commentary.
+- The Author retains the right to approve or deny any such request based on the content's adherence to the principles of respect, tolerance, and responsible discourse.
+
+The Author reserves the right to deny any request that may be deemed harmful, dangerous, or contrary to the values of respect, inclusion, and constructive criticism.
+
 ## 7. Enforcement and Legal
 
 - The author reserves the right to enforce the terms of this License through legal action if necessary.
@@ -89,4 +106,4 @@ The author appreciates the contributions and respect for the terms of this Licen
 
 ---
 
-By using or distributing the software, you acknowledge that you have read, understood, and agree to the terms of the MISLE 1.1 License.
+By using or distributing the software, you acknowledge that you have read, understood, and agree to the terms of the MISLE 1.2 License.
