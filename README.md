@@ -25,6 +25,8 @@ cd out
 java com.ded.misle.Launcher
 ```
 
+This process might take some time, usually around a few seconds. The game will automatically launch, but this behavior can be disabled by removing the last bash line.
+
 Alternatively, you can use your preferred IDE with a compiler to run the source-code yourself, always using `Launcher` as the starting point or a preferred Test class.
 
 ### Donations
