@@ -1,6 +1,6 @@
 # Misle
 
-![License: MISLE 1.1](https://img.shields.io/badge/license-MISLE%201.1-blueviolet)
+![License: MISLE 1.2](https://img.shields.io/badge/license-MISLE%201.2-blueviolet)
 
 ### About the game
 
@@ -57,7 +57,7 @@ Again, I profoundly thank you and everyone who is reading this.
 
 ### License
 
-This project is licensed under the **MISLE 1.1 (Misle Independent Software License & Enforcement)**.
+This project is licensed under the **MISLE 1.2 (Misle Independent Software License & Enforcement)**.
 It is a **non-commercial license** that grants the right to use, modify, and redistribute the software for personal or educational purposes, but **prohibits commercialization and reuse of core artistic or narrative content** outside this game.
 Redistributions and derivative works **must include the full, unmodified text** of the MISLE License and follow all its terms.
 Creating and monetizing media content such as videos, streams, or screenshots involving the game is allowed under this license, as long as it does not redistribute or repackage the game itself.
