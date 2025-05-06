@@ -253,7 +253,7 @@ public class Box {
 	}
 
 	public void setPos(int x, int y) {
-		setPos(x, y, 0);
+		setPos(x, y, -1);
 	}
 
 	public void setPos(int x, int y, int layer) {
