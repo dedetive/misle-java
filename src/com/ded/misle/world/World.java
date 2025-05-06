@@ -41,92 +41,97 @@ public class World {
     }
 
     public void setPos(Box box, int x, int y, int z, boolean force) {
-        int previousX = box.getX();
-        int previousY = box.getY();
-        int previousLayer = box.worldLayer;
+        int[] previousPos = findPreviousPosition(box);
+        int previousX = previousPos[0], previousY = previousPos[1], previousLayer = previousPos[2];
+        boolean relevantPrevious = grid[previousX][previousY][previousLayer] == box;
 
         try {
-            for (int i = 0; i < this.width; i++) {
-                for (int j = 0; j < this.height; j++) {
-                    for (int k = 0; k < this.layers; k++) {
-                        if (this.grid[i][j][k] == box) {
-                            previousX = i;
-                            previousY = j;
-                            previousLayer = k;
-                        }
-                    }
-                }
-            }
-
-            boolean relevantPrevious = this.grid[previousX][previousY][previousLayer] == box;
-
-            if (z >= 0 && z < this.layers && this.grid[x][y][z] == null) {
-                this.grid[x][y][z] = box;
-                box.worldLayer = z;
-
-                boolean hasMoved = !Arrays.equals(new int[]{previousX, previousY, previousLayer}, new int[]{x, y, z});
-                if (hasMoved && relevantPrevious) {
-                    this.grid[previousX][previousY][previousLayer] = null;
-                }
+            if (isValidLayer(z) && isFree(x, y, z)) {
+                placeBox(box, x, y, z);
+                clearOldPosition(box, previousX, previousY, previousLayer, x, y, z, relevantPrevious);
                 return;
             }
 
-            List<Integer> freeLayers = new ArrayList<>();
-            int highestOccupied = -1;
-
-            for (int k = 0; k < this.layers; k++) {
-                if (this.grid[x][y][k] == null) {
-                    freeLayers.add(k);
-                } else {
-                    highestOccupied = k;
-                }
-            }
+            List<Integer> freeLayers = getFreeLayers(x, y);
+            int highestOccupied = getHighestOccupiedLayer(x, y);
 
             if (freeLayers.size() == 1) {
-                int chosenLayer = freeLayers.get(0);
-                this.grid[x][y][chosenLayer] = box;
-                box.worldLayer = chosenLayer;
-
-                boolean hasMoved = !Arrays.equals(new int[]{previousX, previousY, previousLayer}, new int[]{x, y, chosenLayer});
-                if (hasMoved && relevantPrevious) {
-                    this.grid[previousX][previousY][previousLayer] = null;
-                }
+                int chosen = freeLayers.getFirst();
+                placeBox(box, x, y, chosen);
+                clearOldPosition(box, previousX, previousY, previousLayer, x, y, chosen, relevantPrevious);
                 return;
             }
 
-            int targetLayer = highestOccupied + 1;
-            if (targetLayer < this.layers && this.grid[x][y][targetLayer] == null) {
-                this.grid[x][y][targetLayer] = box;
-                box.worldLayer = targetLayer;
-
-                boolean hasMoved = !Arrays.equals(new int[]{previousX, previousY, previousLayer}, new int[]{x, y, targetLayer});
-                if (hasMoved && relevantPrevious) {
-                    this.grid[previousX][previousY][previousLayer] = null;
-                }
+            int aboveHighest = highestOccupied + 1;
+            if (aboveHighest < layers && isFree(x, y, aboveHighest)) {
+                placeBox(box, x, y, aboveHighest);
+                clearOldPosition(box, previousX, previousY, previousLayer, x, y, aboveHighest, relevantPrevious);
                 return;
             }
 
             if (force) {
-                for (int k = 0; k < this.layers; k++) {
-                    if (this.grid[x][y][k] == null || k == this.layers - 1) {
-                        this.grid[x][y][k] = box;
-                        box.worldLayer = k;
-
-                        boolean hasMoved = !Arrays.equals(new int[]{previousX, previousY, previousLayer}, new int[]{x, y, k});
-                        if (hasMoved && relevantPrevious) {
-                            this.grid[previousX][previousY][previousLayer] = null;
-                        }
+                for (int k = 0; k < layers; k++) {
+                    if (isFree(x, y, k) || k == layers - 1) {
+                        placeBox(box, x, y, k);
+                        clearOldPosition(box, previousX, previousY, previousLayer, x, y, k, relevantPrevious);
                         return;
                     }
                 }
             }
 
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Index " + x + ", " + y + " is out of bounds for length " + this.width + ", " + this.height);
+            System.out.printf("Index %d, %d is out of bounds for length %d, %d%n", x, y, width, height);
         }
     }
 
+    private int[] findPreviousPosition(Box box) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                for (int k = 0; k < layers; k++) {
+                    if (grid[i][j][k] == box) {
+                        return new int[]{i, j, k};
+                    }
+                }
+            }
+        }
+        return new int[]{box.getX(), box.getY(), box.worldLayer};
+    }
 
+    private List<Integer> getFreeLayers(int x, int y) {
+        List<Integer> free = new ArrayList<>();
+        for (int k = 0; k < layers; k++) {
+            if (grid[x][y][k] == null) free.add(k);
+        }
+        return free;
+    }
+
+    private int getHighestOccupiedLayer(int x, int y) {
+        int highest = -1;
+        for (int k = 0; k < layers; k++) {
+            if (grid[x][y][k] != null) highest = k;
+        }
+        return highest;
+    }
+
+    private boolean isValidLayer(int z) {
+        return z >= 0 && z < layers;
+    }
+
+    private boolean isFree(int x, int y, int z) {
+        return grid[x][y][z] == null;
+    }
+
+    private void placeBox(Box box, int x, int y, int z) {
+        grid[x][y][z] = box;
+        box.worldLayer = z;
+    }
+
+    private void clearOldPosition(Box box, int oldX, int oldY, int oldZ, int newX, int newY, int newZ, boolean relevantPrevious) {
+        boolean moved = oldX != newX || oldY != newY || oldZ != newZ;
+        if (moved && relevantPrevious) {
+            grid[oldX][oldY][oldZ] = null;
+        }
+    }
 
     public Box[][][] getNeighborhood(int centerX, int centerY, int radius) {
         Box[][][] b = new Box[radius][radius][layers];
