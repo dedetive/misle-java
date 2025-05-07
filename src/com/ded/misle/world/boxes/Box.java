@@ -2,6 +2,7 @@ package com.ded.misle.world.boxes;
 
 import com.ded.misle.core.PhysicsEngine;
 import com.ded.misle.renderer.ImageManager;
+import com.ded.misle.renderer.SmoothPosition;
 import com.ded.misle.world.World;
 import com.ded.misle.world.player.Player;
 import com.ded.misle.world.player.PlayerAttributes;
@@ -29,8 +30,7 @@ import static com.ded.misle.renderer.MainRenderer.*;
 public class Box {
 	private int worldX;
 	private int worldY;
-	public float renderX = -1;
-	public float renderY = -1;
+	private final SmoothPosition smoothPos = new SmoothPosition(worldX, worldY);
 	public int worldLayer;
 
 	private Color color;
@@ -121,7 +121,9 @@ public class Box {
 
 	// Method to render the box with the current tileSize and scale the position
 	public void draw(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY) {
-		updateVisualPosition(15f);
+		updateVisualPosition(20f);
+		float renderX = smoothPos.getRenderX();
+		float renderY = smoothPos.getRenderY();
 
 		// Apply the camera offset to the scaled position
 		int screenX = (int) (renderX - cameraOffsetX - this.visualOffsetX * tileSize);
@@ -232,32 +234,18 @@ public class Box {
 			screenY >= 0 - margin && screenY <= screenHeight + margin);
 	}
 
-	/**
-	 *
-	 * @param renderPos either {@link #renderX} or {@link #renderY}
-	 * @return whether render coordinates have never been updated to this box
-	 */
-	private boolean isFirstTime(float renderPos) {
-		return renderPos == -1;
-	}
-
-	private boolean hasRenderPosArrived(float renderPos, int worldPos) {
-		return Math.abs(renderPos - worldPos * tileSize) < 0.1f;
-	}
-
 	public void updateVisualPosition(float speed) {
-		if (isFirstTime(renderX)) renderX = worldX * tileSize;
-		else if (!hasRenderPosArrived(renderX, worldX)) {
-			float targetX = worldX * tileSize;
-			renderX += (float) ((targetX - renderX) * deltaTime * speed);
-		}
-
-		if (isFirstTime(renderY)) renderY = worldY * tileSize;
-		else if (!hasRenderPosArrived(renderY, worldY)) {
-			float targetY = worldY * tileSize;
-			renderY += (float) ((targetY - renderY) * deltaTime * speed);
-		}
+		smoothPos.setTarget(worldX, worldY);
+		this.smoothPos.update(speed, tileSize);
 	}
+
+	public float getRenderX() {
+		return smoothPos.getRenderX();
+	}
+	public float getRenderY() {
+		return smoothPos.getRenderY();
+	}
+
 	// COLLISION
 
 	// Check if a point is inside this box

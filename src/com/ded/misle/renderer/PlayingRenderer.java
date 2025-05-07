@@ -96,8 +96,8 @@ public abstract class PlayingRenderer {
 
         // Player position adjustments
         player.updateVisualPosition(50f);
-        int playerScreenX = (int) (player.renderX + player.visualOffsetX * tileSize - player.pos.getCameraOffsetX());
-        int playerScreenY = (int) (player.renderY + player.visualOffsetY * tileSize - player.pos.getCameraOffsetY());
+        int playerScreenX = (int) (player.getRenderX() + player.visualOffsetX * tileSize - player.pos.getCameraOffsetX());
+        int playerScreenY = (int) (player.getRenderY() + player.visualOffsetY * tileSize - player.pos.getCameraOffsetY());
 
         // Draw the player above every box
 //        g2d.setColor(player.getColor());
