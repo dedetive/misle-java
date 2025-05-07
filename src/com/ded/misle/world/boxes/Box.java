@@ -29,8 +29,8 @@ import static com.ded.misle.renderer.MainRenderer.*;
 public class Box {
 	private int worldX;
 	private int worldY;
-	public float renderX;
-	public float renderY;
+	public float renderX = -1;
+	public float renderY = -1;
 	public int worldLayer;
 
 	private Color color;
@@ -84,8 +84,6 @@ public class Box {
 	public Box(int x, int y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, Effect effect, double rotation, PhysicsEngine.ObjectType objectType, boolean interactsWithPlayer) {
 		worldX = x;
 		worldY = y;
-		renderX = worldX * tileSize;
-		renderY = worldY * tileSize;
 		World world = player.pos.world;
 		world.setPos(this, worldX, worldY);
 		this.color = color;
@@ -103,8 +101,6 @@ public class Box {
 	public Box(int x, int y) {
 		worldX = x;
 		worldY = y;
-		renderX = worldX * tileSize;
-		renderY = worldY * tileSize;
 		World world = player.pos.world;
 		world.setPos(this, worldX, worldY);
 		this.color = defaultBoxColor;
@@ -125,8 +121,8 @@ public class Box {
 
 	// Method to render the box with the current tileSize and scale the position
 	public void draw(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY) {
-		renderX = worldX * tileSize;
-		renderY = worldY * tileSize;
+		if (renderX == -1) renderX = worldX * tileSize;
+		if (renderY == -1) renderY = worldY * tileSize;
 
 		// Apply the camera offset to the scaled position
 		int screenX = (int) (renderX - cameraOffsetX - this.visualOffsetX * tileSize);
