@@ -296,7 +296,7 @@ public class BoxHandling {
 		}
 
         for (Box box : nearbyBoxes) {
-			box.draw(g2d, cameraOffsetX, cameraOffsetY, box.getBoxScaleHorizontal(), box.getBoxScaleVertical());
+			box.draw(g2d, cameraOffsetX, cameraOffsetY);
 		}
 	}
 
