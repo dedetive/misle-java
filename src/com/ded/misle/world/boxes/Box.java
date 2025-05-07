@@ -245,7 +245,7 @@ public class Box {
 		return Math.abs(renderPos - worldPos * tileSize) < 0.1f;
 	}
 
-	private void updateVisualPosition() {
+	public void updateVisualPosition() {
 		float speed = 15f;
 
 		if (isFirstTime(renderX)) renderX = worldX * tileSize;

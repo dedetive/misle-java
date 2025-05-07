@@ -31,7 +31,7 @@ import static com.ded.misle.world.player.PlayerStats.Direction.*;
 import static java.lang.System.currentTimeMillis;
 
 public abstract class PlayingRenderer {
-    public static double isFacingRight;
+    public static double facingMultiplicator;
     public static boolean mirror;
 
     public static String selectedItemName;
@@ -167,29 +167,29 @@ public abstract class PlayingRenderer {
         if (player.inv.hasHeldItem()) {
 
             if (player.stats.getHorizontalDirection() == RIGHT) {
-                isFacingRight = 0.5;
+                facingMultiplicator = 0.5;
                 mirror = false;
             } else {
-                isFacingRight = -1;
+                facingMultiplicator = -0.5;
                 mirror = true;
             }
 
             double distance = playerScreenX + player.getBoxScaleHorizontal() * tileSize
-                * isFacingRight * scaleByScreenSize;
+                * facingMultiplicator * scaleByScreenSize;
 
             Item selectedItem = player.inv.getSelectedItem();
 
             if (selectedItem.getCountLimit() >= 16 && selectedItem.getCount() > selectedItem.getCountLimit() / 3) {
-                double pos = 12 * isFacingRight * scaleByScreenSize;
-                drawRotatedImage(g2d, selectedItem.getIcon(), distance + pos + selectedItem.getAnimationX() * isFacingRight * scale / 3.75, playerScreenY + 15 * scaleByScreenSize + selectedItem.getAnimationY() * scale / 3.75, (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), (35 + selectedItem.getAnimationRotation()) * Math.ceil(isFacingRight), mirror);
+                double pos = 12 * facingMultiplicator * scaleByScreenSize;
+                drawRotatedImage(g2d, selectedItem.getIcon(), distance + pos + selectedItem.getAnimationX() * facingMultiplicator * scale / 3.75, playerScreenY + 15 * scaleByScreenSize + selectedItem.getAnimationY() * scale / 3.75, (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), (35 + selectedItem.getAnimationRotation()) * Math.ceil(facingMultiplicator), mirror);
             }
 
             if (selectedItem.getCountLimit() >= 100 && selectedItem.getCount() > 2 * selectedItem.getCountLimit() / 3) {
-                double pos = -12 * isFacingRight * scaleByScreenSize;
-                drawRotatedImage(g2d, selectedItem.getIcon(), distance + pos + selectedItem.getAnimationX() * isFacingRight * scale / 3.75, playerScreenY + 15 * scaleByScreenSize + selectedItem.getAnimationY() * scale / 3.75, (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), (-35 + selectedItem.getAnimationRotation()) * Math.ceil(isFacingRight), mirror);
+                double pos = -12 * facingMultiplicator * scaleByScreenSize;
+                drawRotatedImage(g2d, selectedItem.getIcon(), distance + pos + selectedItem.getAnimationX() * facingMultiplicator * scale / 3.75, playerScreenY + 15 * scaleByScreenSize + selectedItem.getAnimationY() * scale / 3.75, (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), (-35 + selectedItem.getAnimationRotation()) * Math.ceil(facingMultiplicator), mirror);
             }
 
-            drawRotatedImage(g2d, selectedItem.getIcon(), (int) distance + selectedItem.getAnimationX() * isFacingRight * scale / 3.75, playerScreenY + selectedItem.getAnimationY() * scale / 3.75, (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), selectedItem.getAnimationRotation() * Math.ceil(isFacingRight), mirror);
+            drawRotatedImage(g2d, selectedItem.getIcon(), (int) distance + selectedItem.getAnimationX() * facingMultiplicator * scale / 3.75, playerScreenY + selectedItem.getAnimationY() * scale / 3.75, (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), selectedItem.getAnimationRotation() * Math.ceil(facingMultiplicator), mirror);
         }
     }
 
