@@ -29,6 +29,8 @@ import static com.ded.misle.renderer.MainRenderer.*;
 public class Box {
 	private int worldX;
 	private int worldY;
+	public float renderX;
+	public float renderY;
 	public int worldLayer;
 
 	private Color color;
@@ -82,6 +84,8 @@ public class Box {
 	public Box(int x, int y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, Effect effect, double rotation, PhysicsEngine.ObjectType objectType, boolean interactsWithPlayer) {
 		worldX = x;
 		worldY = y;
+		renderX = worldX * tileSize;
+		renderY = worldY * tileSize;
 		World world = player.pos.world;
 		world.setPos(this, worldX, worldY);
 		this.color = color;
@@ -99,6 +103,8 @@ public class Box {
 	public Box(int x, int y) {
 		worldX = x;
 		worldY = y;
+		renderX = worldX * tileSize;
+		renderY = worldY * tileSize;
 		World world = player.pos.world;
 		world.setPos(this, worldX, worldY);
 		this.color = defaultBoxColor;
@@ -119,12 +125,13 @@ public class Box {
 
 	// Method to render the box with the current tileSize and scale the position
 	public void draw(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY, double boxScaleHorizontal, double boxScaleVertical) {
-		double scaledX = worldX * tileSize;
-		double scaledY = worldY * tileSize;
+		renderX = worldX * tileSize;
+		renderY = worldY * tileSize;
 
 		// Apply the camera offset to the scaled position
-		int screenX = (int) (scaledX - cameraOffsetX - this.visualOffsetX * tileSize);
-		int screenY = (int) (scaledY - cameraOffsetY - this.visualOffsetY * tileSize);
+		int screenX = (int) (renderX - cameraOffsetX - this.visualOffsetX * tileSize);
+		int screenY = (int) (renderY - cameraOffsetY - this.visualOffsetY * tileSize);
+		if (isInvalid(screenX, screenY)) return;
 
 		// Draw the box with the scaled position and tileSize
 		try {
@@ -222,6 +229,12 @@ public class Box {
 			textureName = textureName.replace("@", "");
 		}
 		drawRotatedImage(g2d, this.getTexture(), screenX, screenY, (int) (tileSize * boxScaleHorizontal), (int) (tileSize * boxScaleVertical), this.visualRotation);
+	}
+
+	private boolean isInvalid(double screenX, double screenY) {
+		double margin = tileSize * 2;
+		return !(screenX >= -margin && screenX <= screenWidth + margin &&
+			screenY >= 0 - margin && screenY <= screenHeight + margin);
 	}
 	// COLLISION
 
