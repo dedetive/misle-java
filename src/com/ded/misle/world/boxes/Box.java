@@ -121,7 +121,7 @@ public class Box {
 
 	// Method to render the box with the current tileSize and scale the position
 	public void draw(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY) {
-		updateVisualPosition();
+		updateVisualPosition(15f);
 
 		// Apply the camera offset to the scaled position
 		int screenX = (int) (renderX - cameraOffsetX - this.visualOffsetX * tileSize);
@@ -245,9 +245,7 @@ public class Box {
 		return Math.abs(renderPos - worldPos * tileSize) < 0.1f;
 	}
 
-	public void updateVisualPosition() {
-		float speed = 15f;
-
+	public void updateVisualPosition(float speed) {
 		if (isFirstTime(renderX)) renderX = worldX * tileSize;
 		else if (!hasRenderPosArrived(renderX, worldX)) {
 			float targetX = worldX * tileSize;

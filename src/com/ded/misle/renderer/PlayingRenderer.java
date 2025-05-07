@@ -95,7 +95,7 @@ public abstract class PlayingRenderer {
         }
 
         // Player position adjustments
-        player.updateVisualPosition();
+        player.updateVisualPosition(50f);
         int playerScreenX = (int) (player.renderX + player.visualOffsetX * tileSize - player.pos.getCameraOffsetX());
         int playerScreenY = (int) (player.renderY + player.visualOffsetY * tileSize - player.pos.getCameraOffsetY());
 
