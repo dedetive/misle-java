@@ -121,8 +121,7 @@ public class Box {
 
 	// Method to render the box with the current tileSize and scale the position
 	public void draw(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY) {
-		if (renderX == -1) renderX = worldX * tileSize;
-		if (renderY == -1) renderY = worldY * tileSize;
+		updateVisualPosition();
 
 		// Apply the camera offset to the scaled position
 		int screenX = (int) (renderX - cameraOffsetX - this.visualOffsetX * tileSize);
@@ -231,6 +230,35 @@ public class Box {
 		double margin = tileSize * 2;
 		return !(screenX >= -margin && screenX <= screenWidth + margin &&
 			screenY >= 0 - margin && screenY <= screenHeight + margin);
+	}
+
+	/**
+	 *
+	 * @param renderPos either {@link #renderX} or {@link #renderY}
+	 * @return whether render coordinates have never been updated to this box
+	 */
+	private boolean isFirstTime(float renderPos) {
+		return renderPos == -1;
+	}
+
+	private boolean hasRenderPosArrived(float renderPos, int worldPos) {
+		return Math.abs(renderPos - worldPos * tileSize) < 0.1f;
+	}
+
+	private void updateVisualPosition() {
+		float speed = 15f;
+
+		if (isFirstTime(renderX)) renderX = worldX * tileSize;
+		else if (!hasRenderPosArrived(renderX, worldX)) {
+			float targetX = worldX * tileSize;
+			renderX += (float) ((targetX - renderX) * deltaTime * speed);
+		}
+
+		if (isFirstTime(renderY)) renderY = worldY * tileSize;
+		else if (!hasRenderPosArrived(renderY, worldY)) {
+			float targetY = worldY * tileSize;
+			renderY += (float) ((targetY - renderY) * deltaTime * speed);
+		}
 	}
 	// COLLISION
 
