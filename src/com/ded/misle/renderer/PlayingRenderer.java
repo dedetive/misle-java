@@ -29,6 +29,7 @@ import static com.ded.misle.renderer.ImageManager.cachedImages;
 import static com.ded.misle.renderer.InventoryRenderer.*;
 import static com.ded.misle.world.player.PlayerStats.Direction.*;
 import static java.lang.System.currentTimeMillis;
+import static java.lang.System.getProperties;
 
 public abstract class PlayingRenderer {
     public static double facingMultiplicator;
@@ -94,8 +95,9 @@ public abstract class PlayingRenderer {
         }
 
         // Player position adjustments
-        int playerScreenX = (int) ((player.getX() + player.visualOffsetX) * tileSize - player.pos.getCameraOffsetX());
-        int playerScreenY = (int) ((player.getY() + player.visualOffsetY) * tileSize - player.pos.getCameraOffsetY());
+        player.updateVisualPosition();
+        int playerScreenX = (int) (player.renderX + player.visualOffsetX * tileSize - player.pos.getCameraOffsetX());
+        int playerScreenY = (int) (player.renderY + player.visualOffsetY * tileSize - player.pos.getCameraOffsetY());
 
         // Draw the player above every box
 //        g2d.setColor(player.getColor());
