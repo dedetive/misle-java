@@ -367,9 +367,21 @@ public abstract class InventoryRenderer {
         return lines.toArray(new String[0]);
     }
 
-    public static void drawDraggedItem(Graphics2D g2d, MouseHandler mouseHandler) {
+    private static final SmoothPosition smoothPos = new SmoothPosition(0, 0);
+
+    public static void updateMousePos(MouseHandler mouseHandler) {
+        int originX = mouseHandler.getMouseX() - slotSize[0] / 2;
+        int originY = mouseHandler.getMouseY() - slotSize[0] / 2;
+        smoothPos.setTarget(originX, originY);
+        smoothPos.update(75f, 1);
+    }
+
+    public static void drawDraggedItem(Graphics2D g2d) {
         Item draggedItem = player.inv.getDraggedItem();
 
-        g2d.drawImage(draggedItem.getIcon(), mouseHandler.getMouseX(), mouseHandler.getMouseY(), slotSize[0], slotSize[0], null);
+        int posX = smoothPos.getRenderX();
+        int posY = smoothPos.getRenderY();
+
+        g2d.drawImage(draggedItem.getIcon(), posX, posY, slotSize[0], slotSize[0], null);
     }
 }

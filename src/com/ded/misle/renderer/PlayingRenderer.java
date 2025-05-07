@@ -29,7 +29,6 @@ import static com.ded.misle.renderer.ImageManager.cachedImages;
 import static com.ded.misle.renderer.InventoryRenderer.*;
 import static com.ded.misle.world.player.PlayerStats.Direction.*;
 import static java.lang.System.currentTimeMillis;
-import static java.lang.System.getProperties;
 
 public abstract class PlayingRenderer {
     public static double facingMultiplicator;
@@ -148,8 +147,9 @@ public abstract class PlayingRenderer {
                 player.inv.getItem(mouseHandler.getExtraHoveredSlot()[0] + mouseHandler.getExtraHoveredSlot()[1] * 2) != null) {
                 drawHoveredItemTooltip(g, new int[]{mouseHandler.getExtraHoveredSlot()[1], mouseHandler.getExtraHoveredSlot()[0]}, true);
             }
+            InventoryRenderer.updateMousePos(mouseHandler);
             if (player.inv.getDraggedItem() != null) {
-                drawDraggedItem(g2d, mouseHandler);
+                drawDraggedItem(g2d);
             }
         } else {
             if (mouseHandler.getHoveredBarSlot() > -1 && player.inv.getItem(0, mouseHandler.getHoveredBarSlot()) != null) {
