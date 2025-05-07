@@ -284,9 +284,9 @@ public class BoxHandling {
 
 		List<Box> nearbyBoxes = new ArrayList<>();
 		World world = player.pos.world;
-		for (int i = 0; i < world.width; i++) {
-			for (int j = 0; j < world.height; j++) {
-				for (int k = 0; k < world.layers; k++) {
+		for (int k = 0; k < world.layers; k++) {
+			for (int i = 0; i < world.width; i++) {
+				for (int j = 0; j < world.height; j++) {
 					Box box = world.grid[i][j][k];
 					if (box != null && !Objects.equals(box.textureName, "invisible")) {
 						nearbyBoxes.add(world.grid[i][j][k]);
