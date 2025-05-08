@@ -231,7 +231,7 @@ public abstract class InventoryRenderer {
             drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize[1]);
         }
 
-        drawHoveredItemTooltip(g2d, slotX, slotY, slotSize[1], hoveredItem, isExtra);
+        drawHoveredItemTooltip(g2d, slotX, slotY, slotSize[0], hoveredItem, isExtra);
     }
 
     public static void drawHoveredItemTooltip(Graphics2D g2d, int slotX, int slotY, int slotSize, Item hoveredItem, boolean isInverted) {
@@ -285,7 +285,7 @@ public abstract class InventoryRenderer {
         tooltipHeight += lineHeight * (wrappedEffect.size() - 1); // Adjust height based on wrapped lines
 
         // Shift tooltip upwards if text exceeds height
-        int triangleHeight = slotSize / 2;
+        int triangleHeight = slotSize / 4;
         tooltipY = slotY - tooltipHeight - (triangleHeight);
 
         // Draw rounded tooltip box
