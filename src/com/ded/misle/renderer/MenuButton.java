@@ -33,7 +33,7 @@ public class MenuButton {
     public static final HashMap<Integer, MainRenderer.FadingState> fadingState = new HashMap<>();
     public static final HashMap<Integer, Float> fadingProgress = new HashMap<>();
 
-    private static final List<MenuButton> buttons = new ArrayList<>();
+    private volatile static List<MenuButton> buttons = new ArrayList<>();
 
     public MenuButton(Rectangle bounds, Color defaultColor, Runnable action, String text, int id) {
         this.bounds = bounds;
