@@ -191,7 +191,7 @@ public abstract class InventoryRenderer {
         drawStat(g2d, statText, centerX, y, statColor, statShadowColor);
     }
 
-    public static void drawHoveredItemTooltip(Graphics g, int[] hoveredSlot, boolean isExtra) {
+    public static void drawHoveredItemTooltip(Graphics g, int[] hoveredSlot, boolean isExtra, MouseHandler mouseHandler) {
         Graphics2D g2d = (Graphics2D) g;
 
         int slotX;
@@ -231,11 +231,14 @@ public abstract class InventoryRenderer {
             drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize[1]);
         }
 
-        drawHoveredItemTooltip(g2d, slotX, slotY, slotSize[0], hoveredItem, isExtra);
+        drawHoveredItemTooltip(g2d, slotSize[0], hoveredItem, isExtra, mouseHandler);
     }
 
-    public static void drawHoveredItemTooltip(Graphics2D g2d, int slotX, int slotY, int slotSize, Item hoveredItem, boolean isInverted) {
+    public static void drawHoveredItemTooltip(Graphics2D g2d, int slotSize, Item hoveredItem, boolean isInverted, MouseHandler mouseHandler) {
         int invertedMultiplier = isInverted ? 1 : -1; // WIP
+
+        int slotX = mouseHandler.getMouseX() - slotSize / 2;
+        int slotY = mouseHandler.getMouseY() - slotSize / 4;
 
         // Get item details
         String itemName;

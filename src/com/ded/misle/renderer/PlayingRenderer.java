@@ -142,10 +142,10 @@ public abstract class PlayingRenderer {
         if (gameState == GameState.INVENTORY) {
             renderInventoryMenu(g);
             if (mouseHandler.getHoveredSlot()[0] > -1 && mouseHandler.getHoveredSlot()[1] > -1 && player.inv.getItem(mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1]) != null) {
-                drawHoveredItemTooltip(g, new int[]{mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1]}, false);
+                drawHoveredItemTooltip(g, new int[]{mouseHandler.getHoveredSlot()[0], mouseHandler.getHoveredSlot()[1]}, false, mouseHandler);
             } else if (mouseHandler.getExtraHoveredSlot()[0] > -1 && mouseHandler.getExtraHoveredSlot()[1] > -1 &&
                 player.inv.getItem(mouseHandler.getExtraHoveredSlot()[0] + mouseHandler.getExtraHoveredSlot()[1] * 2) != null) {
-                drawHoveredItemTooltip(g, new int[]{mouseHandler.getExtraHoveredSlot()[1], mouseHandler.getExtraHoveredSlot()[0]}, true);
+                drawHoveredItemTooltip(g, new int[]{mouseHandler.getExtraHoveredSlot()[1], mouseHandler.getExtraHoveredSlot()[0]}, true, mouseHandler);
             }
             InventoryRenderer.updateMousePos(mouseHandler);
             if (player.inv.getDraggedItem() != null) {
@@ -153,7 +153,7 @@ public abstract class PlayingRenderer {
             }
         } else {
             if (mouseHandler.getHoveredBarSlot() > -1 && player.inv.getItem(0, mouseHandler.getHoveredBarSlot()) != null) {
-                drawHoveredItemTooltip(g, new int[]{-1, mouseHandler.getHoveredBarSlot()}, false);
+                drawHoveredItemTooltip(g, new int[]{-1, mouseHandler.getHoveredBarSlot()}, false, mouseHandler);
             }
         }
 
