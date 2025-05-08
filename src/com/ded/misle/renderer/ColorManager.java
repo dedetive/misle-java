@@ -58,7 +58,7 @@ public abstract class ColorManager {
     public final static Color selectedItemNameShadowColor = defaultShadowColor;
     public final static Color slotIndicator = new Color(100, 50, 30, 140);
         // Tooltip
-    public final static Color hoveredTooltipBackground = new Color(84, 84, 84, 190);
+    public final static Color hoveredTooltipBackground = new Color(78, 78, 78, 200);
     public final static Color itemTypeTooltip = defaultLighterYellow;
     public final static Color itemCountTooltip = defaultWhite;
     public final static Color itemEffectTooltip = defaultLightYellow;
