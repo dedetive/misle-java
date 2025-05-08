@@ -403,7 +403,7 @@ public abstract class PlayingRenderer {
             }
 
             if (i == selectedSlot) {
-                drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize[0]);
+                drawSelectedSlotOverlay(g2d, slotX, (int) (slotY + 1 * scale + 2 * scale / 3.75), (int) (slotSize[0] - 2 * scale / 3));
             }
         }
     }
