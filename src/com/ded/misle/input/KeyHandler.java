@@ -1,8 +1,8 @@
 package com.ded.misle.input;
 
 import com.ded.misle.core.LogicManager;
-import com.ded.misle.core.PhysicsEngine;
 import com.ded.misle.renderer.ImageManager;
+import com.ded.misle.world.boxes.BoxManipulation;
 import com.ded.misle.world.npcs.NPC;
 import com.ded.misle.world.player.PlayerAttributes;
 
@@ -344,7 +344,7 @@ public class KeyHandler implements KeyListener {
 					int targetX = player.getX() + willMovePlayer[0];
 					int targetY = player.getY() + willMovePlayer[1];
 					if (!isSpaceOccupied(targetX, targetY, player)) {
-						PhysicsEngine.movePlayer(willMovePlayer[0], willMovePlayer[1]);
+						BoxManipulation.movePlayer(willMovePlayer[0], willMovePlayer[1]);
 					}
 				}
 			}
@@ -439,7 +439,7 @@ public class KeyHandler implements KeyListener {
 			}
 
 			if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
-				PhysicsEngine.movePlayer(willMovePlayer[0], willMovePlayer[1]);
+				BoxManipulation.movePlayer(willMovePlayer[0], willMovePlayer[1]);
 			}
 
 			// Pause

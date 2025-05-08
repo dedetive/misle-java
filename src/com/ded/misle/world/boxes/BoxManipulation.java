@@ -7,6 +7,8 @@ import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static com.ded.misle.core.GamePanel.player;
+
 public class BoxManipulation {
 
 	/**
@@ -100,4 +102,22 @@ public class BoxManipulation {
 		});
 		timer.start();
 	}
+
+    /**
+     * This moves the player by x, oftentimes being the playerSpeed, or by y.
+     * Set the other as 0, unless you intend to move the player diagonally.
+     * <p></p>
+     * Example use:
+     * movePlayer(playerSpeed, 0);
+     *
+     * @param x double - How many pixels in x direction (this is not based on scale).
+     * @param y double - How many pixels in y direction (this is not based on scale).
+     */
+    public static void movePlayer(int x, int y) {
+        player.stats.increaseDistance(x, y);
+        x = player.getX() + x;
+        y = player.getY() + y;
+        player.setX(x);
+        player.setY(y);
+    }
 }
