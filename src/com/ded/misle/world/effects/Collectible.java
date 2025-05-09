@@ -26,15 +26,6 @@ public class Collectible extends Effect {
     }
 
     @Override
-    public String toString() {
-        return "Collectible{" +
-            "collectible=" + collectible +
-            "id=" + id +
-            "count=" + count +
-            '}';
-    }
-
-    @Override
     public void run(Box culprit, Box victim) {
         if (!(victim instanceof Player)) return;
 
@@ -54,5 +45,14 @@ public class Collectible extends Effect {
             PlayingRenderer.updateSelectedItemNamePosition();
             deleteBox(culprit);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Collectible{" +
+            "collectible=" + collectible +
+            "id=" + id +
+            "count=" + count +
+            '}';
     }
 }
