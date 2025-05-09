@@ -51,8 +51,8 @@ public class Collectible extends Effect {
     public String toString() {
         return "Collectible{" +
             "collectible=" + collectible +
-            "id=" + id +
-            "count=" + count +
+            ", id=" + id +
+            ", count=" + count +
             '}';
     }
 }

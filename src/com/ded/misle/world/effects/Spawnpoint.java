@@ -25,7 +25,7 @@ public class Spawnpoint extends Effect {
     public String toString() {
         return "Spawnpoint{" +
             "roomID=" + roomID +
-            "activated=" + (com.ded.misle.core.GamePanel.player.pos.getSpawnpoint() == roomID) +
+            ", activated=" + (com.ded.misle.core.GamePanel.player.pos.getSpawnpoint() == roomID) +
             '}';
     }
 }

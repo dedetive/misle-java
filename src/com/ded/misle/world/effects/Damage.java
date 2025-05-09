@@ -53,9 +53,9 @@ public class Damage extends Effect {
     public String toString() {
         return "Damage{" +
             "damage=" + damage +
-            "damageRate=" + damageRate +
-            "nextDamageTick=" + lastDamageTime + damageRate +
-            "reason=" + reason +
+            ", damageRate=" + damageRate +
+            ", nextDamageTick=" + lastDamageTime + damageRate +
+            ", reason=" + reason +
             '}';
     }
 }

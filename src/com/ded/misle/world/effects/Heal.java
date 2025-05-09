@@ -42,9 +42,9 @@ public class Heal extends Effect {
     public String toString() {
         return "Heal{" +
             "healValue=" + healValue +
-            "healRate=" + healRate +
-            "nextHealTick=" + lastHealTime + healRate +
-            "reason=" + reason +
+            ", healRate=" + healRate +
+            ", nextHealTick=" + lastHealTime + healRate +
+            ", reason=" + reason +
             '}';
     }
 }
