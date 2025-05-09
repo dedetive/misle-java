@@ -486,4 +486,17 @@ public class Box {
 	public boolean getInteractsWithPlayer() {
 		return interactsWithPlayer;
 	}
+
+	// Misc
+
+	@Override
+	public String toString() {
+		return "Box{" +
+			"textureName=" + textureName +
+			", x=" + worldX +
+			", y=" + worldY +
+			", z=" + worldLayer +
+			", Effect=" + effect.toString() +
+			'}';
+	}
 }
