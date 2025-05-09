@@ -86,7 +86,7 @@ public abstract class PlayingRenderer {
             for (NPC npc : selectedNPCs) {
                 for (int i = 0; i <= 270; i += 90) {
                     drawRotatedImage(g2d, getTexture("wall_default_overlayW"), npc.getX() * scale - player.pos.getCameraOffsetX(), npc.getY() * scale - player.pos.getCameraOffsetY(),
-                        (int) (tileSize * npc.getBoxScaleHorizontal()), (int) (tileSize * npc.getBoxScaleVertical()), i + npc.getVisualRotation());
+                        (int) (tileSize * npc.getVisualScaleHorizontal()), (int) (tileSize * npc.getVisualScaleVertical()), i + npc.getVisualRotation());
                 }
             }
         } catch (ConcurrentModificationException e) {
@@ -128,10 +128,10 @@ public abstract class PlayingRenderer {
             playerSprite;
 
         drawRotatedImage(g2d, playerSprite,
-            playerScreenX - player.getBoxScaleHorizontal() * 0.25 * tileSize,
-            playerScreenY - player.getBoxScaleVertical() * 0.25 * tileSize,
-            (int) (player.getBoxScaleHorizontal() * 1.5 * tileSize),
-            (int) (player.getBoxScaleVertical() * 1.5 * tileSize), player.pos.getRotation(), playerMirror);
+            playerScreenX - player.getVisualScaleHorizontal() * 0.25 * tileSize,
+            playerScreenY - player.getVisualScaleVertical() * 0.25 * tileSize,
+            (int) (player.getVisualScaleHorizontal() * 1.5 * tileSize),
+            (int) (player.getVisualScaleVertical() * 1.5 * tileSize), player.pos.getRotation(), playerMirror);
 
         drawHandItem(g2d, playerScreenX, playerScreenY, scaleByScreenSize, mouseHandler);
 
@@ -176,7 +176,7 @@ public abstract class PlayingRenderer {
                 mirror = true;
             }
 
-            double distance = playerScreenX + player.getBoxScaleHorizontal() * tileSize
+            double distance = playerScreenX + player.getVisualScaleHorizontal() * tileSize
                 * facingMultiplicator * scaleByScreenSize;
 
             Item selectedItem = player.inv.getSelectedItem();

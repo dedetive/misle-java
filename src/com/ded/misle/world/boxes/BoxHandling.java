@@ -2,7 +2,6 @@ package com.ded.misle.world.boxes;
 
 import com.ded.misle.core.PhysicsEngine;
 import com.ded.misle.world.World;
-import com.ded.misle.items.DropTable;
 import com.ded.misle.world.enemies.Enemy;
 import com.ded.misle.world.npcs.NPC;
 
@@ -68,8 +67,8 @@ public class BoxHandling {
 	public static Box addBox(BoxPreset preset) {
 		Box box = new Box();
 
-		box.setBoxScaleHorizontal(1);
-		box.setBoxScaleVertical(1);
+		box.setVisualScaleHorizontal(1);
+		box.setVisualScaleVertical(1);
 		boolean loaded = loadPreset(box, preset);
 		if (checkIfPresetHasSides(preset)) {
 			editBox(box, EditBoxKeys.TEXTURE, box.textureName + ".");
@@ -235,10 +234,10 @@ public class BoxHandling {
 				box.setHasCollision(Boolean.parseBoolean(value));
 				break;
 			case BOX_SCALE_HORIZONTAL:
-				box.setBoxScaleHorizontal(Double.parseDouble(value));
+				box.setVisualScaleHorizontal(Double.parseDouble(value));
 				break;
 			case BOX_SCALE_VERTICAL:
-				box.setBoxScaleVertical(Double.parseDouble(value));
+				box.setVisualScaleVertical(Double.parseDouble(value));
 				break;
 			case ROTATION:
 				box.setVisualRotation(Double.parseDouble(value));
@@ -491,7 +490,7 @@ public class BoxHandling {
 		double scaledY = box.getY() * scale;
 
 		// Calculate bounding box range based on the player's position
-		return scaledX + tileSize * box.getBoxScaleHorizontal() / 1.5 >= x - range && scaledX <= x + range
-				&& scaledY + tileSize * box.getBoxScaleVertical() / 1.5 >= y - range && scaledY <= y + range;
+		return scaledX + tileSize * box.getVisualScaleHorizontal() / 1.5 >= x - range && scaledX <= x + range
+				&& scaledY + tileSize * box.getVisualScaleVertical() / 1.5 >= y - range && scaledY <= y + range;
 	}
 }

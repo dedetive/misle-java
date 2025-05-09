@@ -82,8 +82,8 @@ public class Enemy extends HPBox {
 //                this.setTexture("solid");
 //                this.setColor(new Color(0x106000));
                 this.setTexture("../characters/enemy/goblin");
-                this.setBoxScaleHorizontal(0.75);
-                this.setBoxScaleVertical(0.75);
+                this.setVisualScaleHorizontal(0.75);
+                this.setVisualScaleVertical(0.75);
                 this.AIState = WANDERING;
 
                 // Drops

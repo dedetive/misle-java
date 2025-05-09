@@ -28,8 +28,8 @@ public class Player extends HPBox {
 		this.setColor(defaultBoxColor);
 		this.setObjectType(PhysicsEngine.ObjectType.PLAYER);
 		this.setHasCollision(true);
-		this.setBoxScaleHorizontal(0.91);
-		this.setBoxScaleVertical(0.91);
+		this.setVisualScaleHorizontal(0.91);
+		this.setVisualScaleVertical(0.91);
 		this.setKnockbackDirection(NONE);
 		this.effect = null;
 
