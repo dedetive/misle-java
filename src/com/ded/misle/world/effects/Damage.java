@@ -7,8 +7,9 @@ import static com.ded.misle.core.GamePanel.player;
 import static java.lang.System.currentTimeMillis;
 
 public class Damage extends Effect {
-    public double damageRate;
     public double damage;
+    public double damageRate;
+
     public long lastDamageTime;
     public String reason = "normal";
     public String[] args = new String[]{};
@@ -45,5 +46,15 @@ public class Damage extends Effect {
             victim.takeDamage(damage, reason, args, victim.getKnockbackDirection());
 //			System.out.println(box.getEffectValue() + " " + box.getEffectReason() + " damage dealt! Now at " + player.attr.getHP() + " HP.");
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Damage{" +
+            "damage=" + damage +
+            "damageRate=" + damageRate +
+            "nextDamageTick=" + lastDamageTime + damageRate +
+            "reason=" + reason +
+            '}';
     }
 }
