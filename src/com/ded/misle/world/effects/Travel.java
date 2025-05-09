@@ -58,4 +58,13 @@ public class Travel extends Effect {
         fadingIn.setRepeats(true);
         fadingIn.start();
     }
+
+    @Override
+    public String toString() {
+        return "Travel{" +
+            "roomID=" + roomID +
+            ", x=" + coordinates.x +
+            ", y=" + coordinates.y +
+            '}';
+    }
 }
