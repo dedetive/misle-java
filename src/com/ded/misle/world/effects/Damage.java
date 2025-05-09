@@ -36,6 +36,7 @@ public class Damage extends Effect {
         handleBoxDamageCooldown((HPBox) victim);
     }
 
+    // TODO: Update damage time to new turns system instead of time-based
     private void handleBoxDamageCooldown(HPBox victim) {
         long currentTime = currentTimeMillis();
         long cooldownDuration = (long) damageRate;
