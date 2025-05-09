@@ -52,4 +52,11 @@ public class DropTable {
 		}
 		return new int[]{weightedItems.get(randomIndex).getId(), count};
 	}
+
+	@Override
+	public String toString() {
+		return "DropTable{" +
+			"name=" + name +
+			'}';
+	}
 }
