@@ -51,7 +51,7 @@ public class Chest extends Effect {
         return "Chest{" +
             "dropTable=" + dropTable +
             ", openRate=" + openRate +
-            ", nextOpenTick=" + lastTimeOpen + openRate +
+            ", nextOpenTick=" + (lastTimeOpen + openRate) +
             '}';
     }
 }

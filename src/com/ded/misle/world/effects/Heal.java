@@ -43,7 +43,7 @@ public class Heal extends Effect {
         return "Heal{" +
             "healValue=" + healValue +
             ", healRate=" + healRate +
-            ", nextHealTick=" + lastHealTime + healRate +
+            ", nextHealTick=" + (lastHealTime + healRate) +
             ", reason=" + reason +
             '}';
     }

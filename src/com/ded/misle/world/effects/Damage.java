@@ -54,7 +54,7 @@ public class Damage extends Effect {
         return "Damage{" +
             "damage=" + damage +
             ", damageRate=" + damageRate +
-            ", nextDamageTick=" + lastDamageTime + damageRate +
+            ", nextDamageTick=" + (lastDamageTime + damageRate) +
             ", reason=" + reason +
             '}';
     }
