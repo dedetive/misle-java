@@ -1,6 +1,6 @@
 package com.ded.misle.world.enemies;
 
-import com.ded.misle.world.boxes.Effect;
+import com.ded.misle.world.effects.Damage;
 import com.ded.misle.world.boxes.HPBox;
 import com.ded.misle.items.DropTable;
 
@@ -108,7 +108,7 @@ public class Enemy extends HPBox {
         maxHP *= magnification;
 
         if (defaultDamageType) {
-            this.effect = new Effect.Damage(damage, damageRate);
+            this.effect = new Damage(damage, damageRate);
         }
         this.setMaxHP(maxHP);
         this.setHP(this.getMaxHP());

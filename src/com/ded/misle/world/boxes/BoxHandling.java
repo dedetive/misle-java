@@ -2,6 +2,10 @@ package com.ded.misle.world.boxes;
 
 import com.ded.misle.core.PhysicsEngine;
 import com.ded.misle.world.World;
+import com.ded.misle.world.effects.Chest;
+import com.ded.misle.world.effects.Collectible;
+import com.ded.misle.world.effects.Effect;
+import com.ded.misle.world.effects.Spawnpoint;
 import com.ded.misle.world.enemies.Enemy;
 import com.ded.misle.world.npcs.NPC;
 
@@ -164,14 +168,14 @@ public class BoxHandling {
 		if (id > 0) {
 			Box box = new Box(x, y);
 			boxes.add(box);
-			box.effect = new Effect.Collectible(id, count, true);
+			box.effect = new Collectible(id, count, true);
 			editLastBox(EditBoxKeys.TEXTURE, (".." + File.separator + "items" + File.separator + id));
 			addBoxToCache(boxes.getLast());
 			return boxes.getLast();
 		} else {
 			Box box = new Box(x, y);
 			boxes.add(box);
-			box.effect = new Effect.Collectible(1, 0, true);
+			box.effect = new Collectible(1, 0, true);
 			editLastBox(EditBoxKeys.TEXTURE, ("invisible"));
 			addBoxToCache(boxes.getLast());
 			return boxes.getLast();
@@ -183,11 +187,11 @@ public class BoxHandling {
 
 		switch (preset) {
 			case SPAWNPOINT:
-				box.effect = new Effect.Spawnpoint(-1);
+				box.effect = new Spawnpoint(-1);
 				editBox(box, EditBoxKeys.TEXTURE, "spawnpoint");
 				break;
 			case BoxPreset.CHEST:
-				box.effect = new Effect.Chest(0, null);
+				box.effect = new Chest(0, null);
 				editBox(box, EditBoxKeys.HAS_COLLISION, "true");
 				editBox(box, EditBoxKeys.TEXTURE, "chest");
 				break;

@@ -3,7 +3,9 @@ package com.ded.misle.world;
 import com.ded.misle.core.TurnTimer;
 import com.ded.misle.items.DropTable;
 import com.ded.misle.world.boxes.Box;
-import com.ded.misle.world.boxes.Effect;
+import com.ded.misle.world.effects.Chest;
+import com.ded.misle.world.effects.Spawnpoint;
+import com.ded.misle.world.effects.Travel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -89,18 +91,18 @@ public abstract class WorldLoader {
 							int id = getInt.apply(parts[1]);
 							Point coordinates = new Point(getInt.apply(parts[2]), getInt.apply(parts[3]));
 							box = addBox(BoxPreset.TRAVEL);
-							box.effect = new Effect.Travel(id, coordinates);
+							box.effect = new Travel(id, coordinates);
 						}
 						case spawnpoint -> {
 							int id = getInt.apply(parts[1]);
 							box = addBox(BoxPreset.SPAWNPOINT);
-							box.effect = new Effect.Spawnpoint(id);
+							box.effect = new Spawnpoint(id);
 						}
 						case chest -> {
 							DropTable dropTable = DropTable.getDropTableByName(getString.apply(parts[1]));
 							box = addBox(BoxPreset.CHEST);
 							long openRate = getLong.apply(parts[2]);
-							box.effect = new Effect.Chest(openRate, dropTable);
+							box.effect = new Chest(openRate, dropTable);
 						}
 					}
 				} catch (IllegalArgumentException e) { box = addBox(BoxPreset.WALL_DEFAULT); }

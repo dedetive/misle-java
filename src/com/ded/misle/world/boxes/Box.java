@@ -4,6 +4,8 @@ import com.ded.misle.core.PhysicsEngine;
 import com.ded.misle.renderer.ImageManager;
 import com.ded.misle.renderer.SmoothPosition;
 import com.ded.misle.world.World;
+import com.ded.misle.world.effects.Collectible;
+import com.ded.misle.world.effects.Effect;
 import com.ded.misle.world.player.Player;
 import com.ded.misle.world.player.PlayerAttributes;
 
@@ -39,7 +41,7 @@ public class Box {
 	private boolean hasCollision;
 	private PhysicsEngine.ObjectType objectType;
 	public Effect effect;
-	boolean interactsWithPlayer;
+	public boolean interactsWithPlayer;
 	public boolean isMoving = false;
 
 	private double visualRotation = 0;
@@ -409,10 +411,10 @@ public class Box {
 
 		moveBox(droppedItem, multiplier, 1, true);
 
-		((Effect.Collectible) droppedItem.effect).collectible = false;
+		((Collectible) droppedItem.effect).collectible = false;
 
 		Timer timer = new Timer((int) (delay * 1.5), e -> {
-			((Effect.Collectible) droppedItem.effect).collectible = true;
+			((Collectible) droppedItem.effect).collectible = true;
 			if (Objects.equals(this.textureName, "chest_open")) {
 				this.setTexture("chest");
 			}

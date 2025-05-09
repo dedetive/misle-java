@@ -2,7 +2,7 @@ package com.ded.misle.world.player;
 
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.items.Item;
-import com.ded.misle.world.boxes.Effect;
+import com.ded.misle.world.effects.Damage;
 
 import javax.swing.*;
 
@@ -106,7 +106,7 @@ public class HandItemAnimator {
             Box currentBox = boxes.get(boxes.size() - 1 - i);
 
             double damageDealt = Math.max(Math.ceil(Math.floor(Math.pow(damage, 1.1)) * (player.attr.getStrength() * 10/100 + 1)), 1);
-            currentBox.effect = new Effect.Damage(damageDealt, 1000);
+            currentBox.effect = new Damage(damageDealt, 1000);
             attack.add(currentBox); // Add box to list to be deleted
             isSpaceOccupied(attackX, attackY, currentBox); // Handle damage detection
         }
