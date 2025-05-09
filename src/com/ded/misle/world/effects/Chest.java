@@ -31,7 +31,7 @@ public class Chest extends Effect {
 
     private void handleBoxChest(Box chest, long currentTime) {
         lastTimeOpen = currentTime;
-        int[] results = dropTable.getDropTableItemID();
+        int[] results = dropTable.getRandomItemID();
         int id = results[0];
         int count = results[1];
         boolean canGoMinus = false;

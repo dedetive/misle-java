@@ -1,6 +1,7 @@
 package com.ded.misle.items;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -13,10 +14,12 @@ public class DropTable {
 	public static DropTable GOBLIN = new DropTable("goblin_drop");
 
 	public String name;
+	private final List<ItemData> itemsInBundle;
 
 	DropTable(String dropTableName) {
 		this.name = dropTableName;
 		dropTables.add(this);
+		itemsInBundle = getParameterizedItems(ItemGetter.ParameterKey.BUNDLE, this.name);
 	}
 
 	public static DropTable getDropTableByName(String name) {
@@ -28,8 +31,33 @@ public class DropTable {
 		return null;
 	}
 
-	public int[] getDropTableItemID() {
-		List<ItemData> itemsInBundle = getParameterizedItems(ItemGetter.ParameterKey.BUNDLE, this.name);
+	public List<ItemData> getItemDatas() {
+		return itemsInBundle;
+	}
+
+	public int[] getAllIDs() {
+		int[] ids = new int[itemsInBundle.size()];
+		for (int i = 0; i < itemsInBundle.size(); i++) {
+			ids[i] = itemsInBundle.get(i).getId();
+		}
+
+		return ids;
+	}
+
+	public String[] getAllItemNames() {
+		String[] names = new String[itemsInBundle.size()];
+		for (int i = 0; i < itemsInBundle.size(); i++) {
+			names[i] = itemsInBundle.get(i).getName();
+		}
+
+		return names;
+	}
+
+	/**
+	 *
+	 * @return an array containing the selected randomized ID and its randomized count.
+	 */
+	public int[] getRandomItemID() {
 		List<ItemData> weightedItems = new ArrayList<>();
 		int count = 1;
 
@@ -57,6 +85,9 @@ public class DropTable {
 	public String toString() {
 		return "DropTable{" +
 			"name=" + name +
-			'}';
+			", size=" + itemsInBundle.size() +
+			", ids=" + Arrays.toString(getAllIDs()) +
+//			", items=\n" + Arrays.toString(getAllItemNames()) +
+			"}";
 	}
 }

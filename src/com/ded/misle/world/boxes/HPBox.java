@@ -91,7 +91,7 @@ public class HPBox extends Box {
                         canGoPlus = true;
                     }
 
-                    int[] results = dropTable.getDropTableItemID();
+                    int[] results = dropTable.getRandomItemID();
                     int id = results[0];
                     int count = results[1];
 
