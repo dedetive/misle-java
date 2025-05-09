@@ -20,4 +20,12 @@ public class Spawnpoint extends Effect {
             player.pos.setSpawnpoint(player.pos.getRoomID());
         }
     }
+
+    @Override
+    public String toString() {
+        return "Spawnpoint{" +
+            "roomID=" + roomID +
+            "activated=" + (com.ded.misle.core.GamePanel.player.pos.getSpawnpoint() == roomID) +
+            '}';
+    }
 }
