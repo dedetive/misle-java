@@ -36,4 +36,14 @@ public class Heal extends Effect {
 //			System.out.println(box.getEffectValue() + " " + box.getEffectReason() + " heal received! Now at " + player.attr.getHP() + " HP.");
         }
     }
+
+    @Override
+    public String toString() {
+        return "Heal{" +
+            "healValue=" + healValue +
+            "healRate=" + healRate +
+            "nextHealTick=" + lastHealTime + healRate +
+            "reason=" + reason +
+            '}';
+    }
 }
