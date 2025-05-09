@@ -45,4 +45,13 @@ public class Chest extends Effect {
 
         chest.spawnItem(canGoMinus, canGoPlus, id, count);
     }
+
+    @Override
+    public String toString() {
+        return "Chest{" +
+            "dropTable=" + dropTable +
+            ", openRate=" + openRate +
+            ", nextOpenTick=" + lastTimeOpen + openRate +
+            '}';
+    }
 }
