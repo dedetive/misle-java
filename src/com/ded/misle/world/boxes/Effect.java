@@ -212,6 +212,15 @@ public abstract class Effect {
         }
 
         @Override
+        public String toString() {
+            return "Collectible{" +
+                    "collectible=" + collectible +
+                    "id=" + id +
+                    "count=" + count +
+                '}';
+        }
+
+        @Override
         public void run(Box culprit, Box victim) {
             if (!(victim instanceof Player)) return;
 
