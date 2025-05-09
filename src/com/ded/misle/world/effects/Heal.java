@@ -26,6 +26,7 @@ public class Heal extends Effect {
         handleBoxHealCooldown((HPBox) victim);
     }
 
+    // TODO: Update heal time to new turns system instead of time-based
     private void handleBoxHealCooldown(HPBox victim) {
         long currentTime = currentTimeMillis();
         long cooldownDuration = (long) healRate;
