@@ -203,9 +203,24 @@ public class HPBox extends Box {
      * Damage flags used to control how damage is applied.
      */
     public enum DamageFlag {
+        /**
+         * Defense and item effects take place normally.
+         */
         NORMAL,
+
+        /**
+         * The damage value given will be dealt regardless of defense or other factors, unless the player dies.
+         */
         ABSOLUTE,
+
+        /**
+         * The damage will be dealt even if the player dies. May result in negative HP.
+         */
         POST_MORTEM,
+
+        /**
+         * No damage is actually done. Instead, a portion of the HP is locked and temporarily not considered. Uses <code>lockDuration</code> to define how many milliseconds it takes for the HP to be unlocked.
+         */
         LOCKER,
 
         ;
@@ -226,7 +241,7 @@ public class HPBox extends Box {
      * Deals damage to the entity. <p></p>
      * LockDuration is defaulted to empty and knockback direction is set to NONE.
      * @param rawDamage Raw incoming damage.
-     * @param flags Set of damage flags.
+     * @param flags A set of {@link DamageFlag} values.
      * @return Final damage applied.
      */
     public double takeDamage(double rawDamage, EnumSet<DamageFlag> flags) {
@@ -237,7 +252,7 @@ public class HPBox extends Box {
      * Deals damage to the entity. <p></p>
      * LockDuration is defaulted to empty.
      * @param rawDamage Raw incoming damage.
-     * @param flags Set of damage flags.
+     * @param flags A set of {@link DamageFlag} values.
      * @param knockback Direction of the applied knockback.
      * @return Final damage applied.
      */
@@ -248,7 +263,7 @@ public class HPBox extends Box {
     /**
      * Deals damage to the entity.
      * @param rawDamage Raw incoming damage.
-     * @param flags Set of damage flags.
+     * @param flags A set of {@link DamageFlag} values.
      * @param knockback Direction of the applied knockback.
      * @param lockDuration Duration before locked HP resets. Does nothing if LOCKER flag is not given.
      * @return Final damage applied.
@@ -424,16 +439,36 @@ public class HPBox extends Box {
      * Heal flags to control how healing is applied.
      */
     public enum HealFlag {
+        /**
+         * The heal can be affected by external forces, but is limited by max HP.
+         */
         NORMAL,
-        ABSOLUTE,
-        OVERHEAL,
-        REVIVAL,
-        REVIVAL_EXCLUSIVE,
 
-        ;
+        /**
+         * The heal will be received no matter what, unless max HP is hit.
+         */
+        ABSOLUTE,
+
+        /**
+         * The heal can be affected by external forces, but is NOT limited by max HP.
+         */
+        OVERHEAL,
+
+        /**
+         * The heal will be received regardless of whether the player is dead.
+         * This can revive the player. The value may be affected by external forces.
+         */
+        REVIVAL,
+
+        /**
+         * The heal will only be received if the player is dead.
+         * This will revive the player. The value may be affected by external forces.
+         */
+        REVIVAL_EXCLUSIVE;
 
         /**
          * Creates an EnumSet from given HealFlags.
+         *
          * @param flags Flags to include.
          * @return EnumSet of heal flags.
          */
@@ -442,10 +477,11 @@ public class HPBox extends Box {
         }
     }
 
+
     /**
      * Applies healing to this entity.
      * @param heal Heal amount.
-     * @param flags Healing flags.
+     * @param flags A set of {@link HealFlag} values.
      * @return Final amount healed.
      */
     public double receiveHeal(double heal, EnumSet<HealFlag> flags) {
