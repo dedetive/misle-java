@@ -498,7 +498,7 @@ public class Box {
 			", x=" + worldX +
 			", y=" + worldY +
 			", z=" + worldLayer +
-			", Effect=" + effect.toString() +
+			", Effect=" + (effect != null ? effect.toString() : "null") +
 			'}';
 	}
 }
