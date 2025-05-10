@@ -50,7 +50,7 @@ public class Enemy extends HPBox {
     public void loadEnemy() {
         double maxHP = 1;
         double damage = 1;
-        double damageRate = 1;  // In ms
+        int damageRate = 1;
         boolean defaultDamageType = true;
 
         switch (enemyType) {
@@ -58,7 +58,7 @@ public class Enemy extends HPBox {
                 // Attributes
                 maxHP = 50;
                 damage = 5;
-                damageRate = 300;
+                damageRate = 1;
 
                 // Structural
                 this.setTexture("solid");
@@ -75,7 +75,7 @@ public class Enemy extends HPBox {
                 // Attributes
                 maxHP = 20;
                 damage = 3;
-                damageRate = 400;
+                damageRate = 2;
 
                 // Structural
                 this.setHasCollision(false);
