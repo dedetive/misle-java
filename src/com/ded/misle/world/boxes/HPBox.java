@@ -309,10 +309,12 @@ public class HPBox extends Box {
      * @return Final heal received
      */
     public double receiveHeal(double heal, String reason) {
+        boolean isPlayer = this instanceof Player;
         // Early exit for invalid heal or if the character is dead without revival
         if (heal <= 0 ||
+            (isPlayer &&
             ((player.attr.isDead() || this != player) && (!reason.contains("revival"))) ||
-            ((player.attr.isDead() || this != player) && lockedHP > this.getHP() && this.getHP() >= 0)) {
+            ((player.attr.isDead() || this != player) && lockedHP > this.getHP() && this.getHP() >= 0))) {
             return 0;
         }
 
@@ -328,14 +330,14 @@ public class HPBox extends Box {
             this.setHP(this.getHP() + healToReceive);
 
             // Check for revival condition
-            if (reason.contains("revival") && player.getHP() > 0 && this == player) {
+            if (reason.contains("revival") && player.getHP() > 0 && isPlayer) {
                 player.attr.playerRevived(); // Set isDead to false if revived
             }
         } else {
             throw new IllegalArgumentException("Invalid reason: " + reason); // Handle invalid reasons
         }
 
-        if (this == player && player.getHP() > lockedHP) {
+        if (isPlayer && player.getHP() > lockedHP) {
             player.attr.playerRevived();        // Set isDead to false if new HP is higher than locked HP
         }
 
@@ -349,8 +351,10 @@ public class HPBox extends Box {
      *
      */
     public double calculateHeal(double heal, String reason) {
+        boolean isPlayer = this instanceof Player;
+
         // Invalid heal or dead character without revival
-        if (heal <= 0 || ((player.attr.isDead() || this != player) && !reason.contains("revival"))) {
+        if (isPlayer && (heal <= 0 || ((player.attr.isDead() || this != player) && !reason.contains("revival")))) {
             return 0;
         }
 
@@ -362,7 +366,7 @@ public class HPBox extends Box {
         boolean isNormal = reason.contains("normal");
 
         if (isRevivalExclusive) {
-            if (!player.attr.isDead() || this != player) {
+            if (!player.attr.isDead() || !isPlayer) {
                 return 0; // Revival exclusive healing only works if the character is dead
             }
             // Overheal logic for revival exclusive
