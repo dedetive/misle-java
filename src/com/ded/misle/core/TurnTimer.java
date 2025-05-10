@@ -350,6 +350,15 @@ public class TurnTimer {
     }
 
     /**
+     * Returns how many turns left until this timer is triggered. If the timer is not in the queue for whatever reason, 0 is returned.
+     *
+     * @return Number of turns left until execution.
+     */
+    public int getRemainingTurnsUntilActivation() {
+        return queue.contains(this) ? this.executionTurn - turnNum : 0;
+    }
+
+    /**
      * Clears all timers from the queue that are marked as room-dependent (roomScoped).
      * This method is called when the room changes to ensure that timers tied to the old
      * room (such as enemy movement timers) are removed.
