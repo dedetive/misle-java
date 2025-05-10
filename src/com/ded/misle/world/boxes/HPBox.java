@@ -289,53 +289,65 @@ public class HPBox extends Box {
     }
 
     public double receiveHeal(double heal, EnumSet<HealFlag> flags) {
-        boolean isPlayer = this instanceof Player;
-
-        if (heal <= 0 ||
-            (isPlayer &&
-                ((player.attr.isDead() || this != player) && !flags.contains(HealFlag.REVIVAL) &&
-                    !flags.contains(HealFlag.REVIVAL_EXCLUSIVE) ||
-            ((player.attr.isDead() || this != player) && lockedHP > this.getHP() && this.getHP() >= 0)))) {
-            return 0;
-        }
+        if (!canReceiveHeal(heal, flags)) return 0;
 
         double healToReceive = calculateHeal(heal, flags);
         this.setHP(this.getHP() + healToReceive);
 
-        // Revival triggers
-        if (isPlayer && player.getHP() > 0 &&
-            (flags.contains(HealFlag.REVIVAL) || flags.contains(HealFlag.REVIVAL_EXCLUSIVE))) {
-            player.attr.playerRevived();
-        }
-
-        if (isPlayer && player.getHP() > lockedHP) {
+        if (shouldRevive(flags)) {
             player.attr.playerRevived();
         }
 
         return healToReceive;
     }
 
-    public double calculateHeal(double heal, EnumSet<HealFlag> flags) {
+    private boolean canReceiveHeal(double heal, EnumSet<HealFlag> flags) {
+        if (heal <= 0) return false;
+
         boolean isPlayer = this instanceof Player;
         boolean isDead = (isPlayer && player.attr.isDead()) || this.HP < 0;
 
+        boolean isRevival = flags.contains(HealFlag.REVIVAL);
+        boolean isRevivalExclusive = flags.contains(HealFlag.REVIVAL_EXCLUSIVE);
+
+        if (isRevivalExclusive && !isDead) return false;
+        if (!(isRevival || isRevivalExclusive) && isDead) return false;
+
+        if (isPlayer && this != player && (isDead || lockedHP > this.getHP()) && this.getHP() >= 0)
+            return false;
+
+        return true;
+    }
+
+    private boolean shouldRevive(EnumSet<HealFlag> flags) {
+        if (!(this instanceof Player)) return false;
+
+        boolean revived = this.getHP() > 0 &&
+            (flags.contains(HealFlag.REVIVAL) || flags.contains(HealFlag.REVIVAL_EXCLUSIVE));
+
+        boolean surpassedLocked = this.getHP() > lockedHP;
+
+        return revived || surpassedLocked;
+    }
+
+    public double calculateHeal(double heal, EnumSet<HealFlag> flags) {
         if (heal <= 0) return 0;
 
-        boolean isAbsolute = flags.contains(ABSOLUTE);
+        boolean isPlayer = this instanceof Player;
+        boolean isDead = (isPlayer && player.attr.isDead()) || this.HP < 0;
+
+        boolean isAbsolute = flags.contains(HealFlag.ABSOLUTE);
         boolean isOverheal = flags.contains(HealFlag.OVERHEAL);
         boolean isRevival = flags.contains(HealFlag.REVIVAL);
         boolean isRevivalExclusive = flags.contains(HealFlag.REVIVAL_EXCLUSIVE);
 
         if (isRevivalExclusive && !isDead) return 0;
-
         if (!(isRevival || isRevivalExclusive) && isDead) return 0;
 
-        if (isOverheal) {
-            return heal; // Absolute or not doesn't change behavior *yet*
-        }
+        if (isOverheal) return heal;
 
         return isAbsolute
-            ? Math.min(heal, this.getMaxHP() - this.getHP()) // Will be changed later when reduced healing factors exist
+            ? Math.min(heal, this.getMaxHP() - this.getHP())
             : Math.min(heal, this.getMaxHP() - this.getHP());
     }
 
