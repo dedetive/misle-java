@@ -22,6 +22,7 @@ import static com.ded.misle.renderer.FontManager.itemInfoFont;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.renderer.ColorManager.*;
+import static com.ded.misle.world.boxes.HPBox.HealFlag.ABSOLUTE;
 
 public class HPBox extends Box {
     private double HP;
@@ -182,7 +183,7 @@ public class HPBox extends Box {
     }
 
     private void handleInversionHeal(double amount) {
-        receiveHeal(amount, "absolute");
+        receiveHeal(amount, HealFlag.of(ABSOLUTE));
         renderFloatingText("+" + format(amount), healColor, true);
     }
 
@@ -271,111 +272,69 @@ public class HPBox extends Box {
         this.setLockedHP(Math.max(lockedHP - damage, 0));
     }
 
+    public enum HealFlag {
+        NORMAL,
+        ABSOLUTE,
+        OVERHEAL,
+        REVIVAL,
+        REVIVAL_EXCLUSIVE,
 
+        ;
 
-    /**
-     * REASONS: <br>
-     * - "normal": the heal can be affected by external forces, but is limited by max HP <br> <br>
-     * - "absolute": the heal will be received no matter what, unless max HP is hit <br> <br>
-     * - "overheal": the heal can be affected by external forces, but is NOT limited by max HP <br> <br>
-     * - "absolute overheal": the heal will be received no matter what, and is NOT limited by max HP <br> <br>
-     * - "revival": the heal will be received regardless of whether the player is dead. This can revive the player. The value entered may be affected by external forces <br><br>
-     * - "absolute revival": the heal will be received regardless of whether the player is dead. This can revive the player. The value entered will not be affected by external forces <br><br>
-     * - "revival exclusive": the heal will only be received if the player is dead. This will revive the player. The value entered may be affected by external forces <br><br>
-     * - "absolute revival exclusive": the heal will only be received if the player is dead. This will revive the player. The value entered will not be affected by external forces
-     *
-     * @param heal the heal to be received
-     * @param reason the kind of heal that's taking place; see above for a list
-     * @return Final heal received
-     */
-    public double receiveHeal(double heal, String reason) {
+        public static EnumSet<HealFlag> of(HealFlag... flags) {
+            return EnumSet.copyOf(List.of(flags));
+        }
+    }
+
+    public double receiveHeal(double heal, EnumSet<HealFlag> flags) {
         boolean isPlayer = this instanceof Player;
-        // Early exit for invalid heal or if the character is dead without revival
+
         if (heal <= 0 ||
             (isPlayer &&
-            ((player.attr.isDead() || this != player) && (!reason.contains("revival"))) ||
-            ((player.attr.isDead() || this != player) && lockedHP > this.getHP() && this.getHP() >= 0))) {
+                ((player.attr.isDead() || this != player) && !flags.contains(HealFlag.REVIVAL) &&
+                    !flags.contains(HealFlag.REVIVAL_EXCLUSIVE) ||
+            ((player.attr.isDead() || this != player) && lockedHP > this.getHP() && this.getHP() >= 0)))) {
             return 0;
         }
 
-        double healToReceive;
-        // Define boolean flags for different conditions
-        boolean isValidReason = reason.contains("normal") || reason.contains("overheal") ||
-            reason.contains("revival") || reason.contains("revival exclusive") ||
-            reason.contains("absolute");
+        double healToReceive = calculateHeal(heal, flags);
+        this.setHP(this.getHP() + healToReceive);
 
-        // Check for valid healing reasons
-        if (isValidReason) {
-            healToReceive = calculateHeal(heal, reason);
-            this.setHP(this.getHP() + healToReceive);
-
-            // Check for revival condition
-            if (reason.contains("revival") && player.getHP() > 0 && isPlayer) {
-                player.attr.playerRevived(); // Set isDead to false if revived
-            }
-        } else {
-            throw new IllegalArgumentException("Invalid reason: " + reason); // Handle invalid reasons
+        // Revival triggers
+        if (isPlayer && player.getHP() > 0 &&
+            (flags.contains(HealFlag.REVIVAL) || flags.contains(HealFlag.REVIVAL_EXCLUSIVE))) {
+            player.attr.playerRevived();
         }
 
         if (isPlayer && player.getHP() > lockedHP) {
-            player.attr.playerRevived();        // Set isDead to false if new HP is higher than locked HP
+            player.attr.playerRevived();
         }
 
         return healToReceive;
     }
 
-
-    /**
-     *
-     * The documentation for the method {@link #receiveHeal(double, String)} is valid for this method too.
-     *
-     */
-    public double calculateHeal(double heal, String reason) {
+    public double calculateHeal(double heal, EnumSet<HealFlag> flags) {
         boolean isPlayer = this instanceof Player;
+        boolean isDead = (isPlayer && player.attr.isDead()) || this.HP < 0;
 
-        // Invalid heal or dead character without revival
-        if (isPlayer && (heal <= 0 || ((player.attr.isDead() || this != player) && !reason.contains("revival")))) {
-            return 0;
+        if (heal <= 0) return 0;
+
+        boolean isAbsolute = flags.contains(ABSOLUTE);
+        boolean isOverheal = flags.contains(HealFlag.OVERHEAL);
+        boolean isRevival = flags.contains(HealFlag.REVIVAL);
+        boolean isRevivalExclusive = flags.contains(HealFlag.REVIVAL_EXCLUSIVE);
+
+        if (isRevivalExclusive && !isDead) return 0;
+
+        if (!(isRevival || isRevivalExclusive) && isDead) return 0;
+
+        if (isOverheal) {
+            return heal; // Absolute or not doesn't change behavior *yet*
         }
 
-        double healingExpression = 0;
-        boolean isAbsolute = reason.contains("absolute");
-        boolean isOverheal = reason.contains("overheal");
-        boolean isRevivalExclusive = reason.contains("revival exclusive");
-        boolean isRevival = reason.contains("revival");
-        boolean isNormal = reason.contains("normal");
-
-        if (isRevivalExclusive) {
-            if (!player.attr.isDead() || !isPlayer) {
-                return 0; // Revival exclusive healing only works if the character is dead
-            }
-            // Overheal logic for revival exclusive
-            if (isOverheal) {
-                healingExpression = isAbsolute ?
-                    heal :
-                    heal;
-            } else {
-                healingExpression = isAbsolute ?
-                    Math.min(heal, this.getMaxHP() - this.getHP()) : // These will eventually be different
-                    Math.min(heal, this.getMaxHP() - this.getHP());
-            }
-        } else if (isNormal || isRevival) {
-            // Normal or revival healing logic
-            healingExpression = isAbsolute ?
-                Math.min(heal, this.getMaxHP() - this.getHP()) : // These will eventually be different
-                Math.min(heal, this.getMaxHP() - this.getHP());
-        } else if (isAbsolute) {
-            healingExpression = Math.min(heal, this.getMaxHP() - this.getHP());
-        }
-
-        // Overheal logic
-        if (isOverheal && !isRevivalExclusive) {
-            healingExpression = isAbsolute ? // These will eventually be different
-                heal:
-                heal;
-        }
-
-        return healingExpression;
+        return isAbsolute
+            ? Math.min(heal, this.getMaxHP() - this.getHP()) // Will be changed later when reduced healing factors exist
+            : Math.min(heal, this.getMaxHP() - this.getHP());
     }
 
     // REGENERATION
@@ -411,8 +370,8 @@ public class HPBox extends Box {
         // TODO: Update regeneration to turns system
         if (lastRegenerationMillis + regenerationInterval < currentTime &&
             (!player.attr.isDead() || this != player) && this.getHP() < this.getMaxHP()) {
-            receiveHeal(Math.max(getRegenerationQuality(), 1), "normal");
-            if (isRegenerationDoubled) receiveHeal(Math.max(getRegenerationQuality(), 1), "normal");
+            receiveHeal(Math.max(getRegenerationQuality(), 1), HealFlag.of(HealFlag.NORMAL));
+            if (isRegenerationDoubled) receiveHeal(Math.max(getRegenerationQuality(), 1), HealFlag.of(HealFlag.NORMAL));
             lastRegenerationMillis = currentTime;
         } else {
             if (this.getHP() >= this.getMaxHP()) {

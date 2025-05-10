@@ -4,26 +4,28 @@ import com.ded.misle.core.TurnTimer;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.boxes.HPBox;
 
+import java.util.Arrays;
+import java.util.EnumSet;
+
 import static com.ded.misle.core.GamePanel.player;
-import static java.lang.System.currentTimeMillis;
 
 public class Heal extends Effect {
     public double healValue;
     public int healRate;
 
-    public String reason;
+    public EnumSet<HPBox.HealFlag> flags;
 
     private boolean canHeal = true;
     TurnTimer t;
 
     public Heal(double healValue, int healRate) {
-        this(healValue, healRate, "normal");
+        this(healValue, healRate, HPBox.HealFlag.of(HPBox.HealFlag.NORMAL));
     }
 
-    public Heal(double healValue, int healRate, String reason) {
+    public Heal(double healValue, int healRate, EnumSet<HPBox.HealFlag> flags) {
         this.healValue = healValue;
         this.healRate = healRate;
-        this.reason = reason;
+        this.flags = flags;
         t = new TurnTimer(healRate, e -> canHeal = true).setRoomScoped(true);
     }
 
@@ -37,7 +39,7 @@ public class Heal extends Effect {
 
     private void handleBoxHealCooldown(HPBox victim) {
         if (canHeal) {
-            victim.receiveHeal(healValue, reason);
+            victim.receiveHeal(healValue, flags);
 
             canHeal = false;
             t.restart();
@@ -52,7 +54,7 @@ public class Heal extends Effect {
             "healValue=" + healValue +
             ", healRate=" + healRate +
             ", nextHealTick=" + (t.getRemainingTurnsUntilActivation()) +
-            ", reason=" + reason +
+            ", flags=" + Arrays.toString(flags.toArray()) +
             '}';
     }
 }

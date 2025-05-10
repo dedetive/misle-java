@@ -6,15 +6,18 @@ import com.ded.misle.world.boxes.BoxHandling;
 import com.ded.misle.input.MouseHandler;
 import com.ded.misle.items.Item;
 import com.ded.misle.renderer.PlayingRenderer;
+import com.ded.misle.world.boxes.HPBox;
 
 import javax.swing.*;
 import java.text.DecimalFormat;
+import java.text.Normalizer;
 
 import static com.ded.misle.audio.AudioPlayer.AudioFile.*;
 import static com.ded.misle.audio.AudioPlayer.playThis;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.world.boxes.BoxManipulation.*;
+import static com.ded.misle.world.boxes.HPBox.HealFlag.NORMAL;
 import static com.ded.misle.world.player.HandItemAnimator.animateClaw;
 import static com.ded.misle.world.player.PlayerAttributes.Stat.ALL;
 import static com.ded.misle.renderer.ColorManager.entropyGainColor;
@@ -488,7 +491,7 @@ public class Inventory {
 					if (healAmountValue == -1) {
 						healAmountValue = player.getMaxHP();
 					}
-					String formattedHealAmount = df.format(player.receiveHeal(healAmountValue, "normal"));
+					String formattedHealAmount = df.format(player.receiveHeal(healAmountValue, HPBox.HealFlag.of(NORMAL)));
 					new FloatingText("+" + formattedHealAmount, healColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
 
 					Timer delayToRemove = new Timer(30, e -> {
