@@ -1,31 +1,31 @@
 package com.ded.misle.world.effects;
 
+import com.ded.misle.core.TurnTimer;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.boxes.HPBox;
 
 import static com.ded.misle.core.GamePanel.player;
-import static java.lang.System.currentTimeMillis;
 
 public class Damage extends Effect {
     public double damage;
-    public double damageRate;
+    public int damageRate;
 
-    public long lastDamageTime;
-    public String reason = "normal";
-    public String[] args = new String[]{};
+    public String reason;
+    public String[] args;
 
-    public Damage(double damage, double damageRate) {
-        this.damageRate = damageRate;
-        this.damage = damage;
-        lastDamageTime = 0;
+    private boolean canDamage = true;
+    TurnTimer t;
+
+    public Damage(double damage, int damageRate) {
+        this(damage, damageRate, "normal", new String[]{});
     }
 
-    public Damage(double damage, double damageRate, String reason, String[] args) {
+    public Damage(double damage, int damageRate, String reason, String[] args) {
         this.damageRate = damageRate;
         this.damage = damage;
         this.reason = reason;
         this.args = args;
-        lastDamageTime = 0;
+        t = new TurnTimer(damageRate, e -> canDamage = true).setRoomScoped(true);
     }
 
     @Override
@@ -36,15 +36,13 @@ public class Damage extends Effect {
         handleBoxDamageCooldown((HPBox) victim);
     }
 
-    // TODO: Update damage time to new turns system instead of time-based
     private void handleBoxDamageCooldown(HPBox victim) {
-        long currentTime = currentTimeMillis();
-        long cooldownDuration = (long) damageRate;
-
-        // Check if enough time has passed since the last damage was dealt
-        if (currentTime - lastDamageTime >= cooldownDuration) {
-            lastDamageTime = currentTime;
+        if (canDamage) {
             victim.takeDamage(damage, reason, args, victim.getKnockbackDirection());
+
+            canDamage = false;
+            t.restart();
+
 //			System.out.println(box.getEffectValue() + " " + box.getEffectReason() + " damage dealt! Now at " + player.attr.getHP() + " HP.");
         }
     }
@@ -54,7 +52,7 @@ public class Damage extends Effect {
         return "Damage{" +
             "damage=" + damage +
             ", damageRate=" + damageRate +
-            ", nextDamageTick=" + (lastDamageTime + damageRate) +
+            ", nextDamageTick=" + (t.getRemainingTurnsUntilActivation()) +
             ", reason=" + reason +
             '}';
     }
