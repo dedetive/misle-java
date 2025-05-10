@@ -428,7 +428,8 @@ public class HPBox extends Box {
         // Calculate the interval for healing 1 HP, based on the existing regeneration rate and quality
         double regenerationInterval = (250L / regenerationRate);
 
-        if (lastHitMillis + 2500 < currentTime && lastRegenerationMillis + regenerationInterval < currentTime &&
+        // TODO: Update regeneration to turns system
+        if (lastRegenerationMillis + regenerationInterval < currentTime &&
             (!player.attr.isDead() || this != player) && this.getHP() < this.getMaxHP()) {
             receiveHeal(Math.max(getRegenerationQuality(), 1), "normal");
             if (isRegenerationDoubled) receiveHeal(Math.max(getRegenerationQuality(), 1), "normal");
