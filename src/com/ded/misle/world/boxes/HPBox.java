@@ -78,6 +78,8 @@ public class HPBox extends Box {
     }
 
     public boolean checkIfDead() {
+        if (player.pos.world == null) return false;
+
         if (this.HP == 0) {
             if (!(this instanceof Player)) {
                 if (this.dropTable != null) {
