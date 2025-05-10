@@ -10,10 +10,9 @@ import com.ded.misle.world.player.PlayerAttributes;
 
 import java.awt.*;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
+import java.time.Duration;
+import java.util.*;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static com.ded.misle.core.GamePanel.getWindow;
 import static com.ded.misle.core.GamePanel.player;
@@ -32,7 +31,6 @@ public class HPBox extends Box {
     private boolean isRegenerationDoubled;
     private double inversion;
     private long lastRegenerationMillis;
-    private long lastHitMillis;
     private double regenerationQuality;
     private double regenerationRate = 1;
     private boolean isInvulnerable;
@@ -135,146 +133,128 @@ public class HPBox extends Box {
         return false;
     }
 
+    public enum DamageFlag {
+        NORMAL,
+        ABSOLUTE,
+        POST_MORTEM,
+        LOCKER,
+
+        ;
+
+        public static EnumSet<DamageFlag> of(DamageFlag... flags) {
+            return EnumSet.copyOf(List.of(flags));
+        }
+    }
+
     // DAMAGE AND HEAL
 
-    /**
-     * REASONS: <br>
-     * - "normal": defense and item effects take place normally. <br><br>
-     * - "post-mortem": the damage will be dealt even if the player dies. Defense and item effects take place normally. May result in negative values. <br><br>
-     * - "absolute post-mortem": the damage will be dealt even if the player dies. The damage will be dealt no matter what. May result in negative values. <br><br>
-     * - "absolute": the damage will be dealt no matter what, unless player dies. <br><br>
-     * - "locker": no damage is actually done. instead, a portion of the HP is locked and is temporarily not considered. Takes args[0] as how many milliseconds it takes for the HP to be unlocked. <br><br>
-     *
-     * @param damage the damage to be dealt
-     * @param reason the kind of damage that's taking place; see above for a list
-     * @return Final damage dealt
-     */
-    public double takeDamage(double damage, String reason, String[] args, PlayerAttributes.KnockbackDirection knockbackDirection) {
+    public double takeDamage(double rawDamage, EnumSet<DamageFlag> flags) {
+        return takeDamage(rawDamage, flags, Optional.empty(), PlayerAttributes.KnockbackDirection.NONE);
+    }
+
+    public double takeDamage(double rawDamage, EnumSet<DamageFlag> flags, PlayerAttributes.KnockbackDirection knockback) {
+        return takeDamage(rawDamage, flags, Optional.empty(), knockback);
+    }
+
+    public double takeDamage(double rawDamage, EnumSet<DamageFlag> flags, Optional<Duration> lockDuration, PlayerAttributes.KnockbackDirection knockback) {
         isRegenerationDoubled = false;
 
-        // Early exit for invalid damage
-        if (damage <= 0) {
-            return 0;
-        }
+        if (rawDamage <= 0) return 0;
 
         boolean inversionTriggers = Math.random() * 100 < inversion;
-
-        double damageToReceive;
-
-        // Define boolean flags for different conditions
-        boolean isNormalOrAbsolute = reason.contains("normal") || reason.contains("absolute");
-        boolean isPostMortem = reason.contains("post-mortem");
-        boolean isLocker = reason.contains("locker");
+        double finalDamage = calculateDamage(rawDamage, flags);
 
         if (inversionTriggers) {
-            damageToReceive = calculateDamage(damage, reason);
-            this.receiveHeal(damageToReceive, "absolute");
-
-            int playerScreenX;
-            int playerScreenY;
-            if (this == player) {
-                playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()) / scale);
-                playerScreenY = (int) ((player.getY() - player.pos.getCameraOffsetY()) / scale);
-            } else {
-                playerScreenX = (int) (this.getX() * scale);
-                playerScreenY = (int) (this.getY() * scale);
-            }
-            int randomPosX = (int) ((Math.random() * (40 + 40)) - 40);
-            int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
-            DecimalFormat df = new DecimalFormat("#.##");
-            String formattedHealAmount = df.format(damageToReceive);
-            new FloatingText("+" + formattedHealAmount, healColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+            handleInversionHeal(finalDamage);
         } else {
-            if (isLocker) {
-                damageToReceive = calculateDamage(damage, reason);
-                lockedHP += damageToReceive;
-                // Schedule unlockHP() to run after a few seconds, based on args[0] in milliseconds
-                Timer timerToUnlock = new Timer();
-                timerToUnlock.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        unlockHP(damage);
-                    }
-                }, Integer.parseInt(args[0]));
-            } else if (isNormalOrAbsolute) {
-                damageToReceive = calculateDamage(damage, reason);
-                this.setHP(Math.max(this.getHP() - damageToReceive, 0)); // Ensure HP doesn't go below 0 for non post mortem
-            } else if (isPostMortem) {
-                damageToReceive = calculateDamage(damage, reason);
-                this.setHP(this.getHP() - damageToReceive); // Apply damage without floor so it can go below 0
+            if (flags.contains(DamageFlag.LOCKER)) {
+                applyLocker(finalDamage, lockDuration);
             } else {
-                throw new IllegalArgumentException("Invalid reason: " + reason);
+                applyDamageToHP(finalDamage, flags);
             }
 
-            // Displayed numerical value
-
-            int playerScreenX;
-            int playerScreenY;
-            if (this == player) {
-                playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()) / scale);
-                playerScreenY = (int) ((player.getY() - player.pos.getCameraOffsetY()) / scale);
-            } else {
-                playerScreenX = (int) (this.getX());
-                playerScreenY = (int) (this.getY());
-            }
-            int randomPosX = (int) ((Math.random() * (40 + 40)) - 40);
-            int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
-            DecimalFormat df = new DecimalFormat("#.##");
-            String formattedHealAmount = df.format(damageToReceive);
-            new FloatingText("-" + formattedHealAmount, damageColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
+            renderDamageText(finalDamage);
         }
 
-        switch (knockbackDirection) {
+        applyKnockback(knockback);
+
+        return finalDamage;
+    }
+
+    private void handleInversionHeal(double amount) {
+        receiveHeal(amount, "absolute");
+        renderFloatingText("+" + format(amount), healColor, true);
+    }
+
+    private void applyLocker(double amount, Optional<Duration> durationOpt) {
+        lockedHP += amount;
+        durationOpt.ifPresent(duration -> {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    unlockHP(amount);
+                }
+            }, duration.toMillis());
+        });
+    }
+
+    private void applyDamageToHP(double amount, EnumSet<DamageFlag> flags) {
+        if (flags.contains(DamageFlag.POST_MORTEM)) {
+            setHP(getHP() - amount); // Can go negative
+        } else {
+            setHP(Math.max(getHP() - amount, 0));
+        }
+    }
+
+    private void renderDamageText(double amount) {
+        renderFloatingText("-" + format(amount), damageColor, true);
+    }
+
+    private void renderFloatingText(String text, Color color, boolean bold) {
+        int x = (this == player)
+            ? (int) ((player.getX() - player.pos.getCameraOffsetX()) / scale)
+            : (int) (getX() * scale);
+        int y = (this == player)
+            ? (int) ((player.getY() - player.pos.getCameraOffsetY()) / scale)
+            : (int) (getY() * scale);
+
+        int offsetX = (int) ((Math.random() * 80) - 40);
+        int offsetY = (int) ((Math.random() * 50) - 25);
+        new FloatingText(text, color, x + offsetX, y + offsetY, bold);
+    }
+
+    private void applyKnockback(PlayerAttributes.KnockbackDirection dir) {
+        switch (dir) {
             case RIGHT -> moveBox(this, -30, 1);
             case LEFT -> moveBox(this, 30, 1);
             case DOWN -> moveBox(this, 0, 1);
             case UP -> moveBox(this, 0, 1);
         }
-
-        if (damageToReceive > 0) {
-            lastHitMillis = System.currentTimeMillis();
-        }
-
-        return damageToReceive;
     }
 
-    /**
-     *
-     * The documentation for the method {@link #takeDamage(double, String, String[], PlayerAttributes.KnockbackDirection)} is valid for this method too.
-     *
-     */
-    public double calculateDamage(double damage, String reason) {
-        // Early exit for invalid damage
-        if (damage <= 0) {
-            return 0;
-        }
-
-        double defenseCalculation = damage - ((damage * this.defense) / (this.defense + 100)) - this.defense / 2;
-        double theoreticalDamage;
-
-        // Define boolean flags for different conditions
-        boolean isAbsolute = reason.contains("absolute");
-        boolean isPostMortem = reason.contains("post-mortem");
-
-        // Calculate damage based on the reason
-        if (isAbsolute && isPostMortem) {
-            // Absolute post-mortem: damage will be dealt past 0 and defense effects are ignored
-            theoreticalDamage = damage; // Return full damage
-        } else if (isAbsolute) {
-            // Absolute: defense effects are ignored
-            theoreticalDamage = Math.max(Math.min(damage, this.getHP()), 0);
-        } else if (isPostMortem && !getIsInvulnerable()) {
-            // Post-mortem: damage will be dealt past 0 into the negatives
-            theoreticalDamage = defenseCalculation;
-        } else if (!getIsInvulnerable()) {
-            // Normal: defense and item effects take place normally
-            theoreticalDamage = Math.max(Math.min(defenseCalculation, this.getHP()), 0);
-        } else {
-            theoreticalDamage = 0;
-        }
-
-        return theoreticalDamage;
+    private String format(double number) {
+        return new DecimalFormat("#.##").format(number);
     }
+
+    public double calculateDamage(double rawDamage, EnumSet<DamageFlag> flags) {
+        if (rawDamage <= 0) return 0;
+
+        boolean isInvulnerable = getIsInvulnerable();
+        boolean isAbsolute = flags.contains(DamageFlag.ABSOLUTE);
+        boolean isPostMortem = flags.contains(DamageFlag.POST_MORTEM);
+
+        if (isAbsolute && isPostMortem) return rawDamage;
+        if (isAbsolute) return Math.max(Math.min(rawDamage, this.getHP()), 0);
+
+        double defenseReduction = rawDamage - ((rawDamage * defense) / (defense + 100)) - (defense / 2);
+
+        if (isPostMortem && !isInvulnerable) return defenseReduction;
+        if (!isInvulnerable) return Math.max(Math.min(defenseReduction, this.getHP()), 0);
+
+        return 0;
+    }
+
 
     // LOCKED HP
 

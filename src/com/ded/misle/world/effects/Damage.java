@@ -4,27 +4,37 @@ import com.ded.misle.core.TurnTimer;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.boxes.HPBox;
 
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.Optional;
+
 import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.world.boxes.HPBox.DamageFlag.NORMAL;
 
 public class Damage extends Effect {
     public double damage;
     public int damageRate;
 
-    public String reason;
-    public String[] args;
+    public EnumSet<HPBox.DamageFlag> flags;
+    public Optional<Duration> lockDuration;
 
     private boolean canDamage = true;
     TurnTimer t;
 
     public Damage(double damage, int damageRate) {
-        this(damage, damageRate, "normal", new String[]{});
+        this(damage, damageRate, HPBox.DamageFlag.of(NORMAL), Optional.empty());
     }
 
-    public Damage(double damage, int damageRate, String reason, String[] args) {
+    public Damage(double damage, int damageRate, EnumSet<HPBox.DamageFlag> flags) {
+        this(damage, damageRate, flags, Optional.empty());
+    }
+
+    public Damage(double damage, int damageRate, EnumSet<HPBox.DamageFlag> flags, Optional<Duration> lockDuration) {
         this.damageRate = damageRate;
         this.damage = damage;
-        this.reason = reason;
-        this.args = args;
+        this.flags = flags;
+        this.lockDuration = lockDuration;
         t = new TurnTimer(damageRate, e -> canDamage = true).setRoomScoped(true);
     }
 
@@ -38,7 +48,7 @@ public class Damage extends Effect {
 
     private void handleBoxDamageCooldown(HPBox victim) {
         if (canDamage) {
-            victim.takeDamage(damage, reason, args, victim.getKnockbackDirection());
+            victim.takeDamage(damage, flags, lockDuration, victim.getKnockbackDirection());
 
             canDamage = false;
             t.restart();
@@ -53,7 +63,7 @@ public class Damage extends Effect {
             "damage=" + damage +
             ", damageRate=" + damageRate +
             ", nextDamageTick=" + (t.getRemainingTurnsUntilActivation()) +
-            ", reason=" + reason +
+            ", flags=" + Arrays.toString(flags.toArray()) +
             '}';
     }
 }
