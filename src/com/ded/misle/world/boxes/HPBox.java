@@ -24,28 +24,68 @@ import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.world.boxes.HPBox.HealFlag.ABSOLUTE;
 
+/**
+ * Represents an entity with health points (HP).
+ * Handles health, damage, healing, and death logic. Also manages shared HP box instances.
+ */
 public class HPBox extends Box {
+    /** Current HP of the entity. */
     private double HP;
+
+    /** Maximum HP the entity can have. */
     private double maxHP;
+
+    /** Locked HP that cannot be recovered or reduced normally. */
     private double lockedHP;
+
+    /** Defense value used to reduce incoming damage. */
     private double defense;
+
+    /** If true, doubles the regeneration rate. */
     private boolean isRegenerationDoubled;
+
+    /** Chance (0-100%) to invert damage into healing. */
     private double inversion;
+
+    /** Timestamp of the last regeneration tick. */
     private long lastRegenerationMillis;
+
+    /** Quality factor used for regeneration calculation. */
     private double regenerationQuality;
+
+    /** Regeneration rate multiplier. */
     private double regenerationRate = 1;
+
+    /** If true, entity is immune to all damage. */
     private boolean isInvulnerable;
+
+    /** Drop table for items when this entity dies. */
     private DropTable dropTable;
+
+    /** Static list of all active HPBoxes. */
     private static List<HPBox> HPBoxes = new ArrayList<>();
 
+    /**
+     * Returns the list of all HPBoxes.
+     * @return list of HPBox instances.
+     */
     public static List<HPBox> getHPBoxes() {
         return HPBoxes;
     }
+
+    /**
+     * Clears all HPBoxes except the player.
+     */
     public static void clearHPBoxes () {
         HPBoxes.clear();
         HPBoxes.add(player);
     }
 
+    /**
+     * Constructs an HPBox at a specific position. Default values of HP and max HP are 1.
+     * @param x X-coordinate.
+     * @param y Y-coordinate.
+     */
     public HPBox(int x, int y) {
         super(x, y);
         this.setObjectType(HP_BOX);
@@ -54,29 +94,52 @@ public class HPBox extends Box {
         HPBoxes.add(this);
     }
 
+    /**
+     * Constructs an HPBox with HP and max HP set as 1 and no position.
+     */
     public HPBox() {
         this.HP = 1;
         this.maxHP = 1;
         HPBoxes.add(this);
     }
 
+    /**
+     * Sets the current HP. Also checks if this died.
+     * @param HP New HP value.
+     */
     public void setHP(double HP) {
         this.HP = HP;
         checkIfDead();
     }
 
+    /**
+     * Sets the maximum HP.
+     * @param maxHP New maximum HP.
+     */
     public void setMaxHP(double maxHP) {
         this.maxHP = maxHP;
     }
 
+    /**
+     * Returns the current HP.
+     * @return current HP.
+     */
     public double getHP() {
         return HP;
     }
 
+    /**
+     * Returns the maximum HP.
+     * @return maximum HP.
+     */
     public double getMaxHP() {
         return maxHP;
     }
 
+    /**
+     * Checks if the entity is dead. If so, handles drop and removal logic.
+     * @return true if dead, false otherwise.
+     */
     public boolean checkIfDead() {
         if (player.pos.world == null) return false;
 
@@ -136,6 +199,9 @@ public class HPBox extends Box {
         return false;
     }
 
+    /**
+     * Damage flags used to control how damage is applied.
+     */
     public enum DamageFlag {
         NORMAL,
         ABSOLUTE,
@@ -144,6 +210,11 @@ public class HPBox extends Box {
 
         ;
 
+        /**
+         * Creates an EnumSet from given DamageFlags.
+         * @param flags Array of flags.
+         * @return EnumSet of flags.
+         */
         public static EnumSet<DamageFlag> of(DamageFlag... flags) {
             return EnumSet.copyOf(List.of(flags));
         }
@@ -151,14 +222,37 @@ public class HPBox extends Box {
 
     // DAMAGE AND HEAL
 
+    /**
+     * Deals damage to the entity. <p></p>
+     * LockDuration is defaulted to empty and knockback direction is set to NONE.
+     * @param rawDamage Raw incoming damage.
+     * @param flags Set of damage flags.
+     * @return Final damage applied.
+     */
     public double takeDamage(double rawDamage, EnumSet<DamageFlag> flags) {
         return takeDamage(rawDamage, flags, Optional.empty(), PlayerAttributes.KnockbackDirection.NONE);
     }
 
+    /**
+     * Deals damage to the entity. <p></p>
+     * LockDuration is defaulted to empty.
+     * @param rawDamage Raw incoming damage.
+     * @param flags Set of damage flags.
+     * @param knockback Direction of the applied knockback.
+     * @return Final damage applied.
+     */
     public double takeDamage(double rawDamage, EnumSet<DamageFlag> flags, PlayerAttributes.KnockbackDirection knockback) {
         return takeDamage(rawDamage, flags, Optional.empty(), knockback);
     }
 
+    /**
+     * Deals damage to the entity.
+     * @param rawDamage Raw incoming damage.
+     * @param flags Set of damage flags.
+     * @param knockback Direction of the applied knockback.
+     * @param lockDuration Duration before locked HP resets. Does nothing if LOCKER flag is not given.
+     * @return Final damage applied.
+     */
     public double takeDamage(double rawDamage, EnumSet<DamageFlag> flags, Optional<Duration> lockDuration, PlayerAttributes.KnockbackDirection knockback) {
         isRegenerationDoubled = false;
 
@@ -184,11 +278,20 @@ public class HPBox extends Box {
         return finalDamage;
     }
 
+    /**
+     * Applies inverted healing instead of damage.
+     * @param amount Amount to heal.
+     */
     private void handleInversionHeal(double amount) {
         receiveHeal(amount, HealFlag.of(ABSOLUTE));
         renderFloatingText("+" + format(amount), healColor, true);
     }
 
+    /**
+     * Locks a portion of HP.
+     * @param amount Amount to lock.
+     * @param durationOpt Optional duration to unlock automatically.
+     */
     private void applyLocker(double amount, Optional<Duration> durationOpt) {
         lockedHP += amount;
         durationOpt.ifPresent(duration -> {
@@ -202,6 +305,11 @@ public class HPBox extends Box {
         });
     }
 
+    /**
+     * Applies final damage value to HP.
+     * @param amount Damage to apply.
+     * @param flags Damage flags.
+     */
     private void applyDamageToHP(double amount, EnumSet<DamageFlag> flags) {
         if (flags.contains(DamageFlag.POST_MORTEM)) {
             setHP(getHP() - amount); // Can go negative
@@ -210,10 +318,20 @@ public class HPBox extends Box {
         }
     }
 
+    /**
+     * Renders damage floating text.
+     * @param amount Damage amount.
+     */
     private void renderDamageText(double amount) {
         renderFloatingText("-" + format(amount), damageColor, true);
     }
 
+    /**
+     * Shows floating text over this entity.
+     * @param text The string to show.
+     * @param color Color of the text.
+     * @param bold If true, shows bold text.
+     */
     private void renderFloatingText(String text, Color color, boolean bold) {
         int x = (this == player)
             ? (int) ((player.getX() - player.pos.getCameraOffsetX()) / scale)
@@ -227,6 +345,10 @@ public class HPBox extends Box {
         new FloatingText(text, color, x + offsetX, y + offsetY, bold);
     }
 
+    /**
+     * Applies knockback effect.
+     * @param dir Direction of knockback.
+     */
     private void applyKnockback(PlayerAttributes.KnockbackDirection dir) {
         switch (dir) {
             case RIGHT -> moveBox(this, -30, 1);
@@ -236,10 +358,21 @@ public class HPBox extends Box {
         }
     }
 
+    /**
+     * Formats a double to string with two decimals.
+     * @param number Number to format.
+     * @return Formatted string.
+     */
     private String format(double number) {
         return new DecimalFormat("#.##").format(number);
     }
 
+    /**
+     * Calculates final damage after defense and flags.
+     * @param rawDamage Raw incoming damage.
+     * @param flags Damage flags.
+     * @return Final damage value.
+     */
     public double calculateDamage(double rawDamage, EnumSet<DamageFlag> flags) {
         if (rawDamage <= 0) return 0;
 
@@ -261,19 +394,35 @@ public class HPBox extends Box {
 
     // LOCKED HP
 
+    /**
+     * Returns locked HP amount.
+     * @return Locked HP.
+     */
     public double getLockedHP() {
         return lockedHP;
     }
 
+    /**
+     * Sets locked HP.
+     * @param lockedHP New locked HP.
+     * @return New value of locked HP.
+     */
     public double setLockedHP(double lockedHP) {
         this.lockedHP = lockedHP;
         return lockedHP;
     }
 
+    /**
+     * Unlocks a portion of locked HP.
+     * @param damage Amount to unlock.
+     */
     public void unlockHP(double damage) {
         this.setLockedHP(Math.max(lockedHP - damage, 0));
     }
 
+    /**
+     * Heal flags to control how healing is applied.
+     */
     public enum HealFlag {
         NORMAL,
         ABSOLUTE,
@@ -283,11 +432,22 @@ public class HPBox extends Box {
 
         ;
 
+        /**
+         * Creates an EnumSet from given HealFlags.
+         * @param flags Flags to include.
+         * @return EnumSet of heal flags.
+         */
         public static EnumSet<HealFlag> of(HealFlag... flags) {
             return EnumSet.copyOf(List.of(flags));
         }
     }
 
+    /**
+     * Applies healing to this entity.
+     * @param heal Heal amount.
+     * @param flags Healing flags.
+     * @return Final amount healed.
+     */
     public double receiveHeal(double heal, EnumSet<HealFlag> flags) {
         if (!canReceiveHeal(heal, flags)) return 0;
 
@@ -301,6 +461,12 @@ public class HPBox extends Box {
         return healToReceive;
     }
 
+    /**
+     * Validates whether the healing can be applied.
+     * @param heal Amount to heal.
+     * @param flags Healing flags.
+     * @return true if healing is valid.
+     */
     private boolean canReceiveHeal(double heal, EnumSet<HealFlag> flags) {
         if (heal <= 0) return false;
 
@@ -319,6 +485,11 @@ public class HPBox extends Box {
         return true;
     }
 
+    /**
+     * Determines if this heal attempt should revive the entity.
+     * @param flags Healing flags.
+     * @return true if revival should occur.
+     */
     private boolean shouldRevive(EnumSet<HealFlag> flags) {
         if (!(this instanceof Player)) return false;
 
@@ -330,6 +501,12 @@ public class HPBox extends Box {
         return revived || surpassedLocked;
     }
 
+    /**
+     * Calculates how much healing is actually applied.
+     * @param heal Raw heal amount.
+     * @param flags Healing flags.
+     * @return Final heal value.
+     */
     public double calculateHeal(double heal, EnumSet<HealFlag> flags) {
         if (heal <= 0) return 0;
 
@@ -396,25 +573,70 @@ public class HPBox extends Box {
 
     // DROP TABLE
 
+    /**
+     * Returns the drop table associated with this HPBox.
+     *
+     * @return The current DropTable of this HPBox.
+     */
     public DropTable getDropTable() {
         return dropTable;
     }
 
+    /**
+     * Sets the drop table for this HPBox.
+     *
+     * @param dropTable The DropTable to be set.
+     */
     public void setDropTable(DropTable dropTable) {
         this.dropTable = dropTable;
     }
 
-    // OTHER ATTRIBUTES
+// OTHER ATTRIBUTES
 
+    /**
+     * Returns the defense value of this HPBox.
+     * Defense reduces the amount of incoming damage.
+     *
+     * @return The current defense value.
+     */
     public double getDefense() {
         return defense;
     }
 
-    public void setDefense(double defense) { this.defense = defense; }
+    /**
+     * Sets the defense value of this HPBox.
+     *
+     * @param defense The new defense value to be assigned.
+     */
+    public void setDefense(double defense) {
+        this.defense = defense;
+    }
 
-    public void setInversion(double inversion) { this.inversion = inversion; }
+    /**
+     * Sets the inversion chance of this HPBox.
+     * Inversion defines the chance for damage to be converted into healing.
+     *
+     * @param inversion A percentage chance (0 to 100) for inversion to occur.
+     */
+    public void setInversion(double inversion) {
+        this.inversion = inversion;
+    }
 
-    public boolean getIsInvulnerable() { return isInvulnerable; }
+    /**
+     * Checks whether this HPBox is currently invulnerable to damage.
+     *
+     * @return True if the HPBox is invulnerable; otherwise, false.
+     */
+    public boolean getIsInvulnerable() {
+        return isInvulnerable;
+    }
 
-    public void setIsInvulnerable(boolean isInvulnerable) { this.isInvulnerable = isInvulnerable; }
+    /**
+     * Sets whether this HPBox is invulnerable to damage.
+     *
+     * @param isInvulnerable True to make the HPBox invulnerable; false otherwise.
+     */
+    public void setIsInvulnerable(boolean isInvulnerable) {
+        this.isInvulnerable = isInvulnerable;
+    }
 }
