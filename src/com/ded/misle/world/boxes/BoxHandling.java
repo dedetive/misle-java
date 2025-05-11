@@ -34,18 +34,6 @@ public class BoxHandling {
 		FILL
 	}
 
-	public enum EditBoxKeys {
-		X,
-		Y,
-		COLOR,
-		TEXTURE,
-		HAS_COLLISION,
-		BOX_SCALE_HORIZONTAL,
-		BOX_SCALE_VERTICAL,
-		ROTATION,
-		INTERACTS_WITH_PLAYER
-	}
-
 	static {
 		for (int i = 0; i < cachedBoxes.length; i++) {
 			cachedBoxes[i] = new ArrayList<>();
@@ -75,7 +63,7 @@ public class BoxHandling {
 		box.setVisualScaleVertical(1);
 		boolean loaded = loadPreset(box, preset);
 		if (checkIfPresetHasSides(preset)) {
-			editBox(box, EditBoxKeys.TEXTURE, box.textureName + ".");
+			box.setTexture(box.textureName + ".");
 		}
 
 		if (hasExtra(preset)) {
@@ -85,7 +73,7 @@ public class BoxHandling {
 			p[index] = '@';
 			s = String.copyValueOf(p);
 			s = s.substring(0, index) + s.substring(index, index + 2).toUpperCase() + s.substring(index + 2).toLowerCase();
-			editLastBox(EditBoxKeys.TEXTURE, s);
+			box.setTexture(s);
 		}
 
 		if (loaded) {
@@ -153,7 +141,7 @@ public class BoxHandling {
 			p[index] = '@';
 			s = String.copyValueOf(p);
 			s = s.substring(0, index) + s.substring(index, index + 2).toUpperCase() + s.substring(index + 2).toLowerCase();
-			editLastBox(EditBoxKeys.TEXTURE, s);
+			box.setTexture(s);
 		}
 		addBoxToCache(box);
 
@@ -169,16 +157,15 @@ public class BoxHandling {
 			Box box = new Box(x, y);
 			boxes.add(box);
 			box.effect = new Collectible(id, count, true);
-			editLastBox(EditBoxKeys.TEXTURE, (".." + File.separator + "items" + File.separator + id));
-			addBoxToCache(boxes.getLast());
-			return boxes.getLast();
+			box.setTexture(".." + File.separator + "items" + File.separator + id);
+			addBoxToCache(box);
+			return box;
 		} else {
 			Box box = new Box(x, y);
 			boxes.add(box);
 			box.effect = new Collectible(1, 0, true);
-			editLastBox(EditBoxKeys.TEXTURE, ("invisible"));
-			addBoxToCache(boxes.getLast());
-			return boxes.getLast();
+			box.setTexture("invisible");
+			return box;
 		}
 	}
 
@@ -188,96 +175,34 @@ public class BoxHandling {
 		switch (preset) {
 			case SPAWNPOINT:
 				box.effect = new Spawnpoint(-1);
-				editBox(box, EditBoxKeys.TEXTURE, "spawnpoint");
+				box.setTexture("spawnpoint");
 				break;
 			case BoxPreset.CHEST:
 				box.effect = new Chest(0, null);
-				editBox(box, EditBoxKeys.HAS_COLLISION, "true");
-				editBox(box, EditBoxKeys.TEXTURE, "chest");
+				box.setHasCollision(true);
+				box.setTexture("chest");
 				break;
 			case WALL_DEFAULT:
-				editBox(box, EditBoxKeys.HAS_COLLISION, "true");
-				editBox(box, EditBoxKeys.TEXTURE, "wall_default");
+				box.setHasCollision(true);
+				box.setTexture("wall_default");
 				break;
 			case FLOOR_DEFAULT:
-				editBox(box, EditBoxKeys.HAS_COLLISION, "false");
-				editBox(box, EditBoxKeys.TEXTURE, "wall_default");
+				box.setHasCollision(false);
+				box.setTexture("wall_default");
 				break;
 			case GRASS:
-				editBox(box, EditBoxKeys.HAS_COLLISION, "false");
-				editBox(box, EditBoxKeys.TEXTURE, "grass");
+				box.setHasCollision(false);
+				box.setTexture("grass");
 				break;
 			case TRAVEL:
-				editBox(box, EditBoxKeys.HAS_COLLISION, "true");
-				editBox(box, EditBoxKeys.TEXTURE, "invisible");
+				box.setHasCollision(true);
+				box.setTexture("invisible");
 				break;
 			default:
 				loaded = false;
 		}
 
 		return loaded;
-	}
-
-	// TODO: might remove this later idk
-	@Deprecated(forRemoval = true)
-	public static void editBox(Box box, EditBoxKeys key, String value) {
-		switch (key) {
-			case X:
-				box.setX(Integer.parseInt(value));
-				break;
-			case Y:
-				box.setY(Integer.parseInt(value));
-				break;
-			case COLOR:
-				box.setColor(Color.decode(value));
-				break;
-			case TEXTURE:
-				box.setTexture(value);
-				break;
-			case HAS_COLLISION:
-				box.setHasCollision(Boolean.parseBoolean(value));
-				break;
-			case BOX_SCALE_HORIZONTAL:
-				box.setVisualScaleHorizontal(Double.parseDouble(value));
-				break;
-			case BOX_SCALE_VERTICAL:
-				box.setVisualScaleVertical(Double.parseDouble(value));
-				break;
-			case ROTATION:
-				box.setVisualRotation(Double.parseDouble(value));
-				break;
-			case INTERACTS_WITH_PLAYER:
-				box.setInteractsWithPlayer(Boolean.parseBoolean(value));
-				break;
-		}
-	}
-
-	/**
-	 *
-	 * Effect needs to be in the expected format of effects. For example: <br>
-	 * <br>
-	 * editLastBox("effect","{damage, 10, 350, normal, {''}}");
-	 *
-	 * @param key name of the parameter to be edited. The key can be either x, y, color, hasCollision, boxScaleHorizontal, boxScaleVertical and effect
-	 * @param value value to be changed to
-	 */
-	public static void editLastBox(EditBoxKeys key, String value) {
-		editBox(boxes.getLast(), key, value);
-	}
-
-	public static void editLastBox(EditBoxKeys key, String value, int boxCount) {
-		for (int i = 1; i < boxCount + 1; i++) {
-			editBox(boxes.get(boxes.size() - i), key, value);
-		}
-	}
-
-	/**
-	 *
-	 * Edits the last X box, with X being the input negativeIndex. E.g.: If 1, edit the last box added.
-	 *
-	 */
-	public static void editBoxNegativeIndex(EditBoxKeys key, String value, int negativeIndex) {
-		editBox(boxes.get(boxes.size() - negativeIndex), key, value);
 	}
 
 	// Render boxes with camera offset, scale, and tileSize

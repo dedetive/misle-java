@@ -447,16 +447,6 @@ public class Box {
 		}
 		return null;
 	}
-	
-	public static void editSelectedBoxes(EditBoxKeys key, String value) {
-		try {
-			for (Box box : selectedBoxes) {
-				editBox(box, key, value);
-			}
-		} catch (NullPointerException e) {
-			// This just means list is empty, so do nothing
-		}
-	}
 
 	// Object type (BOX, HP_BOX)
 

@@ -89,24 +89,22 @@ public class HandItemAnimator {
         int attackX = (int) (player.getX() + XComponent);
         int attackY = (int) (player.getY() + YComponent);
 
+        int startIndex = getAllBoxes().size();
         Box attackBox = addBox(attackX, attackY);
         int boxCount = 1;
         // TODO: redo this multiple boxes system
 //        int boxCount = lineAddBox(attackX, attackY, Math.max((int) (Math.ceil(range / 20) * clamp(abs(XComponent), 0, 1)), 1),
 //            Math.max((int) (Math.ceil(range / 20) * clamp(abs(YComponent), 0, 1)), 1), "", LineAddBoxModes.FILL);
 //        editLastBox(EditBoxKeys.COLOR, "#DEDE40", boxCount);
-        editLastBox(EditBoxKeys.TEXTURE, "invisible", boxCount);
-        editLastBox(EditBoxKeys.HAS_COLLISION, "true", boxCount);
-        editLastBox(EditBoxKeys.INTERACTS_WITH_PLAYER, "false", boxCount);
-
-        List<Box> boxes = getAllBoxes();
+        List<Box> boxes = getAllBoxes().subList(startIndex, startIndex + boxCount);
         List<Box> attack = new ArrayList<>(List.of());
-
-        for (int i = 0; i < boxCount; i++) {
-            Box currentBox = boxes.get(boxes.size() - 1 - i);
+        for (Box currentBox : boxes) {
+            currentBox.setTexture("invisible");
+            currentBox.setHasCollision(true);
+            currentBox.setInteractsWithPlayer(false);
 
             double damageDealt = Math.max(Math.ceil(Math.floor(Math.pow(damage, 1.1)) * (player.attr.getStrength() * 10/100 + 1)), 1);
-            currentBox.effect = new Damage(damageDealt, 1000);
+            currentBox.effect = new Damage(damageDealt, 1);
             attack.add(currentBox); // Add box to list to be deleted
             isSpaceOccupied(attackX, attackY, currentBox); // Handle damage detection
         }
