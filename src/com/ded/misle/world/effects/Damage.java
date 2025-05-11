@@ -41,7 +41,7 @@ public class Damage extends Effect {
     @Override
     public void run(Box culprit, Box victim) {
         if (!(victim instanceof HPBox)) return;
-        if (!culprit.interactsWithPlayer && victim == player) return;
+        if (!culprit.getInteractsWithPlayer() && victim == player) return;
 
         handleBoxDamageCooldown((HPBox) victim);
     }

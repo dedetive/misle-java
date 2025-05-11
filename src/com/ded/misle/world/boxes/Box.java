@@ -41,7 +41,7 @@ public class Box {
 	private boolean hasCollision;
 	private PhysicsEngine.ObjectType objectType;
 	public Effect effect;
-	public boolean interactsWithPlayer;
+	private boolean interactsWithPlayer;
 	public boolean isMoving = false;
 
 	private double visualRotation = 0;
