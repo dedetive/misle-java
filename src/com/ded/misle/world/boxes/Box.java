@@ -65,25 +65,14 @@ public class Box {
 
 	/**
 	 *
-	 * Effect is what the box can do when interacted. If it has collision, the effect will be given after colliding with it.
-	 * If the box has no collision, simply walking above it will give the effect. <br><br>
-	 *
-	 * List of effects: <br><br>
-	 *
-	 * - "": for no effect <br>
-	 * - "damage": for damaging over time. Second value within the list is the damage amount. Third value is the rate
-	 * at which the damage is given. The fourth value is the reason of the damage. See {@link HPBox#takeDamage(double, String, String[], PlayerAttributes.KnockbackDirection)}
-	 * for a list of reasons.
-	 * - "velocity": for changing the speed. Second value is the multiplier of the speed based on player's playerSpeed.
-	 *
 	 * @param x original x of the box
 	 * @param y original y of the box
 	 * @param color color of the box
 	 * @param texture texture of the box
-	 * @param hasCollision a boolean of whether the box has collision
-	 * @param visualScaleHorizontal how many tilesizes is the box in the x axis
-	 * @param visualScaleVertical how many tilesizes is the box in the y axis
-	 * @param effect first value is the type of effect. See above for a list of effects. Set "" if none
+	 * @param hasCollision whether the box has collision
+	 * @param visualScaleHorizontal how many tilesizes is the box in the x-axis
+	 * @param visualScaleVertical how many tilesizes is the box in the y-axis
+	 * @param effect what the box does when touched or activated
 	 */
 	public Box(int x, int y, Color color, String texture, boolean hasCollision, double visualScaleHorizontal, double visualScaleVertical, Effect effect, double rotation, PhysicsEngine.ObjectType objectType, boolean interactsWithPlayer) {
 		worldX = x;
@@ -372,7 +361,7 @@ public class Box {
 				return null; // Return null if image fails to load
 			}
 		}
-		return cachedTexture2.get(boxTextureName); // Return the cached imageaddBox(BoxPreset.WALL_DEFAULT)
+		return cachedTexture2.get(boxTextureName); // Return the cached image
 	}
 
 	// EFFECT RELATED
