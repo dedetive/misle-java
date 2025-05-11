@@ -100,7 +100,7 @@ public class HandItemAnimator {
         List<Box> attack = new ArrayList<>(List.of());
         for (Box currentBox : boxes) {
             currentBox.setTexture("invisible");
-            currentBox.setHasCollision(true);
+            currentBox.setCollision(true);
             currentBox.setInteractsWithPlayer(false);
 
             double damageDealt = Math.max(Math.ceil(Math.floor(Math.pow(damage, 1.1)) * (player.attr.getStrength() * 10/100 + 1)), 1);

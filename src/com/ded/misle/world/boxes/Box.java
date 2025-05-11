@@ -311,7 +311,7 @@ public class Box {
 
 	public Color getColor() { return color; }
 
-	public void setHasCollision(boolean hasCollision) {
+	public void setCollision(boolean hasCollision) {
 		this.hasCollision = hasCollision;
 	}
 

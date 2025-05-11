@@ -179,23 +179,23 @@ public class BoxHandling {
 				break;
 			case BoxPreset.CHEST:
 				box.effect = new Chest(0, null);
-				box.setHasCollision(true);
+				box.setCollision(true);
 				box.setTexture("chest");
 				break;
 			case WALL_DEFAULT:
-				box.setHasCollision(true);
+				box.setCollision(true);
 				box.setTexture("wall_default");
 				break;
 			case FLOOR_DEFAULT:
-				box.setHasCollision(false);
+				box.setCollision(false);
 				box.setTexture("wall_default");
 				break;
 			case GRASS:
-				box.setHasCollision(false);
+				box.setCollision(false);
 				box.setTexture("grass");
 				break;
 			case TRAVEL:
-				box.setHasCollision(true);
+				box.setCollision(true);
 				box.setTexture("invisible");
 				break;
 			default:

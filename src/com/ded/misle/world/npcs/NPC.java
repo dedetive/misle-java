@@ -8,9 +8,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import static com.ded.misle.renderer.DialogRenderer.resetLetterDisplay;
-import static com.ded.misle.world.boxes.BoxHandling.addBoxToCache;
 import static com.ded.misle.world.npcs.NPCDialog.endDialog;
-import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
 
 public class NPC extends HPBox {
     private static final ArrayList<NPC> selectedNPCs = new ArrayList<>();
@@ -32,7 +30,7 @@ public class NPC extends HPBox {
         super(x, y);
         this.setColor(new Color(0xFFFF00));
         this.setObjectType(PhysicsEngine.ObjectType.NPC);
-        this.setHasCollision(true);
+        this.setCollision(true);
         this.name = "NPC";
         this.nameColor = new Color(0xFFFFFF);
         this.setMaxHP(20);
