@@ -24,14 +24,12 @@ public abstract class LogicManager {
     }
 
     private static void updateTurn() {
-        long currentTime = System.currentTimeMillis();
-
         player.attr.checkIfLevelUp();
 
         updateEnemyAI();
 
         for (HPBox box : getHPBoxes()) {
-            box.updateRegenerationHP(currentTime);
+            box.updateRegenerationHP();
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.ded.misle.world.boxes;
 
 import com.ded.misle.core.LanguageManager;
+import com.ded.misle.core.TurnTimer;
 import com.ded.misle.renderer.FloatingText;
 import com.ded.misle.items.DropTable;
 import com.ded.misle.world.enemies.Enemy;
@@ -41,20 +42,26 @@ public class HPBox extends Box {
     /** Defense value used to reduce incoming damage. */
     private double defense;
 
-    /** If true, doubles the regeneration rate. */
     private boolean isRegenerationDoubled;
 
     /** Chance (0-100%) to invert damage into healing. */
     private double inversion;
 
-    /** Timestamp of the last regeneration tick. */
-    private long lastRegenerationMillis;
-
     /** Quality factor used for regeneration calculation. */
     private double regenerationQuality;
 
-    /** Regeneration rate multiplier. */
-    private double regenerationRate = 1;
+    /** Represents how many turns it takes to regenerate again. Default value is 5. */
+    private int regenerationRate = 5;
+
+    /**
+     * Represents whether the regeneration cooldown has passed or not.
+     */
+    private boolean canRegenerate = true;
+
+    /**
+     * Timer responsible for turning {@link #canRegenerate} true.
+     */
+    private TurnTimer regenerationTimer;
 
     /** If true, entity is immune to all damage. */
     private boolean isInvulnerable;
@@ -92,15 +99,18 @@ public class HPBox extends Box {
         this.HP = 1;
         this.maxHP = 1;
         HPBoxes.add(this);
+        updateRegenerationTimer();
     }
 
     /**
      * Constructs an HPBox with HP and max HP set as 1 and no position.
      */
     public HPBox() {
+        this.setObjectType(HP_BOX);
         this.HP = 1;
         this.maxHP = 1;
         HPBoxes.add(this);
+        updateRegenerationTimer();
     }
 
     /**
@@ -566,10 +576,6 @@ public class HPBox extends Box {
 
     // REGENERATION
 
-    public long getLastRegenerationMillis() {
-        return lastRegenerationMillis;
-    }
-
     public double getRegenerationQuality() {
         return regenerationQuality;
     }
@@ -582,29 +588,37 @@ public class HPBox extends Box {
         return regenerationRate;
     }
 
-    public void setRegenerationRate(double regenerationRate) {
+    public void setRegenerationRate(int regenerationRate) {
         this.regenerationRate = regenerationRate;
+        updateRegenerationTimer();
     }
 
     public void turnRegenerationDoubledOn() {
         isRegenerationDoubled = true;
     }
 
-    public void updateRegenerationHP(long currentTime) {
-        // Calculate the interval for healing 1 HP, based on the existing regeneration rate and quality
-        double regenerationInterval = (250L / regenerationRate);
+    public void updateRegenerationHP() {
+        if (canRegenerate && ( /* Checks if timer is due */
+            (!player.attr.isDead() || this != player) /* Checks if this is a player, and if it is, whether it is dead or not */
+                && this.getHP() < this.getMaxHP())) { /* Checks if hp is lower than max */
+            receiveHeal(regenerationQuality, HealFlag.of(HealFlag.NORMAL));
+            if (isRegenerationDoubled) receiveHeal(regenerationQuality, HealFlag.of(HealFlag.NORMAL));
 
-        // TODO: Update regeneration to turns system
-        if (lastRegenerationMillis + regenerationInterval < currentTime &&
-            (!player.attr.isDead() || this != player) && this.getHP() < this.getMaxHP()) {
-            receiveHeal(Math.max(getRegenerationQuality(), 1), HealFlag.of(HealFlag.NORMAL));
-            if (isRegenerationDoubled) receiveHeal(Math.max(getRegenerationQuality(), 1), HealFlag.of(HealFlag.NORMAL));
-            lastRegenerationMillis = currentTime;
+            canRegenerate = false;
+            regenerationTimer.restart();
         } else {
             if (this.getHP() >= this.getMaxHP()) {
                 isRegenerationDoubled = false;
             }
         }
+    }
+
+    /**
+     * Uses current regenerationRate to update {@link #regenerationTimer}.
+     */
+    private void updateRegenerationTimer() {
+        regenerationTimer = new TurnTimer(regenerationRate, e -> canRegenerate = true)
+            .setRoomScoped(!(this instanceof Player));
     }
 
     // DROP TABLE
