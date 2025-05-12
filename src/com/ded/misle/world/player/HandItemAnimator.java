@@ -1,6 +1,7 @@
 package com.ded.misle.world.player;
 
 import com.ded.misle.items.Item;
+import com.ded.misle.world.attacks.Range;
 import com.ded.misle.world.attacks.WeaponAttacker;
 
 import javax.swing.*;
@@ -30,7 +31,7 @@ public class HandItemAnimator {
             if (player.inv.getSelectedItem() != selectedItem) return;
 
             double damage = Double.parseDouble(selectedItem.getAttributes().get("damage").toString());
-            int range = Integer.parseInt(selectedItem.getAttributes().get("range").toString());
+            Range range = Range.toRange(selectedItem.getAttributes().get("range").toString());
             int originX = player.getX();
             int originY = player.getY();
 

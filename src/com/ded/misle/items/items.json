@@ -21,7 +21,7 @@
     "subtype": "melee",
     "kind": "claw",
     "attackDelay": 1,
-    "range": 1,
+    "range": "OX",
     "nameColor": "#F5B114"
   },
   {
@@ -271,7 +271,7 @@
     "subtype": "melee",
     "kind": "glove",
     "attackDelay": 0.6125,
-    "range": 1,
+    "range": "OX",
     "nameColor": "#BDBDBD"
   },
   {
@@ -285,7 +285,7 @@
   "subtype": "melee",
   "kind": "glove",
   "attackDelay": 0.6125,
-  "range": 1,
+  "range": "OX",
   "nameColor": "#DB2525"
   },
   {

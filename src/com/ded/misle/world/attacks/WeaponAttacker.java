@@ -12,23 +12,22 @@ public class WeaponAttacker {
     private double damage;
     private boolean damagesPlayer;
     // TODO: change range to custom grid pattern instead of int, currently range is unused as its behavior will change
-//    private Range range;
+    private Range range;
 
     private Point[] rangePositions;
 
-    public WeaponAttacker(double damage, int range) {
-        if (range < 0) System.err.println("WeaponAttacker range must be a positive value!");
+    public WeaponAttacker(double damage, Range range) {
         this.damage = damage;
-//        this.range = range;
+        this.range = range;
         this.damagesPlayer = false;
     }
 
     public WeaponAttacker(double damage) {
-        this(damage, 1);
+        this(damage, Range.getDefaultRange());
     }
 
     public WeaponAttacker() {
-        this(0, 1);
+        this(0, Range.getDefaultRange());
     }
 
     public void attack(int originX, int originY) {
@@ -53,10 +52,10 @@ public class WeaponAttacker {
         return this;
     }
 
-//    public WeaponAttacker setRange(Range range) {
-//        this.range = range;
-//        return this;
-//    }
+    public WeaponAttacker setRange(Range range) {
+        this.range = range;
+        return this;
+    }
 
     public WeaponAttacker setDamagesPlayer(boolean damagesPlayer) {
         this.damagesPlayer = damagesPlayer;
