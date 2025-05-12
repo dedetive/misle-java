@@ -39,6 +39,8 @@ public class WeaponAttacker {
         range.offset(origin);
 
         for (Point point : range.getPoints()) {
+            boolean isInvalid = point.getX() < 0 || point.getY() < 0;
+            if (isInvalid) continue;
             for (Box box : player.pos.world.grid[point.x][point.y]) {
                 boolean isTargetHPBox = box instanceof HPBox;
                 boolean isPlayer = box instanceof Player;
