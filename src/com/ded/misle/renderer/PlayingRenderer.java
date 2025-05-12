@@ -73,7 +73,8 @@ public abstract class PlayingRenderer {
 
         for (int i = 0; i < screenWidth / tileSize; i++) {
             for (int j = 0; j < screenHeight / tileSize; j++) {
-                g2d.drawImage(world.background.box.getTexture(), i * tileSize, j * tileSize, tileSize, tileSize, null);
+                if ((i + j) % 2 == 0) g2d.drawImage(world.background.box[0].getTexture(), i * tileSize, j * tileSize, tileSize, tileSize, null);
+                else g2d.drawImage(world.background.box[1].getTexture(), i * tileSize, j * tileSize, tileSize, tileSize, null);
             }
         }
 

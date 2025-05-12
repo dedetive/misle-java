@@ -104,7 +104,8 @@ public class BoxHandling {
 		WALL_DEFAULT,
 		WALL_DEFAULT_DECO,
 		FLOOR_DEFAULT,
-		GRASS,
+		GRASS_LIGHT,
+		GRASS_DARK,
 		TRAVEL,
 
 		;
@@ -190,9 +191,13 @@ public class BoxHandling {
 				box.setCollision(false);
 				box.setTexture("wall_default");
 				break;
-			case GRASS:
+			case GRASS_LIGHT:
 				box.setCollision(false);
-				box.setTexture("grass");
+				box.setTexture("grass_light");
+				break;
+			case GRASS_DARK:
+				box.setCollision(false);
+				box.setTexture("grass_dark");
 				break;
 			case TRAVEL:
 				box.setCollision(true);

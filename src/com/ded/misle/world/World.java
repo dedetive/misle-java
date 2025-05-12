@@ -259,10 +259,11 @@ public class World {
         /**
          * Grass background as seen in {@systemProperty resources/images/boxes/grass.png}.
          */
-        GRASS(createDummyBox(), new Runnable() {
+        GRASS(new Box[]{createDummyBox(), createDummyBox()}, new Runnable() {
             @Override
             public void run() {
-                loadPreset(GRASS.box, BoxPreset.GRASS);
+                loadPreset(GRASS.box[0], BoxPreset.GRASS_LIGHT);
+                loadPreset(GRASS.box[1], BoxPreset.GRASS_DARK);
             }
         });
 
@@ -270,7 +271,7 @@ public class World {
         public static final Background DEFAULT = GRASS;
 
         /** A dummy box associated with this background. */
-        public final Box box;
+        public final Box[] box;
 
         /** Runnable that updates the background (e.g., applying a preset). */
         public final Runnable updateBackground;
@@ -280,7 +281,7 @@ public class World {
             this.updateBackground.run();
         }
 
-        Background(Box box, Runnable updateBackground) {
+        Background(Box[] box, Runnable updateBackground) {
             this.box = box;
             this.updateBackground = updateBackground;
         }
