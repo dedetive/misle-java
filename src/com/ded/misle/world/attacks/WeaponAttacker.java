@@ -11,10 +11,7 @@ import static com.ded.misle.core.GamePanel.player;
 public class WeaponAttacker {
     private double damage;
     private boolean damagesPlayer;
-    // TODO: change range to custom grid pattern instead of int, currently range is unused as its behavior will change
     private Range range;
-
-    private Point[] rangePositions;
 
     public WeaponAttacker(double damage, Range range) {
         this.damage = damage;
@@ -30,19 +27,20 @@ public class WeaponAttacker {
         this(0, Range.getDefaultRange());
     }
 
-    public void attack(int originX, int originY) {
-        Point origin = new Point(originX, originY);
-        // TODO: use grid range to manipulate these values
+    public void attack(Point origin) {
+        range.offset(origin);
 
-        for (Box box : player.pos.world.grid[origin.x][origin.y]) {
-            boolean isTargetHPBox = box instanceof HPBox;
-            boolean isPlayer = box instanceof Player;
-            boolean canDamageThisBox = !isPlayer || this.damagesPlayer;
+        for (Point point : range.getPoints()) {
+            for (Box box : player.pos.world.grid[point.x][point.y]) {
+                boolean isTargetHPBox = box instanceof HPBox;
+                boolean isPlayer = box instanceof Player;
+                boolean canDamageThisBox = !isPlayer || this.damagesPlayer;
 
-            if (isTargetHPBox && canDamageThisBox) {
+                if (isTargetHPBox && canDamageThisBox) {
 
-                ((HPBox) box).takeDamage(damage, HPBox.DamageFlag.of(HPBox.DamageFlag.NORMAL), box.getKnockbackDirection());
+                    ((HPBox) box).takeDamage(damage, HPBox.DamageFlag.of(HPBox.DamageFlag.NORMAL), box.getKnockbackDirection());
 
+                }
             }
         }
     }

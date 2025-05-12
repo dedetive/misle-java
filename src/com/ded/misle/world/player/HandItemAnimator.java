@@ -6,6 +6,8 @@ import com.ded.misle.world.attacks.WeaponAttacker;
 
 import javax.swing.*;
 
+import java.awt.*;
+
 import static com.ded.misle.core.GamePanel.player;
 
 public class HandItemAnimator {
@@ -32,12 +34,11 @@ public class HandItemAnimator {
 
             double damage = Double.parseDouble(selectedItem.getAttributes().get("damage").toString());
             Range range = Range.toRange(selectedItem.getAttributes().get("range").toString());
-            int originX = player.getX();
-            int originY = player.getY();
+            Point origin = new Point(player.getX(), player.getY());
 
             attacker.setDamage(damage);
             attacker.setRange(range);
-            attacker.attack(originX, originY);
+            attacker.attack(origin);
 
             selectedItem.delayedSetAnimationRotation(150, 60);
             selectedItem.delayedChangeAnimationBulk(-0.175, 120);

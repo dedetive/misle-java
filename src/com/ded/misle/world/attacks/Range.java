@@ -126,4 +126,18 @@ public class Range {
     public Point[] getPoints() {
         return points;
     }
+
+    /**
+     * Add an offset to each of this Range's points. All of this' points will get added with the value given.
+     *
+     * @param offset the value for the points to be added, with respect to their x and y individually
+     * @return the same object for chaining
+     */
+    public Range offset(Point offset) {
+        for (Point point : points) {
+            point.translate(offset.x, offset.y);
+        }
+
+        return this;
+    }
 }
