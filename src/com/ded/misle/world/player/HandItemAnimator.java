@@ -38,7 +38,7 @@ public class HandItemAnimator {
 
             attacker.setDamage(damage);
             attacker.setRange(range);
-            attacker.attack(origin);
+            attacker.attack(origin, player.stats.getWalkingDirection());
 
             selectedItem.delayedSetAnimationRotation(150, 60);
             selectedItem.delayedChangeAnimationBulk(-0.175, 120);

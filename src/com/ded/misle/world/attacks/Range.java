@@ -155,12 +155,12 @@ public class Range {
      * @return the same Range object for chaining
      */
     public Range rotate(RangeRotation rotation) {
+        if (rotation == RangeRotation.DEG_0) return this;
         for (int i = 0; i < points.length; i++) {
             int x = points[i].x;
             int y = points[i].y;
 
             switch (rotation) {
-                case DEG_0 -> { /* No rotation for DEG_0 */ }
                 case DEG_90 -> points[i] = new Point(y, -x);
                 case DEG_180 -> points[i] = new Point(-x, -y);
                 case DEG_270 -> points[i] = new Point(-y, x);

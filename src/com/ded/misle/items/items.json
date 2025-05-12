@@ -21,7 +21,7 @@
     "subtype": "melee",
     "kind": "claw",
     "attackDelay": 1,
-    "range": "OX",
+    "range": "OXXX",
     "nameColor": "#F5B114"
   },
   {

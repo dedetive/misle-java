@@ -3,6 +3,7 @@ package com.ded.misle.world.attacks;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.boxes.HPBox;
 import com.ded.misle.world.player.Player;
+import com.ded.misle.world.player.PlayerStats;
 
 import java.awt.*;
 
@@ -27,7 +28,14 @@ public class WeaponAttacker {
         this(0, Range.getDefaultRange());
     }
 
-    public void attack(Point origin) {
+    public void attack(Point origin, PlayerStats.Direction direction) {
+        switch (direction) {
+            case UP -> range.rotate(Range.RangeRotation.DEG_90);
+            case DOWN -> range.rotate(Range.RangeRotation.DEG_270);
+            case LEFT -> range.mirror(Range.MirrorDirection.HORIZONTAL);
+            default -> {}
+        }
+
         range.offset(origin);
 
         for (Point point : range.getPoints()) {
