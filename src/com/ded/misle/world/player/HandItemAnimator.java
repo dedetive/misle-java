@@ -1,19 +1,15 @@
 package com.ded.misle.world.player;
 
 import com.ded.misle.items.Item;
-import com.ded.misle.world.effects.Damage;
-import com.ded.misle.world.boxes.Box;
+import com.ded.misle.world.WeaponAttacker;
 
 import javax.swing.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.ded.misle.core.GamePanel.player;
-import static com.ded.misle.world.PhysicsEngine.isSpaceOccupied;
-import static com.ded.misle.world.boxes.BoxHandling.*;
 
 public class HandItemAnimator {
+    private static WeaponAttacker attacker = new WeaponAttacker();
+
     private static void scheduleAnimation(int delay, Runnable action) {
         Timer timer = new Timer(delay, evt -> action.run());
         timer.setRepeats(false);
@@ -34,9 +30,13 @@ public class HandItemAnimator {
             if (player.inv.getSelectedItem() != selectedItem) return;
 
             double damage = Double.parseDouble(selectedItem.getAttributes().get("damage").toString());
-            double range = Double.parseDouble(selectedItem.getAttributes().get("range").toString());
+            int range = Integer.parseInt(selectedItem.getAttributes().get("range").toString());
+            int originX = player.getX();
+            int originY = player.getY();
 
-            launchAttack(damage, range);
+            attacker.setDamage(damage);
+            attacker.setRange(range);
+            attacker.attack(originX, originY);
 
             selectedItem.delayedSetAnimationRotation(150, 60);
             selectedItem.delayedChangeAnimationBulk(-0.175, 120);
@@ -52,67 +52,6 @@ public class HandItemAnimator {
                 selectedItem.delayedMoveAnimationY(30, 30);
                 selectedItem.delayedMoveAnimationX(-15, 30);
             });
-        });
-    }
-
-    private static void launchAttack(double damage, double range) {
-        double XComponent;
-        double YComponent;
-
-        PlayerAttributes.KnockbackDirection direction;
-
-        direction = PlayerAttributes.KnockbackDirection.valueOf(player.stats.getWalkingDirection().toString()).getOppositeDirection();
-
-        switch (direction) {
-            case LEFT -> {
-                XComponent = range;
-                YComponent = 0;
-            }
-            case RIGHT -> {
-                XComponent = -range;
-                YComponent = 0;
-            }
-            case UP -> {
-                XComponent = 0;
-                YComponent = range;
-            }
-            case DOWN -> {
-                XComponent = 0;
-                YComponent = -range;
-            }
-            default -> {
-                XComponent = range;
-                YComponent = 0;
-            }
-        }
-
-        int attackX = (int) (player.getX() + XComponent);
-        int attackY = (int) (player.getY() + YComponent);
-
-        int startIndex = getAllBoxes().size();
-        Box attackBox = addBox(attackX, attackY);
-        int boxCount = 1;
-        // TODO: redo this multiple boxes system
-//        int boxCount = lineAddBox(attackX, attackY, Math.max((int) (Math.ceil(range / 20) * clamp(abs(XComponent), 0, 1)), 1),
-//            Math.max((int) (Math.ceil(range / 20) * clamp(abs(YComponent), 0, 1)), 1), "", LineAddBoxModes.FILL);
-//        editLastBox(EditBoxKeys.COLOR, "#DEDE40", boxCount);
-        List<Box> boxes = getAllBoxes().subList(startIndex, startIndex + boxCount);
-        List<Box> attack = new ArrayList<>(List.of());
-        for (Box currentBox : boxes) {
-            currentBox.setTexture("invisible");
-            currentBox.setCollision(true);
-            currentBox.setInteractsWithPlayer(false);
-
-            double damageDealt = Math.max(Math.ceil(Math.floor(Math.pow(damage, 1.1)) * (player.attr.getStrength() * 10/100 + 1)), 1);
-            currentBox.effect = new Damage(damageDealt, 1);
-            attack.add(currentBox); // Add box to list to be deleted
-            isSpaceOccupied(attackX, attackY, currentBox); // Handle damage detection
-        }
-
-        scheduleAnimation(60, () -> {
-            for (int i = 0; i < boxCount; i++) {
-                deleteBox(attack.get(i));
-            }
         });
     }
 }
