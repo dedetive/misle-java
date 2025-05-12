@@ -131,11 +131,40 @@ public class Range {
      * Add an offset to each of this Range's points. All of this' points will get added with the value given.
      *
      * @param offset the value for the points to be added, with respect to their x and y individually
-     * @return the same object for chaining
+     * @return the same Range object for chaining
      */
     public Range offset(Point offset) {
         for (Point point : points) {
             point.translate(offset.x, offset.y);
+        }
+
+        return this;
+    }
+
+    public enum RangeRotation {
+        DEG_0,
+        DEG_90,
+        DEG_180,
+        DEG_270
+    }
+
+    /**
+     * Rotates the range around the origin by the specified angle.
+     *
+     * @param rotation the rotation to apply (90°, 180°, 270°, or none)
+     * @return the same Range object for chaining
+     */
+    public Range rotate(RangeRotation rotation) {
+        for (int i = 0; i < points.length; i++) {
+            int x = points[i].x;
+            int y = points[i].y;
+
+            switch (rotation) {
+                case DEG_0 -> { /* No rotation for DEG_0 */ }
+                case DEG_90 -> points[i] = new Point(y, -x);
+                case DEG_180 -> points[i] = new Point(-x, -y);
+                case DEG_270 -> points[i] = new Point(-y, x);
+            }
         }
 
         return this;
