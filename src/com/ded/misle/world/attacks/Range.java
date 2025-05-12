@@ -169,4 +169,41 @@ public class Range {
 
         return this;
     }
+
+    /**
+     * Represents a mirroring direction for a Range.
+     * Note: A vertical mirror followed by a horizontal one is equivalent to a 180-degree rotation.
+     * If you need both, prefer using {@code RangeRotation.DEG_180}.
+     */
+    public enum MirrorDirection {
+        /**
+         * Mirrors the Range horizontally (left-right), flipping the x-coordinate.
+         */
+        HORIZONTAL,
+
+        /**
+         * Mirrors the Range vertically (up-down), flipping the y-coordinate.
+         */
+        VERTICAL
+    }
+
+    /**
+     * Mirrors this Range's points in the specified direction.
+     *
+     * @param direction the direction to mirror the points: horizontally (flip x) or vertically (flip y)
+     * @return this object, after applying the mirror, for chaining
+     */
+    public Range mirror(MirrorDirection direction) {
+        for (int i = 0; i < points.length; i++) {
+            int x = points[i].x;
+            int y = points[i].y;
+
+            switch (direction) {
+                case HORIZONTAL -> points[i] = new Point(-x, y);
+                case VERTICAL -> points[i] = new Point(x, -y);
+            }
+        }
+
+        return this;
+    }
 }
