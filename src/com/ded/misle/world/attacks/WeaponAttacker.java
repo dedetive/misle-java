@@ -1,4 +1,4 @@
-package com.ded.misle.world;
+package com.ded.misle.world.attacks;
 
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.boxes.HPBox;
@@ -12,14 +12,14 @@ public class WeaponAttacker {
     private double damage;
     private boolean damagesPlayer;
     // TODO: change range to custom grid pattern instead of int, currently range is unused as its behavior will change
-    private int range;
+//    private Range range;
 
     private Point[] rangePositions;
 
     public WeaponAttacker(double damage, int range) {
         if (range < 0) System.err.println("WeaponAttacker range must be a positive value!");
         this.damage = damage;
-        this.range = range;
+//        this.range = range;
         this.damagesPlayer = false;
     }
 
@@ -53,10 +53,10 @@ public class WeaponAttacker {
         return this;
     }
 
-    public WeaponAttacker setRange(int range) {
-        this.range = range;
-        return this;
-    }
+//    public WeaponAttacker setRange(Range range) {
+//        this.range = range;
+//        return this;
+//    }
 
     public WeaponAttacker setDamagesPlayer(boolean damagesPlayer) {
         this.damagesPlayer = damagesPlayer;
