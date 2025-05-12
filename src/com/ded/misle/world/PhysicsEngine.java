@@ -37,7 +37,28 @@ public class PhysicsEngine {
 			}
 		}
 
+		return result;
+	}
 
+	/**
+	 * Returns whether space is occupied or not. Will not handle effects in any way.
+	 */
+	public static boolean isSpaceOccupied(int targetX, int targetY) {
+		World world = player.pos.world;
+		boolean result = true;
+
+		for (int layer = 0; layer < world.layers; layer++) {
+			try {
+				Box box = world.grid[targetX][targetY][layer];
+				result = box != null && box.getHasCollision();
+
+				result = result && box.getHasCollision();
+				if (result) return true;
+
+			} catch (NullPointerException | NegativeArraySizeException | ArrayIndexOutOfBoundsException e) {
+				result = true;
+			}
+		}
 
 		return result;
 	}
