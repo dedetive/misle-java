@@ -1,8 +1,8 @@
 package com.ded.misle.world.player;
 
-import com.ded.misle.world.boxes.Box;
 import com.ded.misle.items.Item;
 import com.ded.misle.world.effects.Damage;
+import com.ded.misle.world.boxes.Box;
 
 import javax.swing.*;
 
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ded.misle.core.GamePanel.player;
-import static com.ded.misle.core.PhysicsEngine.isSpaceOccupied;
+import static com.ded.misle.world.PhysicsEngine.isSpaceOccupied;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 
 public class HandItemAnimator {

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.core.GamePanel.*;
-import static com.ded.misle.core.PhysicsEngine.isSpaceOccupied;
+import static com.ded.misle.world.PhysicsEngine.isSpaceOccupied;
 import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.renderer.DialogRenderer.fillLetterDisplay;
 import static com.ded.misle.renderer.DialogRenderer.isLetterDisplayFull;

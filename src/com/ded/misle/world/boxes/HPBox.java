@@ -18,7 +18,7 @@ import java.util.List;
 import static com.ded.misle.core.GamePanel.getWindow;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.core.PhysicsEngine.ObjectType.HP_BOX;
+import static com.ded.misle.world.PhysicsEngine.ObjectType.HP_BOX;
 import static com.ded.misle.renderer.FontManager.itemInfoFont;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.boxes.BoxManipulation.moveBox;

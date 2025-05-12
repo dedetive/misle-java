@@ -1,7 +1,7 @@
 package com.ded.misle.world.npcs;
 
 import com.ded.misle.core.LanguageManager;
-import com.ded.misle.core.PhysicsEngine;
+import com.ded.misle.world.PhysicsEngine;
 import com.ded.misle.world.boxes.HPBox;
 
 import java.awt.*;

@@ -1,6 +1,5 @@
-package com.ded.misle.core;
+package com.ded.misle.world;
 
-import com.ded.misle.world.World;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.effects.Damage;
 import com.ded.misle.world.boxes.HPBox;

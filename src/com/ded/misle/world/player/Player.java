@@ -1,6 +1,6 @@
 package com.ded.misle.world.player;
 
-import com.ded.misle.core.PhysicsEngine;
+import com.ded.misle.world.PhysicsEngine;
 import com.ded.misle.world.boxes.HPBox;
 
 import java.awt.image.BufferedImage;

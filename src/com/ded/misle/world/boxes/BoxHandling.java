@@ -1,6 +1,6 @@
 package com.ded.misle.world.boxes;
 
-import com.ded.misle.core.PhysicsEngine;
+import com.ded.misle.world.PhysicsEngine;
 import com.ded.misle.world.World;
 import com.ded.misle.world.effects.Chest;
 import com.ded.misle.world.effects.Collectible;
