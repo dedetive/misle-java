@@ -52,9 +52,7 @@ public class Box {
 	private final SmoothPosition smoothPos = new SmoothPosition(worldX, worldY);
 
     private static ArrayList<Box> selectedBoxes;
-	private static BufferedImage cachedTexture1;
-	private static String cachedTexture1Name;
-	private static final Map<String, BufferedImage> cachedTexture2 = new HashMap<>();
+	private static final Map<String, BufferedImage> cachedTextures = new HashMap<>();
 	private static final Map<String, Integer> rotationInstruction = new HashMap<>();
 	static {
 				rotationInstruction.put("W", 0);
@@ -328,26 +326,13 @@ public class Box {
 	}
 
 	public BufferedImage getTexture() {
-		String fileName = this.textureName + ".png";
-		Path fullPath = getPath().resolve("resources/images/boxes/").resolve(fileName);
-
-		// Only reload the texture if the cached texture doesn't match the current texture
-		if (cachedTexture1 == null || !cachedTexture1Name.equals(fileName)) {
-			try {
-				cachedTexture1 = ImageIO.read(fullPath.toFile());
-				cachedTexture1Name = fileName; // Store the current texture name
-			} catch (IOException e) {
-				System.out.println("Couldn't find box texture " + fullPath + "!");
-				return null;
-			}
-		}
-		return cachedTexture1;
+		return getTexture(textureName);
 	}
 
 
 	public static BufferedImage getTexture(String boxTextureName) {
 		// Check if the texture is already cached
-		if (!cachedTexture2.containsKey(boxTextureName)) {
+		if (!cachedTextures.containsKey(boxTextureName)) {
 			Path basePath = getPath().resolve("resources/images/boxes/");
 			String fileName = boxTextureName + ".png";
 			Path fullPath = basePath.resolve(fileName);
@@ -355,13 +340,13 @@ public class Box {
 			try {
 				// Load the texture and cache it
 				BufferedImage texture = ImageIO.read(fullPath.toFile());
-				cachedTexture2.put(boxTextureName, texture); // Cache the loaded image
+				cachedTextures.put(boxTextureName, texture); // Cache the loaded image
 			} catch (IOException e) {
 				System.out.println("Can't read Box texture input file: " + fullPath);
 				return null; // Return null if image fails to load
 			}
 		}
-		return cachedTexture2.get(boxTextureName); // Return the cached image
+		return cachedTextures.get(boxTextureName); // Return the cached image
 	}
 
 	// EFFECT RELATED
