@@ -71,10 +71,20 @@ public abstract class PlayingRenderer {
         // Draw background
         World world = player.pos.world;
 
-        for (int i = 0; i < screenWidth / tileSize; i++) {
-            for (int j = 0; j < screenHeight / tileSize; j++) {
-                if ((i + j) % 2 == 0) g2d.drawImage(world.background.box[0].getTexture(), i * tileSize, j * tileSize, tileSize, tileSize, null);
-                else g2d.drawImage(world.background.box[1].getTexture(), i * tileSize, j * tileSize, tileSize, tileSize, null);
+        for (int i = 0; i < screenWidth / tileSize + 2; i++) {
+            for (int j = 0; j < screenHeight / tileSize + 2; j++) {
+
+                int worldX = (int) (Math.max((player.pos.getCameraOffsetX() / (double) tileSize), 0) + i);
+                int worldY = (int) (Math.max((player.pos.getCameraOffsetY() / (double) tileSize), 0) + j);
+
+                BufferedImage texture = ((worldX + worldY) % 2 == 0) ?
+                    world.background.box[0].getTexture() :
+                    world.background.box[1].getTexture();
+
+                int drawX = (int) (i * tileSize - (player.pos.getCameraOffsetX() % tileSize));
+                int drawY = (int) (j * tileSize - (player.pos.getCameraOffsetY() % tileSize));
+
+                g2d.drawImage(texture, drawX, drawY, tileSize, tileSize, null);
             }
         }
 
