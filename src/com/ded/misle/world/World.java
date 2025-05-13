@@ -3,6 +3,7 @@ package com.ded.misle.world;
 import com.ded.misle.world.boxes.Box;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.ded.misle.core.GamePanel.player;
@@ -279,6 +280,15 @@ public class World {
         /** Triggers the background update. */
         public void updateBackground() {
             this.updateBackground.run();
+        }
+
+        /**
+         * Checks all Background values to find if any of them match given string.
+         *
+         * @return whether a Background with such name exists within the enum
+         */
+        public static boolean contains(String backgroundName) {
+            return Arrays.stream(Background.values()).anyMatch(b -> b.name().equals(backgroundName));
         }
 
         Background(Box[] box, Runnable updateBackground) {

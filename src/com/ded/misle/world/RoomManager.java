@@ -23,7 +23,9 @@ public class RoomManager {
             while ((line = reader.readLine()) != null) {
                 jsonContent.append(line.trim());
             }
-        } catch (IOException e) { e.printStackTrace(); }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         String jsonText = jsonContent.toString();
         jsonText = jsonText.substring(1, jsonText.length() - 1);
@@ -50,21 +52,25 @@ public class RoomManager {
             String filesPart = nameAndFiles[1].replace("]", "").trim();
             String[] fileNames = filesPart.isEmpty() ? new String[]{} : filesPart.split(",");
 
+            String background = colorPart.split(",background:")[1].split(",")[0].trim();
+            colorPart = colorPart.replace(",background:", "").replace(background, "").trim();
+
             int[] spawnpointPos = new int[2];
-            if (colorPart != null) {
-                String[] colorPairs = colorPart.replace("}", "").split("#");
-                for (String pair : colorPairs) {
-                    if (pair.trim().isEmpty()) continue;
-                    String[] kv = pair.split(": ", 2);
-                    if (kv.length == 2) colorCodeMap.put(Integer.parseInt(kv[0].trim(), 16), kv[1].trim());
-                    if (kv[1].contains("spawnpoint")) {
-                        spawnpointPos[0] = Integer.parseInt(kv[1].trim().split(":")[1].split(",", kv[1].trim().split(":")[1].length())[0]);
-                        spawnpointPos[1] = Integer.parseInt(kv[1].trim().split(":")[2].split(",", kv[1].trim().split(":")[1].length())[0]);
-                    }
+            String[] colorPairs = colorPart.replace("}", "").split("#");
+            for (String pair : colorPairs) {
+                if (pair.trim().isEmpty()) continue;
+                String[] kv = pair.split(": ", 2);
+                if (kv[1].trim().lastIndexOf(",") == kv[1].trim().length() - 1) {
+                    kv[1] = kv[1].trim().substring(0, kv[1].length() - 1).trim();
+                }
+                if (kv.length == 2) colorCodeMap.put(Integer.parseInt(kv[0].trim(), 16), kv[1].trim());
+                if (kv[1].contains("spawnpoint")) {
+                    spawnpointPos[0] = Integer.parseInt(kv[1].trim().split(":")[1].split(",", kv[1].trim().split(":")[1].length())[0]);
+                    spawnpointPos[1] = Integer.parseInt(kv[1].trim().split(":")[2].split(",", kv[1].trim().split(":")[1].length())[0]);
                 }
             }
 
-            new Room(roomName, fileNames, id, colorCodeMap, spawnpointPos);
+            new Room(roomName, fileNames, id, colorCodeMap, spawnpointPos, background);
         }
     }
 
@@ -73,18 +79,20 @@ public class RoomManager {
         public final String[] fileNames;
         public final int id;
         public final Map<Integer, String> colorCodeMap;
+        public final World.Background background;
         public final int[] spawnpointPos = new int[2];
 
-        Room(String name, String[] fileNames, int id, Map<Integer, String> colorCodeMap) {
+        Room(String name, String[] fileNames, int id, Map<Integer, String> colorCodeMap, String background) {
             this.name = name;
             this.fileNames = fileNames;
             this.id = id;
             this.colorCodeMap = colorCodeMap;
+            this.background = World.Background.contains(background) ? World.Background.valueOf(background) : World.Background.DEFAULT;
             rooms.add(this);
         }
 
-        Room(String name, String[] fileNames, int id, Map<Integer, String> colorCodeMap, int[] spawnpointPos) {
-            this(name, fileNames, id, colorCodeMap);
+        Room(String name, String[] fileNames, int id, Map<Integer, String> colorCodeMap, int[] spawnpointPos, String background) {
+            this(name, fileNames, id, colorCodeMap, background);
             this.spawnpointPos[0] = spawnpointPos[0];
             this.spawnpointPos[1] = spawnpointPos[1];
         }

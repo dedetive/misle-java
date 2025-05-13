@@ -19,7 +19,6 @@ import java.util.function.Function;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.world.RoomManager.*;
-import static com.ded.misle.world.World.Background.GRASS;
 import static com.ded.misle.world.WorldLoader.SideGridDirection.*;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 
@@ -28,7 +27,6 @@ public abstract class WorldLoader {
 		TurnTimer.clearRoomScopedTimers();
         Room room;
 		room = roomIDToName(player.pos.getRoomID());
-//		room = findRoom("TUANI_CITY"); // TEMPORARILY FORCING TUANI_CITY
 		assert room != null;
 
 		Path basePath = getPath().resolve("resources/worlds/");
@@ -52,7 +50,7 @@ public abstract class WorldLoader {
 		// Set dimensions based on image dimensions
 		int worldWidth = roomImages[0].getWidth();
 		int worldHeight = roomImages[0].getHeight();
-        new World(worldWidth, worldHeight, GRASS);
+        new World(worldWidth, worldHeight, room.background);
 
         // Read values and set as boxes
 		for (int x = 0; x < worldWidth; x++) {

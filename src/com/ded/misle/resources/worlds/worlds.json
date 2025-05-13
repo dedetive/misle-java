@@ -7,6 +7,7 @@
     "custom_color_code": {
       "#36dbdb": "travel, roomID:1, x:7, y:4"
     },
+    "background": "GRASS",
     "id": 0
   },
   {
@@ -20,6 +21,7 @@
       "#e04ae7": "spawnpoint, x:1, y:1",
       "#a66c13": "chest, droptable:potion_chest, openRate:3"
     },
+    "background": "GRASS",
     "id": 1
   }
 ]
