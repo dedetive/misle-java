@@ -13,17 +13,9 @@ public class PlayerStats {
 	int stepsDown;
 	int stepsLeft;
 	int stepsRight;
-	double totalDistance;
-	double distanceUp;
-	double distanceDown;
-	double distanceLeft;
-	double distanceRight;
 	Direction walkingDirection;
 	Direction horizontalDirection;
 	Direction verticalDirection;
-	long lastDirectionUpdate;
-	long lastHorizontalDirectionUpdate;
-	long lastVerticalDirectionUpdate;
 
 	public enum Direction {
 		UP,
@@ -47,29 +39,20 @@ public class PlayerStats {
 		this.stepsDown = 0;
 		this.stepsLeft = 0;
 		this.stepsRight = 0;
-		this.totalDistance = 0;
-		this.distanceUp = 0;
-		this.distanceDown = 0;
-		this.distanceLeft = 0;
-		this.distanceRight = 0;
 		this.walkingDirection = Direction.RIGHT;
 		this.horizontalDirection = Direction.RIGHT;
 		this.verticalDirection = Direction.UP;
 	}
 
-	/**
-	 * @return a list containing, as the index 0, the number associated with the highest value and,
-	 * as index 1, the most travelled distance (as in 'up', 'down', 'left', 'right').
-	 */
-	public List<Direction> getMostDistanceTravelled() {
-		HashMap<Direction, Double> mostTravelled = new HashMap<>();
-		mostTravelled.put(Direction.UP, getDistance(Direction.UP));
-		mostTravelled.put(Direction.DOWN, getDistance(Direction.DOWN));
-		mostTravelled.put(Direction.LEFT, getDistance(Direction.LEFT));
-		mostTravelled.put(Direction.RIGHT, getDistance(Direction.RIGHT));
-		Double highestValue = Collections.max(mostTravelled.values());
+	public List<Direction> getHighestStep() {
+		HashMap<Direction, Integer> mostTravelled = new HashMap<>();
+		mostTravelled.put(Direction.UP, getSteps(Direction.UP));
+		mostTravelled.put(Direction.DOWN, getSteps(Direction.DOWN));
+		mostTravelled.put(Direction.LEFT, getSteps(Direction.LEFT));
+		mostTravelled.put(Direction.RIGHT, getSteps(Direction.RIGHT));
+		Integer highestValue = Collections.max(mostTravelled.values());
 		List<Direction> mostDistanceTravelled = new ArrayList<>();
-		for (Map.Entry<Direction, Double> entry : mostTravelled.entrySet()) {
+		for (Map.Entry<Direction, Integer> entry : mostTravelled.entrySet()) {
 			if (entry.getValue() >= highestValue) {
 				mostDistanceTravelled.add(entry.getKey());
 			}
@@ -79,21 +62,17 @@ public class PlayerStats {
 		return mostDistanceTravelled;
 	}
 
-	/**
-	 * @return a list containing, as the index 0, the number associated with the lowest value and,
-	 * as index 1, the least travelled distance (as in 'up', 'down', 'left', 'right').
-	 */
-	public List<Direction> getLeastDistanceTravelled() {
-		HashMap<Direction, Double> leastTravelled = new HashMap<>();
-		leastTravelled.put(Direction.UP, getDistance(Direction.UP));
-		leastTravelled.put(Direction.DOWN, getDistance(Direction.DOWN));
-		leastTravelled.put(Direction.LEFT, getDistance(Direction.LEFT));
-		leastTravelled.put(Direction.RIGHT, getDistance(Direction.RIGHT));
-		Double lowestValue = Collections.min(leastTravelled.values());
+	public List<Direction> getLowestStep() {
+		HashMap<Direction, Integer> leastTravelled = new HashMap<>();
+		leastTravelled.put(Direction.UP, getSteps(Direction.UP));
+		leastTravelled.put(Direction.DOWN, getSteps(Direction.DOWN));
+		leastTravelled.put(Direction.LEFT, getSteps(Direction.LEFT));
+		leastTravelled.put(Direction.RIGHT, getSteps(Direction.RIGHT));
+		Integer lowestValue = Collections.min(leastTravelled.values());
 		List<Direction> leastDistanceTravelled = new ArrayList<>();
 		leastDistanceTravelled.add(Direction.valueOf(lowestValue.toString()));
 
-		for (Map.Entry<Direction, Double> entry : leastTravelled.entrySet()) {
+		for (Map.Entry<Direction, Integer> entry : leastTravelled.entrySet()) {
 			if (entry.getValue() <= lowestValue) {
 				leastDistanceTravelled.add(entry.getKey());
 			}
@@ -113,47 +92,7 @@ public class PlayerStats {
         };
 	}
 
-	public double getDistance(Direction direction) {
-		return switch (direction) {
-			case UP -> distanceUp;
-			case DOWN -> distanceDown;
-			case LEFT -> distanceLeft;
-			case RIGHT -> distanceRight;
-			case TOTAL -> totalDistance;
-			case NONE -> 0;
-		};
-	}
-
-	public void incrementDistance(Direction direction, double distance) {
-		totalDistance += distance;
-		walkingDirection = direction;
-		incrementSteps(direction);
-		switch (direction) {
-			case UP -> {
-				distanceUp += distance;
-				verticalDirection = Direction.UP;
-				lastVerticalDirectionUpdate = System.currentTimeMillis();
-			}
-			case DOWN -> {
-				distanceDown += distance;
-				verticalDirection = Direction.DOWN;
-				lastVerticalDirectionUpdate = System.currentTimeMillis();
-			}
-			case LEFT -> {
-				distanceLeft += distance;
-				horizontalDirection = Direction.LEFT;
-				lastHorizontalDirectionUpdate = System.currentTimeMillis();
-			}
-			case RIGHT -> {
-				distanceRight += distance;
-				horizontalDirection = Direction.RIGHT;
-				lastHorizontalDirectionUpdate = System.currentTimeMillis();
-			}
-		}
-		lastDirectionUpdate = System.currentTimeMillis();
-	}
-
-	private void incrementSteps(Direction direction) {
+	public void incrementSteps(Direction direction) {
 		incrementTotalSteps();
 		switch (direction) {
 			case UP -> stepsUp++;
@@ -174,19 +113,6 @@ public class PlayerStats {
 		totalSteps++;
 	}
 
-	public void increaseDistance(double x, double y) {
-		if (x > 0) {
-			incrementDistance(Direction.RIGHT, x);
-		} else if (x < 0) {
-			incrementDistance(Direction.LEFT,-x);
-		}
-		if (y > 0) {
-			incrementDistance(Direction.DOWN,y);
-		} else if (y < 0) {
-			incrementDistance(Direction.UP,-y);
-		}
-	}
-
 	public Direction getWalkingDirection() {
 		return walkingDirection;
 	}
@@ -197,34 +123,6 @@ public class PlayerStats {
 
 	public Direction getVerticalDirection() {
 		return verticalDirection;
-	}
-
-	public Direction getCurrentWalkingDirection(long precisionMS) {
-		if (lastDirectionUpdate + precisionMS < System.currentTimeMillis()) return Direction.NONE;
-
-		return walkingDirection;
-	}
-
-	public Direction getCurrentHorizontalDirection(long precisionMS) {
-		if (lastHorizontalDirectionUpdate + precisionMS < System.currentTimeMillis()) return Direction.NONE;
-
-		return horizontalDirection;
-	}
-
-	public Direction getCurrentVerticalDirection(long precisionMS) {
-		if (lastVerticalDirectionUpdate + precisionMS < System.currentTimeMillis()) return Direction.NONE;
-
-		return verticalDirection;
-	}
-
-	public void setDistance(Direction direction, double distance) {
-		switch (direction) {
-			case UP -> distanceUp = distance;
-			case DOWN -> distanceDown = distance;
-			case LEFT -> distanceLeft = distance;
-			case RIGHT -> distanceRight = distance;
-			case TOTAL -> totalDistance = distance;
-		}
 	}
 
 	public void setSteps(Direction direction, int steps) {
