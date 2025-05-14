@@ -149,21 +149,6 @@ public class SaveFile {
 		REGENERATION_QUALITY_H		(RED,71,71),
 		REGENERATION_QUALITY_M		(GREEN,71,71),
 		REGENERATION_QUALITY_L		(BLUE,71,71),
-		TOTAL_DISTANCE_H			(RED,117,63),
-		TOTAL_DISTANCE_M			(RED,118,63),
-		TOTAL_DISTANCE_L			(RED,119,63),
-		DISTANCE_UP_H				(RED,117,64),
-		DISTANCE_UP_M				(RED,118,64),
-		DISTANCE_UP_L				(RED,119,64),
-		DISTANCE_DOWN_H				(RED,117,65),
-		DISTANCE_DOWN_M				(RED,118,65),
-		DISTANCE_DOWN_L				(RED,119,65),
-		DISTANCE_LEFT_H				(GREEN,117,63),
-		DISTANCE_LEFT_M				(GREEN,118,63),
-		DISTANCE_LEFT_L				(GREEN,119,63),
-		DISTANCE_RIGHT_H			(GREEN,117,64),
-		DISTANCE_RIGHT_M			(GREEN,118,64),
-		DISTANCE_RIGHT_L			(GREEN,119,64),
 		TOTAL_STEPS_H				(GREEN,117,65),
 		TOTAL_STEPS_M				(GREEN,118,65),
 		TOTAL_STEPS_L				(GREEN,119,65),
@@ -251,12 +236,6 @@ public class SaveFile {
 					player.attr.setMaxStackSizeMulti((float) loadAttribute(PixelData.MAX_STACK_SIZE_MULTIPLIER_M, PixelData.MAX_STACK_SIZE_MULTIPLIER_L) / 1000);
 
 					// Statistics
-
-					player.stats.setDistance(PlayerStats.Direction.TOTAL, loadAttribute(PixelData.TOTAL_DISTANCE_H, PixelData.TOTAL_DISTANCE_M, PixelData.TOTAL_DISTANCE_L));
-					player.stats.setDistance(PlayerStats.Direction.UP, loadAttribute(PixelData.DISTANCE_UP_H, PixelData.DISTANCE_UP_M, PixelData.DISTANCE_UP_L));
-					player.stats.setDistance(PlayerStats.Direction.DOWN, loadAttribute(PixelData.DISTANCE_DOWN_H, PixelData.DISTANCE_DOWN_M, PixelData.DISTANCE_DOWN_L));
-					player.stats.setDistance(PlayerStats.Direction.LEFT, loadAttribute(PixelData.DISTANCE_LEFT_H, PixelData.DISTANCE_LEFT_M, PixelData.DISTANCE_LEFT_L));
-					player.stats.setDistance(PlayerStats.Direction.RIGHT, loadAttribute(PixelData.DISTANCE_RIGHT_H, PixelData.DISTANCE_RIGHT_M, PixelData.DISTANCE_RIGHT_L));
 
 					player.stats.setSteps(PlayerStats.Direction.TOTAL, loadAttribute(PixelData.TOTAL_STEPS_H, PixelData.TOTAL_STEPS_M, PixelData.TOTAL_STEPS_L));
 					player.stats.setSteps(PlayerStats.Direction.UP, loadAttribute(PixelData.STEPS_UP_H, PixelData.STEPS_UP_M, PixelData.STEPS_UP_L));
@@ -439,17 +418,6 @@ public class SaveFile {
 			brandValue(stepsLeft, PixelData.STEPS_LEFT_H, PixelData.STEPS_LEFT_M, PixelData.STEPS_LEFT_L);
 			int stepsRight = player.stats.getSteps(PlayerStats.Direction.RIGHT);
 			brandValue(stepsRight, PixelData.STEPS_RIGHT_H, PixelData.STEPS_RIGHT_M, PixelData.STEPS_RIGHT_L);
-
-			int totalDistance = (int) player.stats.getDistance(PlayerStats.Direction.TOTAL);
-			brandValue(totalDistance, PixelData.TOTAL_DISTANCE_H, PixelData.TOTAL_DISTANCE_M, PixelData.TOTAL_DISTANCE_L);
-			int distanceUp = (int) player.stats.getDistance(PlayerStats.Direction.UP);
-			brandValue(distanceUp, PixelData.DISTANCE_UP_H, PixelData.DISTANCE_UP_M, PixelData.DISTANCE_UP_L);
-			int distanceDown = (int) player.stats.getDistance(PlayerStats.Direction.DOWN);
-			brandValue(distanceDown, PixelData.DISTANCE_DOWN_H, PixelData.DISTANCE_DOWN_M, PixelData.DISTANCE_DOWN_L);
-			int distanceLeft = (int) player.stats.getDistance(PlayerStats.Direction.LEFT);
-			brandValue(distanceLeft, PixelData.DISTANCE_LEFT_H, PixelData.DISTANCE_LEFT_M, PixelData.DISTANCE_LEFT_L);
-			int distanceRight = (int) player.stats.getDistance(PlayerStats.Direction.RIGHT);
-			brandValue(distanceRight, PixelData.DISTANCE_RIGHT_H, PixelData.DISTANCE_RIGHT_M, PixelData.DISTANCE_RIGHT_L);
 
 			long playtime = player.stats.getCurrentTotalPlaytime(PlayerStats.PlaytimeMode.SECONDS);
 			brandValue(playtime, PixelData.TOTAL_PLAYTIME_E, PixelData.TOTAL_PLAYTIME_H, PixelData.TOTAL_PLAYTIME_M, PixelData.TOTAL_PLAYTIME_L);
