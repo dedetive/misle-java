@@ -2,12 +2,14 @@ package com.ded.misle.world.boxes;
 
 import com.ded.misle.world.PhysicsEngine;
 import com.ded.misle.core.TurnTimer;
+import com.ded.misle.world.player.PlayerStats;
 
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.world.player.PlayerStats.Direction.interpretDirection;
 
 public class BoxManipulation {
 
@@ -114,6 +116,7 @@ public class BoxManipulation {
      * @param y double - How many pixels in y direction (this is not based on scale).
      */
     public static void movePlayer(int x, int y) {
+		player.stats.incrementSteps(interpretDirection(x, y));
         x = player.getX() + x;
         y = player.getY() + y;
         player.setX(x);

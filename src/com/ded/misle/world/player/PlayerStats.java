@@ -2,16 +2,12 @@ package com.ded.misle.world.player;
 
 import java.util.*;
 
-import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.player.PlayerStats.Direction.*;
 
 public class PlayerStats {
 
 	long startTimestamp;
 	long totalPlaytime;
-	Direction walkingDirection;
-	Direction horizontalDirection;
-	Direction verticalDirection;
 
 	public enum Direction {
 		UP,
@@ -24,6 +20,11 @@ public class PlayerStats {
 		;
 
 		private int steps;
+
+		public static Direction walkingDirection;
+		public static Direction horizontalDirection;
+		public static Direction verticalDirection;
+		private static long lastDirectionUpdate;
 
 		Direction() {
 			reset();
@@ -39,6 +40,7 @@ public class PlayerStats {
 
 		public void incrementSteps() {
 			steps++;
+			updateLastDirection(this);
 		}
 
 		public void reset() {
@@ -47,6 +49,43 @@ public class PlayerStats {
 
 		public static void resetAll() {
 			for (Direction direction : Direction.values()) direction.reset();
+		}
+
+		public static void updateLastDirection(Direction direction) {
+			walkingDirection = direction;
+            switch (direction) {
+                case LEFT, RIGHT -> horizontalDirection = direction;
+                case UP, DOWN -> verticalDirection = direction;
+            }
+			lastDirectionUpdate = System.currentTimeMillis();
+		}
+
+		public static Direction interpretDirection(int x, int y) {
+			if (x == y) return RIGHT;
+			if (Math.abs(x) > Math.abs(y)) {
+				if (x > 0) return RIGHT;
+				else return LEFT;
+			}
+            if (y > 0) return DOWN;
+            else return UP;
+        }
+
+		public static Direction getRecentDirection(long precision) {
+			return getDirectionIfPrecision(walkingDirection, precision);
+		}
+
+		public static Direction getRecentHorizontalDirection(long precision) {
+			return getDirectionIfPrecision(horizontalDirection, precision);
+		}
+
+		public static Direction getRecentVerticalDirection(long precision) {
+			return getDirectionIfPrecision(verticalDirection, precision);
+		}
+
+		private static Direction getDirectionIfPrecision(Direction direction, long precision) {
+			return lastDirectionUpdate + precision > System.currentTimeMillis()
+				? direction
+				: NONE;
 		}
     }
 
@@ -60,9 +99,9 @@ public class PlayerStats {
 	public PlayerStats() {
 		Direction.resetAll();
 		startTimestamp = System.currentTimeMillis();
-		this.walkingDirection = RIGHT;
-		this.horizontalDirection = RIGHT;
-		this.verticalDirection = UP;
+		walkingDirection = RIGHT;
+		horizontalDirection = RIGHT;
+		verticalDirection = UP;
 	}
 
 	public Direction getWalkingDirection() {
@@ -120,27 +159,20 @@ public class PlayerStats {
 	}
 
 	public void setSteps(Direction direction, int steps) {
-		direction.steps = steps;
+		direction.setSteps(steps);
 	}
 
 	public int getSteps(Direction direction) {
-		return direction.steps;
+		return direction.getSteps();
 	}
 
 	public void incrementSteps(Direction direction) {
 		incrementTotalSteps();
-		direction.steps++;
+		direction.incrementSteps();
 	}
 
 	private void incrementTotalSteps() {
-		for (int level = maxLevel; level > 0; level--) {
-			if (TOTAL.steps == 0) {
-				storeCachedBoxes(level);
-			} else if (TOTAL.steps % Math.pow(2, level) == 0) {
-				storeCachedBoxes(level);
-			}
-		}
-		TOTAL.steps++;
+		TOTAL.incrementSteps();
 	}
 
 	public List<Direction> getHighestStep() {
