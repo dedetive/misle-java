@@ -3,16 +3,12 @@ package com.ded.misle.world.player;
 import java.util.*;
 
 import static com.ded.misle.world.boxes.BoxHandling.*;
+import static com.ded.misle.world.player.PlayerStats.Direction.*;
 
 public class PlayerStats {
 
 	long startTimestamp;
 	long totalPlaytime;
-	int totalSteps;
-	int stepsUp;
-	int stepsDown;
-	int stepsLeft;
-	int stepsRight;
 	Direction walkingDirection;
 	Direction horizontalDirection;
 	Direction verticalDirection;
@@ -24,7 +20,36 @@ public class PlayerStats {
 		RIGHT,
 		TOTAL,
 		NONE
-	}
+
+		;
+
+		private int steps;
+
+		Direction() {
+			reset();
+		}
+
+        public int getSteps() {
+            return steps;
+        }
+
+        public void setSteps(int steps) {
+            this.steps = steps;
+        }
+
+		public void incrementSteps() {
+			steps++;
+		}
+
+		public void reset() {
+			steps = 0;
+		}
+
+		public static void resetAll() {
+			for (Direction direction : Direction.values()) direction.reset();
+		}
+    }
+
 	public enum PlaytimeMode {
 		MILLIS,
 		SECONDS,
@@ -33,84 +58,11 @@ public class PlayerStats {
 	}
 
 	public PlayerStats() {
+		Direction.resetAll();
 		startTimestamp = System.currentTimeMillis();
-		this.totalSteps = 0;
-		this.stepsUp = 0;
-		this.stepsDown = 0;
-		this.stepsLeft = 0;
-		this.stepsRight = 0;
-		this.walkingDirection = Direction.RIGHT;
-		this.horizontalDirection = Direction.RIGHT;
-		this.verticalDirection = Direction.UP;
-	}
-
-	public List<Direction> getHighestStep() {
-		HashMap<Direction, Integer> mostTravelled = new HashMap<>();
-		mostTravelled.put(Direction.UP, getSteps(Direction.UP));
-		mostTravelled.put(Direction.DOWN, getSteps(Direction.DOWN));
-		mostTravelled.put(Direction.LEFT, getSteps(Direction.LEFT));
-		mostTravelled.put(Direction.RIGHT, getSteps(Direction.RIGHT));
-		Integer highestValue = Collections.max(mostTravelled.values());
-		List<Direction> mostDistanceTravelled = new ArrayList<>();
-		for (Map.Entry<Direction, Integer> entry : mostTravelled.entrySet()) {
-			if (entry.getValue() >= highestValue) {
-				mostDistanceTravelled.add(entry.getKey());
-			}
-		}
-		mostDistanceTravelled.add(Direction.valueOf(highestValue.toString()));
-
-		return mostDistanceTravelled;
-	}
-
-	public List<Direction> getLowestStep() {
-		HashMap<Direction, Integer> leastTravelled = new HashMap<>();
-		leastTravelled.put(Direction.UP, getSteps(Direction.UP));
-		leastTravelled.put(Direction.DOWN, getSteps(Direction.DOWN));
-		leastTravelled.put(Direction.LEFT, getSteps(Direction.LEFT));
-		leastTravelled.put(Direction.RIGHT, getSteps(Direction.RIGHT));
-		Integer lowestValue = Collections.min(leastTravelled.values());
-		List<Direction> leastDistanceTravelled = new ArrayList<>();
-		leastDistanceTravelled.add(Direction.valueOf(lowestValue.toString()));
-
-		for (Map.Entry<Direction, Integer> entry : leastTravelled.entrySet()) {
-			if (entry.getValue() <= lowestValue) {
-				leastDistanceTravelled.add(entry.getKey());
-			}
-		}
-
-		return leastDistanceTravelled;
-	}
-
-	public int getSteps(Direction direction) {
-		return switch (direction) {
-			case UP -> stepsUp;
-			case DOWN -> stepsDown;
-			case LEFT -> stepsLeft;
-			case RIGHT -> stepsRight;
-			case TOTAL -> totalSteps;
-            case NONE -> 0;
-        };
-	}
-
-	public void incrementSteps(Direction direction) {
-		incrementTotalSteps();
-		switch (direction) {
-			case UP -> stepsUp++;
-			case DOWN -> stepsDown++;
-			case LEFT -> stepsLeft++;
-			case RIGHT -> stepsRight++;
-		}
-	}
-
-	public void incrementTotalSteps() {
-		for (int level = maxLevel; level > 0; level--) {
-			if (totalSteps == 0) {
-				storeCachedBoxes(level);
-			} else if (totalSteps % Math.pow(2, level) == 0) {
-				storeCachedBoxes(level);
-			}
-		}
-		totalSteps++;
+		this.walkingDirection = RIGHT;
+		this.horizontalDirection = RIGHT;
+		this.verticalDirection = UP;
 	}
 
 	public Direction getWalkingDirection() {
@@ -123,16 +75,6 @@ public class PlayerStats {
 
 	public Direction getVerticalDirection() {
 		return verticalDirection;
-	}
-
-	public void setSteps(Direction direction, int steps) {
-		switch (direction) {
-			case UP -> stepsUp = steps;
-			case DOWN -> stepsDown = steps;
-			case LEFT -> stepsLeft = steps;
-			case RIGHT -> stepsRight = steps;
-			case TOTAL -> totalSteps = steps;
-		}
 	}
 
 	public long getStartTimestamp() {
@@ -175,5 +117,66 @@ public class PlayerStats {
 			case MINUTES -> (totalPlaytime / (60 * 1000));
 			case HOURS -> (totalPlaytime / (60 * 60 * 1000));
 		};
+	}
+
+	public void setSteps(Direction direction, int steps) {
+		direction.steps = steps;
+	}
+
+	public int getSteps(Direction direction) {
+		return direction.steps;
+	}
+
+	public void incrementSteps(Direction direction) {
+		incrementTotalSteps();
+		direction.steps++;
+	}
+
+	private void incrementTotalSteps() {
+		for (int level = maxLevel; level > 0; level--) {
+			if (TOTAL.steps == 0) {
+				storeCachedBoxes(level);
+			} else if (TOTAL.steps % Math.pow(2, level) == 0) {
+				storeCachedBoxes(level);
+			}
+		}
+		TOTAL.steps++;
+	}
+
+	public List<Direction> getHighestStep() {
+		HashMap<Direction, Integer> mostTravelled = new HashMap<>();
+		mostTravelled.put(UP, getSteps(UP));
+		mostTravelled.put(Direction.DOWN, getSteps(Direction.DOWN));
+		mostTravelled.put(Direction.LEFT, getSteps(Direction.LEFT));
+		mostTravelled.put(Direction.RIGHT, getSteps(Direction.RIGHT));
+		Integer highestValue = Collections.max(mostTravelled.values());
+		List<Direction> mostDistanceTravelled = new ArrayList<>();
+		for (Map.Entry<Direction, Integer> entry : mostTravelled.entrySet()) {
+			if (entry.getValue() >= highestValue) {
+				mostDistanceTravelled.add(entry.getKey());
+			}
+		}
+		mostDistanceTravelled.add(Direction.valueOf(highestValue.toString()));
+
+		return mostDistanceTravelled;
+	}
+
+	public List<Direction> getLowestStep() {
+		HashMap<Direction, Integer> leastTravelled = new HashMap<>();
+		leastTravelled.put(UP, getSteps(UP));
+		leastTravelled.put(Direction.DOWN, getSteps(Direction.DOWN));
+		leastTravelled.put(Direction.LEFT, getSteps(Direction.LEFT));
+		leastTravelled.put(Direction.RIGHT, getSteps(Direction.RIGHT));
+		Integer lowestValue = Collections.min(leastTravelled.values());
+		List<Direction> leastDistanceTravelled = new ArrayList<>();
+		leastDistanceTravelled.add(Direction.valueOf(lowestValue.toString()));
+
+		for (Map.Entry<Direction, Integer> entry : leastTravelled.entrySet()) {
+			if (entry.getValue() <= lowestValue) {
+				leastDistanceTravelled.add(entry.getKey());
+			}
+		}
+
+		return leastDistanceTravelled;
 	}
 }

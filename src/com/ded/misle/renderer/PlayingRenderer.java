@@ -114,10 +114,9 @@ public abstract class PlayingRenderer {
 //        Rectangle playerRect = new Rectangle(playerScreenX, playerScreenY, (int) player.getBoxScaleHorizontal(), (int) player.getBoxScaleVertical());
 //        drawRotatedRect(g2d, playerRect, player.pos.getVisualRotation()); // CUBE PLAYER
 
-        long precision = 50;
-        PlayerStats.Direction horizontalDirection = player.stats.getCurrentHorizontalDirection(precision);
-        PlayerStats.Direction verticalDirection = player.stats.getCurrentVerticalDirection(precision);
-        PlayerStats.Direction totalDirection = player.stats.getCurrentWalkingDirection(precision);
+        PlayerStats.Direction horizontalDirection = player.stats.getHorizontalDirection();
+        PlayerStats.Direction verticalDirection = player.stats.getVerticalDirection();
+        PlayerStats.Direction totalDirection = player.stats.getWalkingDirection();
         BufferedImage playerSprite = null;
         boolean playerMirror = player.stats.getHorizontalDirection() == LEFT;
 

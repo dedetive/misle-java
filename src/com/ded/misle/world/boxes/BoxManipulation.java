@@ -114,7 +114,6 @@ public class BoxManipulation {
      * @param y double - How many pixels in y direction (this is not based on scale).
      */
     public static void movePlayer(int x, int y) {
-        player.stats.increaseDistance(x, y);
         x = player.getX() + x;
         y = player.getY() + y;
         player.setX(x);
