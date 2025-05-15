@@ -1,13 +1,14 @@
 package com.ded.misle.world.boxes;
 
-import com.ded.misle.world.PhysicsEngine;
-import com.ded.misle.world.World;
-import com.ded.misle.world.effects.Chest;
-import com.ded.misle.world.effects.Collectible;
-import com.ded.misle.world.effects.Effect;
-import com.ded.misle.world.effects.Spawnpoint;
-import com.ded.misle.world.enemies.Enemy;
-import com.ded.misle.world.npcs.NPC;
+import com.ded.misle.world.entities.HPBox;
+import com.ded.misle.world.logic.PhysicsEngine;
+import com.ded.misle.world.logic.World;
+import com.ded.misle.world.logic.effects.Chest;
+import com.ded.misle.world.logic.effects.Collectible;
+import com.ded.misle.world.logic.effects.Effect;
+import com.ded.misle.world.logic.effects.Spawnpoint;
+import com.ded.misle.world.entities.enemies.Enemy;
+import com.ded.misle.world.entities.npcs.NPC;
 
 import java.awt.*;
 import java.io.File;
@@ -17,12 +18,12 @@ import java.util.List;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.GamePanel.tileSize;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.world.boxes.HPBox.clearHPBoxes;
-import static com.ded.misle.world.boxes.HPBox.getHPBoxes;
-import static com.ded.misle.world.enemies.Enemy.clearEnemyBoxes;
-import static com.ded.misle.world.enemies.Enemy.getEnemyBoxes;
-import static com.ded.misle.world.npcs.NPC.clearNPCs;
-import static com.ded.misle.world.npcs.NPC.getInteractableNPCs;
+import static com.ded.misle.world.entities.HPBox.clearHPBoxes;
+import static com.ded.misle.world.entities.HPBox.getHPBoxes;
+import static com.ded.misle.world.entities.enemies.Enemy.clearEnemyBoxes;
+import static com.ded.misle.world.entities.enemies.Enemy.getEnemyBoxes;
+import static com.ded.misle.world.entities.npcs.NPC.clearNPCs;
+import static com.ded.misle.world.entities.npcs.NPC.getInteractableNPCs;
 
 public class BoxHandling {
 

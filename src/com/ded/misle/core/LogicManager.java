@@ -1,10 +1,10 @@
 package com.ded.misle.core;
 
-import com.ded.misle.world.boxes.HPBox;
+import com.ded.misle.world.entities.HPBox;
 
 import static com.ded.misle.core.GamePanel.player;
-import static com.ded.misle.world.boxes.HPBox.getHPBoxes;
-import static com.ded.misle.world.enemies.EnemyAI.updateEnemyAI;
+import static com.ded.misle.world.entities.HPBox.getHPBoxes;
+import static com.ded.misle.world.entities.enemies.EnemyAI.updateEnemyAI;
 
 public abstract class LogicManager {
 

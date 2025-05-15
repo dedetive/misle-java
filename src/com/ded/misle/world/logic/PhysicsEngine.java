@@ -1,9 +1,9 @@
-package com.ded.misle.world;
+package com.ded.misle.world.logic;
 
 import com.ded.misle.world.boxes.Box;
-import com.ded.misle.world.effects.Damage;
-import com.ded.misle.world.boxes.HPBox;
-import com.ded.misle.world.player.PlayerAttributes;
+import com.ded.misle.world.logic.effects.Damage;
+import com.ded.misle.world.entities.HPBox;
+import com.ded.misle.world.entities.player.PlayerAttributes;
 
 import static com.ded.misle.core.GamePanel.player;
 

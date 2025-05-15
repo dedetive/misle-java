@@ -2,8 +2,8 @@ package com.ded.misle.core;
 
 import com.ded.misle.items.Item;
 import com.ded.misle.renderer.ImageManager;
-import com.ded.misle.world.player.PlayerAttributes;
-import com.ded.misle.world.player.PlayerStats;
+import com.ded.misle.world.entities.player.PlayerAttributes;
+import com.ded.misle.world.entities.player.PlayerStats;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -19,7 +19,6 @@ import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 
 import static com.ded.misle.core.SaveFile.SaveScreenOption.ICON;
-import static com.ded.misle.core.SaveFile.SaveScreenOption.IS_PLAYER_TEXTURE_ICON;
 import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.SaveFile.PixelColor.*;

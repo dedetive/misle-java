@@ -1,4 +1,4 @@
-package com.ded.misle.world.player;
+package com.ded.misle.world.entities.player;
 
 import com.ded.misle.renderer.FloatingText;
 import com.ded.misle.world.boxes.Box;
@@ -6,20 +6,19 @@ import com.ded.misle.world.boxes.BoxHandling;
 import com.ded.misle.input.MouseHandler;
 import com.ded.misle.items.Item;
 import com.ded.misle.renderer.PlayingRenderer;
-import com.ded.misle.world.boxes.HPBox;
+import com.ded.misle.world.entities.HPBox;
 
 import javax.swing.*;
 import java.text.DecimalFormat;
-import java.text.Normalizer;
 
 import static com.ded.misle.audio.AudioPlayer.AudioFile.*;
 import static com.ded.misle.audio.AudioPlayer.playThis;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.world.boxes.BoxManipulation.*;
-import static com.ded.misle.world.boxes.HPBox.HealFlag.NORMAL;
-import static com.ded.misle.world.player.HandItemAnimator.animateClaw;
-import static com.ded.misle.world.player.PlayerAttributes.Stat.ALL;
+import static com.ded.misle.world.entities.HPBox.HealFlag.NORMAL;
+import static com.ded.misle.world.entities.player.HandItemAnimator.animateClaw;
+import static com.ded.misle.world.entities.player.PlayerAttributes.Stat.ALL;
 import static com.ded.misle.renderer.ColorManager.entropyGainColor;
 import static com.ded.misle.renderer.ColorManager.healColor;
 import static java.lang.System.currentTimeMillis;

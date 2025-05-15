@@ -1,10 +1,10 @@
-package com.ded.misle.world.effects;
+package com.ded.misle.world.logic.effects;
 
 import com.ded.misle.items.DropTable;
 import com.ded.misle.world.boxes.Box;
-import com.ded.misle.world.player.Player;
+import com.ded.misle.world.entities.player.Player;
 
-import static com.ded.misle.world.PhysicsEngine.isSpaceOccupied;
+import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
 import static java.lang.System.currentTimeMillis;
 
 public class Chest extends Effect {

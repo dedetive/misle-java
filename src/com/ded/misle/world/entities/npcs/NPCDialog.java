@@ -1,10 +1,10 @@
-package com.ded.misle.world.npcs;
+package com.ded.misle.world.entities.npcs;
 
 import com.ded.misle.core.GamePanel;
 
 import static com.ded.misle.core.GamePanel.gameState;
 import static com.ded.misle.renderer.DialogRenderer.resetLetterDisplay;
-import static com.ded.misle.world.npcs.NPC.getDialogNPCs;
+import static com.ded.misle.world.entities.npcs.NPC.getDialogNPCs;
 
 public class NPCDialog {
     private static NPC currentTalkingTo;

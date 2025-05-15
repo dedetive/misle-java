@@ -1,12 +1,12 @@
 package com.ded.misle.renderer;
 
 import com.ded.misle.core.LanguageManager;
-import com.ded.misle.world.World;
-import com.ded.misle.world.npcs.NPC;
+import com.ded.misle.world.logic.World;
+import com.ded.misle.world.entities.npcs.NPC;
 import com.ded.misle.input.MouseHandler;
 import com.ded.misle.world.boxes.BoxHandling;
 import com.ded.misle.items.Item;
-import com.ded.misle.world.player.PlayerStats;
+import com.ded.misle.world.entities.player.PlayerStats;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -21,13 +21,13 @@ import static com.ded.misle.renderer.FloatingText.drawFloatingTexts;
 import static com.ded.misle.renderer.FontManager.*;
 import static com.ded.misle.renderer.ImageManager.mergeImages;
 import static com.ded.misle.world.boxes.Box.getTexture;
-import static com.ded.misle.world.npcs.NPC.getSelectedNPCs;
+import static com.ded.misle.world.entities.npcs.NPC.getSelectedNPCs;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.DialogRenderer.renderDialog;
 import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.renderer.ImageManager.cachedImages;
 import static com.ded.misle.renderer.InventoryRenderer.*;
-import static com.ded.misle.world.player.PlayerStats.Direction.*;
+import static com.ded.misle.world.entities.player.PlayerStats.Direction.*;
 import static java.lang.System.currentTimeMillis;
 
 public abstract class PlayingRenderer {

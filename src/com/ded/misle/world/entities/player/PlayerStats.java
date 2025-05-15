@@ -1,8 +1,8 @@
-package com.ded.misle.world.player;
+package com.ded.misle.world.entities.player;
 
 import java.util.*;
 
-import static com.ded.misle.world.player.PlayerStats.Direction.*;
+import static com.ded.misle.world.entities.player.PlayerStats.Direction.*;
 
 public class PlayerStats {
 

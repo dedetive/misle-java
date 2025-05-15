@@ -1,8 +1,8 @@
-package com.ded.misle.world.effects;
+package com.ded.misle.world.logic.effects;
 
 import com.ded.misle.core.TurnTimer;
 import com.ded.misle.world.boxes.Box;
-import com.ded.misle.world.boxes.HPBox;
+import com.ded.misle.world.entities.HPBox;
 
 import java.util.Arrays;
 import java.util.EnumSet;

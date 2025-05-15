@@ -1,13 +1,13 @@
 package com.ded.misle.world.boxes;
 
-import com.ded.misle.world.PhysicsEngine;
+import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.renderer.ImageManager;
 import com.ded.misle.renderer.SmoothPosition;
-import com.ded.misle.world.World;
-import com.ded.misle.world.effects.Collectible;
-import com.ded.misle.world.effects.Effect;
-import com.ded.misle.world.player.Player;
-import com.ded.misle.world.player.PlayerAttributes;
+import com.ded.misle.world.logic.World;
+import com.ded.misle.world.logic.effects.Collectible;
+import com.ded.misle.world.logic.effects.Effect;
+import com.ded.misle.world.entities.player.Player;
+import com.ded.misle.world.entities.player.PlayerAttributes;
 
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
@@ -21,11 +21,11 @@ import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.core.GamePanel.*;
 import static com.ded.misle.renderer.ImageManager.*;
 import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
-import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
+import static com.ded.misle.world.entities.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
-import static com.ded.misle.world.PhysicsEngine.ObjectType.BOX;
+import static com.ded.misle.world.logic.PhysicsEngine.ObjectType.BOX;
 import static com.ded.misle.world.boxes.BoxHandling.*;
-import static com.ded.misle.world.WorldLoader.loadBoxes;
+import static com.ded.misle.world.data.WorldLoader.loadBoxes;
 import static com.ded.misle.items.Item.createDroppedItem;
 import static com.ded.misle.renderer.MainRenderer.*;
 

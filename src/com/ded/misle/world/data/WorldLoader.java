@@ -1,11 +1,12 @@
-package com.ded.misle.world;
+package com.ded.misle.world.data;
 
 import com.ded.misle.core.TurnTimer;
 import com.ded.misle.items.DropTable;
 import com.ded.misle.world.boxes.Box;
-import com.ded.misle.world.effects.Chest;
-import com.ded.misle.world.effects.Spawnpoint;
-import com.ded.misle.world.effects.Travel;
+import com.ded.misle.world.logic.effects.Chest;
+import com.ded.misle.world.logic.effects.Spawnpoint;
+import com.ded.misle.world.logic.effects.Travel;
+import com.ded.misle.world.logic.World;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -18,8 +19,8 @@ import java.util.function.Function;
 
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.core.SettingsManager.getPath;
-import static com.ded.misle.world.RoomManager.*;
-import static com.ded.misle.world.WorldLoader.SideGridDirection.*;
+import static com.ded.misle.world.logic.RoomManager.*;
+import static com.ded.misle.world.data.WorldLoader.SideGridDirection.*;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 
 public abstract class WorldLoader {

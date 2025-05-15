@@ -1,7 +1,7 @@
-package com.ded.misle.world.enemies;
+package com.ded.misle.world.entities.enemies;
 
-import com.ded.misle.world.effects.Damage;
-import com.ded.misle.world.boxes.HPBox;
+import com.ded.misle.world.logic.effects.Damage;
+import com.ded.misle.world.entities.HPBox;
 import com.ded.misle.items.DropTable;
 
 import java.awt.*;
@@ -12,8 +12,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
-import static com.ded.misle.world.enemies.EnemyAI.AIState.STILL;
-import static com.ded.misle.world.enemies.EnemyAI.AIState.WANDERING;
+import static com.ded.misle.world.entities.enemies.EnemyAI.AIState.STILL;
+import static com.ded.misle.world.entities.enemies.EnemyAI.AIState.WANDERING;
 
 public class Enemy extends HPBox {
 

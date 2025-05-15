@@ -1,4 +1,4 @@
-package com.ded.misle.world.effects;
+package com.ded.misle.world.logic.effects;
 
 import com.ded.misle.world.boxes.Box;
 

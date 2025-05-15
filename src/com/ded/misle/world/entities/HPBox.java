@@ -1,13 +1,14 @@
-package com.ded.misle.world.boxes;
+package com.ded.misle.world.entities;
 
 import com.ded.misle.core.LanguageManager;
 import com.ded.misle.core.TurnTimer;
 import com.ded.misle.renderer.FloatingText;
 import com.ded.misle.items.DropTable;
-import com.ded.misle.world.enemies.Enemy;
-import com.ded.misle.world.npcs.NPC;
-import com.ded.misle.world.player.Player;
-import com.ded.misle.world.player.PlayerAttributes;
+import com.ded.misle.world.boxes.Box;
+import com.ded.misle.world.entities.enemies.Enemy;
+import com.ded.misle.world.entities.npcs.NPC;
+import com.ded.misle.world.entities.player.Player;
+import com.ded.misle.world.entities.player.PlayerAttributes;
 
 import java.awt.*;
 import java.text.DecimalFormat;
@@ -18,12 +19,12 @@ import java.util.List;
 import static com.ded.misle.core.GamePanel.getWindow;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.world.PhysicsEngine.ObjectType.HP_BOX;
+import static com.ded.misle.world.logic.PhysicsEngine.ObjectType.HP_BOX;
 import static com.ded.misle.renderer.FontManager.itemInfoFont;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.renderer.ColorManager.*;
-import static com.ded.misle.world.boxes.HPBox.HealFlag.ABSOLUTE;
+import static com.ded.misle.world.entities.HPBox.HealFlag.ABSOLUTE;
 
 /**
  * Represents an entity with health points (HP).

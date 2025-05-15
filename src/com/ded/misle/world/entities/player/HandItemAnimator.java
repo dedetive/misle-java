@@ -1,8 +1,8 @@
-package com.ded.misle.world.player;
+package com.ded.misle.world.entities.player;
 
 import com.ded.misle.items.Item;
-import com.ded.misle.world.attacks.Range;
-import com.ded.misle.world.attacks.WeaponAttacker;
+import com.ded.misle.world.logic.attacks.Range;
+import com.ded.misle.world.logic.attacks.WeaponAttacker;
 
 import javax.swing.*;
 

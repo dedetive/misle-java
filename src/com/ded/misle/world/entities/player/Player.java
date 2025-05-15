@@ -1,12 +1,12 @@
-package com.ded.misle.world.player;
+package com.ded.misle.world.entities.player;
 
-import com.ded.misle.world.PhysicsEngine;
-import com.ded.misle.world.boxes.HPBox;
+import com.ded.misle.world.logic.PhysicsEngine;
+import com.ded.misle.world.entities.HPBox;
 
 import java.awt.image.BufferedImage;
 
 import static com.ded.misle.world.boxes.BoxHandling.addBoxToCache;
-import static com.ded.misle.world.player.PlayerAttributes.KnockbackDirection.NONE;
+import static com.ded.misle.world.entities.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 
 public class Player extends HPBox {

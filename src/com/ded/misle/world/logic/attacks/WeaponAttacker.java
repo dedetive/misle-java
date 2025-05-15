@@ -1,9 +1,9 @@
-package com.ded.misle.world.attacks;
+package com.ded.misle.world.logic.attacks;
 
 import com.ded.misle.world.boxes.Box;
-import com.ded.misle.world.boxes.HPBox;
-import com.ded.misle.world.player.Player;
-import com.ded.misle.world.player.PlayerStats;
+import com.ded.misle.world.entities.HPBox;
+import com.ded.misle.world.entities.player.Player;
+import com.ded.misle.world.entities.player.PlayerStats;
 
 import java.awt.*;
 

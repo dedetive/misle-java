@@ -1,26 +1,21 @@
 package com.ded.misle.input;
 
 import com.ded.misle.core.LogicManager;
-import com.ded.misle.renderer.ImageManager;
 import com.ded.misle.world.boxes.BoxManipulation;
-import com.ded.misle.world.npcs.NPC;
-import com.ded.misle.world.player.PlayerAttributes;
+import com.ded.misle.world.entities.npcs.NPC;
+import com.ded.misle.world.entities.player.PlayerAttributes;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.core.GamePanel.*;
-import static com.ded.misle.world.PhysicsEngine.isSpaceOccupied;
-import static com.ded.misle.core.SettingsManager.getPath;
+import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
 import static com.ded.misle.renderer.DialogRenderer.fillLetterDisplay;
 import static com.ded.misle.renderer.DialogRenderer.isLetterDisplayFull;
 import static com.ded.misle.renderer.FontManager.dialogNPCText;
@@ -31,10 +26,10 @@ import static com.ded.misle.renderer.SaveCreator.confirmName;
 import static com.ded.misle.renderer.SaveCreator.playerName;
 import static com.ded.misle.renderer.SaveSelector.askingToDelete;
 import static com.ded.misle.renderer.SettingsMenuRenderer.*;
-import static com.ded.misle.world.npcs.NPC.getDialogNPCs;
-import static com.ded.misle.world.npcs.NPC.getSelectedNPCs;
-import static com.ded.misle.world.npcs.NPCDialog.getCurrentTalkingTo;
-import static com.ded.misle.world.npcs.NPCDialog.startDialog;
+import static com.ded.misle.world.entities.npcs.NPC.getDialogNPCs;
+import static com.ded.misle.world.entities.npcs.NPC.getSelectedNPCs;
+import static com.ded.misle.world.entities.npcs.NPCDialog.getCurrentTalkingTo;
+import static com.ded.misle.world.entities.npcs.NPCDialog.startDialog;
 import static com.ded.misle.renderer.LevelDesignerRenderer.levelDesignerGrid;
 import static com.ded.misle.renderer.MenuRenderer.pauseGame;
 import static com.ded.misle.input.KeyHandler.Key.*;

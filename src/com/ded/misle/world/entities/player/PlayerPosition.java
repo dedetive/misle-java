@@ -1,7 +1,7 @@
-package com.ded.misle.world.player;
+package com.ded.misle.world.entities.player;
 
-import com.ded.misle.world.RoomManager;
-import com.ded.misle.world.World;
+import com.ded.misle.world.logic.RoomManager;
+import com.ded.misle.world.logic.World;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

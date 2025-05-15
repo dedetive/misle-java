@@ -1,4 +1,4 @@
-package com.ded.misle.world.enemies;
+package com.ded.misle.world.entities.enemies;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -7,9 +7,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.core.GamePanel.player;
-import static com.ded.misle.world.PhysicsEngine.isSpaceOccupied;
+import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
 import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
-import static com.ded.misle.world.enemies.Enemy.getEnemyBoxes;
+import static com.ded.misle.world.entities.enemies.Enemy.getEnemyBoxes;
 
 public class EnemyAI  {
     // First breadcrumb = oldest breadcrumb

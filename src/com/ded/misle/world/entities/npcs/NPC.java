@@ -1,14 +1,14 @@
-package com.ded.misle.world.npcs;
+package com.ded.misle.world.entities.npcs;
 
 import com.ded.misle.core.LanguageManager;
-import com.ded.misle.world.PhysicsEngine;
-import com.ded.misle.world.boxes.HPBox;
+import com.ded.misle.world.logic.PhysicsEngine;
+import com.ded.misle.world.entities.HPBox;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 import static com.ded.misle.renderer.DialogRenderer.resetLetterDisplay;
-import static com.ded.misle.world.npcs.NPCDialog.endDialog;
+import static com.ded.misle.world.entities.npcs.NPCDialog.endDialog;
 
 public class NPC extends HPBox {
     private static final ArrayList<NPC> selectedNPCs = new ArrayList<>();

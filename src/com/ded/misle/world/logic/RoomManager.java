@@ -1,4 +1,4 @@
-package com.ded.misle.world;
+package com.ded.misle.world.logic;
 
 import java.io.BufferedReader;
 import java.io.IOException;

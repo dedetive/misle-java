@@ -1,8 +1,8 @@
-package com.ded.misle.world.effects;
+package com.ded.misle.world.logic.effects;
 
 import com.ded.misle.renderer.PlayingRenderer;
 import com.ded.misle.world.boxes.Box;
-import com.ded.misle.world.player.Player;
+import com.ded.misle.world.entities.player.Player;
 
 import static com.ded.misle.audio.AudioPlayer.AudioFile.collect_item;
 import static com.ded.misle.audio.AudioPlayer.playThis;

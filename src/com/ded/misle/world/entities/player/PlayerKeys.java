@@ -1,4 +1,4 @@
-package com.ded.misle.world.player;
+package com.ded.misle.world.entities.player;
 
 import com.ded.misle.input.KeyHandler.Key;
 import static com.ded.misle.input.KeyHandler.Key.*;

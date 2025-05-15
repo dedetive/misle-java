@@ -1,8 +1,8 @@
-package com.ded.misle.world.effects;
+package com.ded.misle.world.logic.effects;
 
 import com.ded.misle.core.GamePanel;
 import com.ded.misle.renderer.MainRenderer;
-import com.ded.misle.world.player.Player;
+import com.ded.misle.world.entities.player.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,9 +11,9 @@ import com.ded.misle.world.boxes.Box;
 import static com.ded.misle.core.GamePanel.gameState;
 import static com.ded.misle.core.GamePanel.player;
 import static com.ded.misle.renderer.MainRenderer.*;
-import static com.ded.misle.world.WorldLoader.loadBoxes;
-import static com.ded.misle.world.WorldLoader.unloadBoxes;
-import static com.ded.misle.world.enemies.EnemyAI.clearBreadcrumbs;
+import static com.ded.misle.world.data.WorldLoader.loadBoxes;
+import static com.ded.misle.world.data.WorldLoader.unloadBoxes;
+import static com.ded.misle.world.entities.enemies.EnemyAI.clearBreadcrumbs;
 
 public class Travel extends Effect {
     int roomID;

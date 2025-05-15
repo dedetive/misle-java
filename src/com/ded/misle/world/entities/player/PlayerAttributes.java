@@ -1,18 +1,14 @@
-package com.ded.misle.world.player;
-
-import com.ded.misle.world.boxes.Box;
+package com.ded.misle.world.entities.player;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.ded.misle.core.GamePanel.deltaTime;
 import static com.ded.misle.core.GamePanel.player;
-import static com.ded.misle.world.WorldLoader.loadBoxes;
-import static com.ded.misle.world.WorldLoader.unloadBoxes;
-import static com.ded.misle.world.player.Inventory.PossibleItemStats.*;
+import static com.ded.misle.world.data.WorldLoader.loadBoxes;
+import static com.ded.misle.world.data.WorldLoader.unloadBoxes;
+import static com.ded.misle.world.entities.player.Inventory.PossibleItemStats.*;
 import static com.ded.misle.renderer.MainRenderer.fadeInThenOut;
 import static com.ded.misle.renderer.MainRenderer.fadeOut;
-import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.items.Item.updateMaxStackSize;
 
 public class PlayerAttributes {
