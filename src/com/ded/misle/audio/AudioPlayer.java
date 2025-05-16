@@ -22,20 +22,24 @@ public class AudioPlayer {
 	}
 
 	public enum AudioFile {
-		consume_small_pot,
-		consume_medium_pot,
+		consume_small_pot(1),
+		consume_medium_pot(1),
 		drop_item,
 		collect_item
 
 		;
 
+		private static final int DEFAULT_AUDIO_PLAYER_COUNT = 4;
 		private final String path;
 		private final ArrayList<AudioPlayer> audioPlayerList = new ArrayList<>();
 
         AudioFile () {
-            int AUDIO_PLAYER_COUNT = 8;
+            this(DEFAULT_AUDIO_PLAYER_COUNT);
+		}
+
+		AudioFile(final int AUDIO_PLAYER_COUNT) {
 			this.path = getPath().resolve("resources/audio/" + this + ".wav").toString();
-            for (int i = 0; i < AUDIO_PLAYER_COUNT; i++) {
+			for (int i = 0; i < AUDIO_PLAYER_COUNT; i++) {
 				this.audioPlayerList.add(new AudioPlayer(this.path));
 			}
 		}
