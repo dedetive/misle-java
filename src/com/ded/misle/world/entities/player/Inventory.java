@@ -235,8 +235,7 @@ public class Inventory {
 	}
 
 	private final static int DROP_DISTANCE = 2;
-	private final static int DROP_DELAY = 500;
-	private final static int DROP_ROTATION_DELAY = 150;
+	private final static int DROP_ROTATION_DURATION_MS = 150;
 
 	public void dropItem(int row, int col, int quantity) {
 		Box droppedItem = BoxHandling.addBoxItem(player.getX(), player.getY(), getItem(row, col).getId(), quantity);
@@ -259,7 +258,7 @@ public class Inventory {
 			case null, default -> {
 			}
 		}
-		delayedRotateBox(droppedItem, 360, DROP_ROTATION_DELAY);
+		delayedRotateBox(droppedItem, 360, DROP_ROTATION_DURATION_MS);
 	}
 
 	public void dropItem(int position, int quantity) {
@@ -283,7 +282,7 @@ public class Inventory {
 			case null, default -> {
 			}
 		}
-		delayedRotateBox(droppedItem, 360, DROP_ROTATION_DELAY);
+		delayedRotateBox(droppedItem, 360, DROP_ROTATION_DURATION_MS);
 	}
 
 	public void initDraggingItem(int row, int col, int count, boolean isExtra) {
@@ -386,7 +385,7 @@ public class Inventory {
 			case null, default -> {
 			}
 		}
-		delayedRotateBox(droppedItem, 360, DROP_ROTATION_DELAY);
+		delayedRotateBox(droppedItem, 360, DROP_ROTATION_DURATION_MS);
 	}
 
 	public int getEmptySlotCount() {
