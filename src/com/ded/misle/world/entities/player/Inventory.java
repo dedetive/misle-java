@@ -235,7 +235,7 @@ public class Inventory {
 	}
 
 	private final static int DROP_DISTANCE = 2;
-	private final static int DROP_ROTATION_DURATION_MS = 150;
+	private final static int DROP_ROTATION_DURATION_MS = 250;
 
 	public void dropItem(int row, int col, int quantity) {
 		Box droppedItem = BoxHandling.addBoxItem(player.getX(), player.getY(), getItem(row, col).getId(), quantity);
