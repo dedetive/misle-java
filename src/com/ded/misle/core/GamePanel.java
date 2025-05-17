@@ -4,6 +4,7 @@ import com.ded.misle.input.KeyHandler;
 import com.ded.misle.input.MouseHandler;
 import com.ded.misle.world.entities.player.Player;
 import com.ded.misle.renderer.*;
+import com.ded.misle.world.logic.LogicManager;
 
 import javax.swing.*;
 import java.awt.*;

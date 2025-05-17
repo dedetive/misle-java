@@ -1,6 +1,6 @@
 package com.ded.misle.input;
 
-import com.ded.misle.core.LogicManager;
+import com.ded.misle.world.logic.LogicManager;
 import com.ded.misle.world.boxes.BoxManipulation;
 import com.ded.misle.world.entities.npcs.NPC;
 import com.ded.misle.world.entities.player.PlayerAttributes;
