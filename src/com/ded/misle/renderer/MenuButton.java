@@ -1,6 +1,6 @@
 package com.ded.misle.renderer;
 
-import com.ded.misle.core.GamePanel;
+import com.ded.misle.game.GamePanel;
 import com.ded.misle.core.LanguageManager;
 
 import javax.swing.*;
@@ -11,8 +11,8 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.*;
 import java.util.List;
 
-import static com.ded.misle.core.GamePanel.deltaTime;
-import static com.ded.misle.core.GamePanel.gameState;
+import static com.ded.misle.game.GamePanel.deltaTime;
+import static com.ded.misle.game.GamePanel.gameState;
 import static com.ded.misle.core.LanguageManager.getCurrentScript;
 import static com.ded.misle.core.PraspomiaNumberConverter.ConvertMode.TO_PRASPOMIA;
 import static com.ded.misle.core.PraspomiaNumberConverter.impureConvertNumberSystem;

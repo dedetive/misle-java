@@ -20,7 +20,7 @@ import javax.imageio.stream.ImageOutputStream;
 
 import static com.ded.misle.core.SaveFile.SaveScreenOption.ICON;
 import static com.ded.misle.core.SettingsManager.getPath;
-import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.core.SaveFile.PixelColor.*;
 import static com.ded.misle.renderer.ImageManager.*;
 

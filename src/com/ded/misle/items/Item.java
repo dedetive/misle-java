@@ -15,7 +15,7 @@ import javax.swing.*;
 import java.io.IOException;
 
 import static com.ded.misle.core.SettingsManager.getPath;
-import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.world.boxes.BoxHandling.addBoxItem;
 import static java.lang.System.currentTimeMillis;
 

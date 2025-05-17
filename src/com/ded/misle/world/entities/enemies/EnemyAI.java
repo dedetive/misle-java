@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
 import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.world.entities.enemies.Enemy.getEnemyBoxes;

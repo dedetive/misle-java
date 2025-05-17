@@ -7,7 +7,7 @@ import com.ded.misle.world.entities.player.PlayerStats;
 
 import java.awt.*;
 
-import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.game.GamePanel.player;
 
 public class WeaponAttacker {
     private double damage;

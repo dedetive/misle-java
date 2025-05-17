@@ -13,7 +13,7 @@ import java.text.DecimalFormat;
 
 import static com.ded.misle.audio.AudioPlayer.AudioFile.*;
 import static com.ded.misle.audio.AudioPlayer.playThis;
-import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.world.boxes.BoxManipulation.*;
 import static com.ded.misle.world.entities.HPBox.HealFlag.NORMAL;

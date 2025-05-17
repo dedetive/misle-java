@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.core.Setting.antiAliasing;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.dialogNPCText;

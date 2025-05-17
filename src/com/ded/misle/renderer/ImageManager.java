@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.ded.misle.core.GamePanel.getWindow;
+import static com.ded.misle.game.GamePanel.getWindow;
 import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.renderer.ColorManager.getRandomColor;
 import static java.nio.file.Files.createDirectories;

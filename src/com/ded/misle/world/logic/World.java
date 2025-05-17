@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.ded.misle.core.GamePanel.player;
-import static com.ded.misle.core.GamePanel.setWorldBorders;
+import static com.ded.misle.game.GamePanel.player;
+import static com.ded.misle.game.GamePanel.setWorldBorders;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 
 /**

@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Optional;
 
-import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.world.entities.HPBox.DamageFlag.NORMAL;
 
 public class Damage extends Effect {

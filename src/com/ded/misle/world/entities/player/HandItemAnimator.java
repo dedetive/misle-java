@@ -8,7 +8,7 @@ import javax.swing.*;
 
 import java.awt.*;
 
-import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.game.GamePanel.player;
 
 public class HandItemAnimator {
     private static WeaponAttacker attacker = new WeaponAttacker();

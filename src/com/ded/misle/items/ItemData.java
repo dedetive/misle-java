@@ -3,7 +3,7 @@ package com.ded.misle.items;
 import java.awt.*;
 import java.util.Map;
 
-import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.game.GamePanel.player;
 
 public class ItemData {
 	private final int id;

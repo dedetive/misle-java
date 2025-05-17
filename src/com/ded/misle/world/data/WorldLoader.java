@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 
-import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.core.SettingsManager.getPath;
 import static com.ded.misle.world.logic.RoomManager.*;
 import static com.ded.misle.world.data.WorldLoader.SideGridDirection.*;

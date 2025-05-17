@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.ImageManager.cachedImages;

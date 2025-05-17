@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static com.ded.misle.Launcher.*;
-import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.core.Setting.*;
 import static com.ded.misle.renderer.FontManager.updateFontSizes;
 

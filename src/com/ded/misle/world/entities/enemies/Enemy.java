@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 import static com.ded.misle.world.entities.enemies.EnemyAI.AIState.STILL;
 import static com.ded.misle.world.entities.enemies.EnemyAI.AIState.WANDERING;

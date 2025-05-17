@@ -5,7 +5,7 @@ import com.ded.misle.world.logic.effects.Damage;
 import com.ded.misle.world.entities.HPBox;
 import com.ded.misle.world.entities.player.PlayerAttributes;
 
-import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.game.GamePanel.player;
 
 public class PhysicsEngine {
 

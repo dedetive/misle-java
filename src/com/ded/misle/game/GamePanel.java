@@ -1,4 +1,4 @@
-package com.ded.misle.core;
+package com.ded.misle.game;
 
 import com.ded.misle.input.KeyHandler;
 import com.ded.misle.input.MouseHandler;

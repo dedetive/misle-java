@@ -1,8 +1,8 @@
 package com.ded.misle.world.entities.npcs;
 
-import com.ded.misle.core.GamePanel;
+import com.ded.misle.game.GamePanel;
 
-import static com.ded.misle.core.GamePanel.gameState;
+import static com.ded.misle.game.GamePanel.gameState;
 import static com.ded.misle.renderer.DialogRenderer.resetLetterDisplay;
 import static com.ded.misle.world.entities.npcs.NPC.getDialogNPCs;
 

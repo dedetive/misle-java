@@ -9,8 +9,8 @@ import java.awt.*;
 import java.util.ConcurrentModificationException;
 
 import static com.ded.misle.Launcher.*;
-import static com.ded.misle.core.GamePanel.screenHeight;
-import static com.ded.misle.core.GamePanel.screenWidth;
+import static com.ded.misle.game.GamePanel.screenHeight;
+import static com.ded.misle.game.GamePanel.screenWidth;
 import static com.ded.misle.core.Setting.*;
 import static com.ded.misle.input.KeyHandler.Key.LEFT_MENU;
 import static com.ded.misle.input.KeyHandler.Key.RIGHT_MENU;

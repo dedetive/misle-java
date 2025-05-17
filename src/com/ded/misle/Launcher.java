@@ -1,7 +1,7 @@
 package com.ded.misle;
 
 import com.ded.misle.audio.AudioPlayer;
-import com.ded.misle.core.GamePanel;
+import com.ded.misle.game.GamePanel;
 import com.ded.misle.core.LanguageManager;
 
 import javax.swing.*;

@@ -18,7 +18,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 import static com.ded.misle.core.SettingsManager.getPath;
-import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.renderer.ImageManager.*;
 import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.world.entities.player.PlayerAttributes.KnockbackDirection.NONE;

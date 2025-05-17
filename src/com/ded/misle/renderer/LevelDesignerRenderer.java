@@ -6,7 +6,7 @@ import com.ded.misle.world.boxes.BoxHandling;
 import javax.swing.*;
 import java.awt.*;
 
-import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.core.Setting.antiAliasing;
 import static com.ded.misle.renderer.ColorManager.gridColor;
 

@@ -15,7 +15,7 @@ import java.util.ConcurrentModificationException;
 import java.util.Objects;
 
 import static com.ded.misle.Launcher.*;
-import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.core.Setting.antiAliasing;
 import static com.ded.misle.renderer.FloatingText.drawFloatingTexts;
 import static com.ded.misle.renderer.FontManager.*;

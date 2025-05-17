@@ -7,7 +7,7 @@ import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.world.entities.player.PlayerStats.Direction.interpretDirection;
 
 public class BoxManipulation {

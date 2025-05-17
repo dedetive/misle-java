@@ -16,8 +16,8 @@ import java.time.Duration;
 import java.util.*;
 import java.util.List;
 
-import static com.ded.misle.core.GamePanel.getWindow;
-import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.game.GamePanel.getWindow;
+import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.world.logic.PhysicsEngine.ObjectType.HP_BOX;
 import static com.ded.misle.renderer.FontManager.itemInfoFont;

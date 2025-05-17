@@ -3,7 +3,7 @@ package com.ded.misle.world.entities.player;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.world.data.WorldLoader.loadBoxes;
 import static com.ded.misle.world.data.WorldLoader.unloadBoxes;
 import static com.ded.misle.world.entities.player.Inventory.PossibleItemStats.*;

@@ -10,8 +10,8 @@ import java.awt.image.BufferedImage;
 import java.util.ConcurrentModificationException;
 
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.core.GamePanel.GameState.*;
-import static com.ded.misle.core.GamePanel.gameState;
+import static com.ded.misle.game.GamePanel.GameState.*;
+import static com.ded.misle.game.GamePanel.gameState;
 import static com.ded.misle.core.SaveFile.*;
 import static com.ded.misle.core.Setting.antiAliasing;
 import static com.ded.misle.renderer.ColorManager.*;

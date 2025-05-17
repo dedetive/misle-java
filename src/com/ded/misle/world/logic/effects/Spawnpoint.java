@@ -1,5 +1,6 @@
 package com.ded.misle.world.logic.effects;
 
+import com.ded.misle.game.GamePanel;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.entities.player.Player;
 
@@ -25,7 +26,7 @@ public class Spawnpoint extends Effect {
     public String toString() {
         return "Spawnpoint{" +
             "roomID=" + roomID +
-            ", activated=" + (com.ded.misle.core.GamePanel.player.pos.getSpawnpoint() == roomID) +
+            ", activated=" + (GamePanel.player.pos.getSpawnpoint() == roomID) +
             '}';
     }
 }

@@ -3,7 +3,7 @@ package com.ded.misle.world.logic;
 import com.ded.misle.core.TurnTimer;
 import com.ded.misle.world.entities.HPBox;
 
-import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.world.entities.HPBox.getHPBoxes;
 import static com.ded.misle.world.entities.enemies.EnemyAI.updateEnemyAI;
 

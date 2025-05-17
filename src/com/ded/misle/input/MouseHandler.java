@@ -11,7 +11,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.Arrays;
 import java.util.Objects;
 
-import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.renderer.DialogRenderer.fillLetterDisplay;
 import static com.ded.misle.renderer.DialogRenderer.isLetterDisplayFull;

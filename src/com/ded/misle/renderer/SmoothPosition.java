@@ -1,7 +1,6 @@
 package com.ded.misle.renderer;
 
-import static com.ded.misle.core.GamePanel.deltaTime;
-import static com.ded.misle.core.GamePanel.tileSize;
+import static com.ded.misle.game.GamePanel.deltaTime;
 
 public class SmoothPosition {
     private float renderX = -1;

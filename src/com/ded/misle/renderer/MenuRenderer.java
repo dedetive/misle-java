@@ -1,14 +1,14 @@
 package com.ded.misle.renderer;
 
-import com.ded.misle.core.GamePanel;
+import com.ded.misle.game.GamePanel;
 import com.ded.misle.core.LanguageManager;
 
 import javax.swing.*;
 import java.awt.*;
 
 import static com.ded.misle.Launcher.*;
-import static com.ded.misle.core.GamePanel.*;
-import static com.ded.misle.core.GamePanel.GameState.*;
+import static com.ded.misle.game.GamePanel.*;
+import static com.ded.misle.game.GamePanel.GameState.*;
 import static com.ded.misle.core.Setting.antiAliasing;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.itemInfoFont;
@@ -20,8 +20,8 @@ import static com.ded.misle.renderer.MenuButton.*;
 import static com.ded.misle.renderer.SettingsMenuRenderer.switchToEmpty;
 import static com.ded.misle.world.data.WorldLoader.unloadBoxes;
 import static java.lang.System.currentTimeMillis;
-import static com.ded.misle.core.GamePanel.screenWidth;
-import static com.ded.misle.core.GamePanel.screenHeight;
+import static com.ded.misle.game.GamePanel.screenWidth;
+import static com.ded.misle.game.GamePanel.screenHeight;
 
 public abstract class MenuRenderer {
     static void createTitle(String text, Graphics2D g2d) {

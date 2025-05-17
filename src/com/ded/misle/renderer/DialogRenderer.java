@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.world.entities.npcs.NPCDialog.getCurrentTalkingTo;
 import static com.ded.misle.world.entities.player.PlayerStats.PlaytimeMode.*;

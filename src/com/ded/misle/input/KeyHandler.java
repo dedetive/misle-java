@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
 import static com.ded.misle.renderer.DialogRenderer.fillLetterDisplay;
 import static com.ded.misle.renderer.DialogRenderer.isLetterDisplayFull;

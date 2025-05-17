@@ -7,7 +7,7 @@ import com.ded.misle.world.entities.HPBox;
 import java.util.Arrays;
 import java.util.EnumSet;
 
-import static com.ded.misle.core.GamePanel.player;
+import static com.ded.misle.game.GamePanel.player;
 
 public class Heal extends Effect {
     public double healValue;

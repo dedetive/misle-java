@@ -4,10 +4,10 @@ import com.ded.misle.input.KeyHandler;
 import com.ded.misle.world.entities.player.Player;
 import com.ded.misle.world.entities.player.PlayerAttributes;
 
-import static com.ded.misle.core.GamePanel.*;
+import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.Launcher.scale;
-import static com.ded.misle.core.GamePanel.GameState.LEVEL_DESIGNER;
-import static com.ded.misle.core.GamePanel.GameState.PLAYING;
+import static com.ded.misle.game.GamePanel.GameState.LEVEL_DESIGNER;
+import static com.ded.misle.game.GamePanel.GameState.PLAYING;
 import static com.ded.misle.core.SaveFile.loadSaveFile;
 import static com.ded.misle.world.boxes.BoxHandling.storeCachedBoxes;
 import static com.ded.misle.world.data.WorldLoader.loadBoxes;
