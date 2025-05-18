@@ -30,7 +30,7 @@ import static com.ded.misle.renderer.InventoryRenderer.*;
 import static com.ded.misle.world.entities.player.PlayerStats.Direction.*;
 import static java.lang.System.currentTimeMillis;
 
-public abstract class PlayingRenderer {
+public class PlayingRenderer extends AbstractRenderer {
     public static double facingMultiplicator;
     public static boolean mirror;
 
@@ -60,7 +60,8 @@ public abstract class PlayingRenderer {
         slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
     }
 
-    public static void renderPlayingGame(Graphics g, MouseHandler mouseHandler) {
+    @Override
+    public void render(Graphics g, MouseHandler mouseHandler) {
         Graphics2D g2d = (Graphics2D) g;
 
         // ANTI-ALIASING

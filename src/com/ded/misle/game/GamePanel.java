@@ -366,7 +366,6 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 	}
 
-
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -378,7 +377,7 @@ public class GamePanel extends JPanel implements Runnable {
 			case GameState.PLAYING:
 			case GameState.FROZEN_PLAYING:
 			case GameState.DIALOG:
-				PlayingRenderer.renderPlayingGame(g, mouseHandler);
+				new PlayingRenderer().render(g, mouseHandler);
 				break;
 			case GameState.MAIN_MENU:
 				MenuRenderer.renderMainMenu(g, this);
