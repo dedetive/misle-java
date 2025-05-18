@@ -4,11 +4,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.ded.misle.game.GamePanel.player;
+import static com.ded.misle.renderer.MainRenderer.fader;
 import static com.ded.misle.world.data.WorldLoader.loadBoxes;
 import static com.ded.misle.world.data.WorldLoader.unloadBoxes;
 import static com.ded.misle.world.entities.player.Inventory.PossibleItemStats.*;
-import static com.ded.misle.renderer.MainRenderer.fadeInThenOut;
-import static com.ded.misle.renderer.MainRenderer.fadeOut;
 import static com.ded.misle.items.Item.updateMaxStackSize;
 
 public class PlayerAttributes {
@@ -140,7 +139,7 @@ public class PlayerAttributes {
 	public void playerDies() {
 		this.isDead = true;
 
-		fadeInThenOut(4000);
+		fader.fadeInThenOut(4000);
 		// Schedule playerRespawns() to run after 4 seconds
 		Timer timerToRespawn = new Timer();
 		timerToRespawn.schedule(new TimerTask() {
@@ -168,7 +167,7 @@ public class PlayerAttributes {
 
 	public void playerRevived() {
 		this.isDead = false;
-		fadeOut();
+		fader.fadeOut();
 	}
 
 	// XP

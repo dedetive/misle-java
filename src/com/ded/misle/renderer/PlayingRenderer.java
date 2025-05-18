@@ -172,7 +172,7 @@ public abstract class PlayingRenderer {
             renderDialog(g2d);
         }
 
-        if (isFading != FadingState.UNFADED) drawFading(g2d);
+        if (!fader.isState(Fader.FadingState.UNFADED)) fader.drawFading(g2d);
 
     }
 

@@ -71,8 +71,7 @@ public abstract class MenuRenderer {
         player.unloadPlayer();
         MainRenderer.previousMenu = MainRenderer.currentMenu;
         gameState = MAIN_MENU;
-        MainRenderer.fadingProgress = 0F;
-        isFading = FadingState.UNFADED;
+        fader.reset();
         clearButtonFading();
     }
 
@@ -255,7 +254,7 @@ public abstract class MenuRenderer {
             g2d.setColor(progressBarPercentage);
             drawColoredText(g2d, percentage, centerX, textY);
 
-            if (isFading != MainRenderer.FadingState.UNFADED) drawFading(g2d);
+            if (!fader.isState(Fader.FadingState.UNFADED)) fader.drawFading(g2d);
         }
     }
 

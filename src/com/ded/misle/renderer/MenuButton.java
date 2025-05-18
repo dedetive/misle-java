@@ -30,7 +30,7 @@ public class MenuButton {
     String text;
     int id;
     boolean needsToUpdate;
-    public static final HashMap<Integer, MainRenderer.FadingState> fadingState = new HashMap<>();
+    public static final HashMap<Integer, Fader.FadingState> fadingState = new HashMap<>();
     public static final HashMap<Integer, Float> fadingProgress = new HashMap<>();
 
     private volatile static List<MenuButton> buttons = new ArrayList<>();
@@ -70,7 +70,7 @@ public class MenuButton {
             Point clickPoint = e.getPoint();
             for (MenuButton button : buttons) {
                 if (button.bounds.contains(clickPoint)) {
-                    fadingState.put(button.id, MainRenderer.FadingState.FADING_OUT);
+                    fadingState.put(button.id, Fader.FadingState.FADING_OUT);
                     fadingProgress.put(button.id, 0.75F);
                     button.action.run();
                     panel.setCursor(Cursor.getDefaultCursor());
@@ -193,7 +193,7 @@ public class MenuButton {
 
                     fadingProgress.put(button.id, Math.max((float) (progress - 0.015 * deltaTime * 80), 0));
                     if (progress <= 0) {
-                        fadingState.put(button.id, MainRenderer.FadingState.UNFADED);
+                        fadingState.put(button.id, Fader.FadingState.UNFADED);
                     }
                 }
             }

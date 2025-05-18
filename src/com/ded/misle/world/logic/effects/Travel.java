@@ -1,6 +1,7 @@
 package com.ded.misle.world.logic.effects;
 
 import com.ded.misle.game.GamePanel;
+import com.ded.misle.renderer.Fader;
 import com.ded.misle.renderer.MainRenderer;
 import com.ded.misle.world.entities.player.Player;
 
@@ -32,10 +33,10 @@ public class Travel extends Effect {
     }
 
     private void handleBoxTravel() {
-        fadeIn();
+        fader.fadeIn();
         gameState = GamePanel.GameState.FROZEN_PLAYING;
         Timer fadingIn = new Timer(75, e -> {
-            if (isFading == MainRenderer.FadingState.FADED) {
+            if (fader.isState(Fader.FadingState.FADED)) {
 
                 player.pos.setRoomID(roomID);
 
@@ -46,7 +47,7 @@ public class Travel extends Effect {
                 clearBreadcrumbs();
 
                 Timer loadWait = new Timer(300, evt -> {
-                    fadeOut();
+                    fader.fadeOut();
                     gameState = GamePanel.GameState.PLAYING;
                 });
                 loadWait.setRepeats(false);

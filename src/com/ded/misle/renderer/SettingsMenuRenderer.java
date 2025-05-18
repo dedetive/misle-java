@@ -268,7 +268,7 @@ public abstract class SettingsMenuRenderer {
 
         int buttonId = SettingsMenuRenderer.SettingState.getStateByOrder(nextMenu).buttonId;
 
-        fadingState.put(buttonId, MainRenderer.FadingState.FADING_OUT);
+        fadingState.put(buttonId, Fader.FadingState.FADING_OUT);
         fadingProgress.put(buttonId, 0.75F);
         settingState = SettingsMenuRenderer.SettingState.getStateByOrder(nextMenu);
         clearButtons();

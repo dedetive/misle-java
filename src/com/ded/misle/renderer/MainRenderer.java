@@ -29,6 +29,8 @@ public abstract class MainRenderer {
 
 	public static double textShadow = 1 * scale;
 
+	public static Fader fader = new Fader();
+
 	public static void gameStart(int saveSlot) {
 		player = new Player();
 		player.currentSaveSlot = saveSlot;
@@ -50,13 +52,13 @@ public abstract class MainRenderer {
 		player.currentSaveSlot = saveSlot;
 		clearBreadcrumbs();
 
-		Timer fadeTimer = new Timer(LOADING_DURATION, e -> { fadeIn(); });
+		Timer fadeTimer = new Timer(LOADING_DURATION, e -> { fader.fadeIn(); });
 		fadeTimer.setRepeats(false);
 		fadeTimer.start();
 
 		Timer timer = new Timer(75, e -> {
-			if (isFading == MainRenderer.FadingState.FADED) {
-				slowlyFadeOut();
+			if (fader.isState(Fader.FadingState.FADED)) {
+				fader.slowlyFadeOut();
 				for (int i = 15; i > 0; i--) {
 					storeCachedBoxes(i);
 				}
@@ -102,10 +104,6 @@ public abstract class MainRenderer {
 		currentMenu = LEVEL_DESIGNER;
 		gameState = LEVEL_DESIGNER;
 	}
-
-	public static FadingState isFading = FadingState.UNFADED;
-
-	public static float fadingProgress;
 
     public static void drawRotatedImage(Graphics2D g2d, Image image, double x, double y, int width, int height, double angle) {
         // Calculate the rotation center based on the desired width and height
@@ -167,61 +165,4 @@ public abstract class MainRenderer {
         // Restore the original transform to avoid affecting other drawings
         g2d.setTransform(originalTransform);
     }
-
-    public enum FadingState {
-		NONE(),
-		FADED(0, 1, NONE),
-		UNFADED(0, 0, NONE),
-		FADING_IN(0.019F, 1, FADED),
-		SLOWLY_FADING_IN(0.005F, 1, FADED),
-		FADING_OUT(-0.02125F, 0, UNFADED),
-		SLOWLY_FADING_OUT(-0.005F, 0, UNFADED);
-
-		float progressIncrease;
-		float progressMax;
-		FadingState turnsInto;
-
-		FadingState () {}
-
-		FadingState (float progressIncrease, float progressMax, FadingState turnsInto) {
-			this.progressIncrease = progressIncrease;
-			this.progressMax = progressMax;
-			this.turnsInto = turnsInto;
-		}
-
-		public float getProgressIncrease() { return progressIncrease; }
-
-		public float getProgressMax() { return progressMax; }
-
-		public FadingState getTurnsInto() { return turnsInto; }
-	}
-
-	public static void fadeIn() { isFading = FadingState.FADING_IN; }
-
-	public static void fadeOut() { isFading = FadingState.FADING_OUT; }
-
-	public static void slowlyFadeOut() { isFading = FadingState.SLOWLY_FADING_OUT; }
-
-	public static void slowlyFadeIn() { isFading = FadingState.SLOWLY_FADING_IN; }
-
-	public static void fadeInThenOut(int ms) {
-		fadeIn();
-
-		Timer timer = new Timer(ms, e -> {
-			fadeOut();
-		});
-		timer.setRepeats(false);
-		timer.start();
-	}
-
-	public static void drawFading(Graphics2D g2d) {
-		if (isFading != MainRenderer.FadingState.UNFADED) {
-			fadingProgress = (float) Math.clamp(fadingProgress + isFading.getProgressIncrease() * Math.pow(deltaTime, 0.3) * 6, 0F, 1F);
-			g2d.setColor(new Color((float) fadingColor.getRed() / 256, (float) fadingColor.getGreen() / 256, (float) fadingColor.getBlue() / 256, fadingProgress));
-			g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
-			if (fadingProgress == isFading.getProgressMax()) {
-                isFading = isFading.getProgressMax() == 0 ? FadingState.UNFADED : FadingState.FADED;
-			}
-		}
-	}
 }
