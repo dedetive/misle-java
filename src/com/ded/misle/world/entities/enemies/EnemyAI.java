@@ -5,7 +5,6 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
 import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
@@ -19,7 +18,7 @@ public class EnemyAI  {
     private static final int maxBreadcrumbs = 5;
 
     public static void updateBreadcrumbs() {
-        breadcrumbs.add(new int[]{(int) (player.getX() / scale), (int) (player.getY() / scale)});
+        breadcrumbs.add(new int[]{player.getX(), player.getY()});
         lastBreadcrumbUpdate = System.currentTimeMillis();
         if (breadcrumbs.size() > maxBreadcrumbs) {
             breadcrumbs.removeFirst();

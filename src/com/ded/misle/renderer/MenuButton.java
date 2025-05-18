@@ -19,7 +19,6 @@ import static com.ded.misle.core.PraspomiaNumberConverter.impureConvertNumberSys
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.MainRenderer.textShadow;
 import static com.ded.misle.renderer.FontManager.buttonFont;
-import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.renderer.SettingsMenuRenderer.settingState;
 
 public class MenuButton {
@@ -147,7 +146,7 @@ public class MenuButton {
     public static void drawButtons(Graphics2D g2d) {
         try {
             for (MenuButton button : buttons) {
-                int buttonBorderSize = (int) (18.4 * scale);
+                int buttonBorderSize = 18;
 
                 // BORDER
                 g2d.setColor(buttonBorderColor);
@@ -171,7 +170,7 @@ public class MenuButton {
                 }
                 int textHeight = fm.getAscent();
                 int textX = button.bounds.x + (button.bounds.width - textWidth) / 2;
-                int textY = button.bounds.y + (button.bounds.height + textHeight) / 2 - fm.getDescent() + (int) (2 * scale);
+                int textY = button.bounds.y + (button.bounds.height + textHeight) / 2 - fm.getDescent() + 2;
                 g2d.setColor(buttonTextShadowColor);
                 // Left, right, up, down
                 drawColoredText(g2d, button.text, (int) (textX - textShadow), textY, g2d.getFont(), buttonTextShadowColor, true);
@@ -203,10 +202,10 @@ public class MenuButton {
     }
 
     public static void createGoBackButton(JPanel panel, int id) {
-        int buttonX = (int) (356 * scale);
-        int buttonY = (int) (220 * Math.pow(scale, 1.04));
-        int buttonWidth = (int) (109 * scale);
-        int buttonHeight = (int) (31 * scale);
+        int buttonX = 356;
+        int buttonY = 220;
+        int buttonWidth = 109;
+        int buttonHeight = 31;
         Rectangle button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
         createButton(button, LanguageManager.getText("settings_menu_go_back"), MenuRenderer::goToPreviousMenu, panel, id);
     }

@@ -8,7 +8,6 @@ import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
-import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.core.Setting.antiAliasing;
 import static com.ded.misle.renderer.ColorManager.*;
@@ -49,13 +48,13 @@ public abstract class SaveCreator {
             FontMetrics fm = g2d.getFontMetrics();
             String text = playerName.toString();
             int textWidth = fm.stringWidth(text);
-            int width = (int) (220 * scale);
-            int textX = (int) (((double) 512 / 2) * scale);
-            int textY = (int) (100 * scale);
+            int width = 220;
+            int textX = 256;
+            int textY = 100;
 
             g2d.setColor(saveCreatorTextBackground);
             g2d.fillRoundRect(textX - width / 2, textY - 7 * fm.getHeight() / 9,
-                (int) (width * 1.05), fm.getHeight(), (int) (16 * scale), (int) (16 * scale));
+                (int) (width * 1.05), fm.getHeight(), 16, 16);
 
                 // Text
             g2d.setColor(saveCreatorTextShadow);
@@ -71,18 +70,18 @@ public abstract class SaveCreator {
                 // Insert name text
             text = LanguageManager.getText("save_creator_instruction");
             textWidth = fm.stringWidth(text);
-            textX = (int) (((double) 512 / 2) * scale - (double) textWidth / 2);
+            textX = (int) (256 - (double) textWidth / 2);
             g2d.setColor(saveCreatorInsertNameShadow);
-            g2d.drawString(text, (int) (textX + textShadow), (int) (textY - 20 * scale + textShadow));
+            g2d.drawString(text, (int) (textX + textShadow), (int) (textY - 20 + textShadow));
             g2d.setColor(saveCreatorInsertName);
-            g2d.drawString(text, textX, (int) (textY - 20 * scale));
+            g2d.drawString(text, textX, textY - 20);
 
                 // Transparent 'Player name'
 
             if (playerName.isEmpty()) {
                 text = LanguageManager.getText("save_creator_player_name");
                 textWidth = fm.stringWidth(text);
-                textX = (int) (((double) 512 / 2) * scale - (double) textWidth / 2);
+                textX = (int) (256 - (double) textWidth / 2);
                 g2d.setColor(saveCreatorPlayerName);
                 g2d.drawString(text, textX, textY);
             } else {
@@ -91,10 +90,10 @@ public abstract class SaveCreator {
 
                 if (System.currentTimeMillis() % 1600 <= 800) {
 
-                    int x = (int) (((double) 512 / 2) * scale + (double) fm.stringWidth(playerName.toString()) / 2 + 2 * scale);
+                    int x = (int) (256 + (double) fm.stringWidth(playerName.toString()) / 2 + 2);
                     int y = textY - 2 * fm.getHeight() / 3;
                     g2d.setColor(saveCreatorCaret);
-                    g2d.fillRect(x, y, (int) (1 * scale), 4 * fm.getHeight() / 5);
+                    g2d.fillRect(x, y, 1, 4 * fm.getHeight() / 5);
 
                 }
 
@@ -103,17 +102,17 @@ public abstract class SaveCreator {
                 // Confirm name button
             buttonWidth = (int) (width * 1.05);
             buttonHeight = fm.getHeight();
-            buttonX = (int) ((double) 512 / 2 * scale) - buttonWidth / 2;
-            buttonY = (int) (140 * scale);
+            buttonX = 256 - buttonWidth / 2;
+            buttonY = 140;
             Rectangle buttonRect = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
             Runnable runnable = SaveCreator::confirmName;
 
             createButton(buttonRect, LanguageManager.getText("save_creator_confirm_button"), runnable, panel, 127);
 
                 // Add image
-            buttonWidth = (int) (40 * scale);
+            buttonWidth = 40;
             buttonHeight = buttonWidth;
-            buttonY = (int) (184 * scale);
+            buttonY = 184;
             buttonRect = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
             runnable = SaveCreator::handleIcon;
             createButton(buttonRect, "", runnable, panel, 120);
@@ -126,13 +125,13 @@ public abstract class SaveCreator {
 
                     // Add image plus
                 g2d.setColor(saveSelectorTextBackground);
-                g2d.fillRoundRect((int) (buttonX + (double) buttonWidth / 2 - 1 * scale),
-                    (int) (buttonY + (double) buttonHeight / 5 + 1 * scale),
-                    (int) (4 * scale), buttonHeight / 2, (int) (3 * scale), (int) (3 * scale));
+                g2d.fillRoundRect((int) (buttonX + (double) buttonWidth / 2 - 1),
+                    (int) (buttonY + (double) buttonHeight / 5 + 1),
+                    4, buttonHeight / 2, 3, 3);
 
-                g2d.fillRoundRect((int) (buttonX + (double) buttonWidth / 2 - 9 * scale),
-                    (int) (buttonY + (double) buttonHeight / 4 + 8 * scale),
-                    buttonHeight / 2, (int) (4 * scale), (int) (3 * scale), (int) (3 * scale));
+                g2d.fillRoundRect((int) (buttonX + (double) buttonWidth / 2 - 9),
+                    (int) (buttonY + (double) buttonHeight / 4 + 8),
+                    buttonHeight / 2, 4, 3, 3);
             } else {
                     // Clear icon
                 buttonRect = new Rectangle(buttonX, buttonY + 9 * buttonHeight / 8, buttonWidth, buttonHeight / 4);
@@ -142,7 +141,7 @@ public abstract class SaveCreator {
 
                 drawButtons(g2d);
 
-                RoundRectangle2D clip = new RoundRectangle2D.Double(buttonX, buttonY, buttonWidth, buttonHeight, 17 * scale, 17 * scale);
+                RoundRectangle2D clip = new RoundRectangle2D.Double(buttonX, buttonY, buttonWidth, buttonHeight, 17, 17);
                 g2d.setClip(clip);
                 g2d.drawImage(icon, buttonX, buttonY, buttonWidth, buttonHeight, null);
                 g2d.setClip(null);

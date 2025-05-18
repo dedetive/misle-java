@@ -17,7 +17,6 @@ import java.util.List;
 
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.game.GamePanel.tileSize;
-import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.world.entities.HPBox.clearHPBoxes;
 import static com.ded.misle.world.entities.HPBox.getHPBoxes;
 import static com.ded.misle.world.entities.enemies.Enemy.clearEnemyBoxes;
@@ -421,8 +420,8 @@ public class BoxHandling {
 	}
 
 	public static boolean checkIfBoxInRange(Box box, double x, double y, double range) {
-		double scaledX = box.getX() * scale;
-		double scaledY = box.getY() * scale;
+		double scaledX = box.getX();
+		double scaledY = box.getY();
 
 		// Calculate bounding box range based on the player's position
 		return scaledX + tileSize * box.getVisualScaleHorizontal() / 1.5 >= x - range && scaledX <= x + range

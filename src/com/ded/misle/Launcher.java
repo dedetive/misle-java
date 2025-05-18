@@ -21,7 +21,6 @@ public class Launcher {
 	// VARIABLE INITIALIZATIONS
 
 	public static String windowTitle;
-	public static double scale;
 	public static boolean levelDesigner;
 	public static LanguageManager languageManager;
 	public static String displayMoreInfo;
@@ -52,8 +51,6 @@ public class Launcher {
 		// WINDOW CONFIGS
 
 		windowTitle = "Misle";
-
-		scale = 2;
 	}
 
 	public static void main(String[] args) {
@@ -63,6 +60,7 @@ public class Launcher {
 
 		SwingUtilities.invokeLater(() -> {
 			GamePanel panel = new GamePanel();
+			GamePanel.forceResize(screenSize.str());
 			panel.showScreen();
 			panel.startGameThread();
 		});

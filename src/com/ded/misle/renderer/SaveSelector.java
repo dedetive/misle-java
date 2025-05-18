@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ConcurrentModificationException;
 
-import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.game.GamePanel.GameState.*;
 import static com.ded.misle.game.GamePanel.gameState;
 import static com.ded.misle.core.SaveFile.*;

@@ -16,9 +16,7 @@ import java.time.Duration;
 import java.util.*;
 import java.util.List;
 
-import static com.ded.misle.game.GamePanel.getWindow;
-import static com.ded.misle.game.GamePanel.player;
-import static com.ded.misle.Launcher.scale;
+import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.world.logic.PhysicsEngine.ObjectType.HP_BOX;
 import static com.ded.misle.renderer.FontManager.itemInfoFont;
 import static com.ded.misle.world.boxes.BoxHandling.*;
@@ -176,8 +174,8 @@ public class HPBox extends Box {
                         double xpGain = ((Enemy) this).getXPDrop();
                         player.attr.addXP(xpGain);
 
-                        int playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()) / scale);
-                        int playerScreenY = (int) ((player.getY() - player.pos.getCameraOffsetY()) / scale);
+                        int playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()));
+                        int playerScreenY = (int) ((player.getY() - player.pos.getCameraOffsetY()));
                         int randomPosX = (int) ((Math.random() * (40 + 40)) - 40);
                         int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
                         DecimalFormat df = new DecimalFormat("#.##");
@@ -188,7 +186,7 @@ public class HPBox extends Box {
                         player.attr.addBalance(coinGain);
 
                         FontMetrics fm = getWindow().getFontMetrics(itemInfoFont);
-                        int newY = (int) (playerScreenY + randomPosY + fm.getHeight() / scale);
+                        int newY = (int) (playerScreenY + randomPosY + fm.getHeight());
                         String formattedCoinGain = "+" + coinGain + "i{COIN}";
                         new FloatingText(formattedCoinGain, coinGainColor, playerScreenX + randomPosX, newY, true);
                     }
@@ -359,12 +357,8 @@ public class HPBox extends Box {
      * @param bold If true, shows bold text.
      */
     private void renderFloatingText(String text, Color color, boolean bold) {
-        int x = (this == player)
-            ? (int) ((player.getX() - player.pos.getCameraOffsetX()) / scale)
-            : (int) (getX() * scale);
-        int y = (this == player)
-            ? (int) ((player.getY() - player.pos.getCameraOffsetY()) / scale)
-            : (int) (getY() * scale);
+        int x = getX() * tileSize;
+        int y = getY() * tileSize;
 
         int offsetX = (int) ((Math.random() * 80) - 40);
         int offsetY = (int) ((Math.random() * 50) - 25);

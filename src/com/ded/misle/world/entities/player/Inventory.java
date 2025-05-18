@@ -13,8 +13,8 @@ import java.text.DecimalFormat;
 
 import static com.ded.misle.audio.AudioPlayer.AudioFile.*;
 import static com.ded.misle.audio.AudioPlayer.playThis;
+import static com.ded.misle.game.GamePanel.getWindowScale;
 import static com.ded.misle.game.GamePanel.player;
-import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.world.boxes.BoxManipulation.*;
 import static com.ded.misle.world.entities.HPBox.HealFlag.NORMAL;
 import static com.ded.misle.world.entities.player.HandItemAnimator.animateClaw;
@@ -462,8 +462,8 @@ public class Inventory {
 		if (currentTime > getSelectedItem().getTimeToDelay()) {
 			getSelectedItem().setTimeToDelay((long) (potionDelay * 1000)); // Handle delay
 
-			int playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()) / scale);
-			int playerScreenY = (int) ((player.getY() - player.pos.getCameraOffsetY()) / scale);
+			int playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()));
+			int playerScreenY = (int) ((player.getY() - player.pos.getCameraOffsetY()));
 			int randomPosX = (int) ((Math.random() * (40 + 40)) - 40);
 			int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
 			DecimalFormat df = new DecimalFormat("#.##");

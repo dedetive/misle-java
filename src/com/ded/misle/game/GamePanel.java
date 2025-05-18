@@ -17,7 +17,6 @@ import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.input.KeyHandler.updateDesignerSpeed;
 import static com.ded.misle.Launcher.*;
-import static com.ded.misle.renderer.InventoryRenderer.updateRendererVariableScales;
 import static com.ded.misle.renderer.MenuButton.clearButtons;
 import static com.ded.misle.input.MouseHandler.updateMouseVariableScales;
 import static com.ded.misle.core.SaveFile.saveEverything;
@@ -36,8 +35,14 @@ public class GamePanel extends JPanel implements Runnable {
 
 	// TILES SIZE
 
+	private static double windowScale;
+
+	public static double getWindowScale() {
+		return windowScale;
+	}
+
 	static final int originalTileSize = 64; // 64x64 tiles
-	public static double gameScale = scale;
+	public static double gameScale = getWindowScale();
 	public static int tileSize = updateTileSize();
 	static final double maxScreenCol = 24; // Horizontal
 	static final double maxScreenRow = 13.5; // Vertical
@@ -182,12 +187,12 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public static void forceResize(String screenSize) {
-		double previousScale = scale;
+		double previousScale = getWindowScale();
 		ScreenSizeDimensions screen = ScreenSizeDimensions.valueOf(screenSize);
 		int preferredX = screen.x;
 		int preferredY = screen.y;
-		scale = screen.scale;
-		gameScale = scale;
+		windowScale = screen.scale;
+		gameScale = getWindowScale();
 		GamePanel.screenWidth = preferredX;
 		GamePanel.screenHeight = preferredY;
 
@@ -202,8 +207,8 @@ public class GamePanel extends JPanel implements Runnable {
 				window.setResizable(false);
 				window.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds());
 				window.setVisible(true);
-				scale = (double) window.getWidth() / 512;
-				gameScale = scale;
+				windowScale = (double) window.getWidth() / 512;
+				gameScale = getWindowScale();
 				GamePanel.screenWidth = window.getWidth();
 				GamePanel.screenHeight = window.getHeight();
 			} else if (fullscreenMode.value.equals("exclusive")) {
@@ -213,8 +218,8 @@ public class GamePanel extends JPanel implements Runnable {
 					window.dispose();
 					window.setUndecorated(true);
 					device.setFullScreenWindow(window);
-					scale = (double) window.getWidth() / 512;
-					gameScale = scale;
+					windowScale = (double) window.getWidth() / 512;
+					gameScale = getWindowScale();
 					GamePanel.screenWidth = window.getWidth();
 					GamePanel.screenHeight = window.getHeight();
 				} else {
@@ -236,12 +241,11 @@ public class GamePanel extends JPanel implements Runnable {
 		updateTileSize();
 		player.setVisualScaleHorizontal(0.91);
 		player.setVisualScaleVertical(0.91);
-		worldWidth = originalWorldWidth * scale;
-		worldHeight = originalWorldHeight * scale;
+		worldWidth = originalWorldWidth * getWindowScale();
+		worldHeight = originalWorldHeight * getWindowScale();
 
 		clearButtons();
-		FontManager.updateFontSizes();
-		updateRendererVariableScales();
+		FontManager.updateFontScript();
 		updateMouseVariableScales();
 		updatePlayingVariableScales();
 		if (levelDesigner) {
@@ -371,6 +375,7 @@ public class GamePanel extends JPanel implements Runnable {
 		super.paintComponent(g);
 
 		Graphics2D g2d = (Graphics2D) g;
+		g2d.scale(getWindowScale(), getWindowScale());
 
 		switch (gameState) {
 			case GameState.INVENTORY:
@@ -414,6 +419,8 @@ public class GamePanel extends JPanel implements Runnable {
 			g2d.setColor(FPSColor);
 			drawColoredText(g2d, text, textX, textY);
 		}
+
+		g2d.dispose();
 	}
 
 	public void renderFrame() {

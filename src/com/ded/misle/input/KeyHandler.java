@@ -33,7 +33,6 @@ import static com.ded.misle.world.entities.npcs.NPCDialog.startDialog;
 import static com.ded.misle.renderer.LevelDesignerRenderer.levelDesignerGrid;
 import static com.ded.misle.renderer.MenuRenderer.pauseGame;
 import static com.ded.misle.input.KeyHandler.Key.*;
-import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.items.Item.createItem;
 import static java.awt.event.KeyEvent.*;
 
@@ -169,13 +168,13 @@ public class KeyHandler implements KeyListener {
 	}
 
 	static double baseDesignerSpeed = 1.67;
-	static int designerSpeed = (int) (baseDesignerSpeed * scale);
+	static int designerSpeed = (int) (baseDesignerSpeed);
 	static {
 		updateDesignerSpeed();
 	}
 
 	public static void updateDesignerSpeed() {
-		designerSpeed = (int) (baseDesignerSpeed * scale);
+		designerSpeed = (int) (baseDesignerSpeed);
 	}
 
 	@Override
@@ -454,7 +453,7 @@ public class KeyHandler implements KeyListener {
 				updateTileSize();
 			}
 			if (isPressed(NUM_0) && isPressed(CTRL)) {
-				gameScale = scale;
+				gameScale = getWindowScale();
 			}
 			if (isPressed(GRID)) {
 				levelDesignerGrid = !levelDesignerGrid;

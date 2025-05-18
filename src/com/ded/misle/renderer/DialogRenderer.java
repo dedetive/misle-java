@@ -10,7 +10,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.ded.misle.game.GamePanel.player;
-import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.world.entities.npcs.NPCDialog.getCurrentTalkingTo;
 import static com.ded.misle.world.entities.player.PlayerStats.PlaytimeMode.*;
 import static com.ded.misle.renderer.ColorManager.*;
@@ -25,10 +24,10 @@ public abstract class DialogRenderer {
 
     public static void renderDialog(Graphics2D g2d) {
         // Background
-        int dialogX = (int) (24 * scale);
-        int dialogY = (int) (148 * scale);
-        int dialogWidth = (int) ((512 - 48) * scale);
-        int dialogHeight = (int) (114 * scale);
+        int dialogX = 24;
+        int dialogY = 148;
+        int dialogWidth = 512 - 48;
+        int dialogHeight = 114;
         g2d.setColor(dialogWindowBackground);
         g2d.fillRect(dialogX, dialogY, dialogWidth, dialogHeight);
 
@@ -37,7 +36,7 @@ public abstract class DialogRenderer {
         g2d.setColor(npc.nameColor);
         g2d.setFont(dialogNPCName);
         String npcName = npc.name;
-        g2d.drawString(npcName, (int) (32 * scale), (int) (174 * scale));
+        g2d.drawString(npcName, 32, 174);
 
         // Dialog itself
         String text = LanguageManager.getText("DIALOG_" + npc.getDialogID() + "." + npc.getDialogIndex());
@@ -77,9 +76,9 @@ public abstract class DialogRenderer {
         }
 //        text = text.substring(0, currentLetter);
 
-        String[] wrappedText = wrapText(text, (int) ((512 - 64) * scale), fm);
+        String[] wrappedText = wrapText(text, 512 - 64, fm);
 
-        int height = (int) (192 * scale);
+        int height = 192;
         int pastLength = 0;
         for (String line : wrappedText) {
             boolean hasColorIndicators = line.length() != removeColorIndicators(line).length();
@@ -105,7 +104,7 @@ public abstract class DialogRenderer {
 
             line = line.substring(0, currentLineLetter).concat(extra);
 
-            drawColoredText(g2d, line, (int) (40 * scale), height, dialogNPCText, dialogTextColor, false);
+            drawColoredText(g2d, line, 40, height, dialogNPCText, dialogTextColor, false);
             height += fm.getHeight();
             pastLength += line.length();
         }

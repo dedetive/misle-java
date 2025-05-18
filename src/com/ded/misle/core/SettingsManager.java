@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.core.Setting.*;
-import static com.ded.misle.renderer.FontManager.updateFontSizes;
+import static com.ded.misle.renderer.FontManager.updateFontScript;
 
 /**
  * This is for changing settings (use changeThis()) and for getting the path of the game (use getPath())
@@ -183,7 +183,7 @@ public class SettingsManager {
 
 		changeSetting("language", languageCode.str());
 		languageManager = new LanguageManager(languageCode.str());
-		updateFontSizes();
+		updateFontScript();
 	}
 
 	// Graphics

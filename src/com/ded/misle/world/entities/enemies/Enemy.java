@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 import static com.ded.misle.world.entities.enemies.EnemyAI.AIState.STILL;
@@ -142,7 +141,7 @@ public class Enemy extends HPBox {
     }
 
     public void updatePersonalBreadcrumbs() {
-        personalBreadcrumbs.add(new int[]{(int) (player.getX() / scale), (int) (player.getY() / scale)});
+        personalBreadcrumbs.add(new int[]{player.getX(), player.getY()});
         lastPersonalBreadcrumbUpdate = System.currentTimeMillis();
         if (personalBreadcrumbs.size() > maxPersonalBreadcrumbs) {
             personalBreadcrumbs.removeFirst();

@@ -10,28 +10,16 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.ded.misle.game.GamePanel.*;
-import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.ImageManager.cachedImages;
 
 public abstract class InventoryRenderer {
     // [0] = Inventory and inventory bar
     // [1] = Rings and trophies
-    public final static int[] slotSize = new int[]{(int) (32 * scale), (int) (24 * scale)};
-    public final static int[] slotSpacing = new int[]{0, (int) (8 * scale)};
-    public final static int[][] gridOffset = new int[][]{{(int) (225 * scale), (int) (148 * scale)}, {(int) (132 * scale), (int) (32 * scale)}};
+    public final static int[] slotSize = new int[]{32, 24};
+    public final static int[] slotSpacing = new int[]{0, 8};
+    public final static int[][] gridOffset = new int[][]{{225, 148}, {132, 32}};
     // For gridOffset, first value is either INVENTORY or EXTRA and second value is either X or Y
-
-    public static void updateRendererVariableScales() {
-        slotSize[0] = (int) (32 * scale);
-        slotSpacing[0] = (int) (0 * scale);
-        gridOffset[0][0] = (int) (225 * scale);
-        gridOffset[0][1] = (int) (148 * scale);
-        slotSize[1] = (int) (24 * scale);
-        slotSpacing[1] = (int) (8 * scale);
-        gridOffset[1][0] = (int) (132 * scale);
-        gridOffset[1][1] = (int) (32 * scale);
-    }
 
     public static void drawSelectedSlotOverlay(Graphics2D g2d, int slotX, int slotY, int slotSize) {
         g2d.setColor(selectedSlotOverlay); // Semi-transparent overlay
@@ -144,11 +132,11 @@ public abstract class InventoryRenderer {
         formattedLevel = formattedLevel + LanguageManager.getText("inventory_level_measure_word");
         drawStat(g2d, levelText + " " + formattedLevel, 336, 129);
             // XP
-        int xpBarWidth = (int) (7 * scale);
-        int xpBarHeight = (int) (70 * scale);
-        int xpBarX = (int) (430 * scale);
-        int xpBarY = (int) (40 * scale);
-        final int shadowExtra = (int) (3 * scale);
+        int xpBarWidth = 7;
+        int xpBarHeight = 70;
+        int xpBarX = 430;
+        int xpBarY = 40;
+        final int shadowExtra = 3;
         final int shadowWidth = xpBarWidth + shadowExtra;
         final int shadowHeight = xpBarHeight + shadowExtra;
         final int shadowX = xpBarX - shadowExtra / 2;
@@ -170,11 +158,9 @@ public abstract class InventoryRenderer {
 
     private static void drawStat(Graphics2D g2d, String statText, int centerX, int y, Color textColor, Color shadowColor) {
         // Calculate center
-        centerX = (int) (centerX * scale);
         FontMetrics fm = g2d.getFontMetrics();
         int textWidth = fm.stringWidth(statText);
         int startX = centerX - (textWidth / 2);
-        y = (int) (y * scale);
 
         // Draw text shadow
         g2d.setColor(shadowColor);
@@ -200,13 +186,13 @@ public abstract class InventoryRenderer {
         if (!isExtra) {
             if (hoveredSlot[0] == -1) {
                 // If playing
-                int inventoryBarWidth = (int) (120 * scale);
+                int inventoryBarWidth = 120;
                 int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
-                int inventoryBarY = (int) (screenHeight - 20 * scale - 60);
+                int inventoryBarY = (int) (screenHeight - 100);
 
                 int slotStartX = inventoryBarX + (inventoryBarWidth - (7 * slotSize[0] + 6 * slotSpacing[0])) / 2;
                 slotX = slotStartX + hoveredSlot[1] * (slotSize[0] + slotSpacing[0]);
-                slotY = (int) (inventoryBarY + (20 * scale - slotSize[0]) / 2);
+                slotY = inventoryBarY + slotSize[0] / 2;
                 hoveredSlot[0] = 0;
             } else {
                 // If in inventory menu
@@ -260,7 +246,7 @@ public abstract class InventoryRenderer {
         FontMetrics fm = g2d.getFontMetrics();
 
         // Calculate width based on text
-        int tooltipWidth = Math.max(slotSize * 4, fm.stringWidth(removeColorIndicators(itemName)) + (int) (20 * scale / 3.75));
+        int tooltipWidth = Math.max(slotSize * 4, fm.stringWidth(removeColorIndicators(itemName)) + 20);
         int tooltipX = slotX - (tooltipWidth / 2) + slotSize / 2;
         int tooltipY;
 
@@ -293,7 +279,7 @@ public abstract class InventoryRenderer {
 
         // Draw rounded tooltip box
         g2d.setColor(hoveredTooltipBackground);
-        g2d.fillRoundRect(tooltipX, tooltipY, tooltipWidth, tooltipHeight, (int) (45 * scale / 3.75), (int) (45 * scale / 3.75));
+        g2d.fillRoundRect(tooltipX, tooltipY, tooltipWidth, tooltipHeight, 45, 45);
 
         // Draw triangle
         int triangleBase = slotSize;

@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static com.ded.misle.core.LanguageManager.getCurrentScript;
-import static com.ded.misle.Launcher.scale;
 
 public abstract class FontManager {
     /**
@@ -17,17 +16,17 @@ public abstract class FontManager {
      *
      */
 
-    public static Font titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
-    public static Font selectedItemNameFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (35 * scale / 3.75));
-    public static Font itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (40 * scale / 3.75));
-    public static Font buttonFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
-    public static Font itemInfoFont = loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));
-    public static Font dialogNPCName = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (85 * scale / 3.75));
-    public static Font dialogNPCText = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (52 * scale / 3.75));
-    public static Font coinTextFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (72 * scale / 3.75));
-    public static Font backupAdvisorFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (24 * scale / 3.75));
+    public static Font titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", 96);
+    public static Font selectedItemNameFont = loadFont("/fonts/Ubuntu-Medium.ttf", 35);
+    public static Font itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", 40);
+    public static Font buttonFont = loadFont("/fonts/Ubuntu-Medium.ttf", 44);
+    public static Font itemInfoFont = loadFont("/fonts/Basic-Regular.ttf", 40);
+    public static Font dialogNPCName = loadFont("/fonts/Ubuntu-Medium.ttf", 85);
+    public static Font dialogNPCText = loadFont("/fonts/Ubuntu-Regular.ttf", 52);
+    public static Font coinTextFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", 72);
+    public static Font backupAdvisorFont = loadFont("/fonts/Ubuntu-Medium.ttf", 24);
     static {
-        updateFontSizes();
+        updateFontScript();
     }
 
     public static Font loadFont(String fontPath, float size) {
@@ -47,50 +46,50 @@ public abstract class FontManager {
 		}
 	}
 
-    public static void updateFontSizes() {
-        coinTextFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (62 * scale / 3.75));
-        itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (50 * scale / 3.75));
+    public static void updateFontScript() {
+        coinTextFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", 72);
+        itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", 50);
         switch (getCurrentScript()) {
             case LATIN -> {
-                titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
-                selectedItemNameFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
-                itemInfoFont = loadFont("/fonts/Basic-Regular.ttf", (float) (40 * scale / 3.75));
-                buttonFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
-                dialogNPCName = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (85 * scale / 3.75));
-                dialogNPCText = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (52 * scale / 3.75));
-                backupAdvisorFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (24 * scale / 3.75));
+                titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", 96);
+                selectedItemNameFont = loadFont("/fonts/Ubuntu-Medium.ttf", 40);
+                itemInfoFont = loadFont("/fonts/Basic-Regular.ttf", 40);
+                buttonFont = loadFont("/fonts/Ubuntu-Medium.ttf", 44);
+                dialogNPCName = loadFont("/fonts/Ubuntu-Medium.ttf", 85);
+                dialogNPCText = loadFont("/fonts/Ubuntu-Regular.ttf", 52);
+                backupAdvisorFont = loadFont("/fonts/Ubuntu-Medium.ttf", 24);
             }
             case GREEK, CYRILLIC -> {
-                titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", (float) (96 * scale / 3.75));
-                selectedItemNameFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
-                buttonFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (44 * scale / 3.75));
-                itemInfoFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (40 * scale / 3.75));
-                dialogNPCName = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (85 * scale / 3.75));
-                dialogNPCText = loadFont("/fonts/Ubuntu-Regular.ttf", (float) (52 * scale / 3.75));
-                backupAdvisorFont = loadFont("/fonts/Ubuntu-Medium.ttf", (float) (24 * scale / 3.75));
+                titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", 96);
+                selectedItemNameFont = loadFont("/fonts/Ubuntu-Medium.ttf", 40);
+                buttonFont = loadFont("/fonts/Ubuntu-Medium.ttf", 44);
+                itemInfoFont = loadFont("/fonts/Ubuntu-Medium.ttf", 40);
+                dialogNPCName = loadFont("/fonts/Ubuntu-Medium.ttf", 85);
+                dialogNPCText = loadFont("/fonts/Ubuntu-Regular.ttf", 52);
+                backupAdvisorFont = loadFont("/fonts/Ubuntu-Medium.ttf", 24);
             }
             case SIMPLIFIED_HAN -> {
-                titleFont = loadFont("/fonts/NotoSansSC-SemiBold.ttf", (float) (96 * scale / 3.75));
-                selectedItemNameFont = loadFont("/fonts/NotoSansSC-Regular.ttf", (float) (35 * scale / 3.75));
-                itemInfoFont = loadFont("/fonts/NotoSansSC-Regular.ttf", (float) (40 * scale / 3.75));
-                buttonFont = loadFont("/fonts/NotoSansSC-SemiBold.ttf", (float) (44 * scale / 3.75));
-                dialogNPCName = loadFont("/fonts/NotoSansSC-SemiBold.ttf", (float) (85 * scale / 3.75));
-                dialogNPCText = loadFont("/fonts/NotoSansSC-Regular.ttf", (float) (52 * scale / 3.75));
-                backupAdvisorFont = loadFont("/fonts/NotoSansSC-Regular.ttf", (float) (24 * scale / 3.75));
+                titleFont = loadFont("/fonts/NotoSansSC-SemiBold.ttf", 96);
+                selectedItemNameFont = loadFont("/fonts/NotoSansSC-Regular.ttf", 35);
+                itemInfoFont = loadFont("/fonts/NotoSansSC-Regular.ttf", 40);
+                buttonFont = loadFont("/fonts/NotoSansSC-SemiBold.ttf", 44);
+                dialogNPCName = loadFont("/fonts/NotoSansSC-SemiBold.ttf", 85);
+                dialogNPCText = loadFont("/fonts/NotoSansSC-Regular.ttf", 52);
+                backupAdvisorFont = loadFont("/fonts/NotoSansSC-Regular.ttf", 24);
             }
             case PRASPOMIC -> {
-                titleFont = loadFont("/fonts/Praspomia-Regular.otf", (float) (96 * scale / 3.75));
-                selectedItemNameFont = loadFont("/fonts/Praspomia-Regular.otf", (float) (35 * scale / 3.75));
-                itemInfoFont = loadFont("/fonts/Praspomia-Regular.otf", (float) (40 * scale / 3.75));
-                buttonFont = loadFont("/fonts/Praspomia-Regular.otf", (float) (44 * scale / 3.75));
-                dialogNPCName = loadFont("/fonts/Praspomia-Regular.otf", (float) (85 * scale / 3.75));
-                dialogNPCText = loadFont("/fonts/Praspomia-Regular.otf", (float) (52 * scale / 3.75));
-                backupAdvisorFont = loadFont("/fonts/Praspomia-Regular.otf", (float) (24 * scale / 3.75));
-                coinTextFont = loadFont("/fonts/Praspomia-Regular.otf", (float) (62 * scale / 3.75));
-                itemCountFont = loadFont("/fonts/Praspomia-Regular.otf", (float) (50 * scale / 3.75));
+                titleFont = loadFont("/fonts/Praspomia-Regular.otf", 96);
+                selectedItemNameFont = loadFont("/fonts/Praspomia-Regular.otf", 35);
+                itemInfoFont = loadFont("/fonts/Praspomia-Regular.otf", 40);
+                buttonFont = loadFont("/fonts/Praspomia-Regular.otf", 44);
+                dialogNPCName = loadFont("/fonts/Praspomia-Regular.otf", 85);
+                dialogNPCText = loadFont("/fonts/Praspomia-Regular.otf", 52);
+                backupAdvisorFont = loadFont("/fonts/Praspomia-Regular.otf", 24);
+                coinTextFont = loadFont("/fonts/Praspomia-Regular.otf", 62);
+                itemCountFont = loadFont("/fonts/Praspomia-Regular.otf", 50);
             }
         }
 
-        MainRenderer.textShadow = 1 * scale;
+        MainRenderer.textShadow = 1;
     }
 }
