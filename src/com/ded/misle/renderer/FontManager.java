@@ -17,26 +17,26 @@ public abstract class FontManager {
      *
      */
 
-    public static Font titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", 96);
-    public static Font selectedItemNameFont = loadFont("/fonts/Ubuntu-Medium.ttf", 35);
-    public static Font itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", 50);
-    public static Font buttonFont = loadFont("/fonts/Ubuntu-Medium.ttf", 44);
-    public static Font itemInfoFont = loadFont("/fonts/Basic-Regular.ttf", 40);
-    public static Font dialogNPCName = loadFont("/fonts/Ubuntu-Medium.ttf", 85);
-    public static Font dialogNPCText = loadFont("/fonts/Ubuntu-Regular.ttf", 52);
-    public static Font coinTextFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", 72);
-    public static Font backupAdvisorFont = loadFont("/fonts/Ubuntu-Medium.ttf", 24);
+    public static Font titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", 26);
+    public static Font selectedItemNameFont = loadFont("/fonts/Ubuntu-Medium.ttf", 9);
+    public static Font itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", 13);
+    public static Font buttonFont = loadFont("/fonts/Ubuntu-Medium.ttf", 12);
+    public static Font itemInfoFont = loadFont("/fonts/Basic-Regular.ttf", 10);
+    public static Font dialogNPCName = loadFont("/fonts/Ubuntu-Medium.ttf", 23);
+    public static Font dialogNPCText = loadFont("/fonts/Ubuntu-Regular.ttf", 14);
+    public static Font coinTextFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", 19);
+    public static Font backupAdvisorFont = loadFont("/fonts/Ubuntu-Medium.ttf", 6);
 
     private static final HashMap<Font, Integer> fontToSize = new HashMap<>(){{
-        put(titleFont, 96);
-        put(selectedItemNameFont, 35);
-        put(itemCountFont, 50);
-        put(buttonFont, 44);
-        put(itemInfoFont, 40);
-        put(dialogNPCName, 85);
-        put(dialogNPCText, 52);
-        put(coinTextFont, 72);
-        put(backupAdvisorFont, 24);
+        put(titleFont, 26);
+        put(selectedItemNameFont, 9);
+        put(itemCountFont, 13);
+        put(buttonFont, 12);
+        put(itemInfoFont, 10);
+        put(dialogNPCName, 23);
+        put(dialogNPCText, 14);
+        put(coinTextFont, 19);
+        put(backupAdvisorFont, 6);
     }};
     private static int getSize(Font font) {
         return fontToSize.getOrDefault(font, 0);
