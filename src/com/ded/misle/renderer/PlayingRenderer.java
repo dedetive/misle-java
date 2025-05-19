@@ -38,10 +38,8 @@ public class PlayingRenderer extends AbstractRenderer {
     public static Point selectedItemNamePosition;
     public static long itemNameDisplayStartTime;
 
-    public static double scaleByScreenSize = scale / 3.75;
-
-    public static int inventoryBarWidth = (int) (120 * scale);
-    public static int inventoryBarHeight = (int) (20 * scale);
+    public static int inventoryBarWidth = 120;
+    public static int inventoryBarHeight = 20;
     public static int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
     public static int inventoryBarY = (int) (screenHeight - inventoryBarHeight - 60);
 
@@ -49,10 +47,8 @@ public class PlayingRenderer extends AbstractRenderer {
     public static int slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
 
     public static void updatePlayingVariableScales() {
-        scaleByScreenSize = scale / 3.75;
-
-        inventoryBarWidth = (int) (120 * scale);
-        inventoryBarHeight = (int) (20 * scale);
+        inventoryBarWidth = 120;
+        inventoryBarHeight = 20;
         inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
         inventoryBarY = (int) (screenHeight - inventoryBarHeight - 60);
 
@@ -97,7 +93,7 @@ public class PlayingRenderer extends AbstractRenderer {
         try {
             for (NPC npc : selectedNPCs) {
                 for (int i = 0; i <= 270; i += 90) {
-                    drawRotatedImage(g2d, getTexture("wall_default_overlayW"), npc.getX() * scale - player.pos.getCameraOffsetX(), npc.getY() * scale - player.pos.getCameraOffsetY(),
+                    drawRotatedImage(g2d, getTexture("wall_default_overlayW"), npc.getX() - player.pos.getCameraOffsetX(), npc.getY() - player.pos.getCameraOffsetY(),
                         (int) (tileSize * npc.getVisualScaleHorizontal()), (int) (tileSize * npc.getVisualScaleVertical()), i + npc.getVisualRotation());
                 }
             }
@@ -145,7 +141,7 @@ public class PlayingRenderer extends AbstractRenderer {
             (int) (player.getVisualScaleHorizontal() * 1.5 * tileSize),
             (int) (player.getVisualScaleVertical() * 1.5 * tileSize), player.pos.getRotation(), playerMirror);
 
-        drawHandItem(g2d, playerScreenX, playerScreenY, scaleByScreenSize, mouseHandler);
+        drawHandItem(g2d, playerScreenX, playerScreenY, mouseHandler);
 
         drawUIElements(g2d);
 
@@ -177,7 +173,7 @@ public class PlayingRenderer extends AbstractRenderer {
 
     }
 
-    private static void drawHandItem(Graphics2D g2d, double playerScreenX, double playerScreenY, double scaleByScreenSize, MouseHandler mouseHandler) {
+    private static void drawHandItem(Graphics2D g2d, double playerScreenX, double playerScreenY, MouseHandler mouseHandler) {
         if (player.inv.hasHeldItem()) {
 
             if (player.stats.getHorizontalDirection() == RIGHT) {
@@ -189,30 +185,30 @@ public class PlayingRenderer extends AbstractRenderer {
             }
 
             double distance = playerScreenX + player.getVisualScaleHorizontal() * tileSize
-                * facingMultiplicator * scaleByScreenSize;
+                * facingMultiplicator * (double) 1;
 
             Item selectedItem = player.inv.getSelectedItem();
 
             if (selectedItem.getCountLimit() >= 16 && selectedItem.getCount() > selectedItem.getCountLimit() / 3) {
-                double pos = 12 * facingMultiplicator * scaleByScreenSize;
-                drawRotatedImage(g2d, selectedItem.getIcon(), distance + pos + selectedItem.getAnimationX() * facingMultiplicator * scale / 3.75, playerScreenY + 15 * scaleByScreenSize + selectedItem.getAnimationY() * scale / 3.75, (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), (35 + selectedItem.getAnimationRotation()) * Math.ceil(facingMultiplicator), mirror);
+                double pos = 12 * facingMultiplicator * (double) 1;
+                drawRotatedImage(g2d, selectedItem.getIcon(), distance + pos + selectedItem.getAnimationX() * facingMultiplicator / 3.75, playerScreenY + 15 * (double) 1 + selectedItem.getAnimationY() / 3.75, (int) (100 * (double) 1 * selectedItem.getAnimationBulk()), (int) (100 * (double) 1 * selectedItem.getAnimationBulk()), (35 + selectedItem.getAnimationRotation()) * Math.ceil(facingMultiplicator), mirror);
             }
 
             if (selectedItem.getCountLimit() >= 100 && selectedItem.getCount() > 2 * selectedItem.getCountLimit() / 3) {
-                double pos = -12 * facingMultiplicator * scaleByScreenSize;
-                drawRotatedImage(g2d, selectedItem.getIcon(), distance + pos + selectedItem.getAnimationX() * facingMultiplicator * scale / 3.75, playerScreenY + 15 * scaleByScreenSize + selectedItem.getAnimationY() * scale / 3.75, (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), (-35 + selectedItem.getAnimationRotation()) * Math.ceil(facingMultiplicator), mirror);
+                double pos = -12 * facingMultiplicator * (double) 1;
+                drawRotatedImage(g2d, selectedItem.getIcon(), distance + pos + selectedItem.getAnimationX() * facingMultiplicator / 3.75, playerScreenY + 15 * (double) 1 + selectedItem.getAnimationY() / 3.75, (int) (100 * (double) 1 * selectedItem.getAnimationBulk()), (int) (100 * (double) 1 * selectedItem.getAnimationBulk()), (-35 + selectedItem.getAnimationRotation()) * Math.ceil(facingMultiplicator), mirror);
             }
 
-            drawRotatedImage(g2d, selectedItem.getIcon(), (int) distance + selectedItem.getAnimationX() * facingMultiplicator * scale / 3.75, playerScreenY + selectedItem.getAnimationY() * scale / 3.75, (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), (int) (100 * scaleByScreenSize * selectedItem.getAnimationBulk()), selectedItem.getAnimationRotation() * Math.ceil(facingMultiplicator), mirror);
+            drawRotatedImage(g2d, selectedItem.getIcon(), (int) distance + selectedItem.getAnimationX() * facingMultiplicator / 3.75, playerScreenY + selectedItem.getAnimationY() / 3.75, (int) (100 * (double) 1 * selectedItem.getAnimationBulk()), (int) (100 * (double) 1 * selectedItem.getAnimationBulk()), selectedItem.getAnimationRotation() * Math.ceil(facingMultiplicator), mirror);
         }
     }
 
     private static void drawHealthBar(Graphics2D g2d) {
-        int healthBarWidth = (int) (15 * scale);
-        int healthBarHeight = (int) (50 * scale);
-        int healthBarX = (int) (30 * scale);
-        int healthBarY = (int) (212 * scale);
-        final int shadowExtra = (int) (3 * scale);
+        int healthBarWidth = 15;
+        int healthBarHeight = 50;
+        int healthBarX = 30;
+        int healthBarY = 212;
+        final int shadowExtra = 3;
         final int shadowWidth = healthBarWidth + shadowExtra;
         final int shadowHeight = healthBarHeight + shadowExtra;
         final int shadowX = healthBarX - shadowExtra / 2;
@@ -268,11 +264,11 @@ public class PlayingRenderer extends AbstractRenderer {
     }
 
     private static void drawEntropyBar(Graphics2D g2d) {
-        int entropyBarWidth = (int) (15 * scale);
-        int entropyBarHeight = (int) (50 * scale);
-        int entropyBarX = (int) (65 * scale);
-        int entropyBarY = (int) (212 * scale);
-        final int shadowExtra = (int) (3 * scale);
+        int entropyBarWidth = 15;
+        int entropyBarHeight = 50;
+        int entropyBarX = 65;
+        int entropyBarY = 212;
+        final int shadowExtra = 3;
         final int shadowWidth = entropyBarWidth + shadowExtra;
         final int shadowHeight = entropyBarHeight + shadowExtra;
         final int shadowX = entropyBarX - shadowExtra / 2;
@@ -323,16 +319,16 @@ public class PlayingRenderer extends AbstractRenderer {
 
     private static void drawXPBar(Graphics2D g2d) {
         int xpBarWidth = (slotSize[0] + slotSpacing[0]) * 7;
-        int xpBarHeight = (int) (4 * scale);
+        int xpBarHeight = 4;
         int xpBarX = slotStartX - 4;
         int xpBarY = inventoryBarImageY - 2 - xpBarHeight;
-        final int shadowOffset = (int) (1 * scale);
+        final int shadowOffset = 1;
         final int shadowWidth = xpBarWidth + shadowOffset * 2;
         final int shadowHeight = xpBarHeight + shadowOffset * 2;
         final int shadowX = xpBarX - shadowOffset;
         final int shadowY = xpBarY - shadowOffset;
-        final int arcWidth = (int) (2 * scale);
-        final int arcHeight = (int) (14 * scale);
+        final int arcWidth = 2;
+        final int arcHeight = 14;
 
         // Calculate the percentage of XP remaining
         double xpPercentage = Math.min(player.attr.getXP() / player.attr.getXPtoLevelUp(), 1);
@@ -373,11 +369,11 @@ public class PlayingRenderer extends AbstractRenderer {
         }
     }
 
-    static int inventoryBarImageY =(int) (screenHeight - 82 * Math.pow(scale, (double) 1 /2));
+    static int inventoryBarImageY = (int) (screenHeight - 82);
     private static void drawInventoryBar(Graphics2D g2d) {
 
         g2d.drawImage(cachedImages.get(ImageManager.ImageName.INVENTORY_BAR), 0, inventoryBarImageY,
-            (int) (512 * scale), (int) (35 * scale), null);
+            512, 35, null);
 
         // Slots info
 
@@ -415,7 +411,7 @@ public class PlayingRenderer extends AbstractRenderer {
             }
 
             if (i == selectedSlot) {
-                drawSelectedSlotOverlay(g2d, slotX, (int) (slotY + 1 * scale + 2 * scale / 3.75), (int) (slotSize[0] - 2 * scale / 3));
+                drawSelectedSlotOverlay(g2d, slotX, (int) (slotY + 1 + 2 / 3.75), (int) (slotSize[0] - 2 / 3));
             }
         }
     }
@@ -429,7 +425,7 @@ public class PlayingRenderer extends AbstractRenderer {
             int slotY = inventoryBarY + 50;
 
             // Position the name above the selected slot
-            selectedItemNamePosition = new Point((int) (slotX + slotSize[0] / scale * scaleByScreenSize / 2), slotY - 70);
+            selectedItemNamePosition = new Point(slotX + slotSize[0] / 2, slotY - 70);
             itemNameDisplayStartTime = currentTimeMillis();
         } else {
             selectedItemName = null;
@@ -469,8 +465,8 @@ public class PlayingRenderer extends AbstractRenderer {
     }
 
     private static void drawCoins(Graphics2D g2d) {
-        int coinTextX = (int) (468 * scale);
-        int coinTextY = (int) (222 * scale);
+        int coinTextX = 468;
+        int coinTextY = 222;
         g2d.setColor(coinTextShadowColor);
         g2d.setFont(coinTextFont);
         drawColoredText(g2d, String.valueOf(player.attr.getBalance()), (int) (coinTextX + textShadow), (int)(coinTextY + textShadow));
@@ -481,7 +477,7 @@ public class PlayingRenderer extends AbstractRenderer {
         FontMetrics fm = g2d.getFontMetrics();
         int textWidth = fm.stringWidth(String.valueOf(player.attr.getBalance()));
         int coinPosX = coinTextX + textWidth;
-        int coinPosY = (int) (coinTextY - g2d.getFontMetrics().getHeight() + 4 * scale);
+        int coinPosY = coinTextY - g2d.getFontMetrics().getHeight() + 4;
 
         g2d.drawImage(cachedImages.get(ImageManager.ImageName.COIN), coinPosX, coinPosY,
             g2d.getFontMetrics().getHeight(), g2d.getFontMetrics().getHeight(), null);
@@ -490,12 +486,12 @@ public class PlayingRenderer extends AbstractRenderer {
     private static void drawLevel(Graphics2D g2d) {
         int level = player.attr.getLevel();
         int x = (int) (screenWidth / 2);
-        int xpBarHeight = (int) (4 * scale);
+        int xpBarHeight = 4;
         int xpBarY = inventoryBarImageY - 2 - xpBarHeight;
         FontMetrics fm = g2d.getFontMetrics(coinTextFont);
         x -= fm.stringWidth(String.valueOf(level)) / 2;
 
-        int y = (int) (xpBarY + 3 * scale);
+        int y = xpBarY + 3;
 
         g2d.setColor(levelTextShadowColor);
         g2d.setFont(coinTextFont);
