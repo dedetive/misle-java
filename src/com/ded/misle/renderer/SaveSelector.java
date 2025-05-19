@@ -56,11 +56,11 @@ public abstract class SaveSelector {
 
             } else {
                 // Save buttons
-                int buttonX = (int) (64 * scale);
-                int buttonY = (int) (86 * scale);
-                int buttonWidth = (int) (120 * scale);
-                int buttonHeight = (int) (120 * scale);
-                int buttonSpacing = (int) (12 * scale);
+                int buttonX = 64;
+                int buttonY = 86;
+                int buttonWidth = 120;
+                int buttonHeight = 120;
+                int buttonSpacing = 12;
                 Rectangle buttonRect;
                 int id = 300;
                 boolean[] existingSaves = new boolean[3];
@@ -92,7 +92,7 @@ public abstract class SaveSelector {
                     createButton(buttonRect, "", runnable, panel, id);
 
                     if (saveExists) {
-                        buttonRect = new Rectangle(buttonX, (int) (buttonY + buttonHeight + 4 * scale), buttonWidth, (int) (15 * scale));
+                        buttonRect = new Rectangle(buttonX, buttonY + buttonHeight + 4, buttonWidth, 15);
                         runnable = () -> askingToDelete = finalI;
                         createButton(buttonRect, LanguageManager.getText("save_selector_delete"), runnable, panel, id + 3);
                     }
@@ -107,11 +107,11 @@ public abstract class SaveSelector {
                 try {
                     drawButtons(g2d);
 
-                    buttonX = (int) (64 * scale);
-                    buttonY = (int) (106 * scale);
-                    buttonWidth = (int) (120 * scale / 2);
-                    buttonHeight = (int) (120 * scale);
-                    int backgroundSize = (int) (14 * scale);
+                    buttonX = 64;
+                    buttonY = 106;
+                    buttonWidth = 60;
+                    buttonHeight = 120;
+                    int backgroundSize = 14;
 
                     for (int saveSlot = 0; saveSlot < 3; saveSlot++) {
 
@@ -119,7 +119,7 @@ public abstract class SaveSelector {
 
                         g2d.setColor(saveSelectorTextBackground);
                         g2d.fillRoundRect((int) (buttonX + buttonWidth * 0.975 - backgroundSize * 0.25), (int) (buttonY - backgroundSize * 0.8),
-                            backgroundSize, backgroundSize, (int) (4 * scale), (int) (4 * scale));
+                            backgroundSize, backgroundSize, 4, 4);
 
                         // Shadow
 
@@ -145,7 +145,7 @@ public abstract class SaveSelector {
                                 cachedImages.get(PLAYER_FRONT0);
 
                             g2d.drawImage(img, (int) (buttonX + buttonWidth * 0.75),
-                                (int) (buttonY - 40 * scale + (double) buttonHeight / 2), 135, 135, null);
+                                (int) (buttonY - 40 + (double) buttonHeight / 2), 135, 135, null);
 
                             // Level
 
@@ -156,7 +156,7 @@ public abstract class SaveSelector {
                             int textWidth = fm.stringWidth(text);
 
                             int x = buttonX + buttonWidth - textWidth / 2;
-                            int y = (int) (buttonY + 20 * scale + (double) buttonHeight / 2);
+                            int y = (int) (buttonY + 20 + (double) buttonHeight / 2);
                             drawColoredText(g2d, text, x, y);
 
                             // Playtime
@@ -166,7 +166,7 @@ public abstract class SaveSelector {
                             textWidth = fm.stringWidth(text);
 
                             x = buttonX + buttonWidth - textWidth / 2;
-                            y = (int) (buttonY + 20 * scale + (double) buttonHeight / 2 + fm.getHeight());
+                            y = (int) (buttonY + 20 + (double) buttonHeight / 2 + fm.getHeight());
                             drawColoredText(g2d, text, x, y);
 
                             // Name
@@ -176,7 +176,7 @@ public abstract class SaveSelector {
                             textWidth = fm.stringWidth(text);
 
                             x = buttonX + buttonWidth - textWidth / 2;
-                            y = (int) (buttonY + 14 * scale);
+                            y = buttonY + 14;
                             drawColoredText(g2d, text, x, y);
 
                             // Draw hand item
@@ -184,25 +184,25 @@ public abstract class SaveSelector {
                             Item item = (Item) loadSaveScreenInformation(SaveFile.SaveScreenOption.FIRST_ITEM, saveSlot);
 
                             if (item.getId() != 0) {
-                                drawRotatedImage(g2d, item.getIcon(), buttonX + buttonWidth * 1.1, buttonY - 37 * scale + (double) buttonHeight / 2,
-                                    (int) (100 * scale / 3.75), (int) (100 * scale / 3.75), 0, false);
+                                drawRotatedImage(g2d, item.getIcon(), buttonX + buttonWidth * 1.1, buttonY - 37 + (double) buttonHeight / 2,
+                                    (int) (100 / 3.75), (int) (100 / 3.75), 0, false);
                             }
 
                             // Draw icon
 
                             g2d.drawImage((BufferedImage) loadSaveScreenInformation(SaveScreenOption.ICON, saveSlot),
-                                (int) (x + textWidth + 4 * scale), buttonY + fm.getHeight() / 8,
-                                (int) (16 * scale), (int) (16 * scale), null);
+                                x + textWidth + 4, buttonY + fm.getHeight() / 8,
+                                16, 16, null);
 
                         } else {
 
                             // Plus sign
 
                             g2d.setColor(saveSelectorTextBackground);
-                            g2d.fillRoundRect((int) (buttonX + buttonWidth + 2 * scale), buttonY + buttonHeight / 5,
-                                (int) (4 * scale), buttonHeight / 4, (int) (3 * scale), (int) (3 * scale));
-                            g2d.fillRoundRect((int) (buttonX + buttonWidth * 0.8), (int) (buttonY + (double) buttonHeight / 4 + 7 * scale),
-                                buttonHeight / 4, (int) (4 * scale), (int) (3 * scale), (int) (3 * scale));
+                            g2d.fillRoundRect(buttonX + buttonWidth + 2, buttonY + buttonHeight / 5,
+                                4, buttonHeight / 4, 3, 3);
+                            g2d.fillRoundRect((int) (buttonX + buttonWidth * 0.8), (int) (buttonY + (double) buttonHeight / 4 + 7),
+                                buttonHeight / 4, 4, 3, 3);
                         }
 
                         buttonX += buttonWidth * 2 + buttonSpacing;
@@ -218,11 +218,11 @@ public abstract class SaveSelector {
     public static int askingToDelete = -1;
     public static void askToDeleteSave(int saveSlot, JPanel panel, Graphics2D g2d) {
 
-        int previewX = (int) (112 * scale);
-        int previewY = (int) (86 * scale);
-        int previewWidth = (int) (120 * scale);
-        int previewHeight = (int) (120 * scale);
-        int buttonBorderSize = (int) (69 * scaleByScreenSize);
+        int previewX = 112;
+        int previewY = 86;
+        int previewWidth = 120;
+        int previewHeight = 120;
+        int buttonBorderSize = (int) (69 / 3.75);
 
 
         // BORDER
@@ -238,7 +238,7 @@ public abstract class SaveSelector {
         g2d.fillRoundRect(previewX, previewY, previewWidth, previewHeight,
             buttonBorderSize, buttonBorderSize);
 
-        int backgroundSize = (int) (14 * scale);
+        int backgroundSize = 14;
 
 
         g2d.setColor(buttonTextColor);
@@ -247,18 +247,18 @@ public abstract class SaveSelector {
             // Background
 
         g2d.setColor(saveSelectorTextBackground);
-        g2d.fillRoundRect((int) (previewX + (double) (previewWidth) / 2 - backgroundSize * 0.25), (int) (previewY - backgroundSize * 0.8 + 18 * scale),
-            backgroundSize, backgroundSize, (int) (4 * scale), (int) (4 * scale));
+        g2d.fillRoundRect((int) (previewX + (double) (previewWidth) / 2 - backgroundSize * 0.25), (int) (previewY - backgroundSize * 0.8 + 18),
+            backgroundSize, backgroundSize, 4, 4);
 
             // Shadow
 
         g2d.setColor(saveSelectorTextShadow);
-        drawColoredText(g2d, String.valueOf(saveSlot + 1), (int) (previewX + (double) (previewWidth / 2) + textShadow), (int) (previewY + textShadow + 18 * scale));
+        drawColoredText(g2d, String.valueOf(saveSlot + 1), (int) (previewX + (double) (previewWidth / 2) + textShadow), (int) (previewY + textShadow + 18));
 
             // Number
 
         g2d.setColor(saveSelectorNumber);
-        drawColoredText(g2d, String.valueOf(saveSlot + 1), previewX + previewWidth / 2, (int) (previewY + 18 * scale));
+        drawColoredText(g2d, String.valueOf(saveSlot + 1), previewX + previewWidth / 2, previewY + 18);
 
             // Player
 
@@ -271,7 +271,7 @@ public abstract class SaveSelector {
             cachedImages.get(PLAYER_FRONT0);
 
         g2d.drawImage(img, previewX + 2 * previewWidth / 5,
-            (int) (previewY - 25 * scale + (double) previewHeight / 2), 135, 135, null);
+            (int) (previewY - 25 + (double) previewHeight / 2), 135, 135, null);
 
             // Level
 
@@ -282,7 +282,7 @@ public abstract class SaveSelector {
         int textWidth = fm.stringWidth(text);
 
         int x = previewX + previewWidth / 2 - 2 * textWidth / 5;
-        int y = (int) (previewY + 40 * scale + (double) previewHeight / 2);
+        int y = (int) (previewY + 40 + (double) previewHeight / 2);
         drawColoredText(g2d, text, x, y);
 
             // Name
@@ -291,8 +291,8 @@ public abstract class SaveSelector {
 
         textWidth = fm.stringWidth(text);
 
-        x = (int) (previewX + (double) previewWidth / 2 - (double) textWidth / 2 + 3 * scale);
-        y = (int) (previewY + 32 * scale);
+        x = (int) (previewX + (double) previewWidth / 2 - (double) textWidth / 2 + 3);
+        y = previewY + 32;
         drawColoredText(g2d, text, x, y);
 
             // Playtime
@@ -302,7 +302,7 @@ public abstract class SaveSelector {
         textWidth = fm.stringWidth(text);
 
         x = previewX + previewWidth / 2 - 2 * textWidth / 5;
-        y = (int) (previewY + 40 * scale + (double) previewHeight / 2 + fm.getHeight());
+        y = (int) (previewY + 40 + (double) previewHeight / 2 + fm.getHeight());
         drawColoredText(g2d, text, x, y);
 
             // Draw hand item
@@ -310,37 +310,37 @@ public abstract class SaveSelector {
         Item item = (Item) loadSaveScreenInformation(SaveFile.SaveScreenOption.FIRST_ITEM, saveSlot);
 
         if (item.getId() != 0) {
-            drawRotatedImage(g2d, item.getIcon(), previewX + (double) previewWidth / 2 + 6 * scale,
-                    previewY - (double) previewHeight / 2 + 37.5 * scale + (double) previewHeight / 2,
-                       (int) (100 * scale / 3.75), (int) (100 * scale / 3.75), 0, false);
+            drawRotatedImage(g2d, item.getIcon(), previewX + (double) previewWidth / 2 + 6,
+                    previewY - (double) previewHeight / 2 + 37.5 + (double) previewHeight / 2,
+                       (int) (100 / 3.75), (int) (100 / 3.75), 0, false);
         }
 
         g2d.drawImage(icon, x + textWidth,
-            (int) (y - 100 * scale + (double) fm.getHeight() / 3),
-            (int) (16 * scale), (int) (16 * scale), null);
+            (int) (y - 100 + (double) fm.getHeight() / 3),
+            16, 16, null);
 
-        int buttonX = (int) (261 * scale);
-        int buttonY = (int) (140 * scale);
-        int buttonWidth = (int) (100 * scale);
-        int buttonHeight = (int) (25 * scale);
+        int buttonX = 261;
+        int buttonY = 140;
+        int buttonWidth = 100;
+        int buttonHeight = 25;
         Rectangle button;
         int id = 310;
 
         // CONFIRMATION TEXT
         fm = g2d.getFontMetrics(buttonFont);
         g2d.setColor(buttonBorderColor);
-        g2d.fillRoundRect(buttonX - buttonBorderOffsetPos, (int) (buttonY - buttonHeight - 4 * scale) - buttonBorderOffsetPos - fm.getHeight(),
+        g2d.fillRoundRect(buttonX - buttonBorderOffsetPos, buttonY - buttonHeight - 4 - buttonBorderOffsetPos - fm.getHeight(),
             buttonWidth + buttonBorderOffsetSize, buttonHeight + buttonBorderOffsetSize,
             buttonBorderSize + buttonBorderOffsetPos / 2, buttonBorderSize + buttonBorderOffsetPos / 2);
 
         g2d.setColor(buttonDefaultColor);
-        g2d.fillRoundRect(buttonX, (int) (buttonY - buttonHeight - 4 * scale) - fm.getHeight(), buttonWidth, buttonHeight,
+        g2d.fillRoundRect(buttonX, buttonY - buttonHeight - 4 - fm.getHeight(), buttonWidth, buttonHeight,
             buttonBorderSize, buttonBorderSize);
 
         text = LanguageManager.getText("save_selector_deletion_confirmation");
         fm = g2d.getFontMetrics(buttonFont);
 
-        drawColoredText(g2d, text, buttonX - fm.stringWidth(text) / 2 + buttonWidth / 2, (int) (buttonY - buttonHeight - 1 * scale), buttonFont, buttonTextColor, true);
+        drawColoredText(g2d, text, buttonX - fm.stringWidth(text) / 2 + buttonWidth / 2, buttonY - buttonHeight - 1, buttonFont, buttonTextColor, true);
 
         // CANCEL
         button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
@@ -351,7 +351,7 @@ public abstract class SaveSelector {
         createButton(button, LanguageManager.getText("save_selector_deletion_cancel"), runnable, panel, id);
 
         // DELETE
-        button = new Rectangle(buttonX, (int) (buttonY + buttonHeight + 4 * scale), buttonWidth, buttonHeight);
+        button = new Rectangle(buttonX, buttonY + buttonHeight + 4, buttonWidth, buttonHeight);
         runnable = () -> {
             deleteSaveFile(saveSlot);
             askingToDelete = -1;
@@ -363,7 +363,7 @@ public abstract class SaveSelector {
         g2d.setFont(backupAdvisorFont);
         fm = g2d.getFontMetrics(backupAdvisorFont);
         String[] texts = wrapText(LanguageManager.getText("save_selector_deletion_warning1") + saveSlot + LanguageManager.getText("save_selector_deletion_warning2"), buttonWidth * 3 / 2, fm);
-        double extraY = 15 * scale;
+        double extraY = 15;
         int fontHeight = fm.getHeight();
         for (String s : texts) {
             drawColoredText(g2d, s, buttonX + buttonWidth * 3 / 8 - fm.stringWidth(s) / 3, (int) (buttonY + buttonHeight * 2 + extraY),
