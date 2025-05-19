@@ -38,7 +38,11 @@ public abstract class FontManager {
         put(coinTextFont, 19);
         put(backupAdvisorFont, 6);
     }};
+
     private static int getSize(Font font) {
+        if (!fontToSize.containsKey(font)) {
+            fontToSize.put(font, font.getSize());
+        }
         return fontToSize.getOrDefault(font, 0);
     }
 
@@ -46,14 +50,14 @@ public abstract class FontManager {
         updateFontScript();
     }
 
-    public static Font loadFont(String fontPath, float size) {
+    public static Font loadFont(String fontPath, int size) {
 		try (InputStream is = FontManager.class.getResourceAsStream(fontPath)) {
 			if (is == null) {
 //				System.err.println("Warning: Font resource not found: " + fontPath);
-				return new Font("Dialog", Font.PLAIN, (int) size); // Fallback font
+				return new Font("Dialog", Font.PLAIN, size); // Fallback font
 			}
 			Font font = Font.createFont(Font.TRUETYPE_FONT, is);
-			return font.deriveFont(size);
+			return font.deriveFont((float) size);
 		} catch (FontFormatException e) {
 			System.err.println("Font format error: " + e.getMessage());
 			return new Font("Dialog", Font.PLAIN, (int) size); // Fallback font
@@ -102,8 +106,8 @@ public abstract class FontManager {
                 dialogNPCName = loadFont("/fonts/Praspomia-Regular.otf", getSize(dialogNPCName));
                 dialogNPCText = loadFont("/fonts/Praspomia-Regular.otf", getSize(dialogNPCText));
                 backupAdvisorFont = loadFont("/fonts/Praspomia-Regular.otf", getSize(backupAdvisorFont));
-                coinTextFont = loadFont("/fonts/Praspomia-Regular.otf", 62);
-                itemCountFont = loadFont("/fonts/Praspomia-Regular.otf", 50);
+                coinTextFont = loadFont("/fonts/Praspomia-Regular.otf", 17);
+                itemCountFont = loadFont("/fonts/Praspomia-Regular.otf", 13);
             }
         }
 
