@@ -128,8 +128,8 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		mouseX = e.getX();
-		mouseY = e.getY();
+		mouseX = (int) (e.getX() / getWindowScale());
+		mouseY = (int) (e.getY() / getWindowScale());
 		updateCurrentMouseRotation();
 
 		switch (gameState) {
@@ -152,8 +152,8 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		mouseX = e.getX();
-		mouseY = e.getY();
+		mouseX = (int) (e.getX() / getWindowScale());
+		mouseY = (int) (e.getY() / getWindowScale());
 		updateHoveredBarSlot();
 		updateHoveredSlot();
 	}
