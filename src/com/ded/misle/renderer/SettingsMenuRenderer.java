@@ -58,15 +58,13 @@ public abstract class SettingsMenuRenderer {
             // ANTI-ALIASING
             g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-            double scaleByScreenSize = scale / 3.75;
-
             // BACKGROUND
             drawMenuBackground(g2d);
 
             // SEPARATING BAR
             g2d.setColor(settingsSeparatingBar);
-            int separatingBarY = (int) (210 * Math.pow(scale, 1.04));
-            int separatingBarHeight = (int) (2 * scale);
+            int separatingBarY = 210;
+            int separatingBarHeight = 2;
             g2d.fillRect(0, separatingBarY, (int) screenWidth, separatingBarHeight);
             g2d.setColor(settingsSeparatingBarBottom);
             g2d.fillRect(0, separatingBarY + separatingBarHeight, (int) screenWidth, (int) (screenHeight - (separatingBarY + separatingBarHeight)));
@@ -75,9 +73,9 @@ public abstract class SettingsMenuRenderer {
             MenuRenderer.createTitle("settings_menu_options", g2d);
 
             int buttonX;
-            int buttonY = (int) (220 * Math.pow(scale, 1.04));
-            int buttonWidth = (int) (50 * scale);
-            int buttonHeight = (int) (31 * scale);
+            int buttonY = 220;
+            int buttonWidth = 50;
+            int buttonHeight = 31;
             Rectangle button;
 
             // Other menus buttons
@@ -94,7 +92,7 @@ public abstract class SettingsMenuRenderer {
                 SettingsMenuRenderer::switchToGameplay
             };
             for (int i = 0; i < 4; i++) {
-                buttonX = (int) ((42 + 65 * i) * scale);
+                buttonX = 42 + 65 * i;
                 button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
                 createButton(button, menus[i], actions[i], panel, 38 * i + 100);
             }
@@ -108,7 +106,7 @@ public abstract class SettingsMenuRenderer {
             String text = LanguageManager.getText("settings_menu_" + String.valueOf(settingState).toLowerCase());
             int textWidth = fm.stringWidth(text);
             int centerX = (int) ((screenWidth - textWidth) / 2);
-            int textY = (int) (66 * scale);
+            int textY = 66;
 
             g2d.setColor(buttonTextShadowColor);
             g2d.drawString(text, (int) (centerX + textShadow), (int) (textY + textShadow));
@@ -125,15 +123,15 @@ public abstract class SettingsMenuRenderer {
             for (int i = 0; i < 2; i++) {
                 int width;
                 if (i == 0) {
-                    width = (int) (leftKeyIndicatorWidth * scale);
+                    width = (int) (leftKeyIndicatorWidth);
                 } else {
-                    width = (int) (rightKeyIndicatorWidth * scale);
+                    width = (int) (rightKeyIndicatorWidth);
                 }
                 int height = width;
-                int x = (int) ((30 + i * 269) * scale) - width / 2;
-                int y = (int) (220 * Math.pow(scale, 1.04)) + buttonHeight / 2 - height / 2;
-                int fixedX = (int) ((int) ((30 + i * 269) * scale) - 16 * scale / 2);
-                int fixedY = (int) ((int) (220 * Math.pow(scale, 1.04)) + (double) buttonHeight / 2 - 16 * scale / 2);
+                int x = (30 + i * 269) - width / 2;
+                int y = 220 + buttonHeight / 2 - height / 2;
+                int fixedX = 22 + i * 269;
+                int fixedY = (int) (212 + (double) buttonHeight / 2);
                 int arcW = width / 4;
                 int arcH = arcW;
                 g2d.setColor(settingsMoveKeyHint);
@@ -148,7 +146,7 @@ public abstract class SettingsMenuRenderer {
                 textWidth = fm.stringWidth(text);
 
                 g2d.setColor(settingsMoveKeyHintText);
-                g2d.drawString(text, (int) (fixedX + 8 * scale - (double) textWidth / 2), (int) (fixedY + 16 * scale - (double) fm.getHeight() / 5));
+                g2d.drawString(text, (int) (fixedX + 8 - (double) textWidth / 2), (int) (fixedY + 16 - (double) fm.getHeight() / 5));
             }
 
             if (leftKeyIndicatorWidth > 16.05) leftKeyIndicatorWidth = Math.max(leftKeyIndicatorWidth - 0.05, 16);
@@ -240,15 +238,15 @@ public abstract class SettingsMenuRenderer {
     }
 
     public static void createSetting(String text, String value, int unscaledX, int unscaledY, Runnable action, JPanel panel, int id) {
-        int buttonX = (int) (unscaledX * scale);
-        int buttonY = (int) (unscaledY * Math.pow(scale, 1.04));
-        int buttonWidth = (int) (88 * scale);
-        int buttonHeight = (int) (28 * scale);
+        int buttonX = unscaledX;
+        int buttonY = unscaledY;
+        int buttonWidth = 88;
+        int buttonHeight = 28;
         Rectangle button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
         createButton(button, LanguageManager.getText(text), action, panel, id);
 
-        buttonX = (int) ((unscaledX + 100) * scale);
-        buttonWidth = (int) (39 * scale);
+        buttonX = unscaledX + 100;
+        buttonWidth = 39;
         button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
         createButton(button, LanguageManager.getText(value), action, panel, id + 1);
     }
