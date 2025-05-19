@@ -5,6 +5,7 @@ import com.ded.misle.input.MouseHandler;
 import com.ded.misle.items.Item;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +36,7 @@ public abstract class InventoryRenderer {
 
         // Start the grid
 
-        g2d.drawImage(cachedImages.get(ImageManager.ImageName.INVENTORY_MENU), 0, 0, (int) screenWidth, (int) screenHeight, null);
+        g2d.drawImage(cachedImages.get(ImageManager.ImageName.INVENTORY_MENU), 0, 0, originalScreenWidth, originalScreenHeight, null);
 
         // Draw slots and item icons in the row order {1, 2, 3, 0}
         int[] rowOrder = {1, 2, 3, 0};
