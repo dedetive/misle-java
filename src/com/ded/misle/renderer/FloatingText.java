@@ -5,7 +5,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import static com.ded.misle.Launcher.scale;
 import static com.ded.misle.renderer.ColorManager.drawColoredText;
 import static com.ded.misle.renderer.ColorManager.floatingTextShadow;
 import static com.ded.misle.renderer.FontManager.itemInfoFont;
@@ -55,8 +54,8 @@ public class FloatingText {
             }
 
             Font font = itemInfoFont;
-            int x = (int) ((floatingText.position.x) * scale);
-            int y = (int) ((floatingText.position.y) * scale);
+            int x = floatingText.position.x;
+            int y = floatingText.position.y;
 
             // SHADOW
             drawColoredText(g2d, floatingText.text, (int) (x + MainRenderer.textShadow),
