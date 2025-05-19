@@ -30,7 +30,7 @@ public abstract class MenuRenderer {
         String titleText = LanguageManager.getText(text);
         int textWidth = fm.stringWidth(titleText);
         int centerX = (int) ((screenWidth - textWidth) / 2);
-        int textY = (int) (48 * scale);
+        int textY = 48;
         g2d.setColor(menuTitleShadowColor);
         drawColoredText(g2d, titleText, (int) (centerX - MainRenderer.textShadow), textY); // Left
         drawColoredText(g2d, titleText, (int) (centerX + MainRenderer.textShadow), textY); // Right
@@ -92,8 +92,6 @@ public abstract class MenuRenderer {
 
             MainRenderer.currentMenu = MAIN_MENU;
 
-            double scaleByScreenSize = scale / 3.75;
-
             // BACKGROUND
             drawMenuBackground(g2d);
 
@@ -105,10 +103,10 @@ public abstract class MenuRenderer {
 
             // Play button
 
-            int playButtonX = (int) (736 * scaleByScreenSize);
-            int playButtonY = (int) (462 * scaleByScreenSize);
-            int playButtonWidth = (int) (448 * scaleByScreenSize);
-            int playButtonHeight = (int) (155 * scaleByScreenSize);
+            int playButtonX = 196;
+            int playButtonY = 123;
+            int playButtonWidth = 119;
+            int playButtonHeight = 41;
             Rectangle playButton = new Rectangle(playButtonX, playButtonY, playButtonWidth, playButtonHeight);
 
             if (!levelDesigner) {
@@ -120,10 +118,10 @@ public abstract class MenuRenderer {
 
             // Quit button
 
-            int quitButtonX = (int) (992 * scaleByScreenSize);
-            int quitButtonY = (int) (660 * scaleByScreenSize);
-            int quitButtonWidth = (int) (192 * scaleByScreenSize);
-            int quitButtonHeight = (int) (155 * scaleByScreenSize);
+            int quitButtonX = 265;
+            int quitButtonY = 176;
+            int quitButtonWidth = 51;
+            int quitButtonHeight = 41;
             Rectangle quitButton = new Rectangle(quitButtonX, quitButtonY, quitButtonWidth, quitButtonHeight);
 
             createButton(quitButton, LanguageManager.getText("main_menu_quit"), MenuRenderer::quitGame, panel, 12732);
@@ -131,10 +129,10 @@ public abstract class MenuRenderer {
 
             // Options menu
 
-            int optionsButtonX = (int) (736 * scaleByScreenSize);
-            int optionsButtonY = (int) (660 * scaleByScreenSize);
-            int optionsButtonWidth = (int) (192 * scaleByScreenSize);
-            int optionsButtonHeight = (int) (155 * scaleByScreenSize);
+            int optionsButtonX = 192;
+            int optionsButtonY = 176;
+            int optionsButtonWidth = 51;
+            int optionsButtonHeight = 41;
             Rectangle optionsButton = new Rectangle(optionsButtonX, optionsButtonY, optionsButtonWidth, optionsButtonHeight);
 
             createButton(optionsButton, LanguageManager.getText("main_menu_options"), MenuRenderer::optionsMenu, panel, 12783);
@@ -144,8 +142,8 @@ public abstract class MenuRenderer {
             // Version
 
             String gameVersion = LanguageManager.getText("version");
-            drawColoredText(g2d, gameVersion, (int) (1640 * scaleByScreenSize + textShadow), (int) (1010* Math.pow(scaleByScreenSize, 1.04) + textShadow), itemInfoFont, menuVersionShadowColor, true);
-            drawColoredText(g2d, gameVersion, (int) (1640 * scaleByScreenSize), (int) (1010* Math.pow(scaleByScreenSize, 1.04)), itemInfoFont, menuVersionColor, false);
+            drawColoredText(g2d, gameVersion, (int) (437 + textShadow), (int) (255 + textShadow), itemInfoFont, menuVersionShadowColor, true);
+            drawColoredText(g2d, gameVersion, 437, 255, itemInfoFont, menuVersionColor, false);
         }
     }
 
@@ -157,8 +155,6 @@ public abstract class MenuRenderer {
                 g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             }
 
-            double scaleByScreenSize = scale / 3.75;
-
             // BACKGROUND
             drawMenuBackground(g2d);
 
@@ -168,30 +164,30 @@ public abstract class MenuRenderer {
 
             // Resume button
 
-            int playButtonX = (int) (736 * scaleByScreenSize);
-            int playButtonY = (int) (462 * scaleByScreenSize);
-            int playButtonWidth = (int) (448 * scaleByScreenSize);
-            int playButtonHeight = (int) (155 * scaleByScreenSize);
+            int playButtonX = 196;
+            int playButtonY = 123;
+            int playButtonWidth = 119;
+            int playButtonHeight = 41;
             Rectangle playButton = new Rectangle(playButtonX, playButtonY, playButtonWidth, playButtonHeight);
 
             createButton(playButton, LanguageManager.getText("pause_menu_resume"), MainRenderer::softGameStart, panel, 2738);
 
             // Quit button
 
-            int quitButtonX = (int) (992 * scaleByScreenSize);
-            int quitButtonY = (int) (660 * scaleByScreenSize);
-            int quitButtonWidth = (int) (192 * scaleByScreenSize);
-            int quitButtonHeight = (int) (155 * scaleByScreenSize);
+            int quitButtonX = 265;
+            int quitButtonY = 176;
+            int quitButtonWidth = 51;
+            int quitButtonHeight = 41;
             Rectangle quitButton = new Rectangle(quitButtonX, quitButtonY, quitButtonWidth, quitButtonHeight);
 
             createButton(quitButton, LanguageManager.getText("pause_menu_quit"), MenuRenderer::goToMainMenu, panel, 7384);
 
             // Options menu
 
-            int optionsButtonX = (int) (736 * scaleByScreenSize);
-            int optionsButtonY = (int) (660 * scaleByScreenSize);
-            int optionsButtonWidth = (int) (192 * scaleByScreenSize);
-            int optionsButtonHeight = (int) (155 * scaleByScreenSize);
+            int optionsButtonX = 196;
+            int optionsButtonY = 176;
+            int optionsButtonWidth = 51;
+            int optionsButtonHeight = 41;
             Rectangle optionsButton = new Rectangle(optionsButtonX, optionsButtonY, optionsButtonWidth, optionsButtonHeight);
 
             createButton(optionsButton, LanguageManager.getText("pause_menu_settings"), MenuRenderer::optionsMenu, panel, 8734);
@@ -208,8 +204,6 @@ public abstract class MenuRenderer {
                 g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             }
 
-            double scaleByScreenSize = scale / 3.75;
-
             // BACKGROUND
             drawMenuBackground(g2d);
 
@@ -219,20 +213,20 @@ public abstract class MenuRenderer {
             FontMetrics fm = g2d.getFontMetrics();
             String titleText = LanguageManager.getText("loading_menu_loading");
             fm.stringWidth(titleText);
-            int textY = (int) (182 * scaleByScreenSize);
+            int textY = 49;
 
             // Progress bar
             long elapsedTime = currentTimeMillis() - MainRenderer.startTime;
             double progress = Math.min((double) elapsedTime / MainRenderer.LOADING_DURATION, 1.0); // Calculate progress (0.0 to 1.0)
             String percentage = (int) (progress * 100) + "%";
 
-            int fullProgressBarWidth = (int) (640 * scaleByScreenSize);
+            int fullProgressBarWidth = 171;
             int progressBarWidth = (int) (fullProgressBarWidth * progress);
-            int progressBarHeight = (int) (25 * scaleByScreenSize);
-            int progressBarX = (int) (660 * scaleByScreenSize);
-            int progressBarY = (int) ((textY + 560) * scaleByScreenSize);
+            int progressBarHeight = 7;
+            int progressBarX = 176;
+            int progressBarY = textY + 149;
 
-            final int shadowExtra = (int) (2 * scale);
+            final int shadowExtra = 2;
             final int shadowWidth = fullProgressBarWidth + shadowExtra;
             final int shadowHeight = progressBarHeight + shadowExtra;
             final int shadowX = progressBarX - shadowExtra / 2;
@@ -248,7 +242,7 @@ public abstract class MenuRenderer {
             FontMetrics percentageFm = g2d.getFontMetrics();
             int textWidth = percentageFm.stringWidth(percentage);
             int centerX = (int) ((screenWidth - textWidth) / 2);
-            textY = (int) ((progressBarY) - 20 * scaleByScreenSize);
+            textY = progressBarY - 5;
             g2d.setColor(progressBarPercentageShadow);
             drawColoredText(g2d, percentage, (int) (centerX + MainRenderer.textShadow), (int) (textY + MainRenderer.textShadow));
             g2d.setColor(progressBarPercentage);
