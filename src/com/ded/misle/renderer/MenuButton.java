@@ -11,11 +11,10 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.*;
 import java.util.List;
 
-import static com.ded.misle.game.GamePanel.deltaTime;
-import static com.ded.misle.game.GamePanel.gameState;
 import static com.ded.misle.core.LanguageManager.getCurrentScript;
 import static com.ded.misle.core.PraspomiaNumberConverter.ConvertMode.TO_PRASPOMIA;
 import static com.ded.misle.core.PraspomiaNumberConverter.impureConvertNumberSystem;
+import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.MainRenderer.textShadow;
 import static com.ded.misle.renderer.FontManager.buttonFont;
@@ -67,6 +66,7 @@ public class MenuButton {
             @Override
             public void mouseClicked(MouseEvent e) {
             Point clickPoint = e.getPoint();
+            clickPoint = new Point((int) (clickPoint.x / getWindowScale()), (int) (clickPoint.y / getWindowScale()));
             for (MenuButton button : buttons) {
                 if (button.bounds.contains(clickPoint)) {
                     fadingState.put(button.id, Fader.FadingState.FADING_OUT);
@@ -103,6 +103,7 @@ public class MenuButton {
 
     private static void detectIfButtonHovered(Point mousePoint, JPanel panel) {
         boolean repaintNeeded = false;
+        mousePoint = new Point((int) (mousePoint.x / getWindowScale()), (int) (mousePoint.y / getWindowScale()));
 
         for (MenuButton button : buttons) {
             if (gameState == GamePanel.GameState.OPTIONS_MENU) {
