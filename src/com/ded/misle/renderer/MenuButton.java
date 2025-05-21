@@ -141,9 +141,9 @@ public class MenuButton {
         }
     }
 
-    private final static int buttonBorderOffsetPos = 2;
+    private final static int buttonBorderOffsetPos = 1;
     private final static int buttonBorderOffsetSize = buttonBorderOffsetPos * 2;
-    private final static int buttonBorderSize = 18;
+    private final static int buttonBorderSize = 20;
 
     public static void drawButtons(Graphics2D g2d) {
         try {
@@ -153,7 +153,7 @@ public class MenuButton {
                 g2d.setColor(buttonBorderColor);
                 g2d.fillRoundRect(button.bounds.x - buttonBorderOffsetPos, button.bounds.y - buttonBorderOffsetPos,
                     button.bounds.width + buttonBorderOffsetSize, button.bounds.height + buttonBorderOffsetSize,
-                    buttonBorderSize + buttonBorderOffsetPos / 2, buttonBorderSize + buttonBorderOffsetPos / 2);
+                    buttonBorderSize, buttonBorderSize);
 
                 // BUTTON
                 g2d.setColor(button.color);
