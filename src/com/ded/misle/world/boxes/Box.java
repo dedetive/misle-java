@@ -110,18 +110,16 @@ public class Box {
 	// For player creation or dummy box
 	public Box() {}
 
-	// Method to render the box with the current tileSize and scale the position
 	public void draw(Graphics2D g2d, double cameraOffsetX, double cameraOffsetY) {
 		updateVisualPosition(20f);
 		float renderX = smoothPos.getRenderX();
 		float renderY = smoothPos.getRenderY();
 
-		// Apply the camera offset to the scaled position
-		int screenX = (int) (renderX - cameraOffsetX - this.visualOffsetX * tileSize);
-		int screenY = (int) (renderY - cameraOffsetY - this.visualOffsetY * tileSize);
+		// Apply the camera offset to the current position
+		int screenX = (int) (renderX - cameraOffsetX - this.visualOffsetX * originalTileSize);
+		int screenY = (int) (renderY - cameraOffsetY - this.visualOffsetY * originalTileSize);
 		if (isInvalid(screenX, screenY)) return;
 
-		// Draw the box with the scaled position and tileSize
 		try {
 			if (Objects.equals(this.textureName, "solid")) {
 				drawSolid(g2d, screenX, screenY);
@@ -141,7 +139,7 @@ public class Box {
 				for (int i = 0; i <= 270; i += 90) {
 					System.out.println(i);
 					drawRotatedImage(g2d, getTexture("wall_default_overlayW"), screenX, screenY,
-							(int) (tileSize * visualScaleHorizontal), (int) (tileSize * visualScaleVertical), i + this.visualRotation);
+							(int) (originalTileSize * visualScaleHorizontal), (int) (originalTileSize * visualScaleVertical), i + this.visualRotation);
 				}
 			}
 		} catch (NullPointerException e) {
@@ -151,7 +149,7 @@ public class Box {
 
 	private void drawSolid(Graphics2D g2d, int screenX, int screenY) {
 		g2d.setColor(color);
-		Rectangle solidBox = new Rectangle(screenX, screenY, (int) (tileSize * visualScaleHorizontal), (int) (tileSize * visualScaleVertical));
+		Rectangle solidBox = new Rectangle(screenX, screenY, (int) (originalTileSize * visualScaleHorizontal), (int) (originalTileSize * visualScaleVertical));
 		drawRotatedRect(g2d, solidBox, this.visualRotation);
 	}
 
@@ -167,7 +165,7 @@ public class Box {
 				textureExtra = textureName.substring(textureName.indexOf("@") + 1);
 				textureName = textureName.substring(0, textureName.indexOf("@"));
 			} else {
-				drawRotatedImage(g2d, getTexture(textureName), screenX, screenY, (int) (tileSize * visualScaleHorizontal), (int) (tileSize * visualScaleVertical), this.visualRotation);
+				drawRotatedImage(g2d, getTexture(textureName), screenX, screenY, (int) (originalTileSize * visualScaleHorizontal), (int) (originalTileSize * visualScaleVertical), this.visualRotation);
 			}
 
 			// Draw extras if any
@@ -175,11 +173,11 @@ public class Box {
 				if (textureParts[3].equals("@")) {
 					switch (textureExtra) {
 						case "Deco":
-							drawRotatedImage(g2d, getTexture(textureName + textureExtra), screenX, screenY, (int) (tileSize * visualScaleHorizontal), (int) (tileSize * visualScaleVertical), this.visualRotation);
+							drawRotatedImage(g2d, getTexture(textureName + textureExtra), screenX, screenY, (int) (originalTileSize * visualScaleHorizontal), (int) (originalTileSize * visualScaleVertical), this.visualRotation);
 					}
 				}
 			} else {
-				drawRotatedImage(g2d, getTexture(textureName), screenX, screenY, (int) (tileSize * visualScaleHorizontal), (int) (tileSize * visualScaleVertical), this.visualRotation);
+				drawRotatedImage(g2d, getTexture(textureName), screenX, screenY, (int) (originalTileSize * visualScaleHorizontal), (int) (originalTileSize * visualScaleVertical), this.visualRotation);
 			}
 
 			// Draw sides if they exist
@@ -190,7 +188,7 @@ public class Box {
 				for (String side : eachSide) {
 					if (side.isEmpty()) continue;
 					drawRotatedImage(g2d, getTexture(textureName + "_overlayW"), screenX, screenY,
-						(int) (tileSize * visualScaleHorizontal), (int) (tileSize * visualScaleVertical), rotationInstruction.get(side) + this.visualRotation);
+						(int) (originalTileSize * visualScaleHorizontal), (int) (originalTileSize * visualScaleVertical), rotationInstruction.get(side) + this.visualRotation);
 				}
 			}
 
@@ -203,7 +201,7 @@ public class Box {
 						continue;
 					}
 					drawRotatedImage(g2d, getTexture(textureName + "_overlayC"), screenX, screenY,
-						(int) (tileSize * visualScaleHorizontal), (int) (tileSize * visualScaleVertical), rotationInstruction.get(corner) + this.visualRotation);
+						(int) (originalTileSize * visualScaleHorizontal), (int) (originalTileSize * visualScaleVertical), rotationInstruction.get(corner) + this.visualRotation);
 				}
 			}
 
@@ -216,18 +214,18 @@ public class Box {
 		if (textureName.contains("@")) {
 			textureName = textureName.replace("@", "");
 		}
-		drawRotatedImage(g2d, this.getTexture(), screenX, screenY, (int) (tileSize * visualScaleHorizontal), (int) (tileSize * visualScaleVertical), this.visualRotation);
+		drawRotatedImage(g2d, this.getTexture(), screenX, screenY, (int) (originalTileSize * visualScaleHorizontal), (int) (originalTileSize * visualScaleVertical), this.visualRotation);
 	}
 
 	private boolean isInvalid(double screenX, double screenY) {
-		double margin = tileSize * 2;
+		double margin = originalTileSize * 2;
 		return !(screenX >= -margin && screenX <= originalScreenWidth + margin &&
 			screenY >= 0 - margin && screenY <= originalScreenHeight + margin);
 	}
 
 	public void updateVisualPosition(float speed) {
 		smoothPos.setTarget(worldX, worldY);
-		this.smoothPos.update(speed, tileSize);
+		this.smoothPos.update(speed, originalTileSize);
 	}
 
 	public float getRenderX() {

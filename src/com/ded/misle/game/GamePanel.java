@@ -40,7 +40,7 @@ public class GamePanel extends JPanel implements Runnable {
 		return windowScale;
 	}
 
-	static final int originalTileSize = 64; // 64x64 tiles
+	public static final int originalTileSize = 40; // 40x40 tiles
 	public static double gameScale = getWindowScale();
 	public static int tileSize = updateTileSize();
 	static final double maxScreenCol = 24; // Horizontal
@@ -92,8 +92,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 	// CAMERA WORLD BOUNDARIES
 
-	static double originalWorldWidth = 1;
-	static double originalWorldHeight = 1;
+	public static double originalWorldWidth = 1;
+	public static double originalWorldHeight = 1;
 	public static double worldWidth = originalWorldWidth;
 	public static double worldHeight = originalWorldHeight;
 
@@ -346,8 +346,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void updateCamera() {
 		// Camera dead zone
-		double deadZoneWidth = tileSize;
-		double deadZoneHeight = tileSize * 9 / 16d;
+		double deadZoneWidth = originalTileSize;
+		double deadZoneHeight = originalTileSize * 9 / 16d;
 
 		double cameraX = player.pos.getCameraOffsetX();
 		double targetCameraX = player.pos.calculateCameraOffsetX();
@@ -358,7 +358,7 @@ public class GamePanel extends JPanel implements Runnable {
 		double dy = targetCameraY - cameraY;
 
 		// Damping: 0 < alpha < 1, lower values = smoother
-		float alpha = (float) (1 - Math.pow(0.15, deltaTime));
+		float alpha = (float) (1 - Math.pow(0.16, deltaTime));
 
 		if (Math.abs(dx) > deadZoneWidth) {
 			cameraX += 1.5 * dx * alpha;

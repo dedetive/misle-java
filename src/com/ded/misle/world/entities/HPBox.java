@@ -357,8 +357,8 @@ public class HPBox extends Box {
      * @param bold If true, shows bold text.
      */
     private void renderFloatingText(String text, Color color, boolean bold) {
-        int x = getX() * tileSize;
-        int y = getY() * tileSize;
+        int x = getX() * originalTileSize;
+        int y = getY() * originalTileSize;
 
         int offsetX = (int) ((Math.random() * 80) - 40);
         int offsetY = (int) ((Math.random() * 50) - 25);

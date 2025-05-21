@@ -1,6 +1,7 @@
 package com.ded.misle.renderer;
 
 import com.ded.misle.core.LanguageManager;
+import com.ded.misle.game.GamePanel;
 import com.ded.misle.world.logic.World;
 import com.ded.misle.world.entities.npcs.NPC;
 import com.ded.misle.input.MouseHandler;
@@ -53,20 +54,20 @@ public class PlayingRenderer extends AbstractRenderer {
         // Draw background
         World world = player.pos.world;
 
-        for (int i = 0; i < originalScreenWidth / tileSize + 2; i++) {
-            for (int j = 0; j < originalScreenHeight / tileSize + 2; j++) {
+        for (int i = 0; i < originalScreenWidth / originalTileSize + 2; i++) {
+            for (int j = 0; j < originalScreenHeight / originalTileSize + 2; j++) {
 
-                int worldX = (int) (Math.max((player.pos.getCameraOffsetX() / (double) tileSize), 0) + i);
-                int worldY = (int) (Math.max((player.pos.getCameraOffsetY() / (double) tileSize), 0) + j);
+                int worldX = (int) (Math.max((player.pos.getCameraOffsetX() / (double) originalTileSize), 0) + i);
+                int worldY = (int) (Math.max((player.pos.getCameraOffsetY() / (double) originalTileSize), 0) + j);
 
                 BufferedImage texture = ((worldX + worldY) % 2 == 0) ?
                     world.background.box[0].getTexture() :
                     world.background.box[1].getTexture();
 
-                int drawX = (int) (i * tileSize - (player.pos.getCameraOffsetX() % tileSize));
-                int drawY = (int) (j * tileSize - (player.pos.getCameraOffsetY() % tileSize));
+                int drawX = (int) (i * originalTileSize - (player.pos.getCameraOffsetX() % originalTileSize));
+                int drawY = (int) (j * originalTileSize - (player.pos.getCameraOffsetY() % originalTileSize));
 
-                g2d.drawImage(texture, drawX, drawY, tileSize, tileSize, null);
+                g2d.drawImage(texture, drawX, drawY, originalTileSize, originalTileSize, null);
             }
         }
 
@@ -79,7 +80,7 @@ public class PlayingRenderer extends AbstractRenderer {
             for (NPC npc : selectedNPCs) {
                 for (int i = 0; i <= 270; i += 90) {
                     drawRotatedImage(g2d, getTexture("wall_default_overlayW"), npc.getX() - player.pos.getCameraOffsetX(), npc.getY() - player.pos.getCameraOffsetY(),
-                        (int) (tileSize * npc.getVisualScaleHorizontal()), (int) (tileSize * npc.getVisualScaleVertical()), i + npc.getVisualRotation());
+                        (int) (originalTileSize * npc.getVisualScaleHorizontal()), (int) (originalTileSize * npc.getVisualScaleVertical()), i + npc.getVisualRotation());
                 }
             }
         } catch (ConcurrentModificationException e) {
@@ -88,8 +89,8 @@ public class PlayingRenderer extends AbstractRenderer {
 
         // Player position adjustments
         player.updateVisualPosition(50f);
-        int playerScreenX = (int) (player.getRenderX() + player.visualOffsetX * tileSize - player.pos.getCameraOffsetX());
-        int playerScreenY = (int) (player.getRenderY() + player.visualOffsetY * tileSize - player.pos.getCameraOffsetY());
+        int playerScreenX = (int) (player.getRenderX() + player.visualOffsetX * originalTileSize - player.pos.getCameraOffsetX());
+        int playerScreenY = (int) (player.getRenderY() + player.visualOffsetY * originalTileSize - player.pos.getCameraOffsetY());
 
         // Draw the player above every box
 //        g2d.setColor(player.getColor());
@@ -121,10 +122,10 @@ public class PlayingRenderer extends AbstractRenderer {
             playerSprite;
 
         drawRotatedImage(g2d, playerSprite,
-            playerScreenX - player.getVisualScaleHorizontal() * 0.25 * tileSize,
-            playerScreenY - player.getVisualScaleVertical() * 0.25 * tileSize,
-            (int) (player.getVisualScaleHorizontal() * 1.5 * tileSize),
-            (int) (player.getVisualScaleVertical() * 1.5 * tileSize), player.pos.getRotation(), playerMirror);
+            playerScreenX - player.getVisualScaleHorizontal() * 0.25 * originalTileSize,
+            playerScreenY - player.getVisualScaleVertical() * 0.25 * originalTileSize,
+            (int) (player.getVisualScaleHorizontal() * 1.5 * originalTileSize),
+            (int) (player.getVisualScaleVertical() * 1.5 * originalTileSize), player.pos.getRotation(), playerMirror);
 
         drawHandItem(g2d, playerScreenX, playerScreenY, mouseHandler);
 
@@ -169,22 +170,35 @@ public class PlayingRenderer extends AbstractRenderer {
                 mirror = true;
             }
 
-            double distance = playerScreenX + player.getVisualScaleHorizontal() * tileSize
+            double distance = playerScreenX + player.getVisualScaleHorizontal() * originalTileSize
                 * facingMultiplicator * (double) 1;
 
             Item selectedItem = player.inv.getSelectedItem();
+            int itemSize = (int) (originalTileSize * selectedItem.getAnimationBulk());
 
             if (selectedItem.getCountLimit() >= 16 && selectedItem.getCount() > selectedItem.getCountLimit() / 3) {
                 double pos = 12 * facingMultiplicator * (double) 1;
-                drawRotatedImage(g2d, selectedItem.getIcon(), distance + pos + selectedItem.getAnimationX() * facingMultiplicator / 3.75, playerScreenY + 15 * (double) 1 + selectedItem.getAnimationY() / 3.75, (int) (100 * (double) 1 * selectedItem.getAnimationBulk()), (int) (100 * (double) 1 * selectedItem.getAnimationBulk()), (35 + selectedItem.getAnimationRotation()) * Math.ceil(facingMultiplicator), mirror);
+                drawRotatedImage(g2d, selectedItem.getIcon(),
+                    distance + pos + selectedItem.getAnimationX() * facingMultiplicator / 3.75,
+                    playerScreenY + 15 * (double) 1 + selectedItem.getAnimationY() / 3.75,
+                    itemSize, itemSize,
+                    (35 + selectedItem.getAnimationRotation()) * Math.ceil(facingMultiplicator), mirror);
             }
 
             if (selectedItem.getCountLimit() >= 100 && selectedItem.getCount() > 2 * selectedItem.getCountLimit() / 3) {
                 double pos = -12 * facingMultiplicator * (double) 1;
-                drawRotatedImage(g2d, selectedItem.getIcon(), distance + pos + selectedItem.getAnimationX() * facingMultiplicator / 3.75, playerScreenY + 15 * (double) 1 + selectedItem.getAnimationY() / 3.75, (int) (100 * (double) 1 * selectedItem.getAnimationBulk()), (int) (100 * (double) 1 * selectedItem.getAnimationBulk()), (-35 + selectedItem.getAnimationRotation()) * Math.ceil(facingMultiplicator), mirror);
+                drawRotatedImage(g2d, selectedItem.getIcon(),
+                    distance + pos + selectedItem.getAnimationX() * facingMultiplicator / 3.75,
+                    playerScreenY + 15 * (double) 1 + selectedItem.getAnimationY() / 3.75,
+                    itemSize, itemSize,
+                    (-35 + selectedItem.getAnimationRotation()) * Math.ceil(facingMultiplicator), mirror);
             }
 
-            drawRotatedImage(g2d, selectedItem.getIcon(), (int) distance + selectedItem.getAnimationX() * facingMultiplicator / 3.75, playerScreenY + selectedItem.getAnimationY() / 3.75, (int) (100 * (double) 1 * selectedItem.getAnimationBulk()), (int) (100 * (double) 1 * selectedItem.getAnimationBulk()), selectedItem.getAnimationRotation() * Math.ceil(facingMultiplicator), mirror);
+            drawRotatedImage(g2d, selectedItem.getIcon(),
+                (int) distance + selectedItem.getAnimationX() * facingMultiplicator / 3.75,
+                playerScreenY + selectedItem.getAnimationY() / 3.75,
+                itemSize, itemSize,
+                selectedItem.getAnimationRotation() * Math.ceil(facingMultiplicator), mirror);
         }
     }
 
