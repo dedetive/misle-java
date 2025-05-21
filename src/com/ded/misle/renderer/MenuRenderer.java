@@ -20,8 +20,6 @@ import static com.ded.misle.renderer.MenuButton.*;
 import static com.ded.misle.renderer.SettingsMenuRenderer.switchToEmpty;
 import static com.ded.misle.world.data.WorldLoader.unloadBoxes;
 import static java.lang.System.currentTimeMillis;
-import static com.ded.misle.game.GamePanel.screenWidth;
-import static com.ded.misle.game.GamePanel.screenHeight;
 
 public abstract class MenuRenderer {
     static void createTitle(String text, Graphics2D g2d) {
@@ -236,7 +234,7 @@ public abstract class MenuRenderer {
             g2d.setFont(FontManager.selectedItemNameFont);
             FontMetrics percentageFm = g2d.getFontMetrics();
             int textWidth = percentageFm.stringWidth(percentage);
-            int centerX = (int) ((screenWidth - textWidth) / 2);
+            int centerX = (originalScreenWidth - textWidth) / 2;
             textY = progressBarY - 5;
             g2d.setColor(progressBarPercentageShadow);
             drawColoredText(g2d, percentage, (int) (centerX + MainRenderer.textShadow), (int) (textY + MainRenderer.textShadow));
@@ -248,9 +246,6 @@ public abstract class MenuRenderer {
     }
 
     public static void drawMenuBackground(Graphics2D g2d) {
-//        g2d.setColor(menuBackgroundColor);
-//        g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
-
-        g2d.drawImage(cachedImages.get(MAIN_MENU_BACKGROUND), 0, 0, (int) screenWidth, (int) screenHeight, null);
+        g2d.drawImage(cachedImages.get(MAIN_MENU_BACKGROUND), 0, 0, originalScreenWidth, originalScreenHeight, null);
     }
 }
