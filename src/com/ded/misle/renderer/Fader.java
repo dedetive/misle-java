@@ -64,7 +64,7 @@ public class Fader {
         if (state != FadingState.UNFADED) {
             fadingProgress = (float) Math.clamp(fadingProgress + state.getProgressIncrease() * Math.pow(deltaTime, 0.3) * 6, 0F, 1F);
             g2d.setColor(new Color((float) fadingColor.getRed() / 256, (float) fadingColor.getGreen() / 256, (float) fadingColor.getBlue() / 256, fadingProgress));
-            g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
+            g2d.fillRect(0, 0, originalScreenWidth, originalScreenHeight);
             if (fadingProgress == state.getProgressMax()) {
                 state = state.getProgressMax() == 0 ? FadingState.UNFADED : FadingState.FADED;
             }
