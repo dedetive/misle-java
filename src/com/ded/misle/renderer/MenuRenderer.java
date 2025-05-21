@@ -129,7 +129,7 @@ public abstract class MenuRenderer {
 
             // Options menu
 
-            int optionsButtonX = 192;
+            int optionsButtonX = 196;
             int optionsButtonY = 176;
             int optionsButtonWidth = 51;
             int optionsButtonHeight = 41;
