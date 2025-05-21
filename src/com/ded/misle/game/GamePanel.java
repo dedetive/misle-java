@@ -378,6 +378,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.scale(getWindowScale(), getWindowScale());
+		if (antiAliasing.bool()) {
+			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		}
 
 		switch (gameState) {
 			case GameState.INVENTORY:
