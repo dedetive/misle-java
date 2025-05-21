@@ -401,7 +401,16 @@ public class PlayingRenderer extends AbstractRenderer {
             }
 
             if (i == selectedSlot) {
-                drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize[0]);
+                int width = slotSize[0];
+                int height = slotSize[0] - 1;
+                if (selectedSlot == 0) {
+                    slotX++;
+                    width--;
+                } else if (selectedSlot == 6) {
+                    width--;
+                }
+                slotY = inventoryBarImageY + 2;
+                drawSelectedSlotOverlay(g2d, slotX - 1, slotY, width, height);
             }
         }
     }

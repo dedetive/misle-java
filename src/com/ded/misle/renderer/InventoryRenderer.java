@@ -12,6 +12,7 @@ import java.util.List;
 import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.ImageManager.cachedImages;
+import static com.ded.misle.renderer.PlayingRenderer.*;
 
 public abstract class InventoryRenderer {
     // [0] = Inventory and inventory bar
@@ -22,8 +23,12 @@ public abstract class InventoryRenderer {
     // For gridOffset, first value is either INVENTORY or EXTRA and second value is either X or Y
 
     public static void drawSelectedSlotOverlay(Graphics2D g2d, int slotX, int slotY, int slotSize) {
+        drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize, slotSize);
+    }
+
+    public static void drawSelectedSlotOverlay(Graphics2D g2d, int slotX, int slotY, int slotWidth, int slotHeight) {
         g2d.setColor(selectedSlotOverlay); // Semi-transparent overlay
-        g2d.fillRect(slotX, slotY, slotSize, slotSize);
+        g2d.fillRect(slotX, slotY, slotWidth, slotHeight);
     }
 
     public static void renderInventoryMenu(Graphics g) {
@@ -186,14 +191,23 @@ public abstract class InventoryRenderer {
         if (!isExtra) {
             if (hoveredSlot[0] == -1) {
                 // If playing
-                int inventoryBarWidth = 120;
-                int inventoryBarX = (originalScreenWidth - inventoryBarWidth) / 2;
-                int inventoryBarY = originalScreenHeight - 100;
 
                 int slotStartX = inventoryBarX + (inventoryBarWidth - (7 * slotSize[0] + 6 * slotSpacing[0])) / 2;
                 slotX = slotStartX + hoveredSlot[1] * (slotSize[0] + slotSpacing[0]);
-                slotY = inventoryBarY + slotSize[0] / 2;
+                slotY = inventoryBarImageY + 2;
                 hoveredSlot[0] = 0;
+
+                if (hoveredSlot[1] != player.inv.getSelectedSlot() && gameState == GameState.PLAYING) {
+                    int width = slotSize[0];
+                    int height = slotSize[0] - 1;
+                    if (hoveredSlot[1] == 0) {
+                        slotX++;
+                        width--;
+                    } else if (hoveredSlot[1] == 6) {
+                        width--;
+                    }
+                    drawSelectedSlotOverlay(g2d, slotX - 1, slotY, width, height);
+                }
             } else {
                 // If in inventory menu
 
@@ -201,13 +215,11 @@ public abstract class InventoryRenderer {
 
                 slotX = gridOffset[0][0] + hoveredSlot[1] * (slotSize[0] + slotSpacing[0]);
                 slotY = gridOffset[0][1] + rowOrder[hoveredSlot[0]] * (slotSize[0] + slotSpacing[0]);
+
+                drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize[0]);
             }
 
             hoveredItem = player.inv.getItem(hoveredSlot[0], hoveredSlot[1]);
-
-            if (gameState == GameState.INVENTORY || (hoveredSlot[1] != player.inv.getSelectedSlot() && gameState == GameState.PLAYING)) {
-                drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize[0]);
-            }
         } else {
             slotX = gridOffset[1][0] + hoveredSlot[0] * (slotSize[1] + slotSpacing[1]);
             slotY = gridOffset[1][1] + hoveredSlot[1] * (slotSize[1] + slotSpacing[1]);
