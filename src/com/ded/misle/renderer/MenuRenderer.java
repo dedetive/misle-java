@@ -133,9 +133,9 @@ public abstract class MenuRenderer {
             drawButtons(g2d);
 
             // Version
-
             String gameVersion = LanguageManager.getText("version");
-            drawColoredText(g2d, gameVersion, (int) (437 + textShadow), (int) (255 + textShadow), itemInfoFont, menuVersionShadowColor, true);
+            String gameVersionShadow = LanguageManager.getText("version_shadow");
+            drawColoredText(g2d, gameVersionShadow, 437 + textShadow, 255 + textShadow, itemInfoFont, menuVersionShadowColor, false);
             drawColoredText(g2d, gameVersion, 437, 255, itemInfoFont, menuVersionColor, false);
         }
     }

@@ -25,7 +25,7 @@ public abstract class MainRenderer {
 	public static long startTime;
 	public static final int LOADING_DURATION = 500;
 
-	public static double textShadow = 1;
+	public static final int textShadow = 1;
 
 	public static Fader fader = new Fader();
 

@@ -110,7 +110,5 @@ public abstract class FontManager {
                 itemCountFont = loadFont("/fonts/Praspomia-Regular.otf", 13);
             }
         }
-
-        MainRenderer.textShadow = 1;
     }
 }

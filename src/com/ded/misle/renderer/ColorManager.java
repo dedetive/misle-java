@@ -262,7 +262,6 @@ public abstract class ColorManager {
             }
 
             // Draw stuff
-            g2d.setFont(font);
             FontMetrics fm = g2d.getFontMetrics();
             int fontHeight = fm.getHeight(); // Height of the font, used for image size
 
@@ -318,12 +317,12 @@ public abstract class ColorManager {
 
                         if (img != null) {
                             g2d.drawImage(img, charX, y - fontHeight, (int) (fontHeight * 1.1), (int) (fontHeight * 1.1), null);
-                            charX += fontHeight; // Move cursor forward by the image width
+                            charX += fm.charWidth(snippet.charAt(i)); // Move cursor forward by the image width
                         }
                     } else {
                         String letter = String.valueOf(snippet.charAt(i));
                         g2d.drawString(letter, charX, y);
-                        charX += fm.charWidth(snippet.charAt(i)); // Move x forward by character width
+                        charX += fm.stringWidth(letter); // Move x forward by character width
                     }
                 }
 
