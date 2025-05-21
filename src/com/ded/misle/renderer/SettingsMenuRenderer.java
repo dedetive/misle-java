@@ -9,9 +9,8 @@ import java.awt.*;
 import java.util.ConcurrentModificationException;
 
 import static com.ded.misle.Launcher.*;
-import static com.ded.misle.game.GamePanel.screenHeight;
-import static com.ded.misle.game.GamePanel.screenWidth;
 import static com.ded.misle.core.Setting.*;
+import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.input.KeyHandler.Key.LEFT_MENU;
 import static com.ded.misle.input.KeyHandler.Key.RIGHT_MENU;
 import static com.ded.misle.renderer.ColorManager.*;
@@ -65,9 +64,9 @@ public abstract class SettingsMenuRenderer {
             g2d.setColor(settingsSeparatingBar);
             int separatingBarY = 210;
             int separatingBarHeight = 2;
-            g2d.fillRect(0, separatingBarY, (int) screenWidth, separatingBarHeight);
+            g2d.fillRect(0, separatingBarY, originalScreenWidth, separatingBarHeight);
             g2d.setColor(settingsSeparatingBarBottom);
-            g2d.fillRect(0, separatingBarY + separatingBarHeight, (int) screenWidth, (int) (screenHeight - (separatingBarY + separatingBarHeight)));
+            g2d.fillRect(0, separatingBarY + separatingBarHeight, originalScreenWidth, originalScreenHeight - (separatingBarY + separatingBarHeight));
 
             // MENU ITSELF
             MenuRenderer.createTitle("settings_menu_options", g2d);
@@ -105,7 +104,7 @@ public abstract class SettingsMenuRenderer {
             FontMetrics fm = g2d.getFontMetrics();
             String text = LanguageManager.getText("settings_menu_" + String.valueOf(settingState).toLowerCase());
             int textWidth = fm.stringWidth(text);
-            int centerX = (int) ((screenWidth - textWidth) / 2);
+            int centerX = (originalScreenWidth - textWidth) / 2;
             int textY = 66;
 
             g2d.setColor(buttonTextShadowColor);
