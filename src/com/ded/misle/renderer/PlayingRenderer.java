@@ -50,11 +50,6 @@ public class PlayingRenderer extends AbstractRenderer {
     public void render(Graphics g, MouseHandler mouseHandler) {
         Graphics2D g2d = (Graphics2D) g;
 
-        // ANTI-ALIASING
-        if (antiAliasing.bool()) {
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        }
-
         // Draw background
         World world = player.pos.world;
 
