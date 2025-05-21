@@ -30,15 +30,22 @@ public class SaveFile {
 
 	// FILE PATH FOR .PNG
 	private static final Path filePath = getPath().resolve("savefile");
-	private static final File[] save = new File[3];
+	private static final File[] saves = new File[3];
+	private static final BufferedImage[] saveImages = new BufferedImage[3];
 	static {
 		for (int i = 0; i < 3; i++) {
-			save[i] = (Path.of(filePath + String.valueOf(i) + ".png")).toFile();
-		}
+			saves[i] = (Path.of(filePath + String.valueOf(i) + ".png")).toFile();
+            try {
+                saveImages[i] = ImageIO.read(saves[i]);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
 	}
 
 	// IMAGE
 
+	private final static BufferedImage[] imageCache = new BufferedImage[3];
 	static BufferedImage image = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB);
 
 	// COLORS
@@ -196,130 +203,124 @@ public class SaveFile {
 			boolean fileExists = checkIfSaveFileExists(saveSlot);
 
 			if (fileExists) {
-				try {
-					image = ImageIO.read(save[saveSlot]);
+                image = saveImages[saveSlot];
 
-					// Spawnpoint
+                // Spawnpoint
 
-					int spawnpoint = loadAttribute(PixelData.SPAWNPOINT_M, PixelData.SPAWNPOINT_L);
-					player.pos.setSpawnpoint(Math.max(spawnpoint, 0));
-					player.pos.reloadSpawnpoint();
+                int spawnpoint = loadAttribute(PixelData.SPAWNPOINT_M, PixelData.SPAWNPOINT_L);
+                player.pos.setSpawnpoint(Math.max(spawnpoint, 0));
+                player.pos.reloadSpawnpoint();
 
-					// Level and XP related
+                // Level and XP related
 
-					int level = loadAttribute(PixelData.LEVEL_M, PixelData.LEVEL_L);
-					player.attr.setLevel(level);
+                int level = loadAttribute(PixelData.LEVEL_M, PixelData.LEVEL_L);
+                player.attr.setLevel(level);
 
-					int levelPoints = loadAttribute(PixelData.LEVEL_POINTS_M, PixelData.LEVEL_POINTS_L);
-					player.attr.addLevelUpPoints(levelPoints);
+                int levelPoints = loadAttribute(PixelData.LEVEL_POINTS_M, PixelData.LEVEL_POINTS_L);
+                player.attr.addLevelUpPoints(levelPoints);
 
-					int XP = loadAttribute(PixelData.XP_H, PixelData.XP_M, PixelData.XP_L);
-					player.attr.setXP(XP);
+                int XP = loadAttribute(PixelData.XP_H, PixelData.XP_M, PixelData.XP_L);
+                player.attr.setXP(XP);
 
-					// Level stats (Max HP, max entropy, defense, regeneration quality and speed)
+                // Level stats (Max HP, max entropy, defense, regeneration quality and speed)
 
-					int playerMaxHP = loadAttribute(PixelData.MAX_HP_H, PixelData.MAX_HP_M, PixelData.MAX_HP_L);
-					player.attr.setLevelStat(PlayerAttributes.LevelStat.MAX_HP, playerMaxHP);
+                int playerMaxHP = loadAttribute(PixelData.MAX_HP_H, PixelData.MAX_HP_M, PixelData.MAX_HP_L);
+                player.attr.setLevelStat(PlayerAttributes.LevelStat.MAX_HP, playerMaxHP);
 
-					int playerMaxEntropy = loadAttribute(PixelData.MAX_ENTROPY_H, PixelData.MAX_ENTROPY_M, PixelData.MAX_ENTROPY_L);
-					player.attr.setLevelStat(PlayerAttributes.LevelStat.MAX_ENTROPY, playerMaxEntropy);
+                int playerMaxEntropy = loadAttribute(PixelData.MAX_ENTROPY_H, PixelData.MAX_ENTROPY_M, PixelData.MAX_ENTROPY_L);
+                player.attr.setLevelStat(PlayerAttributes.LevelStat.MAX_ENTROPY, playerMaxEntropy);
 
-					int playerDefense = loadAttribute(PixelData.DEFENSE_H, PixelData.DEFENSE_M, PixelData.DEFENSE_L);
-					player.attr.setLevelStat(PlayerAttributes.LevelStat.DEFENSE, playerDefense);
+                int playerDefense = loadAttribute(PixelData.DEFENSE_H, PixelData.DEFENSE_M, PixelData.DEFENSE_L);
+                player.attr.setLevelStat(PlayerAttributes.LevelStat.DEFENSE, playerDefense);
 
-					int playerRegenerationQuality = loadAttribute(PixelData.REGENERATION_QUALITY_H, PixelData.REGENERATION_QUALITY_M, PixelData.REGENERATION_QUALITY_L);
-					player.attr.setLevelStat(PlayerAttributes.LevelStat.REGENERATION_QUALITY, playerRegenerationQuality);
+                int playerRegenerationQuality = loadAttribute(PixelData.REGENERATION_QUALITY_H, PixelData.REGENERATION_QUALITY_M, PixelData.REGENERATION_QUALITY_L);
+                player.attr.setLevelStat(PlayerAttributes.LevelStat.REGENERATION_QUALITY, playerRegenerationQuality);
 
-					// Max stack size
+                // Max stack size
 
-					player.attr.setMaxStackSizeMulti((float) loadAttribute(PixelData.MAX_STACK_SIZE_MULTIPLIER_M, PixelData.MAX_STACK_SIZE_MULTIPLIER_L) / 1000);
+                player.attr.setMaxStackSizeMulti((float) loadAttribute(PixelData.MAX_STACK_SIZE_MULTIPLIER_M, PixelData.MAX_STACK_SIZE_MULTIPLIER_L) / 1000);
 
-					// Statistics
+                // Statistics
 
-					player.stats.setSteps(PlayerStats.Direction.TOTAL, loadAttribute(PixelData.TOTAL_STEPS_H, PixelData.TOTAL_STEPS_M, PixelData.TOTAL_STEPS_L));
-					player.stats.setSteps(PlayerStats.Direction.UP, loadAttribute(PixelData.STEPS_UP_H, PixelData.STEPS_UP_M, PixelData.STEPS_UP_L));
-					player.stats.setSteps(PlayerStats.Direction.DOWN, loadAttribute(PixelData.STEPS_DOWN_H, PixelData.STEPS_DOWN_M, PixelData.STEPS_DOWN_L));
-					player.stats.setSteps(PlayerStats.Direction.LEFT, loadAttribute(PixelData.STEPS_LEFT_H, PixelData.STEPS_LEFT_M, PixelData.STEPS_LEFT_L));
-					player.stats.setSteps(PlayerStats.Direction.RIGHT, loadAttribute(PixelData.STEPS_RIGHT_H, PixelData.STEPS_RIGHT_M, PixelData.STEPS_RIGHT_L));
+                player.stats.setSteps(PlayerStats.Direction.TOTAL, loadAttribute(PixelData.TOTAL_STEPS_H, PixelData.TOTAL_STEPS_M, PixelData.TOTAL_STEPS_L));
+                player.stats.setSteps(PlayerStats.Direction.UP, loadAttribute(PixelData.STEPS_UP_H, PixelData.STEPS_UP_M, PixelData.STEPS_UP_L));
+                player.stats.setSteps(PlayerStats.Direction.DOWN, loadAttribute(PixelData.STEPS_DOWN_H, PixelData.STEPS_DOWN_M, PixelData.STEPS_DOWN_L));
+                player.stats.setSteps(PlayerStats.Direction.LEFT, loadAttribute(PixelData.STEPS_LEFT_H, PixelData.STEPS_LEFT_M, PixelData.STEPS_LEFT_L));
+                player.stats.setSteps(PlayerStats.Direction.RIGHT, loadAttribute(PixelData.STEPS_RIGHT_H, PixelData.STEPS_RIGHT_M, PixelData.STEPS_RIGHT_L));
 
-					player.stats.setTotalPlaytime(loadAttribute(PixelData.TOTAL_PLAYTIME_E, PixelData.TOTAL_PLAYTIME_H, PixelData.TOTAL_PLAYTIME_M, PixelData.TOTAL_PLAYTIME_L) * 1000L);
+                player.stats.setTotalPlaytime(loadAttribute(PixelData.TOTAL_PLAYTIME_E, PixelData.TOTAL_PLAYTIME_H, PixelData.TOTAL_PLAYTIME_M, PixelData.TOTAL_PLAYTIME_L) * 1000L);
 
-					// Coins
+                // Coins
 
-					player.attr.setBalance(loadAttribute(PixelData.BALANCE_E, PixelData.BALANCE_H, PixelData.BALANCE_M, PixelData.BALANCE_L));
+                player.attr.setBalance(loadAttribute(PixelData.BALANCE_E, PixelData.BALANCE_H, PixelData.BALANCE_M, PixelData.BALANCE_L));
 
-					// Name
+                // Name
 
-                    byte[] nameBytes = new byte[16];
-					PixelColor pixelColor;
+                byte[] nameBytes = new byte[16];
+                PixelColor pixelColor;
 
-					for (int i = 0; i < 16; i++) {
-						if (i % 3 == 0) pixelColor = RED;
-						else if (i % 3 == 1) pixelColor = GREEN;
-						else pixelColor = BLUE;
+                for (int i = 0; i < 16; i++) {
+                    if (i % 3 == 0) pixelColor = RED;
+                    else if (i % 3 == 1) pixelColor = GREEN;
+                    else pixelColor = BLUE;
 
-						nameBytes[i] = (byte) loadThis(pixelColor, i / 3, 127);
-					}
+                    nameBytes[i] = (byte) loadThis(pixelColor, i / 3, 127);
+                }
 
-					String playerName = new String(nameBytes, StandardCharsets.UTF_8);
-					player.name = playerName.trim();
+                String playerName = new String(nameBytes, StandardCharsets.UTF_8);
+                player.name = playerName.trim();
 
-					// Load inventory
+                // Load inventory
 
-					int[][][] tempInventory = new int[4][7][4];
-					for (int i = 0; i < 4; i++) {
-						for (int j = 0; j < 7; j++) {
-							tempInventory[i][j][0] = loadThis(RED, i, j + 15);
-							tempInventory[i][j][1] = loadThis(GREEN, i, j + 15);
-							// [i][j][0] = ID
-							int itemID = tempInventory[i][j][0] * 255 + tempInventory[i][j][1];
+                int[][][] tempInventory = new int[4][7][4];
+                for (int i = 0; i < 4; i++) {
+                    for (int j = 0; j < 7; j++) {
+                        tempInventory[i][j][0] = loadThis(RED, i, j + 15);
+                        tempInventory[i][j][1] = loadThis(GREEN, i, j + 15);
+                        // [i][j][0] = ID
+                        int itemID = tempInventory[i][j][0] * 255 + tempInventory[i][j][1];
 
-							tempInventory[i][j][2] = loadThis(BLUE, i, j + 15);
-							tempInventory[i][j][3] = loadThis(RED, j + 15, i);
-							// [i][j][1] = Count
-							int itemCount = tempInventory[i][j][2] * 255 + tempInventory[i][j][3];
+                        tempInventory[i][j][2] = loadThis(BLUE, i, j + 15);
+                        tempInventory[i][j][3] = loadThis(RED, j + 15, i);
+                        // [i][j][1] = Count
+                        int itemCount = tempInventory[i][j][2] * 255 + tempInventory[i][j][3];
 
-							if (itemID == 0 || itemCount == 0) continue;
+                        if (itemID == 0 || itemCount == 0) continue;
 
-							player.inv.bruteSetItem(Item.createItem(itemID, itemCount), i, j);
-						}
-					}
+                        player.inv.bruteSetItem(Item.createItem(itemID, itemCount), i, j);
+                    }
+                }
 
-					tempInventory = new int[2][2][4];
-					for (int i = 0; i < 2; i++) {
-						for (int j = 0; j < 2; j++) {
-							tempInventory[i][j][0] = loadThis(RED, i, j + 25);
-							tempInventory[i][j][1] = loadThis(GREEN, i, j + 25);
-							// [i][j][0] = ID
-							int itemID = tempInventory[i][j][0] * 255 + tempInventory[i][j][1];
+                tempInventory = new int[2][2][4];
+                for (int i = 0; i < 2; i++) {
+                    for (int j = 0; j < 2; j++) {
+                        tempInventory[i][j][0] = loadThis(RED, i, j + 25);
+                        tempInventory[i][j][1] = loadThis(GREEN, i, j + 25);
+                        // [i][j][0] = ID
+                        int itemID = tempInventory[i][j][0] * 255 + tempInventory[i][j][1];
 
-							tempInventory[i][j][2] = loadThis(BLUE, i, j + 25);
-							tempInventory[i][j][3] = loadThis(RED, j + 25, i);
-							// [i][j][1] = Count
-							int itemCount = tempInventory[i][j][2] * 255 + tempInventory[i][j][3];
+                        tempInventory[i][j][2] = loadThis(BLUE, i, j + 25);
+                        tempInventory[i][j][3] = loadThis(RED, j + 25, i);
+                        // [i][j][1] = Count
+                        int itemCount = tempInventory[i][j][2] * 255 + tempInventory[i][j][3];
 
-							if (itemID == 0 || itemCount == 0) continue;
+                        if (itemID == 0 || itemCount == 0) continue;
 
-							player.inv.bruteSetItem(Item.createItem(itemID, itemCount), i * 2 + j);
-						}
-					}
+                        player.inv.bruteSetItem(Item.createItem(itemID, itemCount), i * 2 + j);
+                    }
+                }
 
-					player.isIconActive = (getLow(loadThis(PixelData.ICON_ACTIVE_L)) % 2) == 1;
-					player.icon = (BufferedImage) loadSaveScreenInformation(ICON, saveSlot);
-					player.isIconTexture = (boolean) loadSaveScreenInformation(SaveScreenOption.IS_PLAYER_TEXTURE_ICON, saveSlot);
+                player.isIconActive = (getLow(loadThis(PixelData.ICON_ACTIVE_L)) % 2) == 1;
+                player.icon = (BufferedImage) loadSaveScreenInformation(ICON, saveSlot);
+                player.isIconTexture = (boolean) loadSaveScreenInformation(SaveScreenOption.IS_PLAYER_TEXTURE_ICON, saveSlot);
 
-					if (player.isIconTexture) {
-						for (ImageManager.ImageName img : playerImages) {
-							mergeImages(cachedImages.get(img), player.icon);
-						}
-					}
+                if (player.isIconTexture) {
+                    for (ImageName img : playerImages) {
+                        mergeImages(cachedImages.get(img), player.icon);
+                    }
+                }
 
-				} catch (IOException e) {
-					System.out.println("Failed to load save file!");
-					player.unloadPlayer();
-					e.printStackTrace();
-				}
-			} else {
+            } else {
 				System.out.println("Could not find a save file!");
 				player.unloadPlayer();
 				player.pos.reloadSpawnpoint();
@@ -528,11 +529,13 @@ public class SaveFile {
 				}
 			}
 
+			saveImages[saveSlot] = image;
+
 			ImageWriter writer = ImageIO.getImageWritersByFormatName("png").next();
 			ImageWriteParam param = writer.getDefaultWriteParam();
 			param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
 			param.setCompressionQuality(1.0f); // Maximum quality (lossless)
-			try (ImageOutputStream ios = ImageIO.createImageOutputStream(save[saveSlot])) {
+			try (ImageOutputStream ios = ImageIO.createImageOutputStream(saves[saveSlot])) {
 				writer.setOutput(ios);
 				writer.write(null, new IIOImage(image, null, null), param);
 				writer.dispose();
@@ -594,14 +597,14 @@ public class SaveFile {
 	}
 
 	private static boolean checkIfSaveFileExists(int saveSlot) {
-		if (!SaveFile.save[saveSlot].exists()) {
+		if (!SaveFile.saves[saveSlot].exists()) {
 			System.out.println("Save file not found. Creating a new empty file...");
 
 			try {
 				// Write the image to a file
-				ImageIO.write(image, "png", SaveFile.save[saveSlot]);
+				ImageIO.write(image, "png", SaveFile.saves[saveSlot]);
 
-				System.out.println("PNG save file created: " + save[saveSlot].getPath());
+				System.out.println("PNG save file created: " + saves[saveSlot].getPath());
 				return false;
 			} catch (IOException e) {
 				System.err.println("Failed to create the base PNG save file.");
@@ -609,7 +612,7 @@ public class SaveFile {
 				return false;
 			}
 		} else {
-			System.out.println("Save file found: " + save[saveSlot].getPath());
+			System.out.println("Save file found: " + saves[saveSlot].getPath());
 			return true;
 		}
 	}
@@ -644,15 +647,15 @@ public class SaveFile {
 		try {
 			return switch (option) {
 				case EXISTS -> {
-					yield SaveFile.save[saveSlot].exists();
+					yield SaveFile.saves[saveSlot].exists();
 				}
 				case LEVEL -> {
-					image = ImageIO.read(SaveFile.save[saveSlot]);
+					image = saveImages[saveSlot];
 
                     yield loadAttribute(PixelData.LEVEL_M, PixelData.LEVEL_L);
 				}
 				case PLAYTIME -> {
-					image = ImageIO.read(SaveFile.save[saveSlot]);
+					image = saveImages[saveSlot];
 					long seconds = (loadAttribute(PixelData.TOTAL_PLAYTIME_E, PixelData.TOTAL_PLAYTIME_H, PixelData.TOTAL_PLAYTIME_M, PixelData.TOTAL_PLAYTIME_L));
 					long minutes = seconds / 60;
 					long hours = minutes / 60;
@@ -661,7 +664,7 @@ public class SaveFile {
 					yield time;
 				}
 				case FIRST_ITEM -> {
-					image = ImageIO.read(SaveFile.save[saveSlot]);
+					image = saveImages[saveSlot];
 					int idHigh = loadThis(RED, 0, 15);
 					int idLow = loadThis(GREEN, 0, 15);
 					int itemID = idHigh * 255 + idLow;
@@ -673,7 +676,7 @@ public class SaveFile {
 					}
 				}
 				case NAME -> {
-					image = ImageIO.read(SaveFile.save[saveSlot]);
+					image = saveImages[saveSlot];
 					byte[] nameBytes = new byte[16];
 					PixelColor pixelColor;
 
@@ -690,7 +693,7 @@ public class SaveFile {
 					yield playerName.trim();
 				}
 				case ICON -> {
-					image = ImageIO.read(SaveFile.save[saveSlot]);
+					image = saveImages[saveSlot];
 					BufferedImage output = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 					boolean isIconActive = new Color(image.getRGB(0, 110)).getBlue() % 2 == 1;
 
@@ -708,7 +711,7 @@ public class SaveFile {
 					yield output;
 				}
 				case IS_PLAYER_TEXTURE_ICON -> {
-					image = ImageIO.read(SaveFile.save[saveSlot]);
+					image = saveImages[saveSlot];
 
 					yield Objects.equals(((loadAttribute(PixelData.IS_PLAYER_TEXTURE_ICON_L) / 2) % 2), 1);
 				}
@@ -723,15 +726,15 @@ public class SaveFile {
 
 	public static void deleteSaveFile(int saveSlot) {
 		try {
-			String path = String.valueOf(SaveFile.save[saveSlot]);
+			String path = String.valueOf(SaveFile.saves[saveSlot]);
 			path = path.substring(0, path.lastIndexOf("."));
-			SaveFile.save[saveSlot].renameTo(new File(path + "B.png"));
+			SaveFile.saves[saveSlot].renameTo(new File(path + "B.png"));
 		} catch (SecurityException e) {
-			System.out.println("Could not delete " + SaveFile.save[saveSlot].getPath());
+			System.out.println("Could not delete " + SaveFile.saves[saveSlot].getPath());
 		}
 	}
 
 	public static boolean backupExists(int saveSlot) {
-		return new File(String.valueOf(SaveFile.save[saveSlot]).substring(0, String.valueOf(SaveFile.save[saveSlot]).lastIndexOf(".")) + "B.png").exists();
+		return new File(String.valueOf(SaveFile.saves[saveSlot]).substring(0, String.valueOf(SaveFile.saves[saveSlot]).lastIndexOf(".")) + "B.png").exists();
 	}
 }
