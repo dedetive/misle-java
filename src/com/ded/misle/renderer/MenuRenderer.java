@@ -29,7 +29,7 @@ public abstract class MenuRenderer {
         FontMetrics fm = g2d.getFontMetrics();
         String titleText = LanguageManager.getText(text);
         int textWidth = fm.stringWidth(titleText);
-        int centerX = (int) ((screenWidth - textWidth) / 2);
+        int centerX = (originalScreenWidth - textWidth) / 2;
         int textY = 48;
         g2d.setColor(menuTitleShadowColor);
         drawColoredText(g2d, titleText, (int) (centerX - MainRenderer.textShadow), textY); // Left
