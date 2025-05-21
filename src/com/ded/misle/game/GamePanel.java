@@ -416,8 +416,8 @@ public class GamePanel extends JPanel implements Runnable {
 			String text = "FPS: " + frameCount;
 			FontMetrics fm = g2d.getFontMetrics(buttonFont);
 			int textWidth = fm.stringWidth(text);
-			int textX = (int) (screenWidth - textWidth) - 8;
-			int textY = fm.getHeight() - 8;
+			int textX = originalScreenWidth - textWidth - 8;
+			int textY = fm.getHeight();
 			g2d.setColor(FPSShadowColor);
 			drawColoredText(g2d, text, (int) (textX + textShadow), (int) (textY + textShadow));
 			g2d.setColor(FPSColor);
