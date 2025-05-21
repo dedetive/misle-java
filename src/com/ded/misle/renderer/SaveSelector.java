@@ -178,11 +178,13 @@ public abstract class SaveSelector {
 
                             // Draw hand item
 
-                            Item item = (Item) loadSaveScreenInformation(SaveFile.SaveScreenOption.FIRST_ITEM, saveSlot);
+                            Object itemResult = loadSaveScreenInformation(SaveScreenOption.FIRST_ITEM, saveSlot);
+                            if (itemResult instanceof Item item) {
 
-                            if (item.getId() != 0) {
-                                drawRotatedImage(g2d, item.getIcon(), buttonX + buttonWidth * 1.1, buttonY - 37 + (double) buttonHeight / 2,
-                                    (int) (100 / 3.75), (int) (100 / 3.75), 0, false);
+                                if (item.getId() != 0) {
+                                    drawRotatedImage(g2d, item.getIcon(), buttonX + buttonWidth * 1.1, buttonY - 37 + (double) buttonHeight / 2,
+                                        (int) (100 / 3.75), (int) (100 / 3.75), 0, false);
+                                }
                             }
 
                             // Draw icon

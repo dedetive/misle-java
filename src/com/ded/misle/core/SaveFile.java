@@ -666,7 +666,11 @@ public class SaveFile {
 					int idLow = loadThis(GREEN, 0, 15);
 					int itemID = idHigh * 255 + idLow;
 
-					yield new Item(itemID);
+					if (itemID != 0) {
+						yield new Item(itemID);
+					} else {
+						yield 0;
+					}
 				}
 				case NAME -> {
 					image = ImageIO.read(SaveFile.save[saveSlot]);
