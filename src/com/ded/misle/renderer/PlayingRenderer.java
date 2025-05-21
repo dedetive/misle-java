@@ -38,23 +38,13 @@ public class PlayingRenderer extends AbstractRenderer {
     public static Point selectedItemNamePosition;
     public static long itemNameDisplayStartTime;
 
-    public static int inventoryBarWidth = 120;
-    public static int inventoryBarHeight = 20;
-    public static int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
-    public static int inventoryBarY = (int) (screenHeight - inventoryBarHeight - 60);
+    public static final int inventoryBarWidth = 120;
+    public static final int inventoryBarHeight = 20;
+    public static final int inventoryBarX = (originalScreenWidth - inventoryBarWidth) / 2;
+    public static final int inventoryBarY = originalScreenHeight - inventoryBarHeight - 10;
 
-    public static int totalSlotsWidth = 7 * slotSize[0] + (6 * slotSpacing[0]);
-    public static int slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
-
-    public static void updatePlayingVariableScales() {
-        inventoryBarWidth = 120;
-        inventoryBarHeight = 20;
-        inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
-        inventoryBarY = (int) (screenHeight - inventoryBarHeight - 60);
-
-        totalSlotsWidth = 7 * slotSize[0] + (6 * slotSpacing[0]);
-        slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
-    }
+    public static final int totalSlotsWidth = 7 * slotSize[0] + (6 * slotSpacing[0]);
+    public static final int slotStartX = inventoryBarX + (inventoryBarWidth - totalSlotsWidth) / 2;
 
     @Override
     public void render(Graphics g, MouseHandler mouseHandler) {
@@ -369,11 +359,11 @@ public class PlayingRenderer extends AbstractRenderer {
         }
     }
 
-    static int inventoryBarImageY = (int) (screenHeight - 82);
+    static int inventoryBarImageY = originalScreenHeight - 36;
     private static void drawInventoryBar(Graphics2D g2d) {
 
         g2d.drawImage(cachedImages.get(ImageManager.ImageName.INVENTORY_BAR), 0, inventoryBarImageY,
-            512, 35, null);
+            originalScreenWidth, 35, null);
 
         // Slots info
 
@@ -402,7 +392,7 @@ public class PlayingRenderer extends AbstractRenderer {
                     FontMetrics fm = g2d.getFontMetrics();
                     int textWidth = fm.stringWidth(Integer.toString(itemCount));
                     int textX = slotX - textWidth + slotSize[0];
-                    int textY = slotY + 8 * slotSize[0] / 9;
+                    int textY = slotY + slotSize[0];
                     g2d.setColor(itemCountShadowColor);
                     drawColoredText(g2d, Integer.toString(itemCount), (int) (textX + textShadow), (int) (textY + textShadow));
                     g2d.setColor(itemCountColor);
@@ -411,7 +401,7 @@ public class PlayingRenderer extends AbstractRenderer {
             }
 
             if (i == selectedSlot) {
-                drawSelectedSlotOverlay(g2d, slotX, (int) (slotY + 1 + 2 / 3.75), (int) (slotSize[0] - 2 / 3));
+                drawSelectedSlotOverlay(g2d, slotX, slotY, slotSize[0]);
             }
         }
     }
@@ -422,10 +412,10 @@ public class PlayingRenderer extends AbstractRenderer {
             selectedItemName = selectedItem.getDisplayName();
 
             int slotX = slotStartX + player.inv.getSelectedSlot() * (slotSize[0] + slotSpacing[0]);
-            int slotY = inventoryBarY + 50;
+            int slotY = inventoryBarY - 12;
 
             // Position the name above the selected slot
-            selectedItemNamePosition = new Point(slotX + slotSize[0] / 2, slotY - 70);
+            selectedItemNamePosition = new Point(slotX + slotSize[0] / 2, slotY);
             itemNameDisplayStartTime = currentTimeMillis();
         } else {
             selectedItemName = null;
@@ -485,7 +475,7 @@ public class PlayingRenderer extends AbstractRenderer {
 
     private static void drawLevel(Graphics2D g2d) {
         int level = player.attr.getLevel();
-        int x = (int) (screenWidth / 2);
+        int x = originalScreenWidth / 2;
         int xpBarHeight = 4;
         int xpBarY = inventoryBarImageY - 2 - xpBarHeight;
         FontMetrics fm = g2d.getFontMetrics(coinTextFont);
