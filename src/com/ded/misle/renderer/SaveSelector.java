@@ -13,6 +13,7 @@ import static com.ded.misle.game.GamePanel.GameState.*;
 import static com.ded.misle.game.GamePanel.gameState;
 import static com.ded.misle.core.SaveFile.*;
 import static com.ded.misle.core.Setting.antiAliasing;
+import static com.ded.misle.game.GamePanel.originalTileSize;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.*;
 import static com.ded.misle.renderer.ImageManager.*;
@@ -51,7 +52,7 @@ public abstract class SaveSelector {
             } else {
                 // Save buttons
                 int buttonX = 64;
-                int buttonY = 86;
+                int buttonY = 66;
                 int buttonWidth = 120;
                 int buttonHeight = 120;
                 int buttonSpacing = 12;
@@ -102,7 +103,7 @@ public abstract class SaveSelector {
                     drawButtons(g2d);
 
                     buttonX = 64;
-                    buttonY = 106;
+                    buttonY += 17;
                     buttonWidth = 60;
                     buttonHeight = 120;
                     int backgroundSize = 14;
@@ -119,12 +120,13 @@ public abstract class SaveSelector {
 
                         g2d.setColor(saveSelectorTextShadow);
                         drawColoredText(g2d, String.valueOf(saveSlot + 1),
-                            (int) (buttonX + (double) buttonWidth * 0.975 + textShadow), (int) (buttonY + textShadow));
+                            (int) (buttonX + buttonWidth * 0.975 + textShadow), buttonY + textShadow);
 
                         // Number
 
                         g2d.setColor(saveSelectorNumber);
-                        drawColoredText(g2d, String.valueOf(saveSlot + 1), (int) (buttonX + buttonWidth * 0.975), buttonY);
+                        drawColoredText(g2d, String.valueOf(saveSlot + 1),
+                            (int) (buttonX + buttonWidth * 0.975), buttonY);
 
                         if (existingSaves[saveSlot]) {
 
@@ -138,8 +140,9 @@ public abstract class SaveSelector {
                                 mergeImages(cachedImages.get(PLAYER_FRONT0_EDIT), icon) :
                                 cachedImages.get(PLAYER_FRONT0);
 
-                            g2d.drawImage(img, (int) (buttonX + buttonWidth * 0.75),
-                                (int) (buttonY - 40 + (double) buttonHeight / 2), 135, 135, null);
+                            g2d.drawImage(img,
+                                (int) (buttonX + buttonWidth * 0.75), (int) (buttonY - 40 + (double) buttonHeight / 2),
+                                originalTileSize, originalTileSize, null);
 
                             // Level
 
