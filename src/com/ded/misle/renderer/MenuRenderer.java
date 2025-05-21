@@ -85,11 +85,6 @@ public abstract class MenuRenderer {
     public static void renderMainMenu(Graphics g, JPanel panel) {
         if (g instanceof Graphics2D g2d) {
 
-            // ANTI-ALIASING
-            if (antiAliasing.bool()) {
-                g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            }
-
             MainRenderer.currentMenu = MAIN_MENU;
 
             // BACKGROUND
