@@ -53,8 +53,8 @@ public class PlayingRenderer extends AbstractRenderer {
         // Draw background
         World world = player.pos.world;
 
-        for (int i = 0; i < screenWidth / tileSize + 2; i++) {
-            for (int j = 0; j < screenHeight / tileSize + 2; j++) {
+        for (int i = 0; i < originalScreenWidth / tileSize + 2; i++) {
+            for (int j = 0; j < originalScreenHeight / tileSize + 2; j++) {
 
                 int worldX = (int) (Math.max((player.pos.getCameraOffsetX() / (double) tileSize), 0) + i);
                 int worldY = (int) (Math.max((player.pos.getCameraOffsetY() / (double) tileSize), 0) + j);
