@@ -221,8 +221,8 @@ public class Box {
 
 	private boolean isInvalid(double screenX, double screenY) {
 		double margin = tileSize * 2;
-		return !(screenX >= -margin && screenX <= screenWidth + margin &&
-			screenY >= 0 - margin && screenY <= screenHeight + margin);
+		return !(screenX >= -margin && screenX <= originalScreenWidth + margin &&
+			screenY >= 0 - margin && screenY <= originalScreenHeight + margin);
 	}
 
 	public void updateVisualPosition(float speed) {
