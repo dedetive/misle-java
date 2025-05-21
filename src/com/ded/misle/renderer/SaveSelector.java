@@ -221,11 +221,11 @@ public abstract class SaveSelector {
         int previewY = 86;
         int previewWidth = 120;
         int previewHeight = 120;
-        int buttonBorderSize = (int) (69 / 3.75);
+        int buttonBorderSize = 18;
 
 
         // BORDER
-        int buttonBorderOffsetPos = 4;
+        int buttonBorderOffsetPos = 1;
         int buttonBorderOffsetSize = buttonBorderOffsetPos * 2;
         g2d.setColor(buttonBorderColor);
         g2d.fillRoundRect(previewX - buttonBorderOffsetPos, previewY - buttonBorderOffsetPos,
@@ -269,8 +269,8 @@ public abstract class SaveSelector {
             mergeImages(cachedImages.get(PLAYER_FRONT0_EDIT), icon) :
             cachedImages.get(PLAYER_FRONT0);
 
-        g2d.drawImage(img, previewX + 2 * previewWidth / 5,
-            (int) (previewY - 25 + (double) previewHeight / 2), 135, 135, null);
+        g2d.drawImage(img, previewX + 2 * previewWidth / 5, (int) (previewY - 25 + (double) previewHeight / 2),
+            originalTileSize, originalTileSize, null);
 
             // Level
 
@@ -306,12 +306,14 @@ public abstract class SaveSelector {
 
             // Draw hand item
 
-        Item item = (Item) loadSaveScreenInformation(SaveFile.SaveScreenOption.FIRST_ITEM, saveSlot);
+        Object itemResult = loadSaveScreenInformation(SaveScreenOption.FIRST_ITEM, saveSlot);
+        if (itemResult instanceof Item item) {
 
-        if (item.getId() != 0) {
-            drawRotatedImage(g2d, item.getIcon(), previewX + (double) previewWidth / 2 + 6,
+            if (item.getId() != 0) {
+                drawRotatedImage(g2d, item.getIcon(), previewX + (double) previewWidth / 2 + 6,
                     previewY - (double) previewHeight / 2 + 37.5 + (double) previewHeight / 2,
-                       (int) (100 / 3.75), (int) (100 / 3.75), 0, false);
+                    (int) (100 / 3.75), (int) (100 / 3.75), 0, false);
+            }
         }
 
         g2d.drawImage(icon, x + textWidth,

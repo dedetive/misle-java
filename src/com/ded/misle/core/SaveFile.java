@@ -38,7 +38,7 @@ public class SaveFile {
             try {
                 saveImages[i] = ImageIO.read(saves[i]);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                // This would mean save was not found
             }
         }
 	}
