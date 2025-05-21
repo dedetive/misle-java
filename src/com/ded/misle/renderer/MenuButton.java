@@ -141,13 +141,13 @@ public class MenuButton {
         }
     }
 
-    private final static int buttonBorderOffsetPos = 4;
+    private final static int buttonBorderOffsetPos = 2;
     private final static int buttonBorderOffsetSize = buttonBorderOffsetPos * 2;
+    private final static int buttonBorderSize = 18;
 
     public static void drawButtons(Graphics2D g2d) {
         try {
             for (MenuButton button : buttons) {
-                int buttonBorderSize = 18;
 
                 // BORDER
                 g2d.setColor(buttonBorderColor);
