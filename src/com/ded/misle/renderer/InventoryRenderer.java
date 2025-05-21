@@ -5,7 +5,6 @@ import com.ded.misle.input.MouseHandler;
 import com.ded.misle.items.Item;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +31,7 @@ public abstract class InventoryRenderer {
 
         // Semi-transparent background overlay
         g2d.setColor(backgroundOverlay);
-        g2d.fillRect(0, 0, (int) screenWidth, (int) screenHeight);
+        g2d.fillRect(0, 0, originalScreenWidth, originalScreenHeight);
 
         // Start the grid
 
@@ -188,8 +187,8 @@ public abstract class InventoryRenderer {
             if (hoveredSlot[0] == -1) {
                 // If playing
                 int inventoryBarWidth = 120;
-                int inventoryBarX = (int) (screenWidth - inventoryBarWidth) / 2;
-                int inventoryBarY = (int) (screenHeight - 100);
+                int inventoryBarX = (originalScreenWidth - inventoryBarWidth) / 2;
+                int inventoryBarY = originalScreenHeight - 100;
 
                 int slotStartX = inventoryBarX + (inventoryBarWidth - (7 * slotSize[0] + 6 * slotSpacing[0])) / 2;
                 slotX = slotStartX + hoveredSlot[1] * (slotSize[0] + slotSpacing[0]);
