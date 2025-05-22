@@ -270,7 +270,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public static double nsPerFrame;
 	public static double deltaTime;
 
-	public static AtomicLong frameCount = new AtomicLong();
+	public static int frameCount = 0;
 	@Override
 	public void run() {
 		long lastTime = System.nanoTime(); // Using nanoTime for precision with delta time
@@ -284,6 +284,7 @@ public class GamePanel extends JPanel implements Runnable {
 			delta += (currentTime - lastTime) / nsPerFrame;
 			deltaTime = (currentTime - lastTime) / 1e9;
 			lastTime = currentTime;
+			frameCount = (int) (1 / deltaTime);
 
 			// Process updates and rendering while delta is >= 1
 			while (delta >= 1) {
@@ -328,12 +329,6 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 
 			renderFrame(); // Render the appropriate frame based on gameState
-			frameCount.getAndIncrement();
-			Timer framePastSecond = new Timer(1000, evt -> {
-				frameCount.getAndDecrement();
-			});
-			framePastSecond.setRepeats(false);
-			framePastSecond.start();
 
 			// Sleep dynamically to maintain target FPS
 			try {
@@ -419,7 +414,7 @@ public class GamePanel extends JPanel implements Runnable {
 			int textX = originalScreenWidth - textWidth - 8;
 			int textY = fm.getHeight();
 			g2d.setColor(FPSShadowColor);
-			drawColoredText(g2d, text, (int) (textX + textShadow), (int) (textY + textShadow));
+			drawColoredText(g2d, text, textX + textShadow, textY + textShadow);
 			g2d.setColor(FPSColor);
 			drawColoredText(g2d, text, textX, textY);
 		}
