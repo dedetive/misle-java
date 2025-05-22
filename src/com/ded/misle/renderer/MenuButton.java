@@ -84,7 +84,7 @@ public class MenuButton {
     public static final Map<MenuButtonID, Fader.FadingState> fadingState = new EnumMap<>(MenuButtonID.class);
     public static final Map<MenuButtonID, Float> fadingProgress = new EnumMap<>(MenuButtonID.class);
 
-    private static final List<MenuButton> buttons = new ArrayList<>();
+    private static final List<MenuButton> buttons = Collections.synchronizedList(new ArrayList<>());
 
     public MenuButton(Rectangle bounds, Color defaultColor, Runnable action, String text, MenuButtonID id) {
         this.bounds = bounds;
@@ -263,9 +263,14 @@ public class MenuButton {
     }
 
     public static void clearButtons() {
+        initializedPanels.clear();
         buttons.clear();
         clearButtonFading();
-        initializedPanels.clear();
+        SwingUtilities.invokeLater(() -> {
+            initializedPanels.clear();
+            buttons.clear();
+            clearButtonFading();
+        });
     }
 
 
