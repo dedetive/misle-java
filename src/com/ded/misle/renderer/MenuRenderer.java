@@ -240,7 +240,7 @@ public abstract class MenuRenderer {
             g2d.setColor(progressBarPercentage);
             drawColoredText(g2d, percentage, centerX, textY);
 
-            if (!fader.isState(Fader.FadingState.UNFADED)) fader.drawFading(g2d);
+            fader.drawFading(g2d);
         }
     }
 

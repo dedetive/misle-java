@@ -155,8 +155,7 @@ public class PlayingRenderer extends AbstractRenderer {
             renderDialog(g2d);
         }
 
-        if (!fader.isState(Fader.FadingState.UNFADED)) fader.drawFading(g2d);
-
+        fader.drawFading(g2d);
     }
 
     private static void drawHandItem(Graphics2D g2d, double playerScreenX, double playerScreenY, MouseHandler mouseHandler) {
