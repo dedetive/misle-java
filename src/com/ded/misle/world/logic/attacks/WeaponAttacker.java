@@ -1,6 +1,7 @@
 package com.ded.misle.world.logic.attacks;
 
 import com.ded.misle.world.boxes.Box;
+import com.ded.misle.world.data.TilePattern;
 import com.ded.misle.world.entities.HPBox;
 import com.ded.misle.world.entities.player.Player;
 import com.ded.misle.world.entities.player.PlayerStats;
@@ -8,6 +9,7 @@ import com.ded.misle.world.entities.player.PlayerStats;
 import java.awt.*;
 
 import static com.ded.misle.game.GamePanel.player;
+import static com.ded.misle.world.data.TilePattern.MirrorDirection.HORIZONTAL;
 
 public class WeaponAttacker {
     private double damage;
@@ -30,9 +32,9 @@ public class WeaponAttacker {
 
     public void attack(Point origin, PlayerStats.Direction direction) {
         switch (direction) {
-            case UP -> range.rotate(Range.RangeRotation.DEG_90);
-            case DOWN -> range.rotate(Range.RangeRotation.DEG_270);
-            case LEFT -> range.mirror(Range.MirrorDirection.HORIZONTAL);
+            case UP -> range.rotate(TilePattern.Rotation.DEG_90);
+            case DOWN -> range.rotate(TilePattern.Rotation.DEG_270);
+            case LEFT -> range.mirror(HORIZONTAL);
             default -> {}
         }
 

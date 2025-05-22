@@ -1,10 +1,11 @@
 package com.ded.misle.world.logic.attacks;
 
+import com.ded.misle.world.data.TilePattern;
+
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Range {
-    private final Point[] points;
+public class Range extends TilePattern {
     private static final Point[] defaultPoints = new Point[]{new Point(1, 0)};
     /**
      * The range used when {@link #getDefaultRange()} is called. Refers to a Range with a single point to the right of the origin.
@@ -12,7 +13,7 @@ public class Range {
     private static final Range defaultRange = new Range(defaultPoints);
 
     private Range(Point[] points) {
-        this.points = points;
+        super(points);
     }
 
     /**
@@ -126,94 +127,5 @@ public class Range {
      */
     public static Range getDefaultRange() {
         return defaultRange;
-    }
-
-    /**
-     * Gets the array of points representing the calculated range.
-     *
-     * @return an array of points
-     */
-    public Point[] getPoints() {
-        return points;
-    }
-
-    /**
-     * Add an offset to each of this Range's points. All of this' points will get added with the value given.
-     *
-     * @param offset the value for the points to be added, with respect to their x and y individually
-     * @return the same Range object for chaining
-     */
-    public Range offset(Point offset) {
-        for (Point point : points) {
-            point.translate(offset.x, offset.y);
-        }
-
-        return this;
-    }
-
-    public enum RangeRotation {
-        DEG_0,
-        DEG_90,
-        DEG_180,
-        DEG_270
-    }
-
-    /**
-     * Rotates the range around the origin by the specified angle.
-     *
-     * @param rotation the rotation to apply (90°, 180°, 270°, or none)
-     * @return the same Range object for chaining
-     */
-    public Range rotate(RangeRotation rotation) {
-        if (rotation == RangeRotation.DEG_0) return this;
-        for (int i = 0; i < points.length; i++) {
-            int x = points[i].x;
-            int y = points[i].y;
-
-            switch (rotation) {
-                case DEG_90 -> points[i] = new Point(y, -x);
-                case DEG_180 -> points[i] = new Point(-x, -y);
-                case DEG_270 -> points[i] = new Point(-y, x);
-            }
-        }
-
-        return this;
-    }
-
-    /**
-     * Represents a mirroring direction for a Range.
-     * Note: A vertical mirror followed by a horizontal one is equivalent to a 180-degree rotation.
-     * If you need both, prefer using {@code RangeRotation.DEG_180}.
-     */
-    public enum MirrorDirection {
-        /**
-         * Mirrors the Range horizontally (left-right), flipping the x-coordinate.
-         */
-        HORIZONTAL,
-
-        /**
-         * Mirrors the Range vertically (up-down), flipping the y-coordinate.
-         */
-        VERTICAL
-    }
-
-    /**
-     * Mirrors this Range's points in the specified direction.
-     *
-     * @param direction the direction to mirror the points: horizontally (flip x) or vertically (flip y)
-     * @return this object, after applying the mirror, for chaining
-     */
-    public Range mirror(MirrorDirection direction) {
-        for (int i = 0; i < points.length; i++) {
-            int x = points[i].x;
-            int y = points[i].y;
-
-            switch (direction) {
-                case HORIZONTAL -> points[i] = new Point(-x, y);
-                case VERTICAL -> points[i] = new Point(x, -y);
-            }
-        }
-
-        return this;
     }
 }
