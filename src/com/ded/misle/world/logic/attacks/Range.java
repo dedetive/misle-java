@@ -23,8 +23,9 @@ public class Range {
      * @return a Range object containing the calculated points
      */
     public static Range toRange(String s) {
+        s = fixString(s);
         if (!isValidRangeString(s)) {
-            System.err.println("Invalid characters found in the range string!");
+            System.err.println("Invalid characters found in the range string! Given string: " + s);
             return getDefaultRange();
         }
 
@@ -106,6 +107,15 @@ public class Range {
             }
         }
         return true;
+    }
+
+    /**
+     * Fixes newline characters due to how json handles them.
+     * @param s the string to fix
+     * @return fixed string
+     */
+    private static String fixString(String s) {
+        return s.replaceAll("\\\\n", "\n");
     }
 
     /**
