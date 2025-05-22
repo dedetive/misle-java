@@ -22,18 +22,18 @@ import static com.ded.misle.renderer.SettingsMenuRenderer.SettingPos.*;
 
 public abstract class SettingsMenuRenderer {
     public enum SettingState {
-        EMPTY(-1, 0),
-        GENERAL(0, 100),
-        GRAPHICS(1, 138),
-        AUDIO(2, 176),
-        GAMEPLAY(3, 214),
+        EMPTY(-1, MenuButtonID.SETTINGS_TAB_EMPTY),
+        GENERAL(0, MenuButtonID.SETTINGS_TAB_GENERAL),
+        GRAPHICS(1, MenuButtonID.SETTINGS_TAB_GRAPHICS),
+        AUDIO(2, MenuButtonID.SETTINGS_TAB_AUDIO),
+        GAMEPLAY(3, MenuButtonID.SETTINGS_TAB_GAMEPLAY),
 
         ;
 
         public final int order;
-        public final int buttonId;
+        public final MenuButtonID buttonId;
 
-        SettingState(int order, int buttonId) {
+        SettingState(int order, MenuButtonID buttonId) {
             this.order = order;
             this.buttonId = buttonId;
         }
@@ -78,26 +78,22 @@ public abstract class SettingsMenuRenderer {
             Rectangle button;
 
             // Other menus buttons
-            String[] menus = new String[]{
-                LanguageManager.getText("settings_menu_general"),
-                LanguageManager.getText("settings_menu_graphics"),
-                LanguageManager.getText("settings_menu_audio"),
-                LanguageManager.getText("settings_menu_gameplay")
-            };
-            Runnable[] actions = new Runnable[]{
-                SettingsMenuRenderer::switchToGeneral,
-                SettingsMenuRenderer::switchToGraphics,
-                SettingsMenuRenderer::switchToAudio,
-                SettingsMenuRenderer::switchToGameplay
-            };
-            for (int i = 0; i < 4; i++) {
+            SettingState[] states = new SettingState[]{SettingState.GENERAL, SettingState.GRAPHICS, SettingState.AUDIO, SettingState.GAMEPLAY};
+            for (int i = 0; i < states.length; i++) {
+                SettingState state = states[i];
                 buttonX = 42 + 65 * i;
                 button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-                createButton(button, menus[i], actions[i], panel, 38 * i + 100);
+                createButton(
+                    button,
+                    LanguageManager.getText("settings_menu_" + state.name().toLowerCase()),
+                    () -> settingState = state,
+                    panel,
+                    MenuButtonID.valueOf("SETTINGS_TAB_" + state.name())
+                );
             }
 
             // Go back button
-            createGoBackButton(panel, 40);
+            createGoBackButton(panel, MenuButtonID.SETTINGS_MENU_GO_BACK);
 
             // Text with setting state below title
             g2d.setFont(dialogNPCText);
@@ -108,7 +104,7 @@ public abstract class SettingsMenuRenderer {
             int textY = 66;
 
             g2d.setColor(buttonTextShadowColor);
-            g2d.drawString(text, (int) (centerX + textShadow), (int) (textY + textShadow));
+            g2d.drawString(text, centerX + textShadow, textY + textShadow);
             g2d.setColor(buttonTextColor);
             g2d.drawString(text, centerX, textY);
 
@@ -132,9 +128,8 @@ public abstract class SettingsMenuRenderer {
                 int fixedX = 22 + i * 269;
                 int fixedY = (int) (212 + (double) buttonHeight / 2);
                 int arcW = width / 4;
-                int arcH = arcW;
                 g2d.setColor(settingsMoveKeyHint);
-                g2d.fillRoundRect(x, y, width, height, arcW, arcH);
+                g2d.fillRoundRect(x, y, width, height, arcW, arcW);
 
                 if (i == 0) {
                     text = KeyHandler.getChar(LEFT_MENU);
@@ -190,39 +185,39 @@ public abstract class SettingsMenuRenderer {
         // language
         int[] pos = TOP_LEFT.pos;
         createSetting("settings_general_language", String.valueOf(languageCode.str()),
-            pos[0], pos[1], SettingsManager::cycleLanguage, panel, 42);
+            pos[0], pos[1], SettingsManager::cycleLanguage, panel, MenuButtonID.SETTING_LANGUAGE);
     }
 
     public static void renderGraphicsMenu(JPanel panel) {
         // isFullscreen
         int[] pos = TOP_LEFT.pos;
         createSetting("settings_graphics_isFullscreen", isFullscreen.str(),
-            pos[0], pos[1], SettingsManager::cycleIsFullscreen, panel, 46);
+            pos[0], pos[1], SettingsManager::cycleIsFullscreen, panel, MenuButtonID.SETTING_FULLSCREEN);
 
         // fullscreenMode
         pos = TOP_RIGHT.pos;
         createSetting("settings_graphics_fullscreenMode", fullscreenMode.str(),
-            pos[0], pos[1], SettingsManager::cycleFullscreenMode, panel, 48);
+            pos[0], pos[1], SettingsManager::cycleFullscreenMode, panel, MenuButtonID.SETTING_FULLSCREEN_MODE);
 
         // frameRateCap
         pos = MID_LEFT.pos;
         createSetting("settings_graphics_frameRateCap", frameRateCap.str(),
-            pos[0], pos[1], SettingsManager::cycleFrameRateCap, panel, 50);
+            pos[0], pos[1], SettingsManager::cycleFrameRateCap, panel, MenuButtonID.SETTING_FRAME_RATE_CAP);
 
         // displayFPS
         pos = MID_RIGHT.pos;
         createSetting("settings_graphics_displayFPS", displayFPS.str(),
-            pos[0], pos[1], SettingsManager::cycleDisplayFPS, panel, 54);
+            pos[0], pos[1], SettingsManager::cycleDisplayFPS, panel, MenuButtonID.SETTING_DISPLAY_FPS);
 
         // screenSize
         pos = BOTTOM_LEFT.pos;
         createSetting("settings_graphics_screenSize", screenSize.str(),
-            pos[0], pos[1], SettingsManager::cycleScreenSize, panel, 44);
+            pos[0], pos[1], SettingsManager::cycleScreenSize, panel, MenuButtonID.SETTING_SCREEN_SIZE);
 
         // antiAliasing
         pos = BOTTOM_RIGHT.pos;
         createSetting("settings_graphics_antiAliasing", antiAliasing.str(),
-            pos[0], pos[1], SettingsManager::cycleAntiAliasing, panel, 56);
+            pos[0], pos[1], SettingsManager::cycleAntiAliasing, panel, MenuButtonID.SETTING_ANTIALIASING);
     }
 
     public static void renderAudioMenu(JPanel panel) {
@@ -233,10 +228,10 @@ public abstract class SettingsMenuRenderer {
         // DisplayMoreInfo
         int[] pos = TOP_LEFT.pos;
         createSetting("settings_gameplay_displayMoreInfo", String.valueOf(displayMoreInfo),
-            pos[0], pos[1], SettingsManager::cycleDisplayMoreInfo, panel, 58);
+            pos[0], pos[1], SettingsManager::cycleDisplayMoreInfo, panel, MenuButtonID.SETTING_DISPLAY_MORE_INFO);
     }
 
-    public static void createSetting(String text, String value, int unscaledX, int unscaledY, Runnable action, JPanel panel, int id) {
+    public static void createSetting(String text, String value, int unscaledX, int unscaledY, Runnable action, JPanel panel, MenuButtonID id) {
         int buttonX = unscaledX;
         int buttonY = unscaledY;
         int buttonWidth = 88;
@@ -247,27 +242,21 @@ public abstract class SettingsMenuRenderer {
         buttonX = unscaledX + 100;
         buttonWidth = 39;
         button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-        createButton(button, LanguageManager.getText(value), action, panel, id + 1);
+        createButton(button, LanguageManager.getText(value), action, panel, MenuButtonID.valueOf(id + "_VALUE"));
     }
 
     public static void switchToEmpty() { settingState = SettingState.EMPTY; }
 
-    public static void switchToGeneral() { settingState = SettingState.GENERAL; }
-
-    public static void switchToGraphics() { settingState = SettingState.GRAPHICS; }
-
-    public static void switchToAudio() { settingState = SettingState.AUDIO; }
-
-    public static void switchToGameplay() { settingState = SettingState.GAMEPLAY; }
-
     public static void moveSettingMenu(int offset) {
-        int nextMenu = settingState.order + offset;
+        int nextOrder = settingState.order + offset;
+        if (nextOrder < 0) nextOrder = 3;
+        if (nextOrder > 3) nextOrder = 0;
+        settingState = SettingState.getStateByOrder(nextOrder);
 
-        int buttonId = SettingsMenuRenderer.SettingState.getStateByOrder(nextMenu).buttonId;
+        MenuButtonID buttonId = settingState.buttonId;
 
         fadingState.put(buttonId, Fader.FadingState.FADING_OUT);
         fadingProgress.put(buttonId, 0.75F);
-        settingState = SettingsMenuRenderer.SettingState.getStateByOrder(nextMenu);
         clearButtons();
     }
 }

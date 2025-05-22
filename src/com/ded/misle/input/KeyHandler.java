@@ -489,7 +489,6 @@ public class KeyHandler implements KeyListener {
 			if (isPressed(PAUSE)) {
 				if (gameState == GameState.SAVE_SELECTOR && askingToDelete > -1) {
 					askingToDelete = -1;
-					clearButtonFading();
 					clearButtons();
 				} else {
 					goToPreviousMenu();

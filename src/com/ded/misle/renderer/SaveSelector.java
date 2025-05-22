@@ -12,7 +12,6 @@ import java.util.ConcurrentModificationException;
 import static com.ded.misle.game.GamePanel.GameState.*;
 import static com.ded.misle.game.GamePanel.gameState;
 import static com.ded.misle.core.SaveFile.*;
-import static com.ded.misle.core.Setting.antiAliasing;
 import static com.ded.misle.game.GamePanel.originalTileSize;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.*;
@@ -48,7 +47,6 @@ public abstract class SaveSelector {
             if (askingToDelete != -1) {
                 askToDeleteSave(askingToDelete, panel, g2d);
                 drawButtons(g2d);
-
             } else {
                 // Save buttons
                 int buttonX = 64;
@@ -57,7 +55,6 @@ public abstract class SaveSelector {
                 int buttonHeight = 120;
                 int buttonSpacing = 12;
                 Rectangle buttonRect;
-                int id = 300;
                 boolean[] existingSaves = new boolean[3];
                 for (int i = 0; i < 3; i++) {
                     boolean saveExists = (boolean) loadSaveScreenInformation(SaveFile.SaveScreenOption.EXISTS, i);
@@ -84,20 +81,21 @@ public abstract class SaveSelector {
                     }
 
 
-                    createButton(buttonRect, "", runnable, panel, id);
+                    createButton(buttonRect, "", runnable, panel,
+                        MenuButtonID.valueOf("SAVE_SELECTOR_SELECT_SAVE" + (i + 1)));
 
                     if (saveExists) {
                         buttonRect = new Rectangle(buttonX, buttonY + buttonHeight + 4, buttonWidth, 15);
                         runnable = () -> askingToDelete = finalI;
-                        createButton(buttonRect, LanguageManager.getText("save_selector_delete"), runnable, panel, id + 3);
+                        createButton(buttonRect, LanguageManager.getText("save_selector_delete"), runnable, panel,
+                            MenuButtonID.valueOf("SAVE_SELECTOR_DELETE_SAVE" + (i + 1)));
                     }
 
                     buttonX += buttonWidth + buttonSpacing;
-                    id++;
                 }
 
                 // Go back buttonRect
-                createGoBackButton(panel, 400);
+                createGoBackButton(panel, MenuButtonID.SAVE_SELECTOR_MENU_GO_BACK);
 
                 try {
                     drawButtons(g2d);
@@ -325,7 +323,6 @@ public abstract class SaveSelector {
         int buttonWidth = 100;
         int buttonHeight = 25;
         Rectangle button;
-        int id = 310;
 
         // CONFIRMATION TEXT
         fm = g2d.getFontMetrics(buttonFont);
@@ -347,18 +344,18 @@ public abstract class SaveSelector {
         button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
         Runnable runnable = () -> {
             askingToDelete = -1;
-            clearButtonFading();
+            clearButtons();
         };
-        createButton(button, LanguageManager.getText("save_selector_deletion_cancel"), runnable, panel, id);
+        createButton(button, LanguageManager.getText("save_selector_deletion_cancel"), runnable, panel, MenuButtonID.SAVE_SELECTOR_CANCEL_DELETE_SAVE);
 
         // DELETE
         button = new Rectangle(buttonX, buttonY + buttonHeight + 4, buttonWidth, buttonHeight);
         runnable = () -> {
             deleteSaveFile(saveSlot);
             askingToDelete = -1;
-            clearButtonFading();
+            clearButtons();
         };
-        createButton(button, LanguageManager.getText("save_selector_deletion_delete"), runnable, panel, id + 1);
+        createButton(button, LanguageManager.getText("save_selector_deletion_delete"), runnable, panel, MenuButtonID.SAVE_SELECTOR_CONFIRM_DELETE_SAVE);
 
         // WARNING
         g2d.setFont(backupAdvisorFont);

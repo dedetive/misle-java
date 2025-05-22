@@ -103,10 +103,9 @@ public abstract class MenuRenderer {
             Rectangle playButton = new Rectangle(playButtonX, playButtonY, playButtonWidth, playButtonHeight);
 
             if (!levelDesigner) {
-//                createButton(playButton, LanguageManager.getText("main_menu_play"), MainRenderer::gameStart, panel, 12838);
-                createButton(playButton, LanguageManager.getText("main_menu_play"), SaveSelector::saveSelectorMenu, panel, 12838);
+                createButton(playButton, LanguageManager.getText("main_menu_play"), SaveSelector::saveSelectorMenu, panel, MenuButtonID.MAIN_MENU_PLAY);
             } else {
-                createButton(playButton, LanguageManager.getText("main_menu_level_designer"), MainRenderer::enterLevelDesigner, panel, 12839);
+                createButton(playButton, LanguageManager.getText("main_menu_level_designer"), MainRenderer::enterLevelDesigner, panel, MenuButtonID.MAIN_MENU_LEVEL_DESIGNER);
             }
 
             // Quit button
@@ -117,7 +116,7 @@ public abstract class MenuRenderer {
             int quitButtonHeight = 41;
             Rectangle quitButton = new Rectangle(quitButtonX, quitButtonY, quitButtonWidth, quitButtonHeight);
 
-            createButton(quitButton, LanguageManager.getText("main_menu_quit"), MenuRenderer::quitGame, panel, 12732);
+            createButton(quitButton, LanguageManager.getText("main_menu_quit"), MenuRenderer::quitGame, panel, MenuButtonID.MAIN_MENU_QUIT);
 
 
             // Options menu
@@ -128,7 +127,7 @@ public abstract class MenuRenderer {
             int optionsButtonHeight = 41;
             Rectangle optionsButton = new Rectangle(optionsButtonX, optionsButtonY, optionsButtonWidth, optionsButtonHeight);
 
-            createButton(optionsButton, LanguageManager.getText("main_menu_options"), MenuRenderer::optionsMenu, panel, 12783);
+            createButton(optionsButton, LanguageManager.getText("main_menu_options"), MenuRenderer::optionsMenu, panel, MenuButtonID.MAIN_MENU_SETTINGS);
 
             drawButtons(g2d);
 
@@ -163,7 +162,7 @@ public abstract class MenuRenderer {
             int playButtonHeight = 41;
             Rectangle playButton = new Rectangle(playButtonX, playButtonY, playButtonWidth, playButtonHeight);
 
-            createButton(playButton, LanguageManager.getText("pause_menu_resume"), MainRenderer::softGameStart, panel, 2738);
+            createButton(playButton, LanguageManager.getText("pause_menu_resume"), MainRenderer::softGameStart, panel, MenuButtonID.PAUSE_MENU_RESUME);
 
             // Quit button
 
@@ -173,7 +172,7 @@ public abstract class MenuRenderer {
             int quitButtonHeight = 41;
             Rectangle quitButton = new Rectangle(quitButtonX, quitButtonY, quitButtonWidth, quitButtonHeight);
 
-            createButton(quitButton, LanguageManager.getText("pause_menu_quit"), MenuRenderer::goToMainMenu, panel, 7384);
+            createButton(quitButton, LanguageManager.getText("pause_menu_quit"), MenuRenderer::goToMainMenu, panel, MenuButtonID.PAUSE_MENU_QUIT);
 
             // Options menu
 
@@ -183,7 +182,7 @@ public abstract class MenuRenderer {
             int optionsButtonHeight = 41;
             Rectangle optionsButton = new Rectangle(optionsButtonX, optionsButtonY, optionsButtonWidth, optionsButtonHeight);
 
-            createButton(optionsButton, LanguageManager.getText("pause_menu_settings"), MenuRenderer::optionsMenu, panel, 8734);
+            createButton(optionsButton, LanguageManager.getText("pause_menu_settings"), MenuRenderer::optionsMenu, panel, MenuButtonID.PAUSE_MENU_SETTINGS);
 
             drawButtons(g2d);
         }

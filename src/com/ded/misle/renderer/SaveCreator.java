@@ -107,7 +107,7 @@ public abstract class SaveCreator {
             Rectangle buttonRect = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
             Runnable runnable = SaveCreator::confirmName;
 
-            createButton(buttonRect, LanguageManager.getText("save_creator_confirm_button"), runnable, panel, 127);
+            createButton(buttonRect, LanguageManager.getText("save_creator_confirm_button"), runnable, panel, MenuButtonID.SAVE_CREATOR_MENU_CONFIRM_NAME);
 
                 // Add image
             buttonWidth = 40;
@@ -115,10 +115,10 @@ public abstract class SaveCreator {
             buttonY = 184;
             buttonRect = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
             runnable = SaveCreator::handleIcon;
-            createButton(buttonRect, "", runnable, panel, 120);
+            createButton(buttonRect, "", runnable, panel, MenuButtonID.SAVE_CREATOR_MENU_ADD_ICON);
 
                 // Go back button
-            createGoBackButton(panel, 400);
+            createGoBackButton(panel, MenuButtonID.SAVE_CREATOR_MENU_GO_BACK);
 
             if (!isIconActive) {
                 drawButtons(g2d);
@@ -137,7 +137,7 @@ public abstract class SaveCreator {
                 buttonRect = new Rectangle(buttonX, buttonY + 9 * buttonHeight / 8, buttonWidth, buttonHeight / 4);
                 runnable = SaveCreator::clearIcon;
 
-                createButton(buttonRect, LanguageManager.getText("save_creator_clear_icon"), runnable, panel, 129);
+                createButton(buttonRect, LanguageManager.getText("save_creator_clear_icon"), runnable, panel, MenuButtonID.SAVE_CREATOR_MENU_CLEAR_ICON);
 
                 drawButtons(g2d);
 
