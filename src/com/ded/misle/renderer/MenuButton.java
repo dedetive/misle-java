@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.List;
 
@@ -80,6 +81,8 @@ public class MenuButton {
     String displayText;
     MenuButtonID id;
     boolean needsToUpdate;
+    boolean functionEnabled = true;
+    boolean renderEnabled = true;
 
     public static final Map<MenuButtonID, Fader.FadingState> fadingState = new EnumMap<>(MenuButtonID.class);
     public static final Map<MenuButtonID, Float> fadingProgress = new EnumMap<>(MenuButtonID.class);
@@ -118,6 +121,7 @@ public class MenuButton {
             panel.addMouseMotionListener(new MouseMotionAdapter() {
                 @Override
                 public void mouseMoved(MouseEvent e) {
+                    if (!button.renderEnabled) return;
                     detectIfButtonHovered(e.getPoint(), panel);
                 }
             });
@@ -125,6 +129,7 @@ public class MenuButton {
             panel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
+                    if (!button.functionEnabled) return;
                     Point clickPoint = e.getPoint();
                     clickPoint = new Point((int) (clickPoint.x / getWindowScale()), (int) (clickPoint.y / getWindowScale()));
                     for (MenuButton button : new ArrayList<>(buttons)) {
@@ -146,14 +151,12 @@ public class MenuButton {
     }
 
     private static void detectIfButtonHovered(Point mousePoint, JPanel panel) {
-        boolean repaintNeeded = false;
         mousePoint = new Point((int) (mousePoint.x / getWindowScale()), (int) (mousePoint.y / getWindowScale()));
 
         for (MenuButton button : buttons) {
             if (gameState == GamePanel.GameState.OPTIONS_MENU) {
                 if (Objects.equals(button.originalText, LanguageManager.getText("settings_menu_" + settingState.name().toLowerCase()))) {
                     button.color = buttonCurrentMenu;
-                    repaintNeeded = true;
                     button.needsToUpdate = true;
                 }
             }
@@ -163,7 +166,6 @@ public class MenuButton {
                     button.isHovered = true;
                     button.color = buttonHoveredColor;
                     button.updateDisplayText();
-                    repaintNeeded = true;
                     button.needsToUpdate = true;
                     panel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 }
@@ -171,13 +173,8 @@ public class MenuButton {
                 button.isHovered = false;
                 button.color = buttonDefaultColor;
                 panel.setCursor(Cursor.getDefaultCursor());
-                repaintNeeded = true;
                 button.needsToUpdate = true;
             }
-        }
-
-        if (repaintNeeded) {
-            panel.repaint();
         }
     }
 
@@ -198,6 +195,8 @@ public class MenuButton {
     public static void drawButtons(Graphics2D g2d) {
         try {
             for (MenuButton button : buttons) {
+                if (!button.renderEnabled) return;
+
                 g2d.setColor(buttonBorderColor);
                 g2d.fillRoundRect(button.bounds.x - 1, button.bounds.y - 1,
                     button.bounds.width + 2, button.bounds.height + 2,
@@ -263,19 +262,32 @@ public class MenuButton {
     }
 
     public static void clearButtons() {
+        for (MenuButton button : buttons) {
+            button.setFunctionEnabled(false);
+        }
+
+        try {
+            SwingUtilities.invokeAndWait(MenuButton::clear);
+        } catch (InterruptedException | InvocationTargetException | Error e) {
+            clear();
+        }
+    }
+
+    private static void clear() {
         initializedPanels.clear();
         buttons.clear();
         clearButtonFading();
-        SwingUtilities.invokeLater(() -> {
-            initializedPanels.clear();
-            buttons.clear();
-            clearButtonFading();
-        });
     }
-
 
     public static void clearButtonFading() {
         fadingProgress.clear();
         fadingState.clear();
+    }
+
+    public void setFunctionEnabled(boolean functionEnabled) {
+        this.functionEnabled = functionEnabled;
+    }
+    public void setRenderEnabled(boolean renderEnabled) {
+        this.renderEnabled = renderEnabled;
     }
 }
