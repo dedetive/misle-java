@@ -134,8 +134,11 @@ public abstract class MenuRenderer {
             // Version
             String gameVersion = LanguageManager.getText("version");
             String gameVersionShadow = LanguageManager.getText("version_shadow");
-            drawColoredText(g2d, gameVersionShadow, 437 + textShadow, 255 + textShadow, itemInfoFont, menuVersionShadowColor, false);
-            drawColoredText(g2d, gameVersion, 437, 255, itemInfoFont, menuVersionColor, false);
+            FontMetrics fm = g2d.getFontMetrics();
+            int versionX = originalScreenWidth - fm.stringWidth(gameVersion) / 2;
+            int versionY = originalScreenHeight - fm.getHeight() / 2;
+            drawColoredText(g2d, gameVersionShadow, versionX + textShadow, versionY + textShadow, itemInfoFont, menuVersionShadowColor, false);
+            drawColoredText(g2d, gameVersion, versionX, versionY, itemInfoFont, menuVersionColor, false);
         }
     }
 
