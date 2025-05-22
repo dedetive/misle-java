@@ -241,9 +241,10 @@ public class MenuButton {
                     g2d.setColor(fadingColor);
                     g2d.fillRoundRect(button.bounds.x, button.bounds.y, button.bounds.width, button.bounds.height, 20, 20);
 
-                    fadingProgress.put(button.id, (float) Math.max(progress - 0.015f * deltaTime * 100, 0));
-                    if (progress <= 0) {
-                        fadingState.put(button.id, Fader.FadingState.UNFADED);
+                    fadingProgress.put(button.id, (float) Math.max(progress - 0.015f * Math.abs(Math.pow(deltaTime, 0.3)) * 6, 0));
+                    if (progress <= 0.0) {
+                        fadingState.remove(button.id);
+                        fadingProgress.remove(button.id);
                     }
                 }
             }
@@ -276,7 +277,6 @@ public class MenuButton {
     private static void clear() {
         initializedPanels.clear();
         buttons.clear();
-        clearButtonFading();
     }
 
     public static void clearButtonFading() {
