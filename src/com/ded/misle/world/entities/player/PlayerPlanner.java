@@ -1,0 +1,98 @@
+package com.ded.misle.world.entities.player;
+
+import com.ded.misle.renderer.SmoothPosition;
+import com.ded.misle.world.logic.Path;
+
+import java.awt.*;
+
+import static com.ded.misle.game.GamePanel.originalTileSize;
+import static com.ded.misle.game.GamePanel.player;
+
+/**
+ * Manages the movement planning mode for the player.
+ * <p>
+ * While in planning mode, the player can queue movement steps by navigating to positions on the world.
+ * These steps are recorded without executing any movement in real-time, nor advancing turns.
+ * Once planning is confirmed, the queued steps are executed sequentially, executing the turns as it would normally.
+ * Only the final planned move is considered an attack.
+ * <p>
+ * If the player successfully attacks an enemy without taking any damage during the path execution,
+ * a bonus damage multiplier is applied based on the number of tiles walked.
+ */
+public class PlayerPlanner {
+    /** Stores the sequence of planned points to move through. */
+    private final Path path;
+
+    private final SmoothPosition smoothPos;
+
+    /** Indicates whether the player is currently in planning mode. */
+    private boolean isPlanning;
+
+    /**
+     * Constructs a new PlayerPlanner with an empty path and planning mode disabled.
+     */
+    public PlayerPlanner(Point playerPosition) {
+        this.path = new Path().addPoint(playerPosition);
+        this.isPlanning = false;
+        this.smoothPos = new SmoothPosition(playerPosition.x, playerPosition.y);
+    }
+
+    /**
+     * Attempts to add a new movement point to the plan.
+     * Only adds the point if planning mode is active and the point is not already part of the plan.
+     *
+     * @param point the target point to add to the planned path
+     */
+    public void attemptToMove(Point point) {
+        if (!isPlanning) return;
+        if (!path.contains(point)) {
+            path.addPoint(point);
+            smoothPos.setTarget(point.x, point.y);
+        }
+    }
+
+    /**
+     * Returns the sequence of points currently stored in the planner.
+     *
+     * @return an array of Points representing the planned movement path
+     */
+    public Point[] getPoints() {
+        return this.path.getPoints();
+    }
+
+    /**
+     * Checks if the planner is currently in planning mode.
+     *
+     * @return {@code true} if planning is active; {@code false} otherwise
+     */
+    public boolean isPlanning() {
+        return isPlanning;
+    }
+
+    /**
+     * Sets the planner's mode to planning or idle.
+     *
+     * @param planning {@code true} to enable planning mode, {@code false} to disable it
+     * @return this PlayerPlanner object for chaining
+     */
+    public PlayerPlanner setPlanning(boolean planning) {
+        isPlanning = planning;
+        return this;
+    }
+
+    /**
+     * Returns this planner's last point.
+     * @return the last point in this planner's path array
+     */
+    public Point getEnd() {
+        return this.path.getEnd();
+    }
+
+    public Point getSmoothPos() {
+        return new Point(this.smoothPos.getRenderX(), this.smoothPos.getRenderY());
+    }
+
+    public void updateSmoothPos() {
+        this.smoothPos.update(50f, originalTileSize);
+    }
+}
