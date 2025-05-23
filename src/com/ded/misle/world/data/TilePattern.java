@@ -16,7 +16,7 @@ public abstract class TilePattern {
      * @return an array of points
      */
     public Point[] getPoints() {
-        return points;
+        return deepCopy();
     }
 
     /**
