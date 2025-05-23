@@ -22,6 +22,9 @@ public class Planner {
     /** Stores the sequence of planned points to move through. */
     private final Path path;
 
+    /**
+     * Handles the interpolation for smooth visual transitions between path points.
+     */
     private final SmoothPosition smoothPos;
 
     /** Indicates whether the player is currently in planning mode. */
@@ -87,10 +90,20 @@ public class Planner {
         return this.path.getEnd();
     }
 
+    /**
+     * Returns the current interpolated screen position of the player along the planned path.
+     * This is used for rendering smooth movement transitions while in planning mode.
+     *
+     * @return a Point representing the interpolated screen position
+     */
     public Point getSmoothPos() {
         return new Point(this.smoothPos.getRenderX(), this.smoothPos.getRenderY());
     }
 
+    /**
+     * Updates the internal smooth position based on the interpolation speed and tile size.
+     * This ensures visually smooth movement along the path during rendering.
+     */
     public void updateSmoothPos() {
         this.smoothPos.update(50f, originalTileSize);
     }
