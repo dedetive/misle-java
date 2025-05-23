@@ -1,11 +1,13 @@
 package com.ded.misle.input;
 
+import com.ded.misle.world.entities.player.PlayerPlanner;
 import com.ded.misle.world.logic.LogicManager;
 import com.ded.misle.world.boxes.BoxManipulation;
 import com.ded.misle.world.entities.npcs.NPC;
 import com.ded.misle.world.entities.player.PlayerAttributes;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -73,6 +75,8 @@ public class KeyHandler implements KeyListener {
 		NUM_5(VK_5),
 		NUM_6(VK_6),
 		NUM_7(VK_7),
+		PLANNING_TOGGLE(VK_SPACE),
+		PLANNING_CONFIRM(VK_ENTER),
 
 		;
 
@@ -126,6 +130,8 @@ public class KeyHandler implements KeyListener {
 		GRID,
 		ENTER,
 		SCREENSHOT,
+		PLANNING_TOGGLE,
+		PLANNING_CONFIRM,
 	};
 
 	Key[] cooldownOnPress = new Key[]{
@@ -318,6 +324,14 @@ public class KeyHandler implements KeyListener {
 				pressUseButton(mouseHandler);
 				player.keys.keyPressed.put(USE, false);
 			}
+			if (isPressed(PLANNING_TOGGLE)) {
+				PlayerPlanner planner = player.getPlanner();
+				if (planner.isPlanning()) {
+					planner.setPlanning(false);
+				} else {
+                    player.getNewPlanner().setPlanning(true);
+                }
+			}
 
 			// MOVING
 
@@ -335,12 +349,25 @@ public class KeyHandler implements KeyListener {
 					} else {
 						verticalDirection = PlayerAttributes.KnockbackDirection.UP;
 					}
-					int targetX = player.getX() + willMovePlayer[0];
-					int targetY = player.getY() + willMovePlayer[1];
-					if (!isSpaceOccupied(targetX, targetY, player)) {
-						BoxManipulation.movePlayer(willMovePlayer[0], willMovePlayer[1]);
-					}
-				}
+
+					PlayerPlanner planner = player.getPlanner();
+                    if (planner.isPlanning()) {
+						Point lastPoint = planner.getEnd();
+						int currentX = lastPoint != null ? lastPoint.x : player.getX();
+						int currentY = lastPoint != null ? lastPoint.y : player.getY();
+                        int targetX = currentX + willMovePlayer[0];
+						int targetY = currentY + willMovePlayer[1];
+                        if (!isSpaceOccupied(targetX, targetY)) {
+                            planner.attemptToMove(new Point(targetX, targetY));
+                        }
+                    } else {
+						int targetX = player.getX() + willMovePlayer[0];
+						int targetY = player.getY() + willMovePlayer[1];
+                        if (!isSpaceOccupied(targetX, targetY, player)) {
+                            BoxManipulation.movePlayer(willMovePlayer[0], willMovePlayer[1]);
+                        }
+                    }
+                }
 			}
 		}
 
@@ -555,7 +582,9 @@ public class KeyHandler implements KeyListener {
 			}
 		}
 
-		triggerLogicIfNeeded();
+		if (!player.getPlanner().isPlanning()) {
+			triggerLogicIfNeeded();
+		}
 		setKeysToFalse();
 	}
 
