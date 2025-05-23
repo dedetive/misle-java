@@ -110,10 +110,26 @@ public class Planner {
     public void updateSmoothPos() {
         this.smoothPos.update(50f, originalTileSize);
     }
+
     /**
-     * Delay in milliseconds between each turn during this plan's execution.
+     * Default delay in milliseconds between each turn during this plan's execution. {@link #delayPerTurn} gets set to this value every time the plan is going to be executed.
      */
-    private static final int DELAY_PER_TURN = 500;
+    private static final int DEFAULT_DELAY_PER_TURN = 500;
+
+    /**
+     * Delay in milliseconds between each turn during this plan's execution. This value is reduced by {@link #DELAY_REDUCTION_PER_TURN} every turn.
+     */
+    private static int delayPerTurn = DEFAULT_DELAY_PER_TURN;
+
+    /**
+     * Minimum delay in milliseconds between each turn during this plan's execution.
+     */
+    private static final int MINIMUM_DELAY_PER_TURN = 150;
+
+    /**
+     * Value in milliseconds that reduces current delay per turn, until it reaches {@link #MINIMUM_DELAY_PER_TURN}.
+     */
+    private static final int DELAY_REDUCTION_PER_TURN = 15;
 
     /**
      * Flag indicating whether the plan is currently being executed.
@@ -143,8 +159,11 @@ public class Planner {
         isExecuting = true;
         Thread executor = new Thread(() -> {
             Point previousPoint = new Point(-1, -1);
+            delayPerTurn = DEFAULT_DELAY_PER_TURN;
 
             for (Point point : this.path.getPoints()) {
+                delayPerTurn = Math.max(delayPerTurn - DELAY_REDUCTION_PER_TURN, MINIMUM_DELAY_PER_TURN);
+
                 path.removePoint(previousPoint);
                 BoxManipulation.movePlayer(Integer.signum(point.x - player.getX()), Integer.signum(point.y - player.getY()));
                 LogicManager.requestNewTurn();
@@ -157,7 +176,7 @@ public class Planner {
                 } else {
                     synchronized (lock) {
                         try {
-                            lock.wait(DELAY_PER_TURN);
+                            lock.wait(delayPerTurn);
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
                         }
