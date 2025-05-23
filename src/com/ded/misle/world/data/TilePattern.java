@@ -33,7 +33,7 @@ public abstract class TilePattern {
     }
 
     /**
-     * Rotates the tile pattern around the origin by the specified angle.
+     * Rotates this tile pattern around the origin by the specified angle.
      *
      * @param rotation the rotation to apply (90°, 180°, 270°, or none)
      * @return the same tile pattern object for chaining
@@ -91,6 +91,18 @@ public abstract class TilePattern {
          * Mirrors the tile pattern vertically (up-down), flipping the y-coordinate.
          */
         VERTICAL
+    }
+
+    /**
+     * Creates a deep copy of this tile pattern.
+     * @return the points that make up the copy
+     */
+    private Point[] deepCopy() {
+        Point[] copy = new Point[points.length];
+        for (int i = 0; i < points.length; i++) {
+            copy[i] = new Point(points[i]);
+        }
+        return copy;
     }
 
     @Override
