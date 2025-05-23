@@ -150,6 +150,27 @@ public class Path extends TilePattern {
     }
 
     /**
+     * Returns how many points this Path has.
+     * @return the number of points in {@link #points}
+     */
+    public int getLength() {
+        return points.length;
+    }
+
+    /**
+     * Returns the Euclidean distance from the starting point to the final point.
+     * This is calculated by the square root of the sum of both squares, known as Pythagorean theorem (√(Δx² + Δy²)).
+     *
+     * @return the straight-line distance from the first to the last point
+     */
+    public double getSpan() {
+        if (points.length < 2) return 0;
+        Point start = getStart();
+        Point end = getEnd();
+        return start.distance(end);
+    }
+
+    /**
      * Saves a snapshot of the current state so it can be undone later.
      */
     private void saveState() {
