@@ -1,6 +1,6 @@
 package com.ded.misle.input;
 
-import com.ded.misle.world.entities.player.PlayerPlanner;
+import com.ded.misle.world.entities.player.Planner;
 import com.ded.misle.world.logic.LogicManager;
 import com.ded.misle.world.boxes.BoxManipulation;
 import com.ded.misle.world.entities.npcs.NPC;
@@ -325,7 +325,7 @@ public class KeyHandler implements KeyListener {
 				player.keys.keyPressed.put(USE, false);
 			}
 			if (isPressed(PLANNING_TOGGLE)) {
-				PlayerPlanner planner = player.getPlanner();
+				Planner planner = player.getPlanner();
 				if (planner.isPlanning()) {
 					planner.setPlanning(false);
 				} else {
@@ -350,7 +350,7 @@ public class KeyHandler implements KeyListener {
 						verticalDirection = PlayerAttributes.KnockbackDirection.UP;
 					}
 
-					PlayerPlanner planner = player.getPlanner();
+					Planner planner = player.getPlanner();
                     if (planner.isPlanning()) {
 						Point lastPoint = planner.getEnd();
 						int currentX = lastPoint != null ? lastPoint.x : player.getX();

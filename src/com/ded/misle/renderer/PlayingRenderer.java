@@ -1,8 +1,7 @@
 package com.ded.misle.renderer;
 
 import com.ded.misle.core.LanguageManager;
-import com.ded.misle.game.GamePanel;
-import com.ded.misle.world.entities.player.PlayerPlanner;
+import com.ded.misle.world.entities.player.Planner;
 import com.ded.misle.world.logic.World;
 import com.ded.misle.world.entities.npcs.NPC;
 import com.ded.misle.input.MouseHandler;
@@ -18,7 +17,6 @@ import java.util.Objects;
 
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.game.GamePanel.*;
-import static com.ded.misle.core.Setting.antiAliasing;
 import static com.ded.misle.renderer.FloatingText.drawFloatingTexts;
 import static com.ded.misle.renderer.FontManager.*;
 import static com.ded.misle.renderer.ImageManager.mergeImages;
@@ -90,7 +88,7 @@ public class PlayingRenderer extends AbstractRenderer {
         }
 
         // Player planning
-        PlayerPlanner planner = player.getPlanner();
+        Planner planner = player.getPlanner();
         if (planner.isPlanning()) drawPlanning(g2d);
 
         // Player position adjustments

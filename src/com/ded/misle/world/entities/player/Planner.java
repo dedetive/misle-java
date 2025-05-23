@@ -6,7 +6,6 @@ import com.ded.misle.world.logic.Path;
 import java.awt.*;
 
 import static com.ded.misle.game.GamePanel.originalTileSize;
-import static com.ded.misle.game.GamePanel.player;
 
 /**
  * Manages the movement planning mode for the player.
@@ -19,7 +18,7 @@ import static com.ded.misle.game.GamePanel.player;
  * If the player successfully attacks an enemy without taking any damage during the path execution,
  * a bonus damage multiplier is applied based on the number of tiles walked.
  */
-public class PlayerPlanner {
+public class Planner {
     /** Stores the sequence of planned points to move through. */
     private final Path path;
 
@@ -29,9 +28,9 @@ public class PlayerPlanner {
     private boolean isPlanning;
 
     /**
-     * Constructs a new PlayerPlanner with an empty path and planning mode disabled.
+     * Constructs a new Planner with an empty path and planning mode disabled.
      */
-    public PlayerPlanner(Point playerPosition) {
+    public Planner(Point playerPosition) {
         this.path = new Path().addPoint(playerPosition);
         this.isPlanning = false;
         this.smoothPos = new SmoothPosition(playerPosition.x, playerPosition.y);
@@ -73,9 +72,9 @@ public class PlayerPlanner {
      * Sets the planner's mode to planning or idle.
      *
      * @param planning {@code true} to enable planning mode, {@code false} to disable it
-     * @return this PlayerPlanner object for chaining
+     * @return this Planner object for chaining
      */
-    public PlayerPlanner setPlanning(boolean planning) {
+    public Planner setPlanning(boolean planning) {
         isPlanning = planning;
         return this;
     }

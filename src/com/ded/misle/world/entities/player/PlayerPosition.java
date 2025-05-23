@@ -50,7 +50,7 @@ public class PlayerPosition {
 	}
 
 	public double calculateCameraOffsetX() {
-		PlayerPlanner planner = player.getPlanner();
+		Planner planner = player.getPlanner();
 		int targetX = planner.isPlanning()
 			? planner.getEnd().x
 			: player.getX();
@@ -60,7 +60,7 @@ public class PlayerPosition {
 			Math.max(originalWorldWidth - originalScreenWidth + originalTileSize, 0));
 	}
 	public double calculateCameraOffsetY() {
-		PlayerPlanner planner = player.getPlanner();
+		Planner planner = player.getPlanner();
 		int targetY = planner.isPlanning()
 			? planner.getEnd().y
 			: player.getY();

@@ -17,7 +17,7 @@ public class Player extends HPBox {
 	public final PlayerAttributes attr;
 	public final PlayerStats stats;
 	public final Inventory inv;
-	private PlayerPlanner planner;
+	private Planner planner;
 
 	public int currentSaveSlot;
 	public String name = "";
@@ -52,27 +52,27 @@ public class Player extends HPBox {
 	}
 
 	/**
-	 * Returns the current PlayerPlanner instance.
+	 * Returns the current Planner instance.
 	 * If no planner exists yet, a new one is created.
 	 * This method is used to access or modify the player's planning state.
 	 *
-	 * @return the active PlayerPlanner instance
+	 * @return the active Planner instance
 	 */
-	public PlayerPlanner getPlanner() {
+	public Planner getPlanner() {
 		return planner =
 			planner != null
 				? planner
-				: new PlayerPlanner(new Point(getX(), getY()));
+				: new Planner(new Point(getX(), getY()));
 	}
 
 	/**
-	 * Creates a new PlayerPlanner, replacing any existing planner.
+	 * Creates a new Planner, replacing any existing planner.
 	 * This is useful when starting a fresh planning session.
 	 *
-	 * @return the newly created PlayerPlanner instance
+	 * @return the newly created Planner instance
 	 */
-	public PlayerPlanner getNewPlanner() {
-		return planner = new PlayerPlanner(new Point(getX(), getY()));
+	public Planner getNewPlanner() {
+		return planner = new Planner(new Point(getX(), getY()));
 	}
 
 	/**
