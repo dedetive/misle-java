@@ -124,12 +124,12 @@ public class Planner {
     /**
      * Minimum delay in milliseconds between each turn during this plan's execution.
      */
-    private static final int MINIMUM_DELAY_PER_TURN = 150;
+    private static final int MINIMUM_DELAY_PER_TURN = 120;
 
     /**
      * Value in milliseconds that reduces current delay per turn, until it reaches {@link #MINIMUM_DELAY_PER_TURN}.
      */
-    private static final int DELAY_REDUCTION_PER_TURN = 15;
+    private static final int DELAY_REDUCTION_PER_TURN = 7;
 
     /**
      * Flag indicating whether the plan is currently being executed.
