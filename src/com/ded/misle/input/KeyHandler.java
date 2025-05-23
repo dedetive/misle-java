@@ -76,7 +76,10 @@ public class KeyHandler implements KeyListener {
 		NUM_6(VK_6),
 		NUM_7(VK_7),
 		PLANNING_TOGGLE(VK_SPACE),
-		PLANNING_CONFIRM(VK_P),
+		PLANNING_CONFIRM(VK_ENTER), /*
+			TODO: unused while this key handler system is trash. please refactor this whole thing
+				this absolute buffoon cannot even handle two keys with the same key code
+		 */
 
 		;
 
@@ -283,7 +286,9 @@ public class KeyHandler implements KeyListener {
 			}
 			isPlanning = planner.isPlanning();
 
-			if (isPlanning && isPressed(PLANNING_CONFIRM)) {
+			/* should be PLANNING_CONFIRM, not ENTER. but this bad bad system
+				cannot even comprehend two identical key codes so im using this for now */
+			if (isPlanning && isPressed(ENTER)) {
 				planner.executePlan();
 			}
 
