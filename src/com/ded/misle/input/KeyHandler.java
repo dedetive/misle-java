@@ -290,6 +290,8 @@ public class KeyHandler implements KeyListener {
 				cannot even comprehend two identical key codes so im using this for now */
 			if (isPlanning && !planner.isExecuting() && isPressed(ENTER)) {
 				planner.executePlan();
+			} else if (isPlanning && isPressed(ENTER)) {
+				planner.skipStep();
 			}
 
 			for (NumberKey numberKey : NumberKey.values()) {

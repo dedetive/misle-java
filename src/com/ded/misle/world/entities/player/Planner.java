@@ -118,6 +118,8 @@ public class Planner {
 
     private boolean isExecuting = false;
 
+    private final Object lock = new Object();
+
     public boolean isExecuting() {
         return isExecuting;
     }
@@ -137,17 +139,28 @@ public class Planner {
                     isPlanning = false;
                     isExecuting = false;
                     player.inv.useItem();
-                }
-                else {
-                    try {
-                        Thread.sleep(DELAY_PER_TURN);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                } else {
+                    synchronized (lock) {
+                        try {
+                            lock.wait(DELAY_PER_TURN);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
                     }
                 }
             }
+
+            isExecuting = false;
         });
 
         executor.start();
+    }
+
+    public void skipStep() {
+        if (!this.isExecuting) return;
+
+        synchronized (lock) {
+            lock.notify();
+        }
     }
 }
