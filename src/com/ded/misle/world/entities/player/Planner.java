@@ -110,20 +110,35 @@ public class Planner {
     public void updateSmoothPos() {
         this.smoothPos.update(50f, originalTileSize);
     }
-
     /**
      * Delay in milliseconds between each turn during this plan's execution.
      */
     private static final int DELAY_PER_TURN = 500;
 
+    /**
+     * Flag indicating whether the plan is currently being executed.
+     */
     private boolean isExecuting = false;
 
+    /**
+     * Lock object used for synchronizing turn delay and skipStep interruptions.
+     */
     private final Object lock = new Object();
 
+    /**
+     * Returns whether the plan is currently being executed.
+     *
+     * @return true if the plan is being executed, false otherwise
+     */
     public boolean isExecuting() {
         return isExecuting;
     }
 
+    /**
+     * Starts executing the current plan on a separate thread.
+     * Each step in the plan moves the player and waits for a fixed delay,
+     * unless interrupted by {@link #skipStep()}.
+     */
     public void executePlan() {
         isExecuting = true;
         Thread executor = new Thread(() -> {
@@ -156,6 +171,10 @@ public class Planner {
         executor.start();
     }
 
+    /**
+     * Interrupts the current turn delay in {@link #executePlan()}, causing the execution to
+     * immediately proceed to the next step without waiting for the full delay.
+     */
     public void skipStep() {
         if (!this.isExecuting) return;
 
