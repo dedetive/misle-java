@@ -204,6 +204,9 @@ public class Planner {
         }
     }
 
+    /**
+     * Immediately interrupts this plan's execution. If it was not executing, this does nothing.
+     */
     public void killExecution() {
         isExecuting = false;
     }
