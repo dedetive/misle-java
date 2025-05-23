@@ -533,20 +533,32 @@ public class PlayingRenderer extends AbstractRenderer {
     private void drawPlanning(Graphics2D g2d) {
         int i = 0;
         int max = player.getPlannerState().length;
+        int scaledTile = (int) (originalTileSize * 1.2);
+        int scaledTileDifference = originalTileSize / 5;
+        int cameraOffsetX = (int) player.pos.getCameraOffsetX();
+        int cameraOffsetY = (int) player.pos.getCameraOffsetY();
+        int red = 190; // 0xBE
+        int green = 22; // 0x16
+        int blue = 22; // 0x16
+
         for (Point point : player.getPlannerState()) {
             i++;
 
-            int screenX = (int) (point.x * originalTileSize - player.pos.getCameraOffsetX());
-            int screenY = (int) (point.y * originalTileSize - player.pos.getCameraOffsetY());
+            int screenX = point.x * originalTileSize - cameraOffsetX;
+            int screenY = point.y * originalTileSize - cameraOffsetY;
             if (isInvalid(screenX, screenY)) continue;
 
-            int alpha = Math.max((i * i) * 255 / (max * max), 100) * 16777216;
-            Color color = new Color(0xBE1616 + alpha, true);
+            int alpha;
+            if (max <= 5 || (float) i / max > 0.66f) {
+                alpha = Math.max((i * i) * 255 / (max * max), 100);
+            } else {
+                alpha = 100;
+            }
+            Color color = new Color(red, green, blue, alpha);
+
 
             g2d.setColor(color);
             if (point.equals(player.getPlanner().getEnd())) {
-                int scaledTile = (int) (originalTileSize * 1.2);
-                int scaledTileDifference = originalTileSize / 5;
                 g2d.fillRect(screenX - (scaledTileDifference / 2), screenY - (scaledTileDifference / 2), scaledTile, scaledTile);
             }
             else g2d.fillRect(screenX, screenY, originalTileSize, originalTileSize);
