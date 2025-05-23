@@ -51,7 +51,7 @@ public class PlayerPosition {
 
 	public double calculateCameraOffsetX() {
 		Planner planner = player.getPlanner();
-		int targetX = planner.isPlanning()
+		int targetX = planner.isPlanning() && !planner.isExecuting()
 			? planner.getEnd().x
 			: player.getX();
 
@@ -61,7 +61,7 @@ public class PlayerPosition {
 	}
 	public double calculateCameraOffsetY() {
 		Planner planner = player.getPlanner();
-		int targetY = planner.isPlanning()
+		int targetY = planner.isPlanning() && !planner.isExecuting()
 			? planner.getEnd().y
 			: player.getY();
 
