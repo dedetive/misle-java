@@ -6,8 +6,12 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Deque;
+import java.util.LinkedList;
 
 public class Path extends TilePattern {
+    private final Deque<Point[]> history = new LinkedList<>();
+
     /**
      * Creates a Path object with predefined points.
      * @param points the points the Path initially holds.
@@ -29,6 +33,7 @@ public class Path extends TilePattern {
      * @return this Path for chaining
      */
     public Path addPoint(Point point) {
+        saveState();
         Point[] newPoints = new Point[points.length + 1];
         System.arraycopy(points, 0, newPoints, 0, points.length);
         newPoints[points.length] = point;
@@ -42,6 +47,7 @@ public class Path extends TilePattern {
      * @return this Path for chaining
      */
     public Path addPoints(Point[] newPoints) {
+        saveState();
         Point[] combined = new Point[points.length + newPoints.length];
         System.arraycopy(points, 0, combined, 0, points.length);
         System.arraycopy(newPoints, 0, combined, points.length, newPoints.length);
@@ -56,9 +62,49 @@ public class Path extends TilePattern {
      * @return this Path for chaining
      */
     public Path removePoint(Point point) {
+        saveState();
         points = Arrays.stream(points)
             .filter(p -> !p.equals(point))
             .toArray(Point[]::new);
+        return this;
+    }
+
+    /**
+     * Add an offset to each of this Path's points. All points will get incremented by the given value.
+     *
+     * @param offset the value for the points to be added, with respect to their x and y individually
+     * @return the same Path object for chaining
+     */
+    @Override
+    public Path offset(Point offset) {
+        saveState();
+        super.offset(offset);
+        return this;
+    }
+
+    /**
+     * Rotates this Path around the origin by the specified angle.
+     *
+     * @param rotation the rotation to apply (90°, 180°, 270°, or none)
+     * @return the same Path object for chaining
+     */
+    @Override
+    public Path rotate(Rotation rotation) {
+        saveState();
+        super.rotate(rotation);
+        return this;
+    }
+
+    /**
+     * Mirrors this Path's points in the specified direction.
+     *
+     * @param direction the direction to mirror the points: horizontally (flip x) or vertically (flip y)
+     * @return the same Path object for chaining
+     */
+    @Override
+    public Path mirror(MirrorDirection direction) {
+        saveState();
+        super.mirror(direction);
         return this;
     }
 
@@ -104,38 +150,32 @@ public class Path extends TilePattern {
     }
 
     /**
-     * Add an offset to each of this Path's points. All points will get incremented by the given value.
-     *
-     * @param offset the value for the points to be added, with respect to their x and y individually
-     * @return the same Path object for chaining
+     * Saves a snapshot of the current state so it can be undone later.
      */
-    @Override
-    public Path offset(Point offset) {
-        super.offset(offset);
+    private void saveState() {
+        Point[] snapshot = new Point[points.length];
+        for (int i = 0; i < points.length; i++) {
+            snapshot[i] = new Point(points[i]);
+        }
+        history.push(snapshot);
+    }
+
+    /**
+     * Returns to the most recent snapshot saved by {@link #saveState()}.
+     * @return this Path object for chaining
+     */
+    public Path undo() {
+        if (canUndo()) {
+            points = history.pop();
+        }
         return this;
     }
 
     /**
-     * Rotates this Path around the origin by the specified angle.
-     *
-     * @param rotation the rotation to apply (90°, 180°, 270°, or none)
-     * @return the same Path object for chaining
+     * Returns whether {@link #history} is empty or not, and thus has a modification to undo or not.
+     * @return whether the most recent modification can be undone
      */
-    @Override
-    public Path rotate(Rotation rotation) {
-        super.rotate(rotation);
-        return this;
-    }
-
-    /**
-     * Mirrors this Path's points in the specified direction.
-     *
-     * @param direction the direction to mirror the points: horizontally (flip x) or vertically (flip y)
-     * @return the same Path object for chaining
-     */
-    @Override
-    public Path mirror(MirrorDirection direction) {
-        super.mirror(direction);
-        return this;
+    private boolean canUndo() {
+        return !history.isEmpty();
     }
 }
