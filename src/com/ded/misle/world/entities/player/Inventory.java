@@ -3,7 +3,6 @@ package com.ded.misle.world.entities.player;
 import com.ded.misle.renderer.FloatingText;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.boxes.BoxHandling;
-import com.ded.misle.input.MouseHandler;
 import com.ded.misle.items.Item;
 import com.ded.misle.renderer.PlayingRenderer;
 import com.ded.misle.world.entities.HPBox;
@@ -444,14 +443,14 @@ public class Inventory {
 		return false;
 	}
 
-	public void useItem(MouseHandler mouseHandler) {
+	public void useItem() {
 		if (getSelectedItem() != null) { // Ensure something is selected
 			String type = getSelectedItem().getType();
 			long currentTime = currentTimeMillis();
 
 			switch (type) {
 				case "potion" -> usePotion(currentTime);
-				case "weapon" -> useWeapon(currentTime, mouseHandler);
+				case "weapon" -> useWeapon(currentTime);
 			}
 		}
 	}
@@ -519,7 +518,7 @@ public class Inventory {
 		}
 	}
 
-	public void useWeapon(long currentTime, MouseHandler mouseHandler) {
+	public void useWeapon(long currentTime) {
 		double attackDelay = Double.parseDouble(getSelectedItem().getAttributes().get("attackDelay").toString());
 		if (currentTime > getSelectedItem().getTimeToDelay()) {
 			getSelectedItem().setTimeToDelay((long) (attackDelay * 1000));

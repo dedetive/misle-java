@@ -617,7 +617,7 @@ public class KeyHandler implements KeyListener {
 		ArrayList<NPC> nearbyNPCs = getSelectedNPCs();
 
 		if (nearbyNPCs.isEmpty()) {
-			player.inv.useItem(mouseHandler);
+			player.inv.useItem();
 		} else {
 			int size = nearbyNPCs.size();
 			int rand = ThreadLocalRandom.current().nextInt(0, size);
