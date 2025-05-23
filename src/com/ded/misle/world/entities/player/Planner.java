@@ -1,11 +1,14 @@
 package com.ded.misle.world.entities.player;
 
 import com.ded.misle.renderer.SmoothPosition;
+import com.ded.misle.world.boxes.BoxManipulation;
+import com.ded.misle.world.logic.LogicManager;
 import com.ded.misle.world.logic.Path;
 
 import java.awt.*;
 
 import static com.ded.misle.game.GamePanel.originalTileSize;
+import static com.ded.misle.game.GamePanel.player;
 
 /**
  * Manages the movement planning mode for the player.
@@ -106,5 +109,33 @@ public class Planner {
      */
     public void updateSmoothPos() {
         this.smoothPos.update(50f, originalTileSize);
+    }
+
+    /**
+     * Delay in milliseconds between each turn during this plan's execution.
+     */
+    private static final int DELAY_PER_TURN = 500;
+
+    public void executePlan() {
+        Thread executor = new Thread(() -> {
+            Point previousPoint = new Point(-1, -1);
+
+            for (Point point : this.path.getPoints()) {
+                path.removePoint(previousPoint);
+                BoxManipulation.movePlayer(Integer.signum(point.x - player.getX()), Integer.signum(point.y - player.getY()));
+                LogicManager.requestNewTurn();
+                previousPoint = point;
+
+                if (path.getLength() == 1) isPlanning = false;
+
+                try {
+                    Thread.sleep(DELAY_PER_TURN);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        executor.start();
     }
 }

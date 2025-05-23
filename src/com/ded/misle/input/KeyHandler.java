@@ -76,7 +76,7 @@ public class KeyHandler implements KeyListener {
 		NUM_6(VK_6),
 		NUM_7(VK_7),
 		PLANNING_TOGGLE(VK_SPACE),
-		PLANNING_CONFIRM(VK_ENTER),
+		PLANNING_CONFIRM(VK_P),
 
 		;
 
@@ -273,6 +273,7 @@ public class KeyHandler implements KeyListener {
 
 		if (gameState == GameState.PLAYING) {
 			Planner planner = player.getPlanner();
+
 			if (isPressed(PLANNING_TOGGLE)) {
 				if (planner.isPlanning()) {
 					planner.setPlanning(false);
@@ -281,6 +282,10 @@ public class KeyHandler implements KeyListener {
 				}
 			}
 			isPlanning = planner.isPlanning();
+
+			if (isPlanning && isPressed(PLANNING_CONFIRM)) {
+				planner.executePlan();
+			}
 
 			for (NumberKey numberKey : NumberKey.values()) {
 				if (!isPlanning && isPressed(valueOf(String.valueOf(numberKey)))) {

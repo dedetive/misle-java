@@ -540,7 +540,7 @@ public class PlayingRenderer extends AbstractRenderer {
             int screenY = (int) (point.y * originalTileSize - player.pos.getCameraOffsetY());
             if (isInvalid(screenX, screenY)) continue;
 
-            int alpha = Math.max((i * i * i) * 255 / (max * max * max), 100) * 16777216;
+            int alpha = Math.max((i * i) * 255 / (max * max), 100) * 16777216;
             Color color = new Color(0xBE1616 + alpha, true);
 
             g2d.setColor(color);
