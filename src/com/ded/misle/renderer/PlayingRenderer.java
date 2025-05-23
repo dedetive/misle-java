@@ -2,6 +2,7 @@ package com.ded.misle.renderer;
 
 import com.ded.misle.core.LanguageManager;
 import com.ded.misle.game.GamePanel;
+import com.ded.misle.world.entities.player.PlayerPlanner;
 import com.ded.misle.world.logic.World;
 import com.ded.misle.world.entities.npcs.NPC;
 import com.ded.misle.input.MouseHandler;
@@ -22,6 +23,7 @@ import static com.ded.misle.renderer.FloatingText.drawFloatingTexts;
 import static com.ded.misle.renderer.FontManager.*;
 import static com.ded.misle.renderer.ImageManager.mergeImages;
 import static com.ded.misle.world.boxes.Box.getTexture;
+import static com.ded.misle.world.boxes.Box.isInvalid;
 import static com.ded.misle.world.entities.npcs.NPC.getSelectedNPCs;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.DialogRenderer.renderDialog;
@@ -87,6 +89,10 @@ public class PlayingRenderer extends AbstractRenderer {
             //
         }
 
+        // Player planning
+        PlayerPlanner planner = player.getPlanner();
+        if (planner.isPlanning()) drawPlanning(g2d);
+
         // Player position adjustments
         player.updateVisualPosition(50f);
         int playerScreenX = (int) (player.getRenderX() + player.visualOffsetX * originalTileSize - player.pos.getCameraOffsetX());
@@ -120,6 +126,23 @@ public class PlayingRenderer extends AbstractRenderer {
         playerSprite = player.isIconTexture ?
             mergeImages(playerSprite, player.icon) :
             playerSprite;
+
+        if (planner.isPlanning()) {
+            planner.updateSmoothPos();
+
+            int plannerScreenX = (int) (planner.getSmoothPos().x + player.visualOffsetX * originalTileSize - player.pos.getCameraOffsetX() + originalTileSize / 10);
+            int plannerScreenY = (int) (planner.getSmoothPos().y + player.visualOffsetY * originalTileSize - player.pos.getCameraOffsetY() + originalTileSize / 10);
+
+            Composite originalComposite = g2d.getComposite();
+            AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.35f);
+            g2d.setComposite(ac);
+            drawRotatedImage(g2d, playerSprite,
+                plannerScreenX - player.getVisualScaleHorizontal() * 0.25 * originalTileSize,
+                plannerScreenY - player.getVisualScaleVertical() * 0.25 * originalTileSize,
+                (int) (player.getVisualScaleHorizontal() * 1.5 * originalTileSize),
+                (int) (player.getVisualScaleVertical() * 1.5 * originalTileSize), player.pos.getRotation(), playerMirror);
+            g2d.setComposite(originalComposite);
+        }
 
         drawRotatedImage(g2d, playerSprite,
             playerScreenX - player.getVisualScaleHorizontal() * 0.25 * originalTileSize,
@@ -507,6 +530,29 @@ public class PlayingRenderer extends AbstractRenderer {
         g2d.setColor(levelTextUI);
         drawColoredText(g2d, String.valueOf(level), x, y);
 
+    }
+
+    private void drawPlanning(Graphics2D g2d) {
+        int i = 0;
+        int max = player.getPlannerState().length;
+        for (Point point : player.getPlannerState()) {
+            i++;
+
+            int screenX = (int) (point.x * originalTileSize - player.pos.getCameraOffsetX());
+            int screenY = (int) (point.y * originalTileSize - player.pos.getCameraOffsetY());
+            if (isInvalid(screenX, screenY)) continue;
+
+            int alpha = Math.max((i * i * i) * 255 / (max * max * max), 100) * 16777216;
+            Color color = new Color(0xBE1616 + alpha, true);
+
+            g2d.setColor(color);
+            if (point.equals(player.getPlanner().getEnd())) {
+                int scaledTile = (int) (originalTileSize * 1.2);
+                int scaledTileDifference = originalTileSize / 5;
+                g2d.fillRect(screenX - (scaledTileDifference / 2), screenY - (scaledTileDifference / 2), scaledTile, scaledTile);
+            }
+            else g2d.fillRect(screenX, screenY, originalTileSize, originalTileSize);
+        }
     }
 
     private static void drawUIElements(Graphics2D g2d) {
