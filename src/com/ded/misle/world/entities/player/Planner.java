@@ -116,7 +116,14 @@ public class Planner {
      */
     private static final int DELAY_PER_TURN = 500;
 
+    private boolean isExecuting = false;
+
+    public boolean isExecuting() {
+        return isExecuting;
+    }
+
     public void executePlan() {
+        isExecuting = true;
         Thread executor = new Thread(() -> {
             Point previousPoint = new Point(-1, -1);
 
@@ -126,12 +133,16 @@ public class Planner {
                 LogicManager.requestNewTurn();
                 previousPoint = point;
 
-                if (path.getLength() == 1) isPlanning = false;
-
-                try {
-                    Thread.sleep(DELAY_PER_TURN);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                if (path.getLength() <= 1) {
+                    isPlanning = false;
+                    isExecuting = false;
+                }
+                else {
+                    try {
+                        Thread.sleep(DELAY_PER_TURN);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });

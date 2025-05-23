@@ -277,7 +277,7 @@ public class KeyHandler implements KeyListener {
 		if (gameState == GameState.PLAYING) {
 			Planner planner = player.getPlanner();
 
-			if (isPressed(PLANNING_TOGGLE)) {
+			if (!planner.isExecuting() && isPressed(PLANNING_TOGGLE)) {
 				if (planner.isPlanning()) {
 					planner.setPlanning(false);
 				} else {
@@ -288,7 +288,7 @@ public class KeyHandler implements KeyListener {
 
 			/* should be PLANNING_CONFIRM, not ENTER. but this bad bad system
 				cannot even comprehend two identical key codes so im using this for now */
-			if (isPlanning && isPressed(ENTER)) {
+			if (isPlanning && !planner.isExecuting() && isPressed(ENTER)) {
 				planner.executePlan();
 			}
 
