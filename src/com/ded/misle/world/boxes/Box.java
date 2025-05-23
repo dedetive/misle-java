@@ -217,7 +217,7 @@ public class Box {
 		drawRotatedImage(g2d, this.getTexture(), screenX, screenY, (int) (originalTileSize * visualScaleHorizontal), (int) (originalTileSize * visualScaleVertical), this.visualRotation);
 	}
 
-	private boolean isInvalid(double screenX, double screenY) {
+	public static boolean isInvalid(double screenX, double screenY) {
 		double margin = originalTileSize * 2;
 		return !(screenX >= -margin && screenX <= originalScreenWidth + margin &&
 			screenY >= 0 - margin && screenY <= originalScreenHeight + margin);
