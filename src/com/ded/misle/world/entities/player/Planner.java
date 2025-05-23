@@ -162,6 +162,8 @@ public class Planner {
             delayPerTurn = DEFAULT_DELAY_PER_TURN;
 
             for (Point point : this.path.getPoints()) {
+                if (!isExecuting) return;
+
                 delayPerTurn = Math.max(delayPerTurn - DELAY_REDUCTION_PER_TURN, MINIMUM_DELAY_PER_TURN);
 
                 path.removePoint(previousPoint);
@@ -200,5 +202,9 @@ public class Planner {
         synchronized (lock) {
             lock.notify();
         }
+    }
+
+    public void killExecution() {
+        isExecuting = false;
     }
 }
