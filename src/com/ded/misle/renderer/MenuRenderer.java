@@ -19,6 +19,7 @@ import static com.ded.misle.core.SaveFile.saveEverything;
 import static com.ded.misle.renderer.MenuButton.*;
 import static com.ded.misle.renderer.SettingsMenuRenderer.switchToEmpty;
 import static com.ded.misle.world.data.WorldLoader.unloadBoxes;
+import static com.ded.misle.world.entities.player.Planner.resumeExecution;
 import static java.lang.System.currentTimeMillis;
 
 public abstract class MenuRenderer {
@@ -61,6 +62,7 @@ public abstract class MenuRenderer {
         MainRenderer.previousMenu = MainRenderer.currentMenu;
         currentMenu = newGameState;
         clearButtonFading();
+        resumeExecution();
     }
 
     public static void goToMainMenu() {
@@ -71,6 +73,7 @@ public abstract class MenuRenderer {
         gameState = MAIN_MENU;
         fader.reset();
         clearButtonFading();
+        resumeExecution();
     }
 
     public static void pauseGame() {

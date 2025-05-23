@@ -11,6 +11,7 @@ import static com.ded.misle.core.SaveFile.loadSaveFile;
 import static com.ded.misle.world.boxes.BoxHandling.storeCachedBoxes;
 import static com.ded.misle.world.data.WorldLoader.loadBoxes;
 import static com.ded.misle.world.entities.enemies.EnemyAI.clearBreadcrumbs;
+import static com.ded.misle.world.entities.player.Planner.resumeExecution;
 import static java.lang.System.currentTimeMillis;
 
 import javax.swing.*;
@@ -76,6 +77,7 @@ public abstract class MainRenderer {
 		previousMenu = currentMenu;
 		currentMenu = PLAYING;
 		gameState = PLAYING;
+		resumeExecution();
 	}
 
 	public static void enterLevelDesigner() {

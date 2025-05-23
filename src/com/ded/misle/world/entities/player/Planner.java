@@ -7,8 +7,7 @@ import com.ded.misle.world.logic.Path;
 
 import java.awt.*;
 
-import static com.ded.misle.game.GamePanel.originalTileSize;
-import static com.ded.misle.game.GamePanel.player;
+import static com.ded.misle.game.GamePanel.*;
 
 /**
  * Manages the movement planning mode for the player.
@@ -142,6 +141,11 @@ public class Planner {
     private final Object lock = new Object();
 
     /**
+     * Lock object used for synchronizing pause interruptions.
+     */
+    private static final Object pauseLock = new Object();
+
+    /**
      * Returns whether the plan is currently being executed.
      *
      * @return true if the plan is being executed, false otherwise
@@ -163,6 +167,16 @@ public class Planner {
 
             for (Point point : this.path.getPoints()) {
                 if (!isExecuting) return;
+                synchronized (pauseLock) {
+                    while (gameState == GameState.PAUSE_MENU) {
+                        try {
+                            pauseLock.wait();
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            return;
+                        }
+                    }
+                }
 
                 delayPerTurn = Math.max(delayPerTurn - DELAY_REDUCTION_PER_TURN, MINIMUM_DELAY_PER_TURN);
 
@@ -209,5 +223,14 @@ public class Planner {
      */
     public void killExecution() {
         isExecuting = false;
+    }
+
+    /**
+     * Wakes up any execution that might have been paused.
+     */
+    public static void resumeExecution() {
+        synchronized (pauseLock) {
+            pauseLock.notifyAll();
+        }
     }
 }
