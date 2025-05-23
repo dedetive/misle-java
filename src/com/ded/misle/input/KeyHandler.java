@@ -267,11 +267,23 @@ public class KeyHandler implements KeyListener {
 			System.exit(0);
 		}
 
+		boolean isPlanning = false;
+
 		// PLAYING EXCLUSIVE
 
 		if (gameState == GameState.PLAYING) {
+			Planner planner = player.getPlanner();
+			if (isPressed(PLANNING_TOGGLE)) {
+				if (planner.isPlanning()) {
+					planner.setPlanning(false);
+				} else {
+					player.getNewPlanner().setPlanning(true);
+				}
+			}
+			isPlanning = planner.isPlanning();
+
 			for (NumberKey numberKey : NumberKey.values()) {
-				if (isPressed(valueOf(String.valueOf(numberKey)))) {
+				if (!isPlanning && isPressed(valueOf(String.valueOf(numberKey)))) {
 					player.inv.setSelectedSlot(numberKey.slot);
 				}
 			}
@@ -300,7 +312,8 @@ public class KeyHandler implements KeyListener {
 					willMovePlayer[0] += playerTilesPerStep;
 				}
 			}
-			if (isPressed(DROP)) {
+
+			if (!isPlanning && isPressed(DROP)) {
 				if (player.inv.hasHeldItem()) {
 					if (isPressed(CTRL)) {
 						player.inv.dropItem(0, player.inv.getSelectedSlot(), player.inv.getSelectedItem().getCount());
@@ -309,7 +322,7 @@ public class KeyHandler implements KeyListener {
 					}
 				}
 			}
-			if (isPressed(DODGE)) {
+			if (!isPlanning && isPressed(DODGE)) {
 				int delay = 100;
 				player.pos.delayedRotate(-360, delay * 5);
 				player.setIsInvulnerable(true);
@@ -323,14 +336,6 @@ public class KeyHandler implements KeyListener {
 			if (isPressed(USE)) {
 				pressUseButton(mouseHandler);
 				player.keys.keyPressed.put(USE, false);
-			}
-			if (isPressed(PLANNING_TOGGLE)) {
-				Planner planner = player.getPlanner();
-				if (planner.isPlanning()) {
-					planner.setPlanning(false);
-				} else {
-                    player.getNewPlanner().setPlanning(true);
-                }
 			}
 
 			// MOVING
@@ -350,8 +355,7 @@ public class KeyHandler implements KeyListener {
 						verticalDirection = PlayerAttributes.KnockbackDirection.UP;
 					}
 
-					Planner planner = player.getPlanner();
-                    if (planner.isPlanning()) {
+                    if (isPlanning) {
 						Point lastPoint = planner.getEnd();
 						int currentX = lastPoint != null ? lastPoint.x : player.getX();
 						int currentY = lastPoint != null ? lastPoint.y : player.getY();
@@ -373,7 +377,7 @@ public class KeyHandler implements KeyListener {
 
 		// EITHER PLAYING OR INVENTORY
 
-		if (isPressed(INVENTORY)) {
+		if (!isPlanning && isPressed(INVENTORY)) {
 			if (gameState == GameState.PLAYING) {
 				gameState = GameState.INVENTORY;
 			} else if (gameState == GameState.INVENTORY) {
@@ -582,7 +586,7 @@ public class KeyHandler implements KeyListener {
 			}
 		}
 
-		if (!player.getPlanner().isPlanning()) {
+		if (!isPlanning) {
 			triggerLogicIfNeeded();
 		}
 		setKeysToFalse();

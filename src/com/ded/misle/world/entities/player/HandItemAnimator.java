@@ -11,7 +11,7 @@ import java.awt.*;
 import static com.ded.misle.game.GamePanel.player;
 
 public class HandItemAnimator {
-    private static WeaponAttacker attacker = new WeaponAttacker();
+    private static final WeaponAttacker attacker = new WeaponAttacker();
 
     private static void scheduleAnimation(int delay, Runnable action) {
         Timer timer = new Timer(delay, evt -> action.run());
