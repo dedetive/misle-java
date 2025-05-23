@@ -50,12 +50,22 @@ public class PlayerPosition {
 	}
 
 	public double calculateCameraOffsetX() {
-		return Math.clamp(player.getX() * originalTileSize - (double) originalScreenWidth / 2,
+		PlayerPlanner planner = player.getPlanner();
+		int targetX = planner.isPlanning()
+			? planner.getEnd().x
+			: player.getX();
+
+		return Math.clamp(targetX * originalTileSize - (double) originalScreenWidth / 2,
 			- originalTileSize,
 			Math.max(originalWorldWidth - originalScreenWidth + originalTileSize, 0));
 	}
 	public double calculateCameraOffsetY() {
-		return Math.clamp(player.getY() * originalTileSize - (double) originalScreenHeight / 2,
+		PlayerPlanner planner = player.getPlanner();
+		int targetY = planner.isPlanning()
+			? planner.getEnd().y
+			: player.getY();
+
+		return Math.clamp(targetY * originalTileSize - (double) originalScreenHeight / 2,
 			(double) - originalTileSize / 2,
 			originalWorldHeight - originalScreenHeight + (double) originalTileSize / 2);
 	}
