@@ -51,7 +51,7 @@ public abstract class MainRenderer {
 		player.currentSaveSlot = saveSlot;
 		clearBreadcrumbs();
 
-		Timer fadeTimer = new Timer(LOADING_DURATION, e -> pixelate(1500));
+		Timer fadeTimer = new Timer(LOADING_DURATION, e -> pixelate(1500, 32));
 		fadeTimer.setRepeats(false);
 		fadeTimer.start();
 

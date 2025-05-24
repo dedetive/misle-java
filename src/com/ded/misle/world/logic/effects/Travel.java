@@ -9,8 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 
 import com.ded.misle.world.boxes.Box;
-import static com.ded.misle.game.GamePanel.gameState;
-import static com.ded.misle.game.GamePanel.player;
+
+import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.world.data.WorldLoader.loadBoxes;
 import static com.ded.misle.world.data.WorldLoader.unloadBoxes;
@@ -33,10 +33,9 @@ public class Travel extends Effect {
     }
 
     private void handleBoxTravel() {
-        fader.fadeIn();
+        pixelate(2000L, 110);
         gameState = GamePanel.GameState.FROZEN_PLAYING;
-        Timer fadingIn = new Timer(75, e -> {
-            if (fader.isState(Fader.FadingState.FADED)) {
+        Timer fadingIn = new Timer(1750, e -> {
 
                 player.pos.setRoomID(roomID);
 
@@ -47,16 +46,15 @@ public class Travel extends Effect {
                 clearBreadcrumbs();
 
                 Timer loadWait = new Timer(300, evt -> {
-                    fader.fadeOut();
+                    unpixelate(2000);
                     gameState = GamePanel.GameState.PLAYING;
                 });
                 loadWait.setRepeats(false);
                 loadWait.start();
 
                 ((Timer) e.getSource()).stop();
-            }
         });
-        fadingIn.setRepeats(true);
+        fadingIn.setRepeats(false);
         fadingIn.start();
     }
 

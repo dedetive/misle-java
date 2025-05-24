@@ -385,7 +385,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private BufferedImage screenBuffer;
 	private Graphics2D g2dBuffer;
 	private static final float DEFAULT_BUFFER_SCALE = 1.5f;
-	private static final float MAXIMUM_BUFFER_SCALE = 32;
+	private static float maximumBufferScale;
 	private static float bufferScale = DEFAULT_BUFFER_SCALE;
 
 	@Override
@@ -393,6 +393,12 @@ public class GamePanel extends JPanel implements Runnable {
 		super.paintComponent(g);
 
 		Graphics2D g2d = (Graphics2D) g;
+
+		if (bufferScale != DEFAULT_BUFFER_SCALE) {
+			if (g2dBuffer != null) g2dBuffer.dispose();
+			screenBuffer = new BufferedImage((int) screenWidth, (int) screenHeight, BufferedImage.TYPE_INT_RGB);
+			g2dBuffer = screenBuffer.createGraphics();
+		}
 
 		float staticBufferScale = bufferScale;
 
@@ -451,6 +457,8 @@ public class GamePanel extends JPanel implements Runnable {
 		g2d.drawImage(screenBuffer, 0, 0, null);
 
 		Toolkit.getDefaultToolkit().sync();
+
+		g2d.dispose();
 	}
 
 	public void renderFrame() {
@@ -459,16 +467,17 @@ public class GamePanel extends JPanel implements Runnable {
 
 	static Thread pixelating;
 	final static float STEP = 0.1f;
-	public static void pixelate(long delay) {
+	public static void pixelate(long delay, float maximumBufferScale) {
+		GamePanel.maximumBufferScale = maximumBufferScale;
 		try {
 			unpixelating.interrupt();
 		} catch (NullPointerException ignored) {}
 
 		pixelating = new Thread(() -> {
-			while (bufferScale < MAXIMUM_BUFFER_SCALE) {
-				bufferScale = Math.min(bufferScale + STEP, MAXIMUM_BUFFER_SCALE);
+			while (bufferScale < maximumBufferScale) {
+				bufferScale = Math.min(bufferScale + STEP, maximumBufferScale);
 				try {
-					Thread.sleep((long) (delay * STEP / (MAXIMUM_BUFFER_SCALE - DEFAULT_BUFFER_SCALE)));
+					Thread.sleep((long) (delay * STEP / (maximumBufferScale - DEFAULT_BUFFER_SCALE)));
 				} catch (InterruptedException e) {
 					break;
 				}
@@ -488,7 +497,7 @@ public class GamePanel extends JPanel implements Runnable {
 			while (bufferScale >= DEFAULT_BUFFER_SCALE) {
 				bufferScale = Math.max(bufferScale - STEP, DEFAULT_BUFFER_SCALE);
 				try {
-					Thread.sleep((long) (delay * STEP / (MAXIMUM_BUFFER_SCALE - DEFAULT_BUFFER_SCALE)));
+					Thread.sleep((long) (delay * STEP / (maximumBufferScale - DEFAULT_BUFFER_SCALE)));
 				} catch (InterruptedException e) {
 					break;
 				}
