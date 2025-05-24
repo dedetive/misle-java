@@ -385,7 +385,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private BufferedImage screenBuffer;
 	private Graphics2D g2dBuffer;
 	private static final float DEFAULT_BUFFER_SCALE = 1.5f;
-	private static final float MAXIMUM_BUFFER_SCALE = 24;
+	private static final float MAXIMUM_BUFFER_SCALE = 32;
 	private static float bufferScale = DEFAULT_BUFFER_SCALE;
 
 	@Override
@@ -398,6 +398,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		g2dBuffer.setTransform(new AffineTransform());
 		g2dBuffer.scale(getWindowScale() / staticBufferScale, getWindowScale() / staticBufferScale);
+
 		if (antiAliasing.bool() && staticBufferScale == DEFAULT_BUFFER_SCALE) {
 			g2dBuffer.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g2dBuffer.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -456,43 +457,44 @@ public class GamePanel extends JPanel implements Runnable {
 		repaint();
 	}
 
+	static Thread pixelating;
+	final static float STEP = 0.1f;
 	public static void pixelate(long delay) {
-		new Thread(() -> {
-			int steps = (int) (MAXIMUM_BUFFER_SCALE - bufferScale);
-			if (steps <= 0) return;
+		try {
+			unpixelating.interrupt();
+		} catch (NullPointerException ignored) {}
 
-			long stepDelay = delay / steps;
-
-			for (int i = 0; i < steps; i++) {
-				bufferScale++;
+		pixelating = new Thread(() -> {
+			while (bufferScale < MAXIMUM_BUFFER_SCALE) {
+				bufferScale = Math.min(bufferScale + STEP, MAXIMUM_BUFFER_SCALE);
 				try {
-					Thread.sleep(stepDelay);
+					Thread.sleep((long) (delay * STEP / (MAXIMUM_BUFFER_SCALE - DEFAULT_BUFFER_SCALE)));
 				} catch (InterruptedException e) {
-					e.printStackTrace();
 					break;
 				}
 			}
-			bufferScale = MAXIMUM_BUFFER_SCALE;
-		}).start();
+		});
+
+		pixelating.start();
 	}
 
+	static Thread unpixelating;
 	public static void unpixelate(long delay) {
-		new Thread(() -> {
-			int steps = (int) (bufferScale - DEFAULT_BUFFER_SCALE);
-			if (steps <= 0) return;
+		try {
+			pixelating.interrupt();
+		} catch (NullPointerException ignored) {}
 
-			long stepDelay = delay / steps;
-
-			for (int i = 0; i < steps; i++) {
-				bufferScale--;
+		unpixelating = new Thread(() -> {
+			while (bufferScale >= DEFAULT_BUFFER_SCALE) {
+				bufferScale = Math.max(bufferScale - STEP, DEFAULT_BUFFER_SCALE);
 				try {
-					Thread.sleep(stepDelay);
+					Thread.sleep((long) (delay * STEP / (MAXIMUM_BUFFER_SCALE - DEFAULT_BUFFER_SCALE)));
 				} catch (InterruptedException e) {
-					e.printStackTrace();
 					break;
 				}
 			}
-			bufferScale = DEFAULT_BUFFER_SCALE;
-		}).start();
+		});
+
+		unpixelating.start();
 	}
 }

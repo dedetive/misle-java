@@ -56,7 +56,7 @@ public abstract class MainRenderer {
 		fadeTimer.start();
 
 		Timer timer = new Timer(4000, e -> {
-			unpixelate(2000);
+			unpixelate(1200);
 
 			player.stats.resetStartTimestamp();
 			player.pos.reloadSpawnpoint();
