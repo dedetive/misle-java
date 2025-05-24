@@ -9,7 +9,8 @@ import com.ded.misle.world.logic.LogicManager;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.concurrent.atomic.AtomicLong;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 
 import static com.ded.misle.core.Setting.*;
 import static com.ded.misle.renderer.FontManager.buttonFont;
@@ -273,18 +274,22 @@ public class GamePanel extends JPanel implements Runnable {
 	public static int frameCount = 0;
 	@Override
 	public void run() {
-		long lastTime = System.nanoTime(); // Using nanoTime for precision with delta time
+		long lastTimer = System.currentTimeMillis();
+		long lastTime = System.nanoTime();
 		double delta = 0;
-		nsPerFrame = 1000000000.0 / Math.clamp(frameRateCap.integer(), 30, 144);
+		int frames = 0;
+		nsPerFrame = 1000000000.0 / Math.clamp(frameRateCap.integer(), 30, 160);
+
+		screenBuffer = new BufferedImage((int) screenWidth, (int) screenHeight, BufferedImage.TYPE_INT_RGB);
+		g2dBuffer = screenBuffer.createGraphics();
 
 		// GAME LOOP
 
-		while (gameThread != null && running) {
-			long currentTime = System.nanoTime();
-			delta += (currentTime - lastTime) / nsPerFrame;
-			deltaTime = (currentTime - lastTime) / 1e9;
-			lastTime = currentTime;
-			frameCount = (int) (1 / deltaTime);
+		while (running) {
+			long now = System.nanoTime();
+			delta += (now - lastTime) / nsPerFrame;
+			deltaTime = (now - lastTime) / 1e9;
+			lastTime = now;
 
 			// Process updates and rendering while delta is >= 1
 			while (delta >= 1) {
@@ -328,13 +333,25 @@ public class GamePanel extends JPanel implements Runnable {
 				delta--;
 			}
 
-			renderFrame(); // Render the appropriate frame based on gameState
+			renderFrame();
+			frames++;
 
 			// Sleep dynamically to maintain target FPS
-			try {
-				Thread.sleep(Math.max(0, (long) ((nsPerFrame - (System.nanoTime() - lastTime)) / 1000000))); // Sleep in milliseconds
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
+			long timeTaken = System.nanoTime() - now;
+			long sleepTime = (long)(nsPerFrame - timeTaken) / 1_000_000;
+
+			if (sleepTime > 0) {
+				try {
+					Thread.sleep(sleepTime);
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+				}
+			}
+
+			if (System.currentTimeMillis() - lastTimer >= 1000) {
+				frameCount = frames;
+				frames = 0;
+				lastTimer += 1000;
 			}
 		}
 	}
@@ -365,15 +382,21 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 	}
 
+	private BufferedImage screenBuffer;
+	private Graphics2D g2dBuffer;
+	private static int BUFFER_SCALE = 2;
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.scale(getWindowScale(), getWindowScale());
+
+		g2dBuffer.setTransform(new AffineTransform());
+		g2dBuffer.scale(getWindowScale() / BUFFER_SCALE, getWindowScale() / BUFFER_SCALE);
 		if (antiAliasing.bool()) {
-			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			g2dBuffer.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2dBuffer.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		}
 
 		switch (gameState) {
@@ -381,45 +404,48 @@ public class GamePanel extends JPanel implements Runnable {
 			case GameState.PLAYING:
 			case GameState.FROZEN_PLAYING:
 			case GameState.DIALOG:
-				new PlayingRenderer().render(g, mouseHandler);
+				new PlayingRenderer().render(g2dBuffer, mouseHandler);
 				break;
 			case GameState.MAIN_MENU:
-				MenuRenderer.renderMainMenu(g, this);
+				MenuRenderer.renderMainMenu(g2dBuffer, this);
 				break;
 			case GameState.OPTIONS_MENU:
-				SettingsMenuRenderer.renderOptionsMenu(g, this);
+				SettingsMenuRenderer.renderOptionsMenu(g2dBuffer, this);
 				break;
 			case GameState.PAUSE_MENU:
-				MenuRenderer.renderPauseMenu(g, this);
+				MenuRenderer.renderPauseMenu(g2dBuffer, this);
 				break;
 			case GameState.LOADING_MENU:
-				MenuRenderer.renderLoadingMenu(g, this);
+				MenuRenderer.renderLoadingMenu(g2dBuffer, this);
 				break;
 			case GameState.LEVEL_DESIGNER:
-				LevelDesignerRenderer.renderLevelDesigner(g, this, mouseHandler);
+				LevelDesignerRenderer.renderLevelDesigner(g2dBuffer, this, mouseHandler);
 				break;
 			case GameState.SAVE_SELECTOR:
-				SaveSelector.renderSaveSelector(g, this);
+				SaveSelector.renderSaveSelector(g2dBuffer, this);
 				break;
 			case SAVE_CREATOR:
-				SaveCreator.renderSaveCreator(g, this);
+				SaveCreator.renderSaveCreator(g2dBuffer, this);
 				break;
 		}
 
+		g2d.scale(BUFFER_SCALE, BUFFER_SCALE);
+		g2d.drawImage(screenBuffer, 0, 0, null);
+
 		if (displayFPS.bool()) {
-			g2d.setFont(buttonFont);
+			g.setFont(buttonFont);
 			String text = "FPS: " + frameCount;
-			FontMetrics fm = g2d.getFontMetrics(buttonFont);
+			FontMetrics fm = g.getFontMetrics(buttonFont);
 			int textWidth = fm.stringWidth(text);
 			int textX = originalScreenWidth - textWidth - 8;
 			int textY = fm.getHeight();
-			g2d.setColor(FPSShadowColor);
+			g.setColor(FPSShadowColor);
 			drawColoredText(g2d, text, textX + textShadow, textY + textShadow);
-			g2d.setColor(FPSColor);
+			g.setColor(FPSColor);
 			drawColoredText(g2d, text, textX, textY);
 		}
 
-		g2d.dispose();
+		Toolkit.getDefaultToolkit().sync();
 	}
 
 	public void renderFrame() {
