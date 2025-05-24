@@ -266,7 +266,7 @@ public class PlayingRenderer extends AbstractRenderer {
             }
 
 
-            FontMetrics fm = g2d.getFontMetrics();
+            FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
             int strWidth = fm.stringWidth(str);
             int x = healthBarX + healthBarWidth / 2 - strWidth / 2;
             int y = (int) (healthBarY + healthBarHeight * 1.2);
@@ -320,7 +320,7 @@ public class PlayingRenderer extends AbstractRenderer {
             }
 
 
-            FontMetrics fm = g2d.getFontMetrics();
+            FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
             int strWidth = fm.stringWidth(str);
             int x = entropyBarX + entropyBarWidth / 2 - strWidth / 2;
             int y = (int) (entropyBarY + entropyBarHeight * 1.2);
@@ -418,7 +418,7 @@ public class PlayingRenderer extends AbstractRenderer {
                 if (itemCount > 1) {
                     // Draw item count
                     g2d.setFont(FontManager.itemCountFont);
-                    FontMetrics fm = g2d.getFontMetrics();
+                    FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
                     int textWidth = fm.stringWidth(Integer.toString(itemCount));
                     int textX = slotX - textWidth + slotSize[0];
                     int textY = slotY + slotSize[0];
@@ -468,7 +468,7 @@ public class PlayingRenderer extends AbstractRenderer {
                 long currentTime = currentTimeMillis();
                 if (currentTime - itemNameDisplayStartTime < 5000) {
                     g2d.setFont(FontManager.selectedItemNameFont);
-                    FontMetrics fm = g2d.getFontMetrics();
+                    FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
                     int textWidth = fm.stringWidth(removeColorIndicators(selectedItemName));
 
                     int textX = selectedItemNamePosition.x - textWidth / 2;
@@ -502,13 +502,13 @@ public class PlayingRenderer extends AbstractRenderer {
         g2d.setColor(coinTextUI);
         drawColoredText(g2d, String.valueOf(player.attr.getBalance()), coinTextX, coinTextY);
 
-        FontMetrics fm = g2d.getFontMetrics();
+        FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
         int textWidth = fm.stringWidth(String.valueOf(player.attr.getBalance()));
         int coinPosX = coinTextX + textWidth;
-        int coinPosY = coinTextY - g2d.getFontMetrics().getHeight() + 4;
+        int coinPosY = coinTextY - FontManager.getCachedMetrics(g2d, g2d.getFont()).getHeight() + 4;
 
         g2d.drawImage(cachedImages.get(ImageManager.ImageName.COIN), coinPosX, coinPosY,
-            g2d.getFontMetrics().getHeight(), g2d.getFontMetrics().getHeight(), null);
+            FontManager.getCachedMetrics(g2d, g2d.getFont()).getHeight(), FontManager.getCachedMetrics(g2d, g2d.getFont()).getHeight(), null);
     }
 
     private static void drawLevel(Graphics2D g2d) {

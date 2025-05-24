@@ -97,7 +97,7 @@ public abstract class SettingsMenuRenderer {
 
             // Text with setting state below title
             g2d.setFont(dialogNPCText);
-            FontMetrics fm = g2d.getFontMetrics();
+            FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
             String text = LanguageManager.getText("settings_menu_" + String.valueOf(settingState).toLowerCase());
             int textWidth = fm.stringWidth(text);
             int centerX = (originalScreenWidth - textWidth) / 2;

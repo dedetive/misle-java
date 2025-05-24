@@ -207,7 +207,7 @@ public class MenuButton {
                     20, 20);
 
                 g2d.setFont(buttonFont);
-                FontMetrics fm = g2d.getFontMetrics();
+                FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
                 int textWidth;
                 if (getCurrentScript() == LanguageManager.Script.PRASPOMIC) {
                     textWidth = fm.stringWidth(removeColorIndicators(impureConvertNumberSystem(button.displayText, TO_PRASPOMIA)));

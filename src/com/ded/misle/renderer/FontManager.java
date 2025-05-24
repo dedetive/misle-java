@@ -1,7 +1,6 @@
 package com.ded.misle.renderer;
 
-import java.awt.Font;
-import java.awt.FontFormatException;
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -9,6 +8,14 @@ import java.util.HashMap;
 import static com.ded.misle.core.LanguageManager.getCurrentScript;
 
 public abstract class FontManager {
+    private static final HashMap<String, Font> fontCache = new HashMap<>();
+    private static final HashMap<Font, FontMetrics> metricsCache = new HashMap<>();
+
+    public static FontMetrics getCachedMetrics(Graphics g, Font font) {
+        return metricsCache.computeIfAbsent(font, g::getFontMetrics);
+    }
+
+
     /**
      *  Comfortaa, Ubuntu -> Supports Latin, Cyrillic and Greek
      *  Basic -> Supports only Latin
@@ -51,23 +58,33 @@ public abstract class FontManager {
     }
 
     public static Font loadFont(String fontPath, int size) {
-		try (InputStream is = FontManager.class.getResourceAsStream(fontPath)) {
-			if (is == null) {
-//				System.err.println("Warning: Font resource not found: " + fontPath);
-				return new Font("Dialog", Font.PLAIN, size); // Fallback font
-			}
-			Font font = Font.createFont(Font.TRUETYPE_FONT, is);
-			return font.deriveFont((float) size);
-		} catch (FontFormatException e) {
-			System.err.println("Font format error: " + e.getMessage());
-			return new Font("Dialog", Font.PLAIN, (int) size); // Fallback font
-		} catch (IOException e) {
-			System.err.println("Error loading font: " + e.getMessage());
-			return new Font("Dialog", Font.PLAIN, (int) size); // Fallback font
-		}
-	}
+        String key = fontPath + ":" + size;
+        if (fontCache.containsKey(key)) {
+            return fontCache.get(key);
+        }
+
+        try (InputStream is = FontManager.class.getResourceAsStream(fontPath)) {
+            if (is == null) {
+                Font fallback = new Font("Dialog", Font.PLAIN, size);
+                fontCache.put(key, fallback);
+                return fallback;
+            }
+
+            Font font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont((float) size);
+            fontCache.put(key, font);
+            return font;
+        } catch (FontFormatException | IOException e) {
+            Font fallback = new Font("Dialog", Font.PLAIN, size);
+            fontCache.put(key, fallback);
+            return fallback;
+        }
+    }
+
 
     public static void updateFontScript() {
+        fontCache.clear();
+        metricsCache.clear();
+
         coinTextFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", getSize(coinTextFont));
         itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", getSize(itemCountFont));
         switch (getCurrentScript()) {

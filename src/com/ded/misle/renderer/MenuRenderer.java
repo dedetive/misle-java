@@ -25,7 +25,7 @@ import static java.lang.System.currentTimeMillis;
 public abstract class MenuRenderer {
     static void createTitle(String text, Graphics2D g2d) {
         g2d.setFont(FontManager.titleFont);
-        FontMetrics fm = g2d.getFontMetrics();
+        FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
         String titleText = LanguageManager.getText(text);
         int textWidth = fm.stringWidth(titleText);
         int centerX = (originalScreenWidth - textWidth) / 2;
@@ -137,7 +137,7 @@ public abstract class MenuRenderer {
             // Version
             String gameVersion = LanguageManager.getText("version");
             String gameVersionShadow = LanguageManager.getText("version_shadow");
-            FontMetrics fm = g2d.getFontMetrics();
+            FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
             int versionX = originalScreenWidth - fm.stringWidth(gameVersion) / 2;
             int versionY = originalScreenHeight - fm.getHeight() / 2;
             drawColoredText(g2d, gameVersionShadow, versionX + textShadow, versionY + textShadow, itemInfoFont, menuVersionShadowColor, false);
@@ -208,7 +208,7 @@ public abstract class MenuRenderer {
             // MENU ITSELF
             createTitle("loading_menu_loading", g2d);
             g2d.setFont(FontManager.titleFont);
-            FontMetrics fm = g2d.getFontMetrics();
+            FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
             String titleText = LanguageManager.getText("loading_menu_loading");
             fm.stringWidth(titleText);
             int textY = 49;
@@ -237,7 +237,7 @@ public abstract class MenuRenderer {
             g2d.fillRect(progressBarX, progressBarY, progressBarWidth, progressBarHeight);
 
             g2d.setFont(FontManager.selectedItemNameFont);
-            FontMetrics percentageFm = g2d.getFontMetrics();
+            FontMetrics percentageFm = FontManager.getCachedMetrics(g2d, g2d.getFont());
             int textWidth = percentageFm.stringWidth(percentage);
             int centerX = (originalScreenWidth - textWidth) / 2;
             textY = progressBarY - 5;

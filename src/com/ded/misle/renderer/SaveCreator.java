@@ -45,7 +45,7 @@ public abstract class SaveCreator {
 
                 // Text background
             g2d.setFont(dialogNPCText);
-            FontMetrics fm = g2d.getFontMetrics();
+            FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
             String text = playerName.toString();
             int textWidth = fm.stringWidth(text);
             int width = 220;

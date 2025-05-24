@@ -61,7 +61,7 @@ public abstract class InventoryRenderer {
                     int itemCount = item.getCount();
                     if (itemCount > 1) {
                         g2d.setFont(FontManager.itemCountFont);
-                        FontMetrics fm = g2d.getFontMetrics();
+                        FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
                         int textWidth = fm.stringWidth(Integer.toString(itemCount));
                         int textX = slotX - textWidth + slotSize[0];
                         int countY = slotY + slotSize[0];
@@ -87,7 +87,7 @@ public abstract class InventoryRenderer {
                     int itemCount = item.getCount();
                     if (itemCount > 1) {
                         g2d.setFont(FontManager.itemCountFont);
-                        FontMetrics fm = g2d.getFontMetrics();
+                        FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
                         int textWidth = fm.stringWidth(Integer.toString(itemCount));
                         int textX = slotX - textWidth + slotSize[1];
                         int countY = slotY + slotSize[1];
@@ -163,7 +163,7 @@ public abstract class InventoryRenderer {
 
     private static void drawStat(Graphics2D g2d, String statText, int centerX, int y, Color textColor, Color shadowColor) {
         // Calculate center
-        FontMetrics fm = g2d.getFontMetrics();
+        FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
         int textWidth = fm.stringWidth(statText);
         int startX = centerX - (textWidth / 2);
 
@@ -255,7 +255,7 @@ public abstract class InventoryRenderer {
 
         // Font and dimensions
         g2d.setFont(FontManager.itemInfoFont);
-        FontMetrics fm = g2d.getFontMetrics();
+        FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
 
         // Calculate width based on text
         int tooltipWidth = Math.max(slotSize * 4, fm.stringWidth(removeColorIndicators(itemName)) + 20);

@@ -147,7 +147,7 @@ public abstract class SaveSelector {
                             int level = (int) loadSaveScreenInformation(SaveFile.SaveScreenOption.LEVEL, saveSlot);
 
                             String text = LanguageManager.getText("save_selector_level") + " " + level;
-                            FontMetrics fm = g2d.getFontMetrics();
+                            FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
                             int textWidth = fm.stringWidth(text);
 
                             int x = buttonX + buttonWidth - textWidth / 2;
@@ -275,7 +275,7 @@ public abstract class SaveSelector {
         int level = (int) loadSaveScreenInformation(SaveFile.SaveScreenOption.LEVEL, saveSlot);
 
         String text = LanguageManager.getText("save_selector_level") + " " + level;
-        FontMetrics fm = g2d.getFontMetrics();
+        FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
         int textWidth = fm.stringWidth(text);
 
         int x = previewX + previewWidth / 2 - 2 * textWidth / 5;

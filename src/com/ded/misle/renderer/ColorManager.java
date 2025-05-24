@@ -262,7 +262,7 @@ public abstract class ColorManager {
             }
 
             // Draw stuff
-            FontMetrics fm = g2d.getFontMetrics();
+            FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
             int fontHeight = fm.getHeight(); // Height of the font, used for image size
 
             for (String[] part : parts) {
