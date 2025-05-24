@@ -24,7 +24,7 @@ public abstract class MainRenderer {
 	public static GameState currentMenu;
 
 	public static long startTime;
-	public static final int LOADING_DURATION = 500;
+	public static final int LOADING_DURATION = 1200;
 
 	public static final int textShadow = 1;
 
@@ -51,25 +51,19 @@ public abstract class MainRenderer {
 		player.currentSaveSlot = saveSlot;
 		clearBreadcrumbs();
 
-		Timer fadeTimer = new Timer(LOADING_DURATION, e -> { fader.fadeIn(); });
+		Timer fadeTimer = new Timer(LOADING_DURATION, e -> pixelate(1500));
 		fadeTimer.setRepeats(false);
 		fadeTimer.start();
 
-		Timer timer = new Timer(75, e -> {
-			if (fader.isState(Fader.FadingState.FADED)) {
-				fader.slowlyFadeOut();
-				for (int i = 15; i > 0; i--) {
-					storeCachedBoxes(i);
-				}
-				player.stats.resetStartTimestamp();
-				player.pos.reloadSpawnpoint();
-				gameState = PLAYING;
+		Timer timer = new Timer(4000, e -> {
+			unpixelate(2000);
 
-				((Timer) e.getSource()).stop();
-			}
+			player.stats.resetStartTimestamp();
+			player.pos.reloadSpawnpoint();
+			gameState = PLAYING;
 		});
 
-		timer.setRepeats(true);
+		timer.setRepeats(false);
 		timer.start();
 	}
 

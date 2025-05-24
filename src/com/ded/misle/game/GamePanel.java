@@ -384,7 +384,9 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private BufferedImage screenBuffer;
 	private Graphics2D g2dBuffer;
-	private static int BUFFER_SCALE = 2;
+	private static final float DEFAULT_BUFFER_SCALE = 1.5f;
+	private static final float MAXIMUM_BUFFER_SCALE = 24;
+	private static float bufferScale = DEFAULT_BUFFER_SCALE;
 
 	@Override
 	public void paintComponent(Graphics g) {
@@ -392,9 +394,11 @@ public class GamePanel extends JPanel implements Runnable {
 
 		Graphics2D g2d = (Graphics2D) g;
 
+		float staticBufferScale = bufferScale;
+
 		g2dBuffer.setTransform(new AffineTransform());
-		g2dBuffer.scale(getWindowScale() / BUFFER_SCALE, getWindowScale() / BUFFER_SCALE);
-		if (antiAliasing.bool()) {
+		g2dBuffer.scale(getWindowScale() / staticBufferScale, getWindowScale() / staticBufferScale);
+		if (antiAliasing.bool() && staticBufferScale == DEFAULT_BUFFER_SCALE) {
 			g2dBuffer.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g2dBuffer.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		}
@@ -429,26 +433,66 @@ public class GamePanel extends JPanel implements Runnable {
 				break;
 		}
 
-		g2d.scale(BUFFER_SCALE, BUFFER_SCALE);
-		g2d.drawImage(screenBuffer, 0, 0, null);
-
 		if (displayFPS.bool()) {
-			g.setFont(buttonFont);
+			g2dBuffer.setFont(buttonFont);
 			String text = "FPS: " + frameCount;
-			FontMetrics fm = g.getFontMetrics(buttonFont);
+			FontMetrics fm = g2dBuffer.getFontMetrics(buttonFont);
 			int textWidth = fm.stringWidth(text);
 			int textX = originalScreenWidth - textWidth - 8;
 			int textY = fm.getHeight();
-			g.setColor(FPSShadowColor);
-			drawColoredText(g2d, text, textX + textShadow, textY + textShadow);
-			g.setColor(FPSColor);
-			drawColoredText(g2d, text, textX, textY);
+			g2dBuffer.setColor(FPSShadowColor);
+			drawColoredText(g2dBuffer, text, textX + textShadow, textY + textShadow);
+			g2dBuffer.setColor(FPSColor);
+			drawColoredText(g2dBuffer, text, textX, textY);
 		}
+
+		g2d.scale(staticBufferScale, staticBufferScale);
+		g2d.drawImage(screenBuffer, 0, 0, null);
 
 		Toolkit.getDefaultToolkit().sync();
 	}
 
 	public void renderFrame() {
 		repaint();
+	}
+
+	public static void pixelate(long delay) {
+		new Thread(() -> {
+			int steps = (int) (MAXIMUM_BUFFER_SCALE - bufferScale);
+			if (steps <= 0) return;
+
+			long stepDelay = delay / steps;
+
+			for (int i = 0; i < steps; i++) {
+				bufferScale++;
+				try {
+					Thread.sleep(stepDelay);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					break;
+				}
+			}
+			bufferScale = MAXIMUM_BUFFER_SCALE;
+		}).start();
+	}
+
+	public static void unpixelate(long delay) {
+		new Thread(() -> {
+			int steps = (int) (bufferScale - DEFAULT_BUFFER_SCALE);
+			if (steps <= 0) return;
+
+			long stepDelay = delay / steps;
+
+			for (int i = 0; i < steps; i++) {
+				bufferScale--;
+				try {
+					Thread.sleep(stepDelay);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					break;
+				}
+			}
+			bufferScale = DEFAULT_BUFFER_SCALE;
+		}).start();
 	}
 }
