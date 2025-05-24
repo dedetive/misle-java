@@ -99,7 +99,7 @@ public abstract class MainRenderer {
 		gameState = LEVEL_DESIGNER;
 	}
 
-    public static void drawRotatedImage(Graphics2D g2d, Image image, double x, double y, int width, int height, double angle) {
+    public static void drawRotatedImage(Graphics2D g2d, BufferedImage image, double x, double y, int width, int height, double angle) {
         // Calculate the rotation center based on the desired width and height
         double centerX = x + width / 2.0;
         double centerY = y + height / 2.0;
@@ -117,7 +117,7 @@ public abstract class MainRenderer {
         g2d.setTransform(originalTransform);
     }
 
-    public static void drawRotatedImage(Graphics2D g2d, Image image, double x, double y, int width, int height, double angle, boolean mirror) {
+    public static void drawRotatedImage(Graphics2D g2d, BufferedImage image, double x, double y, int width, int height, double angle, boolean mirror) {
         // Calculate the rotation center based on the desired width and height
         double centerX = x + width / 2.0;
         double centerY = y + height / 2.0;
