@@ -157,6 +157,16 @@ public abstract class SaveSelector {
                             // Playtime
 
                             text = String.valueOf(loadSaveScreenInformation(SaveFile.SaveScreenOption.PLAYTIME, saveSlot));
+                            String[] playtimeText = text.split(":");
+                            text = "";
+                            for (String s : playtimeText) {
+                                if (s.length() <= 2) {
+                                    s = "0" + s;
+                                }
+                                s = ":" + s;
+                                text = text.concat(s);
+                            }
+                            if (text.charAt(0) == ':') text = text.replaceFirst(":", "");
 
                             textWidth = fm.stringWidth(text);
 
