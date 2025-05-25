@@ -47,7 +47,6 @@ public abstract class MainRenderer {
 
 
 		loadSaveFile();
-		loadBoxes();
 
 		player.attr.updateStat(PlayerAttributes.Stat.ALL);
 		player.setHP(player.getMaxHP());
