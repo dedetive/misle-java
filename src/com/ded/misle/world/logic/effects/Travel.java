@@ -39,10 +39,10 @@ public class Travel extends Effect {
 
                 player.pos.setRoomID(roomID);
 
-                player.setX(coordinates.x);
-                player.setY(coordinates.y);
                 unloadBoxes();
                 loadBoxes();
+                player.setX(coordinates.x);
+                player.setY(coordinates.y);
                 clearBreadcrumbs();
 
                 Timer loadWait = new Timer(300, evt -> {
