@@ -18,6 +18,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public abstract class MainRenderer {
@@ -101,47 +104,37 @@ public abstract class MainRenderer {
 	}
 
     public static void drawRotatedImage(Graphics2D g2d, BufferedImage image, double x, double y, int width, int height, double angle) {
-        // Calculate the rotation center based on the desired width and height
-        double centerX = x + width / 2.0;
-        double centerY = y + height / 2.0;
-
-        // Save the original transform
-        AffineTransform originalTransform = g2d.getTransform();
-
-        // Apply rotation around the calculated center
-        g2d.rotate(Math.toRadians(angle), centerX, centerY);
-
-        // Draw the scaled and rotated image at the specified position
-        g2d.drawImage(image, (int) x, (int) y, width, height, null);
-
-        // Restore the original transform to avoid affecting other drawings
-        g2d.setTransform(originalTransform);
+		drawRotatedImage(g2d, image, x, y, width, height, angle, false);
     }
 
+	private static final Map<String, Image> imageMap = new HashMap<>();
     public static void drawRotatedImage(Graphics2D g2d, BufferedImage image, double x, double y, int width, int height, double angle, boolean mirror) {
-        // Calculate the rotation center based on the desired width and height
-        double centerX = x + width / 2.0;
-        double centerY = y + height / 2.0;
+		if (angle == 0 && !mirror) {
+			Image transformed = imageMap.computeIfAbsent((Arrays.toString(new Object[]{image.getSource(), width, height})),
+				(ignored) ->
+					image.getScaledInstance(width, height, Image.SCALE_DEFAULT));
+			g2d.drawImage(transformed, (int) x, (int) y, null);
 
-        // Save the original transform
-        AffineTransform originalTransform = g2d.getTransform();
+			if (imageMap.size() > 100) imageMap.clear();
+			return;
+		}
 
-        // Apply rotation around the calculated center
-        g2d.rotate(Math.toRadians(angle), centerX, centerY);
+		AffineTransform transform = new AffineTransform();
 
-        // Apply mirroring if needed
-        if (mirror) {
-            // Translate to the center of the image, apply scaling to flip horizontally, then translate back
-            g2d.translate(x + width, y); // Move to the right edge of the image
-            g2d.scale(-1, 1);           // Flip horizontally
-            g2d.translate(-x, -y);       // Move back to the original position
-        }
+		double centerX = x + width / 2.0;
+		double centerY = y + height / 2.0;
 
-        // Draw the scaled and rotated (and possibly mirrored) image at the specified position
-        g2d.drawImage(image, (int) x, (int) y, width, height, null);
+		transform.translate(centerX, centerY);
+		transform.rotate(Math.toRadians(angle));
 
-        // Restore the original transform to avoid affecting other drawings
-        g2d.setTransform(originalTransform);
+		if (mirror) {
+			transform.scale(-1, 1);
+		}
+
+		transform.translate(-width / 2.0, -height / 2.0);
+		transform.scale((double) width / image.getWidth(), (double) height / image.getHeight());
+
+		g2d.drawImage(image, transform, null);
     }
 
     public static void drawRotatedRect(Graphics2D g2d, Rectangle rectangle, double angle) {

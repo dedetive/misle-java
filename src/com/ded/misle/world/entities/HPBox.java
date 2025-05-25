@@ -4,6 +4,7 @@ import com.ded.misle.core.LanguageManager;
 import com.ded.misle.core.TurnTimer;
 import com.ded.misle.renderer.FloatingText;
 import com.ded.misle.items.DropTable;
+import com.ded.misle.renderer.FontManager;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.entities.enemies.Enemy;
 import com.ded.misle.world.entities.npcs.NPC;
@@ -185,7 +186,7 @@ public class HPBox extends Box {
                         int coinGain = ((Enemy) this).getCoinDrop();
                         player.attr.addBalance(coinGain);
 
-                        FontMetrics fm = getWindow().getFontMetrics(itemInfoFont);
+                        FontMetrics fm = FontManager.getCachedMetrics(getWindow().getGraphics(), itemInfoFont);
                         int newY = (int) (playerScreenY + randomPosY + fm.getHeight());
                         String formattedCoinGain = "+" + coinGain + "i{COIN}";
                         new FloatingText(formattedCoinGain, coinGainColor, playerScreenX + randomPosX, newY, true);

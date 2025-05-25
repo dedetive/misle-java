@@ -396,6 +396,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		if (bufferScale != DEFAULT_BUFFER_SCALE) {
 			if (g2dBuffer != null) g2dBuffer.dispose();
+			screenBuffer.flush();
 			screenBuffer = new BufferedImage((int) screenWidth, (int) screenHeight, BufferedImage.TYPE_INT_RGB);
 			g2dBuffer = screenBuffer.createGraphics();
 		}
@@ -405,6 +406,8 @@ public class GamePanel extends JPanel implements Runnable {
 		g2dBuffer.setTransform(new AffineTransform());
 		g2dBuffer.scale(getWindowScale() / staticBufferScale, getWindowScale() / staticBufferScale);
 
+		g2dBuffer.setComposite(AlphaComposite.SrcOver);
+		g2dBuffer.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 		if (antiAliasing.bool() && staticBufferScale == DEFAULT_BUFFER_SCALE) {
 			g2dBuffer.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g2dBuffer.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
