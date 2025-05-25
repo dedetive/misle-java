@@ -14,10 +14,10 @@ public class RoomManager {
     public static ArrayList<Room> rooms = new ArrayList<>();
 
     static {
-        Path basePath = getPath().resolve("resources/worlds/");
+        Path basePath = getPath().resolve("resources/rooms/");
 
         StringBuilder jsonContent = new StringBuilder();
-        Path worldsJson = basePath.resolve("worlds.json");
+        Path worldsJson = basePath.resolve("rooms.json");
         try (BufferedReader reader = Files.newBufferedReader(worldsJson)) {
             String line;
             while ((line = reader.readLine()) != null) {

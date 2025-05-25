@@ -30,7 +30,7 @@ public abstract class WorldLoader {
 		room = roomIDToName(player.pos.getRoomID());
 		assert room != null;
 
-		Path basePath = getPath().resolve("resources/worlds/");
+		Path basePath = getPath().resolve("resources/rooms/");
 		int fileCount = room.fileNames.length;
 		Path[] fullPaths = new Path[fileCount];
 		BufferedImage[] roomImages = new BufferedImage[fileCount];

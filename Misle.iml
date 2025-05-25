@@ -16,7 +16,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/images/characters/enemy" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/images/characters/npc" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/images/characters/player" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/worlds" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/rooms" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/out/production/Misle/com/ded/misle" />
       <excludeFolder url="file://$MODULE_DIR$/src/out" />
     </content>
