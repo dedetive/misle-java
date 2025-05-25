@@ -77,27 +77,27 @@ public abstract class WorldLoader {
 				String v = room.colorCodeMap.get(rgb);
 				String[] parts = v.split(", ");
 				enum CustomColorCodeOption {
-					travel,
-					chest,
-					spawnpoint
+					TRAVEL,
+					CHEST,
+					SPAWNPOINT
 				}
 				try {
 					Function<String, Integer> getInt = (String val) -> Integer.parseInt(val.split(":")[1].replace(",", ""));
 					Function<String, Long> getLong = (String val) -> Long.parseLong(val.split(":")[1].replace(",", ""));
 					Function<String, String> getString = (String val) -> val.split(":")[1].replace(",", "");
-					switch (CustomColorCodeOption.valueOf(parts[0])) {
-						case travel -> {
+					switch (CustomColorCodeOption.valueOf(parts[0].toUpperCase())) {
+						case TRAVEL -> {
 							int id = getInt.apply(parts[1]);
 							Point coordinates = new Point(getInt.apply(parts[2]), getInt.apply(parts[3]));
 							box = addBox(BoxPreset.TRAVEL);
 							box.effect = new Travel(id, coordinates);
 						}
-						case spawnpoint -> {
+						case SPAWNPOINT -> {
 							int id = getInt.apply(parts[1]);
 							box = addBox(BoxPreset.SPAWNPOINT);
 							box.effect = new Spawnpoint(id);
 						}
-						case chest -> {
+						case CHEST -> {
 							DropTable dropTable = DropTable.getDropTableByName(getString.apply(parts[1]));
 							box = addBox(BoxPreset.CHEST);
 							long openRate = getLong.apply(parts[2]);

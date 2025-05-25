@@ -65,7 +65,7 @@ public class RoomManager {
                         kv[1] = kv[1].trim().substring(0, kv[1].length() - 1).trim();
                     }
                     if (kv.length == 2) colorCodeMap.put(Integer.parseInt(kv[0].trim(), 16), kv[1].trim());
-                    if (kv[1].contains("spawnpoint")) {
+                    if (kv[1].contains("SPAWNPOINT")) {
                         spawnpointPos[0] = Integer.parseInt(kv[1].trim().split(":")[1].split(",", kv[1].trim().split(":")[1].length())[0]);
                         spawnpointPos[1] = Integer.parseInt(kv[1].trim().split(":")[2].split(",", kv[1].trim().split(":")[1].length())[0]);
                     }
