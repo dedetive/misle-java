@@ -123,7 +123,7 @@ public class World {
             }
 
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.printf("Index %d, %d is out of bounds for length %d, %d%n", x, y, width, height);
+            System.err.printf("Index %d, %d is out of bounds for length %d, %d%n", x, y, width, height);
         }
     }
 
