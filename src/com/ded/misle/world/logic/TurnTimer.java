@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A timer system that executes {@link ActionListener}s based on a turn-based counter.
@@ -271,12 +272,16 @@ public class TurnTimer {
      * Should be called once per turn after game logic.
      */
     private static void executeAllDueTimers() {
-        Iterator<TurnTimer> it = queue.iterator();
-        while (it.hasNext()) {
-            TurnTimer timer = it.next();
-            if (timer.isTimerDue()) {
-                timer.forceExecution(it, false);
-            }
+        List<TurnTimer> dueTimers;
+
+        synchronized (queue) {
+            dueTimers = queue.stream()
+                .filter(TurnTimer::isTimerDue)
+                .toList();
+        }
+
+        for (TurnTimer timer : dueTimers) {
+            timer.forceExecution();
         }
     }
 
