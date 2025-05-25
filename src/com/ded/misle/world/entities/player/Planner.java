@@ -4,6 +4,7 @@ import com.ded.misle.renderer.SmoothPosition;
 import com.ded.misle.world.boxes.BoxManipulation;
 import com.ded.misle.world.logic.LogicManager;
 import com.ded.misle.world.logic.Path;
+import com.ded.misle.world.logic.PhysicsEngine;
 
 import java.awt.*;
 
@@ -181,7 +182,8 @@ public class Planner {
                 delayPerTurn = Math.max(delayPerTurn - DELAY_REDUCTION_PER_TURN, MINIMUM_DELAY_PER_TURN);
 
                 path.removePoint(previousPoint);
-                BoxManipulation.movePlayer(Integer.signum(point.x - player.getX()), Integer.signum(point.y - player.getY()));
+                if (!PhysicsEngine.isSpaceOccupied(point.x, point.y, player))
+                    BoxManipulation.movePlayer(point.x - player.getX(), point.y - player.getY());
                 LogicManager.requestNewTurn();
                 previousPoint = point;
 
