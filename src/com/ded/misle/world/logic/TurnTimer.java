@@ -379,4 +379,19 @@ public class TurnTimer {
         turnNum++;
         executeAllDueTimers();
     }
+
+    @Override
+    public String toString() {
+        return "TurnTimer{" +
+            "turns=" + turns +
+            ", repeats=" + repeats +
+            ", timesTriggered=" + timesTriggered +
+            ", stopsAt=" + stopsAt +
+            ", executionTurn=" + executionTurn +
+            ", started=" + started +
+            ", roomScoped=" + roomScoped +
+            ", listener=" + (listener != null ? listener.getClass().getSimpleName() : "null") +
+            ", onFinish=" + (onFinish != null ? onFinish.getClass().getSimpleName() : "null") +
+            '}';
+    }
 }
