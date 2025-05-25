@@ -352,7 +352,7 @@ public class KeyHandler implements KeyListener {
 
 			// MOVING
 
-			if (!player.attr.isDead()) {
+			if (!player.attr.isDead() && !planner.isExecuting()) {
 				if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
 					PlayerAttributes.KnockbackDirection horizontalDirection = PlayerAttributes.KnockbackDirection.NONE;
 					PlayerAttributes.KnockbackDirection verticalDirection = PlayerAttributes.KnockbackDirection.NONE;
