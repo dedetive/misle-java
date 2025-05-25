@@ -284,10 +284,12 @@ public class KeyHandler implements KeyListener {
 					player.getNewPlanner().setPlanning(true);
 				}
 			} else if (planner.isExecuting() &&
-				isPressed(PLANNING_TOGGLE) ||
-				isPressed(LEFT) || isPressed(RIGHT) ||
-				isPressed(DOWN) || isPressed(UP)) {
+				(isPressed(LEFT) || isPressed(RIGHT) ||
+				isPressed(DOWN) || isPressed(UP))) {
 				planner.skipStep();
+			} else if (planner.isExecuting() &&
+				isPressed(PLANNING_TOGGLE)) {
+				planner.toggleQuickExecution();
 			}
 			isPlanning = planner.isPlanning();
 

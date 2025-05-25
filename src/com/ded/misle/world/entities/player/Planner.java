@@ -132,6 +132,16 @@ public class Planner {
     private static final int DELAY_REDUCTION_PER_TURN = 7;
 
     /**
+     * Value in milliseconds that delayPerTurn is set to if {@link #quickExecution} is set to true.
+     */
+    private static final int QUICK_DELAY_PER_TURN = 50;
+
+    /**
+     * Whether execution should use quick execution or not. If it uses, {@link #delayPerTurn} is always equal to {@link #QUICK_DELAY_PER_TURN}.
+     */
+    private static boolean quickExecution = false;
+
+    /**
      * Flag indicating whether the plan is currently being executed.
      */
     private boolean isExecuting = false;
@@ -179,7 +189,9 @@ public class Planner {
                     }
                 }
 
-                delayPerTurn = Math.max(delayPerTurn - DELAY_REDUCTION_PER_TURN, MINIMUM_DELAY_PER_TURN);
+                delayPerTurn = quickExecution
+                    ? QUICK_DELAY_PER_TURN
+                    : Math.max(delayPerTurn - DELAY_REDUCTION_PER_TURN, MINIMUM_DELAY_PER_TURN);
 
                 path.removePoint(previousPoint);
                 if (!PhysicsEngine.isSpaceOccupied(point.x, point.y, player))
@@ -202,6 +214,7 @@ public class Planner {
                 }
             }
 
+            quickExecution = false;
             isExecuting = false;
         });
 
@@ -218,6 +231,16 @@ public class Planner {
         synchronized (lock) {
             lock.notify();
         }
+    }
+
+    /**
+     * Toggles {@link #quickExecution} tag. This property, when true, sets {@link #delayPerTurn} to {@link #QUICK_DELAY_PER_TURN} during execution.
+     * Note that quick execution is always set to false after finishing the execution.
+     */
+    public void toggleQuickExecution() {
+        if (!this.isExecuting) return;
+
+        quickExecution = !quickExecution;
     }
 
     /**
