@@ -24,10 +24,6 @@ public class PlayerPosition {
 	}
 
 	public PlayerPosition() {
-		if (player != null) {
-            spawnpointRoom = 1;
-            reloadSpawnpoint();
-        }
 		setCameraOffsetX(0);
 		setCameraOffsetY(0);
 		setRegion(Region.CHAIN_OF_LIES);
