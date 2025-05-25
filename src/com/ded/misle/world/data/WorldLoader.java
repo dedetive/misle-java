@@ -135,6 +135,7 @@ public abstract class WorldLoader {
 					int dotIndex = textureName.indexOf(".");
 					if (dotIndex == -1) continue; // Is not a box that has sides
 					String normalizedName = textureName.substring(0, dotIndex);
+					if (normalizedName.isBlank()) continue;
 
 					boolean hasSides = checkIfPresetHasSides(BoxPreset.valueOf(normalizedName.toUpperCase()));
 					if (hasSides) {
