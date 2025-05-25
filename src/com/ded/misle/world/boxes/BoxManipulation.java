@@ -1,7 +1,7 @@
 package com.ded.misle.world.boxes;
 
 import com.ded.misle.world.logic.PhysicsEngine;
-import com.ded.misle.core.TurnTimer;
+import com.ded.misle.world.logic.TurnTimer;
 
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;

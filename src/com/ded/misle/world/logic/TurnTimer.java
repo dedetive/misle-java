@@ -1,4 +1,4 @@
-package com.ded.misle.core;
+package com.ded.misle.world.logic;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

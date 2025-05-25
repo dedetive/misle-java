@@ -1,7 +1,7 @@
 package com.ded.misle.world.entities;
 
 import com.ded.misle.core.LanguageManager;
-import com.ded.misle.core.TurnTimer;
+import com.ded.misle.world.logic.TurnTimer;
 import com.ded.misle.renderer.FloatingText;
 import com.ded.misle.items.DropTable;
 import com.ded.misle.renderer.FontManager;
