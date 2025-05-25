@@ -3,6 +3,7 @@ package com.ded.misle.world.data;
 import com.ded.misle.core.TurnTimer;
 import com.ded.misle.items.DropTable;
 import com.ded.misle.world.boxes.Box;
+import com.ded.misle.world.entities.enemies.Enemy;
 import com.ded.misle.world.logic.effects.Chest;
 import com.ded.misle.world.logic.effects.Spawnpoint;
 import com.ded.misle.world.logic.effects.Travel;
@@ -79,7 +80,8 @@ public abstract class WorldLoader {
 				enum CustomColorCodeOption {
 					TRAVEL,
 					CHEST,
-					SPAWNPOINT
+					SPAWNPOINT,
+					ENEMY
 				}
 				try {
 					Function<String, Integer> getInt = (String val) -> Integer.parseInt(val.split(":")[1].replace(",", ""));
@@ -102,6 +104,11 @@ public abstract class WorldLoader {
 							box = addBox(BoxPreset.CHEST);
 							long openRate = getLong.apply(parts[2]);
 							box.effect = new Chest(openRate, dropTable);
+						}
+						case ENEMY -> {
+							box = addEnemyBox(0, 0,
+								Enemy.EnemyType.valueOf(parts[1].toUpperCase().split(":")[1]),
+								Double.parseDouble(parts[2].split(":")[1]));
 						}
 					}
 				} catch (IllegalArgumentException e) { box = addBox(BoxPreset.WALL_DEFAULT); }
