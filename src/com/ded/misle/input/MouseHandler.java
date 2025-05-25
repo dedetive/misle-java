@@ -179,33 +179,40 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 	}
 
 	public void updateMouse() {
-        switch (gameState) {
-            case GameState.PLAYING -> {
-                if (isAnyPressed()) {
-                    boolean foundWhereClicked = false;
+		if (player.getPlanner().isExecuting()) {
+			if (isLeftPressed() || isRightPressed()) {
+				player.getPlanner().skipStep();
+			}
+		} else {
+			switch (gameState) {
+				case GameState.PLAYING -> {
+					if (isAnyPressed()) {
+						boolean foundWhereClicked = false;
 
-                    if (getHoveredBarSlot() >= 0) {
-                        player.inv.setSelectedSlot(getHoveredBarSlot()); // Select the slot
-                        foundWhereClicked = true;
-                    }
-                    if (!foundWhereClicked) {
-                        pressUseButton(this);
-                    }
-                }
-            }
-            case GameState.INVENTORY -> {
-                Item draggedItem = player.inv.getDraggedItem();
-                if (isLeftPressed() || (isRightPressed() && !hasDraggedItem())) {
-					switch (getSlotType()) {
-                        // If not pressed a slot, drop item
-						case EMPTY -> { if (hasDraggedItem()) player.inv.dropDraggedItem(draggedItem.getCount()); }
-						case INVENTORY -> {
-							if (isSlotOccupied(false)) {
-								if (hasDraggedItem())
-									// Swap
-									player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], draggedItem.getCount(), false);
-									// Quick equip item
-								else if ((player.keys.keyPressed.get(KeyHandler.Key.SHIFT)) && Objects.equals(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]).getSubtype(), "ring")) {
+						if (getHoveredBarSlot() >= 0) {
+							player.inv.setSelectedSlot(getHoveredBarSlot()); // Select the slot
+							foundWhereClicked = true;
+						}
+						if (!foundWhereClicked) {
+							pressUseButton(this);
+						}
+					}
+				}
+				case GameState.INVENTORY -> {
+					Item draggedItem = player.inv.getDraggedItem();
+					if (isLeftPressed() || (isRightPressed() && !hasDraggedItem())) {
+						switch (getSlotType()) {
+							// If not pressed a slot, drop item
+							case EMPTY -> {
+								if (hasDraggedItem()) player.inv.dropDraggedItem(draggedItem.getCount());
+							}
+							case INVENTORY -> {
+								if (isSlotOccupied(false)) {
+									if (hasDraggedItem())
+										// Swap
+										player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], draggedItem.getCount(), false);
+										// Quick equip item
+									else if ((player.keys.keyPressed.get(KeyHandler.Key.SHIFT)) && Objects.equals(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]).getSubtype(), "ring")) {
 										boolean[] isSpaceOccupied = new boolean[3];
 										int firstValidPosition = -1;
 										boolean isAnyEmpty = false;
@@ -214,122 +221,128 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 											if (!isSpaceOccupied[i]) firstValidPosition = i;
 											if (!isSpaceOccupied[i]) {
 												isAnyEmpty = true;
-												break;}
+												break;
+											}
 										}
 										if (isAnyEmpty) {
 											player.inv.bruteSetItem(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]), firstValidPosition);
 											player.inv.removeItem(getHoveredSlot()[0], getHoveredSlot()[1]);
 										}
-								} else if ((player.keys.keyPressed.get(KeyHandler.Key.SHIFT) &&
-									getHoveredSlot()[0] == 0 &&
-                                    !Arrays.equals(player.inv.getFirstEmptyInventorySlot(), new int[]{-1, -1}))) {
+									} else if ((player.keys.keyPressed.get(KeyHandler.Key.SHIFT) &&
+										getHoveredSlot()[0] == 0 &&
+										!Arrays.equals(player.inv.getFirstEmptyInventorySlot(), new int[]{-1, -1}))) {
 										// Quick move item to first inventory slot
 										player.inv.bruteSetItem(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]),
 											player.inv.getFirstEmptyInventorySlot()[0], player.inv.getFirstEmptyInventorySlot()[1]);
 										player.inv.removeItem(getHoveredSlot()[0], getHoveredSlot()[1]);
-								} else if ((player.keys.keyPressed.get(KeyHandler.Key.SHIFT) &&
-									getHoveredSlot()[0] > 0 &&
-									!Arrays.equals(player.inv.getFirstEmptyBarSlot(), new int[]{-1, -1}))) {
-									// Quick move item to first bar slot
-									player.inv.bruteSetItem(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]),
-										player.inv.getFirstEmptyBarSlot()[0], player.inv.getFirstEmptyBarSlot()[1]);
-									player.inv.removeItem(getHoveredSlot()[0], getHoveredSlot()[1]);
-								}
-								// Grab item
-								else player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], -1, false);
-							} else if (hasDraggedItem()) {
-								// Place item into slot if it's empty and has dragged item
-								player.inv.putDraggedItem(getHoveredSlot()[0], getHoveredSlot()[1], draggedItem.getCount(), false);
-							}
-						}
-						case RING -> {
-							boolean isRing = hasDraggedItem() && Objects.equals(player.inv.getDraggedItem().getSubtype(), "ring");
-                            if (isSlotOccupied(true)) {
-								if (isRing)
-									// Swap only if it is a ring
-									player.inv.initDraggingItem(getExtraHoveredSlot()[0], getExtraHoveredSlot()[1], draggedItem.getCount(), true);
-									// Quick unequip ring
-								else if (player.keys.keyPressed.get(KeyHandler.Key.SHIFT)) {
-									boolean[] isSpaceOccupied = new boolean[4];
-									int[] firstValidPosition = new int[]{-1, -1};
-									boolean isAnyEmpty = false;
-									for (int i = 0; i < 4; i++) {
-										for (int j = 0; j < 7; j++) {
-											isSpaceOccupied[i] = player.inv.getItem(i, j) != null;
-											if (!isSpaceOccupied[i] && Arrays.equals(firstValidPosition, new int[]{-1, -1})) firstValidPosition = new int[]{i, j};
-											if (!isSpaceOccupied[i]) {
-												isAnyEmpty = true;
-												break; }
-										}
-										if (isAnyEmpty) break;
+									} else if ((player.keys.keyPressed.get(KeyHandler.Key.SHIFT) &&
+										getHoveredSlot()[0] > 0 &&
+										!Arrays.equals(player.inv.getFirstEmptyBarSlot(), new int[]{-1, -1}))) {
+										// Quick move item to first bar slot
+										player.inv.bruteSetItem(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]),
+											player.inv.getFirstEmptyBarSlot()[0], player.inv.getFirstEmptyBarSlot()[1]);
+										player.inv.removeItem(getHoveredSlot()[0], getHoveredSlot()[1]);
 									}
-									if (isAnyEmpty) {
-										Item item = player.inv.getItem(getExtraHoveredSlot()[1] * 2 + getExtraHoveredSlot()[0]);
-										player.inv.bruteSetItem(item, firstValidPosition[0], firstValidPosition[1]);
-										player.inv.removeItem(getExtraHoveredSlot()[1] * 2 + getExtraHoveredSlot()[0]);
-									}
+									// Grab item
+									else
+										player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], -1, false);
+								} else if (hasDraggedItem()) {
+									// Place item into slot if it's empty and has dragged item
+									player.inv.putDraggedItem(getHoveredSlot()[0], getHoveredSlot()[1], draggedItem.getCount(), false);
 								}
-								// Grab item
-								else if (!hasDraggedItem()) player.inv.initDraggingItem(getExtraHoveredSlot()[0], getExtraHoveredSlot()[1], -1, true);
-							} else if (isRing) {
-								// Place item into slot if it's empty and has dragged item
-								player.inv.putDraggedItem(getExtraHoveredSlot()[0], getExtraHoveredSlot()[1], draggedItem.getCount(), true);
 							}
-						}
-                    }
-                } else if (isRightPressed() && hasDraggedItem()) {
-					switch (getSlotType()) {
-                    	// Drop outside
-						case EMPTY -> player.inv.dropDraggedItem(1);
-						case INVENTORY -> {
-							if (isSlotOccupied(false)) {
-								// Swap
-								player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], draggedItem.getCount(), false);
-							} else {
-								// Put one into slot
-								player.inv.putDraggedItem(getHoveredSlot()[0], getHoveredSlot()[1], 1, false);
-							}
-						}
-						case RING -> {
-							if (player.inv.getDraggedItem().getSubtype().equals("ring")) {
+							case RING -> {
+								boolean isRing = hasDraggedItem() && Objects.equals(player.inv.getDraggedItem().getSubtype(), "ring");
 								if (isSlotOccupied(true)) {
+									if (isRing)
+										// Swap only if it is a ring
+										player.inv.initDraggingItem(getExtraHoveredSlot()[0], getExtraHoveredSlot()[1], draggedItem.getCount(), true);
+										// Quick unequip ring
+									else if (player.keys.keyPressed.get(KeyHandler.Key.SHIFT)) {
+										boolean[] isSpaceOccupied = new boolean[4];
+										int[] firstValidPosition = new int[]{-1, -1};
+										boolean isAnyEmpty = false;
+										for (int i = 0; i < 4; i++) {
+											for (int j = 0; j < 7; j++) {
+												isSpaceOccupied[i] = player.inv.getItem(i, j) != null;
+												if (!isSpaceOccupied[i] && Arrays.equals(firstValidPosition, new int[]{-1, -1}))
+													firstValidPosition = new int[]{i, j};
+												if (!isSpaceOccupied[i]) {
+													isAnyEmpty = true;
+													break;
+												}
+											}
+											if (isAnyEmpty) break;
+										}
+										if (isAnyEmpty) {
+											Item item = player.inv.getItem(getExtraHoveredSlot()[1] * 2 + getExtraHoveredSlot()[0]);
+											player.inv.bruteSetItem(item, firstValidPosition[0], firstValidPosition[1]);
+											player.inv.removeItem(getExtraHoveredSlot()[1] * 2 + getExtraHoveredSlot()[0]);
+										}
+									}
+									// Grab item
+									else if (!hasDraggedItem())
+										player.inv.initDraggingItem(getExtraHoveredSlot()[0], getExtraHoveredSlot()[1], -1, true);
+								} else if (isRing) {
+									// Place item into slot if it's empty and has dragged item
+									player.inv.putDraggedItem(getExtraHoveredSlot()[0], getExtraHoveredSlot()[1], draggedItem.getCount(), true);
+								}
+							}
+						}
+					} else if (isRightPressed() && hasDraggedItem()) {
+						switch (getSlotType()) {
+							// Drop outside
+							case EMPTY -> player.inv.dropDraggedItem(1);
+							case INVENTORY -> {
+								if (isSlotOccupied(false)) {
 									// Swap
-									player.inv.initDraggingItem(getExtraHoveredSlot()[0], getExtraHoveredSlot()[1], -1, true);
+									player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], draggedItem.getCount(), false);
 								} else {
-									// Put into slot
-									player.inv.putDraggedItem(getExtraHoveredSlot()[0], getExtraHoveredSlot()[1], 1, true);
+									// Put one into slot
+									player.inv.putDraggedItem(getHoveredSlot()[0], getHoveredSlot()[1], 1, false);
+								}
+							}
+							case RING -> {
+								if (player.inv.getDraggedItem().getSubtype().equals("ring")) {
+									if (isSlotOccupied(true)) {
+										// Swap
+										player.inv.initDraggingItem(getExtraHoveredSlot()[0], getExtraHoveredSlot()[1], -1, true);
+									} else {
+										// Put into slot
+										player.inv.putDraggedItem(getExtraHoveredSlot()[0], getExtraHoveredSlot()[1], 1, true);
+									}
 								}
 							}
 						}
 					}
-                }
-            }
-            case GameState.LEVEL_DESIGNER -> {
-                if (isLeftPressed()) {
-                    // detect box in click position
-                } else if (isReleased) {
-                    // Get x, y game world coordinates of mouse click and select nearby boxes of that position
-                    int mouseGameX = (int) (player.pos.getCameraOffsetX() + mouseX);
-                    int mouseGameY = (int) (player.pos.getCameraOffsetY() + mouseY);
-                    clearSelectedBoxes();
-                    System.out.println();
-                    System.out.println("mouse: " + mouseGameX + ", " + mouseGameY);
-                    for (Box box : BoxHandling.getCachedBoxesInRange(mouseGameX, mouseGameY, 6)) {
-                        box.addSelectedBox();
-                        System.out.println("box: " + box.getX() + ", " + box.getY());
-                    }
-                }
-            }
-			case GameState.DIALOG -> {
-				if (isLeftPressed()) {
-					if (isLetterDisplayFull()) {
-						getCurrentTalkingTo().incrementDialogIndex();
-					} else {
-						fillLetterDisplay();
+				}
+				case GameState.LEVEL_DESIGNER -> {
+					if (isLeftPressed()) {
+						// detect box in click position
+					} else if (isReleased) {
+						// Get x, y game world coordinates of mouse click and select nearby boxes of that position
+						int mouseGameX = (int) (player.pos.getCameraOffsetX() + mouseX);
+						int mouseGameY = (int) (player.pos.getCameraOffsetY() + mouseY);
+						clearSelectedBoxes();
+						System.out.println();
+						System.out.println("mouse: " + mouseGameX + ", " + mouseGameY);
+						for (Box box : BoxHandling.getCachedBoxesInRange(mouseGameX, mouseGameY, 6)) {
+							box.addSelectedBox();
+							System.out.println("box: " + box.getX() + ", " + box.getY());
+						}
+					}
+				}
+				case GameState.DIALOG -> {
+					if (isLeftPressed()) {
+						if (isLetterDisplayFull()) {
+							getCurrentTalkingTo().incrementDialogIndex();
+						} else {
+							fillLetterDisplay();
+						}
 					}
 				}
 			}
-        }
+		}
 		isLeftPressed = false;
 		isRightPressed = false;
 		isReleased = false;
