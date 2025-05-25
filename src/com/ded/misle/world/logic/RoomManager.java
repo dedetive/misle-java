@@ -32,45 +32,49 @@ public class RoomManager {
         String[] itemBlocks = jsonText.split("},\\s*\\{");
 
         for (String block : itemBlocks) {
-            block = block.replace("{", "").replace("}", "").replace("\"", "");
+            try {
+                block = block.replace("{", "").replace("}", "").replace("\"", "");
 
-            Map<Integer, String> colorCodeMap = new HashMap<>();
+                Map<Integer, String> colorCodeMap = new HashMap<>();
 
-            String[] colorPartSplit = block.split("custom_color_code:");
-            String colorPart = null;
-            if (colorPartSplit.length > 1) {
-                block = colorPartSplit[0] + "id:" + colorPartSplit[1].split("id:")[1];
-                colorPart = colorPartSplit[1].split("id:")[0];
-            }
-
-            String[] parts = block.split(",id:");
-            String roomAndFiles = parts[0].split("custom_color_code:")[0].trim();
-            int id = Integer.parseInt(parts[1].trim());
-
-            String[] nameAndFiles = roomAndFiles.split(":\\s*\\[");
-            String roomName = nameAndFiles[0].trim();
-            String filesPart = nameAndFiles[1].replace("]", "").trim();
-            String[] fileNames = filesPart.isEmpty() ? new String[]{} : filesPart.split(",");
-
-            String background = colorPart.split(",background:")[1].split(",")[0].trim();
-            colorPart = colorPart.replace(",background:", "").replace(background, "").trim();
-
-            int[] spawnpointPos = new int[2];
-            String[] colorPairs = colorPart.replace("}", "").split("#");
-            for (String pair : colorPairs) {
-                if (pair.trim().isEmpty()) continue;
-                String[] kv = pair.split(": ", 2);
-                if (kv[1].trim().lastIndexOf(",") == kv[1].trim().length() - 1) {
-                    kv[1] = kv[1].trim().substring(0, kv[1].length() - 1).trim();
+                String[] colorPartSplit = block.split("custom_color_code:");
+                String colorPart = null;
+                if (colorPartSplit.length > 1) {
+                    block = colorPartSplit[0] + "id:" + colorPartSplit[1].split("id:")[1];
+                    colorPart = colorPartSplit[1].split("id:")[0];
                 }
-                if (kv.length == 2) colorCodeMap.put(Integer.parseInt(kv[0].trim(), 16), kv[1].trim());
-                if (kv[1].contains("spawnpoint")) {
-                    spawnpointPos[0] = Integer.parseInt(kv[1].trim().split(":")[1].split(",", kv[1].trim().split(":")[1].length())[0]);
-                    spawnpointPos[1] = Integer.parseInt(kv[1].trim().split(":")[2].split(",", kv[1].trim().split(":")[1].length())[0]);
-                }
-            }
 
-            new Room(roomName, fileNames, id, colorCodeMap, spawnpointPos, background);
+                String[] parts = block.split(",id:");
+                String roomAndFiles = parts[0].split("custom_color_code:")[0].trim();
+                int id = Integer.parseInt(parts[1].trim());
+
+                String[] nameAndFiles = roomAndFiles.split(":\\s*\\[");
+                String roomName = nameAndFiles[0].trim();
+                String filesPart = nameAndFiles[1].replace("]", "").trim();
+                String[] fileNames = filesPart.isEmpty() ? new String[]{} : filesPart.split(",");
+
+                String background = colorPart.split(",background:")[1].split(",")[0].trim();
+                colorPart = colorPart.replace(",background:", "").replace(background, "").trim();
+
+                int[] spawnpointPos = new int[2];
+                String[] colorPairs = colorPart.replace("}", "").split("#");
+                for (String pair : colorPairs) {
+                    if (pair.trim().isEmpty()) continue;
+                    String[] kv = pair.split(": ", 2);
+                    if (kv[1].trim().lastIndexOf(",") == kv[1].trim().length() - 1) {
+                        kv[1] = kv[1].trim().substring(0, kv[1].length() - 1).trim();
+                    }
+                    if (kv.length == 2) colorCodeMap.put(Integer.parseInt(kv[0].trim(), 16), kv[1].trim());
+                    if (kv[1].contains("spawnpoint")) {
+                        spawnpointPos[0] = Integer.parseInt(kv[1].trim().split(":")[1].split(",", kv[1].trim().split(":")[1].length())[0]);
+                        spawnpointPos[1] = Integer.parseInt(kv[1].trim().split(":")[2].split(",", kv[1].trim().split(":")[1].length())[0]);
+                    }
+                }
+
+                new Room(roomName, fileNames, id, colorCodeMap, spawnpointPos, background);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.err.println("Failed to parse room " + block);
+            }
         }
     }
 
