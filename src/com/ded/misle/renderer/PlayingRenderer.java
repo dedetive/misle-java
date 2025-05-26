@@ -537,9 +537,6 @@ public class PlayingRenderer extends AbstractRenderer {
         int scaledTileDifference = originalTileSize / 5;
         int cameraOffsetX = (int) player.pos.getCameraOffsetX();
         int cameraOffsetY = (int) player.pos.getCameraOffsetY();
-        int red = 190; // 0xBE
-        int green = 22; // 0x16
-        int blue = 22; // 0x16
 
         for (Point point : player.getPlannerState()) {
             i++;
@@ -554,8 +551,7 @@ public class PlayingRenderer extends AbstractRenderer {
             } else {
                 alpha = 100;
             }
-            Color color = new Color(red, green, blue, alpha);
-
+            Color color = new Color(planningColor.getRed(), planningColor.getGreen(), planningColor.getBlue(), alpha);
 
             g2d.setColor(color);
             if (point.equals(player.getPlanner().getEnd())) {

@@ -94,6 +94,8 @@ public abstract class ColorManager {
         // Coins
     public final static Color coinTextUI = defaultLightYellow;
     public final static Color coinTextShadowColor = defaultShadowColor;
+        // Planning
+    public final static Color planningColor = new Color(0x00ffcc);
 
     // Menus
         // Buttons
