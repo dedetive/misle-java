@@ -576,6 +576,11 @@ public class PlayingRenderer extends AbstractRenderer {
                 g2d.fillRoundRect(x, y,
                     width, height,
                     arcW, arcH);
+                g2d.setColor(new Color(255, 255, 255, 110));
+                g2d.drawRoundRect(x, y,
+                    width, height,
+                    arcW, arcH
+                );
             }
         }
     }
