@@ -539,6 +539,8 @@ public class PlayingRenderer extends AbstractRenderer {
         int cameraOffsetY = (int) player.pos.getCameraOffsetY();
 
         for (Point point : player.getPlannerState()) {
+            if (player.getPlannerState()[0].equals(point)) continue;
+
             i++;
 
             int screenX = point.x * originalTileSize - cameraOffsetX;
