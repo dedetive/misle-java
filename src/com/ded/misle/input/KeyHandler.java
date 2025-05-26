@@ -277,8 +277,11 @@ public class KeyHandler implements KeyListener {
 		if (gameState == GameState.PLAYING) {
 			Planner planner = player.getPlanner();
 
-			if (isPressed(PLANNING_TOGGLE) && !planner.isExecuting()) {
+			if ((isPressed(PLANNING_TOGGLE) ||
+				(planner.isPlanning() && isPressed(PAUSE)))
+				&& !planner.isExecuting()) {
 				if (planner.isPlanning()) {
+					player.keys.keyPressed.put(PAUSE, false);
 					planner.setPlanning(false);
 				} else {
 					player.getNewPlanner().setPlanning(true);
