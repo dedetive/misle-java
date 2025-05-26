@@ -189,6 +189,12 @@ public class Planner {
                     }
                 }
 
+                // Ignore player initial position
+                if (path.getPoints()[0].equals(point)) {
+                    previousPoint = point;
+                    continue;
+                }
+
                 delayPerTurn = quickExecution
                     ? QUICK_DELAY_PER_TURN
                     : Math.max(delayPerTurn - DELAY_REDUCTION_PER_TURN, MINIMUM_DELAY_PER_TURN);
