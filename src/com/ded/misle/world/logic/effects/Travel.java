@@ -1,8 +1,6 @@
 package com.ded.misle.world.logic.effects;
 
 import com.ded.misle.game.GamePanel;
-import com.ded.misle.renderer.Fader;
-import com.ded.misle.renderer.MainRenderer;
 import com.ded.misle.world.entities.player.Player;
 
 import javax.swing.*;
@@ -11,10 +9,8 @@ import java.awt.*;
 import com.ded.misle.world.boxes.Box;
 
 import static com.ded.misle.game.GamePanel.*;
-import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.world.data.WorldLoader.loadBoxes;
 import static com.ded.misle.world.data.WorldLoader.unloadBoxes;
-import static com.ded.misle.world.entities.enemies.EnemyAI.clearBreadcrumbs;
 
 public class Travel extends Effect {
     int roomID;
@@ -43,7 +39,6 @@ public class Travel extends Effect {
                 loadBoxes();
                 player.setX(coordinates.x);
                 player.setY(coordinates.y);
-                clearBreadcrumbs();
 
                 Timer loadWait = new Timer(300, evt -> {
                     unpixelate(2000);

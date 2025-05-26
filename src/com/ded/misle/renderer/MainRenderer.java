@@ -10,7 +10,6 @@ import static com.ded.misle.game.GamePanel.GameState.PLAYING;
 import static com.ded.misle.core.SaveFile.loadSaveFile;
 import static com.ded.misle.world.boxes.BoxHandling.storeCachedBoxes;
 import static com.ded.misle.world.data.WorldLoader.loadBoxes;
-import static com.ded.misle.world.entities.enemies.EnemyAI.clearBreadcrumbs;
 import static com.ded.misle.world.entities.player.Planner.resumeExecution;
 import static java.lang.System.currentTimeMillis;
 
@@ -52,7 +51,6 @@ public abstract class MainRenderer {
 		player.setHP(player.getMaxHP());
 		player.attr.fillEntropy();
 		player.currentSaveSlot = saveSlot;
-		clearBreadcrumbs();
 
 		Timer fadeTimer = new Timer(LOADING_DURATION, e -> pixelate(1500, 32));
 		fadeTimer.setRepeats(false);

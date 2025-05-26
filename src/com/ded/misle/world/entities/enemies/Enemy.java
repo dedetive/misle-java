@@ -1,11 +1,14 @@
 package com.ded.misle.world.entities.enemies;
 
+import com.ded.misle.world.boxes.Box;
+import com.ded.misle.world.logic.Path;
 import com.ded.misle.world.logic.effects.Damage;
 import com.ded.misle.world.entities.HPBox;
 import com.ded.misle.items.DropTable;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -77,7 +80,7 @@ public class Enemy extends HPBox {
                 damageRate = 2;
 
                 // Structural
-                this.setCollision(false);
+                this.setCollision(true);
 //                this.setTexture("solid");
 //                this.setColor(new Color(0x106000));
                 this.setTexture("../characters/enemy/goblin");
@@ -89,12 +92,9 @@ public class Enemy extends HPBox {
                 this.setDropTable(DropTable.GOBLIN);
                 this.xpDrop = 1;
                 this.coinDrop = new int[]{1, 3};
-                this.moveInterval = ThreadLocalRandom.current().nextInt(500, 2500 + 1);
+                this.moveInterval = 1;
 
                 // Breadcrumbs
-                this.maxPersonalBreadcrumbs = (int) (Math.random() * (5 - 2) + 2);
-                this.personalBreadcrumbUpdateInterval = (long) (Math.random() * (1400 - 200) + 200);
-                updatePersonalBreadcrumbs();
             }
             default -> {
                 this.AIState = STILL;
@@ -131,26 +131,4 @@ public class Enemy extends HPBox {
 
     // BREADCRUMBS
 
-    private final List<int[]> personalBreadcrumbs = new ArrayList<>();
-    private long lastPersonalBreadcrumbUpdate = System.currentTimeMillis();
-    private int maxPersonalBreadcrumbs;
-    private long personalBreadcrumbUpdateInterval;
-
-    public List<int[]> getPersonalBreadcrumbs() {
-        return personalBreadcrumbs;
-    }
-
-    public void updatePersonalBreadcrumbs() {
-        personalBreadcrumbs.add(new int[]{player.getX(), player.getY()});
-        lastPersonalBreadcrumbUpdate = System.currentTimeMillis();
-        if (personalBreadcrumbs.size() > maxPersonalBreadcrumbs) {
-            personalBreadcrumbs.removeFirst();
-        }
-    }
-
-    public void checkIfBreadcrumbUpdate() {
-        if (lastPersonalBreadcrumbUpdate + personalBreadcrumbUpdateInterval < System.currentTimeMillis()) {
-            updatePersonalBreadcrumbs();
-        }
-    }
 }
