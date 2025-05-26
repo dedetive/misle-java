@@ -70,6 +70,27 @@ public class Path extends TilePattern {
     }
 
     /**
+     * Removes a specific point from this Path. Does nothing if index is invalid within this Path.
+     * @param index the index of the point to be removed
+     * @return this Path for chaining
+     */
+    public Path removePoint(int index) {
+        saveState();
+        if (points.length <= index) {
+            return this;
+        }
+
+        Point[] newPoints = new Point[points.length - 1];
+        for (int i = 0; i < points.length - 1; i++) {
+            if (i == index) continue;
+            newPoints[i] = points[i];
+        }
+        points = newPoints;
+        return this;
+    }
+
+
+    /**
      * Add an offset to each of this Path's points. All points will get incremented by the given value.
      *
      * @param offset the value for the points to be added, with respect to their x and y individually
