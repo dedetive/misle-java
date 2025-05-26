@@ -545,19 +545,38 @@ public class PlayingRenderer extends AbstractRenderer {
             int screenY = point.y * originalTileSize - cameraOffsetY;
             if (isInvalid(screenX, screenY)) continue;
 
-            int alpha;
-            if (max <= 5 || (float) i / max > 0.66f) {
-                alpha = Math.max((i * i) * 255 / (max * max), 100);
-            } else {
-                alpha = 100;
-            }
-            Color color = new Color(planningColor.getRed(), planningColor.getGreen(), planningColor.getBlue(), alpha);
+            float progress = (float) i / max;
+            int alpha = (int) (255 * (0.05f + progress * 0.65f));
+            alpha = Math.max(alpha, 100);
+
+            int r = (int) (planningColor.getRed() + (255 - planningColor.getRed()) * (1 - progress));
+            int g = (int) (planningColor.getGreen() + (255 - planningColor.getGreen()) * (1 - progress));
+            int b = (int) (planningColor.getBlue() + (255 - planningColor.getBlue()) * (1 - progress));
+            Color color = new Color(r, g, b, alpha);
 
             g2d.setColor(color);
             if (point.equals(player.getPlanner().getEnd())) {
+                g2d.setColor(new Color(255, 255, 255, 80));
+                g2d.fillRect(screenX - (scaledTileDifference), screenY - (scaledTileDifference),
+                    scaledTile + scaledTileDifference, scaledTile + scaledTileDifference);
+
+                g2d.setColor(color);
                 g2d.fillRect(screenX - (scaledTileDifference / 2), screenY - (scaledTileDifference / 2), scaledTile, scaledTile);
             }
-            else g2d.fillRect(screenX, screenY, originalTileSize, originalTileSize);
+            else {
+                float scale = (float) (0.7 + 0.3f * progress);
+                int width = 2 * originalTileSize / 3;
+                int height = 2 * originalTileSize / 3;
+                width = (int) (width * scale);
+                height = (int) (height * scale);
+                int x = screenX + originalTileSize / 2 - width / 2;
+                int y = screenY + originalTileSize / 2 - height / 2;
+                int arcW = 5 * width / 16;
+                int arcH = 5 * height / 16;
+                g2d.fillRoundRect(x, y,
+                    width, height,
+                    arcW, arcH);
+            }
         }
     }
 
