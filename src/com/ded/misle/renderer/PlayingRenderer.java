@@ -90,11 +90,26 @@ public class PlayingRenderer extends AbstractRenderer {
         // Player planning
         Planner planner = player.getPlanner();
         if (planner.isPlanning()) drawPlanning(g2d);
-        else if (player.getPlanner().getLastTimeExecuted() + 1000 + Math.min(20L * player.stepCounter.getCurrentStep(), 1000) > currentTimeMillis()) {
-            Font baseFont = plannerCounter;
-            int centerX = originalScreenWidth / 2;
-            int y = originalScreenHeight / 2 - 100;
-            player.stepCounter.draw(g2d, baseFont, centerX, y);
+        else {
+            long lastTime = player.getPlanner().getLastTimeExecuted();
+            long extraTime = 1000 + Math.min(20L * player.stepCounter.getCurrentStep(), 1000);
+            long timeSinceEnd = currentTimeMillis() - lastTime;
+
+            if (timeSinceEnd < extraTime) {
+                float alpha = 1.0f - (float) timeSinceEnd / extraTime;
+                alpha = Math.max(0, Math.min(1, alpha));
+
+                Composite original = g2d.getComposite();
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+
+                Font baseFont = plannerCounter;
+                int centerX = originalScreenWidth / 2;
+                int y = originalScreenHeight / 2 - 100;
+                player.stepCounter.draw(g2d, baseFont, centerX, y);
+
+                g2d.setComposite(original);
+            }
+
         }
 
         // Player position adjustments
