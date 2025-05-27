@@ -89,7 +89,8 @@ public class AnimatedStepCounter {
             }
 
             // Text itself
-            gImg.setColor(new Color(0x16FFEF));
+            float normalizedStep = Math.min(currentStep / 100f, 1f);
+            gImg.setColor(interpolateGradient(normalizedStep));
             gImg.drawString(text, drawX, drawY);
             gImg.dispose();
 
@@ -104,6 +105,34 @@ public class AnimatedStepCounter {
             textHeight,
             null
         );
+    }
+
+    private Color interpolateGradient(float t) {
+        t = Math.max(0f, Math.min(1f, t));
+
+        Color[] colors = {
+            new Color(0x16FFEF),
+            new Color(0x4FF95B),
+            new Color(0xFFD232),
+            new Color(0xFF781E),
+            new Color(0xFF0000),
+        };
+
+        float segment = 1f / (colors.length - 1);
+        int index = (int)(t / segment);
+
+        if (index >= colors.length - 1) return colors[colors.length - 1];
+
+        float localT = (t - (index * segment)) / segment;
+
+        Color c1 = colors[index];
+        Color c2 = colors[index + 1];
+
+        int r = (int)(c1.getRed() * (1 - localT) + c2.getRed() * localT);
+        int g = (int)(c1.getGreen() * (1 - localT) + c2.getGreen() * localT);
+        int b = (int)(c1.getBlue() * (1 - localT) + c2.getBlue() * localT);
+
+        return new Color(r, g, b);
     }
 
     public int getCurrentStep() {
