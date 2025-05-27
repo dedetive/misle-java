@@ -1,6 +1,7 @@
 package com.ded.misle.input;
 
 import com.ded.misle.world.entities.player.Planner;
+import com.ded.misle.world.entities.player.PlayerStats;
 import com.ded.misle.world.logic.LogicManager;
 import com.ded.misle.world.boxes.BoxManipulation;
 import com.ded.misle.world.entities.npcs.NPC;
@@ -363,6 +364,11 @@ public class KeyHandler implements KeyListener {
 			// MOVING
 
 			if (!player.attr.isDead() && !planner.isExecuting()) {
+				if (willMovePlayer[0] != 0 && willMovePlayer[1] != 0) {
+					byte moveJudge = (byte) (player.stats.getSteps(PlayerStats.Direction.TOTAL) % 2);
+					willMovePlayer[moveJudge] = 0;
+				}
+
 				if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
 					PlayerAttributes.KnockbackDirection horizontalDirection = PlayerAttributes.KnockbackDirection.NONE;
 					PlayerAttributes.KnockbackDirection verticalDirection = PlayerAttributes.KnockbackDirection.NONE;
