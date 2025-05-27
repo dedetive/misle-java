@@ -584,6 +584,13 @@ public class PlayingRenderer extends AbstractRenderer {
                     arcW, arcH
                 );
             }
+
+            if (player.getPlanner().isExecuting()) {
+                Font baseFont = plannerCounter;
+                int centerX = originalScreenWidth / 2;
+                int bottomY = originalScreenHeight / 2 + 32;
+                player.stepCounter.draw(g2d, baseFont, centerX, bottomY);
+            }
         }
     }
 

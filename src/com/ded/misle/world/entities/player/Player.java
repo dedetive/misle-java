@@ -1,5 +1,6 @@
 package com.ded.misle.world.entities.player;
 
+import com.ded.misle.renderer.AnimatedStepCounter;
 import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.world.entities.HPBox;
 
@@ -18,6 +19,7 @@ public class Player extends HPBox {
 	public final PlayerStats stats;
 	public final Inventory inv;
 	private Planner planner;
+	public final AnimatedStepCounter stepCounter = new AnimatedStepCounter();
 
 	public int currentSaveSlot;
 	public String name = "";

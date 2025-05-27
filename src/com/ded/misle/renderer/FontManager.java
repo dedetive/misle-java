@@ -34,7 +34,7 @@ public abstract class FontManager {
     public static Font dialogNPCText = loadFont("/fonts/Ubuntu-Regular.ttf", 14);
     public static Font coinTextFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", 19);
     public static Font backupAdvisorFont = loadFont("/fonts/Ubuntu-Medium.ttf", 6);
-    public static Font plannerCounter = loadFont("/fonts/Ubuntu-Medium.ttf", 40);
+    public static Font plannerCounter = loadFont("/fonts/Ubuntu-Medium.ttf", 30);
 
     private static final HashMap<Font, Integer> fontToSize = new HashMap<>(){{
         put(titleFont, 26);
@@ -46,7 +46,7 @@ public abstract class FontManager {
         put(dialogNPCText, 14);
         put(coinTextFont, 19);
         put(backupAdvisorFont, 6);
-        put(plannerCounter, 40);
+        put(plannerCounter, 30);
     }};
 
     private static int getSize(Font font) {
@@ -56,11 +56,9 @@ public abstract class FontManager {
         return fontToSize.getOrDefault(font, 0);
     }
 
-    private static DecimalFormat df = new DecimalFormat("#.#");
     public static Font getResizedFont(Font font, float size) {
-        System.out.println(fontCache.size());
-        return fontCache.computeIfAbsent(font + df.format(size),
-            (e) -> font.deriveFont(size));
+        return fontCache.computeIfAbsent(String.valueOf(font) + Math.floor(size),
+            (e) -> font.deriveFont((float) (int) size));
     }
 
     static {

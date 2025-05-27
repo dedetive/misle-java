@@ -1,5 +1,6 @@
 package com.ded.misle.world.entities.player;
 
+import com.ded.misle.renderer.AnimatedStepCounter;
 import com.ded.misle.renderer.SmoothPosition;
 import com.ded.misle.world.boxes.BoxManipulation;
 import com.ded.misle.world.logic.LogicManager;
@@ -7,6 +8,7 @@ import com.ded.misle.world.logic.Path;
 import com.ded.misle.world.logic.PhysicsEngine;
 
 import java.awt.*;
+import java.util.Arrays;
 
 import static com.ded.misle.game.GamePanel.*;
 
@@ -195,6 +197,8 @@ public class Planner {
                     continue;
                 }
 
+                player.stepCounter.updateStep(player.stepCounter.getCurrentStep() + 1);
+
                 delayPerTurn = quickExecution
                     ? QUICK_DELAY_PER_TURN
                     : Math.max(delayPerTurn - DELAY_REDUCTION_PER_TURN, MINIMUM_DELAY_PER_TURN);
@@ -220,6 +224,7 @@ public class Planner {
                 }
             }
 
+            player.stepCounter.reset();
             quickExecution = false;
             isExecuting = false;
         });
