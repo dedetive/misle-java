@@ -370,19 +370,6 @@ public class KeyHandler implements KeyListener {
 				}
 
 				if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
-					PlayerAttributes.KnockbackDirection horizontalDirection = PlayerAttributes.KnockbackDirection.NONE;
-					PlayerAttributes.KnockbackDirection verticalDirection = PlayerAttributes.KnockbackDirection.NONE;
-					if (willMovePlayer[0] > 0) {
-						horizontalDirection = PlayerAttributes.KnockbackDirection.RIGHT;
-					} else {
-						horizontalDirection = PlayerAttributes.KnockbackDirection.LEFT;
-					}
-					if (willMovePlayer[1] > 0) {
-						verticalDirection = PlayerAttributes.KnockbackDirection.DOWN;
-					} else {
-						verticalDirection = PlayerAttributes.KnockbackDirection.UP;
-					}
-
                     if (isPlanning) {
 						Point lastPoint = planner.getEnd();
 						int currentX = lastPoint != null ? lastPoint.x : player.getX();
