@@ -179,11 +179,23 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 	}
 
 	public void updateMouse() {
-		if (player.getPlanner().isExecuting()) {
+		if (player.getPlanner().isPlanning()) {
+			if (isLeftPressed()) {
+				player.getPlanner().executePlan();
+			} else if (isRightPressed()) {
+				player.getPlanner().undo();
+			}
+		}
+
+
+		else if (player.getPlanner().isExecuting()) {
 			if (isLeftPressed() || isRightPressed()) {
 				player.getPlanner().skipStep();
 			}
-		} else {
+		}
+
+
+		else {
 			switch (gameState) {
 				case GameState.PLAYING -> {
 					if (isAnyPressed()) {
