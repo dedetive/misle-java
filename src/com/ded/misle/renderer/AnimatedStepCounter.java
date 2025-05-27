@@ -4,6 +4,8 @@ import com.ded.misle.core.PraspomiaNumberConverter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AnimatedStepCounter {
     private int currentStep = 0;
@@ -18,6 +20,8 @@ public class AnimatedStepCounter {
     private static final float SCALE_INCREMENT = 0.1f;
     private static final float JUMP_HEIGHT = 10f;
     private static final long ANIMATION_DURATION = 300;
+
+    private final Map<String, BufferedImage> renderCache = new HashMap<>();
 
     public void updateStep(int step) {
         currentStep = step;
@@ -51,39 +55,46 @@ public class AnimatedStepCounter {
         int textWidth = fm.stringWidth(text);
         int textHeight = fm.getHeight();
 
-        int scaleFactor = 3;
-        int imgWidth = textWidth * scaleFactor + 8;
-        int imgHeight = textHeight * scaleFactor + 8;
+        String cacheKey = text + "@" + (int) scale;
+        BufferedImage img = renderCache.get(cacheKey);
 
-        BufferedImage img = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D gImg = img.createGraphics();
+        if (img == null) {
+            int scaleFactor = 3;
+            int imgWidth = textWidth * scaleFactor + 8;
+            int imgHeight = textHeight * scaleFactor + 8;
 
-        gImg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        gImg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        gImg.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            img = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D gImg = img.createGraphics();
 
-        gImg.scale(scaleFactor, scaleFactor);
-        gImg.setFont(scaledFont);
-        FontMetrics fmImg = gImg.getFontMetrics();
+            gImg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            gImg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            gImg.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
-        int drawX = 2;
-        int drawY = fmImg.getAscent() + 2;
+            gImg.scale(scaleFactor, scaleFactor);
+            gImg.setFont(scaledFont);
+            FontMetrics fmImg = gImg.getFontMetrics();
 
-        // Shadow
-        gImg.setColor(new Color(0x002020));
-        int shadowOffset = 1;
-        for (int dx = -shadowOffset; dx <= shadowOffset; dx++) {
-            for (int dy = -shadowOffset; dy <= shadowOffset; dy++) {
-                if (dx != 0 || dy != 0) {
-                    gImg.drawString(text, drawX + dx, drawY + dy);
+            int drawX = 2;
+            int drawY = fmImg.getAscent() + 2;
+
+            // Shadow
+            gImg.setColor(new Color(0x002020));
+            int shadowOffset = 1;
+            for (int dx = -shadowOffset; dx <= shadowOffset; dx++) {
+                for (int dy = -shadowOffset; dy <= shadowOffset; dy++) {
+                    if (dx != 0 || dy != 0) {
+                        gImg.drawString(text, drawX + dx, drawY + dy);
+                    }
                 }
             }
-        }
 
-        // Text itself
-        gImg.setColor(new Color(0x16FFEF));
-        gImg.drawString(text, drawX, drawY);
-        gImg.dispose();
+            // Text itself
+            gImg.setColor(new Color(0x16FFEF));
+            gImg.drawString(text, drawX, drawY);
+            gImg.dispose();
+
+            renderCache.put(cacheKey, img);
+        }
 
         g2d.drawImage(
             img,
@@ -94,7 +105,6 @@ public class AnimatedStepCounter {
             null
         );
     }
-
 
     public int getCurrentStep() {
         return currentStep;
