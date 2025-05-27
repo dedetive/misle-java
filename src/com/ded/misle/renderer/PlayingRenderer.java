@@ -607,10 +607,21 @@ public class PlayingRenderer extends AbstractRenderer {
             }
 
             if (player.getPlanner().isExecuting()) {
+                long executionTime = currentTimeMillis() - player.getPlanner().getLastTimeStarted();
+                float fadeDuration = 750f;
+                float a = Math.min(1.0f, executionTime / fadeDuration);
+
+                Composite original = g2d.getComposite();
+                if (a != 1) {
+                    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, a));
+                }
+
                 Font baseFont = plannerCounter;
                 int centerX = originalScreenWidth / 2;
                 int y = originalScreenHeight / 2 - 100;
                 player.stepCounter.draw(g2d, baseFont, centerX, y);
+
+                g2d.setComposite(original);
             }
         }
     }
