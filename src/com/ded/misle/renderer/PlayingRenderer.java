@@ -90,6 +90,12 @@ public class PlayingRenderer extends AbstractRenderer {
         // Player planning
         Planner planner = player.getPlanner();
         if (planner.isPlanning()) drawPlanning(g2d);
+        else if (player.getPlanner().getLastTimeExecuted() + 1000 + Math.min(20L * player.stepCounter.getCurrentStep(), 1000) > currentTimeMillis()) {
+            Font baseFont = plannerCounter;
+            int centerX = originalScreenWidth / 2;
+            int y = originalScreenHeight / 2 - 100;
+            player.stepCounter.draw(g2d, baseFont, centerX, y);
+        }
 
         // Player position adjustments
         player.updateVisualPosition(50f);
