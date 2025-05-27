@@ -3,6 +3,7 @@ package com.ded.misle.renderer;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 
 import static com.ded.misle.core.LanguageManager.getCurrentScript;
@@ -33,7 +34,7 @@ public abstract class FontManager {
     public static Font dialogNPCText = loadFont("/fonts/Ubuntu-Regular.ttf", 14);
     public static Font coinTextFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", 19);
     public static Font backupAdvisorFont = loadFont("/fonts/Ubuntu-Medium.ttf", 6);
-    public static Font plannerCounter = loadFont("/fonts/Ubuntu-Medium.ttf", 20);
+    public static Font plannerCounter = loadFont("/fonts/Ubuntu-Medium.ttf", 40);
 
     private static final HashMap<Font, Integer> fontToSize = new HashMap<>(){{
         put(titleFont, 26);
@@ -45,7 +46,7 @@ public abstract class FontManager {
         put(dialogNPCText, 14);
         put(coinTextFont, 19);
         put(backupAdvisorFont, 6);
-        put(plannerCounter, 20);
+        put(plannerCounter, 40);
     }};
 
     private static int getSize(Font font) {
@@ -55,13 +56,11 @@ public abstract class FontManager {
         return fontToSize.getOrDefault(font, 0);
     }
 
+    private static DecimalFormat df = new DecimalFormat("#.#");
     public static Font getResizedFont(Font font, float size) {
-        if (fontCache.containsKey(String.valueOf(font)) &&
-        getSize(fontCache.get(String.valueOf(font))) == (int) size) {
-            return font;
-        } else {
-            return fontCache.put(String.valueOf(font.deriveFont(size)), font);
-        }
+        System.out.println(fontCache.size());
+        return fontCache.computeIfAbsent(font + df.format(size),
+            (e) -> font.deriveFont(size));
     }
 
     static {
