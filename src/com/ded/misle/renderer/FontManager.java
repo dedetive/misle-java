@@ -55,7 +55,7 @@ public abstract class FontManager {
         return fontToSize.getOrDefault(font, 0);
     }
 
-    public static Font getScaledFont(Font font, float size) {
+    public static Font getResizedFont(Font font, float size) {
         if (fontCache.containsKey(String.valueOf(font)) &&
         getSize(fontCache.get(String.valueOf(font))) == (int) size) {
             return font;
