@@ -65,6 +65,8 @@ public class Planner {
         if (!path.contains(point)) {
             path.addPoint(point);
             smoothPos.setTarget(point.x, point.y);
+        } else if (getPoints()[getPoints().length - 2].equals(point)) {
+            undo();
         }
     }
 
