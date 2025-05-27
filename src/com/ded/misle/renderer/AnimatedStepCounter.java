@@ -4,7 +4,6 @@ import com.ded.misle.core.PraspomiaNumberConverter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 
 public class AnimatedStepCounter {
     private int currentStep = 0;
@@ -45,26 +44,33 @@ public class AnimatedStepCounter {
 
     public void draw(Graphics2D g2d, Font baseFont, int x, int y) {
         update();
-        Font scaled = FontManager.getResizedFont(baseFont, baseFont.getSize() * scale);
-
-        Point dimensions = new Point((int) (baseFont.getSize() * scale), (int) (baseFont.getSize() * scale));
-        BufferedImage img = new BufferedImage(dimensions.x, dimensions.y, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D gImg = img.createGraphics();
-        gImg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
-        gImg.setFont(scaled);
-        FontMetrics fm = FontManager.getCachedMetrics(gImg, scaled);
-
         String text = PraspomiaNumberConverter.impureConvertNumberSystem(String.valueOf(currentStep), PraspomiaNumberConverter.ConvertMode.TO_PRASPOMIA);
+        Font scaledFont = FontManager.getResizedFont(baseFont, baseFont.getSize() * scale);
+
+        FontMetrics fm = FontManager.getCachedMetrics(g2d, scaledFont);
         int textWidth = fm.stringWidth(text);
         int textHeight = fm.getHeight();
 
+        int scaleFactor = 3;
+        int imgWidth = textWidth * scaleFactor + 8;
+        int imgHeight = textHeight * scaleFactor + 8;
+
+        BufferedImage img = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D gImg = img.createGraphics();
+
+        gImg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        gImg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        gImg.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
+        gImg.scale(scaleFactor, scaleFactor);
+        gImg.setFont(scaledFont);
+        FontMetrics fmImg = gImg.getFontMetrics();
 
         int drawX = 2;
-        int drawY = fm.getAscent() + 2;
+        int drawY = fmImg.getAscent() + 2;
 
         // Shadow
-        gImg.setColor(Color.BLACK);
+        gImg.setColor(new Color(0x002020));
         int shadowOffset = 1;
         for (int dx = -shadowOffset; dx <= shadowOffset; dx++) {
             for (int dy = -shadowOffset; dy <= shadowOffset; dy++) {
@@ -75,12 +81,18 @@ public class AnimatedStepCounter {
         }
 
         // Text itself
-        gImg.setColor(new Color(0x06FFCC));
+        gImg.setColor(new Color(0x16FFEF));
         gImg.drawString(text, drawX, drawY);
-
         gImg.dispose();
 
-        g2d.drawImage(img, x - textWidth / 2, y + (int) yOffset - textHeight / 2, null);
+        g2d.drawImage(
+            img,
+            x - textWidth / 2,
+            y + (int) yOffset - textHeight / 2,
+            textWidth,
+            textHeight,
+            null
+        );
     }
 
 
