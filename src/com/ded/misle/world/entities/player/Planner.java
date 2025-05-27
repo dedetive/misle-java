@@ -41,6 +41,11 @@ public class Planner {
     private long lastTimeExecuted = 0;
 
     /**
+     * Indicates the last time this Plan has started execution.
+     */
+    private long lastTimeStarted = 0;
+
+    /**
      * Constructs a new Planner with an empty path and planning mode disabled.
      */
     public Planner(Point playerPosition) {
@@ -183,6 +188,7 @@ public class Planner {
         Thread executor = new Thread(() -> {
             Point previousPoint = new Point(-1, -1);
             delayPerTurn = DEFAULT_DELAY_PER_TURN;
+            lastTimeStarted = System.currentTimeMillis();
 
             for (Point point : this.path.getPoints()) {
                 if (!isExecuting) return;
@@ -272,6 +278,13 @@ public class Planner {
      */
     public long getLastTimeExecuted() {
         return lastTimeExecuted;
+    }
+
+    /**
+     * @return last time this Planner's plan was started.
+     */
+    public long getLastTimeStarted() {
+        return lastTimeStarted;
     }
 
     /**
