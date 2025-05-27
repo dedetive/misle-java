@@ -17,9 +17,9 @@ public abstract class FontManager {
 
 
     /**
-     *  Comfortaa, Ubuntu -> Supports Latin, Cyrillic and Greek
-     *  Basic -> Supports only Latin
-     *  NotoSansSC -> Supports Simplified Han, Hiragana, Katakana, Latin, Cyrillic, Greek and Hangul
+     *  Comfortaa, Ubuntu -> Supports Latin, Cyrillic and Greek<p>
+     *  Basic -> Supports only Latin<p>
+     *  NotoSansSC -> Supports Simplified Han, Hiragana, Katakana, Latin, Cyrillic, Greek and Hangul<p>
      *  Praspomia -> Supports only Praspomia (uses Greek characters), converts Latin into Praspomia equivalents (though limited)
      *
      */
@@ -33,6 +33,7 @@ public abstract class FontManager {
     public static Font dialogNPCText = loadFont("/fonts/Ubuntu-Regular.ttf", 14);
     public static Font coinTextFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", 19);
     public static Font backupAdvisorFont = loadFont("/fonts/Ubuntu-Medium.ttf", 6);
+    public static Font plannerCounter = loadFont("/fonts/Ubuntu-Medium.ttf", 20);
 
     private static final HashMap<Font, Integer> fontToSize = new HashMap<>(){{
         put(titleFont, 26);
@@ -44,6 +45,7 @@ public abstract class FontManager {
         put(dialogNPCText, 14);
         put(coinTextFont, 19);
         put(backupAdvisorFont, 6);
+        put(plannerCounter, 20);
     }};
 
     private static int getSize(Font font) {
@@ -51,6 +53,15 @@ public abstract class FontManager {
             fontToSize.put(font, font.getSize());
         }
         return fontToSize.getOrDefault(font, 0);
+    }
+
+    public static Font getScaledFont(Font font, float size) {
+        if (fontCache.containsKey(String.valueOf(font)) &&
+        getSize(fontCache.get(String.valueOf(font))) == (int) size) {
+            return font;
+        } else {
+            return fontCache.put(String.valueOf(font.deriveFont(size)), font);
+        }
     }
 
     static {
@@ -96,6 +107,7 @@ public abstract class FontManager {
                 dialogNPCName = loadFont("/fonts/Ubuntu-Medium.ttf", getSize(dialogNPCName));
                 dialogNPCText = loadFont("/fonts/Ubuntu-Regular.ttf", getSize(dialogNPCText));
                 backupAdvisorFont = loadFont("/fonts/Ubuntu-Medium.ttf", getSize(backupAdvisorFont));
+                plannerCounter = loadFont("/fonts/Ubuntu-Medium.ttf", getSize(plannerCounter));
             }
             case GREEK, CYRILLIC -> {
                 titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", getSize(titleFont));
@@ -105,6 +117,7 @@ public abstract class FontManager {
                 dialogNPCName = loadFont("/fonts/Ubuntu-Medium.ttf", getSize(dialogNPCName));
                 dialogNPCText = loadFont("/fonts/Ubuntu-Regular.ttf", getSize(dialogNPCText));
                 backupAdvisorFont = loadFont("/fonts/Ubuntu-Medium.ttf", getSize(backupAdvisorFont));
+                plannerCounter = loadFont("/fonts/Ubuntu-Medium.ttf", getSize(plannerCounter));
             }
             case SIMPLIFIED_HAN -> {
                 titleFont = loadFont("/fonts/NotoSansSC-SemiBold.ttf", getSize(titleFont));
@@ -114,6 +127,7 @@ public abstract class FontManager {
                 dialogNPCName = loadFont("/fonts/NotoSansSC-SemiBold.ttf", getSize(dialogNPCName));
                 dialogNPCText = loadFont("/fonts/NotoSansSC-Regular.ttf", getSize(dialogNPCText));
                 backupAdvisorFont = loadFont("/fonts/NotoSansSC-Regular.ttf", getSize(backupAdvisorFont));
+                plannerCounter = loadFont("/fonts/NotoSansSC-Regular.ttf", getSize(plannerCounter));
             }
             case PRASPOMIC -> {
                 titleFont = loadFont("/fonts/Praspomia-Regular.otf", getSize(titleFont));
@@ -123,6 +137,7 @@ public abstract class FontManager {
                 dialogNPCName = loadFont("/fonts/Praspomia-Regular.otf", getSize(dialogNPCName));
                 dialogNPCText = loadFont("/fonts/Praspomia-Regular.otf", getSize(dialogNPCText));
                 backupAdvisorFont = loadFont("/fonts/Praspomia-Regular.otf", getSize(backupAdvisorFont));
+                plannerCounter = loadFont("/fonts/Praspomia-Regular.otf", getSize(plannerCounter));
                 coinTextFont = loadFont("/fonts/Praspomia-Regular.otf", 17);
                 itemCountFont = loadFont("/fonts/Praspomia-Regular.otf", 13);
             }
