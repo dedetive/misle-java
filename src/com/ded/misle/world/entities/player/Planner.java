@@ -73,6 +73,10 @@ public class Planner {
      */
     public void undo() {
         path.undo();
+        if (path.getPoints().length == 0) {
+            isPlanning = false;
+            return;
+        }
         smoothPos.setTarget(path.getEnd().x, path.getEnd().y);
     }
 
