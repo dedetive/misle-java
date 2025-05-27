@@ -588,8 +588,8 @@ public class PlayingRenderer extends AbstractRenderer {
             if (player.getPlanner().isExecuting()) {
                 Font baseFont = plannerCounter;
                 int centerX = originalScreenWidth / 2;
-                int bottomY = originalScreenHeight / 2 + 32;
-                player.stepCounter.draw(g2d, baseFont, centerX, bottomY);
+                int y = originalScreenHeight / 2 - 100;
+                player.stepCounter.draw(g2d, baseFont, centerX, y);
             }
         }
     }
