@@ -69,6 +69,14 @@ public class Planner {
     }
 
     /**
+     * Undoes last move.
+     */
+    public void undo() {
+        path.undo();
+        smoothPos.setTarget(path.getEnd().x, path.getEnd().y);
+    }
+
+    /**
      * Returns the sequence of points currently stored in the planner.
      *
      * @return an array of Points representing the planned movement path
