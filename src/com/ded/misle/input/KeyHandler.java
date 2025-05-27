@@ -378,7 +378,9 @@ public class KeyHandler implements KeyListener {
 						int targetY = currentY + willMovePlayer[1];
                         if (!isSpaceOccupied(targetX, targetY)) {
                             planner.attemptToMove(new Point(targetX, targetY));
-                        }
+                        } else if (player.getX() == targetX && player.getY() == targetY) {
+                            planner.attemptToMove(new Point(targetX, targetY));
+						}
                     } else {
 						int targetX = player.getX() + willMovePlayer[0];
 						int targetY = player.getY() + willMovePlayer[1];
