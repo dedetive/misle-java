@@ -55,6 +55,18 @@ public class Player extends HPBox {
 	}
 
 	/**
+	 * When used, player unleashes an attack immediately, but only if held item is a valid weapon.<p>
+	 * A valid weapon is defined as having "weapon" as item type.
+	 */
+	public void attack() {
+		String heldItemType = this.inv.getSelectedItem().getType();
+
+		if (heldItemType.equals("weapon")) {
+			this.inv.useWeapon(System.currentTimeMillis());
+		}
+	}
+
+	/**
 	 * Returns the current Planner instance.
 	 * If no planner exists yet, a new one is created.
 	 * This method is used to access or modify the player's planning state.
