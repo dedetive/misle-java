@@ -110,15 +110,15 @@ public class SettingsManager {
 	}
 
 	private static Path attemptToFindPath(Path workingDir, String path) {
-		Path srcBranch = workingDir.resolve("src/").resolve(path);
-		Path secondaryBranch = workingDir.resolve(path);
+		Path srcBranch = workingDir.resolve("src/" + path);
+		Path outBranch = workingDir.resolve(path);
 
 		if (Files.exists(srcBranch)) {
 			return srcBranch;
-		} else if (Files.exists(secondaryBranch)) {
-			return secondaryBranch;
+		} else if (Files.exists(outBranch)) {
+			return outBranch;
 		} else {
-			throw new RuntimeException(secondaryBranch + " structure not found or incorrect");
+			throw new RuntimeException(outBranch + " structure not found or incorrect");
 		}
 	}
 
