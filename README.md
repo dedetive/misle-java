@@ -26,6 +26,7 @@ cd misle-java/
 mkdir out
 javac -d out $(find . -name "*.java")
 cp -r src/resources out/
+mkdir out/resources/savefiles/
 cd out
 java com.ded.misle.Launcher
 ```
