@@ -469,7 +469,8 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	static Thread pixelating;
-	final static float STEP = 0.1f;
+	final static float PIXELATION_STEP = 1f;
+	final static float UNPIXELATION_STEP = 2.2f;
 	public static void pixelate(long delay, float maximumBufferScale) {
 		GamePanel.maximumBufferScale = maximumBufferScale;
 		try {
@@ -478,9 +479,9 @@ public class GamePanel extends JPanel implements Runnable {
 
 		pixelating = new Thread(() -> {
 			while (bufferScale < maximumBufferScale) {
-				bufferScale = Math.min(bufferScale + STEP, maximumBufferScale);
+				bufferScale = Math.min(bufferScale + PIXELATION_STEP, maximumBufferScale);
 				try {
-					Thread.sleep((long) (delay * STEP / (maximumBufferScale - DEFAULT_BUFFER_SCALE)));
+					Thread.sleep((long) (delay * PIXELATION_STEP / (maximumBufferScale - DEFAULT_BUFFER_SCALE)));
 				} catch (InterruptedException e) {
 					break;
 				}
@@ -498,9 +499,9 @@ public class GamePanel extends JPanel implements Runnable {
 
 		unpixelating = new Thread(() -> {
 			while (bufferScale >= DEFAULT_BUFFER_SCALE) {
-				bufferScale = Math.max(bufferScale - STEP, DEFAULT_BUFFER_SCALE);
+				bufferScale = Math.max(bufferScale - UNPIXELATION_STEP, DEFAULT_BUFFER_SCALE);
 				try {
-					Thread.sleep((long) (delay * STEP / (maximumBufferScale - DEFAULT_BUFFER_SCALE)));
+					Thread.sleep((long) (delay * UNPIXELATION_STEP / (maximumBufferScale - DEFAULT_BUFFER_SCALE)));
 				} catch (InterruptedException e) {
 					break;
 				}

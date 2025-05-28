@@ -1,7 +1,6 @@
 package com.ded.misle.core;
 
 import com.ded.misle.items.Item;
-import com.ded.misle.renderer.ImageManager;
 import com.ded.misle.world.entities.player.PlayerAttributes;
 import com.ded.misle.world.entities.player.PlayerStats;
 
