@@ -1,5 +1,6 @@
 package com.ded.misle.input;
 
+import com.ded.misle.world.entities.HPBox;
 import com.ded.misle.world.entities.player.Planner;
 import com.ded.misle.world.entities.player.PlayerStats;
 import com.ded.misle.world.logic.LogicManager;
@@ -13,6 +14,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -384,9 +386,14 @@ public class KeyHandler implements KeyListener {
                     } else {
 						int targetX = player.getX() + willMovePlayer[0];
 						int targetY = player.getY() + willMovePlayer[1];
+							// Is empty
                         if (!isSpaceOccupied(targetX, targetY, player)) {
                             BoxManipulation.movePlayer(willMovePlayer[0], willMovePlayer[1]);
-                        }
+							// Has an HPBox
+                        } else if (Arrays.stream(player.pos.world.grid[targetX][targetY]).
+							anyMatch(box -> box instanceof HPBox)) {
+							player.attack();
+						}
                     }
                 }
 			}
