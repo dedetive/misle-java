@@ -100,7 +100,14 @@ public class SettingsManager {
 				return attemptToFindPath(workingDir, "resources");
 			}
 			case CONFIG -> {
-				return attemptToFindPath(workingDir, "resources/settings.config");
+				Path configPath = attemptToFindPath(workingDir, "resources/settings.config", false);
+				try {
+					if (configPath == null) Files.createFile(
+						getPath(GetPathTag.RESOURCES).resolve("settings.config"));
+				} catch (IOException e) {
+                    throw new RuntimeException("Could not create settings file", e);
+                }
+                return attemptToFindPath(workingDir, "resources/settings.config", true);
 			}
 			case GAME -> {
 				return attemptToFindPath(workingDir, "com/ded/misle");
@@ -110,6 +117,10 @@ public class SettingsManager {
 	}
 
 	private static Path attemptToFindPath(Path workingDir, String path) {
+		return attemptToFindPath(workingDir, path, true);
+	}
+
+	private static Path attemptToFindPath(Path workingDir, String path, boolean throwExceptionIfNotFound) {
 		Path srcBranch = workingDir.resolve("src/" + path);
 		Path outBranch = workingDir.resolve(path);
 
@@ -117,9 +128,10 @@ public class SettingsManager {
 			return srcBranch;
 		} else if (Files.exists(outBranch)) {
 			return outBranch;
-		} else {
+		} else if (throwExceptionIfNotFound) {
 			throw new RuntimeException(outBranch + " structure not found or incorrect");
 		}
+		return null;
 	}
 
 	public static void updateSetting(Setting<?> setting) {
