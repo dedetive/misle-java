@@ -80,7 +80,7 @@ public class SettingsManager {
 		} else if (Files.exists(outPath)) {
 			return outPath;
 		} else {
-			throw new RuntimeException("settings.config file not found");
+			throw new RuntimeException("com/ded/misle structure not found or incorrect");
 		}
 	}
 
