@@ -25,8 +25,7 @@ git clone https://github.com/dedetive/misle-java/
 cd misle-java/
 mkdir out
 javac -d out $(find . -name "*.java")
-cp -r src/com/ded/misle/resources out/com/ded/misle/
-cp -r src/com/ded/misle/items out/com/ded/misle/
+cp -r src/resources out/
 cd out
 java com.ded.misle.Launcher
 ```
