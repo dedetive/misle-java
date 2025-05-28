@@ -37,8 +37,7 @@ public class Travel extends Effect {
 
                 unloadBoxes();
                 loadBoxes();
-                player.setX(coordinates.x);
-                player.setY(coordinates.y);
+                player.setPos(coordinates.x, coordinates.y);
 
                 Timer loadWait = new Timer(300, evt -> {
                     unpixelate(2000);
