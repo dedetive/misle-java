@@ -107,7 +107,7 @@ public class Enemy extends HPBox {
         maxHP *= magnification;
 
         if (defaultDamageType) {
-            this.effect = new Damage(damage, damageRate);
+            this.effect = new Damage(damage, damageRate).setTriggersOnContact(false);
         }
         this.setMaxHP(maxHP);
         this.setHP(this.getMaxHP());
