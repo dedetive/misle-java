@@ -24,9 +24,9 @@ public class SettingsManager {
 	 */
 
 	public static void changeSetting(String setting, String changeTo) {
-		Path file = getPath();
-		Path settingsFile = file.resolve("resources/settings.config");
-		Path tempFile = file.resolve("resources/temp.config");
+		Path file = getPath(GetPathTag.RESOURCES);
+		Path settingsFile = getPath(GetPathTag.CONFIG);
+		Path tempFile = file.resolve("temp.config");
 
 		try (BufferedReader reader = Files.newBufferedReader(settingsFile);
 		     BufferedWriter writer = Files.newBufferedWriter(tempFile)) {
@@ -64,28 +64,66 @@ public class SettingsManager {
 		}
 	}
 
+	public enum GetPathTag {
+		GAME,
+		RESOURCES,
+		ROOT,
+		CONFIG
+
+		;
+
+		public static final GetPathTag DEFAULT_TAG = ROOT;
+	}
 
 	/**
-	 * Use this to get the path of the game, usually to equal to a variable. Has to be in a File format.
+	 * Returns get the root path of this project.
 	 *
-	 * @return the path of the game (com/ded/misle/) in a File format
+	 * @return the root path in a Path format
 	 */
 	public static Path getPath() {
-		Path workingDir = Paths.get(System.getProperty("user.dir"));
-		Path srcPath = workingDir.resolve("src/com/ded/misle");
-		Path outPath = workingDir.resolve("com/ded/misle");
+		return getPath(GetPathTag.DEFAULT_TAG);
+	}
 
-		if (Files.exists(srcPath)) {
-			return srcPath;
-		} else if (Files.exists(outPath)) {
-			return outPath;
+	/**
+	 * Returns get the path of the given tag.
+	 *
+	 * @return the given tag path
+	 */
+	public static Path getPath(GetPathTag tag) {
+		Path workingDir = Paths.get(System.getProperty("user.dir"));
+
+		switch (tag) {
+			case ROOT -> {
+				return workingDir;
+			}
+			case RESOURCES -> {
+				return attemptToFindPath(workingDir, "resources");
+			}
+			case CONFIG -> {
+				return attemptToFindPath(workingDir, "resources/settings.config");
+			}
+			case GAME -> {
+				return attemptToFindPath(workingDir, "com/ded/misle");
+			}
+		}
+		throw new RuntimeException(tag.name() + " tag not found when getting path");
+	}
+
+	private static Path attemptToFindPath(Path workingDir, String path) {
+		Path srcBranch = workingDir.resolve("src/").resolve(path);
+		Path secondaryBranch = workingDir.resolve(path);
+
+		if (Files.exists(srcBranch)) {
+			return srcBranch;
+		} else if (Files.exists(secondaryBranch)) {
+			return secondaryBranch;
 		} else {
-			throw new RuntimeException("com/ded/misle structure not found or incorrect");
+			throw new RuntimeException(secondaryBranch + " structure not found or incorrect");
 		}
 	}
 
 	public static void updateSetting(Setting<?> setting) {
-		Path file = getPath().resolve("resources/settings.config");
+		Path file = getPath(GetPathTag.CONFIG);
 		String result = "";
 
 		try (BufferedReader reader = Files.newBufferedReader(file)) {
@@ -121,7 +159,7 @@ public class SettingsManager {
 	 * @return the value of a specific setting from settings.config in a String format
 	 */
 	public static String getSetting(String args) {
-		Path file = getPath().resolve("resources/settings.config");
+		Path file = getPath(GetPathTag.CONFIG);
 		String result = "";
 
 		try (BufferedReader reader = Files.newBufferedReader(file)) {

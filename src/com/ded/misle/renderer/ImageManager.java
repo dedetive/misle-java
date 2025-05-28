@@ -1,5 +1,7 @@
 package com.ded.misle.renderer;
 
+import com.ded.misle.core.SettingsManager;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -54,7 +56,7 @@ public abstract class ImageManager {
         ;
 
         ImageName(String category, String fileName) {
-            Path basePath = getPath().resolve("resources/images/");
+            Path basePath = getPath(SettingsManager.GetPathTag.RESOURCES).resolve("images");
             Path fullPath = basePath.resolve(category + "/" + fileName);
             try {
                 cachedImages.put(this, ImageIO.read(fullPath.toFile()));
@@ -142,6 +144,8 @@ public abstract class ImageManager {
         return img;
     }
 
+    private final static Path screenshotDirectory = getPath(SettingsManager.GetPathTag.RESOURCES).resolve("screenshots");
+
     public static void saveScreenshot(BufferedImage img) {
         try {
             // File creator
@@ -149,9 +153,8 @@ public abstract class ImageManager {
             t = t.substring(0, t.indexOf("."));
             t = t.replace("T", ".");
 
-            createDirectories(Path.of(getPath() + "/resources/screenshots"));
-            ImageIO.write(img, "png", (getPath().resolve("resources/screenshots/" + t + ".png")).toFile());
-            //					System.out.println("Screenshot saved at " + getPath().resolve("resources/screenshots/" + t + ".png"));
+            createDirectories(screenshotDirectory);
+            ImageIO.write(img, "png", (screenshotDirectory.resolve(t + ".png")).toFile());
 
         } catch (IOException e) {
             System.out.println("Failed to take a screenshot");

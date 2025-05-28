@@ -4,19 +4,20 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/fonts" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/images" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/images/items" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/images/boxes" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/lang" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/audio" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/images/ui" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/images/characters" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/images/characters/enemy" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/images/characters/npc" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/images/characters/player" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/com/ded/misle/resources/rooms" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/resources/audio" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/resources/fonts" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/resources/images" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/resources/images/boxes" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/resources/images/characters" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/resources/images/characters/enemy" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/resources/images/characters/npc" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/resources/images/characters/player" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/resources/images/items" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/resources/images/ui" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/resources/lang" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/resources/rooms" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/resources/savefiles" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/out/production/Misle/com/ded/misle" />
       <excludeFolder url="file://$MODULE_DIR$/src/out" />
     </content>

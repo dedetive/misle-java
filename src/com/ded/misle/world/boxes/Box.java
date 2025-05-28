@@ -1,5 +1,6 @@
 package com.ded.misle.world.boxes;
 
+import com.ded.misle.core.SettingsManager;
 import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.renderer.ImageManager;
 import com.ded.misle.renderer.SmoothPosition;
@@ -331,7 +332,7 @@ public class Box {
 	public static BufferedImage getTexture(String boxTextureName) {
 		// Check if the texture is already cached
 		if (!cachedTextures.containsKey(boxTextureName)) {
-			Path basePath = getPath().resolve("resources/images/boxes/");
+			Path basePath = getPath(SettingsManager.GetPathTag.RESOURCES).resolve("images/boxes/");
 			String fileName = boxTextureName + ".png";
 			Path fullPath = basePath.resolve(fileName);
 

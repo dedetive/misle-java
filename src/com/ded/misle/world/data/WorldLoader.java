@@ -1,5 +1,6 @@
 package com.ded.misle.world.data;
 
+import com.ded.misle.core.SettingsManager;
 import com.ded.misle.world.logic.TurnTimer;
 import com.ded.misle.items.DropTable;
 import com.ded.misle.world.boxes.Box;
@@ -31,7 +32,7 @@ public abstract class WorldLoader {
 		room = roomIDToName(player.pos.getRoomID());
 		assert room != null;
 
-		Path basePath = getPath().resolve("resources/rooms/");
+		Path basePath = getPath(SettingsManager.GetPathTag.RESOURCES).resolve("rooms/");
 		int fileCount = room.fileNames.length;
 		Path[] fullPaths = new Path[fileCount];
 		BufferedImage[] roomImages = new BufferedImage[fileCount];

@@ -1,5 +1,7 @@
 package com.ded.misle.audio;
 
+import com.ded.misle.core.SettingsManager;
+
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +40,7 @@ public class AudioPlayer {
 		}
 
 		AudioFile(final int AUDIO_PLAYER_COUNT) {
-			this.path = getPath().resolve("resources/audio/" + this + ".wav").toString();
+			this.path = getPath(SettingsManager.GetPathTag.RESOURCES).resolve("audio/" + this + ".wav").toString();
 			for (int i = 0; i < AUDIO_PLAYER_COUNT; i++) {
 				this.audioPlayerList.add(new AudioPlayer(this.path));
 			}

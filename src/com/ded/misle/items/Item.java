@@ -1,6 +1,7 @@
 package com.ded.misle.items;
 
 import com.ded.misle.core.LanguageManager;
+import com.ded.misle.core.SettingsManager;
 import com.ded.misle.world.boxes.Box;
 
 import java.awt.*;
@@ -71,7 +72,7 @@ public class Item {
 			if (iconCache.containsKey(id)) {
 				this.icon = iconCache.get(id);
 			} else {
-				Path basePath = getPath().resolve("resources/images/items");
+				Path basePath = getPath(SettingsManager.GetPathTag.RESOURCES).resolve("images/items");
 				Path filePath = basePath.resolve(itemDetails.getResourceID() + ".png");
 
 				try {
@@ -165,7 +166,7 @@ public class Item {
 		if (iconCache.containsKey(id)) {
 			this.icon = iconCache.get(id);
 		} else {
-			Path basePath = getPath().resolve("resources/images/items");
+			Path basePath = getPath(SettingsManager.GetPathTag.RESOURCES).resolve("images/items");
 			Path filePath = basePath.resolve(resourceID + ".png");
 
 			try {

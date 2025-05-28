@@ -54,7 +54,7 @@ public class LanguageManager {
 			Locale locale = new Locale(parts[0], parts.length > 1 ? parts[1] : "");
 
 			// Load the target locale's messages
-			messages = ResourceBundle.getBundle("com.ded.misle.resources.lang.messages", locale, new ResourceBundle.Control() {
+			messages = ResourceBundle.getBundle("resources.lang.messages", locale, new ResourceBundle.Control() {
 				@Override
 				public Locale getFallbackLocale(String baseName, Locale locale) {
 					// Fall back to English if no match is found
@@ -63,10 +63,10 @@ public class LanguageManager {
 			});
 
 			// Load the English fallback messages
-			fallbackMessages = ResourceBundle.getBundle("com.ded.misle.resources.lang.messages", Locale.ENGLISH);
+			fallbackMessages = ResourceBundle.getBundle("resources.lang.messages", Locale.ENGLISH);
 		} catch (Exception e) {
 			// If any error occurs, fallback to English for both
-			messages = ResourceBundle.getBundle("com.ded.misle.resources.lang.messages", Locale.ENGLISH);
+			messages = ResourceBundle.getBundle("resources.lang.messages", Locale.ENGLISH);
 			fallbackMessages = messages;
 		}
 	}

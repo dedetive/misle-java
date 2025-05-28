@@ -29,7 +29,7 @@ public class SaveFile {
 	private static final Object fileLock = new Object();
 
 	// FILE PATH FOR .PNG
-	private static final Path filePath = getPath().resolve("savefile");
+	private static final Path filePath = getPath(SettingsManager.GetPathTag.RESOURCES).resolve("savefiles/savefile");
 	private static final File[] saves = new File[3];
 	private static final BufferedImage[] saveImages = new BufferedImage[3];
 	static {
