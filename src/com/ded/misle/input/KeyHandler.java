@@ -279,7 +279,11 @@ public class KeyHandler implements KeyListener {
 
 		// PLAYING EXCLUSIVE
 
-		if (gameState == GameState.PLAYING) {
+		playing: if (gameState == GameState.PLAYING) {
+			if (player.isWaiting()) {
+				break playing;
+			}
+
 			Planner planner = player.getPlanner();
 
 			if ((isPressed(PLANNING_TOGGLE) ||
