@@ -128,4 +128,9 @@ public class Range extends TilePattern {
     public static Range getDefaultRange() {
         return defaultRange;
     }
+
+    @Override
+    public Range clone() throws CloneNotSupportedException {
+        return (Range) super.clone();
+    }
 }
