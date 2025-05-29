@@ -69,10 +69,14 @@ public class Planner {
      */
     public void attemptToMove(Point point) {
         if (!isPlanning) return;
-        if (!path.contains(point) && enemyPoint == null) {
-            path.addPoint(point);
-            smoothPos.setTarget(point.x, point.y);
-        } else if (getPoints()[getPoints().length - 2].equals(point)) {
+        if (enemyPoint == null) {
+            if (!path.contains(point)) {
+                path.addPoint(point);
+                smoothPos.setTarget(point.x, point.y);
+            } else if (getPoints()[getPoints().length - 2].equals(point)) {
+                undo();
+            }
+        } else {
             undo();
         }
     }
