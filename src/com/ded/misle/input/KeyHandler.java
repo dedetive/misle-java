@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.game.GamePanel.*;
+import static com.ded.misle.world.entities.player.PlayerStats.Direction.interpretDirection;
 import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
 import static com.ded.misle.renderer.DialogRenderer.fillLetterDisplay;
 import static com.ded.misle.renderer.DialogRenderer.isLetterDisplayFull;
@@ -315,26 +316,26 @@ public class KeyHandler implements KeyListener {
 			if (isPressed(PAUSE)) {
 				pauseGame();
 			}
-			int[] willMovePlayer = {0, 0};
+			Point movement = new Point(0, 0);
 			int playerTilesPerStep = 1;
 			if (isPressed(UP)) {
 				if (!isPressed(LEFT) || !isPressed(RIGHT)) {
-					willMovePlayer[1] -= playerTilesPerStep;
+					movement.y -= playerTilesPerStep;
 				}
 			}
 			if (isPressed(DOWN)) {
 				if (!isPressed(LEFT) || !isPressed(RIGHT)) {
-					willMovePlayer[1] += playerTilesPerStep;
+					movement.y += playerTilesPerStep;
 				}
 			}
 			if (isPressed(LEFT)) {
 				if (!isPressed(UP) || !isPressed(DOWN)) {
-					willMovePlayer[0] -= playerTilesPerStep;
+					movement.x -= playerTilesPerStep;
 				}
 			}
 			if (isPressed(RIGHT)) {
 				if (!isPressed(UP) || !isPressed(DOWN)) {
-					willMovePlayer[0] += playerTilesPerStep;
+					movement.x += playerTilesPerStep;
 				}
 			}
 
@@ -354,7 +355,7 @@ public class KeyHandler implements KeyListener {
 				Timer timer = new Timer(delay, e -> {
 					player.setIsInvulnerable(false);
 				});
-				timer.setRepeats(false); // Ensure the timer only runs once
+				timer.setRepeats(false);
 				timer.start();
 
 			}
@@ -366,29 +367,31 @@ public class KeyHandler implements KeyListener {
 			// MOVING
 
 			if (!player.attr.isDead() && !planner.isExecuting()) {
-				if (willMovePlayer[0] != 0 && willMovePlayer[1] != 0) {
+				if (movement.x != 0 && movement.y != 0) {
 					byte moveJudge = (byte) (player.stats.getSteps(PlayerStats.Direction.TOTAL) % 2);
-					willMovePlayer[moveJudge] = 0;
+                    movement = moveJudge == 0
+						? new Point(movement.x, 0)
+						: new Point(0, movement.y);
 				}
 
-				if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
+				if (movement.x != 0 || movement.y != 0) {
                     if (isPlanning) {
 						Point lastPoint = planner.getEnd();
 						int currentX = lastPoint != null ? lastPoint.x : player.getX();
 						int currentY = lastPoint != null ? lastPoint.y : player.getY();
-                        int targetX = currentX + willMovePlayer[0];
-						int targetY = currentY + willMovePlayer[1];
+                        int targetX = currentX + movement.x;
+						int targetY = currentY + movement.y;
                         if (!isSpaceOccupied(targetX, targetY)) {
                             planner.attemptToMove(new Point(targetX, targetY));
                         } else if (player.getX() == targetX && player.getY() == targetY) {
                             planner.attemptToMove(new Point(targetX, targetY));
 						}
                     } else {
-						int targetX = player.getX() + willMovePlayer[0];
-						int targetY = player.getY() + willMovePlayer[1];
+						int targetX = player.getX() + movement.x;
+						int targetY = player.getY() + movement.y;
 							// Is empty
                         if (!isSpaceOccupied(targetX, targetY, player)) {
-                            BoxManipulation.movePlayer(willMovePlayer[0], willMovePlayer[1]);
+                            BoxManipulation.movePlayer(movement.x, movement.y);
 							// Has an HPBox
                         } else if (Arrays.stream(player.pos.world.grid[targetX][targetY]).
 							anyMatch(box -> box instanceof HPBox)) {
