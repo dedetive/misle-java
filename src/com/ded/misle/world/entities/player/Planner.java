@@ -29,6 +29,8 @@ public class Planner {
     /** Stores the sequence of planned points to move through. */
     private final Path path;
 
+    private Point enemyPoint;
+
     /**
      * Handles the interpolation for smooth visual transitions between path points.
      */
@@ -64,7 +66,7 @@ public class Planner {
      */
     public void attemptToMove(Point point) {
         if (!isPlanning) return;
-        if (!path.contains(point)) {
+        if (!path.contains(point) && enemyPoint == null) {
             path.addPoint(point);
             smoothPos.setTarget(point.x, point.y);
         } else if (getPoints()[getPoints().length - 2].equals(point)) {
@@ -72,11 +74,17 @@ public class Planner {
         }
     }
 
+    public void addEnemyPoint(Point point) {
+        attemptToMove(point);
+        this.enemyPoint = point;
+    }
+
     /**
      * Undoes last move.
      */
     public void undo() {
         path.undo();
+        if (enemyPoint != null) enemyPoint = null;
         if (path.getPoints().length == 0) {
             isPlanning = false;
             return;

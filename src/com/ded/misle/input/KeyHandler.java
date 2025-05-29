@@ -388,7 +388,7 @@ public class KeyHandler implements KeyListener {
                             planner.attemptToMove(new Point(targetX, targetY));
                         } else if (Arrays.stream(player.pos.world.grid[targetX][targetY]).
                             anyMatch(box -> box instanceof HPBox)) {
-							planner.attemptToMove(new Point(targetX, targetY));
+							planner.addEnemyPoint(new Point(targetX, targetY));
                         }
                     } else {
 						int targetX = player.getX() + movement.x;
