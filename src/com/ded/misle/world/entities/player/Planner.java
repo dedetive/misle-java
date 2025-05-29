@@ -11,6 +11,8 @@ import java.awt.*;
 import java.util.Arrays;
 
 import static com.ded.misle.game.GamePanel.*;
+import static com.ded.misle.world.entities.player.PlayerStats.Direction.interpretDirection;
+import static com.ded.misle.world.entities.player.PlayerStats.Direction.updateLastDirection;
 
 /**
  * Manages the movement planning mode for the player.
@@ -230,8 +232,16 @@ public class Planner {
                     : Math.max(delayPerTurn - DELAY_REDUCTION_PER_TURN, MINIMUM_DELAY_PER_TURN);
 
                 path.removePoint(previousPoint);
+                Point unitaryPoint = new Point(point.x - player.getX(), point.y - player.getY());
                 if (!PhysicsEngine.isSpaceOccupied(point.x, point.y, player))
-                    BoxManipulation.movePlayer(point.x - player.getX(), point.y - player.getY());
+                    BoxManipulation.movePlayer(unitaryPoint.x, unitaryPoint.y);
+                else {
+                    // Kills execution sooner, so no damage multi
+                    isPlanning = false;
+                    isExecuting = false;
+                    player.inv.useItem();
+                }
+                updateLastDirection(interpretDirection(unitaryPoint.x, unitaryPoint.y));
                 LogicManager.requestNewTurn();
                 previousPoint = point;
 
