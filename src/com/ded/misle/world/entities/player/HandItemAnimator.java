@@ -40,7 +40,7 @@ public class HandItemAnimator {
             switch (direction) {
                 case UP -> attacker.getRange().rotate(TilePattern.Rotation.DEG_90);
                 case DOWN -> attacker.getRange().rotate(TilePattern.Rotation.DEG_270);
-                case LEFT -> attacker.getRange().mirror(HORIZONTAL);
+                case LEFT -> attacker.getRange().rotate(TilePattern.Rotation.DEG_180);
                 default -> attacker.getRange();
             }
         );

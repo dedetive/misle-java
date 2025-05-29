@@ -34,7 +34,7 @@ public class WeaponAttacker {
         switch (direction) {
             case UP -> range.rotate(TilePattern.Rotation.DEG_90);
             case DOWN -> range.rotate(TilePattern.Rotation.DEG_270);
-            case LEFT -> range.mirror(HORIZONTAL);
+            case LEFT -> range.rotate(TilePattern.Rotation.DEG_180);
             default -> {}
         }
 
