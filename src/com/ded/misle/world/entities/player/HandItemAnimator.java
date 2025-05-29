@@ -34,6 +34,8 @@ public class HandItemAnimator {
     }
 
     public Range getRange(PlayerStats.Direction direction) {
+        update();
+
         attacker.setRange((Range)
             switch (direction) {
                 case UP -> attacker.getRange().rotate(TilePattern.Rotation.DEG_90);
@@ -43,7 +45,6 @@ public class HandItemAnimator {
             }
         );
 
-        update();
         return attacker.getRange();
     }
 

@@ -563,7 +563,13 @@ public class PlayingRenderer extends AbstractRenderer {
         Point finalPoint = player.getPlanner().hasEnemyPoint()
             ? player.getPlannerState()[player.getPlannerState().length - 2]
             : player.getPlanner().getEnd();
+
+        Point previousPoint = new Point(player.getX(), player.getY());
+
         for (Point point : player.getPlannerState()) {
+            Point difference = new Point(point.x - previousPoint.x, point.y - previousPoint.y);
+            previousPoint = point;
+
             if (player.getPlannerState()[0].equals(point)) continue;
 
             i++;
@@ -611,7 +617,7 @@ public class PlayingRenderer extends AbstractRenderer {
                     rect.height = height;
                     Point arc = new Point(arcW, arcH);
 
-                    drawAttackPreview(g2d, rect, arc);
+                    drawAttackPreview(g2d, rect, arc, difference);
                 } else {
                     g2d.setColor(color);
 
@@ -647,8 +653,9 @@ public class PlayingRenderer extends AbstractRenderer {
         }
     }
 
-    private void drawAttackPreview(Graphics2D g2d, Rectangle rect, Point arc) {
-        Range attackRange = player.animator.getRange(player.stats.getWalkingDirection());
+    private void drawAttackPreview(Graphics2D g2d, Rectangle rect, Point arc, Point directionVec) {
+        PlayerStats.Direction direction = interpretDirection(directionVec.x, directionVec.y);
+        Range attackRange = player.animator.getRange(direction);
 
         int x = rect.x;
         int y = rect.y;
