@@ -653,6 +653,22 @@ public class PlayingRenderer extends AbstractRenderer {
         }
     }
 
+    private void calculateAndDrawPreview(Graphics2D g2d, int cameraOffsetX, int cameraOffsetY, Point finalPoint, Point difference, int width, int height, int arcW, int arcH) {
+        int screenX;
+        int screenY;
+        screenX = finalPoint.x * originalTileSize - cameraOffsetX;
+        screenY = finalPoint.y * originalTileSize - cameraOffsetY;
+
+        Rectangle rect = new Rectangle();
+        rect.x = screenX + originalTileSize / 2 - width / 2;
+        rect.y = screenY + originalTileSize / 2 - height / 2;
+        rect.width = width;
+        rect.height = height;
+        Point arc = new Point(arcW, arcH);
+
+        drawAttackPreview(g2d, rect, arc, difference);
+    }
+
     private void drawAttackPreview(Graphics2D g2d, Rectangle rect, Point arc, Point directionVec) {
         PlayerStats.Direction direction = interpretDirection(directionVec.x, directionVec.y);
         Range attackRange = player.animator.getRange(direction);
