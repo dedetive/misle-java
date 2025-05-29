@@ -601,25 +601,17 @@ public class PlayingRenderer extends AbstractRenderer {
                 int arcH = 5 * height / 16;
 
                 if (point.equals(player.getPlannerState()[player.getPlannerState().length - 1])) {
-                    Range attackRange = player.animator.getRange(player.stats.getWalkingDirection());
-
                     screenX = finalPoint.x * originalTileSize - cameraOffsetX;
                     screenY = finalPoint.y * originalTileSize - cameraOffsetY;
-                    x = screenX + originalTileSize / 2 - width / 2;
-                    y = screenY + originalTileSize / 2 - height / 2;
 
-                    for (Point attackPoint : attackRange.getPoints()) {
-                        g2d.setColor(new Color(0xA6DE4040, true));
-                        g2d.fillRoundRect(x + attackPoint.x * originalTileSize, y + attackPoint.y * originalTileSize,
-                            width, height,
-                            arcW, arcH);
+                    Rectangle rect = new Rectangle();
+                    rect.x = screenX + originalTileSize / 2 - width / 2;
+                    rect.y = screenY + originalTileSize / 2 - height / 2;
+                    rect.width = width;
+                    rect.height = height;
+                    Point arc = new Point(arcW, arcH);
 
-                        g2d.setColor(new Color(255, 255, 255, 110));
-                        g2d.drawRoundRect(x + attackPoint.x * originalTileSize, y + attackPoint.y * originalTileSize,
-                            width, height,
-                            arcW, arcH
-                        );
-                    }
+                    drawAttackPreview(g2d, rect, arc);
                 } else {
                     g2d.setColor(color);
 
@@ -652,6 +644,26 @@ public class PlayingRenderer extends AbstractRenderer {
 
                 g2d.setComposite(original);
             }
+        }
+    }
+
+    private void drawAttackPreview(Graphics2D g2d, Rectangle rect, Point arc) {
+        Range attackRange = player.animator.getRange(player.stats.getWalkingDirection());
+
+        int x = rect.x;
+        int y = rect.y;
+
+        for (Point attackPoint : attackRange.getPoints()) {
+            g2d.setColor(new Color(0xA6DE4040, true));
+            g2d.fillRoundRect(x + attackPoint.x * originalTileSize, y + attackPoint.y * originalTileSize,
+                rect.width, rect.height,
+                arc.x, arc.y);
+
+            g2d.setColor(new Color(255, 255, 255, 110));
+            g2d.drawRoundRect(x + attackPoint.x * originalTileSize, y + attackPoint.y * originalTileSize,
+                rect.width, rect.height,
+                arc.x, arc.y
+            );
         }
     }
 
