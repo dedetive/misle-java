@@ -182,7 +182,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 		boolean isPlanning = player.getPlanner().isPlanning();
 		boolean isExecuting = player.getPlanner().isExecuting();
 
-		if (isPlanning && !isExecuting) {
+		mouseValidation: if (isPlanning && !isExecuting) {
 			if (isLeftPressed()) {
 				player.getPlanner().executePlan();
 			} else if (isRightPressed()) {
@@ -199,6 +199,9 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 
 		else {
+			if (player.isWaiting()) {
+				break mouseValidation;
+			}
 			switch (gameState) {
 				case GameState.PLAYING -> {
 					if (isAnyPressed()) {
