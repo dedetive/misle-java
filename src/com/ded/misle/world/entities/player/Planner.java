@@ -29,6 +29,9 @@ public class Planner {
     /** Stores the sequence of planned points to move through. */
     private final Path path;
 
+    /**
+     * Indicates the last, unpassable point when a point in the plan touches a living object.
+     */
     private Point enemyPoint;
 
     /**
@@ -74,9 +77,24 @@ public class Planner {
         }
     }
 
+    /**
+     * Sets the last, unpassable point. Ideally when a point in the plan touches a living object.<p>
+     * Note this enemy point is also a valid entry in this plan's Path.<p>
+     * Also note only one point can be added. To add another, the last movement should be undone before.
+     * @param point the target point to be marked as the enemy point
+     */
     public void addEnemyPoint(Point point) {
+        if (hasEnemyPoint()) return;
         attemptToMove(point);
         this.enemyPoint = point;
+    }
+
+    /**
+     * Returns whether this plan has a point marked as an enemy point.
+     * @return whether this has an enemy point
+     */
+    public boolean hasEnemyPoint() {
+        return enemyPoint != null;
     }
 
     /**
