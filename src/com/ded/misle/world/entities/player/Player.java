@@ -19,7 +19,7 @@ public class Player extends HPBox {
 	public final PlayerStats stats;
 	public final Inventory inv;
 	private Planner planner;
-	public HandItemAnimator animator;
+	public HandItemAnimator animator = new HandItemAnimator();
 	public final AnimatedStepCounter stepCounter = new AnimatedStepCounter();
 
 	public int currentSaveSlot;
@@ -27,6 +27,8 @@ public class Player extends HPBox {
 	public BufferedImage icon;
 	public boolean isIconActive;
 	public boolean isIconTexture;
+
+	private boolean waiting;
 
 	public Player() {
 		this.setTexture("invisible");
@@ -53,6 +55,14 @@ public class Player extends HPBox {
 		this.inv.destroyTempItem();
 		this.pos.setSpawnpoint(1);
 		this.getPlanner().killExecution();
+	}
+
+	public void setWaiting(boolean waiting) {
+		this.waiting = waiting;
+	}
+
+	public boolean isWaiting() {
+		return waiting;
 	}
 
 	/**

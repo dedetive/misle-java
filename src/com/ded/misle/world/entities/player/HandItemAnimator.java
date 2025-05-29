@@ -13,6 +13,11 @@ import static com.ded.misle.game.GamePanel.player;
 public class HandItemAnimator {
     private final WeaponAttacker attacker = new WeaponAttacker();
 
+    public void update() {
+
+
+    }
+
     private void scheduleAnimation(int delay, Runnable action) {
         Timer timer = new Timer(delay, evt -> action.run());
         timer.setRepeats(false);
@@ -22,6 +27,7 @@ public class HandItemAnimator {
     public void animateClaw() {
         // PREPARATION (move claw up and swing back)
         Item selectedItem = player.inv.getSelectedItem();
+        player.setWaiting(true);
 
         selectedItem.delayedSetAnimationRotation(-75, 180);
         selectedItem.delayedChangeAnimationBulk(0.175, 180);
@@ -45,6 +51,7 @@ public class HandItemAnimator {
 
             // RETURN TO ORIGINAL POSITION
             scheduleAnimation(60, () -> {
+                player.setWaiting(false);
 
                 if (player.inv.getSelectedItem() != selectedItem) {
                     return;
