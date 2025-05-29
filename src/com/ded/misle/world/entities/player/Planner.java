@@ -85,7 +85,7 @@ public class Planner {
      */
     public void addEnemyPoint(Point point) {
         if (hasEnemyPoint()) return;
-        attemptToMove(point);
+        path.addPoint(point);
         this.enemyPoint = point;
     }
 
