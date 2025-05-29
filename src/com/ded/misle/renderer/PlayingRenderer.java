@@ -587,6 +587,18 @@ public class PlayingRenderer extends AbstractRenderer {
             int b = (int) (planningColor.getBlue() + (255 - planningColor.getBlue()) * (1 - progress));
             Color color = new Color(r, g, b, alpha);
 
+            float scale = (float) (0.7 + 0.3f * progress);
+            int width = 2 * originalTileSize / 3;
+            int height = 2 * originalTileSize / 3;
+            width = (int) (width * scale);
+            height = (int) (height * scale);
+            int x = screenX + originalTileSize / 2 - width / 2;
+            int y = screenY + originalTileSize / 2 - height / 2;
+            int arcW = 5 * width / 16;
+            int arcH = 5 * height / 16;
+
+            boolean willDrawPreview = point.equals(player.getPlannerState()[player.getPlannerState().length - 1]);
+
             if (point.equals(finalPoint)) {
                 g2d.setColor(new Color(255, 255, 255, 80));
                 g2d.fillRect(screenX - (scaledTileDifference), screenY - (scaledTileDifference),
@@ -594,30 +606,13 @@ public class PlayingRenderer extends AbstractRenderer {
 
                 g2d.setColor(color);
                 g2d.fillRect(screenX - (scaledTileDifference / 2), screenY - (scaledTileDifference / 2), scaledTile, scaledTile);
+
+                if (willDrawPreview)
+                    calculateAndDrawPreview(g2d, cameraOffsetX, cameraOffsetY, finalPoint, difference, width, height, arcW, arcH);
             }
             else {
-                float scale = (float) (0.7 + 0.3f * progress);
-                int width = 2 * originalTileSize / 3;
-                int height = 2 * originalTileSize / 3;
-                width = (int) (width * scale);
-                height = (int) (height * scale);
-                int x = screenX + originalTileSize / 2 - width / 2;
-                int y = screenY + originalTileSize / 2 - height / 2;
-                int arcW = 5 * width / 16;
-                int arcH = 5 * height / 16;
-
-                if (point.equals(player.getPlannerState()[player.getPlannerState().length - 1])) {
-                    screenX = finalPoint.x * originalTileSize - cameraOffsetX;
-                    screenY = finalPoint.y * originalTileSize - cameraOffsetY;
-
-                    Rectangle rect = new Rectangle();
-                    rect.x = screenX + originalTileSize / 2 - width / 2;
-                    rect.y = screenY + originalTileSize / 2 - height / 2;
-                    rect.width = width;
-                    rect.height = height;
-                    Point arc = new Point(arcW, arcH);
-
-                    drawAttackPreview(g2d, rect, arc, difference);
+                if (willDrawPreview) {
+                    calculateAndDrawPreview(g2d, cameraOffsetX, cameraOffsetY, finalPoint, difference, width, height, arcW, arcH);
                 } else {
                     g2d.setColor(color);
 
@@ -645,7 +640,7 @@ public class PlayingRenderer extends AbstractRenderer {
 
                 Font baseFont = plannerCounter;
                 int centerX = originalScreenWidth / 2;
-                int y = originalScreenHeight / 2 - 100;
+                y = originalScreenHeight / 2 - 100;
                 player.stepCounter.draw(g2d, baseFont, centerX, y);
 
                 g2d.setComposite(original);
