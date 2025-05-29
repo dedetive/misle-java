@@ -15,7 +15,6 @@ import static com.ded.misle.audio.AudioPlayer.playThis;
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.world.boxes.BoxManipulation.*;
 import static com.ded.misle.world.entities.HPBox.HealFlag.NORMAL;
-import static com.ded.misle.world.entities.player.HandItemAnimator.animateClaw;
 import static com.ded.misle.world.entities.player.PlayerAttributes.Stat.ALL;
 import static com.ded.misle.renderer.ColorManager.entropyGainColor;
 import static com.ded.misle.renderer.ColorManager.healColor;
@@ -526,7 +525,7 @@ public class Inventory {
 			switch (getSelectedItem().getAttributes().get("subtype").toString()) {
 				case "melee" -> {
 					switch (getSelectedItem().getAttributes().get("kind").toString()) {
-						case "claw" -> animateClaw();
+						case "claw" -> player.animator.animateClaw();
 						// Weapon goes upward for a bit and then swings downwards
 						// Deals area damage
 						case "ranged" -> {     // throw a box projectile to held direction

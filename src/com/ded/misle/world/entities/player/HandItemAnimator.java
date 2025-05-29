@@ -11,15 +11,15 @@ import java.awt.*;
 import static com.ded.misle.game.GamePanel.player;
 
 public class HandItemAnimator {
-    private static final WeaponAttacker attacker = new WeaponAttacker();
+    private final WeaponAttacker attacker = new WeaponAttacker();
 
-    private static void scheduleAnimation(int delay, Runnable action) {
+    private void scheduleAnimation(int delay, Runnable action) {
         Timer timer = new Timer(delay, evt -> action.run());
         timer.setRepeats(false);
         timer.start();
     }
 
-    public static void animateClaw() {
+    public void animateClaw() {
         // PREPARATION (move claw up and swing back)
         Item selectedItem = player.inv.getSelectedItem();
 

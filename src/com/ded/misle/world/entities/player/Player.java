@@ -19,6 +19,7 @@ public class Player extends HPBox {
 	public final PlayerStats stats;
 	public final Inventory inv;
 	private Planner planner;
+	public HandItemAnimator animator;
 	public final AnimatedStepCounter stepCounter = new AnimatedStepCounter();
 
 	public int currentSaveSlot;
