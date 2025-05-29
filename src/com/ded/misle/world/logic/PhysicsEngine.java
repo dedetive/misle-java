@@ -25,7 +25,7 @@ public class PhysicsEngine {
 				Box box = world.grid[targetX][targetY][layer];
 				result = box != null && box != responsibleBox;
 
-				if (result && box.effect.getTriggersOnContact()) {
+				if (result && box.effect != null && box.effect.getTriggersOnContact()) {
 					handleEffect(box, responsibleBox, responsibleBox.getKnockbackDirection());
 				}
 
