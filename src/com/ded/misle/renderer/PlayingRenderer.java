@@ -559,6 +559,9 @@ public class PlayingRenderer extends AbstractRenderer {
         int cameraOffsetX = (int) player.pos.getCameraOffsetX();
         int cameraOffsetY = (int) player.pos.getCameraOffsetY();
 
+        Point finalPoint = player.getPlanner().hasEnemyPoint()
+            ? player.getPlannerState()[player.getPlannerState().length - 2]
+            : player.getPlanner().getEnd();
         for (Point point : player.getPlannerState()) {
             if (player.getPlannerState()[0].equals(point)) continue;
 
@@ -577,8 +580,7 @@ public class PlayingRenderer extends AbstractRenderer {
             int b = (int) (planningColor.getBlue() + (255 - planningColor.getBlue()) * (1 - progress));
             Color color = new Color(r, g, b, alpha);
 
-            g2d.setColor(color);
-            if (point.equals(player.getPlanner().getEnd())) {
+            if (point.equals(finalPoint)) {
                 g2d.setColor(new Color(255, 255, 255, 80));
                 g2d.fillRect(screenX - (scaledTileDifference), screenY - (scaledTileDifference),
                     scaledTile + scaledTileDifference, scaledTile + scaledTileDifference);
@@ -596,9 +598,16 @@ public class PlayingRenderer extends AbstractRenderer {
                 int y = screenY + originalTileSize / 2 - height / 2;
                 int arcW = 5 * width / 16;
                 int arcH = 5 * height / 16;
+
+                if (point.equals(player.getPlannerState()[player.getPlannerState().length - 1])) {
+                    g2d.setColor(new Color(0xA6DE4040, true));
+                } else {
+                    g2d.setColor(color);
+                }
                 g2d.fillRoundRect(x, y,
                     width, height,
                     arcW, arcH);
+
                 g2d.setColor(new Color(255, 255, 255, 110));
                 g2d.drawRoundRect(x, y,
                     width, height,
