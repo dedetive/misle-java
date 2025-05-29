@@ -524,6 +524,7 @@ public class Inventory {
 
 			switch (getSelectedItem().getAttributes().get("subtype").toString()) {
 				case "melee" -> {
+					player.animator.update();
 					switch (getSelectedItem().getAttributes().get("kind").toString()) {
 						case "claw" -> player.animator.animateClaw();
 						// Weapon goes upward for a bit and then swings downwards

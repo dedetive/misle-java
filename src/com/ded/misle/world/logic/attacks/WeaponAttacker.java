@@ -69,6 +69,14 @@ public class WeaponAttacker {
         return this;
     }
 
+    public Range getRange() {
+        try {
+            return range.clone();
+        } catch (CloneNotSupportedException e) {
+            return range;
+        }
+    }
+
     public WeaponAttacker setDamagesPlayer(boolean damagesPlayer) {
         this.damagesPlayer = damagesPlayer;
         return this;

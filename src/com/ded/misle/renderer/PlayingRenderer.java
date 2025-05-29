@@ -8,6 +8,7 @@ import com.ded.misle.input.MouseHandler;
 import com.ded.misle.world.boxes.BoxHandling;
 import com.ded.misle.items.Item;
 import com.ded.misle.world.entities.player.PlayerStats;
+import com.ded.misle.world.logic.attacks.Range;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -600,19 +601,38 @@ public class PlayingRenderer extends AbstractRenderer {
                 int arcH = 5 * height / 16;
 
                 if (point.equals(player.getPlannerState()[player.getPlannerState().length - 1])) {
-                    g2d.setColor(new Color(0xA6DE4040, true));
+                    Range attackRange = player.animator.getRange(player.stats.getWalkingDirection());
+
+                    screenX = finalPoint.x * originalTileSize - cameraOffsetX;
+                    screenY = finalPoint.y * originalTileSize - cameraOffsetY;
+                    x = screenX + originalTileSize / 2 - width / 2;
+                    y = screenY + originalTileSize / 2 - height / 2;
+
+                    for (Point attackPoint : attackRange.getPoints()) {
+                        g2d.setColor(new Color(0xA6DE4040, true));
+                        g2d.fillRoundRect(x + attackPoint.x * originalTileSize, y + attackPoint.y * originalTileSize,
+                            width, height,
+                            arcW, arcH);
+
+                        g2d.setColor(new Color(255, 255, 255, 110));
+                        g2d.drawRoundRect(x + attackPoint.x * originalTileSize, y + attackPoint.y * originalTileSize,
+                            width, height,
+                            arcW, arcH
+                        );
+                    }
                 } else {
                     g2d.setColor(color);
-                }
-                g2d.fillRoundRect(x, y,
-                    width, height,
-                    arcW, arcH);
 
-                g2d.setColor(new Color(255, 255, 255, 110));
-                g2d.drawRoundRect(x, y,
-                    width, height,
-                    arcW, arcH
-                );
+                    g2d.fillRoundRect(x, y,
+                        width, height,
+                        arcW, arcH);
+
+                    g2d.setColor(new Color(255, 255, 255, 110));
+                    g2d.drawRoundRect(x, y,
+                        width, height,
+                        arcW, arcH
+                    );
+                }
             }
 
             if (player.getPlanner().isExecuting()) {

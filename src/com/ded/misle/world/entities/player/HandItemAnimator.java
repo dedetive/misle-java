@@ -1,6 +1,7 @@
 package com.ded.misle.world.entities.player;
 
 import com.ded.misle.items.Item;
+import com.ded.misle.world.data.TilePattern;
 import com.ded.misle.world.logic.attacks.Range;
 import com.ded.misle.world.logic.attacks.WeaponAttacker;
 
@@ -9,13 +10,41 @@ import javax.swing.*;
 import java.awt.*;
 
 import static com.ded.misle.game.GamePanel.player;
+import static com.ded.misle.world.data.TilePattern.MirrorDirection.HORIZONTAL;
 
 public class HandItemAnimator {
     private final WeaponAttacker attacker = new WeaponAttacker();
 
     public void update() {
+        Item selectedItem = player.inv.getSelectedItem();
 
+        if (selectedItem != null) {
+            String strRange = (selectedItem.getAttributes().get("range").toString());
+            if (strRange.isEmpty()) return;
+            Range range = Range.toRange(strRange);
 
+            double damage = Double.parseDouble(selectedItem.getAttributes().get("damage").toString());
+
+            attacker.setRange(range);
+            attacker.setDamage(damage);
+        } else {
+            attacker.setDamage(0);
+            attacker.setRange(Range.toRange("O")); // Empty range
+        }
+    }
+
+    public Range getRange(PlayerStats.Direction direction) {
+        attacker.setRange((Range)
+            switch (direction) {
+                case UP -> attacker.getRange().rotate(TilePattern.Rotation.DEG_90);
+                case DOWN -> attacker.getRange().rotate(TilePattern.Rotation.DEG_270);
+                case LEFT -> attacker.getRange().mirror(HORIZONTAL);
+                default -> attacker.getRange();
+            }
+        );
+
+        update();
+        return attacker.getRange();
     }
 
     private void scheduleAnimation(int delay, Runnable action) {
@@ -38,12 +67,8 @@ public class HandItemAnimator {
         scheduleAnimation(215, () -> {
             if (player.inv.getSelectedItem() != selectedItem) return;
 
-            double damage = Double.parseDouble(selectedItem.getAttributes().get("damage").toString());
-            Range range = Range.toRange(selectedItem.getAttributes().get("range").toString());
             Point origin = new Point(player.getX(), player.getY());
 
-            attacker.setDamage(damage);
-            attacker.setRange(range);
             attacker.attack(origin, player.stats.getWalkingDirection());
 
             selectedItem.delayedSetAnimationRotation(150, 60);
