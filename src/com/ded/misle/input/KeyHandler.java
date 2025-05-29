@@ -21,6 +21,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.world.entities.player.PlayerStats.Direction.interpretDirection;
+import static com.ded.misle.world.entities.player.PlayerStats.Direction.updateLastDirection;
 import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
 import static com.ded.misle.renderer.DialogRenderer.fillLetterDisplay;
 import static com.ded.misle.renderer.DialogRenderer.isLetterDisplayFull;
@@ -389,14 +390,18 @@ public class KeyHandler implements KeyListener {
                     } else {
 						int targetX = player.getX() + movement.x;
 						int targetY = player.getY() + movement.y;
-							// Is empty
+						// Is empty
                         if (!isSpaceOccupied(targetX, targetY, player)) {
                             BoxManipulation.movePlayer(movement.x, movement.y);
-							// Has an HPBox
-                        } else if (Arrays.stream(player.pos.world.grid[targetX][targetY]).
-							anyMatch(box -> box instanceof HPBox)) {
-							player.attack();
-						}
+						// Has an HPBox
+                        } else {
+                            updateLastDirection(interpretDirection(movement.x, movement.y));
+
+                            if (Arrays.stream(player.pos.world.grid[targetX][targetY]).
+                                anyMatch(box -> box instanceof HPBox)) {
+                                player.attack();
+                            }
+                        }
                     }
                 }
 			}
