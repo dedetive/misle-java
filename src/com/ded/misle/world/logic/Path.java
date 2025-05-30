@@ -10,7 +10,20 @@ import java.util.*;
 public class Path extends TilePattern {
     private final Deque<Point[]> history = new LinkedList<>();
 
-
+    /**
+     * Constructs a Path from the origin Box to the target Box simulating
+     * a straight line while only moving along one axis at a time.
+     * <p>
+     * This algorithm ensures that each step moves in only one direction
+     * (either horizontally or vertically), never both in a single step.
+     * It tries to follow the ideal straight-line trajectory between the
+     * origin and target by proportionally distributing steps in X and Y
+     * directions.
+     * </p>
+     *
+     * @param origin the starting Box.
+     * @param target the destination Box.
+     */
     public Path(Box origin, Box target) {
         super(new Point[0]);
 
