@@ -1,16 +1,61 @@
 package com.ded.misle.world.logic;
 
+import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.data.TilePattern;
 
 import java.awt.*;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Deque;
-import java.util.LinkedList;
+import java.awt.List;
+import java.util.*;
 
 public class Path extends TilePattern {
     private final Deque<Point[]> history = new LinkedList<>();
+
+
+    public Path(Box origin, Box target) {
+        super(new Point[0]);
+
+        int x0 = origin.getX();
+        int y0 = origin.getY();
+        int x1 = target.getX();
+        int y1 = target.getY();
+
+        int dx = Math.abs(x1 - x0);
+        int dy = Math.abs(y1 - y0);
+
+        int sx = Integer.signum(x1 - x0);
+        int sy = Integer.signum(y1 - y0);
+
+        int x = x0;
+        int y = y0;
+
+        int stepsTotal = dx + dy;
+
+        ArrayList<Point> list = new ArrayList<>();
+
+        float xStep = (float) dx / stepsTotal;
+        float yStep = (float) dy / stepsTotal;
+        float currentStepX = 0;
+        float currentStepY = 0;
+        for (int i = 0; i < stepsTotal; i++) {
+            currentStepX += xStep;
+            currentStepY += yStep;
+
+            if (currentStepX >= 1f) {
+                x += sx;
+                currentStepX -= 1f;
+
+                list.add(new Point(x, y));
+            }
+            if (currentStepY >= 1f) {
+                y += sy;
+                currentStepY -= 1f;
+
+                list.add(new Point(x, y));
+            }
+        }
+
+        points = list.toArray(new Point[0]);
+    }
 
     /**
      * Creates a Path object with predefined points.
