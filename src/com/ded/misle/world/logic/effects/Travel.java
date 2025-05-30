@@ -29,7 +29,7 @@ public class Travel extends Effect {
     }
 
     private void handleBoxTravel() {
-        pixelate(2000L, 110);
+        pixelate(1000L, 110);
         gameState = GamePanel.GameState.FROZEN_PLAYING;
         Timer fadingIn = new Timer(1750, e -> {
 
@@ -40,7 +40,7 @@ public class Travel extends Effect {
                 player.setPos(coordinates.x, coordinates.y);
 
                 Timer loadWait = new Timer(300, evt -> {
-                    unpixelate(2000);
+                    unpixelate(1000L);
                     gameState = GamePanel.GameState.PLAYING;
                 });
                 loadWait.setRepeats(false);
