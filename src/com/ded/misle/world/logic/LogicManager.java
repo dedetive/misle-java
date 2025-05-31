@@ -4,7 +4,6 @@ import com.ded.misle.world.entities.Entity;
 
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.world.entities.Entity.getEntities;
-import static com.ded.misle.world.entities.enemies.EnemyAI.updateEnemyAI;
 
 public abstract class LogicManager {
 
@@ -26,7 +25,7 @@ public abstract class LogicManager {
     private static void updateTurn() {
         player.attr.checkIfLevelUp();
 
-        updateEnemyAI();
+//        updateEnemyAI();
 
         for (Entity box : getEntities()) {
             box.updateRegenerationHP();

@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
-import static com.ded.misle.world.entities.enemies.EnemyAI.AIState.STILL;
-import static com.ded.misle.world.entities.enemies.EnemyAI.AIState.WANDERING;
 
 public class Enemy extends Entity {
 
@@ -22,9 +20,6 @@ public class Enemy extends Entity {
 
     private double xpDrop = 0;
     private int[] coinDrop = new int[]{0, 0};
-    public EnemyAI.AIState AIState;
-    public long lastMoved = 0;
-    public int moveInterval;
 
     // INITIALIZATION
 
@@ -62,8 +57,6 @@ public class Enemy extends Entity {
                 this.setTexture("solid");
                 this.setColor(new Color(0xA02020));
                 this.setDropTable(DropTable.POTION_CHEST);
-                this.AIState = STILL;
-                this.moveInterval = 0;
 
                 // Drops
                 this.xpDrop = 50;
@@ -82,18 +75,15 @@ public class Enemy extends Entity {
                 this.setTexture("../characters/enemy/goblin");
                 this.setVisualScaleHorizontal(0.75);
                 this.setVisualScaleVertical(0.75);
-                this.AIState = WANDERING;
 
                 // Drops
                 this.setDropTable(DropTable.GOBLIN);
                 this.xpDrop = 1;
                 this.coinDrop = new int[]{1, 3};
-                this.moveInterval = 1;
 
                 // Breadcrumbs
             }
             default -> {
-                this.AIState = STILL;
                 this.setTexture("solid");
                 this.setColor(defaultBoxColor);
             }
