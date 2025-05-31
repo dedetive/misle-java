@@ -52,7 +52,6 @@ public class PhysicsEngine {
 				Box box = world.grid[targetX][targetY][layer];
 				result = box != null && box.getHasCollision();
 
-				result = result && box.getHasCollision();
 				if (result) return true;
 
 			} catch (NullPointerException | NegativeArraySizeException | ArrayIndexOutOfBoundsException e) {
