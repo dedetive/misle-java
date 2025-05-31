@@ -1,9 +1,9 @@
 package com.ded.misle.world.logic;
 
-import com.ded.misle.world.entities.HPBox;
+import com.ded.misle.world.entities.Entity;
 
 import static com.ded.misle.game.GamePanel.player;
-import static com.ded.misle.world.entities.HPBox.getHPBoxes;
+import static com.ded.misle.world.entities.Entity.getEntities;
 import static com.ded.misle.world.entities.enemies.EnemyAI.updateEnemyAI;
 
 public abstract class LogicManager {
@@ -28,7 +28,7 @@ public abstract class LogicManager {
 
         updateEnemyAI();
 
-        for (HPBox box : getHPBoxes()) {
+        for (Entity box : getEntities()) {
             box.updateRegenerationHP();
         }
     }

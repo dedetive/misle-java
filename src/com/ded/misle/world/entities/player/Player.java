@@ -2,7 +2,7 @@ package com.ded.misle.world.entities.player;
 
 import com.ded.misle.renderer.AnimatedStepCounter;
 import com.ded.misle.world.logic.PhysicsEngine;
-import com.ded.misle.world.entities.HPBox;
+import com.ded.misle.world.entities.Entity;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -11,7 +11,7 @@ import static com.ded.misle.world.boxes.BoxHandling.addBoxToCache;
 import static com.ded.misle.world.entities.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 
-public class Player extends HPBox {
+public class Player extends Entity {
 
 	public final PlayerKeys keys;
 	public final PlayerPosition pos;

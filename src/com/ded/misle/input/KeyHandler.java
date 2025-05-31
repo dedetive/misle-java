@@ -1,12 +1,11 @@
 package com.ded.misle.input;
 
-import com.ded.misle.world.entities.HPBox;
+import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.player.Planner;
 import com.ded.misle.world.entities.player.PlayerStats;
 import com.ded.misle.world.logic.LogicManager;
 import com.ded.misle.world.boxes.BoxManipulation;
 import com.ded.misle.world.entities.npcs.NPC;
-import com.ded.misle.world.entities.player.PlayerAttributes;
 
 import javax.swing.*;
 import java.awt.*;
@@ -391,7 +390,7 @@ public class KeyHandler implements KeyListener {
                         } else if (player.getX() == targetX && player.getY() == targetY) {
                             planner.attemptToMove(new Point(targetX, targetY));
                         } else if (Arrays.stream(player.pos.world.grid[targetX][targetY]).
-                            anyMatch(box -> box instanceof HPBox)) {
+                            anyMatch(box -> box instanceof Entity)) {
 							planner.addEnemyPoint(new Point(targetX, targetY));
                         }
                     } else {
@@ -400,12 +399,12 @@ public class KeyHandler implements KeyListener {
 						// Is empty
                         if (!isSpaceOccupied(targetX, targetY, player)) {
                             BoxManipulation.movePlayer(movement.x, movement.y);
-						// Has an HPBox
+						// Has an entity
                         } else {
                             updateLastDirection(interpretDirection(movement.x, movement.y));
 
                             if (Arrays.stream(player.pos.world.grid[targetX][targetY]).
-                                anyMatch(box -> box instanceof HPBox)) {
+                                anyMatch(box -> box instanceof Entity)) {
                                 player.attack();
                             }
                         }

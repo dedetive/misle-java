@@ -2,7 +2,7 @@ package com.ded.misle.world.logic.effects;
 
 import com.ded.misle.world.logic.TurnTimer;
 import com.ded.misle.world.boxes.Box;
-import com.ded.misle.world.entities.HPBox;
+import com.ded.misle.world.entities.Entity;
 
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -13,16 +13,16 @@ public class Heal extends Effect {
     public double healValue;
     public int healRate;
 
-    public EnumSet<HPBox.HealFlag> flags;
+    public EnumSet<Entity.HealFlag> flags;
 
     private boolean canHeal = true;
     TurnTimer t;
 
     public Heal(double healValue, int healRate) {
-        this(healValue, healRate, HPBox.HealFlag.of(HPBox.HealFlag.NORMAL));
+        this(healValue, healRate, Entity.HealFlag.of(Entity.HealFlag.NORMAL));
     }
 
-    public Heal(double healValue, int healRate, EnumSet<HPBox.HealFlag> flags) {
+    public Heal(double healValue, int healRate, EnumSet<Entity.HealFlag> flags) {
         this.healValue = healValue;
         this.healRate = healRate;
         this.flags = flags;
@@ -31,13 +31,13 @@ public class Heal extends Effect {
 
     @Override
     public void run(Box culprit, Box victim) {
-        if (!(victim instanceof HPBox)) return;
+        if (!(victim instanceof Entity)) return;
         if (!culprit.getInteractsWithPlayer() && victim == player) return;
 
-        handleBoxHealCooldown((HPBox) victim);
+        handleBoxHealCooldown((Entity) victim);
     }
 
-    private void handleBoxHealCooldown(HPBox victim) {
+    private void handleBoxHealCooldown(Entity victim) {
         if (canHeal) {
             victim.receiveHeal(healValue, flags);
 

@@ -2,7 +2,7 @@ package com.ded.misle.world.entities.npcs;
 
 import com.ded.misle.core.LanguageManager;
 import com.ded.misle.world.logic.PhysicsEngine;
-import com.ded.misle.world.entities.HPBox;
+import com.ded.misle.world.entities.Entity;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import static com.ded.misle.renderer.DialogRenderer.resetLetterDisplay;
 import static com.ded.misle.world.entities.npcs.NPCDialog.endDialog;
 
-public class NPC extends HPBox {
+public class NPC extends Entity {
     private static final ArrayList<NPC> selectedNPCs = new ArrayList<>();
     private static final ArrayList<NPC> dialogNPCs = new ArrayList<>();
     private static final ArrayList<NPC> shopNPCs = new ArrayList<>();

@@ -2,14 +2,13 @@ package com.ded.misle.world.logic.attacks;
 
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.data.TilePattern;
-import com.ded.misle.world.entities.HPBox;
+import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.player.Player;
 import com.ded.misle.world.entities.player.PlayerStats;
 
 import java.awt.*;
 
 import static com.ded.misle.game.GamePanel.player;
-import static com.ded.misle.world.data.TilePattern.MirrorDirection.HORIZONTAL;
 
 public class WeaponAttacker {
     private double damage;
@@ -46,13 +45,13 @@ public class WeaponAttacker {
                 (point.getX() > player.pos.world.width - 1 || point.getY() > player.pos.world.height - 1);
             if (isInvalid) continue;
             for (Box box : player.pos.world.grid[point.x][point.y]) {
-                boolean isTargetHPBox = box instanceof HPBox;
+                boolean isTargetEntity = box instanceof Entity;
                 boolean isPlayer = box instanceof Player;
                 boolean canDamageThisBox = !isPlayer || this.damagesPlayer;
 
-                if (isTargetHPBox && canDamageThisBox) {
+                if (isTargetEntity && canDamageThisBox) {
 
-                    ((HPBox) box).takeDamage(damage, HPBox.DamageFlag.of(HPBox.DamageFlag.NORMAL), box.getKnockbackDirection());
+                    ((Entity) box).takeDamage(damage, Entity.DamageFlag.of(Entity.DamageFlag.NORMAL), box.getKnockbackDirection());
 
                 }
             }

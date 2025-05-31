@@ -1,23 +1,19 @@
 package com.ded.misle.world.entities.enemies;
 
-import com.ded.misle.world.boxes.Box;
-import com.ded.misle.world.logic.Path;
 import com.ded.misle.world.logic.effects.Damage;
-import com.ded.misle.world.entities.HPBox;
+import com.ded.misle.world.entities.Entity;
 import com.ded.misle.items.DropTable;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 import static com.ded.misle.world.entities.enemies.EnemyAI.AIState.STILL;
 import static com.ded.misle.world.entities.enemies.EnemyAI.AIState.WANDERING;
 
-public class Enemy extends HPBox {
+public class Enemy extends Entity {
 
     private final EnemyType enemyType;
     private final double magnification;

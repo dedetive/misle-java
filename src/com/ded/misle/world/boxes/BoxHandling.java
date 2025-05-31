@@ -1,6 +1,6 @@
 package com.ded.misle.world.boxes;
 
-import com.ded.misle.world.entities.HPBox;
+import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.world.logic.World;
 import com.ded.misle.world.logic.effects.Chest;
@@ -17,8 +17,8 @@ import java.util.List;
 
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.game.GamePanel.tileSize;
-import static com.ded.misle.world.entities.HPBox.clearHPBoxes;
-import static com.ded.misle.world.entities.HPBox.getHPBoxes;
+import static com.ded.misle.world.entities.Entity.clearEntities;
+import static com.ded.misle.world.entities.Entity.getEntities;
 import static com.ded.misle.world.entities.enemies.Enemy.clearEnemyBoxes;
 import static com.ded.misle.world.entities.enemies.Enemy.getEnemyBoxes;
 import static com.ded.misle.world.entities.npcs.NPC.clearNPCs;
@@ -86,10 +86,10 @@ public class BoxHandling {
 		}
 	}
 
-	public static HPBox addHPBox(int x, int y) {
-		boxes.add(new HPBox(x, y));
+	public static Entity addEntity(int x, int y) {
+		boxes.add(new Entity(x, y));
 		addBoxToCache(boxes.getLast());
-		return getHPBoxes().getLast();
+		return getEntities().getLast();
 	}
 
 	public static Enemy addEnemyBox(int x, int y, Enemy.EnemyType enemyType, double magnification) {
@@ -271,7 +271,7 @@ public class BoxHandling {
 	public static void clearAllBoxes() {
 		clearEntireCache();
 		boxes.clear();
-		clearHPBoxes();
+		clearEntities();
 		clearEnemyBoxes();
 		clearNPCs();
 		World world = player.pos.world;
@@ -407,13 +407,13 @@ public class BoxHandling {
         return npcsInRange.stream().filter(getInteractableNPCs()::contains).toList();
 	}
 
-	public static List<HPBox> getHPBoxesInRange(double x, double y, double range) {
-		List<HPBox> boxesInRange = new ArrayList<>();
+	public static List<Entity> getEntitiesInRange(double x, double y, double range) {
+		List<Entity> boxesInRange = new ArrayList<>();
 		for (Box box : getCachedBoxes(8)) {
-			if (!(box instanceof HPBox)) continue;
+			if (!(box instanceof Entity)) continue;
 
 			if (checkIfBoxInRange(box, x, y, range)) {
-				boxesInRange.add((HPBox) box);
+				boxesInRange.add((Entity) box);
 			}
 		}
 		return boxesInRange;

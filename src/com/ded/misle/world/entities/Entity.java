@@ -18,18 +18,18 @@ import java.util.*;
 import java.util.List;
 
 import static com.ded.misle.game.GamePanel.*;
-import static com.ded.misle.world.logic.PhysicsEngine.ObjectType.HP_BOX;
+import static com.ded.misle.world.logic.PhysicsEngine.ObjectType.ENTITY;
 import static com.ded.misle.renderer.FontManager.itemInfoFont;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.renderer.ColorManager.*;
-import static com.ded.misle.world.entities.HPBox.HealFlag.ABSOLUTE;
+import static com.ded.misle.world.entities.Entity.HealFlag.ABSOLUTE;
 
 /**
  * Represents an entity with health points (HP).
- * Handles health, damage, healing, and death logic. Also manages shared HP box instances.
+ * Handles health, damage, healing, and death logic. Also manages shared Entity instances.
  */
-public class HPBox extends Box {
+public class Entity extends Box {
     /** Current HP of the entity. */
     private double HP;
 
@@ -69,47 +69,47 @@ public class HPBox extends Box {
     /** Drop table for items when this entity dies. */
     private DropTable dropTable;
 
-    /** Static list of all active HPBoxes. */
-    private static List<HPBox> HPBoxes = new ArrayList<>();
+    /** Static list of all active Entities. */
+    private static List<Entity> entities = new ArrayList<>();
 
     /**
-     * Returns the list of all HPBoxes.
-     * @return list of HPBox instances.
+     * Returns the list of all Entities.
+     * @return list of Entity instances.
      */
-    public static List<HPBox> getHPBoxes() {
-        return HPBoxes;
+    public static List<Entity> getEntities() {
+        return entities;
     }
 
     /**
-     * Clears all HPBoxes except the player.
+     * Clears all Entities except the player.
      */
-    public static void clearHPBoxes () {
-        HPBoxes.clear();
-        HPBoxes.add(player);
+    public static void clearEntities() {
+        entities.clear();
+        entities.add(player);
     }
 
     /**
-     * Constructs an HPBox at a specific position. Default values of HP and max HP are 1.
+     * Constructs an Entity at a specific position. Default values of HP and max HP are 1.
      * @param x X-coordinate.
      * @param y Y-coordinate.
      */
-    public HPBox(int x, int y) {
+    public Entity(int x, int y) {
         super(x, y);
-        this.setObjectType(HP_BOX);
+        this.setObjectType(ENTITY);
         this.HP = 1;
         this.maxHP = 1;
-        HPBoxes.add(this);
+        entities.add(this);
         updateRegenerationTimer();
     }
 
     /**
-     * Constructs an HPBox with HP and max HP set as 1 and no position.
+     * Constructs an Entity with HP and max HP set as 1 and no position.
      */
-    public HPBox() {
-        this.setObjectType(HP_BOX);
+    public Entity() {
+        this.setObjectType(ENTITY);
         this.HP = 1;
         this.maxHP = 1;
-        HPBoxes.add(this);
+        entities.add(this);
         updateRegenerationTimer();
     }
 
@@ -193,7 +193,7 @@ public class HPBox extends Box {
                     }
                 }
 
-                HPBoxes.remove(this);
+                entities.remove(this);
                 deleteBox(this);
                 if (this instanceof Enemy) {
                     ((Enemy) this).removeEnemyBox();
@@ -620,16 +620,16 @@ public class HPBox extends Box {
     // DROP TABLE
 
     /**
-     * Returns the drop table associated with this HPBox.
+     * Returns the drop table associated with this Entity.
      *
-     * @return The current DropTable of this HPBox.
+     * @return The current DropTable of this Entity.
      */
     public DropTable getDropTable() {
         return dropTable;
     }
 
     /**
-     * Sets the drop table for this HPBox.
+     * Sets the drop table for this Entity.
      *
      * @param dropTable The DropTable to be set.
      */
@@ -640,7 +640,7 @@ public class HPBox extends Box {
 // OTHER ATTRIBUTES
 
     /**
-     * Returns the defense value of this HPBox.
+     * Returns the defense value of this Entity.
      * Defense reduces the amount of incoming damage.
      *
      * @return The current defense value.
@@ -650,7 +650,7 @@ public class HPBox extends Box {
     }
 
     /**
-     * Sets the defense value of this HPBox.
+     * Sets the defense value of this Entity.
      *
      * @param defense The new defense value to be assigned.
      */
@@ -659,7 +659,7 @@ public class HPBox extends Box {
     }
 
     /**
-     * Sets the inversion chance of this HPBox.
+     * Sets the inversion chance of this Entity.
      * Inversion defines the chance for damage to be converted into healing.
      *
      * @param inversion A percentage chance (0 to 100) for inversion to occur.
@@ -669,18 +669,18 @@ public class HPBox extends Box {
     }
 
     /**
-     * Checks whether this HPBox is currently invulnerable to damage.
+     * Checks whether this Entity is currently invulnerable to damage.
      *
-     * @return True if the HPBox is invulnerable; otherwise, false.
+     * @return True if the Entity is invulnerable; otherwise, false.
      */
     public boolean getIsInvulnerable() {
         return isInvulnerable;
     }
 
     /**
-     * Sets whether this HPBox is invulnerable to damage.
+     * Sets whether this Entity is invulnerable to damage.
      *
-     * @param isInvulnerable True to make the HPBox invulnerable; false otherwise.
+     * @param isInvulnerable True to make the Entity invulnerable; false otherwise.
      */
     public void setIsInvulnerable(boolean isInvulnerable) {
         this.isInvulnerable = isInvulnerable;

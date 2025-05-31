@@ -2,7 +2,7 @@ package com.ded.misle.world.logic;
 
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.logic.effects.Damage;
-import com.ded.misle.world.entities.HPBox;
+import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.player.PlayerAttributes;
 
 import static com.ded.misle.game.GamePanel.player;
@@ -12,7 +12,7 @@ public class PhysicsEngine {
 	public enum ObjectType {
 		PLAYER,
 		BOX,
-		HP_BOX,
+		ENTITY,
 		NPC
 	}
 
@@ -65,14 +65,14 @@ public class PhysicsEngine {
 	private static void handleEffect(Box culprit, Box victim, PlayerAttributes.KnockbackDirection direction) {
 		try {
 			// Victim gets effect
-			if (victim instanceof HPBox && culprit.effect != null) {
+			if (victim instanceof Entity && culprit.effect != null) {
 				if (culprit.effect instanceof Damage) {
 					culprit.setKnockbackDirection(direction);
 				}
 				culprit.effect.run(culprit, victim);
 			}
 			// Culprit gets effect
-			if (culprit instanceof HPBox && victim.effect != null) {
+			if (culprit instanceof Entity && victim.effect != null) {
 				if (victim.effect instanceof Damage) {
 					victim.setKnockbackDirection(direction.getOppositeDirection());
 				}
