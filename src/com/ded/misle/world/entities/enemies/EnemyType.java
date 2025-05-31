@@ -29,7 +29,7 @@ public enum EnemyType {
         enemy.setTexture("../characters/enemy/goblin");
         enemy.setDropTable(DropTable.GOBLIN);
         enemy.setXpDrop(1);
-        enemy.setCoinDrop(1, 3);
+        enemy.setCoinDrop(3);
         enemy.setCollision(true);
     });
 

@@ -107,7 +107,7 @@ public abstract class WorldLoader {
 							box.effect = new Chest(openRate, dropTable);
 						}
 						case ENEMY -> {
-							box = addEnemyBox(0, 0,
+							box = addEnemyBox(new Point(0, 0),
 								EnemyType.valueOf(parts[1].toUpperCase().split(":")[1]),
 								Double.parseDouble(parts[2].split(":")[1]));
 						}

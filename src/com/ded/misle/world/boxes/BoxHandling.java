@@ -1,6 +1,7 @@
 package com.ded.misle.world.boxes;
 
 import com.ded.misle.world.entities.Entity;
+import com.ded.misle.world.entities.enemies.EnemyRegistry;
 import com.ded.misle.world.entities.enemies.EnemyType;
 import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.world.logic.World;
@@ -20,8 +21,6 @@ import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.game.GamePanel.tileSize;
 import static com.ded.misle.world.entities.Entity.clearEntities;
 import static com.ded.misle.world.entities.Entity.getEntities;
-import static com.ded.misle.world.entities.enemies.Enemy.clearEnemyBoxes;
-import static com.ded.misle.world.entities.enemies.Enemy.getEnemyBoxes;
 import static com.ded.misle.world.entities.npcs.NPC.clearNPCs;
 import static com.ded.misle.world.entities.npcs.NPC.getInteractableNPCs;
 
@@ -93,10 +92,10 @@ public class BoxHandling {
 		return getEntities().getLast();
 	}
 
-	public static Enemy addEnemyBox(int x, int y, EnemyType enemyType, double magnification) {
-		boxes.add(new Enemy(x, y, enemyType, magnification));
+	public static Enemy addEnemyBox(Point pos, EnemyType enemyType, double magnification) {
+		boxes.add(new Enemy(pos, enemyType, magnification));
 		addBoxToCache(boxes.getLast());
-		return getEnemyBoxes().getLast();
+		return EnemyRegistry.all().getLast();
 	}
 
 	public enum BoxPreset {
@@ -273,7 +272,7 @@ public class BoxHandling {
 		clearEntireCache();
 		boxes.clear();
 		clearEntities();
-		clearEnemyBoxes();
+		EnemyRegistry.clear();
 		clearNPCs();
 		World world = player.pos.world;
 		world.grid = new Box[][][]{};

@@ -2,8 +2,7 @@ package com.ded.misle.world.entities.enemies;
 
 import com.ded.misle.world.entities.Entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Enemy extends Entity {
@@ -11,21 +10,39 @@ public class Enemy extends Entity {
     private final EnemyType type;
     private final double magnification;
 
-    private static final List<Enemy> enemyBoxes = new ArrayList<>();
+    private double xpDrop;
+    private int[] coinDrop;
 
-    private double xpDrop = 0;
-    private int[] coinDrop = new int[]{0, 0};
-
-    // INITIALIZATION
-
-    public Enemy(int x, int y, EnemyType type, double magnification) {
-        super(x, y);
+    public Enemy(Point pos, EnemyType type, double magnification) {
+        super(pos.x, pos.y);
         this.magnification = magnification;
 
         this.type = type;
         this.load();
 
-        enemyBoxes.add(this);
+        EnemyRegistry.register(this);
+    }
+
+    private void load() {
+        type.applyTo(this);
+    }
+
+    public void kill() {
+        EnemyRegistry.unregister(this);
+    }
+
+    // GETTERS & SETTERS
+
+    public double getMagnification() {
+        return this.magnification;
+    }
+
+    public EnemyType getEnemyType() {
+        return type;
+    }
+
+    public double getXPDrop() {
+        return xpDrop;
     }
 
     public void setXpDrop(int xp) {
@@ -40,29 +57,7 @@ public class Enemy extends Entity {
         this.coinDrop = new int[]{coinDrop, coinDrop};
     }
 
-    public double getMagnification() {
-        return this.magnification;
+    public int getCoinDrop() {
+        return ThreadLocalRandom.current().nextInt(coinDrop[0], coinDrop[1] + 1);
     }
-
-    // ENEMY LOADER
-
-    private void load() {
-        type.applyTo(this);
-    }
-
-    // ENEMY BOXES
-
-    public static List<Enemy> getEnemyBoxes() { return enemyBoxes; }
-
-    public static void clearEnemyBoxes() { enemyBoxes.clear(); }
-
-    public void removeEnemyBox() {
-        enemyBoxes.remove(this);
-    }
-
-    public EnemyType getEnemyType() { return type; }
-
-    public double getXPDrop() { return xpDrop; }
-
-    public int getCoinDrop() { return ThreadLocalRandom.current().nextInt(coinDrop[0], coinDrop[1] + 1); }
 }

@@ -196,7 +196,7 @@ public class Entity extends Box {
                 entities.remove(this);
                 deleteBox(this);
                 if (this instanceof Enemy) {
-                    ((Enemy) this).removeEnemyBox();
+                    ((Enemy) this).kill();
                 } else if (this instanceof NPC) {
                     ((NPC) this).deleteNPC();
                 }
