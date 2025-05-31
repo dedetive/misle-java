@@ -1,13 +1,14 @@
 package com.ded.misle.renderer;
 
 import com.ded.misle.core.LanguageManager;
+import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.entities.player.Planner;
+import com.ded.misle.world.entities.player.PlayerPosition;
 import com.ded.misle.world.logic.World;
 import com.ded.misle.world.entities.npcs.NPC;
 import com.ded.misle.input.MouseHandler;
 import com.ded.misle.world.boxes.BoxHandling;
 import com.ded.misle.items.Item;
-import com.ded.misle.world.entities.player.PlayerStats;
 import com.ded.misle.world.logic.attacks.Range;
 
 import java.awt.*;
@@ -29,7 +30,7 @@ import static com.ded.misle.renderer.DialogRenderer.renderDialog;
 import static com.ded.misle.renderer.MainRenderer.*;
 import static com.ded.misle.renderer.ImageManager.cachedImages;
 import static com.ded.misle.renderer.InventoryRenderer.*;
-import static com.ded.misle.world.entities.player.PlayerStats.Direction.*;
+import static com.ded.misle.world.data.Direction.*;
 import static java.lang.System.currentTimeMillis;
 
 public class PlayingRenderer extends AbstractRenderer {
@@ -124,11 +125,11 @@ public class PlayingRenderer extends AbstractRenderer {
 //        drawRotatedRect(g2d, playerRect, player.pos.getVisualRotation()); // CUBE PLAYER
 
         long precision = 200;
-        PlayerStats.Direction horizontalDirection = getRecentHorizontalDirection(precision);
-        PlayerStats.Direction verticalDirection = getRecentVerticalDirection(precision);
-        PlayerStats.Direction totalDirection = getRecentDirection(precision);
+        Direction horizontalDirection = player.pos.getRecentHorizontalDirection(precision);
+        Direction verticalDirection = player.pos.getRecentVerticalDirection(precision);
+        Direction totalDirection = player.pos.getRecentDirection(precision);
         BufferedImage playerSprite = null;
-        boolean playerMirror = player.stats.getHorizontalDirection() == LEFT;
+        boolean playerMirror = player.pos.getHorizontalDirection() == LEFT;
 
         // Draw player sprite
         if (totalDirection == NONE) {
@@ -204,7 +205,7 @@ public class PlayingRenderer extends AbstractRenderer {
     private static void drawHandItem(Graphics2D g2d, double playerScreenX, double playerScreenY, MouseHandler mouseHandler) {
         if (player.inv.hasHeldItem()) {
 
-            if (player.stats.getHorizontalDirection() == RIGHT) {
+            if (player.pos.getHorizontalDirection() == RIGHT) {
                 facingMultiplicator = 0.5;
                 mirror = false;
             } else {
@@ -665,7 +666,7 @@ public class PlayingRenderer extends AbstractRenderer {
     }
 
     private void drawAttackPreview(Graphics2D g2d, Rectangle rect, Point arc, Point directionVec) {
-        PlayerStats.Direction direction = interpretDirection(directionVec.x, directionVec.y);
+        Direction direction = interpretDirection(directionVec.x, directionVec.y);
         Range attackRange = player.animator.getRange(direction);
 
         int x = rect.x;

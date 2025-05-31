@@ -1,93 +1,17 @@
 package com.ded.misle.world.entities.player;
 
+import com.ded.misle.world.data.Direction;
+
 import java.util.*;
 
-import static com.ded.misle.world.entities.player.PlayerStats.Direction.*;
+import static com.ded.misle.game.GamePanel.player;
+import static com.ded.misle.world.data.Direction.*;
 
 public class PlayerStats {
 
+	private Map<Direction, Integer> steps = new HashMap<>();
 	long startTimestamp;
 	long totalPlaytime;
-
-	public enum Direction {
-		UP,
-		DOWN,
-		LEFT,
-		RIGHT,
-		TOTAL,
-		NONE
-
-		;
-
-		private int steps;
-
-		public static Direction walkingDirection;
-		public static Direction horizontalDirection;
-		public static Direction verticalDirection;
-		private static long lastDirectionUpdate;
-
-		Direction() {
-			reset();
-		}
-
-        public int getSteps() {
-            return steps;
-        }
-
-        public void setSteps(int steps) {
-            this.steps = steps;
-        }
-
-		public void incrementSteps() {
-			steps++;
-			updateLastDirection(this);
-		}
-
-		public void reset() {
-			steps = 0;
-		}
-
-		public static void resetAll() {
-			for (Direction direction : Direction.values()) direction.reset();
-		}
-
-		public static void updateLastDirection(Direction direction) {
-			walkingDirection = direction;
-            switch (direction) {
-                case LEFT, RIGHT -> horizontalDirection = direction;
-                case UP, DOWN -> verticalDirection = direction;
-            }
-			lastDirectionUpdate = System.currentTimeMillis();
-		}
-
-		public static Direction interpretDirection(int x, int y) {
-			if (x == y) return RIGHT;
-			if (Math.abs(x) > Math.abs(y)) {
-				if (x > 0) return RIGHT;
-				else return LEFT;
-			}
-            if (y > 0) return DOWN;
-            else return UP;
-        }
-
-		public static Direction getRecentDirection(long precision) {
-			return getDirectionIfPrecision(walkingDirection, precision);
-		}
-
-		public static Direction getRecentHorizontalDirection(long precision) {
-			return getDirectionIfPrecision(horizontalDirection, precision);
-		}
-
-		public static Direction getRecentVerticalDirection(long precision) {
-			return getDirectionIfPrecision(verticalDirection, precision);
-		}
-
-		private static Direction getDirectionIfPrecision(Direction direction, long precision) {
-			return lastDirectionUpdate + precision > System.currentTimeMillis()
-				? direction
-				: NONE;
-		}
-    }
 
 	public enum PlaytimeMode {
 		MILLIS,
@@ -97,23 +21,7 @@ public class PlayerStats {
 	}
 
 	public PlayerStats() {
-		Direction.resetAll();
 		startTimestamp = System.currentTimeMillis();
-		walkingDirection = RIGHT;
-		horizontalDirection = RIGHT;
-		verticalDirection = UP;
-	}
-
-	public Direction getWalkingDirection() {
-		return walkingDirection;
-	}
-
-	public Direction getHorizontalDirection() {
-		return horizontalDirection;
-	}
-
-	public Direction getVerticalDirection() {
-		return verticalDirection;
 	}
 
 	public long getStartTimestamp() {
@@ -159,20 +67,20 @@ public class PlayerStats {
 	}
 
 	public void setSteps(Direction direction, int steps) {
-		direction.setSteps(steps);
+		this.steps.put(direction, steps);
 	}
 
 	public int getSteps(Direction direction) {
-		return direction.getSteps();
+		return steps.get(direction);
 	}
 
 	public void incrementSteps(Direction direction) {
 		incrementTotalSteps();
-		direction.incrementSteps();
+		steps.put(direction, steps.getOrDefault(direction, 0) + 1);
 	}
 
 	private void incrementTotalSteps() {
-		TOTAL.incrementSteps();
+		steps.put(TOTAL, steps.getOrDefault(TOTAL, 0) + 1);
 	}
 
 	public List<Direction> getHighestStep() {
@@ -210,5 +118,13 @@ public class PlayerStats {
 		}
 
 		return leastDistanceTravelled;
+	}
+
+	public void setSteps(Map<Direction, Integer> steps) {
+		this.steps = steps;
+	}
+
+	public void resetSteps() {
+		steps = new HashMap<>();
 	}
 }

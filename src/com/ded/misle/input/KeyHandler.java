@@ -1,8 +1,8 @@
 package com.ded.misle.input;
 
+import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.player.Planner;
-import com.ded.misle.world.entities.player.PlayerStats;
 import com.ded.misle.world.logic.LogicManager;
 import com.ded.misle.world.boxes.BoxManipulation;
 import com.ded.misle.world.entities.npcs.NPC;
@@ -20,8 +20,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.input.Key.*;
-import static com.ded.misle.world.entities.player.PlayerStats.Direction.interpretDirection;
-import static com.ded.misle.world.entities.player.PlayerStats.Direction.updateLastDirection;
+import static com.ded.misle.world.data.Direction.interpretDirection;
 import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
 import static com.ded.misle.renderer.DialogRenderer.fillLetterDisplay;
 import static com.ded.misle.renderer.DialogRenderer.isLetterDisplayFull;
@@ -39,7 +38,6 @@ import static com.ded.misle.world.entities.npcs.NPCDialog.getCurrentTalkingTo;
 import static com.ded.misle.world.entities.npcs.NPCDialog.startDialog;
 import static com.ded.misle.renderer.LevelDesignerRenderer.levelDesignerGrid;
 import static com.ded.misle.renderer.MenuRenderer.pauseGame;
-import static com.ded.misle.input.Key.*;
 import static com.ded.misle.items.Item.createItem;
 import static java.awt.event.KeyEvent.*;
 
@@ -327,7 +325,7 @@ public class KeyHandler implements KeyListener {
 
 			if (!player.attr.isDead() && !planner.isExecuting()) {
 				if (movement.x != 0 && movement.y != 0) {
-					byte moveJudge = (byte) (player.stats.getSteps(PlayerStats.Direction.TOTAL) % 2);
+					byte moveJudge = (byte) (player.stats.getSteps(Direction.TOTAL) % 2);
                     movement = moveJudge == 0
 						? new Point(movement.x, 0)
 						: new Point(0, movement.y);
@@ -356,7 +354,7 @@ public class KeyHandler implements KeyListener {
                             BoxManipulation.movePlayer(movement.x, movement.y);
 						// Has an entity
                         } else {
-                            updateLastDirection(interpretDirection(movement.x, movement.y));
+                            player.pos.updateLastDirection(interpretDirection(movement.x, movement.y));
 
                             if (Arrays.stream(player.pos.world.grid[targetX][targetY]).
                                 anyMatch(box -> box instanceof Entity)) {

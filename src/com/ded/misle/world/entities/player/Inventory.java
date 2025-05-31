@@ -5,6 +5,7 @@ import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.boxes.BoxHandling;
 import com.ded.misle.items.Item;
 import com.ded.misle.renderer.PlayingRenderer;
+import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.entities.Entity;
 
 import javax.swing.*;
@@ -239,17 +240,17 @@ public class Inventory {
 		playThis(drop_item);
 		removeItem(row, col, quantity);
 		PlayingRenderer.updateSelectedItemNamePosition();
-		switch (player.stats.getWalkingDirection()) {
-			case PlayerStats.Direction.UP -> {
+		switch (player.pos.getWalkingDirection()) {
+			case Direction.UP -> {
 				moveBox(droppedItem, 0, -DROP_DISTANCE);
 			}
-			case PlayerStats.Direction.DOWN -> {
+			case Direction.DOWN -> {
 				moveBox(droppedItem, 0, DROP_DISTANCE);
 			}
-			case PlayerStats.Direction.LEFT -> {
+			case Direction.LEFT -> {
 				moveBox(droppedItem, -DROP_DISTANCE, 0);
 			}
-			case PlayerStats.Direction.RIGHT -> {
+			case Direction.RIGHT -> {
 				moveBox(droppedItem, DROP_DISTANCE, 0);
 			}
 			case null, default -> {
@@ -263,17 +264,17 @@ public class Inventory {
 		playThis(drop_item);
 		removeItem(position);
 		PlayingRenderer.updateSelectedItemNamePosition();
-		switch (player.stats.getWalkingDirection()) {
-			case PlayerStats.Direction.UP -> {
+		switch (player.pos.getWalkingDirection()) {
+			case Direction.UP -> {
 				moveBox(droppedItem, 0, -DROP_DISTANCE);
 			}
-			case PlayerStats.Direction.DOWN -> {
+			case Direction.DOWN -> {
 				moveBox(droppedItem, 0, DROP_DISTANCE);
 			}
-			case PlayerStats.Direction.LEFT -> {
+			case Direction.LEFT -> {
 				moveBox(droppedItem, -DROP_DISTANCE, 0);
 			}
-			case PlayerStats.Direction.RIGHT -> {
+			case Direction.RIGHT -> {
 				moveBox(droppedItem, DROP_DISTANCE, 0);
 			}
 			case null, default -> {
@@ -366,7 +367,7 @@ public class Inventory {
 		if (draggedItem.getCount() == 0) destroyGrabbedItem();
 		destroyTempItem();
 		PlayingRenderer.updateSelectedItemNamePosition();
-		switch (player.stats.getWalkingDirection()) {
+		switch (player.pos.getWalkingDirection()) {
 			case UP -> {
 				moveBox(droppedItem, 0, 1);
 			}

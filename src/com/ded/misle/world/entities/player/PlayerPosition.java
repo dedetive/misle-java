@@ -1,5 +1,6 @@
 package com.ded.misle.world.entities.player;
 
+import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.logic.RoomManager;
 import com.ded.misle.world.logic.World;
 
@@ -8,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import static com.ded.misle.game.GamePanel.*;
+import static com.ded.misle.world.data.Direction.RIGHT;
+import static com.ded.misle.world.data.Direction.UP;
 
 public class PlayerPosition {
 
@@ -18,7 +21,13 @@ public class PlayerPosition {
 	private int roomID;
 	private double rotation;
 	public World world;
-	public enum Region {
+
+	public Direction walkingDirection;
+	public Direction horizontalDirection;
+	public Direction verticalDirection;
+	private long lastDirectionUpdate;
+
+    public enum Region {
 		VOID,
 		CHAIN_OF_LIES
 	}
@@ -27,6 +36,9 @@ public class PlayerPosition {
 		setCameraOffsetX(0);
 		setCameraOffsetY(0);
 		setRegion(Region.CHAIN_OF_LIES);
+		this.walkingDirection = RIGHT;
+		this.horizontalDirection = RIGHT;
+		this.verticalDirection = UP;
 	}
 
 	public double getCameraOffsetX() {
@@ -122,5 +134,45 @@ public class PlayerPosition {
 			}
 		});
 		timer.start();
+	}
+
+	public Direction getWalkingDirection() {
+		return player.pos.walkingDirection;
+	}
+
+	public Direction getHorizontalDirection() {
+		return player.pos.horizontalDirection;
+	}
+
+	public Direction getVerticalDirection() {
+		return player.pos.verticalDirection;
+	}
+
+
+	public void updateLastDirection(Direction direction) {
+		walkingDirection = direction;
+		switch (direction) {
+			case LEFT, RIGHT -> horizontalDirection = direction;
+			case UP, DOWN -> verticalDirection = direction;
+		}
+		lastDirectionUpdate = System.currentTimeMillis();
+	}
+
+	public Direction getRecentDirection(long precision) {
+		return getDirectionIfPrecision(walkingDirection, precision);
+	}
+
+	public Direction getRecentHorizontalDirection(long precision) {
+		return getDirectionIfPrecision(horizontalDirection, precision);
+	}
+
+	public Direction getRecentVerticalDirection(long precision) {
+		return getDirectionIfPrecision(verticalDirection, precision);
+	}
+
+	private Direction getDirectionIfPrecision(Direction direction, long precision) {
+		return lastDirectionUpdate + precision > System.currentTimeMillis()
+			? direction
+			: Direction.NONE;
 	}
 }

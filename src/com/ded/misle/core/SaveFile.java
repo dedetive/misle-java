@@ -1,6 +1,7 @@
 package com.ded.misle.core;
 
 import com.ded.misle.items.Item;
+import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.entities.player.PlayerAttributes;
 import com.ded.misle.world.entities.player.PlayerStats;
 
@@ -241,11 +242,11 @@ public class SaveFile {
 
                 // Statistics
 
-                player.stats.setSteps(PlayerStats.Direction.TOTAL, loadAttribute(PixelData.TOTAL_STEPS_H, PixelData.TOTAL_STEPS_M, PixelData.TOTAL_STEPS_L));
-                player.stats.setSteps(PlayerStats.Direction.UP, loadAttribute(PixelData.STEPS_UP_H, PixelData.STEPS_UP_M, PixelData.STEPS_UP_L));
-                player.stats.setSteps(PlayerStats.Direction.DOWN, loadAttribute(PixelData.STEPS_DOWN_H, PixelData.STEPS_DOWN_M, PixelData.STEPS_DOWN_L));
-                player.stats.setSteps(PlayerStats.Direction.LEFT, loadAttribute(PixelData.STEPS_LEFT_H, PixelData.STEPS_LEFT_M, PixelData.STEPS_LEFT_L));
-                player.stats.setSteps(PlayerStats.Direction.RIGHT, loadAttribute(PixelData.STEPS_RIGHT_H, PixelData.STEPS_RIGHT_M, PixelData.STEPS_RIGHT_L));
+                player.stats.setSteps(Direction.TOTAL, loadAttribute(PixelData.TOTAL_STEPS_H, PixelData.TOTAL_STEPS_M, PixelData.TOTAL_STEPS_L));
+                player.stats.setSteps(Direction.UP, loadAttribute(PixelData.STEPS_UP_H, PixelData.STEPS_UP_M, PixelData.STEPS_UP_L));
+                player.stats.setSteps(Direction.DOWN, loadAttribute(PixelData.STEPS_DOWN_H, PixelData.STEPS_DOWN_M, PixelData.STEPS_DOWN_L));
+                player.stats.setSteps(Direction.LEFT, loadAttribute(PixelData.STEPS_LEFT_H, PixelData.STEPS_LEFT_M, PixelData.STEPS_LEFT_L));
+                player.stats.setSteps(Direction.RIGHT, loadAttribute(PixelData.STEPS_RIGHT_H, PixelData.STEPS_RIGHT_M, PixelData.STEPS_RIGHT_L));
 
                 player.stats.setTotalPlaytime(loadAttribute(PixelData.TOTAL_PLAYTIME_E, PixelData.TOTAL_PLAYTIME_H, PixelData.TOTAL_PLAYTIME_M, PixelData.TOTAL_PLAYTIME_L) * 1000L);
 
@@ -407,15 +408,15 @@ public class SaveFile {
 
 			// Statistics
 
-			int totalSteps = player.stats.getSteps(PlayerStats.Direction.TOTAL);
+			int totalSteps = player.stats.getSteps(Direction.TOTAL);
 			brandValue(totalSteps, PixelData.TOTAL_STEPS_H, PixelData.TOTAL_STEPS_M, PixelData.TOTAL_STEPS_L);
-			int stepsUp = player.stats.getSteps(PlayerStats.Direction.UP);
+			int stepsUp = player.stats.getSteps(Direction.UP);
 			brandValue(stepsUp, PixelData.STEPS_UP_H, PixelData.STEPS_UP_M, PixelData.STEPS_UP_L);
-			int stepsDown = player.stats.getSteps(PlayerStats.Direction.DOWN);
+			int stepsDown = player.stats.getSteps(Direction.DOWN);
 			brandValue(stepsDown, PixelData.STEPS_DOWN_H, PixelData.STEPS_DOWN_M, PixelData.STEPS_DOWN_L);
-			int stepsLeft = player.stats.getSteps(PlayerStats.Direction.LEFT);
+			int stepsLeft = player.stats.getSteps(Direction.LEFT);
 			brandValue(stepsLeft, PixelData.STEPS_LEFT_H, PixelData.STEPS_LEFT_M, PixelData.STEPS_LEFT_L);
-			int stepsRight = player.stats.getSteps(PlayerStats.Direction.RIGHT);
+			int stepsRight = player.stats.getSteps(Direction.RIGHT);
 			brandValue(stepsRight, PixelData.STEPS_RIGHT_H, PixelData.STEPS_RIGHT_M, PixelData.STEPS_RIGHT_L);
 
 			long playtime = player.stats.getCurrentTotalPlaytime(PlayerStats.PlaytimeMode.SECONDS);

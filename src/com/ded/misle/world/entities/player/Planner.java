@@ -9,8 +9,7 @@ import com.ded.misle.world.logic.PhysicsEngine;
 import java.awt.*;
 
 import static com.ded.misle.game.GamePanel.*;
-import static com.ded.misle.world.entities.player.PlayerStats.Direction.interpretDirection;
-import static com.ded.misle.world.entities.player.PlayerStats.Direction.updateLastDirection;
+import static com.ded.misle.world.data.Direction.interpretDirection;
 
 /**
  * Manages the movement planning mode for the player.
@@ -269,7 +268,7 @@ public class Planner {
                     isExecuting = false;
                     player.inv.useItem();
                 }
-                updateLastDirection(interpretDirection(unitaryPoint.x, unitaryPoint.y));
+                player.pos.updateLastDirection(interpretDirection(unitaryPoint.x, unitaryPoint.y));
                 LogicManager.requestNewTurn();
                 previousPoint = point;
 

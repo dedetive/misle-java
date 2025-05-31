@@ -1,6 +1,7 @@
 package com.ded.misle.world.entities.player;
 
 import com.ded.misle.items.Item;
+import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.data.TilePattern;
 import com.ded.misle.world.logic.attacks.Range;
 import com.ded.misle.world.logic.attacks.WeaponAttacker;
@@ -36,7 +37,7 @@ public class HandItemAnimator {
         }
     }
 
-    public Range getRange(PlayerStats.Direction direction) {
+    public Range getRange(Direction direction) {
         update();
 
         attacker.setRange((Range)
@@ -73,7 +74,7 @@ public class HandItemAnimator {
 
             Point origin = new Point(player.getX(), player.getY());
 
-            attacker.attack(origin, player.stats.getWalkingDirection());
+            attacker.attack(origin, player.pos.getWalkingDirection());
 
             selectedItem.delayedSetAnimationRotation(150, 60);
             selectedItem.delayedChangeAnimationBulk(-0.175, 120);

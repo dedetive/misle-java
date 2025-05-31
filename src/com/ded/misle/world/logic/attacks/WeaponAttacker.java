@@ -1,10 +1,10 @@
 package com.ded.misle.world.logic.attacks;
 
 import com.ded.misle.world.boxes.Box;
+import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.data.TilePattern;
 import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.player.Player;
-import com.ded.misle.world.entities.player.PlayerStats;
 
 import java.awt.*;
 
@@ -29,7 +29,7 @@ public class WeaponAttacker {
         this(0, Range.getDefaultRange());
     }
 
-    public void attack(Point origin, PlayerStats.Direction direction) {
+    public void attack(Point origin, Direction direction) {
         switch (direction) {
             case UP -> range.rotate(TilePattern.Rotation.DEG_90);
             case DOWN -> range.rotate(TilePattern.Rotation.DEG_270);
