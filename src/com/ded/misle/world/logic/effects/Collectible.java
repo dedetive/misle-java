@@ -4,7 +4,7 @@ import com.ded.misle.renderer.PlayingRenderer;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.entities.player.Player;
 
-import static com.ded.misle.audio.AudioPlayer.AudioFile.collect_item;
+import static com.ded.misle.audio.AudioFile.collect_item;
 import static com.ded.misle.audio.AudioPlayer.playThis;
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.items.Item.createItem;

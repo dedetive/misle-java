@@ -10,7 +10,7 @@ import com.ded.misle.world.entities.Entity;
 import javax.swing.*;
 import java.text.DecimalFormat;
 
-import static com.ded.misle.audio.AudioPlayer.AudioFile.*;
+import static com.ded.misle.audio.AudioFile.*;
 import static com.ded.misle.audio.AudioPlayer.playThis;
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.world.boxes.BoxManipulation.*;
