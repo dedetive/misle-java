@@ -1,5 +1,6 @@
 package com.ded.misle.game;
 
+import com.ded.misle.input.Key;
 import com.ded.misle.input.KeyHandler;
 import com.ded.misle.input.MouseHandler;
 import com.ded.misle.world.entities.player.Player;
@@ -301,7 +302,7 @@ public class GamePanel extends JPanel implements Runnable {
 						updateCamera();
 					} // Only update if in the playing state
 					case PAUSE_MENU -> {
-						if (player.keys.keyPressed.get(KeyHandler.Key.PAUSE)) {
+						if (player.keys.keyPressed.get(Key.PAUSE)) {
                             if (levelDesigner) {
                                 softEnterLevelDesigner();
                             } else {
@@ -309,7 +310,7 @@ public class GamePanel extends JPanel implements Runnable {
                             }
                             clearButtons();
 							this.setCursor(Cursor.getDefaultCursor());
-							player.keys.keyPressed.put(KeyHandler.Key.PAUSE, false);
+							player.keys.keyPressed.put(Key.PAUSE, false);
 						}
 					}
 					case LEVEL_DESIGNER -> {

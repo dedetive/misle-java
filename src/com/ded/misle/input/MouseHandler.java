@@ -230,7 +230,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 										// Swap
 										player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], draggedItem.getCount(), false);
 										// Quick equip item
-									else if ((player.keys.keyPressed.get(KeyHandler.Key.SHIFT)) && Objects.equals(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]).getSubtype(), "ring")) {
+									else if ((player.keys.keyPressed.get(Key.SHIFT)) && Objects.equals(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]).getSubtype(), "ring")) {
 										boolean[] isSpaceOccupied = new boolean[3];
 										int firstValidPosition = -1;
 										boolean isAnyEmpty = false;
@@ -246,14 +246,14 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 											player.inv.bruteSetItem(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]), firstValidPosition);
 											player.inv.removeItem(getHoveredSlot()[0], getHoveredSlot()[1]);
 										}
-									} else if ((player.keys.keyPressed.get(KeyHandler.Key.SHIFT) &&
+									} else if ((player.keys.keyPressed.get(Key.SHIFT) &&
 										getHoveredSlot()[0] == 0 &&
 										!Arrays.equals(player.inv.getFirstEmptyInventorySlot(), new int[]{-1, -1}))) {
 										// Quick move item to first inventory slot
 										player.inv.bruteSetItem(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]),
 											player.inv.getFirstEmptyInventorySlot()[0], player.inv.getFirstEmptyInventorySlot()[1]);
 										player.inv.removeItem(getHoveredSlot()[0], getHoveredSlot()[1]);
-									} else if ((player.keys.keyPressed.get(KeyHandler.Key.SHIFT) &&
+									} else if ((player.keys.keyPressed.get(Key.SHIFT) &&
 										getHoveredSlot()[0] > 0 &&
 										!Arrays.equals(player.inv.getFirstEmptyBarSlot(), new int[]{-1, -1}))) {
 										// Quick move item to first bar slot
@@ -276,7 +276,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 										// Swap only if it is a ring
 										player.inv.initDraggingItem(getExtraHoveredSlot()[0], getExtraHoveredSlot()[1], draggedItem.getCount(), true);
 										// Quick unequip ring
-									else if (player.keys.keyPressed.get(KeyHandler.Key.SHIFT)) {
+									else if (player.keys.keyPressed.get(Key.SHIFT)) {
 										boolean[] isSpaceOccupied = new boolean[4];
 										int[] firstValidPosition = new int[]{-1, -1};
 										boolean isAnyEmpty = false;
