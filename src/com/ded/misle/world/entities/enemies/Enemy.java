@@ -1,15 +1,10 @@
 package com.ded.misle.world.entities.enemies;
 
-import com.ded.misle.world.logic.effects.Damage;
 import com.ded.misle.world.entities.Entity;
-import com.ded.misle.items.DropTable;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 
 public class Enemy extends Entity {
 
@@ -70,7 +65,4 @@ public class Enemy extends Entity {
     public double getXPDrop() { return xpDrop; }
 
     public int getCoinDrop() { return ThreadLocalRandom.current().nextInt(coinDrop[0], coinDrop[1] + 1); }
-
-    // BREADCRUMBS
-
 }
