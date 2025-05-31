@@ -39,6 +39,8 @@ public class BoxSight {
     }
 
     public boolean canSee() {
+        if (target == null) throw new NullPointerException("The target box for this BoxSight is null");
+
         return canSee(this.target);
     }
 
