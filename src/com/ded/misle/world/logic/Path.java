@@ -12,13 +12,9 @@ public class Path extends TilePattern {
 
     /**
      * Constructs a Path from the origin Box to the target Box simulating
-     * a straight line while only moving along one axis at a time.
+     * a straight line.
      * <p>
-     * This algorithm ensures that each step moves in only one direction
-     * (either horizontally or vertically), never both in a single step.
-     * It tries to follow the ideal straight-line trajectory between the
-     * origin and target by proportionally distributing steps in X and Y
-     * directions.
+     * This uses <a href="https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm">Bresenham's line algorithm</a>.
      * </p>
      *
      * @param origin the starting Box.
@@ -32,42 +28,34 @@ public class Path extends TilePattern {
         int x1 = target.getX();
         int y1 = target.getY();
 
+        java.util.List<Point> result = new ArrayList<>();
+
         int dx = Math.abs(x1 - x0);
         int dy = Math.abs(y1 - y0);
 
-        int sx = Integer.signum(x1 - x0);
-        int sy = Integer.signum(y1 - y0);
+        int sx = x0 < x1 ? 1 : -1;
+        int sy = y0 < y1 ? 1 : -1;
 
-        int x = x0;
-        int y = y0;
+        int err = dx - dy;
 
-        int stepsTotal = dx + dy;
+        while (true) {
+            result.add(new Point(x0, y0));
+            if (x0 == x1 && y0 == y1) break;
 
-        ArrayList<Point> list = new ArrayList<>();
+            int e2 = 2 * err;
 
-        float xStep = (float) dx / stepsTotal;
-        float yStep = (float) dy / stepsTotal;
-        float currentStepX = 0;
-        float currentStepY = 0;
-        for (int i = 0; i < stepsTotal; i++) {
-            currentStepX += xStep;
-            currentStepY += yStep;
-
-            if (currentStepX >= 1f) {
-                x += sx;
-                currentStepX -= 1f;
-
-                list.add(new Point(x, y));
+            if (e2 > -dy) {
+                err -= dy;
+                x0 += sx;
             }
-            if (currentStepY >= 1f) {
-                y += sy;
-                currentStepY -= 1f;
 
-                list.add(new Point(x, y));
+            if (e2 < dx) {
+                err += dx;
+                y0 += sy;
             }
         }
 
-        points = list.toArray(new Point[0]);
+        points = result.toArray(new Point[0]);
     }
 
     /**
