@@ -10,7 +10,6 @@ import javax.swing.*;
 import java.awt.*;
 
 import static com.ded.misle.game.GamePanel.player;
-import static com.ded.misle.world.data.TilePattern.MirrorDirection.HORIZONTAL;
 
 public class HandItemAnimator {
     private final WeaponAttacker attacker = new WeaponAttacker();
@@ -19,8 +18,13 @@ public class HandItemAnimator {
         Item selectedItem = player.inv.getSelectedItem();
 
         if (selectedItem != null) {
-            String strRange = (selectedItem.getAttributes().get("range").toString());
-            if (strRange.isEmpty()) return;
+            String strRange = selectedItem.getAttributes().containsKey("range")
+                ? (selectedItem.getAttributes().get("range").toString())
+                : "";
+            if (strRange.isEmpty()) {
+                attacker.invalidate();
+                return;
+            }
             Range range = Range.toRange(strRange);
 
             double damage = Double.parseDouble(selectedItem.getAttributes().get("damage").toString());
@@ -28,8 +32,7 @@ public class HandItemAnimator {
             attacker.setRange(range);
             attacker.setDamage(damage);
         } else {
-            attacker.setDamage(0);
-            attacker.setRange(Range.toRange("O")); // Empty range
+            attacker.invalidate();
         }
     }
 
