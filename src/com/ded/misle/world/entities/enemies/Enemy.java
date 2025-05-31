@@ -1,9 +1,9 @@
 package com.ded.misle.world.entities.enemies;
 
+import com.ded.misle.world.data.CoinDropRange;
 import com.ded.misle.world.entities.Entity;
 
 import java.awt.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Enemy extends Entity {
 
@@ -11,7 +11,7 @@ public class Enemy extends Entity {
     private final double magnification;
 
     private double xpDrop;
-    private int[] coinDrop;
+    private CoinDropRange coinDrop;
 
     public Enemy(Point pos, EnemyType type, double magnification) {
         super(pos.x, pos.y);
@@ -49,15 +49,19 @@ public class Enemy extends Entity {
         this.xpDrop = xp;
     }
 
-    public void setCoinDrop(int min, int max) {
-        this.coinDrop = new int[]{min, max};
+    public void setCoinDropRange(int min, int max) {
+        this.coinDrop = new CoinDropRange(min, max);
+    }
+
+    public void setCoinDropRange(CoinDropRange coinDropRange) {
+        this.coinDrop = coinDropRange;
     }
 
     public void setCoinDrop(int coinDrop) {
-        this.coinDrop = new int[]{coinDrop, coinDrop};
+        this.coinDrop = new CoinDropRange(coinDrop);
     }
 
     public int getCoinDrop() {
-        return ThreadLocalRandom.current().nextInt(coinDrop[0], coinDrop[1] + 1);
+        return coinDrop.roll();
     }
 }

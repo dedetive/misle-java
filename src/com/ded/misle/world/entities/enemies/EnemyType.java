@@ -16,7 +16,7 @@ public enum EnemyType {
         enemy.setColor(new Color(0xA02020));
         enemy.setDropTable(DropTable.POTION_CHEST);
         enemy.setXpDrop(50);
-        enemy.setCoinDrop(0, 100);
+        enemy.setCoinDropRange(0, 100);
         enemy.setCollision(true);
     }),
 
