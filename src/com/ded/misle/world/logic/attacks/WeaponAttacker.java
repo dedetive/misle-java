@@ -80,4 +80,12 @@ public class WeaponAttacker {
         this.damagesPlayer = damagesPlayer;
         return this;
     }
+
+    public WeaponAttacker invalidate() {
+        this.setRange(Range.toRange("O"));
+        this.setDamage(0);
+        this.damagesPlayer = false;
+
+        return this;
+    }
 }
