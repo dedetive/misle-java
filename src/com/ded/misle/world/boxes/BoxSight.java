@@ -13,9 +13,24 @@ import java.awt.*;
  * A sight check iterates through each {@link Point} on the path and verifies if the space is occupied.
  */
 public class BoxSight {
+    /**
+     * The box from which visibility is being calculated.
+     */
     private final Box origin;
+
+    /**
+     * The target box being checked for visibility.
+     */
     private Box target;
+
+    /**
+     * Flag indicating whether the visibility state needs to be recalculated.
+     */
     private boolean mustUpdate = true;
+
+    /**
+     * Cached result of the last visibility calculation.
+     */
     private boolean hasDirectSight = false;
 
     /**
@@ -41,7 +56,7 @@ public class BoxSight {
     /**
      * Checks whether the origin box has a clear line of sight to the specified target.
      * <p>
-     * A clear path is determined by verifying that no collidable space exists along the straight path.
+     * A clear path is determined by verifying that no collidable space exists along the path.
      *
      * @param target the target {@link Box} to check visibility to
      * @return {@code true} if the origin can see the target, {@code false} otherwise
