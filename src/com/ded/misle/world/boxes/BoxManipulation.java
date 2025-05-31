@@ -116,6 +116,7 @@ public class BoxManipulation {
      */
     public static void movePlayer(int x, int y) {
 		player.stats.incrementSteps(interpretDirection(x, y));
+		player.pos.updateLastDirection(interpretDirection(x, y));
         x = player.getX() + x;
         y = player.getY() + y;
         player.setX(x);
