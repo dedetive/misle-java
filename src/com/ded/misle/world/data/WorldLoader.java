@@ -1,10 +1,10 @@
 package com.ded.misle.world.data;
 
 import com.ded.misle.core.SettingsManager;
+import com.ded.misle.world.entities.enemies.EnemyType;
 import com.ded.misle.world.logic.TurnTimer;
 import com.ded.misle.items.DropTable;
 import com.ded.misle.world.boxes.Box;
-import com.ded.misle.world.entities.enemies.Enemy;
 import com.ded.misle.world.logic.effects.Chest;
 import com.ded.misle.world.logic.effects.Spawnpoint;
 import com.ded.misle.world.logic.effects.Travel;
@@ -108,7 +108,7 @@ public abstract class WorldLoader {
 						}
 						case ENEMY -> {
 							box = addEnemyBox(0, 0,
-								Enemy.EnemyType.valueOf(parts[1].toUpperCase().split(":")[1]),
+								EnemyType.valueOf(parts[1].toUpperCase().split(":")[1]),
 								Double.parseDouble(parts[2].split(":")[1]));
 						}
 					}

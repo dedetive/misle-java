@@ -1,6 +1,7 @@
 package com.ded.misle.world.boxes;
 
 import com.ded.misle.world.entities.Entity;
+import com.ded.misle.world.entities.enemies.EnemyType;
 import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.world.logic.World;
 import com.ded.misle.world.logic.effects.Chest;
@@ -92,7 +93,7 @@ public class BoxHandling {
 		return getEntities().getLast();
 	}
 
-	public static Enemy addEnemyBox(int x, int y, Enemy.EnemyType enemyType, double magnification) {
+	public static Enemy addEnemyBox(int x, int y, EnemyType enemyType, double magnification) {
 		boxes.add(new Enemy(x, y, enemyType, magnification));
 		addBoxToCache(boxes.getLast());
 		return getEnemyBoxes().getLast();

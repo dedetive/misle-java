@@ -13,7 +13,7 @@ import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 
 public class Enemy extends Entity {
 
-    private final EnemyType enemyType;
+    private final EnemyType type;
     private final double magnification;
 
     private static final List<Enemy> enemyBoxes = new ArrayList<>();
@@ -23,80 +23,36 @@ public class Enemy extends Entity {
 
     // INITIALIZATION
 
-    public Enemy(int x, int y, EnemyType enemyType, double magnification) {
+    public Enemy(int x, int y, EnemyType type, double magnification) {
         super(x, y);
         this.magnification = magnification;
 
-        this.enemyType = enemyType;
-        this.loadEnemy();
+        this.type = type;
+        this.load();
 
         enemyBoxes.add(this);
     }
 
-    // ENEMY LOADER
-
-    public enum EnemyType {
-        RED_BLOCK,
-        GOBLIN
+    public void setXpDrop(int xp) {
+        this.xpDrop = xp;
     }
 
-    public void loadEnemy() {
-        double maxHP = 1;
-        double damage = 1;
-        int damageRate = 1;
-        boolean defaultDamageType = true;
+    public void setCoinDrop(int min, int max) {
+        this.coinDrop = new int[]{min, max};
+    }
 
-        switch (enemyType) {
-            case RED_BLOCK -> {
-                // Attributes
-                maxHP = 50;
-                damage = 5;
-                damageRate = 1;
+    public void setCoinDrop(int coinDrop) {
+        this.coinDrop = new int[]{coinDrop, coinDrop};
+    }
 
-                // Structural
-                this.setTexture("solid");
-                this.setColor(new Color(0xA02020));
-                this.setDropTable(DropTable.POTION_CHEST);
+    public double getMagnification() {
+        return this.magnification;
+    }
 
-                // Drops
-                this.xpDrop = 50;
-                this.coinDrop = new int[]{0, 20};
-            }
-            case GOBLIN -> {
-                // Attributes
-                maxHP = 20;
-                damage = 3;
-                damageRate = 2;
+    // ENEMY LOADER
 
-                // Structural
-                this.setCollision(true);
-//                this.setTexture("solid");
-//                this.setColor(new Color(0x106000));
-                this.setTexture("../characters/enemy/goblin");
-                this.setVisualScaleHorizontal(0.75);
-                this.setVisualScaleVertical(0.75);
-
-                // Drops
-                this.setDropTable(DropTable.GOBLIN);
-                this.xpDrop = 1;
-                this.coinDrop = new int[]{1, 3};
-
-                // Breadcrumbs
-            }
-            default -> {
-                this.setTexture("solid");
-                this.setColor(defaultBoxColor);
-            }
-        }
-
-        damage *= magnification;
-        maxHP *= magnification;
-
-        if (defaultDamageType) {
-            this.effect = new Damage(damage, damageRate).setTriggersOnContact(false);
-        }
-        this.setMaxHP(maxHP);
-        this.setHP(this.getMaxHP());
+    private void load() {
+        type.applyTo(this);
     }
 
     // ENEMY BOXES
@@ -109,7 +65,7 @@ public class Enemy extends Entity {
         enemyBoxes.remove(this);
     }
 
-    public EnemyType getEnemyType() { return enemyType; }
+    public EnemyType getEnemyType() { return type; }
 
     public double getXPDrop() { return xpDrop; }
 
