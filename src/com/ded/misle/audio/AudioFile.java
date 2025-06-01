@@ -2,9 +2,8 @@ package com.ded.misle.audio;
 
 import com.ded.misle.core.SettingsManager;
 
+import javax.sound.sampled.Clip;
 import java.util.ArrayList;
-
-import static com.ded.misle.core.SettingsManager.getPath;
 
 public enum AudioFile {
     consume_small_pot(1),
@@ -46,5 +45,13 @@ public enum AudioFile {
         }
 
         return audioPlayerList.getFirst();
+    }
+
+    public Clip[] getAllClips() {
+        Clip[] clips = new Clip[audioPlayerList.size()];
+        for (int i = 0 ; i < audioPlayerList.size() ; i++) {
+            clips[i] = audioPlayerList.get(i).getClip();
+        }
+        return clips;
     }
 }
