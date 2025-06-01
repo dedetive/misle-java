@@ -28,7 +28,7 @@ public class AudioManipulator {
         List<AudioFile> files = new ArrayList<>(type.getFiles());
         List<Clip> clips = new ArrayList<>(files.size());
         for (AudioFile file : files) {
-            clips = List.of(file.getAllClips());
+            clips.addAll(Arrays.asList(file.getAllClips()));
         }
         this.clips = clips.toArray(new Clip[0]);
     }

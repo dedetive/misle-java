@@ -15,7 +15,7 @@ public enum AudioType {
 
     AudioType() {}
 
-    private AudioType updateManipulator() {
+    public AudioType updateManipulator() {
         this.manipulator = new AudioManipulator(this);
         this.manipulator.setGain(gain);
         this.manipulator.setMute(isMute);
