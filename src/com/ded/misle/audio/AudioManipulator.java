@@ -57,16 +57,6 @@ public class AudioManipulator {
         return this;
     }
 
-    public AudioManipulator setSampleRate(float modifier) {
-        iterateAllClips(clip -> {
-            FloatControl sampleRate = (FloatControl) clip.getControl(FloatControl.Type.SAMPLE_RATE);
-            float range = sampleRate.getMaximum() - sampleRate.getMinimum();
-            float value = (modifier * range) + sampleRate.getMinimum();
-            sampleRate.setValue(value);
-        });
-        return this;
-    }
-
     private void iterateAllClips(Consumer<Clip> action) {
         Arrays.stream(clips).iterator().forEachRemaining(action);
     }
