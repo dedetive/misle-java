@@ -4,10 +4,9 @@ import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 
-import static com.ded.misle.core.SettingsManager.getPath;
-
 public class AudioPlayer {
 	private Clip clip;
+	private AudioManipulator manipulator;
 
 	public AudioPlayer(String filePath) {
 		try {
@@ -15,6 +14,7 @@ public class AudioPlayer {
 			AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 			clip = AudioSystem.getClip();
 			clip.open(audioStream);
+			manipulator = new AudioManipulator(clip);
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
 			e.printStackTrace();
 		}
