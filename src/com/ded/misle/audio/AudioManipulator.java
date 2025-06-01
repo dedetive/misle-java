@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 
 public class AudioManipulator {
     Clip[] clips;
+    boolean isMute;
 
     public AudioManipulator(Clip clip) {
         this.clips = new Clip[] { clip };
@@ -36,6 +37,12 @@ public class AudioManipulator {
             BooleanControl booleanControl = (BooleanControl) clip.getControl(BooleanControl.Type.MUTE);
             booleanControl.setValue(mute);
         });
+        isMute = mute;
+        return this;
+    }
+
+    public AudioManipulator toggleMute() {
+        setMute(!isMute);
         return this;
     }
 
