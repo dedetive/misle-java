@@ -70,4 +70,7 @@ public class AudioManipulator {
     private void iterateAllClips(Consumer<Clip> action) {
         Arrays.stream(clips).iterator().forEachRemaining(action);
     }
+private void iterateAllFiles(Consumer<AudioFile> action) {
+        Arrays.stream(files).iterator().forEachRemaining(action);
+    }
 }
