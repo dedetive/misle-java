@@ -4,6 +4,7 @@ import javax.sound.sampled.BooleanControl;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import java.util.Arrays;
+import java.util.function.Consumer;
 
 public class AudioManipulator {
     Clip[] clips;
@@ -17,7 +18,7 @@ public class AudioManipulator {
     }
 
     public AudioManipulator setGain(float gain) {
-        Arrays.stream(clips).iterator().forEachRemaining(clip -> {
+        iterateAllClips(clip -> {
             FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             float range = gainControl.getMaximum() - gainControl.getMinimum();
             float value = (gain * range) + gainControl.getMinimum();
@@ -27,10 +28,14 @@ public class AudioManipulator {
     }
 
     public AudioManipulator setMute(boolean mute) {
-        Arrays.stream(clips).iterator().forEachRemaining(clip -> {
+        iterateAllClips(clip -> {
             BooleanControl booleanControl = (BooleanControl) clip.getControl(BooleanControl.Type.MUTE);
             booleanControl.setValue(mute);
         });
         return this;
+    }
+
+    private void iterateAllClips(Consumer<Clip> action) {
+        Arrays.stream(clips).iterator().forEachRemaining(action);
     }
 }
