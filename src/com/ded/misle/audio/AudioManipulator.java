@@ -1,8 +1,6 @@
 package com.ded.misle.audio;
 
-import javax.sound.sampled.BooleanControl;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,6 +8,7 @@ import java.util.function.Consumer;
 
 public class AudioManipulator {
     Clip[] clips;
+    AudioFile[] files;
     boolean isMute;
 
     public AudioManipulator(Clip clip) {
@@ -21,6 +20,7 @@ public class AudioManipulator {
     }
 
     public AudioManipulator(AudioFile file) {
+        this.files = new AudioFile[] { file };
         this.clips = file.getAllClips();
     }
 
@@ -30,6 +30,7 @@ public class AudioManipulator {
         for (AudioFile file : files) {
             clips.addAll(Arrays.asList(file.getAllClips()));
         }
+        this.files = files.toArray(new AudioFile[0]);
         this.clips = clips.toArray(new Clip[0]);
     }
 
