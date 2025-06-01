@@ -6,7 +6,6 @@ import java.io.IOException;
 
 public class AudioPlayer {
 	private Clip clip;
-	private AudioManipulator manipulator;
 
 	public AudioPlayer(String filePath) {
 		try {
@@ -14,7 +13,6 @@ public class AudioPlayer {
 			AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 			clip = AudioSystem.getClip();
 			clip.open(audioStream);
-			manipulator = new AudioManipulator(clip);
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
 			e.printStackTrace();
 		}
