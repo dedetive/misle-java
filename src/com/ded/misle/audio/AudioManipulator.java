@@ -3,7 +3,9 @@ package com.ded.misle.audio;
 import javax.sound.sampled.BooleanControl;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class AudioManipulator {
@@ -20,6 +22,15 @@ public class AudioManipulator {
 
     public AudioManipulator(AudioFile file) {
         this.clips = file.getAllClips();
+    }
+
+    public AudioManipulator(AudioType type) {
+        List<AudioFile> files = new ArrayList<>(type.getFiles());
+        List<Clip> clips = new ArrayList<>(files.size());
+        for (AudioFile file : files) {
+            clips = List.of(file.getAllClips());
+        }
+        this.clips = clips.toArray(new Clip[0]);
     }
 
     public AudioManipulator setGain(float gain) {
