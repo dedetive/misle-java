@@ -17,4 +17,10 @@ public class AudioManipulator {
         gainControl.setValue(value);
         return this;
     }
+
+    public AudioManipulator setMute(boolean mute) {
+        BooleanControl booleanControl = (BooleanControl) clip.getControl(BooleanControl.Type.MUTE);
+        booleanControl.setValue(mute);
+        return this;
+    }
 }
