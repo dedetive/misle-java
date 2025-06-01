@@ -13,6 +13,10 @@ public class AudioManipulator {
         this.clips = new Clip[] { clip };
     }
 
+    public AudioManipulator(Clip[] clips) {
+        this.clips = clips;
+    }
+
     public AudioManipulator(AudioFile file) {
         this.clips = file.getAllClips();
     }
