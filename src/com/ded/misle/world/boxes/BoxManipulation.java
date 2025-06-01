@@ -119,7 +119,6 @@ public class BoxManipulation {
 		player.pos.updateLastDirection(interpretDirection(x, y));
         x = player.getX() + x;
         y = player.getY() + y;
-        player.setX(x);
-        player.setY(y);
+        player.setPos(x, y);
     }
 }

@@ -542,19 +542,21 @@ public class KeyHandler implements KeyListener {
 
 		if (gameState != GameState.LEVEL_DESIGNER) {
 			if (isPressed(DEBUG1)) {
-//				if (!isPressed(SHIFT)) {
+				if (!isPressed(SHIFT)) {
 					for (int i = 1; i <= 27; i++) {
 						if (i != 5) {
 							player.inv.addItem(createItem(i, 1));
 						}
 					}
-//				} else {
+				} else {
+					player.takeDamage(10, Entity.DamageFlag.of(Entity.DamageFlag.NORMAL));
+
 //					if (isPressed(CTRL)) {
 //						player.attr.setLevel(1);
 //					} else {
 //						player.attr.addXP(player.attr.getXPtoLevelUp() * 9 / 10);
 //					}
-//				}
+				}
 
 
 			}

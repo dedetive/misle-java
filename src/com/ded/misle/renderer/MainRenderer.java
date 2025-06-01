@@ -34,7 +34,6 @@ public abstract class MainRenderer {
 	public static Fader fader = new Fader();
 
 	public static void gameStart(int saveSlot) {
-		player = new Player();
 		player.currentSaveSlot = saveSlot;
 
 		keyH = new KeyHandler();
