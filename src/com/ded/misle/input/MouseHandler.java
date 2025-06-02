@@ -115,8 +115,8 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 			case MouseEvent.BUTTON3 -> isRightPressed = true;
 		}
 
-		mouseX = e.getX();
-		mouseY = e.getY();
+		mouseX = (int) (e.getX() / getWindowScale());
+		mouseY = (int) (e.getY() / getWindowScale());
 	}
 
 	@Override
