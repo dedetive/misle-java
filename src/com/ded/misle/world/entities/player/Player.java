@@ -1,5 +1,6 @@
 package com.ded.misle.world.entities.player;
 
+import com.ded.misle.net.NetClient;
 import com.ded.misle.renderer.AnimatedStepCounter;
 import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.world.entities.Entity;
@@ -28,6 +29,8 @@ public class Player extends Entity {
 	public boolean isIconActive;
 	public boolean isIconTexture;
 
+	long lastSendTime;
+
 	private boolean waiting;
 
 	public Player() {
@@ -46,6 +49,15 @@ public class Player extends Entity {
 		this.attr = new PlayerAttributes();
 		this.stats = new PlayerStats();
 		addBoxToCache(this);
+
+		Thread netThread = new Thread(() -> {
+			while (isRunning())
+				if (System.currentTimeMillis() - lastSendTime >= 500) {
+					NetClient.sendPosition(name, getX(), getY(), this.pos.getRoomID());
+					lastSendTime = System.currentTimeMillis();
+				}
+		});
+		netThread.start();
 	}
 
 	public void unloadPlayer() {
