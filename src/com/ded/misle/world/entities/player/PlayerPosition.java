@@ -93,8 +93,7 @@ public class PlayerPosition {
         assert room != null;
 
 		int[] spawnpointCoordinates = room.spawnpointPos;
-		player.setX(spawnpointCoordinates[0]);
-		player.setY(spawnpointCoordinates[1]);
+		player.setPos(spawnpointCoordinates[0], spawnpointCoordinates[1]);
 	}
 
 	public Region getRegion() {
