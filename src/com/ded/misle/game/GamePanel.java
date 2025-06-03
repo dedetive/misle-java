@@ -269,6 +269,10 @@ public class GamePanel extends JPanel implements Runnable {
 		window.setVisible(true);
 	}
 
+	public static boolean isRunning() {
+		return running;
+	}
+
 	public static double nsPerFrame;
 	public static double deltaTime;
 
