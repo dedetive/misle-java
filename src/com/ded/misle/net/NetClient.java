@@ -71,6 +71,19 @@ public class NetClient {
         return list;
     }
 
+    public static boolean isServerOnline() {
+        try {
+            URL url = new URL("http://localhost:8080/ping");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(300);
+            conn.setReadTimeout(300);
+            return conn.getResponseCode() == 200;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
     public static class Player {
         public String id;
         public int x, y;
