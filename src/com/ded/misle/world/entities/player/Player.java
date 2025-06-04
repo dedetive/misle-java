@@ -137,9 +137,9 @@ public class Player extends Entity {
 							GamePanel.gameState == GamePanel.GameState.DIALOG ||
 							GamePanel.gameState == GamePanel.GameState.PAUSE_MENU
 						) {
-							NetClient.sendPosition(name, getX(), getY(), this.pos.getRoomID());
-							onlinePlayerList = NetClient.fetchOnlinePlayers(name);
-							System.out.println(onlinePlayerList.toString());
+							String uuid = getUUIDString();
+							NetClient.sendPosition(uuid, getX(), getY(), this.pos.getRoomID());
+							onlinePlayerList = NetClient.fetchOnlinePlayers(uuid);
 						}
 						check = 500;
 					} else {
@@ -181,5 +181,13 @@ public class Player extends Entity {
 		bb.putLong(uuid.getLeastSignificantBits());
 
         return bb.array();
+	}
+
+	public String getUUIDString() {
+		ByteBuffer bb = ByteBuffer.wrap(this.getUUIDBytes());
+		long high = bb.getLong();
+		long low = bb.getLong();
+		UUID uuid = new UUID(high, low);
+		return uuid.toString();
 	}
 }
