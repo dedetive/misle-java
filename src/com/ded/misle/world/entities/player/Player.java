@@ -8,7 +8,8 @@ import com.ded.misle.world.entities.Entity;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.nio.ByteBuffer;
+import java.util.*;
 import java.util.List;
 
 import static com.ded.misle.game.GamePanel.isRunning;
@@ -35,6 +36,7 @@ public class Player extends Entity {
 
 	long lastSendTime;
 	private java.util.List<NetClient.Player> onlinePlayerList = new ArrayList<>();
+	private final byte[] uuid = new byte[16];
 
 	private boolean waiting;
 
@@ -151,4 +153,28 @@ public class Player extends Entity {
     public List<NetClient.Player> getOnlinePlayerList() {
         return onlinePlayerList;
     }
+
+	public void setUUID(byte[] uuid) {
+		if (!Arrays.equals(uuid, new byte[16])) return;
+
+        System.arraycopy(uuid, 0, this.uuid, 0, uuid.length);
+	}
+
+	public byte[] getUUIDBytes() {
+		if (Arrays.equals(uuid, new byte[16])) {
+			System.arraycopy(generateUUID(), 0, this.uuid, 0, uuid.length);
+		}
+
+		return this.uuid;
+	}
+
+	public byte[] generateUUID() {
+		UUID uuid = UUID.randomUUID();
+
+		ByteBuffer bb = ByteBuffer.allocate(16);
+		bb.putLong(uuid.getMostSignificantBits());
+		bb.putLong(uuid.getLeastSignificantBits());
+
+        return bb.array();
+	}
 }

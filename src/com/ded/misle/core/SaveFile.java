@@ -443,6 +443,18 @@ public class SaveFile {
 				charPos++;
 			}
 
+			byte[] uuidBytes = player.getUUIDBytes(); // 16 bytes
+			for (int i = 0; i < uuidBytes.length; i++) {
+				byte b = uuidBytes[i];
+				if (i % 3 == 0) pixelColor = RED;
+				else if (i % 3 == 1) pixelColor = GREEN;
+				else pixelColor = BLUE;
+				brandIntoSaveFile(b + 128, pixelColor, 62 + i / 3, 64);
+				brandIntoSaveFile(b + 128, pixelColor, 62 - i / 3, 64);
+				brandIntoSaveFile(b + 128, pixelColor, 62, 64 + i / 3);
+				brandIntoSaveFile(b + 128, pixelColor, 62, 64 - i / 3);
+			}
+
 			// Remove trailing
 			if (player.name.length() < maxLength) {
 				for (int i = player.name.length(); i < maxLength - player.name.length(); i++) {
