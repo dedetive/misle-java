@@ -36,7 +36,7 @@ public class Player extends Entity {
 
 	long lastSendTime;
 	private java.util.List<NetClient.Player> onlinePlayerList = new ArrayList<>();
-	private final byte[] uuid = new byte[16];
+	private byte[] uuid = new byte[16];
 
 	private boolean waiting;
 
@@ -61,6 +61,7 @@ public class Player extends Entity {
 	}
 
 	public void unloadPlayer() {
+		this.invalidateUUID();
 		this.keys.resetAllCooldowns();
 		this.attr.unloadAttributes();
 		this.inv.destroyGrabbedItem();
@@ -157,12 +158,16 @@ public class Player extends Entity {
 	public void setUUID(byte[] uuid) {
 		if (!Arrays.equals(uuid, new byte[16])) return;
 
-        System.arraycopy(uuid, 0, this.uuid, 0, uuid.length);
+        this.uuid = uuid;
+	}
+
+	public void invalidateUUID() {
+		this.uuid = new byte[16];
 	}
 
 	public byte[] getUUIDBytes() {
 		if (Arrays.equals(uuid, new byte[16])) {
-			System.arraycopy(generateUUID(), 0, this.uuid, 0, uuid.length);
+			this.uuid = generateUUID();
 		}
 
 		return this.uuid;
