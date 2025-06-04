@@ -31,9 +31,9 @@ public class NetClient {
         }
     }
 
-    public static List<Player> fetchOnlinePlayers() {
+    public static List<Player> fetchOnlinePlayers(String playerName) {
         try {
-            URL url = new URL("http://localhost:8080/players");
+            URL url = new URL("http://localhost:8080/players?id=" + playerName);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
