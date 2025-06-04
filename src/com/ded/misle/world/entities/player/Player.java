@@ -1,5 +1,6 @@
 package com.ded.misle.world.entities.player;
 
+import com.ded.misle.game.GamePanel;
 import com.ded.misle.net.NetClient;
 import com.ded.misle.renderer.AnimatedStepCounter;
 import com.ded.misle.world.logic.PhysicsEngine;
@@ -57,7 +58,15 @@ public class Player extends Entity {
 			while (isRunning())
 				if (System.currentTimeMillis() - lastSendTime >= check) {
 					if (NetClient.isServerOnline()) {
-						NetClient.sendPosition(name, getX(), getY(), this.pos.getRoomID());
+						/* TODO: please for the sake of Erosius change this ugly check asap */
+						if (GamePanel.gameState == GamePanel.GameState.PLAYING ||
+							GamePanel.gameState == GamePanel.GameState.INVENTORY ||
+							GamePanel.gameState == GamePanel.GameState.FROZEN_PLAYING ||
+							GamePanel.gameState == GamePanel.GameState.DIALOG ||
+							GamePanel.gameState == GamePanel.GameState.PAUSE_MENU
+						) {
+							NetClient.sendPosition(name, getX(), getY(), this.pos.getRoomID());
+						}
 						check = 500;
 					} else {
 						check = 3000;
