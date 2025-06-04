@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Objects;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -270,7 +271,39 @@ public class SaveFile {
                 String playerName = new String(nameBytes, StandardCharsets.UTF_8);
                 player.name = playerName.trim();
 
-                // Load inventory
+				byte[][] copies = new byte[4][16];
+
+				for (int i = 0; i < 16; i++) {
+					if (i % 3 == 0) pixelColor = RED;
+					else if (i % 3 == 1) pixelColor = GREEN;
+					else pixelColor = BLUE;
+
+					int offset = i / 3;
+
+					copies[0][i] = (byte) (loadThis(pixelColor, 62 + offset, 64) - 128);
+					copies[1][i] = (byte) (loadThis(pixelColor, 62 - offset, 64) - 128);
+					copies[2][i] = (byte) (loadThis(pixelColor, 62, 64 + offset) - 128);
+					copies[3][i] = (byte) (loadThis(pixelColor, 62, 64 - offset) - 128);
+				}
+
+				boolean valid = true;
+				for (int i = 1; i < 4; i++) {
+					if (!Arrays.equals(copies[0], copies[i])) {
+						valid = false;
+						break;
+					}
+				}
+
+				valid = valid && !Arrays.equals(copies[0], new byte[16]);
+
+				if (valid) {
+					player.setUUID(copies[0]);
+				} else {
+					player.invalidateUUID();
+					player.setUUID(player.generateUUID());
+				}
+
+				// Load inventory
 
                 int[][][] tempInventory = new int[4][7][4];
                 for (int i = 0; i < 4; i++) {
@@ -443,7 +476,7 @@ public class SaveFile {
 				charPos++;
 			}
 
-			byte[] uuidBytes = player.getUUIDBytes(); // 16 bytes
+			byte[] uuidBytes = player.getUUIDBytes();
 			for (int i = 0; i < uuidBytes.length; i++) {
 				byte b = uuidBytes[i];
 				if (i % 3 == 0) pixelColor = RED;

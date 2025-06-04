@@ -156,7 +156,7 @@ public class Player extends Entity {
     }
 
 	public void setUUID(byte[] uuid) {
-		if (!Arrays.equals(uuid, new byte[16])) return;
+		if (!Arrays.equals(this.uuid, new byte[16])) return;
 
         this.uuid = uuid;
 	}
