@@ -8,6 +8,8 @@ import com.ded.misle.world.entities.Entity;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.ded.misle.game.GamePanel.isRunning;
 import static com.ded.misle.world.boxes.BoxHandling.addBoxToCache;
@@ -32,6 +34,7 @@ public class Player extends Entity {
 	public boolean isIconTexture;
 
 	long lastSendTime;
+	private java.util.List<NetClient.Player> onlinePlayerList = new ArrayList<>();
 
 	private boolean waiting;
 
@@ -52,29 +55,7 @@ public class Player extends Entity {
 		this.stats = new PlayerStats();
 		addBoxToCache(this);
 
-		Thread netThread = new Thread(() -> {
-			int check = 500;
-
-			while (isRunning())
-				if (System.currentTimeMillis() - lastSendTime >= check) {
-					if (NetClient.isServerOnline()) {
-						/* TODO: please for the sake of Erosius change this ugly check asap */
-						if (GamePanel.gameState == GamePanel.GameState.PLAYING ||
-							GamePanel.gameState == GamePanel.GameState.INVENTORY ||
-							GamePanel.gameState == GamePanel.GameState.FROZEN_PLAYING ||
-							GamePanel.gameState == GamePanel.GameState.DIALOG ||
-							GamePanel.gameState == GamePanel.GameState.PAUSE_MENU
-						) {
-							NetClient.sendPosition(name, getX(), getY(), this.pos.getRoomID());
-						}
-						check = 500;
-					} else {
-						check = 3000;
-					}
-					lastSendTime = System.currentTimeMillis();
-				}
-		});
-		netThread.start();
+		this.startNetThread();
 	}
 
 	public void unloadPlayer() {
@@ -138,4 +119,36 @@ public class Player extends Entity {
 	public Point[] getPlannerState() {
 		return getPlanner().getPoints();
 	}
+
+	private void startNetThread() {
+		Thread netThread = new Thread(() -> {
+			int check = 500;
+
+			while (isRunning())
+				if (System.currentTimeMillis() - lastSendTime >= check) {
+					if (NetClient.isServerOnline()) {
+						/* TODO: please for the sake of Erosius change this ugly check asap */
+						if (GamePanel.gameState == GamePanel.GameState.PLAYING ||
+							GamePanel.gameState == GamePanel.GameState.INVENTORY ||
+							GamePanel.gameState == GamePanel.GameState.FROZEN_PLAYING ||
+							GamePanel.gameState == GamePanel.GameState.DIALOG ||
+							GamePanel.gameState == GamePanel.GameState.PAUSE_MENU
+						) {
+							NetClient.sendPosition(name, getX(), getY(), this.pos.getRoomID());
+							onlinePlayerList = NetClient.fetchOnlinePlayers(name);
+							System.out.println(onlinePlayerList.toString());
+						}
+						check = 500;
+					} else {
+						check = 3000;
+					}
+					lastSendTime = System.currentTimeMillis();
+				}
+		});
+		netThread.start();
+	}
+
+    public List<NetClient.Player> getOnlinePlayerList() {
+        return onlinePlayerList;
+    }
 }
