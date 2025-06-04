@@ -8,6 +8,7 @@ import com.ded.misle.world.entities.Entity;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import static com.ded.misle.game.GamePanel.isRunning;
 import static com.ded.misle.world.boxes.BoxHandling.addBoxToCache;
 import static com.ded.misle.world.entities.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
@@ -51,9 +52,16 @@ public class Player extends Entity {
 		addBoxToCache(this);
 
 		Thread netThread = new Thread(() -> {
+			int check = 500;
+
 			while (isRunning())
-				if (System.currentTimeMillis() - lastSendTime >= 500) {
-					NetClient.sendPosition(name, getX(), getY(), this.pos.getRoomID());
+				if (System.currentTimeMillis() - lastSendTime >= check) {
+					if (NetClient.isServerOnline()) {
+						NetClient.sendPosition(name, getX(), getY(), this.pos.getRoomID());
+						check = 500;
+					} else {
+						check = 3000;
+					}
 					lastSendTime = System.currentTimeMillis();
 				}
 		});
