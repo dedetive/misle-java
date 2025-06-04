@@ -1,6 +1,7 @@
 package com.ded.misle.renderer;
 
 import com.ded.misle.core.LanguageManager;
+import com.ded.misle.net.NetClient;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.entities.player.Planner;
 import com.ded.misle.world.entities.player.PlayerPosition;
@@ -75,6 +76,22 @@ public class PlayingRenderer extends AbstractRenderer {
 
         // Draw boxes
         BoxHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY());
+
+        for (NetClient.Player netPlayer : player.getOnlinePlayerList()) {
+            if (Objects.equals(player.getUUIDString(), netPlayer.id)) continue;
+            int netPlayerScreenX = (int) (netPlayer.x * originalTileSize + player.visualOffsetX * originalTileSize - player.pos.getCameraOffsetX());
+            int netPlayerScreenY = (int) (netPlayer.y * originalTileSize + player.visualOffsetY * originalTileSize - player.pos.getCameraOffsetY());
+
+            Composite originalComposite = g2d.getComposite();
+            AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.35f);
+            g2d.setComposite(ac);
+            drawRotatedImage(g2d, cachedImages.get(ImageManager.ImageName.PLAYER_FRONT0),
+                netPlayerScreenX - 0.2275 * originalTileSize,
+                netPlayerScreenY - 0.2275 * originalTileSize,
+                (int) (1.365 * originalTileSize),
+                (int) (1.365 * originalTileSize), 0, false);
+            g2d.setComposite(originalComposite);
+        }
 
         // Draw selected NPC indicator
         ArrayList<NPC> selectedNPCs = getSelectedNPCs();
