@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ public class NetClient {
 
     public static void sendPosition(String id, int x, int y, int roomID) {
         try {
-            URL url = new URL("http://localhost:8080/update");
+            URL url = URI.create("http://localhost:8080/update").toURL();
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
@@ -43,7 +44,7 @@ public class NetClient {
 
     public static List<Player> fetchOnlinePlayers(String playerName) {
         try {
-            URL url = new URL("http://localhost:8080/players?id=" + playerName);
+            URL url = URI.create("http://localhost:8080/players?id=" + playerName).toURL();
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
@@ -83,7 +84,7 @@ public class NetClient {
 
     public static boolean isServerOnline() {
         try {
-            URL url = new URL("http://localhost:8080/ping");
+            URL url = URI.create("http://localhost:8080/ping").toURL();
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setConnectTimeout(300);
