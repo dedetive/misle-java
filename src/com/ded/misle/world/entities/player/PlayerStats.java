@@ -71,7 +71,7 @@ public class PlayerStats {
 	}
 
 	public int getSteps(Direction direction) {
-		return steps.get(direction);
+		return steps.getOrDefault(direction, 0);
 	}
 
 	public void incrementSteps(Direction direction) {
