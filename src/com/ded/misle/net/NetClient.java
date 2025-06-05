@@ -12,6 +12,16 @@ import java.util.List;
 import java.util.Map;
 
 public class NetClient {
+
+    /*
+         NOTE:
+        This module currently has no real authentication and only runs locally.
+        Other players appear as ghosts only, and cannot interact with the host's world.
+        This is intended, and may only change with the introduction of private parties,
+        online connection features, and protective measures.
+
+     */
+
     public static void sendPosition(String id, int x, int y, int roomID) {
         try {
             URL url = new URL("http://localhost:8080/update");
