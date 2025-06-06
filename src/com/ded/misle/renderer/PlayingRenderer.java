@@ -4,7 +4,6 @@ import com.ded.misle.core.LanguageManager;
 import com.ded.misle.net.NetClient;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.entities.player.Planner;
-import com.ded.misle.world.entities.player.PlayerPosition;
 import com.ded.misle.world.logic.World;
 import com.ded.misle.world.entities.npcs.NPC;
 import com.ded.misle.input.MouseHandler;
@@ -78,7 +77,7 @@ public class PlayingRenderer extends AbstractRenderer {
         BoxHandling.renderBoxes(g2d, player.pos.getCameraOffsetX(), player.pos.getCameraOffsetY());
 
         for (NetClient.Player netPlayer : player.getOnlinePlayerList()) {
-            if (Objects.equals(player.getUUIDString(), netPlayer.id)) continue;
+            if (Objects.equals(player.getUUIDString(), netPlayer.uuid)) continue;
             int netPlayerScreenX = (int) (netPlayer.x * originalTileSize + player.visualOffsetX * originalTileSize - player.pos.getCameraOffsetX());
             int netPlayerScreenY = (int) (netPlayer.y * originalTileSize + player.visualOffsetY * originalTileSize - player.pos.getCameraOffsetY());
 

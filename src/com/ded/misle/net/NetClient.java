@@ -23,7 +23,7 @@ public class NetClient {
 
      */
 
-    public static void sendPosition(String id, int x, int y, int roomID) {
+    public static void sendPosition(String uuid, int x, int y, int roomID) {
         try {
             URL url = URI.create("http://localhost:8080/update").toURL();
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -31,7 +31,7 @@ public class NetClient {
             conn.setDoOutput(true);
             conn.setRequestProperty("Content-Type", "application/json");
 
-            String json = String.format("{\"id\":\"%s\", \"x\":%d, \"y\":%d, \"roomID\":%d}", id, x, y, roomID);
+            String json = String.format("{\"uuid\":\"%s\", \"x\":%d, \"y\":%d, \"roomID\":%d}", uuid, x, y, roomID);
             try (OutputStream os = conn.getOutputStream()) {
                 os.write(json.getBytes());
             }
@@ -44,7 +44,7 @@ public class NetClient {
 
     public static List<Player> fetchOnlinePlayers(String playerName) {
         try {
-            URL url = URI.create("http://localhost:8080/players?id=" + playerName).toURL();
+            URL url = URI.create("http://localhost:8080/players?uuid=" + playerName).toURL();
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
@@ -70,9 +70,9 @@ public class NetClient {
                 String[] kv = part.split(":");
                 if (kv.length == 2) map.put(kv[0].trim(), kv[1].trim());
             }
-            if (map.containsKey("id") && map.containsKey("x") && map.containsKey("y") && map.containsKey("roomID")) {
+            if (map.containsKey("uuid") && map.containsKey("x") && map.containsKey("y") && map.containsKey("roomID")) {
                 Player p = new Player();
-                p.id = map.get("id");
+                p.uuid = map.get("uuid");
                 p.x = Integer.parseInt(map.get("x"));
                 p.y = Integer.parseInt(map.get("y"));
                 p.roomID = Integer.parseInt(map.get("roomID"));
@@ -96,7 +96,7 @@ public class NetClient {
     }
 
     public static class Player {
-        public String id;
+        public String uuid;
         public int x, y;
         public int roomID;
     }
