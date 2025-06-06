@@ -143,6 +143,7 @@ public class Player extends Entity {
 						}
 						check = 500;
 					} else {
+						if (!onlinePlayerList.isEmpty()) onlinePlayerList = new ArrayList<>();
 						check = 3000;
 					}
 					lastSendTime = System.currentTimeMillis();
