@@ -14,7 +14,6 @@ xcopy /E /I /Y src\resources out\resources
 mkdir out\resources\savefiles
 
 echo Building jar...
-cd out
 jar cfe Misle.jar com.ded.misle.Launcher -C . .
 
 echo.
