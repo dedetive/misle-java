@@ -42,9 +42,9 @@ public class NetClient {
         }
     }
 
-    public static List<Player> fetchOnlinePlayers(String playerName) {
+    public static List<Player> fetchOnlinePlayers(String uuid) {
         try {
-            URL url = URI.create("http://localhost:8080/players?uuid=" + playerName).toURL();
+            URL url = URI.create("http://localhost:8080/players?uuid=" + uuid).toURL();
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
