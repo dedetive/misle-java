@@ -18,22 +18,33 @@ I hope you enjoy discovering this world as much as I’ve enjoyed creating it!!
 
 ### Usage
 
-To install the game, copy and paste the following in a bash terminal, in the directory that you want to install the game in:
+##### Building on Linux/macOS
+
+To build and run the game from source, open a terminal in the desired directory and run:
 
 ```bash
 git clone https://github.com/dedetive/misle-java/
 cd misle-java/
-mkdir out
-javac -d out $(find . -name "*.java")
-cp -r src/resources out/
-mkdir out/resources/savefiles/
-cd out
-java com.ded.misle.Launcher
+bash build.sh
 ```
 
-This process might take some time, usually around a few seconds. The game will automatically launch, but this behavior can be disabled by removing the last bash line.
+This will compile the game, copy the necessary resources, and create a `Misle.jar` file in the root directory. Once built, you can run the game by double-clicking the `Misle.jar` file or using:
 
-Alternatively, you can use your preferred IDE with a compiler to run the source-code yourself, always using `Launcher` as the starting point or a preferred Test class.
+```bash
+java -jar Misle.jar
+```
+
+##### Building on Windows
+
+For Windows users, a `build.bat` script is also included. Simply double-click `build.bat` or run the following commands in Command Prompt:
+
+```bash
+git clone https://github.com/dedetive/misle-java/
+cd misle-java/
+build.bat
+```
+
+This will compile the game, prepare resources, create the `Misle.jar`, and give instructions on how to run it.
 
 ### Planned Features
 - Top-down tactical combat with turn-based system (partially implemented already!)
