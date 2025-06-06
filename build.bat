@@ -3,11 +3,11 @@ REM Remove previous build folder
 rd /s /q out
 mkdir out
 
+echo Listing sources...
+dir /B /S src\*.java > sources.txt
+
 echo Compiling...
-for /R src %%f in (*.java) do (
-    echo Compiling %%f
-)
-javac -d out -cp src @findstr /S /M /C:".java" src\*.java
+javac -d out -cp src @sources.txt
 
 echo Copying resources...
 xcopy /E /I /Y src\resources out\resources
