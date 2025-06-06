@@ -19,9 +19,11 @@ public class NetClient {
 
      */
 
+    private static final String SERVER_IP = "http://localhost:8080";
+
     public static void sendPosition(String uuid, String name, int x, int y, int roomID, BufferedImage icon, int heldItemID) {
         try {
-            URL url = URI.create("http://localhost:8080/update").toURL();
+            URL url = URI.create(SERVER_IP + "/update").toURL();
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
@@ -51,7 +53,7 @@ public class NetClient {
 
     public static List<Player> fetchOnlinePlayers(String uuid) {
         try {
-            URL url = URI.create("http://localhost:8080/players?uuid=" + uuid).toURL();
+            URL url = URI.create(SERVER_IP + "/players?uuid=" + uuid).toURL();
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
@@ -102,7 +104,7 @@ public class NetClient {
 
     public static boolean isServerOnline() {
         try {
-            URL url = URI.create("http://localhost:8080/ping").toURL();
+            URL url = URI.create(SERVER_IP + "/ping").toURL();
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setConnectTimeout(300);
