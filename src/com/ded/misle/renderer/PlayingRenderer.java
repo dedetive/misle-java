@@ -91,6 +91,19 @@ public class PlayingRenderer extends AbstractRenderer {
                 netPlayerScreenY - 0.2275 * originalTileSize,
                 (int) (1.365 * originalTileSize),
                 (int) (1.365 * originalTileSize), 0, false);
+
+            if (netPlayer.heldItemID != 0) {
+                try {
+                    double posX = netPlayerScreenX + (double) (originalTileSize - 4) / 2;
+
+                    drawRotatedImage(g2d, Objects.requireNonNull(Item.createItem(netPlayer.heldItemID)).getIcon(),
+                        posX,
+                        netPlayerScreenY,
+                        originalTileSize, originalTileSize,
+                        0, false);
+                } catch (Exception ignored) {}
+            }
+
             g2d.setComposite(originalComposite);
         }
 
