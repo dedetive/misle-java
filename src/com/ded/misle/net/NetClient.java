@@ -19,7 +19,7 @@ public class NetClient {
 
      */
 
-    public static void sendPosition(String uuid, String name, BufferedImage icon, int x, int y, int roomID) {
+    public static void sendPosition(String uuid, String name, int x, int y, int roomID, BufferedImage icon, int heldItemID) {
         try {
             URL url = URI.create("http://localhost:8080/update").toURL();
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -35,8 +35,8 @@ public class NetClient {
             }
 
             String json = String.format(
-                "{\"uuid\":\"%s\",\"name\":\"%s\",\"x\":%d,\"y\":%d,\"roomID\":%d,\"icon\":\"%s\"}",
-                uuid, name, x, y, roomID, base64Icon
+                "{\"uuid\":\"%s\",\"name\":\"%s\",\"x\":%d,\"y\":%d,\"roomID\":%d,\"icon\":\"%s\",\"heldItemID\":%d}",
+                uuid, name, x, y, roomID, base64Icon, heldItemID
             );
 
             try (OutputStream os = conn.getOutputStream()) {
@@ -77,20 +77,22 @@ public class NetClient {
                 String[] kv = part.split(":");
                 if (kv.length == 2) map.put(kv[0].trim(), kv[1].trim());
             }
-            if (map.containsKey("uuid") && map.containsKey("x") && map.containsKey("y") && map.containsKey("roomID")) {
+            if (map.containsKey("uuid") && map.containsKey("x") &&
+                map.containsKey("y") && map.containsKey("roomID") &&
+                map.containsKey("icon") && map.containsKey("heldItemID")
+            ) {
                 Player p = new Player();
                 p.uuid = map.get("uuid");
                 p.name = map.get("name");
                 p.x = Integer.parseInt(map.get("x"));
                 p.y = Integer.parseInt(map.get("y"));
                 p.roomID = Integer.parseInt(map.get("roomID"));
-                if (map.containsKey("icon")) {
-                    try {
-                        byte[] decoded = Base64.getDecoder().decode(map.get("icon"));
-                        p.icon = ImageIO.read(new java.io.ByteArrayInputStream(decoded));
-                    } catch (Exception e) {
-                        System.err.println("Failed to decode player icon for " + p.uuid);
-                    }
+                p.heldItemID = Integer.parseInt(map.get("heldItemID"));
+                try {
+                    byte[] decoded = Base64.getDecoder().decode(map.get("icon"));
+                    p.icon = ImageIO.read(new java.io.ByteArrayInputStream(decoded));
+                } catch (Exception e) {
+                    System.err.println("Failed to decode player icon for " + p.uuid);
                 }
                 list.add(p);
             }
@@ -116,5 +118,6 @@ public class NetClient {
         public BufferedImage icon;
         public int x, y;
         public int roomID;
+        public int heldItemID;
     }
 }

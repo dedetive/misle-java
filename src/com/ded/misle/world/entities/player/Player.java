@@ -138,7 +138,8 @@ public class Player extends Entity {
 							GamePanel.gameState == GamePanel.GameState.PAUSE_MENU
 						) {
 							String uuid = getUUIDString();
-							NetClient.sendPosition(uuid, name, icon, getX(), getY(), this.pos.getRoomID());
+							int heldItemID = inv.getSelectedItem() == null ? 0 : inv.getSelectedItem().getId();
+							NetClient.sendPosition(uuid, name, getX(), getY(), this.pos.getRoomID(), icon, heldItemID);
 							onlinePlayerList = NetClient.fetchOnlinePlayers(uuid);
 						}
 						check = 500;
