@@ -122,13 +122,17 @@ public class SettingsManager {
 
 	private static Path attemptToFindPath(Path workingDir, String path, boolean throwExceptionIfNotFound) {
 		Path srcBranch = workingDir.resolve("src/" + path);
-		Path outBranch = workingDir.resolve(path);
+		Path outBranch = workingDir.resolve("out/" + path);
+		Path noneBranch = workingDir.resolve(path);
 
-		if (Files.exists(srcBranch)) {
-			return srcBranch;
-		} else if (Files.exists(outBranch)) {
+		if (Files.exists(outBranch)) {
 			return outBranch;
-		} else if (throwExceptionIfNotFound) {
+		} else if (Files.exists(srcBranch)) {
+			return srcBranch;
+		} else if (Files.exists(noneBranch)) {
+		return noneBranch;
+		}
+		else if (throwExceptionIfNotFound) {
 			throw new RuntimeException(outBranch + " structure not found or incorrect");
 		}
 		return null;
