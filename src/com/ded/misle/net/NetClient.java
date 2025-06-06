@@ -23,7 +23,7 @@ public class NetClient {
 
      */
 
-    public static void sendPosition(String uuid, int x, int y, int roomID) {
+    public static void sendPosition(String uuid, String name, int x, int y, int roomID) {
         try {
             URL url = URI.create("http://localhost:8080/update").toURL();
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -31,7 +31,7 @@ public class NetClient {
             conn.setDoOutput(true);
             conn.setRequestProperty("Content-Type", "application/json");
 
-            String json = String.format("{\"uuid\":\"%s\", \"x\":%d, \"y\":%d, \"roomID\":%d}", uuid, x, y, roomID);
+            String json = String.format("{\"uuid\":\"%s\", \"name\":%s, \"x\":%d, \"y\":%d, \"roomID\":%d}", uuid, name, x, y, roomID);
             try (OutputStream os = conn.getOutputStream()) {
                 os.write(json.getBytes());
             }
@@ -73,6 +73,7 @@ public class NetClient {
             if (map.containsKey("uuid") && map.containsKey("x") && map.containsKey("y") && map.containsKey("roomID")) {
                 Player p = new Player();
                 p.uuid = map.get("uuid");
+                p.name = map.get("name");
                 p.x = Integer.parseInt(map.get("x"));
                 p.y = Integer.parseInt(map.get("y"));
                 p.roomID = Integer.parseInt(map.get("roomID"));
@@ -96,7 +97,7 @@ public class NetClient {
     }
 
     public static class Player {
-        public String uuid;
+        public String uuid, name;
         public int x, y;
         public int roomID;
     }
