@@ -1,16 +1,12 @@
 package com.ded.misle.net;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class NetClient {
 
@@ -23,7 +19,7 @@ public class NetClient {
 
      */
 
-    public static void sendPosition(String uuid, String name, int x, int y, int roomID) {
+    public static void sendPosition(String uuid, String name, BufferedImage icon, int x, int y, int roomID) {
         try {
             URL url = URI.create("http://localhost:8080/update").toURL();
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -31,7 +27,18 @@ public class NetClient {
             conn.setDoOutput(true);
             conn.setRequestProperty("Content-Type", "application/json");
 
-            String json = String.format("{\"uuid\":\"%s\", \"name\":%s, \"x\":%d, \"y\":%d, \"roomID\":%d}", uuid, name, x, y, roomID);
+            String base64Icon = "";
+            if (icon != null) {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(icon, "png", baos);
+                base64Icon = Base64.getEncoder().encodeToString(baos.toByteArray());
+            }
+
+            String json = String.format(
+                "{\"uuid\":\"%s\",\"name\":\"%s\",\"x\":%d,\"y\":%d,\"roomID\":%d,\"icon\":\"%s\"}",
+                uuid, name, x, y, roomID, base64Icon
+            );
+
             try (OutputStream os = conn.getOutputStream()) {
                 os.write(json.getBytes());
             }
@@ -77,6 +84,14 @@ public class NetClient {
                 p.x = Integer.parseInt(map.get("x"));
                 p.y = Integer.parseInt(map.get("y"));
                 p.roomID = Integer.parseInt(map.get("roomID"));
+                if (map.containsKey("icon")) {
+                    try {
+                        byte[] decoded = Base64.getDecoder().decode(map.get("icon"));
+                        p.icon = ImageIO.read(new java.io.ByteArrayInputStream(decoded));
+                    } catch (Exception e) {
+                        System.err.println("Failed to decode player icon for " + p.uuid);
+                    }
+                }
                 list.add(p);
             }
         }
@@ -98,6 +113,7 @@ public class NetClient {
 
     public static class Player {
         public String uuid, name;
+        public BufferedImage icon;
         public int x, y;
         public int roomID;
     }
