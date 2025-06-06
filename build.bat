@@ -14,7 +14,7 @@ xcopy /E /I /Y src\resources out\resources
 mkdir out\resources\savefiles
 
 echo Building jar...
-jar cfe Misle.jar com.ded.misle.Launcher -C . .
+jar cfe Misle.jar com.ded.misle.Launcher -C out .
 
 echo.
 echo Build done! You can now run the game by double-clicking Misle.jar.
