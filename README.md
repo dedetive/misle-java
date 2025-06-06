@@ -18,7 +18,7 @@ I hope you enjoy discovering this world as much as I’ve enjoyed creating it!!
 
 ### Usage
 
-##### Building on Linux/macOS
+#### Building on Linux/macOS
 
 To build and run the game from source, open a terminal in the desired directory and run:
 
@@ -34,7 +34,7 @@ This will compile the game, copy the necessary resources, and create a `Misle.ja
 java -jar Misle.jar
 ```
 
-##### Building on Windows
+#### Building on Windows
 
 For Windows users, a `build.bat` script is also included. Simply double-click `build.bat` or run the following commands in Command Prompt:
 
