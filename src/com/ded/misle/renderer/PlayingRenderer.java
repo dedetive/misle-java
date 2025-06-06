@@ -84,7 +84,9 @@ public class PlayingRenderer extends AbstractRenderer {
             Composite originalComposite = g2d.getComposite();
             AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.35f);
             g2d.setComposite(ac);
-            drawRotatedImage(g2d, cachedImages.get(ImageManager.ImageName.PLAYER_FRONT0),
+            BufferedImage playerSprite = cachedImages.get(ImageManager.ImageName.PLAYER_FRONT0_EDIT);
+            playerSprite = mergeImages(playerSprite, netPlayer.icon);
+            drawRotatedImage(g2d, playerSprite,
                 netPlayerScreenX - 0.2275 * originalTileSize,
                 netPlayerScreenY - 0.2275 * originalTileSize,
                 (int) (1.365 * originalTileSize),
