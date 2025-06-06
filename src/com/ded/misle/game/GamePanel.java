@@ -399,6 +399,11 @@ public class GamePanel extends JPanel implements Runnable {
 
 		Graphics2D g2d = (Graphics2D) g;
 
+		if (screenBuffer == null) {
+			screenBuffer = new BufferedImage((int) screenWidth, (int) screenHeight, BufferedImage.TYPE_INT_RGB);
+			g2dBuffer = screenBuffer.createGraphics();
+		}
+
 		if (bufferScale != DEFAULT_BUFFER_SCALE) {
 			if (g2dBuffer != null) g2dBuffer.dispose();
 			screenBuffer.flush();
