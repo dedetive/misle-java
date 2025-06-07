@@ -81,9 +81,21 @@ public class PlayingRenderer extends AbstractRenderer {
             int netPlayerScreenX = (int) (netPlayer.x * originalTileSize + player.visualOffsetX * originalTileSize - player.pos.getCameraOffsetX());
             int netPlayerScreenY = (int) (netPlayer.y * originalTileSize + player.visualOffsetY * originalTileSize - player.pos.getCameraOffsetY());
 
+            FontMetrics fontMetrics = g2d.getFontMetrics();
+            drawColoredText(g2d, removeColorIndicators(netPlayer.name),
+                (int) (netPlayerScreenX - (double) fontMetrics.stringWidth(netPlayer.name) / 2 + 0.4 * originalTileSize + 1),
+                netPlayerScreenY - fontMetrics.getAscent() + fontMetrics.getDescent() + 1,
+                g2d.getFont(), new Color(0x33000000, true), true);
+
             Composite originalComposite = g2d.getComposite();
             AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.35f);
             g2d.setComposite(ac);
+
+            drawColoredText(g2d, removeColorIndicators(netPlayer.name),
+                (int) (netPlayerScreenX - (double) fontMetrics.stringWidth(netPlayer.name) / 2 + 0.4 * originalTileSize),
+                netPlayerScreenY - fontMetrics.getAscent() + fontMetrics.getDescent(),
+                g2d.getFont(), new Color(0xEFEFEF), false);
+
             BufferedImage playerSprite = cachedImages.get(ImageManager.ImageName.PLAYER_FRONT0_EDIT);
             playerSprite = mergeImages(playerSprite, netPlayer.icon);
             drawRotatedImage(g2d, playerSprite,
