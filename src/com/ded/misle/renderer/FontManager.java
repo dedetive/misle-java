@@ -25,16 +25,16 @@ public abstract class FontManager {
      *
      */
 
-    public static Font titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", 26);
-    public static Font selectedItemNameFont = loadFont("/fonts/Ubuntu-Medium.ttf", 9);
-    public static Font itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", 13);
-    public static Font buttonFont = loadFont("/fonts/Ubuntu-Medium.ttf", 12);
-    public static Font itemInfoFont = loadFont("/fonts/Basic-Regular.ttf", 10);
-    public static Font dialogNPCName = loadFont("/fonts/Ubuntu-Medium.ttf", 23);
-    public static Font dialogNPCText = loadFont("/fonts/Ubuntu-Regular.ttf", 14);
-    public static Font coinTextFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", 19);
-    public static Font backupAdvisorFont = loadFont("/fonts/Ubuntu-Medium.ttf", 6);
-    public static Font plannerCounter = loadFont("/fonts/Ubuntu-Medium.ttf", 30);
+    public static Font titleFont = loadFont("Comfortaa-SemiBold.ttf", 26);
+    public static Font selectedItemNameFont = loadFont("Ubuntu-Medium.ttf", 9);
+    public static Font itemCountFont = loadFont("Ubuntu-Regular.ttf", 13);
+    public static Font buttonFont = loadFont("Ubuntu-Medium.ttf", 12);
+    public static Font itemInfoFont = loadFont("Basic-Regular.ttf", 10);
+    public static Font dialogNPCName = loadFont("Ubuntu-Medium.ttf", 23);
+    public static Font dialogNPCText = loadFont("Ubuntu-Regular.ttf", 14);
+    public static Font coinTextFont = loadFont("Comfortaa-SemiBold.ttf", 19);
+    public static Font backupAdvisorFont = loadFont("Ubuntu-Medium.ttf", 6);
+    public static Font plannerCounter = loadFont("Ubuntu-Medium.ttf", 30);
 
     private static final HashMap<Font, Integer> fontToSize = new HashMap<>(){{
         put(titleFont, 26);
@@ -71,8 +71,11 @@ public abstract class FontManager {
             return fontCache.get(key);
         }
 
-        try (InputStream is = FontManager.class.getResourceAsStream(fontPath)) {
+        String fullFontPath = "/resources/fonts/" + fontPath;
+
+        try (InputStream is = FontManager.class.getResourceAsStream(fullFontPath)) {
             if (is == null) {
+                System.err.println("Font not found: " + fullFontPath);
                 Font fallback = new Font("Dialog", Font.PLAIN, size);
                 fontCache.put(key, fallback);
                 return fallback;
@@ -93,50 +96,50 @@ public abstract class FontManager {
         fontCache.clear();
         metricsCache.clear();
 
-        coinTextFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", getSize(coinTextFont));
-        itemCountFont = loadFont("/fonts/Ubuntu-Regular.ttf", getSize(itemCountFont));
+        coinTextFont = loadFont("Comfortaa-SemiBold.ttf", getSize(coinTextFont));
+        itemCountFont = loadFont("Ubuntu-Regular.ttf", getSize(itemCountFont));
         switch (getCurrentScript()) {
             case LATIN -> {
-                titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", getSize(titleFont));
-                selectedItemNameFont = loadFont("/fonts/Ubuntu-Medium.ttf", getSize(selectedItemNameFont));
-                itemInfoFont = loadFont("/fonts/Basic-Regular.ttf", getSize(itemCountFont));
-                buttonFont = loadFont("/fonts/Ubuntu-Medium.ttf", getSize(buttonFont));
-                dialogNPCName = loadFont("/fonts/Ubuntu-Medium.ttf", getSize(dialogNPCName));
-                dialogNPCText = loadFont("/fonts/Ubuntu-Regular.ttf", getSize(dialogNPCText));
-                backupAdvisorFont = loadFont("/fonts/Ubuntu-Medium.ttf", getSize(backupAdvisorFont));
-                plannerCounter = loadFont("/fonts/Ubuntu-Medium.ttf", getSize(plannerCounter));
+                titleFont = loadFont("Comfortaa-SemiBold.ttf", getSize(titleFont));
+                selectedItemNameFont = loadFont("Ubuntu-Medium.ttf", getSize(selectedItemNameFont));
+                itemInfoFont = loadFont("Basic-Regular.ttf", getSize(itemCountFont));
+                buttonFont = loadFont("Ubuntu-Medium.ttf", getSize(buttonFont));
+                dialogNPCName = loadFont("Ubuntu-Medium.ttf", getSize(dialogNPCName));
+                dialogNPCText = loadFont("Ubuntu-Regular.ttf", getSize(dialogNPCText));
+                backupAdvisorFont = loadFont("Ubuntu-Medium.ttf", getSize(backupAdvisorFont));
+                plannerCounter = loadFont("Ubuntu-Medium.ttf", getSize(plannerCounter));
             }
             case GREEK, CYRILLIC -> {
-                titleFont = loadFont("/fonts/Comfortaa-SemiBold.ttf", getSize(titleFont));
-                selectedItemNameFont = loadFont("/fonts/Ubuntu-Medium.ttf", getSize(selectedItemNameFont));
-                buttonFont = loadFont("/fonts/Ubuntu-Medium.ttf", getSize(buttonFont));
-                itemInfoFont = loadFont("/fonts/Ubuntu-Medium.ttf", getSize(itemInfoFont));
-                dialogNPCName = loadFont("/fonts/Ubuntu-Medium.ttf", getSize(dialogNPCName));
-                dialogNPCText = loadFont("/fonts/Ubuntu-Regular.ttf", getSize(dialogNPCText));
-                backupAdvisorFont = loadFont("/fonts/Ubuntu-Medium.ttf", getSize(backupAdvisorFont));
-                plannerCounter = loadFont("/fonts/Ubuntu-Medium.ttf", getSize(plannerCounter));
+                titleFont = loadFont("Comfortaa-SemiBold.ttf", getSize(titleFont));
+                selectedItemNameFont = loadFont("Ubuntu-Medium.ttf", getSize(selectedItemNameFont));
+                buttonFont = loadFont("Ubuntu-Medium.ttf", getSize(buttonFont));
+                itemInfoFont = loadFont("Ubuntu-Medium.ttf", getSize(itemInfoFont));
+                dialogNPCName = loadFont("Ubuntu-Medium.ttf", getSize(dialogNPCName));
+                dialogNPCText = loadFont("Ubuntu-Regular.ttf", getSize(dialogNPCText));
+                backupAdvisorFont = loadFont("Ubuntu-Medium.ttf", getSize(backupAdvisorFont));
+                plannerCounter = loadFont("Ubuntu-Medium.ttf", getSize(plannerCounter));
             }
             case SIMPLIFIED_HAN -> {
-                titleFont = loadFont("/fonts/NotoSansSC-SemiBold.ttf", getSize(titleFont));
-                selectedItemNameFont = loadFont("/fonts/NotoSansSC-Regular.ttf", getSize(selectedItemNameFont));
-                itemInfoFont = loadFont("/fonts/NotoSansSC-Regular.ttf", getSize(itemInfoFont));
-                buttonFont = loadFont("/fonts/NotoSansSC-SemiBold.ttf", getSize(buttonFont));
-                dialogNPCName = loadFont("/fonts/NotoSansSC-SemiBold.ttf", getSize(dialogNPCName));
-                dialogNPCText = loadFont("/fonts/NotoSansSC-Regular.ttf", getSize(dialogNPCText));
-                backupAdvisorFont = loadFont("/fonts/NotoSansSC-Regular.ttf", getSize(backupAdvisorFont));
-                plannerCounter = loadFont("/fonts/NotoSansSC-Regular.ttf", getSize(plannerCounter));
+                titleFont = loadFont("NotoSansSC-SemiBold.ttf", getSize(titleFont));
+                selectedItemNameFont = loadFont("NotoSansSC-Regular.ttf", getSize(selectedItemNameFont));
+                itemInfoFont = loadFont("NotoSansSC-Regular.ttf", getSize(itemInfoFont));
+                buttonFont = loadFont("NotoSansSC-SemiBold.ttf", getSize(buttonFont));
+                dialogNPCName = loadFont("NotoSansSC-SemiBold.ttf", getSize(dialogNPCName));
+                dialogNPCText = loadFont("NotoSansSC-Regular.ttf", getSize(dialogNPCText));
+                backupAdvisorFont = loadFont("NotoSansSC-Regular.ttf", getSize(backupAdvisorFont));
+                plannerCounter = loadFont("NotoSansSC-Regular.ttf", getSize(plannerCounter));
             }
             case PRASPOMIC -> {
-                titleFont = loadFont("/fonts/Praspomia-Regular.otf", getSize(titleFont));
-                selectedItemNameFont = loadFont("/fonts/Praspomia-Regular.otf", getSize(selectedItemNameFont));
-                itemInfoFont = loadFont("/fonts/Praspomia-Regular.otf", getSize(itemInfoFont));
-                buttonFont = loadFont("/fonts/Praspomia-Regular.otf", getSize(buttonFont));
-                dialogNPCName = loadFont("/fonts/Praspomia-Regular.otf", getSize(dialogNPCName));
-                dialogNPCText = loadFont("/fonts/Praspomia-Regular.otf", getSize(dialogNPCText));
-                backupAdvisorFont = loadFont("/fonts/Praspomia-Regular.otf", getSize(backupAdvisorFont));
-                plannerCounter = loadFont("/fonts/Praspomia-Regular.otf", getSize(plannerCounter));
-                coinTextFont = loadFont("/fonts/Praspomia-Regular.otf", 17);
-                itemCountFont = loadFont("/fonts/Praspomia-Regular.otf", 13);
+                titleFont = loadFont("Praspomia-Regular.otf", getSize(titleFont));
+                selectedItemNameFont = loadFont("Praspomia-Regular.otf", getSize(selectedItemNameFont));
+                itemInfoFont = loadFont("Praspomia-Regular.otf", getSize(itemInfoFont));
+                buttonFont = loadFont("Praspomia-Regular.otf", getSize(buttonFont));
+                dialogNPCName = loadFont("Praspomia-Regular.otf", getSize(dialogNPCName));
+                dialogNPCText = loadFont("Praspomia-Regular.otf", getSize(dialogNPCText));
+                backupAdvisorFont = loadFont("Praspomia-Regular.otf", getSize(backupAdvisorFont));
+                plannerCounter = loadFont("Praspomia-Regular.otf", getSize(plannerCounter));
+                coinTextFont = loadFont("Praspomia-Regular.otf", 17);
+                itemCountFont = loadFont("Praspomia-Regular.otf", 13);
             }
         }
     }
