@@ -58,29 +58,21 @@ public class BoxManipulation {
 	 * @param axisIndex    0 for X-axis, 1 for Y-axis
 	 * @param ignoreCollision whether to skip collision checks when moving
 	 */
-	private static void moveAxis(Box box, int[] delta, int axisIndex, boolean ignoreCollision) {
+	private static boolean moveAxis(Box box, int[] delta, int axisIndex, boolean ignoreCollision) {
 		int signum = Integer.signum(delta[0]);
-
-		if (signum == 0) return;
+		if (signum == 0) return false;
 
 		int x = box.getX();
 		int y = box.getY();
 		int targetX = axisIndex == 0 ? x + signum : x;
 		int targetY = axisIndex == 1 ? y + signum : y;
 
-		if (!ignoreCollision) {
-			if (isDestinationOccupied(targetX, targetY, box)) {
-				return;
-			}
+		if (!ignoreCollision && isDestinationOccupied(targetX, targetY, box)) {
+			return false;
 		}
 
-		if (axisIndex == 0) {
-			box.setPos(x + signum, y);
-		} else {
-			box.setPos(x, y + signum);
-		}
-
-		delta[0] -= signum;
+		box.setPos(targetX, targetY);
+		return true;
 	}
 
 
