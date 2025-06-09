@@ -7,4 +7,6 @@ public interface AIBehavior {
 
     void setPriority(int priority);
     int getPriority();
+
+    BehaviorType getType();
 }
