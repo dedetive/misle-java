@@ -4,6 +4,7 @@ import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.world.logic.TurnTimer;
 
 import javax.swing.Timer;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -102,6 +103,11 @@ public class BoxManipulation {
 			}
 		});
 		timer.start();
+	}
+
+	public static void moveToward(Box box, Point point, boolean ignoreCollision) {
+		moveAxis(box, new int[]{1},
+			Integer.signum(Math.max(point.x, point.y)), false);
 	}
 
     /**
