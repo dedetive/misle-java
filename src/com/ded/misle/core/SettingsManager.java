@@ -3,7 +3,6 @@ package com.ded.misle.core;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.game.GamePanel.*;
@@ -24,8 +23,8 @@ public class SettingsManager {
 	 */
 
 	public static void changeSetting(String setting, String changeTo) {
-		Path file = getPath(GetPathTag.RESOURCES);
-		Path settingsFile = getPath(GetPathTag.CONFIG);
+		Path file = com.ded.misle.core.Path.getPath(com.ded.misle.core.Path.GetPathTag.RESOURCES);
+		Path settingsFile = com.ded.misle.core.Path.getPath(com.ded.misle.core.Path.GetPathTag.CONFIG);
 		Path tempFile = file.resolve("temp.config");
 
 		try (BufferedReader reader = Files.newBufferedReader(settingsFile);
@@ -64,82 +63,8 @@ public class SettingsManager {
 		}
 	}
 
-	public enum GetPathTag {
-		GAME,
-		RESOURCES,
-		ROOT,
-		CONFIG
-
-		;
-
-		public static final GetPathTag DEFAULT_TAG = ROOT;
-	}
-
-	/**
-	 * Returns get the root path of this project.
-	 *
-	 * @return the root path in a Path format
-	 */
-	public static Path getPath() {
-		return getPath(GetPathTag.DEFAULT_TAG);
-	}
-
-	/**
-	 * Returns get the path of the given tag.
-	 *
-	 * @return the given tag path
-	 */
-	public static Path getPath(GetPathTag tag) {
-		Path workingDir = Paths.get(System.getProperty("user.dir"));
-
-		switch (tag) {
-			case ROOT -> {
-				return workingDir;
-			}
-			case RESOURCES -> {
-				return attemptToFindPath(workingDir, "resources");
-			}
-			case CONFIG -> {
-				Path configPath = attemptToFindPath(workingDir, "resources/settings.config", false);
-				try {
-					if (configPath == null) Files.createFile(
-						getPath(GetPathTag.RESOURCES).resolve("settings.config"));
-				} catch (IOException e) {
-                    throw new RuntimeException("Could not create settings file", e);
-                }
-                return attemptToFindPath(workingDir, "resources/settings.config", true);
-			}
-			case GAME -> {
-				return attemptToFindPath(workingDir, "com/ded/misle");
-			}
-		}
-		throw new RuntimeException(tag.name() + " tag not found when getting path");
-	}
-
-	private static Path attemptToFindPath(Path workingDir, String path) {
-		return attemptToFindPath(workingDir, path, true);
-	}
-
-	private static Path attemptToFindPath(Path workingDir, String path, boolean throwExceptionIfNotFound) {
-		Path srcBranch = workingDir.resolve("src/" + path);
-		Path outBranch = workingDir.resolve("out/" + path);
-		Path noneBranch = workingDir.resolve(path);
-
-		if (Files.exists(outBranch)) {
-			return outBranch;
-		} else if (Files.exists(srcBranch)) {
-			return srcBranch;
-		} else if (Files.exists(noneBranch)) {
-		return noneBranch;
-		}
-		else if (throwExceptionIfNotFound) {
-			throw new RuntimeException(outBranch + " structure not found or incorrect");
-		}
-		return null;
-	}
-
 	public static void updateSetting(Setting<?> setting) {
-		Path file = getPath(GetPathTag.CONFIG);
+		Path file = com.ded.misle.core.Path.getPath(com.ded.misle.core.Path.GetPathTag.CONFIG);
 		String result = "";
 
 		try (BufferedReader reader = Files.newBufferedReader(file)) {
@@ -175,7 +100,7 @@ public class SettingsManager {
 	 * @return the value of a specific setting from settings.config in a String format
 	 */
 	public static String getSetting(String args) {
-		Path file = getPath(GetPathTag.CONFIG);
+		Path file = com.ded.misle.core.Path.getPath(com.ded.misle.core.Path.GetPathTag.CONFIG);
 		String result = "";
 
 		try (BufferedReader reader = Files.newBufferedReader(file)) {

@@ -1,7 +1,6 @@
 package com.ded.misle.items;
 
 import com.ded.misle.core.LanguageManager;
-import com.ded.misle.core.SettingsManager;
 import com.ded.misle.world.boxes.Box;
 
 import java.awt.*;
@@ -15,7 +14,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.IOException;
 
-import static com.ded.misle.core.SettingsManager.getPath;
+import static com.ded.misle.core.Path.getPath;
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.world.boxes.BoxHandling.addBoxItem;
 import static java.lang.System.currentTimeMillis;
@@ -72,7 +71,7 @@ public class Item {
 			if (iconCache.containsKey(id)) {
 				this.icon = iconCache.get(id);
 			} else {
-				Path basePath = getPath(SettingsManager.GetPathTag.RESOURCES).resolve("images/items");
+				Path basePath = getPath(com.ded.misle.core.Path.GetPathTag.RESOURCES).resolve("images/items");
 				Path filePath = basePath.resolve(itemDetails.getResourceID() + ".png");
 
 				try {
@@ -166,7 +165,7 @@ public class Item {
 		if (iconCache.containsKey(id)) {
 			this.icon = iconCache.get(id);
 		} else {
-			Path basePath = getPath(SettingsManager.GetPathTag.RESOURCES).resolve("images/items");
+			Path basePath = getPath(com.ded.misle.core.Path.GetPathTag.RESOURCES).resolve("images/items");
 			Path filePath = basePath.resolve(resourceID + ".png");
 
 			try {

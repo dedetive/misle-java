@@ -1,6 +1,6 @@
 package com.ded.misle.audio;
 
-import com.ded.misle.core.SettingsManager;
+import com.ded.misle.core.Path;
 
 import javax.sound.sampled.Clip;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public enum AudioFile {
     }
 
     AudioFile(AudioType type, final int AUDIO_PLAYER_COUNT) {
-        this.path = SettingsManager.getPath(SettingsManager.GetPathTag.RESOURCES).resolve("audio/" + this + ".wav").toString();
+        this.path = Path.getPath(Path.GetPathTag.RESOURCES).resolve("audio/" + this + ".wav").toString();
 
         this.type = type;
         type.setType(this);

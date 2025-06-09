@@ -1,7 +1,5 @@
 package com.ded.misle.renderer;
 
-import com.ded.misle.core.SettingsManager;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.ded.misle.game.GamePanel.getWindow;
-import static com.ded.misle.core.SettingsManager.getPath;
+import static com.ded.misle.core.Path.getPath;
 import static com.ded.misle.renderer.ColorManager.getRandomColor;
 import static java.nio.file.Files.createDirectories;
 
@@ -56,7 +54,7 @@ public abstract class ImageManager {
         ;
 
         ImageName(String category, String fileName) {
-            Path basePath = getPath(SettingsManager.GetPathTag.RESOURCES).resolve("images");
+            Path basePath = getPath(com.ded.misle.core.Path.GetPathTag.RESOURCES).resolve("images");
             Path fullPath = basePath.resolve(category + "/" + fileName);
             try {
                 cachedImages.put(this, ImageIO.read(fullPath.toFile()));
@@ -144,7 +142,7 @@ public abstract class ImageManager {
         return img;
     }
 
-    private final static Path screenshotDirectory = getPath(SettingsManager.GetPathTag.RESOURCES).resolve("screenshots");
+    private final static Path screenshotDirectory = getPath(com.ded.misle.core.Path.GetPathTag.RESOURCES).resolve("screenshots");
 
     public static void saveScreenshot(BufferedImage img) {
         try {

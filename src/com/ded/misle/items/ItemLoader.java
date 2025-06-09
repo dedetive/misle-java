@@ -1,7 +1,5 @@
 package com.ded.misle.items;
 
-import com.ded.misle.core.SettingsManager;
-
 import java.awt.*;
 import java.io.BufferedReader;
 import java.nio.file.Files;
@@ -10,11 +8,11 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.List;
 
-import static com.ded.misle.core.SettingsManager.getPath;
+import static com.ded.misle.core.Path.getPath;
 import static com.ded.misle.game.GamePanel.player;
 
 public class ItemLoader {
-	private static final Path FILE_PATH = getPath(SettingsManager.GetPathTag.RESOURCES).resolve("items.json");
+	private static final Path FILE_PATH = getPath(com.ded.misle.core.Path.GetPathTag.RESOURCES).resolve("items.json");
 
 	// Load all items from the JSON file
 	public static List<ItemData> loadItems() throws IOException {

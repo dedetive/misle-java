@@ -1,7 +1,5 @@
 package com.ded.misle.world.logic;
 
-import com.ded.misle.core.SettingsManager;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,13 +8,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.ded.misle.core.SettingsManager.getPath;
+import static com.ded.misle.core.Path.getPath;
 
 public class RoomManager {
     public static ArrayList<Room> rooms = new ArrayList<>();
 
     static {
-        Path basePath = getPath(SettingsManager.GetPathTag.RESOURCES).resolve("rooms/");
+        Path basePath = getPath(com.ded.misle.core.Path.GetPathTag.RESOURCES).resolve("rooms/");
 
         StringBuilder jsonContent = new StringBuilder();
         Path worldsJson = basePath.resolve("rooms.json");

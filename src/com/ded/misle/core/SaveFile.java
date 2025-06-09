@@ -20,7 +20,7 @@ import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 
 import static com.ded.misle.core.SaveFile.SaveScreenOption.ICON;
-import static com.ded.misle.core.SettingsManager.getPath;
+import static com.ded.misle.core.Path.getPath;
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.core.SaveFile.PixelColor.*;
 import static com.ded.misle.renderer.ImageManager.*;
@@ -30,7 +30,7 @@ public class SaveFile {
 	private static final Object fileLock = new Object();
 
 	// FILE PATH FOR .PNG
-	private static final Path filePath = getPath(SettingsManager.GetPathTag.RESOURCES).resolve("savefiles/savefile");
+	private static final Path filePath = getPath(com.ded.misle.core.Path.GetPathTag.RESOURCES).resolve("savefiles/savefile");
 	private static final File[] saves = new File[3];
 	private static final BufferedImage[] saveImages = new BufferedImage[3];
 	static {
