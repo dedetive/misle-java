@@ -105,9 +105,21 @@ public class BoxManipulation {
 		timer.start();
 	}
 
-	public static void moveToward(Box box, Point point, boolean ignoreCollision) {
-		moveAxis(box, new int[]{1},
-			Integer.signum(Math.max(point.x, point.y)), false);
+	public static void moveToward(Box box, Point target, boolean ignoreCollision) {
+		int dx = target.x - box.getX();
+		int dy = target.y - box.getY();
+
+		if (dx == 0 && dy == 0) return;
+
+		if (Math.abs(dx) >= Math.abs(dy)) {
+			if (!moveAxis(box, new int[]{dx}, 0, ignoreCollision)) {
+				moveAxis(box, new int[]{dy}, 1, ignoreCollision);
+			}
+		} else {
+			if (!moveAxis(box, new int[]{dy}, 1, ignoreCollision)) {
+				moveAxis(box, new int[]{dx}, 0, ignoreCollision);
+			}
+		}
 	}
 
     /**
