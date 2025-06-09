@@ -12,7 +12,7 @@ import static com.ded.misle.core.Path.getPath;
 import static com.ded.misle.game.GamePanel.player;
 
 public class ItemLoader {
-	private static final Path FILE_PATH = getPath(com.ded.misle.core.Path.GetPathTag.RESOURCES).resolve("items.json");
+	private static final Path FILE_PATH = getPath(com.ded.misle.core.Path.PathTag.RESOURCES).resolve("items.json");
 
 	// Load all items from the JSON file
 	public static List<ItemData> loadItems() throws IOException {

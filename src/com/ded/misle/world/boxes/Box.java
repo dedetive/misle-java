@@ -331,7 +331,7 @@ public class Box {
 	public static BufferedImage getTexture(String boxTextureName) {
 		// Check if the texture is already cached
 		if (!cachedTextures.containsKey(boxTextureName)) {
-			Path basePath = getPath(com.ded.misle.core.Path.GetPathTag.RESOURCES).resolve("images/boxes/");
+			Path basePath = getPath(com.ded.misle.core.Path.PathTag.RESOURCES).resolve("images/boxes/");
 			String fileName = boxTextureName + ".png";
 			Path fullPath = basePath.resolve(fileName);
 

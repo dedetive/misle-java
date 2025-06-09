@@ -14,7 +14,7 @@ public class RoomManager {
     public static ArrayList<Room> rooms = new ArrayList<>();
 
     static {
-        Path basePath = getPath(com.ded.misle.core.Path.GetPathTag.RESOURCES).resolve("rooms/");
+        Path basePath = getPath(com.ded.misle.core.Path.PathTag.RESOURCES).resolve("rooms/");
 
         StringBuilder jsonContent = new StringBuilder();
         Path worldsJson = basePath.resolve("rooms.json");

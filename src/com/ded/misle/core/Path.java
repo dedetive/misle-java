@@ -11,7 +11,7 @@ public class Path {
      * @return the root path in a Path format
      */
     public static java.nio.file.Path getPath() {
-        return getPath(GetPathTag.DEFAULT_TAG);
+        return getPath(PathTag.DEFAULT_TAG);
     }
 
     /**
@@ -19,7 +19,7 @@ public class Path {
      *
      * @return the given tag path
      */
-    public static java.nio.file.Path getPath(GetPathTag tag) {
+    public static java.nio.file.Path getPath(PathTag tag) {
         java.nio.file.Path workingDir = Paths.get(System.getProperty("user.dir"));
 
         switch (tag) {
@@ -33,7 +33,7 @@ public class Path {
                 java.nio.file.Path configPath = attemptToFindPath(workingDir, "resources/settings.config", false);
                 try {
                     if (configPath == null) Files.createFile(
-                        getPath(GetPathTag.RESOURCES).resolve("settings.config"));
+                        getPath(PathTag.RESOURCES).resolve("settings.config"));
                 } catch (IOException e) {
                     throw new RuntimeException("Could not create settings file", e);
                 }
@@ -67,12 +67,12 @@ public class Path {
         return null;
     }
 
-    public enum GetPathTag {
+    public enum PathTag {
         GAME,
         RESOURCES,
         ROOT,
         CONFIG;
 
-        public static final GetPathTag DEFAULT_TAG = ROOT;
+        public static final PathTag DEFAULT_TAG = ROOT;
     }
 }

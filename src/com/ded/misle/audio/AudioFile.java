@@ -21,7 +21,7 @@ public enum AudioFile {
     }
 
     AudioFile(AudioType type, final int AUDIO_PLAYER_COUNT) {
-        this.path = Path.getPath(Path.GetPathTag.RESOURCES).resolve("audio/" + this + ".wav").toString();
+        this.path = Path.getPath(Path.PathTag.RESOURCES).resolve("audio/" + this + ".wav").toString();
 
         this.type = type;
         type.setType(this);

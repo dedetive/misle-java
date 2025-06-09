@@ -54,7 +54,7 @@ public abstract class ImageManager {
         ;
 
         ImageName(String category, String fileName) {
-            Path basePath = getPath(com.ded.misle.core.Path.GetPathTag.RESOURCES).resolve("images");
+            Path basePath = getPath(com.ded.misle.core.Path.PathTag.RESOURCES).resolve("images");
             Path fullPath = basePath.resolve(category + "/" + fileName);
             try {
                 cachedImages.put(this, ImageIO.read(fullPath.toFile()));
@@ -142,7 +142,7 @@ public abstract class ImageManager {
         return img;
     }
 
-    private final static Path screenshotDirectory = getPath(com.ded.misle.core.Path.GetPathTag.RESOURCES).resolve("screenshots");
+    private final static Path screenshotDirectory = getPath(com.ded.misle.core.Path.PathTag.RESOURCES).resolve("screenshots");
 
     public static void saveScreenshot(BufferedImage img) {
         try {

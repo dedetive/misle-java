@@ -31,7 +31,7 @@ public abstract class WorldLoader {
 		room = roomIDToName(player.pos.getRoomID());
 		assert room != null;
 
-		Path basePath = getPath(com.ded.misle.core.Path.GetPathTag.RESOURCES).resolve("rooms/");
+		Path basePath = getPath(com.ded.misle.core.Path.PathTag.RESOURCES).resolve("rooms/");
 		int fileCount = room.fileNames.length;
 		Path[] fullPaths = new Path[fileCount];
 		BufferedImage[] roomImages = new BufferedImage[fileCount];

@@ -71,7 +71,7 @@ public class Item {
 			if (iconCache.containsKey(id)) {
 				this.icon = iconCache.get(id);
 			} else {
-				Path basePath = getPath(com.ded.misle.core.Path.GetPathTag.RESOURCES).resolve("images/items");
+				Path basePath = getPath(com.ded.misle.core.Path.PathTag.RESOURCES).resolve("images/items");
 				Path filePath = basePath.resolve(itemDetails.getResourceID() + ".png");
 
 				try {
@@ -165,7 +165,7 @@ public class Item {
 		if (iconCache.containsKey(id)) {
 			this.icon = iconCache.get(id);
 		} else {
-			Path basePath = getPath(com.ded.misle.core.Path.GetPathTag.RESOURCES).resolve("images/items");
+			Path basePath = getPath(com.ded.misle.core.Path.PathTag.RESOURCES).resolve("images/items");
 			Path filePath = basePath.resolve(resourceID + ".png");
 
 			try {

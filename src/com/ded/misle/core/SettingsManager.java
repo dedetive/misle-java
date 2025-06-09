@@ -23,8 +23,8 @@ public class SettingsManager {
 	 */
 
 	public static void changeSetting(String setting, String changeTo) {
-		Path file = com.ded.misle.core.Path.getPath(com.ded.misle.core.Path.GetPathTag.RESOURCES);
-		Path settingsFile = com.ded.misle.core.Path.getPath(com.ded.misle.core.Path.GetPathTag.CONFIG);
+		Path file = com.ded.misle.core.Path.getPath(com.ded.misle.core.Path.PathTag.RESOURCES);
+		Path settingsFile = com.ded.misle.core.Path.getPath(com.ded.misle.core.Path.PathTag.CONFIG);
 		Path tempFile = file.resolve("temp.config");
 
 		try (BufferedReader reader = Files.newBufferedReader(settingsFile);
@@ -64,7 +64,7 @@ public class SettingsManager {
 	}
 
 	public static void updateSetting(Setting<?> setting) {
-		Path file = com.ded.misle.core.Path.getPath(com.ded.misle.core.Path.GetPathTag.CONFIG);
+		Path file = com.ded.misle.core.Path.getPath(com.ded.misle.core.Path.PathTag.CONFIG);
 		String result = "";
 
 		try (BufferedReader reader = Files.newBufferedReader(file)) {
@@ -100,7 +100,7 @@ public class SettingsManager {
 	 * @return the value of a specific setting from settings.config in a String format
 	 */
 	public static String getSetting(String args) {
-		Path file = com.ded.misle.core.Path.getPath(com.ded.misle.core.Path.GetPathTag.CONFIG);
+		Path file = com.ded.misle.core.Path.getPath(com.ded.misle.core.Path.PathTag.CONFIG);
 		String result = "";
 
 		try (BufferedReader reader = Files.newBufferedReader(file)) {
