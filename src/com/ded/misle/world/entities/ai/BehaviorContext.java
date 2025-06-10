@@ -8,5 +8,13 @@ public record BehaviorContext(
     Entity target,
     World world
 ) {
+    public BehaviorContext(Entity self, Entity target, World world) {
+        this.self = self;
+        this.target = target;
+        this.world = world;
+    }
 
+    public BehaviorContext(Entity self, World world) {
+        this(self, null, world);
+    }
 }
