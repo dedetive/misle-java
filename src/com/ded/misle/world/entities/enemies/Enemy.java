@@ -76,4 +76,8 @@ public class Enemy extends Entity {
     public AIBehavior[] getBehaviors() {
         return controller.getBehaviors();
     }
+
+    public BehaviorController getController() {
+        return controller;
+    }
 }
