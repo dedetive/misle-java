@@ -41,4 +41,11 @@ public abstract class AbstractBehavior implements AIBehavior {
     public void setInterruptible(boolean interruptible) {
         this.interruptible = interruptible;
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{" +
+            "priority=" + priority +
+            '}';
+    }
 }
