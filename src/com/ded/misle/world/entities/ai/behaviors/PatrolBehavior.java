@@ -8,6 +8,9 @@ import com.ded.misle.world.logic.Path;
 import com.ded.misle.world.logic.PhysicsEngine;
 
 import java.awt.*;
+import java.util.Arrays;
+
+import static com.ded.misle.game.GamePanel.player;
 
 public class PatrolBehavior implements AIBehavior {
     private int priority = Integer.MIN_VALUE;
@@ -33,12 +36,14 @@ public class PatrolBehavior implements AIBehavior {
     public void tryExecute(BehaviorContext context) {
         if (patrolPath.getLength() == 0) return;
 
-        updateStepCount();
+        Point target = patrolPath.getPoints()[calculateNextStep()];
 
-        Point target = patrolPath.getPoints()[step];
-
-        if (PhysicsEngine.isSpaceOccupied(target.x, target.y)) returning = !returning; // Invert if hit something
-        BoxManipulation.moveToward(context.self(), patrolPath.getPoints()[step], false);
+        if (PhysicsEngine.isSpaceOccupied(target.x, target.y)) {
+            returning = !returning;
+        } else {
+            BoxManipulation.moveToward(context.self(), target, false);
+            advanceStep();
+        }
     }
 
     @Override
@@ -61,10 +66,19 @@ public class PatrolBehavior implements AIBehavior {
         return BehaviorType.PATROL;
     }
 
-    private void updateStepCount() {
+    private void advanceStep() {
+        step = calculateNextStep();
+    }
+
+    private int calculateNextStep() {
         if (step >= lastStep) returning = true;
         else if (step <= 0) returning = false;
 
-        step += returning ? -1 : 1;
+        return step + (returning ? -1 : 1);
+    }
+
+    @Override
+    public boolean matches(BehaviorContext context) {
+        return true;
     }
 }
