@@ -1,5 +1,6 @@
 package com.ded.misle.world.data;
 
+import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.enemies.EnemyType;
 import com.ded.misle.world.logic.TurnTimer;
 import com.ded.misle.items.DropTable;
@@ -119,6 +120,9 @@ public abstract class WorldLoader {
 			int y = point[1];
 			int z = point[2];
 			box.setPos(x, y, z);
+			if (box instanceof Entity) {
+				((Entity) box).setOrigin(new Point(x, y));
+			}
 		} catch (Exception ignored) {}
 
 	}
