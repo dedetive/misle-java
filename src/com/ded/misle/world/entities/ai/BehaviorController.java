@@ -2,6 +2,9 @@ package com.ded.misle.world.entities.ai;
 
 import com.ded.misle.world.entities.Entity;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 import static com.ded.misle.game.GamePanel.player;
 
 public class BehaviorController implements Runnable {
@@ -16,15 +19,22 @@ public class BehaviorController implements Runnable {
 
     @Override
     public void run() {
-        if (currentBehavior != null) {
-            currentBehavior.tryExecute(
-                new BehaviorContext(
-                    entity,
-                    target,
-                    player.pos.world
-                )
+        BehaviorContext context = new BehaviorContext(
+                entity,
+                target,
+                player.pos.world
             );
+
+        AIBehavior bestBehavior = Arrays.stream(behaviors)
+            .filter(b -> b.matches(context))
+            .max(Comparator.comparingInt(AIBehavior::getPriority))
+            .orElse(null);
+
+        if (bestBehavior != null) {
+            bestBehavior.tryExecute(context);
+            currentBehavior = bestBehavior;
         }
+
     }
 
     public void setTarget(Entity target) {
