@@ -34,7 +34,6 @@ public class BehaviorController implements Runnable {
             bestBehavior.tryExecute(context);
             currentBehavior = bestBehavior;
         }
-
     }
 
     public void setTarget(Entity target) {
@@ -47,5 +46,9 @@ public class BehaviorController implements Runnable {
 
     public AIBehavior[] getBehaviors() {
         return behaviors;
+    }
+
+    public AIBehavior getCurrentBehavior() {
+        return currentBehavior;
     }
 }
