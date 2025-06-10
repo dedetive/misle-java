@@ -7,76 +7,154 @@ import com.ded.misle.world.entities.ai.BehaviorController;
 
 import java.awt.*;
 
+/**
+ * Represents an enemy entity in the game world.
+ * Enemies have behaviors, experience and coin drops, and belong to a specific {@link EnemyType}.
+ */
 public class Enemy extends Entity {
 
+    /** The type of this enemy, which defines its default configuration. */
     private final EnemyType type;
+
+    /** A scaling factor that magnifies the enemy's attributes (e.g. HP, damage). */
     private final double magnification;
 
+    /** The amount of XP awarded to the player when this enemy is defeated. */
     private double xpDrop;
+
+    /** The range of coins that may drop from this enemy. */
     private CoinDropRange coinDrop;
 
+    /** Controls the AI behaviors of this enemy. */
     private final BehaviorController controller = new BehaviorController(this);
 
+    /**
+     * Constructs a new {@code Enemy} at the given position with a specific type and magnification.
+     *
+     * @param pos           the position to spawn the enemy
+     * @param type          the type of enemy
+     * @param magnification a multiplier for stats like HP and damage
+     */
     public Enemy(Point pos, EnemyType type, double magnification) {
         super(pos.x, pos.y);
         this.magnification = magnification;
-
         this.type = type;
         this.load();
-
         EnemyRegistry.register(this);
     }
 
+    /**
+     * Applies the configuration from this enemy's {@link EnemyType}.
+     */
     private void load() {
         type.applyTo(this);
     }
 
+    /**
+     * Kills the enemy and removes it from the registry.
+     */
     public void kill() {
         EnemyRegistry.unregister(this);
     }
 
     // GETTERS & SETTERS
 
+    /**
+     * Returns the magnification factor used to scale the enemy's stats.
+     *
+     * @return the magnification multiplier
+     */
     public double getMagnification() {
         return this.magnification;
     }
 
+    /**
+     * Returns the {@link EnemyType} of this enemy.
+     *
+     * @return the type of this enemy
+     */
     public EnemyType getEnemyType() {
         return type;
     }
 
+    /**
+     * Returns the amount of XP this enemy drops when defeated.
+     *
+     * @return the XP drop value
+     */
     public double getXPDrop() {
         return xpDrop;
     }
 
+    /**
+     * Sets the amount of XP this enemy will drop.
+     *
+     * @param xp the XP amount
+     */
     public void setXpDrop(int xp) {
         this.xpDrop = xp;
     }
 
+    /**
+     * Sets the coin drop range using minimum and maximum values.
+     *
+     * @param min the minimum number of coins
+     * @param max the maximum number of coins
+     */
     public void setCoinDropRange(int min, int max) {
         this.coinDrop = new CoinDropRange(min, max);
     }
 
+    /**
+     * Sets the coin drop range using a {@link CoinDropRange} object.
+     *
+     * @param coinDropRange the coin drop range
+     */
     public void setCoinDropRange(CoinDropRange coinDropRange) {
         this.coinDrop = coinDropRange;
     }
 
+    /**
+     * Sets a fixed coin drop amount (min = max = amount).
+     *
+     * @param coinDrop the fixed number of coins
+     */
     public void setCoinDrop(int coinDrop) {
         this.coinDrop = new CoinDropRange(coinDrop);
     }
 
+    /**
+     * Returns a randomly rolled coin drop based on the drop range.
+     *
+     * @return the coin drop amount
+     */
     public int getCoinDrop() {
         return coinDrop.roll();
     }
 
+    /**
+     * Sets the AI behaviors for this enemy.
+     *
+     * @param behaviors the list of behaviors
+     */
     public void setBehaviors(AIBehavior... behaviors) {
         controller.setBehaviors(behaviors);
     }
 
+    /**
+     * Returns the list of AI behaviors assigned to this enemy.
+     *
+     * @return the array of behaviors
+     */
     public AIBehavior[] getBehaviors() {
         return controller.getBehaviors();
     }
 
+    /**
+     * Returns the {@link BehaviorController} managing this enemy's behavior.
+     *
+     * @return the behavior controller
+     */
     public BehaviorController getController() {
         return controller;
     }
