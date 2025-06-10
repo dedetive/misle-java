@@ -9,12 +9,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.ded.misle.core.Path.getPath;
+import static com.ded.misle.game.GamePanel.isDebug;
 
 public class RoomManager {
     public static ArrayList<Room> rooms = new ArrayList<>();
 
     static {
         Path basePath = getPath(com.ded.misle.core.Path.PathTag.RESOURCES).resolve("rooms/");
+
+        if (isDebug()) {
+            basePath = getPath(com.ded.misle.core.Path.PathTag.RESOURCES, com.ded.misle.core.Path.BranchTag.SRC).resolve("rooms/");
+        }
 
         StringBuilder jsonContent = new StringBuilder();
         Path worldsJson = basePath.resolve("rooms.json");
