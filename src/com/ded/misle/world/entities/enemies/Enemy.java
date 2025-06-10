@@ -4,6 +4,7 @@ import com.ded.misle.world.data.CoinDropRange;
 import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.ai.AIBehavior;
 import com.ded.misle.world.entities.ai.BehaviorController;
+import com.ded.misle.world.logic.effects.Damage;
 
 import java.awt.*;
 
@@ -157,5 +158,25 @@ public class Enemy extends Entity {
      */
     public BehaviorController getController() {
         return controller;
+    }
+
+    /**
+     * Sets the maximum HP.
+     * <p>Is multiplied by this Enemy's {@link #magnification}.</p>
+     * @param maxHP New maximum HP.
+     */
+    @Override
+    public void setMaxHP(double maxHP) {
+        super.setMaxHP(maxHP * magnification);
+    }
+
+    /**
+     * Sets damage.
+     * <p>Is multiplied by this Enemy's {@link #magnification}.</p>
+     * @param damage Base damage dealt per hit
+     * @param damageRate How long it takes per hit in turns
+     */
+    public void setDamage(double damage, int damageRate) {
+        this.effect = new Damage(damage * magnification, damageRate).setTriggersOnContact(false);
     }
 }
