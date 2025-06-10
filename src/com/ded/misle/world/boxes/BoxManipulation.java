@@ -59,19 +59,10 @@ public class BoxManipulation {
 	 * @param ignoreCollision whether to skip collision checks when moving
 	 */
 	private static boolean moveAxis(Box box, int[] delta, int axisIndex, boolean ignoreCollision) {
-		int signum = Integer.signum(delta[0]);
-		if (signum == 0) return false;
+		Point next = tryMoveAxis(box.getX(), box.getY(), delta[0], axisIndex, box, ignoreCollision);
+		if (next == null) return false;
 
-		int x = box.getX();
-		int y = box.getY();
-		int targetX = axisIndex == 0 ? x + signum : x;
-		int targetY = axisIndex == 1 ? y + signum : y;
-
-		if (!ignoreCollision && isDestinationOccupied(targetX, targetY, box)) {
-			return false;
-		}
-
-		box.setPos(targetX, targetY);
+		box.setPos(next.x, next.y);
 		return true;
 	}
 
@@ -98,23 +89,51 @@ public class BoxManipulation {
 	}
 
 	public static void moveToward(Box box, Point target, boolean ignoreCollision) {
-		int dx = target.x - box.getX();
-		int dy = target.y - box.getY();
-
-		if (dx == 0 && dy == 0) return;
-
-		if (Math.abs(dx) >= Math.abs(dy)) {
-			if (!moveAxis(box, new int[]{dx}, 0, ignoreCollision)) {
-				moveAxis(box, new int[]{dy}, 1, ignoreCollision);
-			}
-		} else {
-			if (!moveAxis(box, new int[]{dy}, 1, ignoreCollision)) {
-				moveAxis(box, new int[]{dx}, 0, ignoreCollision);
-			}
+		Point next = getNextPositionToward(box, target, ignoreCollision);
+		if (!next.equals(box.getPos())) {
+			box.setPos(next.x, next.y);
 		}
 	}
 
-    /**
+	public static Point getNextPositionToward(Box box, Point target, boolean ignoreCollision) {
+		int dx = target.x - box.getX();
+		int dy = target.y - box.getY();
+
+		if (dx == 0 && dy == 0) return new Point(box.getX(), box.getY());
+
+		int x = box.getX();
+		int y = box.getY();
+
+		if (Math.abs(dx) >= Math.abs(dy)) {
+			Point result = tryMoveAxis(x, y, dx, 0, box, ignoreCollision);
+			if (result != null) return result;
+			result = tryMoveAxis(x, y, dy, 1, box, ignoreCollision);
+			if (result != null) return result;
+		} else {
+			Point result = tryMoveAxis(x, y, dy, 1, box, ignoreCollision);
+			if (result != null) return result;
+			result = tryMoveAxis(x, y, dx, 0, box, ignoreCollision);
+			if (result != null) return result;
+		}
+
+		return new Point(x, y);
+	}
+
+	private static Point tryMoveAxis(int x, int y, int delta, int axisIndex, Box box, boolean ignoreCollision) {
+		int signum = Integer.signum(delta);
+		if (signum == 0) return null;
+
+		int targetX = axisIndex == 0 ? x + signum : x;
+		int targetY = axisIndex == 1 ? y + signum : y;
+
+		if (!ignoreCollision && isDestinationOccupied(targetX, targetY, box)) {
+			return null;
+		}
+
+		return new Point(targetX, targetY);
+	}
+
+	/**
      * This moves the player by x, oftentimes being the playerSpeed, or by y.
      * Set the other as 0, unless you intend to move the player diagonally.
      * <p></p>
