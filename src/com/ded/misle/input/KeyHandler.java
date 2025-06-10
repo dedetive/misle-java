@@ -349,8 +349,9 @@ public class KeyHandler implements KeyListener {
                     } else {
 						int targetX = player.getX() + movement.x;
 						int targetY = player.getY() + movement.y;
-						// Is empty
-                        if (!isSpaceOccupied(targetX, targetY, player)) {
+						// Is empty or player is stuck
+                        if (!isSpaceOccupied(targetX, targetY, player) ||
+							isSpaceOccupied(player.getX(), player.getY(), player)) {
                             BoxManipulation.movePlayer(movement.x, movement.y);
 						// Has an entity
                         } else {
