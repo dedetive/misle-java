@@ -3,6 +3,7 @@ package com.ded.misle.world.entities.enemies;
 import com.ded.misle.world.data.CoinDropRange;
 import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.ai.AIBehavior;
+import com.ded.misle.world.entities.ai.BehaviorController;
 
 import java.awt.*;
 
@@ -14,7 +15,7 @@ public class Enemy extends Entity {
     private double xpDrop;
     private CoinDropRange coinDrop;
 
-    private AIBehavior[] behaviors;
+    private final BehaviorController controller = new BehaviorController(this);
 
     public Enemy(Point pos, EnemyType type, double magnification) {
         super(pos.x, pos.y);
@@ -69,10 +70,10 @@ public class Enemy extends Entity {
     }
 
     public void setBehaviors(AIBehavior... behaviors) {
-        this.behaviors = behaviors;
+        controller.setBehaviors(behaviors);
     }
 
     public AIBehavior[] getBehaviors() {
-        return behaviors;
+        return controller.getBehaviors();
     }
 }
