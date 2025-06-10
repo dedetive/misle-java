@@ -7,7 +7,6 @@ import com.ded.misle.world.logic.Path;
 import com.ded.misle.world.logic.PhysicsEngine;
 
 import java.awt.*;
-import java.util.Arrays;
 
 import static com.ded.misle.game.GamePanel.player;
 
@@ -26,6 +25,7 @@ public class PatrolBehavior extends AbstractBehavior {
         for (Path p : patrolPath) {
             this.patrolPath.addPoints(p.getPoints());
         }
+
         this.lastStep = this.patrolPath.getLength() - 1;
     }
 
@@ -33,13 +33,17 @@ public class PatrolBehavior extends AbstractBehavior {
     public void tryExecute(BehaviorContext context) {
         if (patrolPath.getLength() == 0) return;
 
-        Point target = patrolPath.getPoints()[calculateNextStep()];
+        Point target = patrolPath
+            .offset(context.self().getOrigin())
+            .getPoints()[calculateNextStep()];
 
         if (PhysicsEngine.isSpaceOccupied(target.x, target.y)) {
             returning = !returning;
         } else {
             BoxManipulation.moveToward(context.self(), target, false);
         }
+
+        patrolPath.undo();
         advanceStep();
     }
 
