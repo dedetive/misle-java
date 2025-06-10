@@ -34,9 +34,18 @@ public enum EnemyType {
         enemy.setCoinDrop(3);
         enemy.setCollision(true);
 
-        enemy.setBehaviors(new PatrolBehavior(
-            new Path(new Point(-1, 0), new Point(1, 0))
-        ));
+        Point[] pathPoints = new Point[] {
+            new Point(-1, 0),
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(0, 0),
+            new Point(0, 1),
+            new Point(0, 0),
+            new Point(0, -1),
+        };
+
+        enemy.setBehaviors(
+            new PatrolBehavior(pathPoints));
     });
 
     private final EnemyConfigurator configurator;
