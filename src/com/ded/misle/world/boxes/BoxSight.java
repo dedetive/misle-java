@@ -63,7 +63,7 @@ public class BoxSight {
      */
     public boolean canSee(Box target) {
         if (mustUpdate) {
-            Path pathToTarget = new Path(origin, target).removePoint(new Point(origin.getX(), origin.getY()));
+            Path pathToTarget = new Path(origin.getPos(), target.getPos()).removePoint(new Point(origin.getX(), origin.getY()));
 
             hasDirectSight = true;
             for (Point point : pathToTarget.getPoints()) {
