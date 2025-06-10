@@ -10,22 +10,22 @@ import java.awt.*;
 
 import static com.ded.misle.game.GamePanel.player;
 
-public class WeaponAttacker {
+public class Attacker {
     private double damage;
     private boolean damagesPlayer;
     private Range range;
 
-    public WeaponAttacker(double damage, Range range) {
+    public Attacker(double damage, Range range) {
         this.damage = damage;
         this.range = range;
         this.damagesPlayer = false;
     }
 
-    public WeaponAttacker(double damage) {
+    public Attacker(double damage) {
         this(damage, Range.getDefaultRange());
     }
 
-    public WeaponAttacker() {
+    public Attacker() {
         this(0, Range.getDefaultRange());
     }
 
@@ -58,12 +58,12 @@ public class WeaponAttacker {
         }
     }
 
-    public WeaponAttacker setDamage(double damage) {
+    public Attacker setDamage(double damage) {
         this.damage = damage;
         return this;
     }
 
-    public WeaponAttacker setRange(Range range) {
+    public Attacker setRange(Range range) {
         this.range = range;
         return this;
     }
@@ -76,12 +76,12 @@ public class WeaponAttacker {
         }
     }
 
-    public WeaponAttacker setDamagesPlayer(boolean damagesPlayer) {
+    public Attacker setDamagesPlayer(boolean damagesPlayer) {
         this.damagesPlayer = damagesPlayer;
         return this;
     }
 
-    public WeaponAttacker invalidate() {
+    public Attacker invalidate() {
         this.setRange(Range.toRange("O"));
         this.setDamage(0);
         this.damagesPlayer = false;

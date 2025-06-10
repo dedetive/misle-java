@@ -4,7 +4,7 @@ import com.ded.misle.items.Item;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.data.TilePattern;
 import com.ded.misle.world.logic.attacks.Range;
-import com.ded.misle.world.logic.attacks.WeaponAttacker;
+import com.ded.misle.world.logic.attacks.Attacker;
 
 import javax.swing.*;
 
@@ -13,7 +13,7 @@ import java.awt.*;
 import static com.ded.misle.game.GamePanel.player;
 
 public class HandItemAnimator {
-    private final WeaponAttacker attacker = new WeaponAttacker();
+    private final Attacker attacker = new Attacker();
 
     public void update() {
         Item selectedItem = player.inv.getSelectedItem();
