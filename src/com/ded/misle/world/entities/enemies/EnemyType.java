@@ -1,6 +1,8 @@
 package com.ded.misle.world.entities.enemies;
 
 import com.ded.misle.items.DropTable;
+import com.ded.misle.world.entities.ai.behaviors.PatrolBehavior;
+import com.ded.misle.world.logic.Path;
 import com.ded.misle.world.logic.effects.Damage;
 
 import java.awt.*;
@@ -31,6 +33,10 @@ public enum EnemyType {
         enemy.setXpDrop(1);
         enemy.setCoinDrop(3);
         enemy.setCollision(true);
+
+        enemy.setBehaviors(new PatrolBehavior(
+            new Path(new Point(-1, 0), new Point(1, 0))
+        ));
     });
 
     private final EnemyConfigurator configurator;
