@@ -13,11 +13,9 @@ import java.awt.*;
  */
 public enum EnemyType {
     RED_BLOCK(enemy -> {
-        double mag = enemy.getMagnification();
-
         enemy.setMaxHP(50);
-        enemy.setHP(50);
-        enemy.effect = new Damage(5 * mag, 1).setTriggersOnContact(false);
+        enemy.fillHP();
+        enemy.setDamage(5, 1);
         enemy.setTexture("solid");
         enemy.setColor(new Color(0xA02020));
         enemy.setDropTable(DropTable.POTION_CHEST);
@@ -27,11 +25,9 @@ public enum EnemyType {
     }),
 
     GOBLIN(enemy -> {
-        double mag = enemy.getMagnification();
-
-        enemy.setMaxHP(20 * mag);
-        enemy.setHP(20 * mag);
-        enemy.effect = new Damage(3 * mag, 2).setTriggersOnContact(false);
+        enemy.setMaxHP(20);
+        enemy.fillHP();
+        enemy.setDamage(3, 2);
         enemy.setTexture("../characters/enemy/goblin");
         enemy.setDropTable(DropTable.GOBLIN);
         enemy.setXpDrop(1);
