@@ -21,6 +21,7 @@ import javax.imageio.stream.ImageOutputStream;
 
 import static com.ded.misle.core.SaveFile.SaveScreenOption.ICON;
 import static com.ded.misle.core.Path.getPath;
+import static com.ded.misle.game.GamePanel.isDebug;
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.core.SaveFile.PixelColor.*;
 import static com.ded.misle.renderer.ImageManager.*;
@@ -209,6 +210,12 @@ public class SaveFile {
                 // Spawnpoint
 
                 int spawnpoint = loadAttribute(PixelData.SPAWNPOINT_M, PixelData.SPAWNPOINT_L);
+
+				if (isDebug()) {
+					// Forcing spawn at room 2
+					spawnpoint = 2;
+				}
+
                 player.pos.setSpawnpoint(Math.max(spawnpoint, 0));
                 player.pos.reloadSpawnpoint();
 
