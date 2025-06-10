@@ -31,6 +31,7 @@
     ],
     "custom_color_code": {
       "#56abab": "TRAVEL, roomID:0, x:11, y:1",
+      "#e04ae7": "SPAWNPOINT, x:2, y:5",
       "#a66c13": "CHEST, droptable:potion_chest, openRate:500",
       "#20bf20": "ENEMY, type:goblin, mag:1"
     },
