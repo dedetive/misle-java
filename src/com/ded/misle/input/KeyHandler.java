@@ -356,7 +356,9 @@ public class KeyHandler implements KeyListener {
                         } else {
                             player.pos.updateLastDirection(interpretDirection(movement.x, movement.y));
 
-                            if (Arrays.stream(player.pos.world.grid[targetX][targetY]).
+                            if (targetX > 0 && targetX < worldWidth &&
+								targetY > 0 && targetY < worldHeight &&
+								Arrays.stream(player.pos.world.grid[targetX][targetY]).
                                 anyMatch(box -> box instanceof Entity)) {
                                 player.attack();
                             }
