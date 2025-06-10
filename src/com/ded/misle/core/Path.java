@@ -15,6 +15,38 @@ public class Path {
     }
 
     /**
+     * Returns get the path of the given tag, forcing a branch.
+     *
+     * @return the given tag path within the selected branch
+     */
+    public static java.nio.file.Path getPath(PathTag tag, BranchTag branch) {
+        java.nio.file.Path workingDir = Paths.get(System.getProperty("user.dir"));
+
+        switch (tag) {
+            case ROOT -> {
+                return workingDir;
+            }
+            case RESOURCES -> {
+                return attemptToFindPath(workingDir, "resources", branch);
+            }
+            case CONFIG -> {
+                java.nio.file.Path configPath = attemptToFindPath(workingDir, "resources/settings.config", branch);
+                try {
+                    if (configPath == null) Files.createFile(
+                        getPath(PathTag.RESOURCES).resolve("settings.config"));
+                } catch (IOException e) {
+                    throw new RuntimeException("Could not create settings file", e);
+                }
+                return attemptToFindPath(workingDir, "resources/settings.config", branch);
+            }
+            case GAME -> {
+                return attemptToFindPath(workingDir, "com/ded/misle", branch);
+            }
+        }
+        throw new RuntimeException(tag.name() + " tag not found when getting path");
+    }
+
+    /**
      * Returns get the path of the given tag.
      *
      * @return the given tag path
@@ -67,6 +99,25 @@ public class Path {
         return null;
     }
 
+    private static java.nio.file.Path attemptToFindPath(java.nio.file.Path workingDir, String path, BranchTag branch) {
+        switch (branch) {
+            case OUT -> {
+                java.nio.file.Path outBranch = workingDir.resolve("out/" + path);
+                if (Files.exists(outBranch)) return outBranch;
+            }
+            case SRC -> {
+                java.nio.file.Path srcBranch = workingDir.resolve("src/" + path);
+                 if (Files.exists(srcBranch)) return srcBranch;
+            }
+            case NONE -> {
+                java.nio.file.Path noneBranch = workingDir.resolve(path);
+                if (Files.exists(noneBranch)) return noneBranch;
+            }
+        }
+
+        return null;
+    }
+
     public enum PathTag {
         GAME,
         RESOURCES,
@@ -74,5 +125,11 @@ public class Path {
         CONFIG;
 
         public static final PathTag DEFAULT_TAG = ROOT;
+    }
+
+    public enum BranchTag {
+        SRC,
+        OUT,
+        NONE
     }
 }
