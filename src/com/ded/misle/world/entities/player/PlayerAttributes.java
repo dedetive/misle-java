@@ -155,7 +155,6 @@ public class PlayerAttributes {
 	private void playerRespawns() {
 		unloadBoxes();
 		player.pos.reloadSpawnpoint();
-		loadBoxes();
 		player.setHP(player.getMaxHP());
 		player.setLockedHP(0);
 		this.isDead = false;
