@@ -39,12 +39,19 @@ public class PatrolBehavior extends AbstractBehavior {
 
         if (PhysicsEngine.isSpaceOccupied(target.x, target.y)) {
             returning = !returning;
+            triggerEffectOnPlayerContact(context, target);
         } else {
             BoxManipulation.moveToward(context.self(), target, false);
         }
 
         patrolPath.undo();
         advanceStep();
+    }
+
+    private void triggerEffectOnPlayerContact(BehaviorContext context, Point target) {
+        if (player.getPos().equals(target)) {
+            context.self().effect.run(context.self(), player);
+        }
     }
 
     private void advanceStep() {
