@@ -95,6 +95,7 @@ public class Entity extends Box {
      */
     public Entity(int x, int y) {
         super(x, y);
+        this.setOrigin(new Point(x, y));
         this.setObjectType(ENTITY);
         this.HP = 1;
         this.maxHP = 1;
@@ -694,5 +695,15 @@ public class Entity extends Box {
 
     public int getMaxSight() {
         return maxSight;
+    }
+
+    private Point origin;
+
+    public void setOrigin(Point origin) {
+        this.origin = origin;
+    }
+
+    public Point getOrigin() {
+        return origin;
     }
 }
