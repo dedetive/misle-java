@@ -7,6 +7,9 @@ import com.ded.misle.world.logic.Path;
 import com.ded.misle.world.logic.PhysicsEngine;
 
 import java.awt.*;
+import java.util.Arrays;
+
+import static com.ded.misle.game.GamePanel.player;
 
 public class PatrolBehavior extends AbstractBehavior {
     private final Path patrolPath;
@@ -36,8 +39,8 @@ public class PatrolBehavior extends AbstractBehavior {
             returning = !returning;
         } else {
             BoxManipulation.moveToward(context.self(), target, false);
-            advanceStep();
         }
+        advanceStep();
     }
 
     private void advanceStep() {
