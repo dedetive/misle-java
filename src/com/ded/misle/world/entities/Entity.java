@@ -685,4 +685,14 @@ public class Entity extends Box {
     public void setIsInvulnerable(boolean isInvulnerable) {
         this.isInvulnerable = isInvulnerable;
     }
+
+    private int maxSight;
+
+    public void setMaxSight(int maxSight) {
+        this.maxSight = maxSight;
+    }
+
+    public int getMaxSight() {
+        return maxSight;
+    }
 }
