@@ -55,4 +55,14 @@ public class PatrolBehavior extends AbstractBehavior {
     public BehaviorType getType() {
         return BehaviorType.PATROL;
     }
+
+    @Override
+    public String toString() {
+        return super.toString().replace("}", "") + ", " +
+            "patrolPath=" + patrolPath +
+            ", lastStep=" + lastStep +
+            ", step=" + step +
+            ", returning=" + returning +
+            '}';
+    }
 }
