@@ -5,7 +5,7 @@ import com.ded.misle.input.KeyHandler;
 import com.ded.misle.input.MouseHandler;
 import com.ded.misle.world.entities.player.Player;
 import com.ded.misle.renderer.*;
-import com.ded.misle.world.logic.LogicManager;
+import com.ded.misle.world.logic.TurnManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -302,7 +302,7 @@ public class GamePanel extends JPanel implements Runnable {
 					case PLAYING, INVENTORY ->  {
 						keyH.updateKeys(mouseHandler);
 						mouseHandler.updateMouse();
-						LogicManager.updateIfNeeded();
+						TurnManager.updateIfNeeded();
 						updateCamera();
 					} // Only update if in the playing state
 					case PAUSE_MENU -> {

@@ -2,7 +2,7 @@ package com.ded.misle.world.entities.player;
 
 import com.ded.misle.renderer.SmoothPosition;
 import com.ded.misle.world.boxes.BoxManipulation;
-import com.ded.misle.world.logic.LogicManager;
+import com.ded.misle.world.logic.TurnManager;
 import com.ded.misle.world.logic.Path;
 import com.ded.misle.world.logic.PhysicsEngine;
 
@@ -269,7 +269,7 @@ public class Planner {
                     player.inv.useItem();
                 }
                 player.pos.updateLastDirection(interpretDirection(unitaryPoint.x, unitaryPoint.y));
-                LogicManager.requestNewTurn();
+                TurnManager.requestNewTurn();
                 previousPoint = point;
 
                 if (path.getLength() <= 1) {

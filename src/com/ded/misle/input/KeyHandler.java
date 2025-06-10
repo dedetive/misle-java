@@ -3,7 +3,7 @@ package com.ded.misle.input;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.player.Planner;
-import com.ded.misle.world.logic.LogicManager;
+import com.ded.misle.world.logic.TurnManager;
 import com.ded.misle.world.boxes.BoxManipulation;
 import com.ded.misle.world.entities.npcs.NPC;
 
@@ -120,7 +120,7 @@ public class KeyHandler implements KeyListener {
 	private void triggerLogicIfNeeded() {
 		for (Key key : triggerLogic) {
 			if (isPressed(key)) {
-				LogicManager.requestNewTurn();
+				TurnManager.requestNewTurn();
 			}
 		}
 	}

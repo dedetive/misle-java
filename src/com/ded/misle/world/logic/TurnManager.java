@@ -7,7 +7,7 @@ import com.ded.misle.world.entities.enemies.EnemyRegistry;
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.world.entities.Entity.getEntities;
 
-public abstract class LogicManager {
+public abstract class TurnManager {
 
     private static boolean pendingTurn = false;
 
