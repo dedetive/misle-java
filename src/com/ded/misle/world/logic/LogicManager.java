@@ -1,6 +1,8 @@
 package com.ded.misle.world.logic;
 
 import com.ded.misle.world.entities.Entity;
+import com.ded.misle.world.entities.enemies.Enemy;
+import com.ded.misle.world.entities.enemies.EnemyRegistry;
 
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.world.entities.Entity.getEntities;
@@ -25,10 +27,12 @@ public abstract class LogicManager {
     private static void updateTurn() {
         player.attr.checkIfLevelUp();
 
-//        updateEnemyAI();
-
         for (Entity box : getEntities()) {
             box.updateRegenerationHP();
+        }
+
+        for (Enemy enemy : EnemyRegistry.all()) {
+            enemy.getController().run();
         }
     }
 }
