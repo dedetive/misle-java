@@ -16,7 +16,7 @@ public abstract class LogicManager {
     }
 
     public static void updateIfNeeded() {
-        if (pendingTurn) {
+        if (pendingTurn && !player.isWaiting()) {
             updateTurn();
             pendingTurn = false;
 
