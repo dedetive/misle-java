@@ -264,6 +264,10 @@ public class Box {
 		setPos(worldX, y);
 	}
 
+	public Point getPos() {
+		return new Point(worldX, worldY);
+	}
+
 	public void setPos(int x, int y) {
 		setPos(x, y, -1);
 	}
