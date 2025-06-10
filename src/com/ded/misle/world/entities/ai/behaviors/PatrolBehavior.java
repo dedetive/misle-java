@@ -21,9 +21,12 @@ public class PatrolBehavior implements AIBehavior {
         this(new Path(points));
     }
 
-    public PatrolBehavior(Path patrolPath) {
-        this.patrolPath = patrolPath;
-        this.lastStep = patrolPath.getLength() - 1;
+    public PatrolBehavior(Path... patrolPath) {
+        this.patrolPath = new Path();
+        for (Path p : patrolPath) {
+            this.patrolPath.addPoints(p.getPoints());
+        }
+        this.lastStep = this.patrolPath.getLength() - 1;
     }
 
     @Override
