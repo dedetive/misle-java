@@ -11,22 +11,22 @@ public class Path extends TilePattern {
     private final Deque<Point[]> history = new LinkedList<>();
 
     /**
-     * Constructs a Path from the origin Box to the target Box simulating
+     * Constructs a Path from the origin point to the target point simulating
      * a straight line.
      * <p>
      * This uses <a href="https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm">Bresenham's line algorithm</a>.
      * </p>
      *
-     * @param origin the starting Box.
-     * @param target the destination Box.
+     * @param origin the starting point.
+     * @param target the destination point.
      */
-    public Path(Box origin, Box target) {
+    public Path(Point origin, Point target) {
         super(new Point[0]);
 
-        int x0 = origin.getX();
-        int y0 = origin.getY();
-        int x1 = target.getX();
-        int y1 = target.getY();
+        int x0 = origin.x;
+        int y0 = origin.y;
+        int x1 = target.x;
+        int y1 = target.y;
 
         java.util.List<Point> result = new ArrayList<>();
 
