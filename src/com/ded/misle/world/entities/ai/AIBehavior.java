@@ -1,6 +1,6 @@
 package com.ded.misle.world.entities.ai;
 
-public interface AIBehavior {
+public interface AIBehavior extends BehaviorCondition {
 
     void tryExecute(BehaviorContext context);
     boolean isInterruptible();
