@@ -520,4 +520,14 @@ public class GamePanel extends JPanel implements Runnable {
 
 		unpixelating.start();
 	}
+
+	private static boolean debug;
+
+	public static boolean isDebug() {
+		return debug;
+	}
+
+	public static void setDebug(boolean debug) {
+		GamePanel.debug = debug;
+	}
 }
