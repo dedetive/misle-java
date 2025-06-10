@@ -64,7 +64,7 @@ public class Launcher {
 			panel.showScreen();
 			panel.startGameThread();
 
-			GamePanel.setDebug(true);
+//			GamePanel.setDebug(true);
 		});
 	}
 }
