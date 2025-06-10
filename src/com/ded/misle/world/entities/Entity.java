@@ -148,6 +148,13 @@ public class Entity extends Box {
     }
 
     /**
+     * Instantly sets HP to maximum.
+     */
+    public void fillHP() {
+        this.HP = maxHP;
+    }
+
+    /**
      * Checks if the entity is dead. If so, handles drop and removal logic.
      * @return true if dead, false otherwise.
      */
