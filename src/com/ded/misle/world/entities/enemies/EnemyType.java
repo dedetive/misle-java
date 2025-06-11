@@ -1,31 +1,27 @@
 package com.ded.misle.world.entities.enemies;
 
-import com.ded.misle.items.DropTable;
 import com.ded.misle.world.data.EnemyConfigurations;
-import com.ded.misle.world.entities.ai.behaviors.PatrolBehavior;
-
-import java.awt.*;
 
 /**
  * Enumeration of predefined enemy types.
- * Each constant defines the setup logic for a specific type of enemy,
- * including health, texture, behavior, and drop information.
+ * Each constant refers to a predefined enemy configuration
+ * declared in {@link EnemyConfigurations}, allowing centralized
+ * management and easier code navigation.
  */
 public enum EnemyType {
     RED_BLOCK(EnemyConfigurations.RED_BLOCK),
-    GOBLIN(EnemyConfigurations.GOBLIN)
-
-    ;
+    GOBLIN(EnemyConfigurations.GOBLIN);
 
     /**
-     * Functional interface that defines how to configure an enemy of this type.
+     * Reference to a predefined configuration for an enemy.
      */
     private final EnemyConfigurations configuration;
 
     /**
-     * Constructs a new EnemyType with the given configuration logic.
+     * Constructs a new EnemyType based on the given configuration enum.
      *
-     * @param configurator a lambda that sets up an {@link Enemy} instance
+     * @param configuration a constant from {@link EnemyConfigurations}
+     *                      that holds the setup logic for this enemy
      */
     EnemyType(EnemyConfigurations configuration) {
         this.configuration = configuration;
