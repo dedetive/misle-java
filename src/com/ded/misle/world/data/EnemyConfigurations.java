@@ -7,7 +7,6 @@ import com.ded.misle.world.entities.enemies.EnemyConfigurator;
 import java.awt.*;
 
 public enum EnemyConfigurations {
-    //region RED_BLOCK
     RED_BLOCK(enemy -> {
         enemy.setMaxHP(50);
         enemy.fillHP();
@@ -19,8 +18,6 @@ public enum EnemyConfigurations {
         enemy.setCoinDropRange(0, 100);
         enemy.setCollision(true);
     }),
-    //endregion
-    //region GOBLIN
     GOBLIN(enemy -> {
         enemy.setMaxHP(20);
         enemy.fillHP();
@@ -44,7 +41,6 @@ public enum EnemyConfigurations {
         enemy.setBehaviors(
             new PatrolBehavior(pathPoints));
     });
-    //endregion
 
     public final EnemyConfigurator c;
 
