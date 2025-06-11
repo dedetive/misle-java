@@ -26,11 +26,7 @@ public record BehaviorContext(
      * @param target the target entity (can be null)
      * @param world  the current world context
      */
-    public BehaviorContext(Entity self, Entity target, World world) {
-        this.self = self;
-        this.target = target;
-        this.world = world;
-    }
+    public BehaviorContext {}
 
     /**
      * Constructs a behavior context with no target.
