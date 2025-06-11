@@ -36,6 +36,8 @@ public class BehaviorController implements Runnable {
 
     /**
      * Called each turn to evaluate and execute the highest-priority matching behavior.
+     * If a behavior is already running and marked as non-interruptible, it will continue
+     * running as long as it still matches the context.
      */
     @Override
     public void run() {
@@ -49,6 +51,12 @@ public class BehaviorController implements Runnable {
             .filter(b -> b.matches(context))
             .max(Comparator.comparingInt(AIBehavior::getPriority))
             .orElse(null);
+
+        bestBehavior = currentBehavior != null &&
+            !currentBehavior.isInterruptible() &&
+            currentBehavior.matches(context)
+            ? currentBehavior
+            : bestBehavior;
 
         if (bestBehavior != null) {
             bestBehavior.tryExecute(context);
