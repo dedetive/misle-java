@@ -1,11 +1,13 @@
 package com.ded.misle.world.data;
 
 import com.ded.misle.items.DropTable;
+import com.ded.misle.world.entities.ai.BehaviorContext;
 import com.ded.misle.world.entities.ai.behaviors.PatrolBehavior;
 import com.ded.misle.world.entities.enemies.EnemyConfigurator;
 import com.ded.misle.world.entities.enemies.EnemyType;
 
 import java.awt.*;
+import java.util.function.Function;
 
 /**
  * Centralized definitions of enemy setup configurations.
@@ -37,7 +39,7 @@ public enum EnemyConfigurations {
         enemy.setCoinDrop(3);
         enemy.setCollision(true);
 
-        Point[] pathPoints = new Point[] {
+        Point[] walkingPoints = new Point[] {
             new Point(-1, 0),
             new Point(0, 0),
             new Point(1, 0),
@@ -47,8 +49,33 @@ public enum EnemyConfigurations {
             new Point(0, -1),
         };
 
+        Point[] upwardsPoints = new Point[] {
+            new Point(0, 0),
+            new Point(0, -1),
+            new Point(0, -2),
+            new Point(0, -3),
+            new Point(0, -4),
+            new Point(0, -5),
+            new Point(0, -6),
+            new Point(0, -7),
+            new Point(0, -8),
+        };
+
+        Function<BehaviorContext, Boolean> hasOverThirdHP =
+            context ->
+                context.self().getHP() >= context.self().getMaxHP() / 3;
+
+        PatrolBehavior walkingAround = new PatrolBehavior(walkingPoints);
+        walkingAround.setCondition(hasOverThirdHP);
+
+        PatrolBehavior goingUp = new PatrolBehavior(upwardsPoints);
+        goingUp.setCondition(hasOverThirdHP);
+
+        // this is all temporary don't worry
         enemy.setBehaviors(
-            new PatrolBehavior(pathPoints));
+            walkingAround,
+            goingUp
+        );
     });
 
     /**
