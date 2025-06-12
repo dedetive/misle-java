@@ -46,10 +46,7 @@ public class WanderBehavior extends AbstractBehavior {
     }
 
     private boolean isWithinWanderRegion(Point origin, Point target) {
-        return
-            (int) Math.ceil(
-                new Path(origin, target).getSpan()
-        ) <= maxDistanceFromOrigin;
+        return getDistanceFromOrigin(origin, target) <= maxDistanceFromOrigin;
     }
 
     public enum WanderMode {
