@@ -45,6 +45,13 @@ public class WanderBehavior extends AbstractBehavior {
             );
     }
 
+    private boolean isWithinWanderRegion(Point origin, Point target) {
+        return
+            (int) Math.ceil(
+                new Path(origin, target).getSpan()
+        ) <= maxDistanceFromOrigin;
+    }
+
     public enum WanderMode {
         /**
          * Walks randomly within a confined path.
