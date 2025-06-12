@@ -38,6 +38,13 @@ public class WanderBehavior extends AbstractBehavior {
         return BehaviorType.WANDER;
     }
 
+    private int getDistanceFromOrigin(Point origin, Point target) {
+        return
+            (int) Math.ceil(
+                new Path(origin, target).getSpan()
+            );
+    }
+
     public enum WanderMode {
         /**
          * Walks randomly within a confined path.
