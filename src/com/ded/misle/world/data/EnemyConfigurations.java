@@ -3,6 +3,7 @@ package com.ded.misle.world.data;
 import com.ded.misle.items.DropTable;
 import com.ded.misle.world.entities.ai.BehaviorContext;
 import com.ded.misle.world.entities.ai.behaviors.PatrolBehavior;
+import com.ded.misle.world.entities.ai.behaviors.WanderBehavior;
 import com.ded.misle.world.entities.enemies.EnemyConfigurator;
 import com.ded.misle.world.entities.enemies.EnemyType;
 
@@ -39,16 +40,6 @@ public enum EnemyConfigurations {
         enemy.setCoinDrop(3);
         enemy.setCollision(true);
 
-        Point[] walkingPoints = new Point[] {
-            new Point(-1, 0),
-            new Point(0, 0),
-            new Point(1, 0),
-            new Point(0, 0),
-            new Point(0, 1),
-            new Point(0, 0),
-            new Point(0, -1),
-        };
-
         Point[] upwardsPoints = new Point[] {
             new Point(0, 0),
             new Point(0, -1),
@@ -65,7 +56,7 @@ public enum EnemyConfigurations {
             context ->
                 context.self().getHP() >= context.self().getMaxHP() / 3;
 
-        PatrolBehavior walkingAround = new PatrolBehavior(walkingPoints);
+        WanderBehavior walkingAround = new WanderBehavior(2);
         walkingAround.setCondition(hasOverThirdHP);
 
         PatrolBehavior goingUp = new PatrolBehavior(upwardsPoints);
