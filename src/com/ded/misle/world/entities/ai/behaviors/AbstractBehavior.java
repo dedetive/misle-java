@@ -3,7 +3,10 @@ package com.ded.misle.world.entities.ai.behaviors;
 import com.ded.misle.world.entities.ai.AIBehavior;
 import com.ded.misle.world.entities.ai.BehaviorContext;
 
+import java.awt.*;
 import java.util.function.Function;
+
+import static com.ded.misle.game.GamePanel.player;
 
 /**
  * A base implementation of {@link AIBehavior} that provides default behavior logic,
@@ -25,6 +28,12 @@ public abstract class AbstractBehavior implements AIBehavior {
      * By default, this condition always returns {@code true}.
      */
     private Function<BehaviorContext, Boolean> condition = ctx -> true;
+
+    protected void triggerEffectOnPlayerContact(BehaviorContext context, Point target) {
+        if (player.getPos().equals(target)) {
+            context.self().effect.run(context.self(), player);
+        }
+    }
 
     /**
      * Checks whether this behavior should be selected based on the given context.

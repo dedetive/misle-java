@@ -47,12 +47,6 @@ public class PatrolBehavior extends AbstractBehavior {
         advanceStep();
     }
 
-    private void triggerEffectOnPlayerContact(BehaviorContext context, Point target) {
-        if (player.getPos().equals(target)) {
-            context.self().effect.run(context.self(), player);
-        }
-    }
-
     private void advanceStep() {
         step = calculateNextStep();
     }
