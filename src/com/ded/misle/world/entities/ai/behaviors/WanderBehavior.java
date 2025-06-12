@@ -49,7 +49,7 @@ public class WanderBehavior extends AbstractBehavior {
         return getDistanceFromOrigin(origin, target) <= maxDistanceFromOrigin;
     }
 
-    public enum WanderMode {
+    private enum WanderMode {
         /**
          * Walks randomly within a confined path.
          */
