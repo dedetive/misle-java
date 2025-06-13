@@ -42,10 +42,22 @@ public class PatrolBehavior extends AbstractBehavior {
      */
     private boolean returning;
 
+    /**
+     * Initializes a new {@code PatrolBehavior} with the specified points.
+     * The points define the path the entity will follow back and forth.
+     *
+     * @param points the points in the path to follow
+     */
     public PatrolBehavior(Point... points) {
         this(new Path(points));
     }
 
+    /**
+     * Initializes a new {@code PatrolBehavior} by combining multiple paths into a single path.
+     * All points from each path are concatenated in the final path.
+     *
+     * @param patrolPath the paths to combine into a single path
+     */
     public PatrolBehavior(Path... patrolPath) {
         this.patrolPath = new Path();
         for (Path p : patrolPath) {
