@@ -247,4 +247,18 @@ public class WanderBehavior extends AbstractBehavior {
     public BehaviorType getType() {
         return BehaviorType.WANDER;
     }
+
+    /**
+     * Prints a string representation of this WanderBehavior.
+     *
+     * @return a string representation with details about its state
+     */
+    @Override
+    public String toString() {
+        return super.toString().replace("}", "") + ", " +
+            "maxDistanceFromOrigin=" + maxDistanceFromOrigin +
+            ", customPath=" + customPath +
+            ", mode=" + mode +
+            '}';
+    }
 }
