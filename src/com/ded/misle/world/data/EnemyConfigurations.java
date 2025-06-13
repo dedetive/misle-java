@@ -45,14 +45,11 @@ public enum EnemyConfigurations {
         Point[] upwardsPoints = new Point[] {
             new Point(0, 0),
             new Point(0, -1),
-            new Point(0, -2),
-            new Point(0, -3),
-            new Point(0, -4),
-            new Point(0, -5),
-            new Point(0, -6),
-            new Point(0, -7),
-            new Point(0, -8),
         };
+
+        Function<BehaviorContext, Boolean> isMaxHP =
+            context ->
+                context.self().getHP() == context.self().getMaxHP();
 
         Function<BehaviorContext, Boolean> hasOverThirdHP =
             context ->
@@ -62,15 +59,19 @@ public enum EnemyConfigurations {
             context ->
                 context.self().getHP() < context.self().getMaxHP() / 3;
 
-        AIBehavior walkingAround = new WanderBehavior(2);
-        walkingAround.setCondition(hasOverThirdHP);
+        AIBehavior freelyWalkingAround = new WanderBehavior();
+        freelyWalkingAround.setCondition(isMaxHP);
+
+        AIBehavior limitedWalkingAround = new WanderBehavior(2);
+        limitedWalkingAround.setCondition(hasOverThirdHP);
 
         AIBehavior goingUp = new WanderBehavior(new Path(upwardsPoints));
         goingUp.setCondition(hasUnderThirdHP);
 
         // this is all temporary don't worry
         enemy.setBehaviors(
-            walkingAround,
+            freelyWalkingAround,
+            limitedWalkingAround,
             goingUp
         );
     });
