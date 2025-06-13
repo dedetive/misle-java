@@ -22,6 +22,8 @@ import static com.ded.misle.game.GamePanel.player;
  * The direction of a step is equally likely, unconditional, and randomized, within valid spaces.
  * <p>
  * If, for whatever reason, the entity is not in a valid space, it actively attempts to return to its valid positions.
+ * <p>
+ * This behavior is, by default, interruptible and lowest-priority.
  */
 public class WanderBehavior extends AbstractBehavior {
     /**
