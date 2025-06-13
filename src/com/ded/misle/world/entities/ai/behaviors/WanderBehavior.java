@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
 
+import static com.ded.misle.game.GamePanel.player;
+
 public class WanderBehavior extends AbstractBehavior {
     private int maxDistanceFromOrigin;
     private Path customPath;
@@ -82,6 +84,9 @@ public class WanderBehavior extends AbstractBehavior {
 
             validPos = Stream.of(cardinalPoints)
                 .filter(cardinalPoint -> isWithinWanderRegion(origin, cardinalPoint))
+                .filter(cardinalPoint ->
+                    !(PhysicsEngine.isSpaceOccupied(cardinalPoint.x, cardinalPoint.y)) ||
+                    player.getPos().equals(cardinalPoint))
                 .toList();
         }
 
