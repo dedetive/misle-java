@@ -21,10 +21,26 @@ import java.awt.*;
  * This can aid in adding depth and variation to their routines or making their movement less static.
  */
 public class PatrolBehavior extends AbstractBehavior {
+
+    /**
+     * The predefined path made up of points that the entity should follow back and forth.
+     */
     private final Path patrolPath;
+
+    /**
+     * The current step or index in the path.
+     */
     private int step;
+
+    /**
+     * The index of the last step in the path.
+     */
     private final int lastStep;
-    private boolean returning = false;
+
+    /**
+     * Flag indicating whether the entity is currently moving in reverse direction.
+     */
+    private boolean returning;
 
     public PatrolBehavior(Point... points) {
         this(new Path(points));
