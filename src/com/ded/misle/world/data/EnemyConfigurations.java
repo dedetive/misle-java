@@ -62,7 +62,7 @@ public enum EnemyConfigurations {
         AIBehavior freelyWalkingAround = new WanderBehavior();
         freelyWalkingAround.setCondition(isMaxHP);
 
-        AIBehavior limitedWalkingAround = new WanderBehavior(2);
+        AIBehavior limitedWalkingAround = new WanderBehavior(1);
         limitedWalkingAround.setCondition(hasOverThirdHP);
 
         AIBehavior goingUp = new WanderBehavior(new Path(upwardsPoints));
