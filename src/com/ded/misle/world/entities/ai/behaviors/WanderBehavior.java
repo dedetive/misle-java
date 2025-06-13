@@ -14,7 +14,7 @@ import java.util.Random;
 
 public class WanderBehavior extends AbstractBehavior {
     private int maxDistanceFromOrigin;
-    private Path wanderingPath;
+    private Path customPath;
     private final WanderMode wanderMode;
 
     private final Random random = new Random();
@@ -29,9 +29,9 @@ public class WanderBehavior extends AbstractBehavior {
         this.wanderMode = WanderMode.DISTANCE;
     }
 
-    public WanderBehavior(Path wanderingPath) {
-        this.wanderingPath = wanderingPath;
-        this.wanderMode = WanderMode.PATH;
+    public WanderBehavior(Path customPath) {
+        this.customPath = customPath;
+        this.wanderMode = WanderMode.CUSTOM_PATH;
     }
 
     @Override
@@ -96,7 +96,7 @@ public class WanderBehavior extends AbstractBehavior {
         /**
          * Walks randomly within a confined path.
          */
-        PATH,
+        CUSTOM_PATH,
 
         /**
          * Walks randomly within a max distance.
