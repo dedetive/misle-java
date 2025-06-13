@@ -69,27 +69,31 @@ public class WanderBehavior extends AbstractBehavior {
     }
 
     private List<Point> computeValidPositionsDistance(Entity self) {
-        List<Point> validPos = new ArrayList<>();
         Point origin = self.getOrigin();
         Point currentPos = self.getPos();
 
-        if (isWithinWanderRegion(origin, currentPos)) {
-            Point[] cardinalPoints = new Point[]{
-                new Point(currentPos.x, currentPos.y - 1), // Up
-                new Point(currentPos.x, currentPos.y + 1), // Down
-                new Point(currentPos.x - 1, currentPos.y), // Left
-                new Point(currentPos.x + 1, currentPos.y)  // Right
-            };
+        Point[] cardinalPoints = new Point[]{
+            new Point(currentPos.x, currentPos.y - 1), // Up
+            new Point(currentPos.x, currentPos.y + 1), // Down
+            new Point(currentPos.x - 1, currentPos.y), // Left
+            new Point(currentPos.x + 1, currentPos.y)  // Right
+        };
 
-            validPos = Stream.of(cardinalPoints)
+        if (isWithinWanderRegion(origin, currentPos)) {
+
+            return Stream.of(cardinalPoints)
                 .filter(cardinalPoint -> isWithinWanderRegion(origin, cardinalPoint))
                 .filter(cardinalPoint ->
                     !(PhysicsEngine.isSpaceOccupied(cardinalPoint.x, cardinalPoint.y)) ||
                     player.getPos().equals(cardinalPoint))
                 .toList();
+        } else {
+            return Stream.of(cardinalPoints)
+                .filter(p -> !PhysicsEngine.isSpaceOccupied(p.x, p.y) ||
+                    player.getPos().equals(p))
+                .filter(p -> getDistanceFromOrigin(p, origin) < getDistanceFromOrigin(currentPos, origin))
+                .toList();
         }
-
-        return validPos;
     }
 
     private List<Point> computeValidPositionsCustomPath(Entity self) {
