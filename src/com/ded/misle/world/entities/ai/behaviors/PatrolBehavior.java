@@ -95,10 +95,20 @@ public class PatrolBehavior extends AbstractBehavior {
         advanceStep();
     }
 
+    /**
+     * Advances the step forward or backward along the path, depending on whether it's currently
+     * following forward or reverse direction.
+     */
     private void advanceStep() {
         step = calculateNextStep();
     }
 
+    /**
+     * Computes the index of the subsequent step along the path.
+     * If the path reaches its last or first point, the direction reverses.
+     *
+     * @return the index of the subsequent step
+     */
     private int calculateNextStep() {
         if (step >= lastStep) returning = true;
         else if (step <= 0) returning = false;
