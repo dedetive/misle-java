@@ -47,16 +47,32 @@ public class WanderBehavior extends AbstractBehavior {
      */
     private final Random random = new Random();
 
+    /**
+     * Initializes a new WanderBehavior with no maximum distance (integer maximum).
+     * The entity will move in a wander-like manner without range limitation.
+     */
     public WanderBehavior() {
         this(Integer.MAX_VALUE);
     }
 
+    /**
+     * Initializes a new WanderBehavior with a maximum distance from its origin.
+     * The entity will move within this range.
+     *
+     * @param maxDistanceFromOrigin maximum range in tile distance
+     */
     public WanderBehavior(int maxDistanceFromOrigin) {
         this.maxDistanceFromOrigin = maxDistanceFromOrigin;
         this.mode = WanderMode.DISTANCE;
         this.setInterruptible(true);
     }
 
+    /**
+     * Initializes a new WanderBehavior with a custom path.
+     * The entity will follow this path instead of wander within a range.
+     *
+     * @param customPath custom path for the entity to follow
+     */
     public WanderBehavior(Path customPath) {
         this.customPath = customPath;
         this.mode = WanderMode.CUSTOM_PATH;
