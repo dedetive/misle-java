@@ -52,11 +52,13 @@ public class WanderBehavior extends AbstractBehavior {
     public WanderBehavior(int maxDistanceFromOrigin) {
         this.maxDistanceFromOrigin = maxDistanceFromOrigin;
         this.mode = WanderMode.DISTANCE;
+        this.setInterruptible(true);
     }
 
     public WanderBehavior(Path customPath) {
         this.customPath = customPath;
         this.mode = WanderMode.CUSTOM_PATH;
+        this.setInterruptible(true);
     }
 
     @Override
