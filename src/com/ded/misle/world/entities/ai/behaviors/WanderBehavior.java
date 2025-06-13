@@ -238,6 +238,11 @@ public class WanderBehavior extends AbstractBehavior {
         DISTANCE
     }
 
+    /**
+     * Returns the behavioral type for this instance.
+     *
+     * @return the behavior's type
+     */
     @Override
     public BehaviorType getType() {
         return BehaviorType.WANDER;
