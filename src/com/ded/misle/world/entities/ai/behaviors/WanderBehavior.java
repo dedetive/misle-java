@@ -72,23 +72,18 @@ public class WanderBehavior extends AbstractBehavior {
         Point origin = self.getOrigin();
         Point currentPos = self.getPos();
 
-        Point[] cardinalPoints = new Point[]{
-            new Point(currentPos.x, currentPos.y - 1), // Up
-            new Point(currentPos.x, currentPos.y + 1), // Down
-            new Point(currentPos.x - 1, currentPos.y), // Left
-            new Point(currentPos.x + 1, currentPos.y)  // Right
-        };
+        Point[] neighbors = getCardinalNeighbors(currentPos).toArray(new Point[0]);
 
         if (isWithinWanderRegion(origin, currentPos)) {
 
-            return Stream.of(cardinalPoints)
+            return Stream.of(neighbors)
                 .filter(cardinalPoint -> isWithinWanderRegion(origin, cardinalPoint))
                 .filter(cardinalPoint ->
                     !(PhysicsEngine.isSpaceOccupied(cardinalPoint.x, cardinalPoint.y)) ||
                     player.getPos().equals(cardinalPoint))
                 .toList();
         } else {
-            return Stream.of(cardinalPoints)
+            return Stream.of(neighbors)
                 .filter(p -> !PhysicsEngine.isSpaceOccupied(p.x, p.y) ||
                     player.getPos().equals(p))
                 .filter(p -> getDistanceFromOrigin(p, origin) < getDistanceFromOrigin(currentPos, origin))
@@ -99,12 +94,7 @@ public class WanderBehavior extends AbstractBehavior {
     private List<Point> computeValidPositionsCustomPath(Entity self) {
         Point currentPos = self.getPos();
 
-        List<Point> neighbors = List.of(
-            new Point(currentPos.x, currentPos.y - 1), // Up
-            new Point(currentPos.x, currentPos.y + 1), // Down
-            new Point(currentPos.x - 1, currentPos.y), // Left
-            new Point(currentPos.x + 1, currentPos.y)  // Right
-        );
+        List<Point> neighbors = getCardinalNeighbors(currentPos);
 
         if (customPath.contains(currentPos)) {
             return neighbors.stream()
@@ -135,6 +125,16 @@ public class WanderBehavior extends AbstractBehavior {
             BoxManipulation.moveToward(self, target, false);
         }
     }
+
+    private List<Point> getCardinalNeighbors(Point pos) {
+        return List.of(
+            new Point(pos.x, pos.y - 1), // Up
+            new Point(pos.x, pos.y + 1), // Down
+            new Point(pos.x - 1, pos.y), // Left
+            new Point(pos.x + 1, pos.y)  // Right
+        );
+    }
+
 
     private enum WanderMode {
         /**
