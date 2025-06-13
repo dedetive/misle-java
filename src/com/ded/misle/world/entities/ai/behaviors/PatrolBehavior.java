@@ -70,12 +70,19 @@ public class PatrolBehavior extends AbstractBehavior {
         this.priority = Integer.MIN_VALUE;
     }
 
+    /**
+     * Performs the patrol behavior by attempting to move toward the current step in the path.
+     * If the step is occupied, it may trigger an effect instead.
+     * After attempting to move, it prepares for the subsequent step.
+     *
+     * @param context the context for this behavior, including the entity itself
+     */
     @Override
     public void tryExecute(BehaviorContext context) {
         if (patrolPath.getLength() == 0) return;
 
         Point target = patrolPath
-            .offset(context.self().getOrigin())
+            .offset(context.self().getOrigin()) // Align path to entity's origin
             .getPoints()[calculateNextStep()];
 
         if (PhysicsEngine.isSpaceOccupied(target.x, target.y)) {
