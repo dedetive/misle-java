@@ -223,15 +223,17 @@ public class WanderBehavior extends AbstractBehavior {
         );
     }
 
-
+    /**
+     * The wander modes supported by this behavior.
+     */
     private enum WanderMode {
         /**
-         * Walks randomly within a confined path.
+         * Wander within a confined path.
          */
         CUSTOM_PATH,
 
         /**
-         * Walks randomly within a max distance.
+         * Wander within a range.
          */
         DISTANCE
     }
