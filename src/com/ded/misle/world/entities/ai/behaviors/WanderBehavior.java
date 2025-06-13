@@ -7,10 +7,12 @@ import com.ded.misle.world.entities.ai.BehaviorType;
 import com.ded.misle.world.logic.Path;
 import com.ded.misle.world.logic.PhysicsEngine;
 
-import java.awt.*;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
 
 public class WanderBehavior extends AbstractBehavior {
     private int maxDistanceFromOrigin;
@@ -36,44 +38,17 @@ public class WanderBehavior extends AbstractBehavior {
 
     @Override
     public void tryExecute(BehaviorContext context) {
-        java.util.List<Point> validPos = new ArrayList<>();
         Entity self = context.self();
 
-        switch (wanderMode) {
-            case DISTANCE -> {
-                Point origin = self.getOrigin();
-                Point currentPos = self.getPos();
+        List<Point> validPos = computeValidPositions(self);
 
-                // Is current pos within valid region
-                  // If is, move anywhere valid
-                  // If not, attempt to return
-                if (isWithinWanderRegion(
-                    self.getOrigin(), currentPos)) {
-
-                    Point[] cardinalPoints = new Point[]{
-                        new Point(currentPos.x, currentPos.y - 1), // Up
-                        new Point(currentPos.x, currentPos.y + 1), // Down
-                        new Point(currentPos.x - 1, currentPos.y), // Left
-                        new Point(currentPos.x + 1, currentPos.y)  // Right
-                    };
-
-                    validPos =
-                        Arrays.stream(cardinalPoints)
-                            .filter(cardinalPoint -> isWithinWanderRegion(origin, cardinalPoint))
-                            .toList();
-                }
-
-                Point target = validPos.get(
-                    random.nextInt(validPos.size())
-                );
-
-                if (PhysicsEngine.isSpaceOccupied(target.x, target.y)) {
-                    triggerEffectOnPlayerContact(context, target);
-                } else {
-                    BoxManipulation.moveToward(self, target, false);
-                }
-            }
+        if (validPos.isEmpty()) {
+            return;
         }
+
+        Point target = validPos.get(random.nextInt(validPos.size()));
+
+        attemptToMove(context, target);
     }
 
     @Override
@@ -90,6 +65,37 @@ public class WanderBehavior extends AbstractBehavior {
 
     private boolean isWithinWanderRegion(Point origin, Point target) {
         return getDistanceFromOrigin(origin, target) <= maxDistanceFromOrigin;
+    }
+
+    private List<Point> computeValidPositions(Entity self) {
+        List<Point> validPos = new ArrayList<>();
+        Point origin = self.getOrigin();
+        Point currentPos = self.getPos();
+
+        if (isWithinWanderRegion(origin, currentPos)) {
+            Point[] cardinalPoints = new Point[]{
+                new Point(currentPos.x, currentPos.y - 1), // Up
+                new Point(currentPos.x, currentPos.y + 1), // Down
+                new Point(currentPos.x - 1, currentPos.y), // Left
+                new Point(currentPos.x + 1, currentPos.y)  // Right
+            };
+
+            validPos = Stream.of(cardinalPoints)
+                .filter(cardinalPoint -> isWithinWanderRegion(origin, cardinalPoint))
+                .toList();
+        }
+
+        return validPos;
+    }
+
+    private void attemptToMove(BehaviorContext context, Point target) {
+        Entity self = context.self();
+
+        if (PhysicsEngine.isSpaceOccupied(target.x, target.y)) {
+            triggerEffectOnPlayerContact(context, target);
+        } else {
+            BoxManipulation.moveToward(self, target, false);
+        }
     }
 
     private enum WanderMode {
