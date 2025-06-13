@@ -35,7 +35,8 @@ public class WanderBehavior extends AbstractBehavior {
     private Path customPath;
 
     /**
-     * The wander mode, which controls whether the entity moves within a custom path or within its maximum distance.
+     * The wander mode that controls this behavior.
+     * {@link WanderMode#CUSTOM_PATH} will follow the custom path; {@link WanderMode#DISTANCE} will move within maxDistance.
      */
     private final WanderMode mode;
 
