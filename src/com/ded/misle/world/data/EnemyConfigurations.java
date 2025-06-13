@@ -1,11 +1,13 @@
 package com.ded.misle.world.data;
 
 import com.ded.misle.items.DropTable;
+import com.ded.misle.world.entities.ai.AIBehavior;
 import com.ded.misle.world.entities.ai.BehaviorContext;
 import com.ded.misle.world.entities.ai.behaviors.PatrolBehavior;
 import com.ded.misle.world.entities.ai.behaviors.WanderBehavior;
 import com.ded.misle.world.entities.enemies.EnemyConfigurator;
 import com.ded.misle.world.entities.enemies.EnemyType;
+import com.ded.misle.world.logic.Path;
 
 import java.awt.*;
 import java.util.function.Function;
@@ -56,11 +58,15 @@ public enum EnemyConfigurations {
             context ->
                 context.self().getHP() >= context.self().getMaxHP() / 3;
 
-        WanderBehavior walkingAround = new WanderBehavior(2);
+        Function<BehaviorContext, Boolean> hasUnderThirdHP =
+            context ->
+                context.self().getHP() < context.self().getMaxHP() / 3;
+
+        AIBehavior walkingAround = new WanderBehavior(2);
         walkingAround.setCondition(hasOverThirdHP);
 
-        PatrolBehavior goingUp = new PatrolBehavior(upwardsPoints);
-        goingUp.setCondition(hasOverThirdHP);
+        AIBehavior goingUp = new WanderBehavior(new Path(upwardsPoints));
+        goingUp.setCondition(hasUnderThirdHP);
 
         // this is all temporary don't worry
         enemy.setBehaviors(
