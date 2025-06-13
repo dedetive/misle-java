@@ -106,6 +106,14 @@ public class WanderBehavior extends AbstractBehavior {
         attemptToMove(context, target);
     }
 
+    /**
+     * Computes the distance from the origin to a target point.
+     * This is used to determine if a move is within range.
+     *
+     * @param origin the origin point
+     * @param target the target point
+     * @return the distance as an integer
+     */
     private int getDistanceFromOrigin(Point origin, Point target) {
         return
             (int) Math.ceil(
@@ -113,10 +121,23 @@ public class WanderBehavior extends AbstractBehavior {
             );
     }
 
+    /**
+     * Checks whether a point is within the wander range for the entity.
+     *
+     * @param origin the origin point
+     * @param target the point to validate
+     * @return true if within range, false otherwise
+     */
     private boolean isWithinWanderRegion(Point origin, Point target) {
         return getDistanceFromOrigin(origin, target) <= maxDistanceFromOrigin;
     }
 
+    /**
+     * Computes a list of valid points to move toward when wandering with range limitation.
+     *
+     * @param self the entity to move
+     * @return a list of points to move toward
+     */
     private List<Point> computeValidPositionsDistance(Entity self) {
         Point origin = self.getOrigin();
         Point currentPos = self.getPos();
@@ -140,6 +161,12 @@ public class WanderBehavior extends AbstractBehavior {
         }
     }
 
+    /**
+     * Computes a list of valid points to move toward when following a custom path.
+     *
+     * @param self the entity to move
+     * @return a list of points to move toward
+     */
     private List<Point> computeValidPositionsCustomPath(Entity self) {
         Point currentPos = self.getPos();
 
@@ -175,6 +202,12 @@ public class WanderBehavior extends AbstractBehavior {
         }
     }
 
+    /**
+     * Computes the four cardinal neighbors (up, down, left, right) of a point.
+     *
+     * @param pos the point for which to compute neighbors
+     * @return a list of neighboring points
+     */
     private List<Point> getCardinalNeighbors(Point pos) {
         return List.of(
             new Point(pos.x, pos.y - 1), // Up
