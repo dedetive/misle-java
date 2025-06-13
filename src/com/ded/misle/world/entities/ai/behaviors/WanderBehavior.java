@@ -192,6 +192,12 @@ public class WanderBehavior extends AbstractBehavior {
         }
     }
 
+    /**
+     * Performs the move toward the specified point, triggering effects if occupied.
+     *
+     * @param context the context for this behavior
+     * @param target the point to move toward
+     */
     private void attemptToMove(BehaviorContext context, Point target) {
         Entity self = context.self();
 
