@@ -342,7 +342,9 @@ public class KeyHandler implements KeyListener {
                             planner.attemptToMove(new Point(targetX, targetY));
                         } else if (player.getX() == targetX && player.getY() == targetY) {
                             planner.attemptToMove(new Point(targetX, targetY));
-                        } else if (Arrays.stream(player.pos.world.grid[targetX][targetY]).
+                        } else if (targetX > 0 && targetX < worldWidth &&
+							targetY > 0 && targetY < worldHeight &&
+							Arrays.stream(player.pos.world.grid[targetX][targetY]).
                             anyMatch(box -> box instanceof Entity)) {
 							planner.addEnemyPoint(new Point(targetX, targetY));
                         }
