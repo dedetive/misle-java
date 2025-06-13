@@ -79,6 +79,12 @@ public class WanderBehavior extends AbstractBehavior {
         this.setInterruptible(true);
     }
 
+    /**
+     * Performs this behavior, attempting to move the entity
+     * toward a new, valid point, either within its range or following its custom path.
+     *
+     * @param context the context for this behavior, including the actor
+     */
     @Override
     public void tryExecute(BehaviorContext context) {
         Entity self = context.self();
