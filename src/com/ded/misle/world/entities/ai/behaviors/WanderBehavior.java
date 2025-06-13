@@ -65,6 +65,7 @@ public class WanderBehavior extends AbstractBehavior {
         this.maxDistanceFromOrigin = maxDistanceFromOrigin;
         this.mode = WanderMode.DISTANCE;
         this.setInterruptible(true);
+        this.priority = Integer.MIN_VALUE;
     }
 
     /**
@@ -77,6 +78,7 @@ public class WanderBehavior extends AbstractBehavior {
         this.customPath = customPath;
         this.mode = WanderMode.CUSTOM_PATH;
         this.setInterruptible(true);
+        this.priority = Integer.MIN_VALUE;
     }
 
     /**
