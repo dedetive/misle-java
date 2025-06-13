@@ -8,8 +8,6 @@ import com.ded.misle.world.logic.PhysicsEngine;
 
 import java.awt.*;
 
-import static com.ded.misle.game.GamePanel.player;
-
 public class PatrolBehavior extends AbstractBehavior {
     private final Path patrolPath;
     private int step;

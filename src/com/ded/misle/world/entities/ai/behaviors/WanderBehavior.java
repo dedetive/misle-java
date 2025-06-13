@@ -39,10 +39,15 @@ public class WanderBehavior extends AbstractBehavior {
     public void tryExecute(BehaviorContext context) {
         Entity self = context.self();
 
-        List<Point> validPos =
-            wanderMode == WanderMode.CUSTOM_PATH
-                ? computeValidPositionsCustomPath(self)
-                : computeValidPositionsDistance(self);
+
+        List<Point> validPos;
+        if (wanderMode == WanderMode.CUSTOM_PATH) {
+            customPath.offset(self.getOrigin());
+            validPos = computeValidPositionsCustomPath(self);
+            customPath.undo();
+        }
+        else validPos = computeValidPositionsDistance(self);
+
 
         if (validPos.isEmpty()) {
             return;
