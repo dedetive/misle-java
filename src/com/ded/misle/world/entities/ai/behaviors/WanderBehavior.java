@@ -13,6 +13,16 @@ import java.util.stream.Stream;
 
 import static com.ded.misle.game.GamePanel.player;
 
+/**
+ * An AI behavior that guides an entity to move to a nearby or custom path.
+ * This behavior can either wander anywhere freely,
+ * wander within a maximum distance from its origin, or
+ * follow a predefined path of points.
+ * <p>
+ * The direction of a step is equally likely, unconditional, and randomized, within valid spaces.
+ * <p>
+ * If, for whatever reason, the entity is not in a valid space, it actively attempts to return to its valid positions.
+ */
 public class WanderBehavior extends AbstractBehavior {
     /**
      * The maximum distance this entity can move away from its origin point while wandering.
