@@ -8,10 +8,7 @@ import com.ded.misle.world.logic.Path;
 import com.ded.misle.world.logic.PhysicsEngine;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static com.ded.misle.game.GamePanel.player;
@@ -42,14 +39,16 @@ public class WanderBehavior extends AbstractBehavior {
     public void tryExecute(BehaviorContext context) {
         Entity self = context.self();
 
-        List<Point> validPos = computeValidPositions(self);
+        List<Point> validPos =
+            wanderMode == WanderMode.CUSTOM_PATH
+                ? computeValidPositionsCustomPath(self)
+                : computeValidPositionsDistance(self);
 
         if (validPos.isEmpty()) {
             return;
         }
 
         Point target = validPos.get(random.nextInt(validPos.size()));
-
         attemptToMove(context, target);
     }
 
@@ -69,7 +68,7 @@ public class WanderBehavior extends AbstractBehavior {
         return getDistanceFromOrigin(origin, target) <= maxDistanceFromOrigin;
     }
 
-    private List<Point> computeValidPositions(Entity self) {
+    private List<Point> computeValidPositionsDistance(Entity self) {
         List<Point> validPos = new ArrayList<>();
         Point origin = self.getOrigin();
         Point currentPos = self.getPos();
@@ -91,6 +90,36 @@ public class WanderBehavior extends AbstractBehavior {
         }
 
         return validPos;
+    }
+
+    private List<Point> computeValidPositionsCustomPath(Entity self) {
+        Point currentPos = self.getPos();
+
+        List<Point> neighbors = List.of(
+            new Point(currentPos.x, currentPos.y - 1), // Up
+            new Point(currentPos.x, currentPos.y + 1), // Down
+            new Point(currentPos.x - 1, currentPos.y), // Left
+            new Point(currentPos.x + 1, currentPos.y)  // Right
+        );
+
+        if (customPath.contains(currentPos)) {
+            return neighbors.stream()
+                .filter(customPath::contains)
+                .filter(p -> !PhysicsEngine.isSpaceOccupied(p.x, p.y) ||
+                    player.getPos().equals(p))
+                .toList();
+        } else {
+            Point nearest = Arrays.stream(customPath.getPoints())
+                .min(Comparator.comparingInt(p -> getDistanceFromOrigin(currentPos, p)))
+                .orElse(null);
+            if (nearest == null) return List.of();
+
+            return neighbors.stream()
+                .filter(p -> !PhysicsEngine.isSpaceOccupied(p.x, p.y) ||
+                    player.getPos().equals(p))
+                .filter(p -> getDistanceFromOrigin(p, nearest) < getDistanceFromOrigin(currentPos, nearest))
+                .toList();
+        }
     }
 
     private void attemptToMove(BehaviorContext context, Point target) {
