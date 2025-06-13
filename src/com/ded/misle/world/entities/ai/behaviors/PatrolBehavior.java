@@ -56,6 +56,11 @@ public class PatrolBehavior extends AbstractBehavior {
         return step + (returning ? -1 : 1);
     }
 
+    /**
+     * Returns the behavioral type for this instance.
+     *
+     * @return the behavior's type
+     */
     @Override
     public BehaviorType getType() {
         return BehaviorType.PATROL;
