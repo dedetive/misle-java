@@ -57,11 +57,6 @@ public class WanderBehavior extends AbstractBehavior {
         attemptToMove(context, target);
     }
 
-    @Override
-    public BehaviorType getType() {
-        return BehaviorType.WANDER;
-    }
-
     private int getDistanceFromOrigin(Point origin, Point target) {
         return
             (int) Math.ceil(
@@ -147,5 +142,10 @@ public class WanderBehavior extends AbstractBehavior {
          * Walks randomly within a max distance.
          */
         DISTANCE
+    }
+
+    @Override
+    public BehaviorType getType() {
+        return BehaviorType.WANDER;
     }
 }
