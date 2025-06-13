@@ -16,23 +16,23 @@ import static com.ded.misle.game.GamePanel.player;
 public class WanderBehavior extends AbstractBehavior {
     private int maxDistanceFromOrigin;
     private Path customPath;
-    private final WanderMode wanderMode;
+    private final WanderMode mode;
 
     private final Random random = new Random();
 
     public WanderBehavior() {
         this.maxDistanceFromOrigin = Integer.MAX_VALUE;
-        this.wanderMode = WanderMode.DISTANCE;
+        this.mode = WanderMode.DISTANCE;
     }
 
     public WanderBehavior(int maxDistanceFromOrigin) {
         this.maxDistanceFromOrigin = maxDistanceFromOrigin;
-        this.wanderMode = WanderMode.DISTANCE;
+        this.mode = WanderMode.DISTANCE;
     }
 
     public WanderBehavior(Path customPath) {
         this.customPath = customPath;
-        this.wanderMode = WanderMode.CUSTOM_PATH;
+        this.mode = WanderMode.CUSTOM_PATH;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class WanderBehavior extends AbstractBehavior {
 
 
         List<Point> validPos;
-        if (wanderMode == WanderMode.CUSTOM_PATH) {
+        if (mode == WanderMode.CUSTOM_PATH) {
             customPath.offset(self.getOrigin());
             validPos = computeValidPositionsCustomPath(self);
             customPath.undo();
