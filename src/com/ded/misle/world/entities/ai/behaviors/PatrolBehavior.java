@@ -61,6 +61,11 @@ public class PatrolBehavior extends AbstractBehavior {
         return BehaviorType.PATROL;
     }
 
+    /**
+     * Prints a string representation of this PatrolBehavior.
+     *
+     * @return a string representation with details about its state
+     */
     @Override
     public String toString() {
         return super.toString().replace("}", "") + ", " +
