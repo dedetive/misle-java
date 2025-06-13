@@ -8,6 +8,18 @@ import com.ded.misle.world.logic.PhysicsEngine;
 
 import java.awt.*;
 
+/**
+ * An AI behavior that guides an entity to follow a predefined path of points in a forward-and-backward manner.
+ * This behavior moves the entity from the first point in its path toward the last, then reverses direction
+ * and moves back toward the first, repeating this process in a loop.
+ * <p>
+ * The path is defined by a set of points provided upon instantiation.
+ * This behavior is interruptible and typically holds the lowest priority, allowing
+ * other, higher-priority behaviors to interrupt it when needed (for instance, when the entity notices a nearby player).
+ * <p>
+ * The main role of this behavior is to enable entities to perform routine or guard-like movement, following their path back and forth.
+ * This can aid in adding depth and variation to their routines or making their movement less static.
+ */
 public class PatrolBehavior extends AbstractBehavior {
     private final Path patrolPath;
     private int step;
