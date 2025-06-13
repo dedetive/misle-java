@@ -25,6 +25,9 @@ public class PatrolBehavior extends AbstractBehavior {
         }
 
         this.lastStep = this.patrolPath.getLength() - 1;
+
+        this.setInterruptible(true);
+        this.priority = Integer.MIN_VALUE;
     }
 
     @Override
