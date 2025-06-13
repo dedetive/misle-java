@@ -14,11 +14,26 @@ import java.util.stream.Stream;
 import static com.ded.misle.game.GamePanel.player;
 
 public class WanderBehavior extends AbstractBehavior {
+    /**
+     * The maximum distance this entity can move away from its origin point while wandering.
+     */
     private int maxDistanceFromOrigin;
+
+    /**
+     * An optional custom path composed of points within which the entity should move.
+     */
     private Path customPath;
+
+    /**
+     * The wander mode, which controls whether the entity moves within a custom path or within its maximum distance.
+     */
     private final WanderMode mode;
 
+    /**
+     * The pseudorandom number generator used to select a new destination when wandering.
+     */
     private final Random random = new Random();
+
 
     public WanderBehavior() {
         this.maxDistanceFromOrigin = Integer.MAX_VALUE;
