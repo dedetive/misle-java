@@ -34,10 +34,8 @@ public class WanderBehavior extends AbstractBehavior {
      */
     private final Random random = new Random();
 
-
     public WanderBehavior() {
-        this.maxDistanceFromOrigin = Integer.MAX_VALUE;
-        this.mode = WanderMode.DISTANCE;
+        this(Integer.MAX_VALUE);
     }
 
     public WanderBehavior(int maxDistanceFromOrigin) {
@@ -53,7 +51,6 @@ public class WanderBehavior extends AbstractBehavior {
     @Override
     public void tryExecute(BehaviorContext context) {
         Entity self = context.self();
-
 
         List<Point> validPos;
         if (mode == WanderMode.CUSTOM_PATH) {
