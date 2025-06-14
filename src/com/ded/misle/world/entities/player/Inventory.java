@@ -447,7 +447,6 @@ public class Inventory {
 	public void useItem() {
 		if (getSelectedItem() != null) { // Ensure something is selected
 			String type = getSelectedItem().getType();
-			long currentTime = currentTimeMillis();
 
 			switch (type) {
 				case "potion" -> usePotion();
