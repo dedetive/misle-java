@@ -448,7 +448,7 @@ public class Inventory {
 		if (getSelectedItem() != null) { // Ensure something is selected
 			String type = getSelectedItem().getType();
 
-			switch (type) {
+            switch (type) {
 				case "potion" -> usePotion();
 				case "weapon" -> useWeapon();
 			}
@@ -457,11 +457,12 @@ public class Inventory {
 
 	public void usePotion() {
 		int potionDelay = Integer.parseInt(getSelectedItem().getAttributes().get("potionDelay").toString());
-		if (getSelectedItem().canUse()) {
-			getSelectedItem().setCanUse(false);
+		Item it = getSelectedItem();
+		if (it.canUse() && !player.isWaiting()) {
+			it.setCanUse(false);
 
-			getSelectedItem().setUsageDelay(
-				new TurnTimer(potionDelay, e -> getSelectedItem().setCanUse(true))
+			it.setUsageDelay(
+				new TurnTimer(potionDelay, e -> it.setCanUse(true))
 			);
 
 			int playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()));
@@ -470,7 +471,7 @@ public class Inventory {
 			int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
 			DecimalFormat df = new DecimalFormat("#.##");
 
-			switch ((String) getSelectedItem().getAttributes().get("size")) {
+			switch ((String) it.getAttributes().get("size")) {
 				case "small":
 					playThis(consume_small_pot);
 					break;
@@ -485,9 +486,9 @@ public class Inventory {
 //					break;
 			}
 
-			switch (getSelectedItem().getAttributes().get("subtype").toString()) {
+			switch (it.getAttributes().get("subtype").toString()) {
 				case "heal" -> {
-					double healAmountValue = Double.parseDouble(Integer.toString((Integer) getSelectedItem().getAttributes().get("heal")));
+					double healAmountValue = Double.parseDouble(Integer.toString((Integer) it.getAttributes().get("heal")));
 					if (healAmountValue == -1) {
 						healAmountValue = player.getMaxHP();
 					}
@@ -495,8 +496,8 @@ public class Inventory {
 					new FloatingText("+" + formattedHealAmount, healColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
 
 					Timer delayToRemove = new Timer(30, e -> {
-						getSelectedItem().setCount(getSelectedItem().getCount() - 1);
-						if (!getSelectedItem().isActive()) {
+						it.setCount(it.getCount() - 1);
+						if (!it.isActive()) {
 							removeItem(0, getSelectedSlot());
 						}
 					});
@@ -504,7 +505,7 @@ public class Inventory {
 					delayToRemove.start();
 				}
 				case "entropy" -> {
-					double entropyAmountValue = Double.parseDouble(Integer.toString((Integer) getSelectedItem().getAttributes().get("entropy")));
+					double entropyAmountValue = Double.parseDouble(Integer.toString((Integer) it.getAttributes().get("entropy")));
 					if (entropyAmountValue == -1) {
 						entropyAmountValue = player.attr.getMaxEntropy();
 					}
@@ -512,8 +513,8 @@ public class Inventory {
 
 					new FloatingText("+" + formattedEntropyAmount, entropyGainColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
 					player.attr.addEntropy(entropyAmountValue);
-					getSelectedItem().setCount(getSelectedItem().getCount() - 1);
-					if (!getSelectedItem().isActive()) {
+					it.setCount(it.getCount() - 1);
+					if (!it.isActive()) {
 						removeItem(0, getSelectedSlot());
 					}
 				}
@@ -523,19 +524,20 @@ public class Inventory {
 	}
 
 	public void useWeapon() {
-		int attackDelay = Integer.parseInt(getSelectedItem().getAttributes().get("attackDelay").toString());
-		if (getSelectedItem().canUse()) {
+		Item it = getSelectedItem();
+		int attackDelay = Integer.parseInt(it.getAttributes().get("attackDelay").toString());
+		if (it.canUse() && !player.isWaiting()) {
 
-			getSelectedItem().setCanUse(false);
+			it.setCanUse(false);
 
-			getSelectedItem().setUsageDelay(
-				new TurnTimer(attackDelay, e -> getSelectedItem().setCanUse(true))
+			it.setUsageDelay(
+				new TurnTimer(attackDelay, e -> it.setCanUse(true))
 			);
 
-			switch (getSelectedItem().getAttributes().get("subtype").toString()) {
+			switch (it.getAttributes().get("subtype").toString()) {
 				case "melee" -> {
 					player.animator.update();
-					switch (getSelectedItem().getAttributes().get("kind").toString()) {
+					switch (it.getAttributes().get("kind").toString()) {
 						case "claw" -> player.animator.animateClaw();
 						// Weapon goes upward for a bit and then swings downwards
 						// Deals area damage
