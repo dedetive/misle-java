@@ -457,8 +457,8 @@ public class Inventory {
 
 	public void usePotion(long currentTime) {
 		double potionDelay = Double.parseDouble(getSelectedItem().getAttributes().get("potionDelay").toString());
-		if (currentTime > getSelectedItem().getTimeToDelay()) {
-			getSelectedItem().setTimeToDelay((long) (potionDelay * 1000)); // Handle delay
+		if (currentTime > getSelectedItem().getUsageDelay()) {
+			getSelectedItem().setUsageDelay((long) (potionDelay * 1000)); // Handle delay
 
 			int playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()));
 			int playerScreenY = (int) ((player.getY() - player.pos.getCameraOffsetY()));
@@ -520,8 +520,8 @@ public class Inventory {
 
 	public void useWeapon(long currentTime) {
 		double attackDelay = Double.parseDouble(getSelectedItem().getAttributes().get("attackDelay").toString());
-		if (currentTime > getSelectedItem().getTimeToDelay()) {
-			getSelectedItem().setTimeToDelay((long) (attackDelay * 100));
+		if (currentTime > getSelectedItem().getUsageDelay()) {
+			getSelectedItem().setUsageDelay((long) (attackDelay * 100));
 
 			switch (getSelectedItem().getAttributes().get("subtype").toString()) {
 				case "melee" -> {

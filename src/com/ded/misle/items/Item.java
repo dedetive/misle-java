@@ -31,7 +31,7 @@ public class Item {
 	private BufferedImage icon;
 	private final Map<String, Object> attributes; // Holds dynamic attributes
 	private int count;
-	private long timeToDelay;
+	private long usageDelay;
 	private boolean active;
 	private final Color nameColor;
 	private final String displayEffect;
@@ -61,7 +61,7 @@ public class Item {
 			this.displayType = LanguageManager.getText("TYPE_" + itemDetails.getType());
 			this.displayEffect = LanguageManager.getText(normalizedName + "_EFFECT");
 			this.attributes = itemDetails.getAttributes();
-			this.timeToDelay = currentTimeMillis();
+			this.usageDelay = currentTimeMillis();
 			this.active = true;
 			this.nameColor = itemDetails.getNameColor();
 			this.animationRotation = 0;
@@ -114,8 +114,8 @@ public class Item {
 	public String getDisplayEffect() { return displayEffect; }
 	public Map<String, Object> getAttributes() { return attributes; }
 	public int getCount() { return count; }
-	public long getTimeToDelay() { return timeToDelay; }
-	public void setTimeToDelay(long timeToDelay) { this.timeToDelay = currentTimeMillis() + timeToDelay; }
+	public long getUsageDelay() { return usageDelay; }
+	public void setUsageDelay(long usageDelay) { this.usageDelay = currentTimeMillis() + usageDelay; }
 	public boolean isActive() { return active; }
 	public Color getNameColor() { return nameColor; }
 
