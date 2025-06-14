@@ -521,7 +521,7 @@ public class Inventory {
 	public void useWeapon(long currentTime) {
 		double attackDelay = Double.parseDouble(getSelectedItem().getAttributes().get("attackDelay").toString());
 		if (currentTime > getSelectedItem().getTimeToDelay()) {
-			getSelectedItem().setTimeToDelay((long) (attackDelay * 1000));
+			getSelectedItem().setTimeToDelay((long) (attackDelay * 100));
 
 			switch (getSelectedItem().getAttributes().get("subtype").toString()) {
 				case "melee" -> {
