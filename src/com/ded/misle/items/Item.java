@@ -41,7 +41,7 @@ public class Item {
 	private double animationBulk;
 
 	private TurnTimer usageDelay;
-	private boolean canUse;
+	private boolean canUse = true;
 
 	HashMap<Integer, BufferedImage> iconCache = new HashMap<>();
 
