@@ -119,7 +119,10 @@ public class Item {
 	public boolean isActive() { return active; }
 	public Color getNameColor() { return nameColor; }
 	public TurnTimer getUsageDelay() { return usageDelay; }
-	public void setUsageDelay(TurnTimer usageDelay) { this.usageDelay = usageDelay; }
+	public void setUsageDelay(TurnTimer usageDelay) {
+		this.usageDelay = usageDelay;
+		this.usageDelay.restart();
+	}
 	public boolean canUse() { return canUse; }
 	public void setCanUse(boolean canUse) { this.canUse = canUse; }
 
