@@ -2,6 +2,7 @@ package com.ded.misle.items;
 
 import com.ded.misle.core.LanguageManager;
 import com.ded.misle.world.boxes.Box;
+import com.ded.misle.world.logic.TurnTimer;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -31,7 +32,6 @@ public class Item {
 	private BufferedImage icon;
 	private final Map<String, Object> attributes; // Holds dynamic attributes
 	private int count;
-	private long usageDelay;
 	private boolean active;
 	private final Color nameColor;
 	private final String displayEffect;
@@ -39,6 +39,9 @@ public class Item {
 	private double animationX;
 	private double animationY;
 	private double animationBulk;
+
+	private TurnTimer usageDelay;
+	private boolean canUse;
 
 	HashMap<Integer, BufferedImage> iconCache = new HashMap<>();
 
@@ -61,7 +64,6 @@ public class Item {
 			this.displayType = LanguageManager.getText("TYPE_" + itemDetails.getType());
 			this.displayEffect = LanguageManager.getText(normalizedName + "_EFFECT");
 			this.attributes = itemDetails.getAttributes();
-			this.usageDelay = currentTimeMillis();
 			this.active = true;
 			this.nameColor = itemDetails.getNameColor();
 			this.animationRotation = 0;
@@ -114,11 +116,12 @@ public class Item {
 	public String getDisplayEffect() { return displayEffect; }
 	public Map<String, Object> getAttributes() { return attributes; }
 	public int getCount() { return count; }
-	public long getUsageDelay() { return usageDelay; }
-	public void setUsageDelay(long usageDelay) { this.usageDelay = currentTimeMillis() + usageDelay; }
 	public boolean isActive() { return active; }
 	public Color getNameColor() { return nameColor; }
-
+	public TurnTimer getUsageDelay() { return usageDelay; }
+	public void setUsageDelay(TurnTimer usageDelay) { this.usageDelay = usageDelay; }
+	public boolean canUse() { return canUse; }
+	public void setCanUse(boolean canUse) { this.canUse = canUse; }
 
 	public boolean setCount(int count) {
 		this.count = Math.min(count, countLimit);

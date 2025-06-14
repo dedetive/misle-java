@@ -86,7 +86,7 @@ public class Player extends Entity {
 		String heldItemType = this.inv.getSelectedItem().getType();
 
 		if (heldItemType.equals("weapon")) {
-			this.inv.useWeapon(System.currentTimeMillis());
+			this.inv.useWeapon();
 		}
 	}
 

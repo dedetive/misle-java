@@ -7,6 +7,7 @@ import com.ded.misle.items.Item;
 import com.ded.misle.renderer.PlayingRenderer;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.entities.Entity;
+import com.ded.misle.world.logic.TurnTimer;
 
 import javax.swing.*;
 import java.text.DecimalFormat;
@@ -449,16 +450,20 @@ public class Inventory {
 			long currentTime = currentTimeMillis();
 
 			switch (type) {
-				case "potion" -> usePotion(currentTime);
-				case "weapon" -> useWeapon(currentTime);
+				case "potion" -> usePotion();
+				case "weapon" -> useWeapon();
 			}
 		}
 	}
 
-	public void usePotion(long currentTime) {
-		double potionDelay = Double.parseDouble(getSelectedItem().getAttributes().get("potionDelay").toString());
-		if (currentTime > getSelectedItem().getUsageDelay()) {
-			getSelectedItem().setUsageDelay((long) (potionDelay * 1000)); // Handle delay
+	public void usePotion() {
+		int potionDelay = Integer.parseInt(getSelectedItem().getAttributes().get("potionDelay").toString());
+		if (getSelectedItem().canUse()) {
+			getSelectedItem().setCanUse(false);
+
+			getSelectedItem().setUsageDelay(
+				new TurnTimer(potionDelay, e -> getSelectedItem().setCanUse(true))
+			);
 
 			int playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()));
 			int playerScreenY = (int) ((player.getY() - player.pos.getCameraOffsetY()));
@@ -518,10 +523,15 @@ public class Inventory {
 		}
 	}
 
-	public void useWeapon(long currentTime) {
-		double attackDelay = Double.parseDouble(getSelectedItem().getAttributes().get("attackDelay").toString());
-		if (currentTime > getSelectedItem().getUsageDelay()) {
-			getSelectedItem().setUsageDelay((long) (attackDelay * 100));
+	public void useWeapon() {
+		int attackDelay = Integer.parseInt(getSelectedItem().getAttributes().get("attackDelay").toString());
+		if (getSelectedItem().canUse()) {
+
+			getSelectedItem().setCanUse(false);
+
+			getSelectedItem().setUsageDelay(
+				new TurnTimer(attackDelay, e -> getSelectedItem().setCanUse(true))
+			);
 
 			switch (getSelectedItem().getAttributes().get("subtype").toString()) {
 				case "melee" -> {
