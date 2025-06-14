@@ -48,7 +48,7 @@
     "subtype": "heal",
     "kind": "self",
     "size": "small",
-    "potionDelay": 1.6,
+    "potionDelay": 1,
     "bundles": "potion_chest|8|75",
     "nameColor": "#FF6969"
   },
@@ -62,7 +62,7 @@
     "type": "potion",
     "subtype": "entropy",
     "size": "small",
-    "potionDelay": 1.6,
+    "potionDelay": 1,
     "kind": "self",
     "bundles": "potion_chest|6|62",
     "nameColor": "#6BC6F5"
@@ -106,7 +106,7 @@
     "subtype": "heal",
     "kind": "self",
     "size": "big",
-    "potionDelay": 2.5,
+    "potionDelay": 2,
     "bundles": "potion_chest|2|8",
     "nameColor": "#C70202"
   },
@@ -151,7 +151,7 @@
     "subtype": "entropy",
     "kind": "self",
     "size": "big",
-    "potionDelay": 2.5,
+    "potionDelay": 2,
     "bundles": "potion_chest|1|5",
     "nameColor": "#8FF8FF"
   },
@@ -270,7 +270,7 @@
     "type": "weapon",
     "subtype": "melee",
     "kind": "glove",
-    "attackDelay": 0.6125,
+    "attackDelay": 1,
     "range": "OX",
     "nameColor": "#BDBDBD"
   },
@@ -284,7 +284,7 @@
   "type": "weapon",
   "subtype": "melee",
   "kind": "glove",
-  "attackDelay": 0.6125,
+  "attackDelay": 1,
   "range": "OX",
   "nameColor": "#DB2525"
   },
