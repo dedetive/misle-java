@@ -148,7 +148,7 @@ public class Box {
 		}
 
 		if (this instanceof Entity) {
-			g2d.drawImage(ImageManager.cachedImages.get(ImageManager.ImageName.HEALTH_BAR),
+			g2d.drawImage(ImageManager.cachedImages.get(ImageManager.ImageName.ENEMY_HEALTH_BAR),
                 screenX + 12, screenY - 4, null
 				);
 		}

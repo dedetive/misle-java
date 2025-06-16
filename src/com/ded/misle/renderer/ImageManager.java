@@ -37,7 +37,7 @@ public abstract class ImageManager {
             INVENTORY_RINGLESS_EXTRA_SLOT("ui", "inventory_ringless_extra_slot.png"),
             COIN("ui", "coin.png"),
             MAIN_MENU_BACKGROUND("ui", "main_menu_background.png"),
-            HEALTH_BAR("ui", "health_bar.png"),
+            ENEMY_HEALTH_BAR("ui", "enemy_health_bar.png"),
 
         // CHARACTER
             // PLAYER
