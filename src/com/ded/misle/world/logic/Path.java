@@ -2,6 +2,7 @@ package com.ded.misle.world.logic;
 
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.data.TilePattern;
+import com.ded.misle.world.logic.attacks.Range;
 
 import java.awt.*;
 import java.awt.List;
@@ -235,6 +236,15 @@ public class Path extends TilePattern {
         Point start = getStart();
         Point end = getEnd();
         return start.distance(end);
+    }
+
+    /**
+     * Creates and returns a copy of this object.
+     * @return a clone of this instance
+     */
+    @Override
+    public Path clone() throws CloneNotSupportedException {
+        return (Path) super.clone();
     }
 
     /**
