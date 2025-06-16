@@ -123,10 +123,14 @@ public class Range extends TilePattern {
      * Returns the default range when there are parsing errors or no 'O' is found.
      * The default range is a single point to the right of the origin.
      *
-     * @return the default range
+     * @return a clone of the default range
      */
     public static Range getDefaultRange() {
-        return defaultRange;
+        try {
+            return defaultRange.clone();
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
     }
 
     @Override
