@@ -1,5 +1,6 @@
 package com.ded.misle.world.boxes;
 
+import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.renderer.ImageManager;
 import com.ded.misle.renderer.SmoothPosition;
@@ -144,6 +145,12 @@ public class Box {
 			}
 		} catch (NullPointerException e) {
 			// This just means selectedBoxes is empty
+		}
+
+		if (this instanceof Entity) {
+			g2d.drawImage(ImageManager.cachedImages.get(ImageManager.ImageName.HEALTH_BAR),
+                screenX + 12, screenY - 4, null
+				);
 		}
 	}
 
