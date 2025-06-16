@@ -148,9 +148,15 @@ public class Box {
 		}
 
 		if (this instanceof Entity) {
-			g2d.drawImage(ImageManager.cachedImages.get(ImageManager.ImageName.ENEMY_HEALTH_BAR),
-                screenX + 12, screenY - 4, null
-				);
+			BufferedImage bar = ImageManager.cachedImages.get(ImageManager.ImageName.ENEMY_HEALTH_BAR);
+			BufferedImage compatible = new BufferedImage(bar.getWidth(), bar.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			Graphics g = compatible.createGraphics();
+			g.drawImage(bar, 0, 0, null);
+			g.dispose();
+
+			bar = compatible;
+
+ 			g2d.drawImage(bar, screenX, screenY - 4, null);
 		}
 	}
 
