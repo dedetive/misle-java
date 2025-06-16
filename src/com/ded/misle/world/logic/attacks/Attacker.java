@@ -26,7 +26,7 @@ public class Attacker {
     }
 
     public Attacker() {
-        this(0, Range.getDefaultRange());
+        this(0);
     }
 
     public void attack(Point origin, Direction direction) {
