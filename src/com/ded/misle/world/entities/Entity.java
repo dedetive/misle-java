@@ -36,6 +36,11 @@ public class Entity extends Box {
     /** Maximum HP the entity can have. */
     private double maxHP;
 
+    /**
+     * Current HP of the entity that is going to be rendered. Has a slight delay compared to real internal {@link #HP}.
+     */
+    private int smoothHP;
+
     /** Locked HP that cannot be recovered or reduced normally. */
     private double lockedHP;
 
