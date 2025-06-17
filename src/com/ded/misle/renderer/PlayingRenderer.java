@@ -761,6 +761,16 @@ public class PlayingRenderer extends AbstractRenderer {
             int drawY = (int) (e.getRenderY() - originalTileSize * e.getVisualScaleVertical());
 
             g2d.drawImage(bar, drawX, drawY, null);
+
+            bar = ImageManager.cachedImages.get(ImageManager.ImageName.ENEMY_HEALTH_BAR_INSIDE);
+            compatible = new BufferedImage(bar.getWidth(), bar.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            g = compatible.createGraphics();
+            g.drawImage(bar, 0, 0, null);
+            g.dispose();
+
+            bar = compatible;
+
+            g2d.drawImage(bar, drawX, drawY, null);
         }
     }
 }
