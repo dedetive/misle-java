@@ -2,6 +2,7 @@ package com.ded.misle.renderer;
 
 import com.ded.misle.core.LanguageManager;
 import com.ded.misle.net.NetClient;
+import com.ded.misle.renderer.smoother.SmoothValue;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.player.Planner;
@@ -768,7 +769,11 @@ public class PlayingRenderer extends AbstractRenderer {
 
             bar = ImageManager.cachedImages.get(ImageManager.ImageName.ENEMY_HEALTH_BAR_INSIDE);
             float w = bar.getWidth();
-            w *= (float) (e.getHP() / e.getMaxHP());
+
+            SmoothValue hp = e.getHPSmoother();
+            hp.update(12);
+
+            w *= (float) (hp.getCurrentFloat() / e.getMaxHP());
             w = Math.max(w, 1);
 
             compatible = new BufferedImage((int) w, bar.getHeight(), BufferedImage.TYPE_INT_ARGB);

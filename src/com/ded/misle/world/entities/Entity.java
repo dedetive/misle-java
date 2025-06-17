@@ -2,6 +2,7 @@ package com.ded.misle.world.entities;
 
 import com.ded.misle.core.LanguageManager;
 import com.ded.misle.renderer.smoother.SmoothPosition;
+import com.ded.misle.renderer.smoother.SmoothValue;
 import com.ded.misle.world.logic.TurnTimer;
 import com.ded.misle.renderer.FloatingText;
 import com.ded.misle.items.DropTable;
@@ -38,9 +39,11 @@ public class Entity extends Box {
     private double maxHP;
 
     /**
-     * Current HP of the entity that is going to be rendered. Has a slight delay compared to real internal {@link #HP}.
+     * HP smoothness manager. Should be updated every frame to stay relevant.
+     * <p>
+     * Shows current HP of the entity that is going to be rendered. Has a slight delay compared to real internal {@link #HP}.
      */
-    private int smoothHP;
+    private final SmoothValue HPSmoother;
 
     /** Locked HP that cannot be recovered or reduced normally. */
     private double lockedHP;
@@ -105,6 +108,7 @@ public class Entity extends Box {
         this.setObjectType(ENTITY);
         this.HP = 1;
         this.maxHP = 1;
+        this.HPSmoother = new SmoothValue((float) HP);
         entities.add(this);
         updateRegenerationTimer();
     }
@@ -116,6 +120,7 @@ public class Entity extends Box {
         this.setObjectType(ENTITY);
         this.HP = 1;
         this.maxHP = 1;
+        this.HPSmoother = new SmoothValue((float) HP);
         entities.add(this);
         updateRegenerationTimer();
     }
@@ -126,6 +131,7 @@ public class Entity extends Box {
      */
     public void setHP(double HP) {
         this.HP = HP;
+        this.HPSmoother.setTarget((float) HP);
         checkIfDead();
     }
 
@@ -158,6 +164,7 @@ public class Entity extends Box {
      */
     public void fillHP() {
         this.HP = maxHP;
+        this.HPSmoother.setTarget((float) HP);
     }
 
     /**
@@ -221,6 +228,10 @@ public class Entity extends Box {
             return true;
         }
         return false;
+    }
+
+    public SmoothValue getHPSmoother() {
+        return HPSmoother;
     }
 
     /**
