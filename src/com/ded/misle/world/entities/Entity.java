@@ -1,6 +1,7 @@
 package com.ded.misle.world.entities;
 
 import com.ded.misle.renderer.smoother.SmoothValue;
+import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.logic.TurnTimer;
 import com.ded.misle.items.DropTable;
 import com.ded.misle.world.boxes.Box;
@@ -269,7 +270,7 @@ public class Entity extends Box {
      * @return Final damage applied.
      */
     public double takeDamage(double rawDamage, EnumSet<DamageFlag> flags) {
-        return takeDamage(rawDamage, flags, Optional.empty(), PlayerAttributes.KnockbackDirection.NONE);
+        return takeDamage(rawDamage, flags, Optional.empty(), Direction.NONE);
     }
 
     /**
@@ -280,7 +281,7 @@ public class Entity extends Box {
      * @param knockback Direction of the applied knockback.
      * @return Final damage applied.
      */
-    public double takeDamage(double rawDamage, EnumSet<DamageFlag> flags, PlayerAttributes.KnockbackDirection knockback) {
+    public double takeDamage(double rawDamage, EnumSet<DamageFlag> flags, Direction knockback) {
         return takeDamage(rawDamage, flags, Optional.empty(), knockback);
     }
 
@@ -292,7 +293,7 @@ public class Entity extends Box {
      * @param lockDuration Duration before locked HP resets. Does nothing if LOCKER flag is not given.
      * @return Final damage applied.
      */
-    public double takeDamage(double rawDamage, EnumSet<DamageFlag> flags, Optional<Duration> lockDuration, PlayerAttributes.KnockbackDirection knockback) {
+    public double takeDamage(double rawDamage, EnumSet<DamageFlag> flags, Optional<Duration> lockDuration, Direction knockback) {
         isRegenerationDoubled = false;
 
         if (rawDamage <= 0) return 0;
@@ -358,7 +359,7 @@ public class Entity extends Box {
      * Applies knockback effect.
      * @param dir Direction of knockback.
      */
-    private void applyKnockback(PlayerAttributes.KnockbackDirection dir) {
+    private void applyKnockback(Direction dir) {
         switch (dir) {
             case RIGHT -> moveBox(this, -30, 1);
             case LEFT -> moveBox(this, 30, 1);

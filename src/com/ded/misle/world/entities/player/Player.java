@@ -3,6 +3,7 @@ package com.ded.misle.world.entities.player;
 import com.ded.misle.game.GamePanel;
 import com.ded.misle.net.NetClient;
 import com.ded.misle.renderer.AnimatedStepCounter;
+import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.world.entities.Entity;
 
@@ -14,7 +15,6 @@ import java.util.List;
 
 import static com.ded.misle.game.GamePanel.isRunning;
 import static com.ded.misle.world.boxes.BoxHandling.addBoxToCache;
-import static com.ded.misle.world.entities.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 
 public class Player extends Entity {
@@ -47,7 +47,7 @@ public class Player extends Entity {
 		this.setCollision(true);
 		this.setVisualScaleHorizontal(0.91);
 		this.setVisualScaleVertical(0.91);
-		this.setKnockbackDirection(NONE);
+		this.setKnockbackDirection(Direction.NONE);
 		this.effect = null;
 
 		this.inv = new Inventory();

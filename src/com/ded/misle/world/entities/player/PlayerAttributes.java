@@ -74,27 +74,6 @@ public class PlayerAttributes {
 
 	private boolean isDead = false;
 	private float maxStackSizeMulti;
-	public enum KnockbackDirection {
-		NONE,
-		LEFT,
-		RIGHT,
-		DOWN,
-		UP,
-
-		;
-
-		private KnockbackDirection opposite;
-
-		public KnockbackDirection getOppositeDirection() {
-			return switch (this) {
-				case LEFT -> RIGHT;
-				case RIGHT -> LEFT;
-				case DOWN -> UP;
-				case UP -> DOWN;
-				default -> NONE;
-			};
-		}
-	}
 
 	public PlayerAttributes() {
 			this.updateStat(Stat.ALL);

@@ -1,5 +1,6 @@
 package com.ded.misle.world.boxes;
 
+import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.renderer.ImageManager;
 import com.ded.misle.renderer.smoother.SmoothPosition;
@@ -7,7 +8,6 @@ import com.ded.misle.world.logic.World;
 import com.ded.misle.world.logic.effects.Collectible;
 import com.ded.misle.world.logic.effects.Effect;
 import com.ded.misle.world.entities.player.Player;
-import com.ded.misle.world.entities.player.PlayerAttributes;
 
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
@@ -21,7 +21,6 @@ import static com.ded.misle.core.Path.getPath;
 import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.renderer.ImageManager.*;
 import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
-import static com.ded.misle.world.entities.player.PlayerAttributes.KnockbackDirection.NONE;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 import static com.ded.misle.world.logic.PhysicsEngine.ObjectType.BOX;
 import static com.ded.misle.world.boxes.BoxHandling.*;
@@ -33,7 +32,7 @@ public class Box {
 	private int worldX;
 	private int worldY;
 	public int worldLayer;
-	private PlayerAttributes.KnockbackDirection knockbackDirection;
+	private Direction knockbackDirection;
 
 	private Color color;
 	public String textureName;
@@ -85,7 +84,7 @@ public class Box {
 		this.effect = effect;
 		this.visualRotation = rotation;
 		this.objectType = objectType;
-		this.knockbackDirection = NONE;
+		this.knockbackDirection = Direction.NONE;
 		this.interactsWithPlayer = interactsWithPlayer;
 	}
 
@@ -102,7 +101,7 @@ public class Box {
 		this.effect = null;
 		this.visualRotation = 0;
 		this.objectType = BOX;
-		this.knockbackDirection = NONE;
+		this.knockbackDirection = Direction.NONE;
 		this.interactsWithPlayer = true;
 		addBoxToCache(this);
 	}
@@ -353,11 +352,11 @@ public class Box {
 
 	// EFFECT RELATED
 
-	public PlayerAttributes.KnockbackDirection getKnockbackDirection() {
+	public Direction getKnockbackDirection() {
 		return knockbackDirection;
 	}
 
-	public void setKnockbackDirection(PlayerAttributes.KnockbackDirection knockbackDirection) {
+	public void setKnockbackDirection(Direction knockbackDirection) {
 		this.knockbackDirection = knockbackDirection;
 	}
 
