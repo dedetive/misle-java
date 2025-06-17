@@ -11,6 +11,11 @@ public class SmoothPosition {
         this.y = new SmoothValue(y);
     }
 
+    public SmoothPosition(int x, int y, int scale) {
+        this.x = new SmoothValue(x * scale);
+        this.y = new SmoothValue(y * scale);
+    }
+
     public void setTarget(int newX, int newY, int scale) {
         x.setTarget(newX * scale);
         y.setTarget(newY * scale);

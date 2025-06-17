@@ -49,7 +49,7 @@ public class Box {
 	private double visualScaleVertical;
 	public double visualOffsetX = 0;
 	public double visualOffsetY = 0;
-	private final SmoothPosition smoothPos = new SmoothPosition(worldX, worldY);
+	private final SmoothPosition smoothPos = new SmoothPosition(worldX, worldY, originalTileSize);
 
     private static ArrayList<Box> selectedBoxes;
 	private static final Map<String, BufferedImage> cachedTextures = new HashMap<>();

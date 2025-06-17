@@ -55,7 +55,7 @@ public class Planner {
     public Planner(Point playerPosition) {
         this.path = new Path().addPoint(playerPosition);
         this.isPlanning = false;
-        this.smoothPos = new SmoothPosition(playerPosition.x, playerPosition.y);
+        this.smoothPos = new SmoothPosition(playerPosition.x, playerPosition.y, originalTileSize);
     }
 
     /**
