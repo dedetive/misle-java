@@ -492,10 +492,10 @@ public class Inventory {
 					if (healAmountValue == -1) {
 						healAmountValue = player.getMaxHP();
 					}
-					String formattedHealAmount = df.format(player.receiveHeal(healAmountValue, Entity.HealFlag.of(NORMAL)));
-					new FloatingText("+" + formattedHealAmount, healColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
 
-					Timer delayToRemove = new Timer(30, e -> {
+                    player.receiveHeal(healAmountValue, Entity.HealFlag.of(NORMAL));
+
+                    Timer delayToRemove = new Timer(30, e -> {
 						it.setCount(it.getCount() - 1);
 						if (!it.isActive()) {
 							removeItem(0, getSelectedSlot());
