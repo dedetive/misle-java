@@ -757,8 +757,12 @@ public class PlayingRenderer extends AbstractRenderer {
 
             bar = compatible;
 
-            int drawX = (int) (e.getRenderX());
-            int drawY = (int) (e.getRenderY() - originalTileSize * e.getVisualScaleVertical());
+            int drawX = (int) (e.getRenderX() - player.pos.getCameraOffsetX());
+            int drawY = (int) (e.getRenderY()
+                - (originalTileSize * e.getVisualScaleVertical())
+                + originalTileSize
+                - player.pos.getCameraOffsetY())
+                - 5;
 
             g2d.drawImage(bar, drawX, drawY, null);
 
