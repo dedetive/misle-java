@@ -268,6 +268,11 @@ public class Box {
 	}
 
 	public void setPos(int x, int y) {
+		this.setDirection(
+			Direction.interpretDirection
+				((x - this.worldX), (y - this.worldY))
+		);
+
 		setPos(x, y, -1);
 	}
 
