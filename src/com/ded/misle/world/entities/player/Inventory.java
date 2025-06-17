@@ -465,13 +465,7 @@ public class Inventory {
 				new TurnTimer(potionDelay, e -> it.setCanUse(true))
 			);
 
-			int playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()));
-			int playerScreenY = (int) ((player.getY() - player.pos.getCameraOffsetY()));
-			int randomPosX = (int) ((Math.random() * (40 + 40)) - 40);
-			int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
-			DecimalFormat df = new DecimalFormat("#.##");
-
-			switch ((String) it.getAttributes().get("size")) {
+            switch ((String) it.getAttributes().get("size")) {
 				case "small":
 					playThis(consume_small_pot);
 					break;
@@ -509,10 +503,8 @@ public class Inventory {
 					if (entropyAmountValue == -1) {
 						entropyAmountValue = player.attr.getMaxEntropy();
 					}
-					String formattedEntropyAmount = df.format(player.attr.calculateEntropyGain(entropyAmountValue));
 
-					new FloatingText("+" + formattedEntropyAmount, entropyGainColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
-					player.attr.addEntropy(entropyAmountValue);
+                    player.attr.addEntropy(entropyAmountValue);
 					it.setCount(it.getCount() - 1);
 					if (!it.isActive()) {
 						removeItem(0, getSelectedSlot());
