@@ -20,6 +20,7 @@ import java.util.*;
 import java.util.List;
 
 import static com.ded.misle.game.GamePanel.*;
+import static com.ded.misle.renderer.FontManager.coinTextFont;
 import static com.ded.misle.world.logic.PhysicsEngine.ObjectType.ENTITY;
 import static com.ded.misle.renderer.FontManager.itemInfoFont;
 import static com.ded.misle.world.boxes.BoxHandling.*;
@@ -176,6 +177,14 @@ public class Entity extends Box {
 
         if (this.HP == 0) {
             if (!(this instanceof Player)) {
+                if (this.HPSmoother.getCurrentFloat() >= 0.5) {
+                    javax.swing.Timer checkAgainTimer = new javax.swing.Timer(30,
+                        e -> checkIfDead());
+                    checkAgainTimer.setRepeats(false);
+                    checkAgainTimer.start();
+                    return true;
+                }
+
                 if (this.dropTable != null) {
                     boolean canGoMinus = false;
                     boolean canGoPlus = false;
