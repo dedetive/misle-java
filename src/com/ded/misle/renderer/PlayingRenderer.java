@@ -763,7 +763,11 @@ public class PlayingRenderer extends AbstractRenderer {
             g2d.drawImage(bar, drawX, drawY, null);
 
             bar = ImageManager.cachedImages.get(ImageManager.ImageName.ENEMY_HEALTH_BAR_INSIDE);
-            compatible = new BufferedImage(bar.getWidth(), bar.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            float w = bar.getWidth();
+            w *= (float) (e.getHP() / e.getMaxHP());
+            w = Math.max(w, 1);
+
+            compatible = new BufferedImage((int) w, bar.getHeight(), BufferedImage.TYPE_INT_ARGB);
             g = compatible.createGraphics();
             g.drawImage(bar, 0, 0, null);
             g.dispose();
