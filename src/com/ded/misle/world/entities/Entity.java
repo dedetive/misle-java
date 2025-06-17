@@ -328,8 +328,6 @@ public class Entity extends Box {
             } else {
                 applyDamageToHP(finalDamage, flags);
             }
-
-            renderDamageText(finalDamage);
         }
 
         applyKnockback(knockback);
@@ -343,7 +341,6 @@ public class Entity extends Box {
      */
     private void handleInversionHeal(double amount) {
         receiveHeal(amount, HealFlag.of(ABSOLUTE));
-        renderFloatingText("+" + format(amount), healColor, true);
     }
 
     /**
@@ -375,29 +372,6 @@ public class Entity extends Box {
         } else {
             setHP(Math.max(getHP() - amount, 0));
         }
-    }
-
-    /**
-     * Renders damage floating text.
-     * @param amount Damage amount.
-     */
-    private void renderDamageText(double amount) {
-        renderFloatingText("-" + format(amount), damageColor, true);
-    }
-
-    /**
-     * Shows floating text over this entity.
-     * @param text The string to show.
-     * @param color Color of the text.
-     * @param bold If true, shows bold text.
-     */
-    private void renderFloatingText(String text, Color color, boolean bold) {
-        int x = getX() * originalTileSize;
-        int y = getY() * originalTileSize;
-
-        int offsetX = (int) ((Math.random() * 80) - 40);
-        int offsetY = (int) ((Math.random() * 50) - 25);
-        new FloatingText(text, color, x + offsetX, y + offsetY, bold);
     }
 
     /**
