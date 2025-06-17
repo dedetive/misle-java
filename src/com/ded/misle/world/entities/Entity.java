@@ -205,21 +205,8 @@ public class Entity extends Box {
                         double xpGain = ((Enemy) this).getXPDrop();
                         player.attr.addXP(xpGain);
 
-                        int playerScreenX = (int) ((player.getX() - player.pos.getCameraOffsetX()));
-                        int playerScreenY = (int) ((player.getY() - player.pos.getCameraOffsetY()));
-                        int randomPosX = (int) ((Math.random() * (40 + 40)) - 40);
-                        int randomPosY = (int) ((Math.random() * (25 + 25)) - 25);
-                        DecimalFormat df = new DecimalFormat("#.##");
-                        String formattedXPGain = "+" + df.format(xpGain) + LanguageManager.getText("xp");
-                        new FloatingText(formattedXPGain, xpGainColor, playerScreenX + randomPosX, playerScreenY + randomPosY, true);
-
                         int coinGain = ((Enemy) this).getCoinDrop();
                         player.attr.addBalance(coinGain);
-
-                        FontMetrics fm = FontManager.getCachedMetrics(getWindow().getGraphics(), itemInfoFont);
-                        int newY = (int) (playerScreenY + randomPosY + fm.getHeight());
-                        String formattedCoinGain = "+" + coinGain + "i{COIN}";
-                        new FloatingText(formattedCoinGain, coinGainColor, playerScreenX + randomPosX, newY, true);
                     }
                 }
 

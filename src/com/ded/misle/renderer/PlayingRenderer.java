@@ -22,7 +22,6 @@ import java.util.Objects;
 
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.game.GamePanel.*;
-import static com.ded.misle.renderer.FloatingText.drawFloatingTexts;
 import static com.ded.misle.renderer.FontManager.*;
 import static com.ded.misle.renderer.ImageManager.mergeImages;
 import static com.ded.misle.world.boxes.Box.getTexture;
@@ -221,8 +220,6 @@ public class PlayingRenderer extends AbstractRenderer {
         drawHandItem(g2d, playerScreenX, playerScreenY, mouseHandler);
 
         drawUIElements(g2d);
-
-        drawFloatingTexts(g2d);
 
         if (gameState == GameState.INVENTORY) {
             renderInventoryMenu(g);
