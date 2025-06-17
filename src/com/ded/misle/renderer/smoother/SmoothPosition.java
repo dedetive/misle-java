@@ -16,7 +16,7 @@ public class SmoothPosition {
         y.setTarget(newY * originalTileSize);
     }
 
-    public void update(float speed, int tileSize) {
+    public void update(float speed) {
         x.update(speed);
         y.update(speed);
     }

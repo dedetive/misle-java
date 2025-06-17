@@ -375,7 +375,7 @@ public abstract class InventoryRenderer {
         int originX = mouseHandler.getMouseX() - slotSize[0] / 2;
         int originY = mouseHandler.getMouseY() - slotSize[0] / 2;
         smoothPos.setTarget(originX, originY);
-        smoothPos.update(75f, 1);
+        smoothPos.update(75f);
     }
 
     public static void drawDraggedItem(Graphics2D g2d) {

@@ -163,7 +163,7 @@ public class Planner {
      * This ensures visually smooth movement along the path during rendering.
      */
     public void updateSmoothPos() {
-        this.smoothPos.update(50f, originalTileSize);
+        this.smoothPos.update(50f);
     }
 
     /**
