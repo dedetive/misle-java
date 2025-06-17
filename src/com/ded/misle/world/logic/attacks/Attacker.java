@@ -51,7 +51,7 @@ public class Attacker {
 
                 if (isTargetEntity && canDamageThisBox) {
 
-                    ((Entity) box).takeDamage(damage, Entity.DamageFlag.of(Entity.DamageFlag.NORMAL), box.getDirection());
+                    ((Entity) box).takeDamage(damage, Entity.DamageFlag.of(Entity.DamageFlag.NORMAL), direction.getOpposite());
 
                 }
             }

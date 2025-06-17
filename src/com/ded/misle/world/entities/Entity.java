@@ -360,12 +360,13 @@ public class Entity extends Box {
      * @param dir Direction of knockback.
      */
     private void applyKnockback(Direction dir) {
-        switch (dir) {
-            case RIGHT -> moveBox(this, -1, 0);
-            case LEFT -> moveBox(this, 1, 0);
-            case DOWN -> moveBox(this, 0, 1);
-            case UP -> moveBox(this, 0, 1);
-        }
+        System.out.println(this.getClass().getSimpleName() + " hit from " + dir);
+//        switch (dir) {
+//            case RIGHT -> this.visualOffsetX -= 0.1;
+//            case LEFT -> this.visualOffsetX += 0.1;
+//            case DOWN -> this.visualOffsetY += 0.1;
+//            case UP -> this.visualOffsetY -= 0.1;
+//        }
     }
 
     /**

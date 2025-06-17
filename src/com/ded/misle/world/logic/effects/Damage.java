@@ -1,5 +1,6 @@
 package com.ded.misle.world.logic.effects;
 
+import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.logic.TurnTimer;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.entities.Entity;
@@ -43,12 +44,18 @@ public class Damage extends Effect {
         if (!(victim instanceof Entity)) return;
         if (!culprit.getInteractsWithPlayer() && victim == player) return;
 
-        handleBoxDamageCooldown((Entity) victim);
+        handleBoxDamageCooldown(culprit, (Entity) victim);
     }
 
-    private void handleBoxDamageCooldown(Entity victim) {
+    private void handleBoxDamageCooldown(Box culprit, Entity victim) {
+
+        Direction hitDirection = Direction.interpretDirection(
+            culprit.getX() - victim.getX(),
+            culprit.getY() - victim.getY()
+        );
+
         if (canDamage) {
-            victim.takeDamage(damage, flags, lockDuration, victim.getDirection());
+            victim.takeDamage(damage, flags, lockDuration, hitDirection);
 
             canDamage = false;
             t.restart();
