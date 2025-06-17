@@ -17,4 +17,14 @@ public enum Direction {
         if (y > 0) return DOWN;
         else return UP;
     }
+
+    public Direction getOpposite() {
+        return switch (this) {
+            case LEFT -> RIGHT;
+            case RIGHT -> LEFT;
+            case DOWN -> UP;
+            case UP -> DOWN;
+            default -> NONE;
+        };
+    }
 }
