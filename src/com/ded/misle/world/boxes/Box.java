@@ -1,9 +1,8 @@
 package com.ded.misle.world.boxes;
 
-import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.renderer.ImageManager;
-import com.ded.misle.renderer.SmoothPosition;
+import com.ded.misle.renderer.smoother.SmoothPosition;
 import com.ded.misle.world.logic.World;
 import com.ded.misle.world.logic.effects.Collectible;
 import com.ded.misle.world.logic.effects.Effect;

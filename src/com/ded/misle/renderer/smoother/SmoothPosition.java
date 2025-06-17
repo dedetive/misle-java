@@ -1,4 +1,4 @@
-package com.ded.misle.renderer;
+package com.ded.misle.renderer.smoother;
 
 import static com.ded.misle.game.GamePanel.deltaTime;
 

@@ -1,6 +1,6 @@
 package com.ded.misle.world.entities.player;
 
-import com.ded.misle.renderer.SmoothPosition;
+import com.ded.misle.renderer.smoother.SmoothPosition;
 import com.ded.misle.world.boxes.BoxManipulation;
 import com.ded.misle.world.logic.TurnManager;
 import com.ded.misle.world.logic.Path;
