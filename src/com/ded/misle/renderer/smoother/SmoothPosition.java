@@ -1,41 +1,31 @@
 package com.ded.misle.renderer.smoother;
 
-import static com.ded.misle.game.GamePanel.deltaTime;
+import static com.ded.misle.game.GamePanel.*;
 
 public class SmoothPosition {
-    private float renderX = -1;
-    private float renderY = -1;
-    private int x;
-    private int y;
+    private final SmoothValue x;
+    private final SmoothValue y;
 
     public SmoothPosition(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.x = new SmoothValue(x);
+        this.y = new SmoothValue(y);
     }
 
-    public void setTarget(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public void setTarget(int newX, int newY) {
+        x.setTarget(newX * originalTileSize);
+        y.setTarget(newY * originalTileSize);
     }
 
     public void update(float speed, int tileSize) {
-        float targetX = x * tileSize;
-        float targetY = y * tileSize;
-
-        if (renderX == -1) renderX = targetX;
-        else if (Math.abs(renderX - targetX) >= 0.1f)
-            renderX += (float) ((targetX - renderX) * deltaTime * speed);
-
-        if (renderY == -1) renderY = targetY;
-        else if (Math.abs(renderY - targetY) >= 0.1f)
-            renderY += (float) ((targetY - renderY) * deltaTime * speed);
+        x.update(speed);
+        y.update(speed);
     }
 
     public int getRenderX() {
-        return Math.round(renderX);
+        return x.getCurrentInt();
     }
 
     public int getRenderY() {
-        return Math.round(renderY);
+        return y.getCurrentInt();
     }
 }
