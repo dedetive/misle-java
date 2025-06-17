@@ -361,8 +361,8 @@ public class Entity extends Box {
      */
     private void applyKnockback(Direction dir) {
         switch (dir) {
-            case RIGHT -> moveBox(this, -30, 1);
-            case LEFT -> moveBox(this, 30, 1);
+            case RIGHT -> moveBox(this, -1, 0);
+            case LEFT -> moveBox(this, 1, 0);
             case DOWN -> moveBox(this, 0, 1);
             case UP -> moveBox(this, 0, 1);
         }

@@ -47,7 +47,7 @@ public class Player extends Entity {
 		this.setCollision(true);
 		this.setVisualScaleHorizontal(0.91);
 		this.setVisualScaleVertical(0.91);
-		this.setKnockbackDirection(Direction.NONE);
+		this.setDirection(Direction.NONE);
 		this.effect = null;
 
 		this.inv = new Inventory();

@@ -48,7 +48,7 @@ public class Damage extends Effect {
 
     private void handleBoxDamageCooldown(Entity victim) {
         if (canDamage) {
-            victim.takeDamage(damage, flags, lockDuration, victim.getKnockbackDirection());
+            victim.takeDamage(damage, flags, lockDuration, victim.getDirection());
 
             canDamage = false;
             t.restart();

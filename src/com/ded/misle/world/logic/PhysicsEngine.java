@@ -26,7 +26,7 @@ public class PhysicsEngine {
 				result = box != null && box != responsibleBox;
 
 				if (result && box.effect != null && box.effect.getTriggersOnContact()) {
-					handleEffect(box, responsibleBox, responsibleBox.getKnockbackDirection());
+					handleEffect(box, responsibleBox, responsibleBox.getDirection());
 				}
 
 				result = result && box.getHasCollision();
@@ -67,14 +67,14 @@ public class PhysicsEngine {
 			// Victim gets effect
 			if (victim instanceof Entity && culprit.effect != null) {
 				if (culprit.effect instanceof Damage) {
-					culprit.setKnockbackDirection(direction);
+					culprit.setDirection(direction);
 				}
 				culprit.effect.run(culprit, victim);
 			}
 			// Culprit gets effect
 			if (culprit instanceof Entity && victim.effect != null) {
 				if (victim.effect instanceof Damage) {
-					victim.setKnockbackDirection(direction.getOpposite());
+					victim.setDirection(direction.getOpposite());
 				}
 				victim.effect.run(victim, culprit);
 			}

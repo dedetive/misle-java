@@ -32,7 +32,7 @@ public class Box {
 	private int worldX;
 	private int worldY;
 	public int worldLayer;
-	private Direction knockbackDirection;
+	private Direction direction;
 
 	private Color color;
 	public String textureName;
@@ -84,7 +84,7 @@ public class Box {
 		this.effect = effect;
 		this.visualRotation = rotation;
 		this.objectType = objectType;
-		this.knockbackDirection = Direction.NONE;
+		this.direction = Direction.NONE;
 		this.interactsWithPlayer = interactsWithPlayer;
 	}
 
@@ -101,7 +101,7 @@ public class Box {
 		this.effect = null;
 		this.visualRotation = 0;
 		this.objectType = BOX;
-		this.knockbackDirection = Direction.NONE;
+		this.direction = Direction.NONE;
 		this.interactsWithPlayer = true;
 		addBoxToCache(this);
 	}
@@ -357,12 +357,12 @@ public class Box {
 
 	// EFFECT RELATED
 
-	public Direction getKnockbackDirection() {
-		return knockbackDirection;
+	public Direction getDirection() {
+		return direction;
 	}
 
-	public void setKnockbackDirection(Direction knockbackDirection) {
-		this.knockbackDirection = knockbackDirection;
+	public void setDirection(Direction direction) {
+		this.direction = direction;
 	}
 
 	public void spawnItem(boolean canGoMinus, boolean canGoPlus, int id, int count) {
