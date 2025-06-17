@@ -224,7 +224,7 @@ public class Box {
 	}
 
 	public void updateVisualPosition(float speed) {
-		smoothPos.setTarget(worldX, worldY);
+		smoothPos.setTarget(worldX, worldY, originalTileSize);
 		this.smoothPos.update(speed);
 	}
 

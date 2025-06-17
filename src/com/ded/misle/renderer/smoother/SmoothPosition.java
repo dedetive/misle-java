@@ -11,9 +11,13 @@ public class SmoothPosition {
         this.y = new SmoothValue(y);
     }
 
+    public void setTarget(int newX, int newY, int scale) {
+        x.setTarget(newX * scale);
+        y.setTarget(newY * scale);
+    }
+
     public void setTarget(int newX, int newY) {
-        x.setTarget(newX * originalTileSize);
-        y.setTarget(newY * originalTileSize);
+        setTarget(newX, newY, 1);
     }
 
     public void update(float speed) {

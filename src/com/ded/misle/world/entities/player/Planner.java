@@ -69,7 +69,7 @@ public class Planner {
         if (enemyPoint == null) {
             if (!path.contains(point)) {
                 path.addPoint(point);
-                smoothPos.setTarget(point.x, point.y);
+                smoothPos.setTarget(point.x, point.y, originalTileSize);
             } else if (getPoints()[getPoints().length - 2].equals(point)) {
                 undo();
             }
@@ -108,7 +108,7 @@ public class Planner {
             isPlanning = false;
             return;
         }
-        smoothPos.setTarget(path.getEnd().x, path.getEnd().y);
+        smoothPos.setTarget(path.getEnd().x, path.getEnd().y, originalTileSize);
     }
 
     /**
