@@ -360,6 +360,7 @@ public class Entity extends Box {
      * @param dir Direction of knockback.
      */
     private void applyKnockback(Direction dir) {
+        // TODO: Add bounce effect to visualOffset
         System.out.println(this.getClass().getSimpleName() + " hit from " + dir);
 //        switch (dir) {
 //            case RIGHT -> this.visualOffsetX -= 0.1;
