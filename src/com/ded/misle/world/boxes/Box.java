@@ -146,18 +146,6 @@ public class Box {
 		} catch (NullPointerException e) {
 			// This just means selectedBoxes is empty
 		}
-
-		if (this instanceof Entity) {
-			BufferedImage bar = ImageManager.cachedImages.get(ImageManager.ImageName.ENEMY_HEALTH_BAR);
-			BufferedImage compatible = new BufferedImage(bar.getWidth(), bar.getHeight(), BufferedImage.TYPE_INT_ARGB);
-			Graphics g = compatible.createGraphics();
-			g.drawImage(bar, 0, 0, null);
-			g.dispose();
-
-			bar = compatible;
-
- 			g2d.drawImage(bar, screenX, screenY - 4, null);
-		}
 	}
 
 	private void drawSolid(Graphics2D g2d, int screenX, int screenY) {

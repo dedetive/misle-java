@@ -3,7 +3,9 @@ package com.ded.misle.renderer;
 import com.ded.misle.core.LanguageManager;
 import com.ded.misle.net.NetClient;
 import com.ded.misle.world.data.Direction;
+import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.player.Planner;
+import com.ded.misle.world.entities.player.Player;
 import com.ded.misle.world.logic.World;
 import com.ded.misle.world.entities.npcs.NPC;
 import com.ded.misle.input.MouseHandler;
@@ -24,6 +26,7 @@ import static com.ded.misle.renderer.FontManager.*;
 import static com.ded.misle.renderer.ImageManager.mergeImages;
 import static com.ded.misle.world.boxes.Box.getTexture;
 import static com.ded.misle.world.boxes.Box.isInvalid;
+import static com.ded.misle.world.entities.Entity.getEntities;
 import static com.ded.misle.world.entities.npcs.NPC.getSelectedNPCs;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.DialogRenderer.renderDialog;
@@ -730,6 +733,7 @@ public class PlayingRenderer extends AbstractRenderer {
     }
 
     private static void drawUIElements(Graphics2D g2d) {
+        drawEntityHealthBars(g2d);
         drawHealthBar(g2d);
         drawEntropyBar(g2d);
         drawXPBar(g2d);
@@ -737,6 +741,27 @@ public class PlayingRenderer extends AbstractRenderer {
         drawCoins(g2d);
         drawInventoryBar(g2d);
         drawSelectedItemName(g2d);
+    }
+
+    private static void drawEntityHealthBars(Graphics2D g2d) {
+        Entity[] entities = getEntities().toArray(new Entity[0]);
+
+        for (Entity e : entities) {
+            if (e instanceof Player) continue;
+
+            BufferedImage bar = ImageManager.cachedImages.get(ImageManager.ImageName.ENEMY_HEALTH_BAR);
+            BufferedImage compatible = new BufferedImage(bar.getWidth(), bar.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            Graphics g = compatible.createGraphics();
+            g.drawImage(bar, 0, 0, null);
+            g.dispose();
+
+            bar = compatible;
+
+            int drawX = (int) (e.getRenderX());
+            int drawY = (int) (e.getRenderY() - originalTileSize * e.getVisualScaleVertical());
+
+            g2d.drawImage(bar, drawX, drawY, null);
+        }
     }
 }
 
