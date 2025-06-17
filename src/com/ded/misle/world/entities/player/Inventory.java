@@ -1,6 +1,5 @@
 package com.ded.misle.world.entities.player;
 
-import com.ded.misle.renderer.FloatingText;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.boxes.BoxHandling;
 import com.ded.misle.items.Item;
@@ -10,7 +9,6 @@ import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.logic.TurnTimer;
 
 import javax.swing.*;
-import java.text.DecimalFormat;
 
 import static com.ded.misle.audio.AudioFile.*;
 import static com.ded.misle.audio.AudioPlayer.playThis;
@@ -18,9 +16,6 @@ import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.world.boxes.BoxManipulation.*;
 import static com.ded.misle.world.entities.Entity.HealFlag.NORMAL;
 import static com.ded.misle.world.entities.player.PlayerAttributes.Stat.ALL;
-import static com.ded.misle.renderer.ColorManager.entropyGainColor;
-import static com.ded.misle.renderer.ColorManager.healColor;
-import static java.lang.System.currentTimeMillis;
 
 public class Inventory {
 	private final Item[][] inventory;

@@ -1,12 +1,8 @@
 package com.ded.misle.world.entities;
 
-import com.ded.misle.core.LanguageManager;
-import com.ded.misle.renderer.smoother.SmoothPosition;
 import com.ded.misle.renderer.smoother.SmoothValue;
 import com.ded.misle.world.logic.TurnTimer;
-import com.ded.misle.renderer.FloatingText;
 import com.ded.misle.items.DropTable;
-import com.ded.misle.renderer.FontManager;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.entities.enemies.Enemy;
 import com.ded.misle.world.entities.npcs.NPC;
@@ -20,12 +16,9 @@ import java.util.*;
 import java.util.List;
 
 import static com.ded.misle.game.GamePanel.*;
-import static com.ded.misle.renderer.FontManager.coinTextFont;
 import static com.ded.misle.world.logic.PhysicsEngine.ObjectType.ENTITY;
-import static com.ded.misle.renderer.FontManager.itemInfoFont;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
-import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.world.entities.Entity.HealFlag.ABSOLUTE;
 
 /**
