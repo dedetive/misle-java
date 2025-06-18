@@ -8,10 +8,8 @@ import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.entities.enemies.Enemy;
 import com.ded.misle.world.entities.npcs.NPC;
 import com.ded.misle.world.entities.player.Player;
-import com.ded.misle.world.entities.player.PlayerAttributes;
 
 import java.awt.*;
-import java.text.DecimalFormat;
 import java.time.Duration;
 import java.util.*;
 import java.util.List;
@@ -368,15 +366,6 @@ public class Entity extends Box {
 //            case DOWN -> this.visualOffsetY += 0.1;
 //            case UP -> this.visualOffsetY -= 0.1;
 //        }
-    }
-
-    /**
-     * Formats a double to string with two decimals.
-     * @param number Number to format.
-     * @return Formatted string.
-     */
-    private String format(double number) {
-        return new DecimalFormat("#.##").format(number);
     }
 
     /**
