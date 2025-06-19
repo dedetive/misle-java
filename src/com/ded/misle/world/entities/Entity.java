@@ -1,6 +1,7 @@
 package com.ded.misle.world.entities;
 
 import com.ded.misle.renderer.smoother.SmoothValue;
+import com.ded.misle.renderer.smoother.modifiers.BounceModifier;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.logic.TurnTimer;
 import com.ded.misle.items.DropTable;
@@ -357,13 +358,15 @@ public class Entity extends Box {
      * @param dir Direction of knockback.
      */
     private void applyKnockback(Direction dir) {
-        // TODO: Add bounce effect to visualOffset
-        System.out.println(this.getClass().getSimpleName() + " hit from " + dir);
+        float amplitude = 0.5f;
+        float duration = 0.3f;
+        float freq = 8f;
+
         switch (dir) {
-//            case RIGHT -> this.visualOffsetX -= 0.1;
-//            case LEFT -> this.visualOffsetX += 0.1;
-//            case DOWN -> this.visualOffsetY += 0.1;
-//            case UP -> this.visualOffsetY -= 0.1;
+            case RIGHT -> visualOffsetX.addModifier(new BounceModifier(amplitude, duration, freq));
+            case LEFT  -> visualOffsetX.addModifier(new BounceModifier(-amplitude, duration, freq));
+            case DOWN  -> visualOffsetY.addModifier(new BounceModifier(amplitude, duration, freq));
+            case UP    -> visualOffsetY.addModifier(new BounceModifier(-amplitude, duration, freq));
         }
     }
 
