@@ -17,7 +17,6 @@ import java.util.List;
 import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.world.logic.PhysicsEngine.ObjectType.ENTITY;
 import static com.ded.misle.world.boxes.BoxHandling.*;
-import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.world.entities.Entity.HealFlag.ABSOLUTE;
 
 /**
@@ -360,12 +359,12 @@ public class Entity extends Box {
     private void applyKnockback(Direction dir) {
         // TODO: Add bounce effect to visualOffset
         System.out.println(this.getClass().getSimpleName() + " hit from " + dir);
-//        switch (dir) {
+        switch (dir) {
 //            case RIGHT -> this.visualOffsetX -= 0.1;
 //            case LEFT -> this.visualOffsetX += 0.1;
 //            case DOWN -> this.visualOffsetY += 0.1;
 //            case UP -> this.visualOffsetY -= 0.1;
-//        }
+        }
     }
 
     /**

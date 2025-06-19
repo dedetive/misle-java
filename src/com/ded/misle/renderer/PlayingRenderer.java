@@ -81,8 +81,8 @@ public class PlayingRenderer extends AbstractRenderer {
 
         for (NetClient.Player netPlayer : player.getOnlinePlayerList()) {
             if (Objects.equals(player.getUUIDString(), netPlayer.uuid)) continue;
-            int netPlayerScreenX = (int) (netPlayer.x * originalTileSize + player.visualOffsetX * originalTileSize - player.pos.getCameraOffsetX());
-            int netPlayerScreenY = (int) (netPlayer.y * originalTileSize + player.visualOffsetY * originalTileSize - player.pos.getCameraOffsetY());
+            int netPlayerScreenX = (int) (netPlayer.x * originalTileSize + player.getVisualOffsetX() * originalTileSize - player.pos.getCameraOffsetX());
+            int netPlayerScreenY = (int) (netPlayer.y * originalTileSize + player.getVisualOffsetY() * originalTileSize - player.pos.getCameraOffsetY());
 
             FontMetrics fontMetrics = g2d.getFontMetrics();
             drawColoredText(g2d, removeColorIndicators(netPlayer.name),
@@ -162,8 +162,8 @@ public class PlayingRenderer extends AbstractRenderer {
 
         // Player position adjustments
         player.updateVisualPosition(50f);
-        int playerScreenX = (int) (player.getRenderX() + player.visualOffsetX * originalTileSize - player.pos.getCameraOffsetX());
-        int playerScreenY = (int) (player.getRenderY() + player.visualOffsetY * originalTileSize - player.pos.getCameraOffsetY());
+        int playerScreenX = (int) (player.getRenderX() + player.getVisualOffsetX() * originalTileSize - player.pos.getCameraOffsetX());
+        int playerScreenY = (int) (player.getRenderY() + player.getVisualOffsetY() * originalTileSize - player.pos.getCameraOffsetY());
 
         // Draw the player above every box
 //        g2d.setColor(player.getColor());
@@ -197,8 +197,8 @@ public class PlayingRenderer extends AbstractRenderer {
         if (planner.isPlanning()) {
             planner.updateSmoothPos();
 
-            int plannerScreenX = (int) (planner.getSmoothPos().x + player.visualOffsetX * originalTileSize - player.pos.getCameraOffsetX() + originalTileSize / 10);
-            int plannerScreenY = (int) (planner.getSmoothPos().y + player.visualOffsetY * originalTileSize - player.pos.getCameraOffsetY() + originalTileSize / 10);
+            int plannerScreenX = (int) (planner.getSmoothPos().x + player.getVisualOffsetX() * originalTileSize - player.pos.getCameraOffsetX() + originalTileSize / 10);
+            int plannerScreenY = (int) (planner.getSmoothPos().y + player.getVisualOffsetY() * originalTileSize - player.pos.getCameraOffsetY() + originalTileSize / 10);
 
             Composite originalComposite = g2d.getComposite();
             AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.35f);

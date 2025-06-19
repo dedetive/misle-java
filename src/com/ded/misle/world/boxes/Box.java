@@ -1,5 +1,6 @@
 package com.ded.misle.world.boxes;
 
+import com.ded.misle.renderer.smoother.SmoothValue;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.renderer.ImageManager;
@@ -46,8 +47,8 @@ public class Box {
 	private double visualRotation = 0;
 	private double visualScaleHorizontal;
 	private double visualScaleVertical;
-	public double visualOffsetX = 0;
-	public double visualOffsetY = 0;
+	protected SmoothValue visualOffsetX = new SmoothValue(0);
+	protected SmoothValue visualOffsetY = new SmoothValue(0);
 	private final SmoothPosition smoothPos = new SmoothPosition(worldX, worldY, originalTileSize);
 
     private static ArrayList<Box> selectedBoxes;
@@ -115,8 +116,8 @@ public class Box {
 		float renderY = smoothPos.getRenderY();
 
 		// Apply the camera offset to the current position
-		int screenX = (int) (renderX - cameraOffsetX - this.visualOffsetX * originalTileSize);
-		int screenY = (int) (renderY - cameraOffsetY - this.visualOffsetY * originalTileSize);
+		int screenX = (int) (renderX - cameraOffsetX - this.visualOffsetX.getCurrentFloat() * originalTileSize);
+		int screenY = (int) (renderY - cameraOffsetY - this.visualOffsetY.getCurrentFloat() * originalTileSize);
 		if (isInvalid(screenX, screenY)) return;
 
 		try {
@@ -288,6 +289,14 @@ public class Box {
 			world = player.pos.world;
 			world.setPos(this, x, y, layer, false);
 		}
+	}
+
+	public double getVisualOffsetX() {
+		return visualOffsetX.getCurrentFloat();
+	}
+
+	public double getVisualOffsetY() {
+		return visualOffsetY.getCurrentFloat();
 	}
 
 	public double getVisualScaleHorizontal() {
