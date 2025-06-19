@@ -1,10 +1,16 @@
 package com.ded.misle.renderer.smoother;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import static com.ded.misle.game.GamePanel.deltaTime;
 
 public class SmoothValue {
     private float current;
     private float target;
+
+    private final List<ValueModifier> modifiers = new ArrayList<>();
 
     public SmoothValue(float initial) {
         this.target = initial;
@@ -21,13 +27,28 @@ public class SmoothValue {
         } else if (Math.abs(current - target) >= 0.1f) {
             current += (float)((target - current) * deltaTime * speed);
         }
+
+        Iterator<ValueModifier> iter = modifiers.iterator();
+        while (iter.hasNext()) {
+            ValueModifier m = iter.next();
+            m.update((float) deltaTime);
+            if (m.isFinished()) iter.remove();
+        }
+    }
+
+    public void addModifier(ValueModifier modifier) {
+        this.modifiers.add(modifier);
     }
 
     public float getCurrentFloat() {
-        return current;
+        float sum = current;
+        for (ValueModifier mod : modifiers) {
+            sum += mod.getOffset();
+        }
+        return sum;
     }
 
     public int getCurrentInt() {
-        return Math.round(current);
+        return Math.round(getCurrentFloat());
     }
 }
