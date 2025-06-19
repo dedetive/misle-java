@@ -14,7 +14,8 @@ public class SmoothValue {
 
     public SmoothValue(float initial) {
         this.target = initial;
-        this.current = -1;
+        this.current = 0;
+        update(0);
     }
 
     public void setTarget(float target) {
@@ -22,7 +23,7 @@ public class SmoothValue {
     }
 
     public void update(float speed) {
-        if (current == -1) {
+        if (current == 0 && target != 0) {
             current = target;
         } else if (Math.abs(current - target) >= 0.1f) {
             current += (float)((target - current) * deltaTime * speed);
