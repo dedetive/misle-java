@@ -299,6 +299,11 @@ public class Box {
 		return visualOffsetY.getCurrentFloat();
 	}
 
+	public void updateVisualOffset(float speed) {
+		visualOffsetX.update(speed);
+		visualOffsetY.update(speed);
+	}
+
 	public double getVisualScaleHorizontal() {
 		return visualScaleHorizontal;
 	}
