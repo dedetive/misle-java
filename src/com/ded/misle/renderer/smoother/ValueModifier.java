@@ -7,4 +7,5 @@ public interface ValueModifier {
     void update(float deltaTime);
     float getOffset();
     boolean isFinished();
+    ValueModifier clone() throws CloneNotSupportedException;
 }
