@@ -1,6 +1,7 @@
 package com.ded.misle.renderer.smoother;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -39,6 +40,10 @@ public class SmoothValue {
 
     public void addModifier(ValueModifier modifier) {
         this.modifiers.add(modifier);
+    }
+
+    public void addModifiers(ValueModifier... modifiers) {
+        this.modifiers.addAll(Arrays.asList(modifiers));
     }
 
     public float getCurrentFloat() {
