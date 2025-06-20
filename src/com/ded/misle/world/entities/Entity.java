@@ -2,6 +2,7 @@ package com.ded.misle.world.entities;
 
 import com.ded.misle.renderer.smoother.SmoothValue;
 import com.ded.misle.renderer.smoother.modifiers.BounceModifier;
+import com.ded.misle.renderer.smoother.modifiers.ShakeModifier;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.logic.TurnTimer;
 import com.ded.misle.items.DropTable;
@@ -361,12 +362,41 @@ public class Entity extends Box {
         float amplitude = 0.5f;
         float duration = 0.3f;
         float freq = 8f;
+        ShakeModifier shaking = new ShakeModifier(0.04f, 0.08f);
 
-        switch (dir) {
-            case RIGHT -> visualOffsetX.addModifier(new BounceModifier(amplitude, duration, freq));
-            case LEFT  -> visualOffsetX.addModifier(new BounceModifier(-amplitude, duration, freq));
-            case DOWN  -> visualOffsetY.addModifier(new BounceModifier(amplitude, duration, freq));
-            case UP    -> visualOffsetY.addModifier(new BounceModifier(-amplitude, duration, freq));
+        try {
+            switch (dir) {
+                case RIGHT -> {
+                    visualOffsetX.addModifiers(
+                        new BounceModifier(amplitude, duration, freq),
+                        shaking.clone());
+
+                    visualOffsetY.addModifiers(shaking.clone());
+                }
+                case LEFT -> {
+                    visualOffsetX.addModifiers(
+                        new BounceModifier(-amplitude, duration, freq),
+                        shaking.clone());
+
+                    visualOffsetY.addModifiers(shaking.clone());
+                }
+                case DOWN -> {
+                    visualOffsetY.addModifiers(
+                        new BounceModifier(amplitude, duration, freq),
+                        shaking.clone());
+
+                    visualOffsetX.addModifiers(shaking.clone());
+                }
+                case UP -> {
+                    visualOffsetY.addModifiers(
+                        new BounceModifier(-amplitude, duration, freq),
+                        shaking.clone());
+
+                    visualOffsetX.addModifiers(shaking.clone());
+                }
+            }
+        } catch (CloneNotSupportedException ignored) {
+            ignored.printStackTrace();
         }
     }
 
