@@ -223,7 +223,7 @@ public class BoxHandling {
 					Box box = world.grid[i][j][k];
 					if (box != null && !Objects.equals(box.textureName, "invisible")) {
 
-						box.updateVisualOffset(10);
+						box.updateVisualOffset(10f);
 
 						nearbyBoxes.add(world.grid[i][j][k]);
 					}
