@@ -363,6 +363,7 @@ public class Entity extends Box {
         float duration = 0.3f;
         float freq = 8f;
         ShakeModifier shaking = new ShakeModifier(0.04f, 0.08f);
+        if (this instanceof Player) dir = dir.getOpposite();
 
         try {
             switch (dir) {
