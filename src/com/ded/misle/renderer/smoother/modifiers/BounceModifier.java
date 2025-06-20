@@ -25,11 +25,17 @@ public class BounceModifier implements ValueModifier {
 
         float progress = time / duration;
         float dampened = (float) (amplitude * Math.exp(-3 * progress));
+        dampened = 0;
         return (float) (dampened * Math.sin(frequency * Math.PI * time));
     }
 
     @Override
     public boolean isFinished() {
         return time >= duration;
+    }
+
+    @Override
+    public BounceModifier clone() throws CloneNotSupportedException {
+        return (BounceModifier) super.clone();
     }
 }
