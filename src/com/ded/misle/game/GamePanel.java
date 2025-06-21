@@ -318,11 +318,11 @@ public class GamePanel extends JPanel implements Runnable {
 						}
 					}
 					case LEVEL_DESIGNER -> {
-						player.pos.setCameraOffsetX(player.getX() - screenWidth / 2 + player.getVisualScaleHorizontal() / 2 * tileSize);
-						player.pos.setCameraOffsetY(player.getY() - screenHeight / 2 + player.getVisualScaleVertical() / 2 * tileSize);
+						player.pos.setCameraOffsetX((float) (player.getX() - screenWidth / 2 + player.getVisualScaleHorizontal() / 2 * tileSize));
+						player.pos.setCameraOffsetY((float) (player.getY() - screenHeight / 2 + player.getVisualScaleVertical() / 2 * tileSize));
 
-						player.pos.setCameraOffsetX(Math.max(0, Math.min(player.pos.getCameraOffsetX(), worldWidth - screenWidth)));
-						player.pos.setCameraOffsetY(Math.max(0, Math.min(player.pos.getCameraOffsetY(), worldHeight - screenHeight)));
+						player.pos.setCameraOffsetX((float) Math.max(0, Math.min(player.pos.getCameraOffsetX(), worldWidth - screenWidth)));
+						player.pos.setCameraOffsetY((float) Math.max(0, Math.min(player.pos.getCameraOffsetY(), worldHeight - screenHeight)));
 
 						keyH.updateKeys(mouseHandler);
 						mouseHandler.updateMouse();
@@ -379,11 +379,11 @@ public class GamePanel extends JPanel implements Runnable {
 
 		if (Math.abs(dx) > deadZoneWidth) {
 			cameraX += 1.5 * dx * alpha;
-			player.pos.setCameraOffsetX(cameraX);
+			player.pos.setCameraOffsetX((float) cameraX);
 		}
 		if (Math.abs(dy) > deadZoneHeight) {
 			cameraY += 1.5 * dy * alpha;
-			player.pos.setCameraOffsetY(cameraY);
+			player.pos.setCameraOffsetY((float) cameraY);
 		}
 	}
 

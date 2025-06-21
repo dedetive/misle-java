@@ -163,6 +163,7 @@ public class PlayingRenderer extends AbstractRenderer {
         // Player position adjustments
         player.updateVisualPosition(50f);
         player.updateVisualOffset(10f);
+        player.pos.updateCameraOffset(200f);
         int playerScreenX = (int) (player.getRenderX() + player.getVisualOffsetX() * originalTileSize - player.pos.getCameraOffsetX());
         int playerScreenY = (int) (player.getRenderY() + player.getVisualOffsetY() * originalTileSize - player.pos.getCameraOffsetY());
 

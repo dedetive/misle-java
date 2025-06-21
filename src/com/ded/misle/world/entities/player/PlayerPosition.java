@@ -1,5 +1,7 @@
 package com.ded.misle.world.entities.player;
 
+import com.ded.misle.renderer.smoother.SyncedValue;
+import com.ded.misle.renderer.smoother.modifiers.ShakeModifier;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.logic.RoomManager;
 import com.ded.misle.world.logic.World;
@@ -14,8 +16,8 @@ import static com.ded.misle.world.data.Direction.UP;
 
 public class PlayerPosition {
 
-    private double cameraOffsetX;
-    private double cameraOffsetY;
+    private SyncedValue cameraOffsetX;
+    private SyncedValue cameraOffsetY;
 	private int spawnpointRoom = 1;
 	private Region region = Region.VOID;
 	private int roomID;
@@ -33,6 +35,8 @@ public class PlayerPosition {
 	}
 
 	public PlayerPosition() {
+		this.cameraOffsetX = new SyncedValue(0);
+		this.cameraOffsetY = new SyncedValue(0);
 		setCameraOffsetX(0);
 		setCameraOffsetY(0);
 		setRegion(Region.CHAIN_OF_LIES);
@@ -41,20 +45,20 @@ public class PlayerPosition {
 		this.verticalDirection = UP;
 	}
 
-	public double getCameraOffsetX() {
-		return cameraOffsetX;
+	public float getCameraOffsetX() {
+		return cameraOffsetX.getVisual();
 	}
 
-	public void setCameraOffsetX(double cameraOffsetX) {
-		this.cameraOffsetX = cameraOffsetX;
+	public void setCameraOffsetX(float cameraOffsetX) {
+		this.cameraOffsetX.set(cameraOffsetX);
 	}
 
-	public double getCameraOffsetY() {
-		return cameraOffsetY;
+	public float getCameraOffsetY() {
+		return cameraOffsetY.getVisual();
 	}
 
-	public void setCameraOffsetY(double cameraOffsetY) {
-		this.cameraOffsetY = cameraOffsetY;
+	public void setCameraOffsetY(float cameraOffsetY) {
+		this.cameraOffsetY.set(cameraOffsetY);
 	}
 
 	public double calculateCameraOffsetX() {
@@ -76,6 +80,11 @@ public class PlayerPosition {
 		return Math.clamp(targetY * originalTileSize - (double) originalScreenHeight / 2,
 			(double) - originalTileSize / 2,
 			originalWorldHeight - originalScreenHeight + (double) originalTileSize / 2);
+	}
+
+	public void updateCameraOffset(float speed) {
+		this.cameraOffsetX.update(speed);
+		this.cameraOffsetY.update(speed);
 	}
 
 	public int getSpawnpoint() {
