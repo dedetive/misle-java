@@ -2,6 +2,7 @@ package com.ded.misle.world.entities.player;
 
 import com.ded.misle.renderer.smoother.SyncedValue;
 import com.ded.misle.renderer.smoother.ValueModifier;
+import com.ded.misle.renderer.smoother.modifiers.BounceModifier;
 import com.ded.misle.renderer.smoother.modifiers.ShakeModifier;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.logic.RoomManager;
@@ -65,6 +66,16 @@ public class PlayerPosition {
 	public void addCameraEffect(ValueModifier... modifier) {
 		this.cameraOffsetX.addModifier(modifier);
 		this.cameraOffsetY.addModifier(modifier);
+	}
+
+	public void shakeScreen(float intensity) {
+		addCameraEffect(
+			new ShakeModifier(
+				1.25f * intensity,
+				0.1f
+			),
+			new BounceModifier(3f * intensity, 0.5f, 8f)
+		);
 	}
 
 	public double calculateCameraOffsetX() {
