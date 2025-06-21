@@ -15,7 +15,7 @@ public class SyncedValue {
         this.visual.setTarget(value);
     }
 
-    public float get() {
+    public float getReal() {
         return real;
     }
 
