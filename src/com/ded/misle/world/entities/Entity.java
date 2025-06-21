@@ -366,6 +366,14 @@ public class Entity extends Box {
         if (this instanceof Player) dir = dir.getOpposite();
 
         try {
+            player.pos.addCameraEffect(
+                new ShakeModifier(
+                    1.25f,
+                    0.1f
+                ),
+                new BounceModifier(3f, 0.5f, freq)
+            );
+
             switch (dir) {
                 case RIGHT -> {
                     visualOffsetX.addModifiers(
