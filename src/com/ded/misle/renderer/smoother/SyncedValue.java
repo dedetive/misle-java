@@ -26,4 +26,8 @@ public class SyncedValue {
     public int getVisualInt() {
         return visual.getCurrentInt();
     }
+
+    public void update(float speed) {
+        visual.update(speed);
+    }
 }
