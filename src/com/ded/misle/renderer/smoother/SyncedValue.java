@@ -9,4 +9,21 @@ public class SyncedValue {
         this.real = initial;
         this.visual = new SmoothValue(initial);
     }
+
+    public void set(float value) {
+        this.real = value;
+        this.visual.setTarget(value);
+    }
+
+    public float get() {
+        return real;
+    }
+
+    public float getVisual() {
+        return visual.getCurrentFloat();
+    }
+
+    public int getVisualInt() {
+        return visual.getCurrentInt();
+    }
 }
