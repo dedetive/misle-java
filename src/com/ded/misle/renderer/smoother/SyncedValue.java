@@ -38,4 +38,8 @@ public class SyncedValue {
     public void addModifier(ValueModifier... mod) {
         visual.addModifiers(mod);
     }
+
+    public void invalidateVisual() {
+        visual.setTarget(real);
+    }
 }
