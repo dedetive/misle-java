@@ -30,4 +30,12 @@ public class SyncedValue {
     public void update(float speed) {
         visual.update(speed);
     }
+
+    public void addModifier(ValueModifier mod) {
+        visual.addModifier(mod);
+    }
+
+    public void addModifier(ValueModifier... mod) {
+        visual.addModifiers(mod);
+    }
 }
