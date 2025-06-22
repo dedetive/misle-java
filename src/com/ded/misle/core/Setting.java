@@ -4,21 +4,34 @@ import static com.ded.misle.core.LanguageManager.Language;
 
 public enum Setting {
 
-    screenSize("medium"),
-    isFullscreen(true),
-    fullscreenMode("windowed"),
-    displayFPS(true),
-    antiAliasing(true),
-    frameRateCap(60),
-    languageCode(Language.en_US);
+    screenSize("medium",
+        new String[]{"small", "medium", "big", "huge"}),
+
+    isFullscreen(true,
+        new Boolean[]{true, false}),
+
+    fullscreenMode("windowed",
+        new String[]{"windowed", "exclusive"}),
+
+    displayFPS(true,
+        new Boolean[]{true, false}),
+
+    antiAliasing(true,
+        new Boolean[]{true, false}),
+
+    frameRateCap(60,
+        new Integer[]{30, 60, 90, 120, 160}),
+
+    languageCode(Language.en_US,
+        Language.values());
 
     public final Object defaultValue;
-
     private Object value;
+    private final Object[] cycleOptions;
 
-    Setting(Object defaultValue) {
+    Setting(Object defaultValue, Object[] cycleOptions) {
         this.defaultValue = defaultValue;
-        this.value = null;
+        this.cycleOptions = cycleOptions;
     }
 
     // Getters
@@ -55,4 +68,21 @@ public enum Setting {
 
     //    levelDesigner = Boolean.parseBoolean(getSetting("levelDesigner"));
     //    displayMoreInfo = getSetting("displayMoreInfo");
+
+    public void cycle() {
+        if (cycleOptions == null || cycleOptions.length == 0)
+            return;
+
+        Object current = get();
+        for (int i = 0; i < cycleOptions.length; i++) {
+            if (cycleOptions[i].equals(current)) {
+                int nextIndex = (i + 1) % cycleOptions.length;
+                set(cycleOptions[nextIndex]);
+                return;
+            }
+        }
+
+        // fallback if not found
+        set(cycleOptions[0]);
+    }
 }
