@@ -203,7 +203,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		// Handle fullscreen logic
 		if (isFullscreen.bool()) {
-			if (fullscreenMode.value.equals("windowed")) {
+			if (fullscreenMode.str().equals("windowed")) {
 				// Set window to borderless and maximize
 				window.dispose();
 				window.setUndecorated(true);
@@ -214,7 +214,7 @@ public class GamePanel extends JPanel implements Runnable {
 				gameScale = getWindowScale();
 				GamePanel.screenWidth = window.getWidth();
 				GamePanel.screenHeight = window.getHeight();
-			} else if (fullscreenMode.value.equals("exclusive")) {
+			} else if (fullscreenMode.str().equals("exclusive")) {
 				// Switch to exclusive fullscreen mode
 				GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 				if (device.isFullScreenSupported()) {

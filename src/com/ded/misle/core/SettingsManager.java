@@ -63,18 +63,18 @@ public class SettingsManager {
 		}
 	}
 
-	public static void updateSetting(Setting<?> setting) {
+	public static void updateSetting(Setting setting) {
 		Path file = com.ded.misle.core.Path.getPath(com.ded.misle.core.Path.PathTag.CONFIG);
 		String result = "";
 
 		try (BufferedReader reader = Files.newBufferedReader(file)) {
 			String line;
 			while ((line = reader.readLine()) != null) {
-				if (line.contains(setting.name)) {
+				if (line.contains(setting.name())) {
 					try {
 						result = line.split("= ")[1];
 					} catch (ArrayIndexOutOfBoundsException e) {
-						System.out.println("Setting " + setting.name + " not found in settings.config file.");
+						System.out.println("Setting " + setting.name() + " not found in settings.config file.");
 					}
 				}
 			}
@@ -87,9 +87,9 @@ public class SettingsManager {
 		}
 
 		try {
-			setting.value = result;
+			setting.set(result);
 		} catch (ClassCastException e) {
-			setting.value = setting.defaultValue;
+			setting.set(setting.defaultValue);
 		}
 	}
 
@@ -157,8 +157,9 @@ public class SettingsManager {
 	// General
 	public static void cycleLanguage() {
 		String[] languageCodes = new String[]{"de_DE", "el_GR", "en_US", "es_ES", "pt_BR", "ru_RU", "zh_CN"};
-		languageCode.value =
-			LanguageManager.Language.valueOf(cycleThroughSetting(languageCodes, languageCode.str()));
+		languageCode.set(
+			LanguageManager.Language.valueOf(cycleThroughSetting(languageCodes, languageCode.str()))
+		);
 
 		changeSetting("language", languageCode.str());
 		languageManager = new LanguageManager(languageCode.str());
@@ -168,39 +169,39 @@ public class SettingsManager {
 	// Graphics
 	public static void cycleScreenSize() {
 		String[] screenSizes = new String[]{"small", "medium", "big", "huge"};
-		screenSize.value = cycleThroughSetting(screenSizes, screenSize.str());
+		screenSize.set(cycleThroughSetting(screenSizes, screenSize.str()));
 
 		changeSetting("screenSize", screenSize.str());
 		forceResize(screenSize.str());
 	}
 
 	public static void cycleIsFullscreen() {
-		isFullscreen.value = cycleBoolean("isFullscreen", isFullscreen.bool());
+		isFullscreen.set(cycleBoolean("isFullscreen", isFullscreen.bool()));
 		forceResize(screenSize.str());
 	}
 
 	public static void cycleFullscreenMode() {
 		String[] modes = new String[]{"windowed", "exclusive"};
-		fullscreenMode.value = cycleThroughSetting(modes, fullscreenMode.str());
+		fullscreenMode.set(cycleThroughSetting(modes, fullscreenMode.str()));
 
 		changeSetting("fullscreenMode", fullscreenMode.str());
 		forceResize(screenSize.str());
 	}
 
 	public static void cycleDisplayFPS() {
-		displayFPS.value = cycleBoolean("displayFPS", displayFPS.bool());
+		displayFPS.set(cycleBoolean("displayFPS", displayFPS.bool()));
 	}
 
 	public static void cycleFrameRateCap() {
 		String[] modes = new String[]{"30", "60", "90", "120", "160"};
-		frameRateCap.value = Integer.parseInt(cycleThroughSetting(modes, frameRateCap.str()));
+		frameRateCap.set(Integer.parseInt(cycleThroughSetting(modes, frameRateCap.str())));
 
 		changeSetting("frameRateCap", frameRateCap.str());
 		nsPerFrame = 1000000000.0 / Math.clamp(frameRateCap.integer(), 30, 144);
 	}
 
 	public static void cycleAntiAliasing() {
-		antiAliasing.value = cycleBoolean("antiAliasing", antiAliasing.bool());
+		antiAliasing.set(cycleBoolean("antiAliasing", antiAliasing.bool()));
 	}
 
 	// Gameplay
