@@ -40,6 +40,10 @@ public class LanguageManager {
 
 	private static Script currentScript;
 
+	public LanguageManager() {
+		this(Setting.languageCode.str());
+	}
+
 	public LanguageManager(String languageCode) {
 		try {
 			for (Language language : Language.values()) {
