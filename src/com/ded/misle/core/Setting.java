@@ -1,37 +1,60 @@
 package com.ded.misle.core;
 
+import java.util.Arrays;
+
+import static com.ded.misle.Launcher.languageManager;
 import static com.ded.misle.core.LanguageManager.Language;
+import static com.ded.misle.renderer.FontManager.updateFontScript;
 
 public enum Setting {
 
     screenSize("medium",
-        new String[]{"small", "medium", "big", "huge"}),
+        new String[]{"small", "medium", "big", "huge"}
+    ),
 
     isFullscreen(true,
-        new Boolean[]{true, false}),
+        new Boolean[]{true, false}
+    ),
 
     fullscreenMode("windowed",
-        new String[]{"windowed", "exclusive"}),
+        new String[]{"windowed", "exclusive"}
+    ),
 
     displayFPS(true,
-        new Boolean[]{true, false}),
+        new Boolean[]{true, false}
+    ),
 
     antiAliasing(true,
-        new Boolean[]{true, false}),
+        new Boolean[]{true, false}
+    ),
 
     frameRateCap(60,
-        new Integer[]{30, 60, 90, 120, 160}),
+        new Integer[]{30, 60, 90, 120, 160}
+    ),
 
     languageCode(Language.en_US,
-        Language.values());
+        Arrays.stream(Language.values()).filter(e -> e != Language.mi_PM).toArray(Language[]::new),
+        () -> {
+            languageManager = new LanguageManager();
+            updateFontScript();
+        }
+    )
+
+    ;
 
     public final Object defaultValue;
     private Object value;
     private final Object[] cycleOptions;
+    private final Runnable onCycle;
 
     Setting(Object defaultValue, Object[] cycleOptions) {
+        this(defaultValue, cycleOptions, null);
+    }
+
+    Setting(Object defaultValue, Object[] cycleOptions, Runnable onCycle) {
         this.defaultValue = defaultValue;
         this.cycleOptions = cycleOptions;
+        this.onCycle = onCycle;
     }
 
     // Getters
@@ -78,11 +101,14 @@ public enum Setting {
             if (cycleOptions[i].equals(current)) {
                 int nextIndex = (i + 1) % cycleOptions.length;
                 set(cycleOptions[nextIndex]);
+                SettingsManager.changeSetting(this.name(), this.str());
+                if (onCycle != null) onCycle.run();
                 return;
             }
         }
 
         // fallback if not found
         set(cycleOptions[0]);
+        if (onCycle != null) onCycle.run();
     }
 }

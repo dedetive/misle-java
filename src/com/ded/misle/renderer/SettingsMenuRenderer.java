@@ -185,7 +185,7 @@ public abstract class SettingsMenuRenderer {
         // language
         int[] pos = TOP_LEFT.pos;
         createSetting("settings_general_language", String.valueOf(languageCode.str()),
-            pos[0], pos[1], SettingsManager::cycleLanguage, panel, MenuButtonID.SETTING_LANGUAGE);
+            pos[0], pos[1], languageCode::cycle, panel, MenuButtonID.SETTING_LANGUAGE);
     }
 
     public static void renderGraphicsMenu(JPanel panel) {
