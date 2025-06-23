@@ -1,6 +1,7 @@
 package com.ded.misle.core;
 
 import java.util.Arrays;
+import java.util.function.Consumer;
 
 import static com.ded.misle.Launcher.languageManager;
 import static com.ded.misle.core.LanguageManager.Language;
@@ -33,31 +34,29 @@ public enum Setting {
     ),
 
     languageCode(Language.en_US,
-        Arrays.stream(Language.values()).filter(e -> e != Language.mi_PM).toArray(Language[]::new),
-        () -> {
-            languageManager = new LanguageManager();
+        Arrays.stream(Language.values())
+            .filter(e -> e != Language.mi_PM)
+            .toArray(Language[]::new),
+        (val) -> {
+            languageManager = new LanguageManager(val.toString());
             updateFontScript();
         }
-    )
-
-    ;
+    );
 
     public final Object defaultValue;
     private Object value;
     private final Object[] cycleOptions;
-    private final Runnable onCycle;
+    private final Consumer<Object> onCycle;
 
     Setting(Object defaultValue, Object[] cycleOptions) {
         this(defaultValue, cycleOptions, null);
     }
 
-    Setting(Object defaultValue, Object[] cycleOptions, Runnable onCycle) {
+    Setting(Object defaultValue, Object[] cycleOptions, Consumer<Object> onCycle) {
         this.defaultValue = defaultValue;
         this.cycleOptions = cycleOptions;
         this.onCycle = onCycle;
     }
-
-    // Getters
 
     public Object get() {
         return value != null ? value : defaultValue;
@@ -89,9 +88,6 @@ public enum Setting {
         return clazz.isInstance(val) ? (T) val : null;
     }
 
-    //    levelDesigner = Boolean.parseBoolean(getSetting("levelDesigner"));
-    //    displayMoreInfo = getSetting("displayMoreInfo");
-
     public void cycle() {
         if (cycleOptions == null || cycleOptions.length == 0)
             return;
@@ -99,16 +95,16 @@ public enum Setting {
         Object current = get();
         for (int i = 0; i < cycleOptions.length; i++) {
             if (cycleOptions[i].equals(current)) {
-                int nextIndex = (i + 1) % cycleOptions.length;
-                set(cycleOptions[nextIndex]);
+                Object nextValue = cycleOptions[(i + 1) % cycleOptions.length];
+                set(nextValue);
                 SettingsManager.changeSetting(this.name(), this.str());
-                if (onCycle != null) onCycle.run();
+                if (onCycle != null) onCycle.accept(nextValue);
                 return;
             }
         }
 
-        // fallback if not found
-        set(cycleOptions[0]);
-        if (onCycle != null) onCycle.run();
+        Object fallback = cycleOptions[0];
+        set(fallback);
+        if (onCycle != null) onCycle.accept(fallback);
     }
 }
