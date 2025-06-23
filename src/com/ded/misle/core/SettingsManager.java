@@ -154,18 +154,6 @@ public class SettingsManager {
 		return defaultSetting;
 	}
 
-	// General
-	public static void cycleLanguage() {
-		String[] languageCodes = new String[]{"de_DE", "el_GR", "en_US", "es_ES", "pt_BR", "ru_RU", "zh_CN"};
-		languageCode.set(
-			LanguageManager.Language.valueOf(cycleThroughSetting(languageCodes, languageCode.str()))
-		);
-
-		changeSetting("language", languageCode.str());
-		languageManager = new LanguageManager(languageCode.str());
-		updateFontScript();
-	}
-
 	// Graphics
 	public static void cycleScreenSize() {
 		String[] screenSizes = new String[]{"small", "medium", "big", "huge"};
