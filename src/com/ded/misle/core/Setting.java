@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 
 import static com.ded.misle.Launcher.languageManager;
 import static com.ded.misle.core.LanguageManager.Language;
+import static com.ded.misle.game.GamePanel.nsPerFrame;
 import static com.ded.misle.renderer.FontManager.updateFontScript;
 
 public enum Setting {
@@ -30,7 +31,8 @@ public enum Setting {
     ),
 
     frameRateCap(60,
-        new Integer[]{30, 60, 90, 120, 160}
+        new Integer[]{30, 60, 90, 120, 160},
+        (val) -> nsPerFrame = 1000000000.0 / Math.clamp((int) val, 30, 144)
     ),
 
     languageCode(Language.en_US,

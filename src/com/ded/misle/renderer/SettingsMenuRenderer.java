@@ -202,7 +202,7 @@ public abstract class SettingsMenuRenderer {
         // frameRateCap
         pos = MID_LEFT.pos;
         createSetting("settings_graphics_frameRateCap", frameRateCap.str(),
-            pos[0], pos[1], SettingsManager::cycleFrameRateCap, panel, MenuButtonID.SETTING_FRAME_RATE_CAP);
+            pos[0], pos[1], frameRateCap::cycle, panel, MenuButtonID.SETTING_FRAME_RATE_CAP);
 
         // displayFPS
         pos = MID_RIGHT.pos;
