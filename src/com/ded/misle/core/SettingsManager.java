@@ -192,14 +192,6 @@ public class SettingsManager {
 		displayFPS.set(cycleBoolean("displayFPS", displayFPS.bool()));
 	}
 
-	public static void cycleFrameRateCap() {
-		String[] modes = new String[]{"30", "60", "90", "120", "160"};
-		frameRateCap.set(Integer.parseInt(cycleThroughSetting(modes, frameRateCap.str())));
-
-		changeSetting("frameRateCap", frameRateCap.str());
-		nsPerFrame = 1000000000.0 / Math.clamp(frameRateCap.integer(), 30, 144);
-	}
-
 	public static void cycleAntiAliasing() {
 		antiAliasing.set(cycleBoolean("antiAliasing", antiAliasing.bool()));
 	}
