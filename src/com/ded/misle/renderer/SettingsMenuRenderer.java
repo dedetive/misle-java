@@ -188,7 +188,7 @@ public abstract class SettingsMenuRenderer {
             pos[0], pos[1], languageCode::cycle, panel, MenuButtonID.SETTING_LANGUAGE);
 
         pos = TOP_RIGHT.pos;
-        createSetting("settings_general_screen_shake", String.valueOf(screenShake.str()),
+        createSetting("settings_general_screenShake", String.valueOf(screenShake.str()),
             pos[0], pos[1], screenShake::cycle, panel, MenuButtonID.SETTING_SCREEN_SHAKE);
     }
 
