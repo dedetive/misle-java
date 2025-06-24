@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static com.ded.misle.core.Setting.screenShake;
 import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.world.data.Direction.RIGHT;
 import static com.ded.misle.world.data.Direction.UP;
@@ -69,6 +70,8 @@ public class PlayerPosition {
 	}
 
 	public void shakeScreen(float intensity) {
+		if (!screenShake.bool()) return;
+
 		addCameraEffect(
 			new ShakeModifier(
 				1.25f * intensity,
