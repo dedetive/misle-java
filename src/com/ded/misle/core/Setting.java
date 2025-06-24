@@ -8,6 +8,13 @@ import static com.ded.misle.core.LanguageManager.Language;
 import static com.ded.misle.game.GamePanel.nsPerFrame;
 import static com.ded.misle.renderer.FontManager.updateFontScript;
 
+/*
+    TODO:
+        - Add missing onCycles values
+        - Remove SettingManager setting-specific cycles methods
+        - Update SettingsMenuRenderer to use setting::cycle
+        instead of calling SettingsManager setting-specific cycle method
+*/
 public enum Setting {
 
     screenSize("medium",
