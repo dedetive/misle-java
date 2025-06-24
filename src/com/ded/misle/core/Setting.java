@@ -50,7 +50,14 @@ public enum Setting {
             languageManager = new LanguageManager(val.toString());
             updateFontScript();
         }
-    );
+    ),
+
+    screenShake(
+        true,
+        new Boolean[]{true, false}
+    )
+
+    ;
 
     public final Object defaultValue;
     private Object value;
