@@ -18,9 +18,10 @@ public class LanguageManager {
 	}
 
 	public enum Language {
-		en_US(LATIN),
 		es_ES(LATIN),
+		en_US(LATIN),
 		pt_BR(LATIN),
+		pt_BR2(LATIN),
 		de_DE(LATIN),
 		ru_RU(CYRILLIC),
 		el_GR(GREEK),
