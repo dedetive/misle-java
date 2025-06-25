@@ -8,7 +8,7 @@ public class WaitBehavior extends AbstractBehavior {
 
     public WaitBehavior(int turns) {
         this.setInterruptible(false);
-        this.priority = Integer.MIN_VALUE;
+        this.priority = 0;
 
         this.remainingTurns = turns;
 

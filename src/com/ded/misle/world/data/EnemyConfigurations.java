@@ -70,7 +70,6 @@ public enum EnemyConfigurations {
         goingUp.setCondition(hasUnderThirdHP);
 
         AIBehavior wait = new WaitBehavior(3);
-        wait.setPriority(Integer.MAX_VALUE);
 
         // this is all temporary don't worry
         enemy.setBehaviors(
