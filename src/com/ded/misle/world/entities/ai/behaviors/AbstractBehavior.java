@@ -58,6 +58,9 @@ public abstract class AbstractBehavior implements AIBehavior {
     @Override
     public void onSwitchIn(BehaviorContext context) {}
 
+    @Override
+    public void onSwitchOut(BehaviorContext context) {}
+
     /**
      * Checks whether this behavior should be selected based on the given context.
      * <p>
