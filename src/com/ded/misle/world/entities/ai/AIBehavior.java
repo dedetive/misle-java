@@ -17,6 +17,15 @@ public interface AIBehavior extends BehaviorCondition {
      */
     void tryExecute(BehaviorContext context);
 
+    /**
+     * Called when this behavior becomes the active behavior,
+     * typically after being selected from a set of possible behaviors.
+     * <p>
+     * This method allows behaviors to perform any setup or transition logic
+     * when they are activated.
+     *
+     * @param context the current behavior context
+     */
     void onSwitch(BehaviorContext context);
 
     /**
