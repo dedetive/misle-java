@@ -35,6 +35,17 @@ public abstract class AbstractBehavior implements AIBehavior {
         }
     }
 
+    /**
+     * Called when the behavior becomes the active behavior.
+     * <p>
+     * This method can be used to trigger setup logic, animation changes,
+     * or other effects when switching to this behavior.
+     * <p>
+     * By default, it is empty.
+     *
+     * @param context the current behavior context
+     */
+    @Override
     public void onSwitch(BehaviorContext context) {}
 
     /**
