@@ -13,6 +13,8 @@ import com.ded.misle.world.logic.Path;
 import java.awt.*;
 import java.util.function.Function;
 
+import static com.ded.misle.game.GamePanel.player;
+
 /**
  * Centralized definitions of enemy setup configurations.
  * Each constant provides a lambda that customizes stats, visuals,
@@ -70,6 +72,8 @@ public enum EnemyConfigurations {
         goingUp.setCondition(hasUnderThirdHP);
 
         AIBehavior wait = new WaitBehavior(3);
+
+        enemy.getController().setTarget(player);
 
         // this is all temporary don't worry
         enemy.setBehaviors(
