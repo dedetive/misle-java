@@ -28,6 +28,14 @@ public interface AIBehavior extends BehaviorCondition {
      */
     void onSwitchIn(BehaviorContext context);
 
+    /**
+     * Called when this behavior is no longer the active behavior.
+     * <p>
+     * This method allows behaviors to perform any cleanup, animation resets,
+     * or other teardown logic when being deactivated.
+     *
+     * @param context the current behavior context
+     */
     void onSwitchOut(BehaviorContext context);
 
     /**
