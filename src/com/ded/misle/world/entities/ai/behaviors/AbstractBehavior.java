@@ -58,6 +58,16 @@ public abstract class AbstractBehavior implements AIBehavior {
     @Override
     public void onSwitchIn(BehaviorContext context) {}
 
+    /**
+     * Called when the behavior is no longer the active behavior.
+     * <p>
+     * This method can be used to clean up resources, reset states,
+     * or trigger exit animations when switching away from this behavior.
+     * <p>
+     * By default, it is empty.
+     *
+     * @param context the current behavior context
+     */
     @Override
     public void onSwitchOut(BehaviorContext context) {}
 
