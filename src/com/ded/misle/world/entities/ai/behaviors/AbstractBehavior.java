@@ -35,6 +35,8 @@ public abstract class AbstractBehavior implements AIBehavior {
         }
     }
 
+    public void onSwitch(BehaviorContext context) {}
+
     /**
      * Checks whether this behavior should be selected based on the given context.
      * <p>
