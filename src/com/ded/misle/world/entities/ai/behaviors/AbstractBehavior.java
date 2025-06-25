@@ -38,6 +38,8 @@ public abstract class AbstractBehavior implements AIBehavior {
      * @param targetPoint the target position to check for entity contact
      */
     protected void triggerEffectOnContact(BehaviorContext context, Point targetPoint) {
+        if (context.target() == null) return;
+
         if (context.target().getPos().equals(targetPoint)) {
             context.self().effect.run(context.self(), context.target());
         }
