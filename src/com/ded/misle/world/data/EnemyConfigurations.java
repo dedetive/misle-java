@@ -4,6 +4,7 @@ import com.ded.misle.items.DropTable;
 import com.ded.misle.world.entities.ai.AIBehavior;
 import com.ded.misle.world.entities.ai.BehaviorContext;
 import com.ded.misle.world.entities.ai.behaviors.PatrolBehavior;
+import com.ded.misle.world.entities.ai.behaviors.WaitBehavior;
 import com.ded.misle.world.entities.ai.behaviors.WanderBehavior;
 import com.ded.misle.world.entities.enemies.EnemyConfigurator;
 import com.ded.misle.world.entities.enemies.EnemyType;
@@ -68,11 +69,15 @@ public enum EnemyConfigurations {
         AIBehavior goingUp = new WanderBehavior(new Path(upwardsPoints));
         goingUp.setCondition(hasUnderThirdHP);
 
+        AIBehavior wait = new WaitBehavior(3);
+        wait.setPriority(Integer.MAX_VALUE);
+
         // this is all temporary don't worry
         enemy.setBehaviors(
             freelyWalkingAround,
             limitedWalkingAround,
-            goingUp
+            goingUp,
+            wait
         );
     });
 
