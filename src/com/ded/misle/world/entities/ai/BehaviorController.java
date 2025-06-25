@@ -60,7 +60,7 @@ public class BehaviorController implements Runnable {
 
         if (bestBehavior != null) {
             boolean isSwitching = bestBehavior != currentBehavior;
-            if (isSwitching) bestBehavior.onSwitch(context);
+            if (isSwitching) bestBehavior.onSwitchIn(context);
 
             bestBehavior.tryExecute(context);
             currentBehavior = bestBehavior;

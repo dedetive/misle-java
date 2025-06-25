@@ -26,7 +26,7 @@ public interface AIBehavior extends BehaviorCondition {
      *
      * @param context the current behavior context
      */
-    void onSwitch(BehaviorContext context);
+    void onSwitchIn(BehaviorContext context);
 
     /**
      * Returns whether the behavior can be interrupted by other higher-priority behaviors.
