@@ -24,7 +24,7 @@ public class WaitBehavior extends AbstractBehavior {
     }
 
     @Override
-    public void onSwitchIn(BehaviorContext context) {
+    public void onSwitchOut(BehaviorContext context) {
         this.remainingTurns = START_TURNS;
     }
 
