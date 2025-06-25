@@ -37,4 +37,17 @@ public class WaitBehavior extends AbstractBehavior {
     public BehaviorType getType() {
         return BehaviorType.WAIT;
     }
+
+    /**
+     * Prints a string representation of this WaitBehavior.
+     *
+     * @return a string representation with details about its state
+     */
+    @Override
+    public String toString() {
+        return super.toString().replace("}", "") + ", " +
+            "startTurns=" + START_TURNS +
+            ", remainingTurns=" + remainingTurns +
+            '}';
+    }
 }
