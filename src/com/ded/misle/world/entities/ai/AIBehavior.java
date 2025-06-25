@@ -17,6 +17,8 @@ public interface AIBehavior extends BehaviorCondition {
      */
     void tryExecute(BehaviorContext context);
 
+    void onSwitch(BehaviorContext context);
+
     /**
      * Returns whether the behavior can be interrupted by other higher-priority behaviors.
      *
