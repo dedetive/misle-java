@@ -30,16 +30,16 @@ public abstract class AbstractBehavior implements AIBehavior {
     private Function<BehaviorContext, Boolean> condition = ctx -> true;
 
     /**
-     * Triggers the effect of the entity on the player if the target position matches the player's position.
+     * Triggers the effect of the entity on the target entity if the target position matches the targeted position.
      * <p>
-     * This utility method is useful for behaviors that cause interactions when the AI reaches or collides with the player.
+     * This utility method is useful for behaviors that cause interactions when the AI reaches or collides with the entity.
      *
      * @param context the behavior context containing entity and world information
-     * @param target the target position to check for player contact
+     * @param targetPoint the target position to check for entity contact
      */
-    protected void triggerEffectOnPlayerContact(BehaviorContext context, Point target) {
-        if (player.getPos().equals(target)) {
-            context.self().effect.run(context.self(), player);
+    protected void triggerEffectOnContact(BehaviorContext context, Point targetPoint) {
+        if (context.target().getPos().equals(targetPoint)) {
+            context.self().effect.run(context.self(), context.target());
         }
     }
 

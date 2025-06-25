@@ -204,7 +204,7 @@ public class WanderBehavior extends AbstractBehavior {
         Entity self = context.self();
 
         if (PhysicsEngine.isSpaceOccupied(target.x, target.y)) {
-            triggerEffectOnPlayerContact(context, target);
+            triggerEffectOnContact(context, target);
         } else {
             BoxManipulation.moveToward(self, target, false);
         }
