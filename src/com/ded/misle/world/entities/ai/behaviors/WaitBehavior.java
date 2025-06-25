@@ -5,12 +5,14 @@ import com.ded.misle.world.entities.ai.BehaviorType;
 
 public class WaitBehavior extends AbstractBehavior {
     private int remainingTurns;
+    private final int START_TURNS;
 
     public WaitBehavior(int turns) {
         this.setInterruptible(false);
         this.priority = 0;
 
         this.remainingTurns = turns;
+        this.START_TURNS = turns;
 
         this.setCondition(
             context -> remainingTurns > 0
@@ -19,6 +21,11 @@ public class WaitBehavior extends AbstractBehavior {
 
     public WaitBehavior() {
         this(1);
+    }
+
+    @Override
+    public void onSwitch(BehaviorContext context) {
+        this.remainingTurns = START_TURNS;
     }
 
     @Override
