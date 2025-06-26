@@ -1,8 +1,11 @@
 package com.ded.misle.world.entities.player;
 
+import com.ded.misle.audio.AudioFile;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.ded.misle.audio.AudioPlayer.playThis;
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.renderer.MainRenderer.fader;
 import static com.ded.misle.world.data.WorldLoader.loadBoxes;
@@ -118,6 +121,7 @@ public class PlayerAttributes {
 	public void playerDies() {
 		this.isDead = true;
 
+		playThis(AudioFile.player_death_jingle);
 		fader.fadeInThenOut(4000);
 		// Schedule playerRespawns() to run after 4 seconds
 		Timer timerToRespawn = new Timer();
