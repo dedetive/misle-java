@@ -9,7 +9,10 @@ public enum AudioFile {
     consume_small_pot(AudioType.SFX, 1),
     consume_medium_pot(AudioType.SFX, 1),
     drop_item(AudioType.SFX),
-    collect_item(AudioType.SFX);
+    collect_item(AudioType.SFX),
+    player_death_jingle(AudioType.SFX),
+
+    ;
 
     private static final int DEFAULT_AUDIO_PLAYER_COUNT = 3;
     private final String path;
