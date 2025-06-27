@@ -10,7 +10,7 @@ public enum AudioFile {
     consume_medium_pot(AudioType.SFX, 1),
     drop_item(AudioType.SFX),
     collect_item(AudioType.SFX),
-    player_death_jingle(AudioType.SFX),
+    player_death_jingle(AudioType.SFX, 1),
 
     ;
 
