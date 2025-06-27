@@ -60,6 +60,7 @@ public class WaitBehavior extends AbstractBehavior {
      */
     @Override
     public void onSwitchOut(BehaviorContext context) {
+        super.onSwitchOut(context);
         this.remainingTurns = START_TURNS;
     }
 
