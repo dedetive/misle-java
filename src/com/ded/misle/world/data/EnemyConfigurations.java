@@ -66,8 +66,8 @@ public enum EnemyConfigurations {
         AIBehavior wanderFreely = new WanderBehavior();
 //        freelyWalkingAround.setCondition(isMaxHP);
 
-        AIBehavior limitedWalkingAround = new WanderBehavior(1);
-        limitedWalkingAround.setCondition(hasUnderThirdHP);
+        AIBehavior walkCloseIfUnderThirdHP = new WanderBehavior(1);
+        walkCloseIfUnderThirdHP.setCondition(hasUnderThirdHP);
 
         AIBehavior goingUp = new WanderBehavior(new Path(upwardsPoints));
         goingUp.setCondition(hasUnderThirdHP);
@@ -76,7 +76,7 @@ public enum EnemyConfigurations {
 
         AIBehavior chain = new ChainBehavior(
             wanderFreely,
-            limitedWalkingAround,
+            walkCloseIfUnderThirdHP,
             wait
         );
 
@@ -84,8 +84,8 @@ public enum EnemyConfigurations {
 
         // this is all temporary don't worry
         enemy.setBehaviors(
-//            freelyWalkingAround,
-//            limitedWalkingAround,
+//            wanderFreely,
+//            walkCloseIfUnderThirdHP,
 //            goingUp,
 //            wait,
             chain
