@@ -32,6 +32,7 @@ public class ChainBehavior extends AbstractBehavior {
         BehaviorController controller = new BehaviorController(context.self());
 
         controller.setBehaviors(currentBehavior);
+        controller.setTarget(context.target());
         controller.run();
 
         if (currentBehavior.isInterruptible() || !currentBehavior.matches(context)
