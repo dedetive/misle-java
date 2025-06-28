@@ -11,7 +11,7 @@ import java.awt.*;
  * (i.e., a clear line of sight) from a source {@link Box} (origin) to a target {@link Box}.
  * A sight check iterates through each {@link Point} on the path and verifies if the space is occupied.
  */
-public class BoxSight {
+public class Sight {
     /**
      * The box from which visibility is being calculated.
      */
@@ -38,7 +38,7 @@ public class BoxSight {
      * @param origin the source {@link Box} from which vision is checked
      * @param target the target {@link Box} to be checked for visibility
      */
-    public BoxSight(Box origin, Box target) {
+    public Sight(Box origin, Box target) {
         this.origin = origin;
         this.target = target;
     }
@@ -48,7 +48,7 @@ public class BoxSight {
      *
      * @param origin the source {@link Box} from which vision is checked
      */
-    public BoxSight(Box origin) {
+    public Sight(Box origin) {
         this.origin = origin;
     }
 
