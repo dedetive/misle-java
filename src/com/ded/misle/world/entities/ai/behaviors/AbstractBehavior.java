@@ -94,6 +94,7 @@ public abstract class AbstractBehavior implements AIBehavior {
      *
      * @param condition a function that returns true if the condition passes
      */
+    @Override
     public void addCondition(Function<BehaviorContext, Boolean> condition) {
         this.conditions.add(condition);
     }

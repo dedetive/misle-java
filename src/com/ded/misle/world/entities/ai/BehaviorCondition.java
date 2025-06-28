@@ -18,6 +18,8 @@ public interface BehaviorCondition {
      */
     boolean matches(BehaviorContext context);
 
+    void addCondition(Function<BehaviorContext, Boolean> condition);
+
     /**
      * Updates or replaces the internal logic used for condition matching.
      *
