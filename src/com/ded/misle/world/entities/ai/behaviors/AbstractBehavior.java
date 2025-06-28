@@ -4,9 +4,8 @@ import com.ded.misle.world.entities.ai.AIBehavior;
 import com.ded.misle.world.entities.ai.BehaviorContext;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.function.Function;
-
-import static com.ded.misle.game.GamePanel.player;
 
 /**
  * A base implementation of {@link AIBehavior} that provides default behavior logic,
@@ -92,6 +91,11 @@ public abstract class AbstractBehavior implements AIBehavior {
         return true;
     }
 
+    @Override
+    public final java.util.List<Function<BehaviorContext, Boolean>> getConditions() {
+        return conditions;
+    }
+
     /**
      * Adds a new condition that must be met for this behavior to be run.
      * Conditions are combined with logical AND.
@@ -105,6 +109,17 @@ public abstract class AbstractBehavior implements AIBehavior {
     @Override
     public final void addCondition(Function<BehaviorContext, Boolean> condition) {
         this.conditions.add(condition);
+    }
+
+    @SafeVarargs
+    @Override
+    public final void addConditions(Function<BehaviorContext, Boolean>... conditions) {
+        this.conditions.addAll(Arrays.asList(conditions));
+    }
+
+    @Override
+    public final void addConditions(java.util.List<Function<BehaviorContext, Boolean>> conditions) {
+        this.conditions.addAll(conditions);
     }
 
     /**
