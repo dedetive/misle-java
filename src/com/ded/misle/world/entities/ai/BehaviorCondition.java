@@ -5,8 +5,8 @@ import java.util.function.Function;
 /**
  * Represents a conditional check that determines whether an AI behavior
  * should be considered for execution based on the provided {@link BehaviorContext}.
- *
- * Can be dynamically configured via {@link #setCondition(Function)}.
+ * <p>
+ * Can be dynamically configured using {@link #setCondition(Function)} or extended via {@link #addCondition(Function)}.
  */
 public interface BehaviorCondition {
 
@@ -14,10 +14,17 @@ public interface BehaviorCondition {
      * Checks if the condition matches the given behavior context.
      *
      * @param context the AI context (including self, target, world)
-     * @return true if the condition is satisfied, false otherwise
+     * @return {@code true} if all conditions are satisfied; {@code false} otherwise
      */
     boolean matches(BehaviorContext context);
 
+    /**
+     * Adds a new condition that must be satisfied for the behavior to match.
+     * <p>
+     * Multiple conditions are combined using logical AND.
+     *
+     * @param condition a new condition to add
+     */
     void addCondition(Function<BehaviorContext, Boolean> condition);
 
     /**
