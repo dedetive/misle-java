@@ -6,7 +6,6 @@ import com.ded.misle.world.entities.ai.BehaviorController;
 import com.ded.misle.world.entities.ai.BehaviorType;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class ChainBehavior extends AbstractBehavior {
 
@@ -35,11 +34,18 @@ public class ChainBehavior extends AbstractBehavior {
         controller.setBehaviors(currentBehavior);
         controller.run();
 
-        if (currentBehavior.isInterruptible() ||
-            !currentBehavior.matches(context)
+        if (currentBehavior.isInterruptible() || !currentBehavior.matches(context)
         ) {
             currentBehavior.onSwitchOut(context);
-            currentChainIndex++;
+            advanceToNextValid(context);
+        }
+    }
+
+    private void advanceToNextValid(BehaviorContext context) {
+        while (++currentChainIndex < chain.length) {
+            if (chain[currentChainIndex].matches(context)) {
+                break;
+            }
         }
     }
 
