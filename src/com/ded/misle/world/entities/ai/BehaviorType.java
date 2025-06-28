@@ -4,6 +4,7 @@ public enum BehaviorType {
     WANDER,
     PATROL,
     WAIT,
+    CHAIN,
     PURSUE,
     OBSERVE,
     CHARGE,
