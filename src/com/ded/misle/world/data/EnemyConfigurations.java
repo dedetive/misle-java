@@ -4,7 +4,6 @@ import com.ded.misle.items.DropTable;
 import com.ded.misle.world.entities.ai.AIBehavior;
 import com.ded.misle.world.entities.ai.BehaviorContext;
 import com.ded.misle.world.entities.ai.behaviors.ChainBehavior;
-import com.ded.misle.world.entities.ai.behaviors.PatrolBehavior;
 import com.ded.misle.world.entities.ai.behaviors.WaitBehavior;
 import com.ded.misle.world.entities.ai.behaviors.WanderBehavior;
 import com.ded.misle.world.entities.enemies.EnemyConfigurator;
@@ -64,13 +63,13 @@ public enum EnemyConfigurations {
                 context.self().getHP() < context.self().getMaxHP() / 3;
 
         AIBehavior wanderFreely = new WanderBehavior();
-//        freelyWalkingAround.setCondition(isMaxHP);
+//        freelyWalkingAround.addCondition(isMaxHP);
 
         AIBehavior walkCloseIfUnderThirdHP = new WanderBehavior(1);
-        walkCloseIfUnderThirdHP.setCondition(hasUnderThirdHP);
+        walkCloseIfUnderThirdHP.addCondition(hasUnderThirdHP);
 
         AIBehavior goingUp = new WanderBehavior(new Path(upwardsPoints));
-        goingUp.setCondition(hasUnderThirdHP);
+        goingUp.addCondition(hasUnderThirdHP);
 
         AIBehavior wait = new WaitBehavior(1);
 
