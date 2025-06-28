@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class Pathfinder {
-    private final static int DEFAULT_TILE_COST = 1;
+    private static final int DEFAULT_TILE_COST = 1;
     private final Map<Point, Node> nodeMap = new HashMap<>();
 
     private Node getNode(Point pos) {
@@ -14,68 +14,72 @@ public class Pathfinder {
     }
 
     public Path findPath(Point start, Point goal, Predicate<Point> isWalkable) {
-
         nodeMap.clear();
-
         Node targetNode = getNode(goal);
 
-        var toSearch = new ArrayList<Node>();
-        toSearch.add(getNode(start));
+        var openList = new ArrayList<Node>();
+        var closedList = new ArrayList<Node>();
 
-        var processed = new ArrayList<Node>();
+        openList.add(getNode(start));
 
-        while (!toSearch.isEmpty()) {
-            var current = toSearch.getFirst();
+        while (!openList.isEmpty()) {
+            Node current = selectNodeWithLowestScore(openList);
 
-            for (Node t : toSearch) {
-                if (t.getF() < current.getF() ||
-                    t.getF() == current.getF() &&
-                    t.getH() < current.getH()) {
-                    current = t;
-                }
-            }
-
-            processed.add(current);
-            toSearch.remove(current);
+            openList.remove(current);
+            closedList.add(current);
 
             if (current.pos.equals(goal)) {
-                var currentPathTile = current;
-                var path = new ArrayList<Node>();
-
-                while (!currentPathTile.pos.equals(start)) {
-                    path.add(currentPathTile);
-                    currentPathTile = currentPathTile.parent;
-                }
-
-                var pathPoints = new ArrayList<Point>();
-                for (Node t : path) {
-                    pathPoints.add(t.pos);
-                }
-
-                return new Path(pathPoints.reversed().toArray(new Point[0]));
+                return reconstructPath(current, start);
             }
 
-            for (Node neighbor : current.getNeighbors()
-                .stream().filter(
-                    t -> (isWalkable.test(t.pos) || t.equals(targetNode)) &&
-                    !processed.contains(t)).toList()) {
-                boolean inSearch = toSearch.contains(neighbor);
-
+            for (Node neighbor : getValidNeighbors(current, targetNode, closedList, isWalkable)) {
                 int costToNeighbor = current.getG() + DEFAULT_TILE_COST;
+                boolean isNew = !openList.contains(neighbor);
 
-                if (!inSearch || costToNeighbor <= neighbor.getG()) {
+                if (isNew || costToNeighbor <= neighbor.getG()) {
                     neighbor.setG(costToNeighbor);
                     neighbor.parent = current;
 
-                    if (!inSearch) {
+                    if (isNew) {
                         neighbor.setH(neighbor.getDistance(targetNode));
-                        toSearch.add(neighbor);
+                        openList.add(neighbor);
                     }
                 }
             }
         }
 
         return null;
+    }
+
+    private Node selectNodeWithLowestScore(List<Node> nodes) {
+        Node best = nodes.getFirst();
+        for (Node node : nodes) {
+            if (node.getF() < best.getF() ||
+                (node.getF() == best.getF() && node.getH() < best.getH())) {
+                best = node;
+            }
+        }
+        return best;
+    }
+
+    private List<Node> getValidNeighbors(Node current, Node target, List<Node> closed, Predicate<Point> isWalkable) {
+        return current.getNeighbors()
+            .stream()
+            .filter(n -> (isWalkable.test(n.pos) || n.equals(target)) && !closed.contains(n))
+            .toList();
+    }
+
+    private Path reconstructPath(Node goal, Point start) {
+        var path = new ArrayList<Point>();
+        Node current = goal;
+
+        while (!current.pos.equals(start)) {
+            path.add(current.pos);
+            current = current.parent;
+        }
+
+        Collections.reverse(path);
+        return new Path(path.toArray(new Point[0]));
     }
 
     private static int heuristic(Point a, Point b) {
@@ -85,9 +89,7 @@ public class Pathfinder {
     private class Node {
         public Node parent;
         public Point pos;
-        private int g;
-        private int h;
-        private int f;
+        private int g, h, f;
 
         Node(Point p) {
             this.pos = p;
@@ -95,7 +97,6 @@ public class Pathfinder {
 
         List<Node> getNeighbors() {
             Point p = this.pos;
-
             return List.of(
                 getNode(new Point(p.x + 1, p.y)),
                 getNode(new Point(p.x - 1, p.y)),
@@ -104,17 +105,9 @@ public class Pathfinder {
             );
         }
 
-        public int getG() {
-            return g;
-        }
-
-        public int getH() {
-            return h;
-        }
-
-        public int getF() {
-            return f;
-        }
+        public int getG() { return g; }
+        public int getH() { return h; }
+        public int getF() { return f; }
 
         public void setH(int h) {
             this.h = h;
@@ -136,10 +129,7 @@ public class Pathfinder {
 
         @Override
         public boolean equals(Object obj) {
-            if (this == obj) return true;
-            if (obj == null || getClass() != obj.getClass()) return false;
-            Node node = (Node) obj;
-            return pos.equals(node.pos);
+            return obj instanceof Node node && pos.equals(node.pos);
         }
 
         @Override
