@@ -7,20 +7,20 @@ import java.util.function.Predicate;
 
 public class Pathfinder {
     private static final int DEFAULT_TILE_COST = 1;
-    private final Map<Point, Node> nodeMap = new HashMap<>();
 
-    private Node getNode(Point pos) {
+    private Node getNode(Map<Point, Node> nodeMap, Point pos) {
         return nodeMap.computeIfAbsent(pos, Node::new);
     }
 
     public Path findPath(Point start, Point goal, Predicate<Point> isWalkable) {
-        nodeMap.clear();
-        Node targetNode = getNode(goal);
+        Map<Point, Node> nodeMap = new HashMap<>();
+
+        Node targetNode = getNode(nodeMap, goal);
 
         var openList = new ArrayList<Node>();
         var closedList = new ArrayList<Node>();
 
-        openList.add(getNode(start));
+        openList.add(getNode(nodeMap, start));
 
         while (!openList.isEmpty()) {
             Node current = selectNodeWithLowestScore(openList);
@@ -32,7 +32,7 @@ public class Pathfinder {
                 return reconstructPath(current, start);
             }
 
-            for (Node neighbor : getValidNeighbors(current, targetNode, closedList, isWalkable)) {
+            for (Node neighbor : getValidNeighbors(nodeMap, current, targetNode, closedList, isWalkable)) {
                 int costToNeighbor = current.getG() + DEFAULT_TILE_COST;
                 boolean isNew = !openList.contains(neighbor);
 
@@ -62,8 +62,8 @@ public class Pathfinder {
         return best;
     }
 
-    private List<Node> getValidNeighbors(Node current, Node target, List<Node> closed, Predicate<Point> isWalkable) {
-        return current.getNeighbors()
+    private List<Node> getValidNeighbors(Map<Point, Node> nodeMap, Node current, Node target, List<Node> closed, Predicate<Point> isWalkable) {
+        return current.getNeighbors(nodeMap)
             .stream()
             .filter(n -> (isWalkable.test(n.pos) || n.equals(target)) && !closed.contains(n))
             .toList();
@@ -82,10 +82,6 @@ public class Pathfinder {
         return new Path(path.toArray(new Point[0]));
     }
 
-    private static int heuristic(Point a, Point b) {
-        return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
-    }
-
     private class Node {
         public Node parent;
         public Point pos;
@@ -95,13 +91,13 @@ public class Pathfinder {
             this.pos = p;
         }
 
-        List<Node> getNeighbors() {
+        private List<Node> getNeighbors(Map<Point, Node> nodeMap) {
             Point p = this.pos;
             return List.of(
-                getNode(new Point(p.x + 1, p.y)),
-                getNode(new Point(p.x - 1, p.y)),
-                getNode(new Point(p.x, p.y + 1)),
-                getNode(new Point(p.x, p.y - 1))
+                getNode(nodeMap, new Point(p.x + 1, p.y)),
+                getNode(nodeMap, new Point(p.x - 1, p.y)),
+                getNode(nodeMap, new Point(p.x, p.y + 1)),
+                getNode(nodeMap, new Point(p.x, p.y - 1))
             );
         }
 
@@ -125,6 +121,10 @@ public class Pathfinder {
 
         public int getDistance(Node other) {
             return heuristic(pos, other.pos);
+        }
+
+        private static int heuristic(Point a, Point b) {
+            return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
         }
 
         @Override
