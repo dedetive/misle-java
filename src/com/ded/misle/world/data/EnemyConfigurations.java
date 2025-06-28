@@ -3,6 +3,7 @@ package com.ded.misle.world.data;
 import com.ded.misle.items.DropTable;
 import com.ded.misle.world.entities.ai.AIBehavior;
 import com.ded.misle.world.entities.ai.BehaviorContext;
+import com.ded.misle.world.entities.ai.behaviors.ChainBehavior;
 import com.ded.misle.world.entities.ai.behaviors.PatrolBehavior;
 import com.ded.misle.world.entities.ai.behaviors.WaitBehavior;
 import com.ded.misle.world.entities.ai.behaviors.WanderBehavior;
@@ -62,25 +63,32 @@ public enum EnemyConfigurations {
             context ->
                 context.self().getHP() < context.self().getMaxHP() / 3;
 
-        AIBehavior freelyWalkingAround = new WanderBehavior();
-        freelyWalkingAround.setCondition(isMaxHP);
+        AIBehavior wanderFreely = new WanderBehavior();
+//        freelyWalkingAround.setCondition(isMaxHP);
 
         AIBehavior limitedWalkingAround = new WanderBehavior(1);
-        limitedWalkingAround.setCondition(hasOverThirdHP);
+        limitedWalkingAround.setCondition(hasUnderThirdHP);
 
         AIBehavior goingUp = new WanderBehavior(new Path(upwardsPoints));
         goingUp.setCondition(hasUnderThirdHP);
 
-        AIBehavior wait = new WaitBehavior(3);
+        AIBehavior wait = new WaitBehavior(1);
+
+        AIBehavior chain = new ChainBehavior(
+            wanderFreely,
+            limitedWalkingAround,
+            wait
+        );
 
         enemy.getController().setTarget(player);
 
         // this is all temporary don't worry
         enemy.setBehaviors(
-            freelyWalkingAround,
-            limitedWalkingAround,
-            goingUp,
-            wait
+//            freelyWalkingAround,
+//            limitedWalkingAround,
+//            goingUp,
+//            wait,
+            chain
         );
     });
 
