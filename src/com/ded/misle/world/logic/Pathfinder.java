@@ -8,10 +8,6 @@ import java.util.function.Predicate;
 public class Pathfinder {
     private static final int DEFAULT_TILE_COST = 1;
 
-    private Node getNode(Map<Point, Node> nodeMap, Point pos) {
-        return nodeMap.computeIfAbsent(pos, Node::new);
-    }
-
     public Path findPath(Point start, Point goal, Predicate<Point> isWalkable) {
         Map<Point, Node> nodeMap = new HashMap<>();
 
@@ -49,6 +45,10 @@ public class Pathfinder {
         }
 
         return null;
+    }
+
+    private Node getNode(Map<Point, Node> nodeMap, Point pos) {
+        return nodeMap.computeIfAbsent(pos, Node::new);
     }
 
     private Node selectNodeWithLowestScore(List<Node> nodes) {
