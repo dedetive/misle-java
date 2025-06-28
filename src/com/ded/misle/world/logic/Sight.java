@@ -1,26 +1,24 @@
 package com.ded.misle.world.logic;
 
-import com.ded.misle.world.boxes.Box;
-
 import java.awt.*;
 
 /**
- * Handles line-of-sight checks between boxes in the world.
+ * Handles line-of-sight checks between two points in the world.
  * <p>
  * This class determines whether there is an unobstructed path
- * (i.e., a clear line of sight) from a source {@link Box} (origin) to a target {@link Box}.
+ * (i.e., a clear line of sight) from a source {@link Point} (origin) to a target {@link Point}.
  * A sight check iterates through each {@link Point} on the path and verifies if the space is occupied.
  */
 public class Sight {
     /**
-     * The box from which visibility is being calculated.
+     * The point from which visibility is being calculated.
      */
-    private final Box origin;
+    private final Point origin;
 
     /**
-     * The target box being checked for visibility.
+     * The target point being checked for visibility.
      */
-    private Box target;
+    private Point target;
 
     /**
      * Flag indicating whether the visibility state needs to be recalculated.
@@ -33,36 +31,37 @@ public class Sight {
     private boolean hasDirectSight = false;
 
     /**
-     * Constructs a BoxSight with both an origin and a target.
+     * Constructs a PointSight with both an origin and a target.
      *
-     * @param origin the source {@link Box} from which vision is checked
-     * @param target the target {@link Box} to be checked for visibility
+     * @param origin the source {@link Point} from which vision is checked
+     * @param target the target {@link Point} to be checked for visibility
      */
-    public Sight(Box origin, Box target) {
+    public Sight(Point origin, Point target) {
         this.origin = origin;
         this.target = target;
     }
 
     /**
-     * Constructs a BoxSight with only the origin. Target can be set later.
+     * Constructs a PointSight with only the origin. Target can be set later.
      *
-     * @param origin the source {@link Box} from which vision is checked
+     * @param origin the source {@link Point} from which vision is checked
      */
-    public Sight(Box origin) {
+    public Sight(Point origin) {
         this.origin = origin;
     }
 
     /**
-     * Checks whether the origin box has a clear line of sight to the specified target.
+     * Checks whether the origin point has a clear line of sight to the specified target.
      * <p>
      * A clear path is determined by verifying that no collidable space exists along the path.
      *
-     * @param target the target {@link Box} to check visibility to
+     * @param target the target {@link Point} to check visibility to
      * @return {@code true} if the origin can see the target, {@code false} otherwise
      */
-    public boolean canSee(Box target) {
+    public boolean canSee(Point target) {
         if (mustUpdate) {
-            Path pathToTarget = new Path(origin.getPos(), target.getPos()).removePoint(new Point(origin.getX(), origin.getY()));
+            Path pathToTarget = new Path(origin, target)
+                .removePoint(new Point(origin.x, origin.y));
 
             hasDirectSight = true;
             for (Point point : pathToTarget.getPoints()) {
@@ -78,14 +77,14 @@ public class Sight {
     }
 
     /**
-     * Checks whether the origin box has a clear line of sight to the current target.<p>
+     * Checks whether the origin point has a clear line of sight to the current target.<p>
      * This method uses this object's target as default, and will throw an exception if it has not been set.
      *
      * @return {@code true} if the origin can see the target, {@code false} otherwise
      * @throws NullPointerException if target has not been set
      */
     public boolean canSee() {
-        if (target == null) throw new NullPointerException("The target box for this BoxSight is null");
+        if (target == null) throw new NullPointerException("The target point for this PointSight is null");
 
         return canSee(this.target);
     }
@@ -93,9 +92,9 @@ public class Sight {
     /**
      * Sets a new target for the vision check and marks the state to be re-evaluated on the next check.
      *
-     * @param target the new target {@link Box}
+     * @param target the new target {@link Point}
      */
-    public void setTarget(Box target) {
+    public void setTarget(Point target) {
         this.target = target;
         mustUpdate = true;
     }
