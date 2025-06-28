@@ -20,7 +20,7 @@ import static com.ded.misle.game.GamePanel.player;
  * Centralized definitions of enemy setup configurations.
  * Each constant provides a lambda that customizes stats, visuals,
  * behavior, and loot for a particular type of enemy.
- *
+ * <p>
  * These are used by {@link EnemyType}.
  */
 public enum EnemyConfigurations {
