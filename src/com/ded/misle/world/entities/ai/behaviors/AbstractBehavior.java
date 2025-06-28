@@ -27,7 +27,7 @@ public abstract class AbstractBehavior implements AIBehavior {
      * A condition function that determines whether this behavior matches the current context.
      * By default, this condition always returns {@code true}.
      */
-    private Function<BehaviorContext, Boolean> condition = ctx -> true;
+    private final java.util.List<Function<BehaviorContext, Boolean>> conditions = new java.util.ArrayList<>();
 
     /**
      * Triggers the effect of the entity on the target entity if the target position matches the targeted position.
@@ -82,7 +82,20 @@ public abstract class AbstractBehavior implements AIBehavior {
      */
     @Override
     public boolean matches(BehaviorContext context) {
-        return condition.apply(context);
+        for (Function<BehaviorContext, Boolean> condition : conditions) {
+            if (!condition.apply(context)) return false;
+        }
+        return true;
+    }
+
+    /**
+     * Adds a new condition that must be met for this behavior to be run.
+     * Conditions are combined with logical AND.
+     *
+     * @param condition a function that returns true if the condition passes
+     */
+    public void addCondition(Function<BehaviorContext, Boolean> condition) {
+        this.conditions.add(condition);
     }
 
     /**
@@ -94,7 +107,8 @@ public abstract class AbstractBehavior implements AIBehavior {
      */
     @Override
     public void setCondition(Function<BehaviorContext, Boolean> condition) {
-        this.condition = condition;
+        this.conditions.clear();
+        this.conditions.add(condition);
     }
 
     /**
