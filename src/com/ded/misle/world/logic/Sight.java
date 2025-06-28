@@ -61,7 +61,8 @@ public class Sight {
     public boolean canSee(Point target) {
         if (mustUpdate) {
             Path pathToTarget = new Path(origin, target)
-                .removePoint(new Point(origin.x, origin.y));
+                .removePoint(new Point(origin.x, origin.y))
+                .removePoint(new Point(target.x, target.y));
 
             hasDirectSight = true;
             for (Point point : pathToTarget.getPoints()) {
