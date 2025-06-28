@@ -30,6 +30,8 @@ public interface BehaviorCondition {
     /**
      * Updates or replaces the internal logic used for condition matching.
      *
+     * @deprecated This method replaces all previously added conditions.
+     * Use {@link #addCondition(Function)} unless you are intentionally discarding all prior conditions.
      * @param condition a new condition function
      */
     void setCondition(Function<BehaviorContext, Boolean> condition);
