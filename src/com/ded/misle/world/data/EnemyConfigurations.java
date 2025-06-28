@@ -1,8 +1,6 @@
 package com.ded.misle.world.data;
 
 import com.ded.misle.items.DropTable;
-import com.ded.misle.world.entities.ai.AIBehavior;
-import com.ded.misle.world.entities.ai.BehaviorContext;
 import com.ded.misle.world.entities.ai.behaviors.ChainBehavior;
 import com.ded.misle.world.entities.ai.behaviors.PursueBehavior;
 import com.ded.misle.world.entities.ai.behaviors.WaitBehavior;
@@ -11,8 +9,6 @@ import com.ded.misle.world.entities.enemies.EnemyConfigurator;
 import com.ded.misle.world.entities.enemies.EnemyType;
 
 import java.awt.*;
-import java.util.Random;
-import java.util.function.Function;
 
 import static com.ded.misle.game.GamePanel.player;
 
