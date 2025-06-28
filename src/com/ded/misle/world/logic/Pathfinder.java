@@ -52,7 +52,7 @@ public class Pathfinder {
                     pathPoints.add(t.pos);
                 }
 
-                return new Path(pathPoints.toArray(new Point[0]));
+                return new Path(pathPoints.reversed().toArray(new Point[0]));
             }
 
             for (Node neighbor : current.getNeighbors()
