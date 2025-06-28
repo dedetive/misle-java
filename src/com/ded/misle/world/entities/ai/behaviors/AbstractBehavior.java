@@ -24,8 +24,10 @@ public abstract class AbstractBehavior implements AIBehavior {
     protected boolean interruptible = true;
 
     /**
-     * A condition function that determines whether this behavior matches the current context.
+     * A list of condition functions that determine whether this behavior matches the current context.
      * By default, this condition always returns {@code true}.
+     * <p>
+     * All conditions must be met for the behavior to be run.
      */
     private final java.util.List<Function<BehaviorContext, Boolean>> conditions = new java.util.ArrayList<>();
 
@@ -74,11 +76,13 @@ public abstract class AbstractBehavior implements AIBehavior {
     /**
      * Checks whether this behavior should be selected based on the given context.
      * <p>
+     * All registered conditions must return {@code true} for the behavior to match.
      * By default, the condition always returns {@code true}, meaning the behavior
      * is considered valid unless overridden.
+     * This might be done either during behavior implementation or construction.
      *
      * @param context the context to evaluate
-     * @return {@code true} if this behavior matches the given context; {@code false} otherwise
+     * @return {@code true} if all conditions pass; {@code false} otherwise
      */
     @Override
     public boolean matches(BehaviorContext context) {
@@ -91,6 +95,10 @@ public abstract class AbstractBehavior implements AIBehavior {
     /**
      * Adds a new condition that must be met for this behavior to be run.
      * Conditions are combined with logical AND.
+     * <p>
+     * By default, the condition always returns {@code true}, meaning the behavior
+     * is considered valid unless overridden.
+     * This might be done either during behavior implementation or construction.
      *
      * @param condition a function that returns true if the condition passes
      */
@@ -100,9 +108,9 @@ public abstract class AbstractBehavior implements AIBehavior {
     }
 
     /**
-     * Sets a custom condition function used to evaluate whether this behavior applies.
+     * Replaces all existing conditions with a new single condition.
      * <p>
-     * Replaces the default condition, which always returns {@code true}.
+     * This removes any previously added conditions.
      *
      * @param condition a function that receives the context and returns {@code true} if it matches
      */
