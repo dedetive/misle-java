@@ -17,7 +17,7 @@ public class ChainBehavior extends AbstractBehavior {
         this.setInterruptible(false);
         this.priority = Integer.MIN_VALUE;
 
-        this.setCondition(ctx -> !isDone());
+        this.setCondition(ctx -> true);
     }
 
     private boolean isDone() {
@@ -26,7 +26,9 @@ public class ChainBehavior extends AbstractBehavior {
 
     @Override
     public void tryExecute(BehaviorContext context) {
-        if (isDone()) return;
+        if (isDone()) {
+            onSwitchIn(context);
+        }
 
         AIBehavior currentBehavior = chain[currentChainIndex];
         BehaviorController controller = new BehaviorController(context.self());
@@ -39,6 +41,7 @@ public class ChainBehavior extends AbstractBehavior {
         ) {
             currentBehavior.onSwitchOut(context);
             advanceToNextValid(context);
+            if (isDone()) onSwitchOut(context);;
         }
     }
 
@@ -51,8 +54,15 @@ public class ChainBehavior extends AbstractBehavior {
     }
 
     @Override
+    public void onSwitchIn(BehaviorContext context) {
+        super.onSwitchIn(context);
+        this.interruptible = false;
+    }
+
+    @Override
     public void onSwitchOut(BehaviorContext context) {
         super.onSwitchOut(context);
+        this.interruptible = true;
         this.currentChainIndex = 0;
     }
 
