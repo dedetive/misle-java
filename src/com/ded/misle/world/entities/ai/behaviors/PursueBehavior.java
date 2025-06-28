@@ -4,8 +4,10 @@ import com.ded.misle.world.boxes.BoxManipulation;
 import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.ai.BehaviorContext;
 import com.ded.misle.world.entities.ai.BehaviorType;
+import com.ded.misle.world.entities.enemies.Enemy;
 import com.ded.misle.world.logic.Path;
 import com.ded.misle.world.logic.Pathfinder;
+import com.ded.misle.world.logic.Sight;
 
 import java.awt.*;
 import java.util.function.Predicate;
@@ -31,12 +33,23 @@ public class PursueBehavior extends AbstractBehavior {
         Entity self = context.self();
         Entity target = context.target();
 
-        Path pathToTarget = new Pathfinder().findPath(
-            self.getPos(), target.getPos(), collisionCheck);
+        boolean canSeeTarget = (new Sight(self.getPos()).canSee(target.getPos()));
+        Point targetPos = canSeeTarget
+            ? target.getPos()
+            : context.lastSeenTargetPos();
 
-        if (pathToTarget == null) return;
+        if (canSeeTarget) {
+            ((Enemy) self).getController().setLastSeenTargetPos(target.getPos());
+        }
+
+        Path pathToTarget = new Pathfinder().findPath(
+            self.getPos(), targetPos, collisionCheck);
+
+        if (pathToTarget == null || (!canSeeTarget && context.lastSeenTargetPos() == null))
+            return;
 
         Point p = pathToTarget.getStart();
+        if (p == null) return;
 
         if (target.getPos().equals(p)) {
             this.triggerEffectOnContact(context, p);
