@@ -109,9 +109,12 @@ public abstract class AbstractBehavior implements AIBehavior {
 
     /**
      * Replaces all existing conditions with a new single condition.
-     * <p>
-     * This removes any previously added conditions.
+     * <p><strong>Warning:</strong> This is a destructive operation that clears all previously added conditions.
+     * <br>Use this only if you're certain that replacing all existing conditions is intended.
+     * <br>In most cases, prefer using {@link #addCondition(Function)} instead.
      *
+     * @deprecated This method replaces all previously added conditions.
+     * Use {@link #addCondition(Function)} unless you are intentionally discarding all prior conditions.
      * @param condition a function that receives the context and returns {@code true} if it matches
      */
     @Override
