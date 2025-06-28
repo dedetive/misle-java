@@ -115,7 +115,7 @@ public abstract class AbstractBehavior implements AIBehavior {
      * @param condition a function that receives the context and returns {@code true} if it matches
      */
     @Override
-    public void setCondition(Function<BehaviorContext, Boolean> condition) {
+    public final void setCondition(Function<BehaviorContext, Boolean> condition) {
         this.conditions.clear();
         this.conditions.add(condition);
     }
