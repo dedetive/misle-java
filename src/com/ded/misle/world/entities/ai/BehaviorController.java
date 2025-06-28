@@ -2,6 +2,7 @@ package com.ded.misle.world.entities.ai;
 
 import com.ded.misle.world.entities.Entity;
 
+import java.awt.*;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -18,6 +19,11 @@ public class BehaviorController implements Runnable {
 
     /** The current target the entity may be reacting to. */
     private Entity target;
+
+    /**
+     * The position the entity last saw its target.
+     */
+    private Point lastSeenTargetPos;
 
     /** The behavior currently being executed. */
     private AIBehavior currentBehavior;
@@ -44,6 +50,7 @@ public class BehaviorController implements Runnable {
         BehaviorContext context = new BehaviorContext(
             entity,
             target,
+            lastSeenTargetPos,
             player.pos.world
         );
 
@@ -79,6 +86,14 @@ public class BehaviorController implements Runnable {
      */
     public void setTarget(Entity target) {
         this.target = target;
+    }
+
+    /**
+     * Sets the point that this entity last tracked its position.
+     * @param lastSeenTargetPos the target point
+     */
+    public void setLastSeenTargetPos(Point lastSeenTargetPos) {
+        this.lastSeenTargetPos = lastSeenTargetPos;
     }
 
     /**
