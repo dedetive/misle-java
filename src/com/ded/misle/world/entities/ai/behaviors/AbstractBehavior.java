@@ -85,7 +85,7 @@ public abstract class AbstractBehavior implements AIBehavior {
      * @return {@code true} if all conditions pass; {@code false} otherwise
      */
     @Override
-    public boolean matches(BehaviorContext context) {
+    public final boolean matches(BehaviorContext context) {
         for (Function<BehaviorContext, Boolean> condition : conditions) {
             if (!condition.apply(context)) return false;
         }
