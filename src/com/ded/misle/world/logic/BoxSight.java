@@ -1,7 +1,6 @@
-package com.ded.misle.world.boxes;
+package com.ded.misle.world.logic;
 
-import com.ded.misle.world.logic.Path;
-import com.ded.misle.world.logic.PhysicsEngine;
+import com.ded.misle.world.boxes.Box;
 
 import java.awt.*;
 
