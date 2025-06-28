@@ -35,6 +35,7 @@ public class ChainBehavior extends AbstractBehavior {
 
         controller.setBehaviors(currentBehavior);
         controller.setTarget(context.target());
+        controller.setLastSeenTargetPos(context.lastSeenTargetPos());
         controller.run();
 
         if (currentBehavior.isInterruptible() || !currentBehavior.matches(context)
