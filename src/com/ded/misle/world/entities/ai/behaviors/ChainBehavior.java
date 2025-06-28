@@ -53,4 +53,14 @@ public class ChainBehavior extends AbstractBehavior {
     public BehaviorType getType() {
         return BehaviorType.CHAIN;
     }
+
+    @Override
+    public String toString() {
+        return super.toString().replace("}", "") +
+            ", behaviorChain=" + Arrays.toString(chain) +
+            ", currentBehavior=" + (isDone() ? "null" : chain[currentChainIndex]) +
+            ", currentIndex=" + currentChainIndex +
+            ", total=" + chain.length +
+            '}';
+    }
 }
