@@ -9,7 +9,6 @@ import com.ded.misle.world.entities.ai.behaviors.WaitBehavior;
 import com.ded.misle.world.entities.ai.behaviors.WanderBehavior;
 import com.ded.misle.world.entities.enemies.EnemyConfigurator;
 import com.ded.misle.world.entities.enemies.EnemyType;
-import com.ded.misle.world.logic.Path;
 
 import java.awt.*;
 import java.util.Random;
@@ -47,31 +46,16 @@ public enum EnemyConfigurations {
         enemy.setCoinDrop(3);
         enemy.setCollision(true);
 
-        Point[] upwardsPoints = new Point[] {
-            new Point(0, 0),
-            new Point(0, -1),
-        };
+        var wait = new WaitBehavior();
+        var pursue = new PursueBehavior();
+        var wander = new WanderBehavior(3);
 
-        Function<BehaviorContext, Boolean> isMaxHP =
-            context ->
-                context.self().getHP() == context.self().getMaxHP();
-
-        Function<BehaviorContext, Boolean> hasOverThirdHP =
-            context ->
-                context.self().getHP() >= context.self().getMaxHP() / 3;
-
-        Function<BehaviorContext, Boolean> hasUnderThirdHP =
-            context ->
-                context.self().getHP() < context.self().getMaxHP() / 3;
-
-        AIBehavior pursue = new PursueBehavior();
-        AIBehavior wanderFreely = new WanderBehavior();
-        AIBehavior wait = new WaitBehavior(1);
-        AIBehavior waitLong = new WaitBehavior(5);
-
-        AIBehavior chain = new ChainBehavior(
+        var chain = new ChainBehavior(
+            wait,
             pursue,
             pursue,
+            wait,
+            wait,
             pursue
         );
 
@@ -79,27 +63,11 @@ public enum EnemyConfigurations {
             pursue.getConditions()
         );
 
-        waitLong.addCondition(
-            ctx -> new Random().nextInt(10) < 5
-        );
-        waitLong.addConditions(
-            chain.getConditions()
-        );
-
-        chain.setPriority(0);
-        waitLong.setPriority(10);
-
         enemy.getController().setTarget(player);
 
-        // this is all temporary don't worry
         enemy.setBehaviors(
-            wanderFreely,
-            waitLong,
-//            walkCloseIfUnderThirdHP,
-//            goingUp,
-//            wait,
-            chain
-//            pursue
+            chain,
+            wander
         );
     });
 
