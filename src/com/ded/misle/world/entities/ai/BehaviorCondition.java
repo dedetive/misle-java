@@ -1,5 +1,6 @@
 package com.ded.misle.world.entities.ai;
 
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -18,6 +19,8 @@ public interface BehaviorCondition {
      */
     boolean matches(BehaviorContext context);
 
+    List<Function<BehaviorContext, Boolean>> getConditions();
+
     /**
      * Adds a new condition that must be satisfied for the behavior to match.
      * <p>
@@ -26,6 +29,10 @@ public interface BehaviorCondition {
      * @param condition a new condition to add
      */
     void addCondition(Function<BehaviorContext, Boolean> condition);
+
+    void addConditions(Function<BehaviorContext, Boolean>... conditions);
+
+    void addConditions(List<Function<BehaviorContext, Boolean>> conditions);
 
     /**
      * Updates or replaces the internal logic used for condition matching.
