@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class Pathfinder {
-    private final static int TILE_COST = 1;
+    private final static int DEFAULT_TILE_COST = 1;
     private final Map<Point, Node> nodeMap = new HashMap<>();
 
     private Node getNode(Point pos) {
@@ -61,7 +61,7 @@ public class Pathfinder {
                     !processed.contains(t)).toList()) {
                 boolean inSearch = toSearch.contains(neighbor);
 
-                int costToNeighbor = current.getG() + TILE_COST;
+                int costToNeighbor = current.getG() + DEFAULT_TILE_COST;
 
                 if (!inSearch || costToNeighbor <= neighbor.getG()) {
                     neighbor.setG(costToNeighbor);
