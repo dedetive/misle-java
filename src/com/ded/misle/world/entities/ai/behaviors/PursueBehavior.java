@@ -38,10 +38,10 @@ public class PursueBehavior extends AbstractBehavior {
 
         Point p = pathToTarget.getStart();
 
-        if (collisionCheck.test(p)) {
-            BoxManipulation.moveToward(self, p, true);
-        } else if (target.getPos().equals(p)) {
+        if (target.getPos().equals(p)) {
             this.triggerEffectOnContact(context, p);
+        } else if (collisionCheck.test(p)) {
+            BoxManipulation.moveToward(self, p, true);
         }
     }
 
