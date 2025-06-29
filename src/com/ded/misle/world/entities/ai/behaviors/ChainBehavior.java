@@ -16,8 +16,6 @@ public class ChainBehavior extends AbstractBehavior {
         this.chain = chain;
         this.setInterruptible(false);
         this.priority = Integer.MIN_VALUE;
-
-        this.setCondition(ctx -> true);
     }
 
     private boolean isDone() {
