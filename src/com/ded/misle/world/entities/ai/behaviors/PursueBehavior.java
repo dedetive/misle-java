@@ -7,6 +7,7 @@ import com.ded.misle.world.entities.ai.BehaviorType;
 import com.ded.misle.world.entities.enemies.Enemy;
 import com.ded.misle.world.logic.Path;
 import com.ded.misle.world.logic.Pathfinder;
+import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.world.logic.Sight;
 
 import java.awt.*;
@@ -50,8 +51,21 @@ import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
  */
 public class PursueBehavior extends AbstractBehavior {
 
+    /**
+     * A predicate used to determine which tiles are walkable during pathfinding.
+     * Defaults to spaces that are not occupied, as checked by {@link PhysicsEngine#isSpaceOccupied(int, int)}.
+     * <p>
+     * This can be replaced with custom logic using {@link #setCollisionCheck(Predicate)}.
+     */
     private Predicate<Point> collisionCheck = p -> !isSpaceOccupied(p.x, p.y);
 
+    /**
+     * Creates a new PursueBehavior with default configuration.
+     * <p>
+     * It is interruptible and has default priority {@code 0}.
+     * The behavior becomes valid if a path to the target or its last known position exists.
+     * Visibility checks are performed using {@link Sight}, and pathfinding via {@link Pathfinder}.
+     */
     public PursueBehavior() {
         this.interruptible = true;
         this.priority = 0;
@@ -74,6 +88,15 @@ public class PursueBehavior extends AbstractBehavior {
         );
     }
 
+    /**
+     * Executes a single tick of the pursue behavior logic.
+     * <p>
+     * The entity will attempt to move one step along the computed path toward the target.
+     * If the entity reaches the same position as the target, a contact effect may be triggered.
+     * If the path is blocked or invalid, the entity halts.
+     *
+     * @param context the context of the behavior, including self, target, and last seen position
+     */
     @Override
     public void tryExecute(BehaviorContext context) {
         Entity self = context.self();
@@ -104,10 +127,22 @@ public class PursueBehavior extends AbstractBehavior {
         }
     }
 
+    /**
+     * Updates the collision-checking logic used during pathfinding and movement.
+     * <p>
+     * Useful when custom environmental constraints or special movement logic must be considered.
+     *
+     * @param collisionCheck a predicate that returns {@code true} for walkable positions
+     */
     public void setCollisionCheck(Predicate<Point> collisionCheck) {
         this.collisionCheck = collisionCheck;
     }
 
+    /**
+     * Returns the behavior type of this instance.
+     *
+     * @return the behavior type {@link BehaviorType#PURSUE}
+     */
     @Override
     public BehaviorType getType() {
         return BehaviorType.PURSUE;
