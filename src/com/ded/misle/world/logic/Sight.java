@@ -99,4 +99,12 @@ public class Sight {
         this.target = target;
         mustUpdate = true;
     }
+
+    /**
+     * Returns this object's target.
+     * @return the target {@link Point}
+     */
+    public Point getTarget() {
+        return target;
+    }
 }
