@@ -101,6 +101,14 @@ public class Sight {
     }
 
     /**
+     * Gets this object's origin.
+     * @return the origin {@link Point}
+     */
+    public Point getOrigin() {
+        return origin;
+    }
+
+    /**
      * Returns this object's target.
      * @return the target {@link Point}
      */
