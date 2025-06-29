@@ -23,8 +23,18 @@ public class PursueBehavior extends AbstractBehavior {
         this.priority = 0;
 
         this.setCondition(
-            ctx -> ctx.target() != null &&
-                new Pathfinder().findPath(ctx.self().getPos(), ctx.target().getPos(), collisionCheck) != null
+            ctx -> {
+                if (ctx.target() == null) return false;
+
+                boolean canSeeTarget = (new Sight(ctx.self().getPos()).canSee(ctx.target().getPos()));
+                Point targetPos = canSeeTarget || ctx.lastSeenTargetPos() == null
+                    ? ctx.target().getPos()
+                    : ctx.lastSeenTargetPos();
+
+                Path p = new Pathfinder().findPath(ctx.self().getPos(), targetPos, collisionCheck);
+                if (p == null) return false;
+                return p.getLength() > 0;
+            }
         );
     }
 
