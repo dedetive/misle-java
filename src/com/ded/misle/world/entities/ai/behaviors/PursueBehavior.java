@@ -14,6 +14,40 @@ import java.util.function.Predicate;
 
 import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
 
+/**
+ * An AI behavior that enables an entity to pursue a visible or previously seen target.
+ * <p>
+ * This behavior causes the entity to move toward its target using A* pathfinding,
+ * following the shortest walkable path available. If the entity can no longer see
+ * the target, it instead moves toward the last known position where the target was seen.
+ * <p>
+ * This behavior is interruptible and holds medium-to-low priority (by default, {@code 0}),
+ * making it a natural part of layered AI decision-making — such as being used as the
+ * "default active engagement" behavior once the target is spotted.
+ * <p>
+ * Pursuit proceeds as follows:
+ * <ul>
+ *   <li>If the target is within line of sight (LOS), a path is calculated directly toward it.</li>
+ *   <li>If not visible, but a {@code lastSeenTargetPos} is known, the entity will attempt to path there.</li>
+ *   <li>If neither is valid (i.e., target not visible and no position stored), the behavior is inactive.</li>
+ * </ul>
+ * <p>
+ * Upon regaining visual contact, the last seen position is updated to reflect the new location.
+ * The behavior also triggers a contact effect if the entity reaches the target's position.
+ * <p>
+ * This behavior works best in coordination with others (e.g., patrol, wait, wander, attack),
+ * and its condition can be reused for targeting logic or used inside {@link ChainBehavior}.
+ * <p>
+ * The collision check is traditionally checking whether the target point is occupied by a Box with collision.
+ * Such check may be modified through {@link #setCollisionCheck(Predicate)}, and will be used for both
+ * pathfinding and movement.
+ * <p>
+ * <strong>Note:</strong> For this behavior to work, a target is required.
+ *
+ * @see com.ded.misle.world.logic.Pathfinder
+ * @see com.ded.misle.world.logic.Sight
+ * @see com.ded.misle.world.entities.ai.BehaviorContext
+ */
 public class PursueBehavior extends AbstractBehavior {
 
     private Predicate<Point> collisionCheck = p -> !isSpaceOccupied(p.x, p.y);
