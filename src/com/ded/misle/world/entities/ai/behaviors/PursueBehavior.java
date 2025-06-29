@@ -27,9 +27,11 @@ public class PursueBehavior extends AbstractBehavior {
                 if (ctx.target() == null) return false;
 
                 boolean canSeeTarget = (new Sight(ctx.self().getPos()).canSee(ctx.target().getPos()));
-                Point targetPos = canSeeTarget || ctx.lastSeenTargetPos() == null
+                Point targetPos = canSeeTarget
                     ? ctx.target().getPos()
                     : ctx.lastSeenTargetPos();
+
+                if (targetPos == null) return false;
 
                 Path p = new Pathfinder().findPath(ctx.self().getPos(), targetPos, collisionCheck);
                 if (p == null) return false;
