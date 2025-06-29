@@ -15,14 +15,25 @@ import java.util.Arrays;
  * <p>
  * Each behavior in the chain is executed in order. Once the end of the chain is reached,
  * the behavior is considered complete and can reset upon switching out.
- * <p>
- * This allows for defining multiphase logic, such as approaching a player, attacking,
- * and then retreating, all bundled in one sequence.
+ * Behaviors with invalid conditions are skipped, and do not traditionally cancel the chain.
  * <p>
  * Once a chain has started, it cannot be interrupted, unless its condition is no longer met.
  * Once finished, the chain restarts, and it is finally interruptible,
  * although it may start again if favorable. This behavior
  * typically holds minimal priority ({@code Integer.MIN_VALUE}).
+ * <p>
+ * This allows for defining multiphase logic, such as approaching a player, attacking,
+ * and then retreating, all bundled in one sequence.
+ * <p>
+ * Adding conditions to this behavior is suggested, and so is mimicking the focal behavior conditions.
+ * Such can be done through:
+ * <pre>
+ * {@code
+ *  chain.addConditions(
+ *      pursue.getConditions()
+ *  );
+ * }
+ * </pre>
  */
 public class ChainBehavior extends AbstractBehavior {
 
