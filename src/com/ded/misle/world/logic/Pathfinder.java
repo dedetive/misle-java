@@ -1,5 +1,7 @@
 package com.ded.misle.world.logic;
 
+import com.ded.misle.core.MathUtils;
+
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -234,19 +236,7 @@ public class Pathfinder {
          * @return the estimated cost to reach the target
          */
         public int getDistance(Node other) {
-            return heuristic(pos, other.pos);
-        }
-
-        /**
-         * Heuristic cost estimate between two points using Manhattan distance.
-         * This method is static and used by {@link Node#getDistance(Node)}.
-         *
-         * @param a the first point
-         * @param b the second point
-         * @return the Manhattan distance between the two points
-         */
-        private static int heuristic(Point a, Point b) {
-            return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+            return MathUtils.manhattan(pos, other.pos);
         }
 
         /**
