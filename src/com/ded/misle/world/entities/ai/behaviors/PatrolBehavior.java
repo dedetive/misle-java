@@ -119,7 +119,7 @@ public class PatrolBehavior extends AbstractBehavior {
     /**
      * Returns the behavioral type for this instance.
      *
-     * @return the behavior's type
+     * @return the behavior's type {@link BehaviorType#PATROL}
      */
     @Override
     public BehaviorType getType() {
