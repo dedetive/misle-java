@@ -7,21 +7,64 @@ import com.ded.misle.world.entities.ai.BehaviorType;
 
 import java.util.Arrays;
 
+/**
+ * A composite AI behavior that executes a predefined sequence of behaviors in order.
+ * <p>
+ * This behavior evaluates and runs one behavior at a time from a defined chain,
+ * switching to the next valid one when the current is interrupted or no longer matches.
+ * <p>
+ * Each behavior in the chain is executed in order. Once the end of the chain is reached,
+ * the behavior is considered complete and can reset upon switching out.
+ * <p>
+ * This allows for defining multiphase logic, such as approaching a player, attacking,
+ * and then retreating, all bundled in one sequence.
+ * <p>
+ * Once a chain has started, it cannot be interrupted, unless its condition is no longer met.
+ * Once finished, the chain restarts, and it is finally interruptible,
+ * although it may start again if favorable. This behavior
+ * typically holds minimal priority ({@code Integer.MIN_VALUE}).
+ */
 public class ChainBehavior extends AbstractBehavior {
 
+    /**
+     * The ordered list of AI behaviors to be executed in sequence.
+     */
     private final AIBehavior[] chain;
+
+    /**
+     * The current index in the chain representing the behavior being executed.
+     */
     private int currentChainIndex = 0;
 
+    /**
+     * Constructs a ChainBehavior with a predefined sequence of behaviors.
+     *
+     * @param chain the sequence of behaviors to execute
+     */
     public ChainBehavior(AIBehavior... chain) {
         this.chain = chain;
         this.setInterruptible(false);
         this.priority = Integer.MIN_VALUE;
     }
 
+    /**
+     * Checks if all behaviors in the chain have already been processed.
+     *
+     * @return {@code true} if the chain has finished executing all behaviors, {@code false} otherwise
+     */
     private boolean isDone() {
         return currentChainIndex >= chain.length;
     }
 
+    /**
+     * Attempts to execute the current behavior in the chain.
+     * <p>
+     * If the behavior completes, is interruptible, or no longer matches the context,
+     * the behavior is switched out and the next valid behavior is evaluated.
+     * When the chain completes, {@code onSwitchOut()} is triggered.
+     *
+     * @param context the behavior context including the entity and target
+     */
     @Override
     public void tryExecute(BehaviorContext context) {
         if (isDone()) {
@@ -36,14 +79,20 @@ public class ChainBehavior extends AbstractBehavior {
         controller.setLastSeenTargetPos(context.lastSeenTargetPos());
         controller.run();
 
-        if (currentBehavior.isInterruptible() || !currentBehavior.matches(context)
-        ) {
+        if (currentBehavior.isInterruptible() || !currentBehavior.matches(context)) {
             currentBehavior.onSwitchOut(context);
             advanceToNextValid(context);
-            if (isDone()) onSwitchOut(context);;
+
+            if (isDone()) onSwitchOut(context);
         }
     }
 
+    /**
+     * Advances to the next behavior in the chain that matches the given context.
+     * If no remaining behavior matches, the chain is marked as done.
+     *
+     * @param context the current behavior context
+     */
     private void advanceToNextValid(BehaviorContext context) {
         while (++currentChainIndex < chain.length) {
             if (chain[currentChainIndex].matches(context)) {
@@ -52,12 +101,24 @@ public class ChainBehavior extends AbstractBehavior {
         }
     }
 
+    /**
+     * Called when this behavior is activated.
+     * Resets internal state and disables interruptions.
+     *
+     * @param context the behavior context
+     */
     @Override
     public void onSwitchIn(BehaviorContext context) {
         super.onSwitchIn(context);
         this.interruptible = false;
     }
 
+    /**
+     * Called when this behavior is deactivated.
+     * Re-enables interruption and resets chain progression to the start.
+     *
+     * @param context the behavior context
+     */
     @Override
     public void onSwitchOut(BehaviorContext context) {
         super.onSwitchOut(context);
@@ -65,11 +126,21 @@ public class ChainBehavior extends AbstractBehavior {
         this.currentChainIndex = 0;
     }
 
+    /**
+     * Returns the behavior type for this class.
+     *
+     * @return the behavior type {@link BehaviorType#CHAIN}
+     */
     @Override
     public BehaviorType getType() {
         return BehaviorType.CHAIN;
     }
 
+    /**
+     * Returns a string representation of the current behavior state.
+     *
+     * @return a string including the current chain index, total behaviors, and current behavior
+     */
     @Override
     public String toString() {
         return super.toString().replace("}", "") +
