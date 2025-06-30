@@ -710,14 +710,4 @@ public class Entity extends Box {
     public int getMaxSight() {
         return maxSight;
     }
-
-    private Point origin;
-
-    public void setOrigin(Point origin) {
-        this.origin = origin;
-    }
-
-    public Point getOrigin() {
-        return origin;
-    }
 }
