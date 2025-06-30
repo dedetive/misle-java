@@ -119,6 +119,7 @@ public abstract class WorldLoader {
 			int x = point[0];
 			int y = point[1];
 			int z = point[2];
+			box.setRoomId(room.id);
 			box.setPos(x, y, z);
 			if (box instanceof Entity) {
 				((Entity) box).setOrigin(new Point(x, y));
