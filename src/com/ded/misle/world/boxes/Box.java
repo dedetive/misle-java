@@ -480,6 +480,15 @@ public class Box {
 		this.roomId = roomId;
 	}
 
+	private Point origin;
+	public void setOrigin(Point origin) {
+		this.origin = origin;
+	}
+
+	public Point getOrigin() {
+		return origin;
+	}
+
 	@Override
 	public String toString() {
 		return "Box{" +
