@@ -475,6 +475,11 @@ public class Box {
 
 	// Misc
 
+	private int roomId;
+	public void setRoomId(int roomId) {
+		this.roomId = roomId;
+	}
+
 	@Override
 	public String toString() {
 		return "Box{" +
