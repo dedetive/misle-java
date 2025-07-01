@@ -14,7 +14,6 @@ import java.util.*;
 import java.util.List;
 
 import static com.ded.misle.game.GamePanel.isRunning;
-import static com.ded.misle.world.boxes.BoxHandling.addBoxToCache;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 
 public class Player extends Entity {
@@ -55,7 +54,6 @@ public class Player extends Entity {
 		this.pos = new PlayerPosition();
 		this.attr = new PlayerAttributes();
 		this.stats = new PlayerStats();
-		addBoxToCache(this);
 
 		this.startNetThread();
 	}

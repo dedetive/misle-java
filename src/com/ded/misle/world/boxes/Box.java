@@ -104,7 +104,6 @@ public class Box {
 		this.objectType = BOX;
 		this.direction = Direction.NONE;
 		this.interactsWithPlayer = true;
-		addBoxToCache(this);
 	}
 
 	// For player creation or dummy box

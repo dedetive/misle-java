@@ -1,14 +1,12 @@
 package com.ded.misle.renderer;
 
 import com.ded.misle.input.KeyHandler;
-import com.ded.misle.world.entities.player.Player;
 import com.ded.misle.world.entities.player.PlayerAttributes;
 
 import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.game.GamePanel.GameState.LEVEL_DESIGNER;
 import static com.ded.misle.game.GamePanel.GameState.PLAYING;
 import static com.ded.misle.core.SaveFile.loadSaveFile;
-import static com.ded.misle.world.boxes.BoxHandling.storeCachedBoxes;
 import static com.ded.misle.world.data.WorldLoader.loadBoxes;
 import static com.ded.misle.world.entities.player.Planner.resumeExecution;
 import static java.lang.System.currentTimeMillis;
@@ -82,14 +80,9 @@ public abstract class MainRenderer {
 
 		loadBoxes();
 
-		Timer timer = new Timer(LOADING_DURATION, e -> {
-			for (int i = 15; i > 0; i--) {
-				storeCachedBoxes(i);
-			}
-			gameState = LEVEL_DESIGNER;
-		});
+		Timer timer = new Timer(LOADING_DURATION, e -> gameState = LEVEL_DESIGNER);
 
-		timer.setRepeats(false); // Ensure the timer only runs once
+		timer.setRepeats(false);
 		timer.start();
 	}
 
