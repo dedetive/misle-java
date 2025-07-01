@@ -20,6 +20,7 @@ import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.world.logic.PhysicsEngine.ObjectType.ENTITY;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.entities.Entity.HealFlag.ABSOLUTE;
+import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
 
 /**
  * Represents an entity with health points (HP).
@@ -179,20 +180,11 @@ public class Entity extends Box {
                 }
 
                 if (this.dropTable != null) {
-                    boolean canGoMinus = false;
-                    boolean canGoPlus = false;
-                    if (getCollisionBoxesInRange(this.getX() - 20, this.getY(), 10, 6).isEmpty()) {
-                        canGoMinus = true;
-                    }
-                    if (getCollisionBoxesInRange(this.getX() + 20, this.getY(), 10, 6).isEmpty()) {
-                        canGoPlus = true;
-                    }
-
                     int[] results = dropTable.getRandomItemID();
                     int id = results[0];
                     int count = results[1];
 
-                    this.spawnItem(canGoMinus, canGoPlus, id, count);
+                    this.spawnItem(false, false, id, count);
 
                     if (this instanceof Enemy) {
                         double xpGain = ((Enemy) this).getXPDrop();
