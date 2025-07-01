@@ -33,20 +33,20 @@ public class Box {
 	private int worldX;
 	private int worldY;
 	public int worldLayer;
-	private Direction direction;
+	private Direction direction = Direction.NONE;
 
-	private Color color;
-	public String textureName;
+	private Color color = defaultBoxColor;
+	public String textureName = "solid";
 
-	private boolean hasCollision;
-	private PhysicsEngine.ObjectType objectType;
+	private boolean hasCollision = false;
+	private PhysicsEngine.ObjectType objectType = BOX;
 	public Effect effect;
-	private boolean interactsWithPlayer;
+	private boolean interactsWithPlayer = true;
 	public boolean isMoving = false;
 
 	private double visualRotation = 0;
-	private double visualScaleHorizontal;
-	private double visualScaleVertical;
+	private double visualScaleHorizontal = 1;
+	private double visualScaleVertical = 1;
 	protected SmoothValue visualOffsetX = new SmoothValue(0);
 	protected SmoothValue visualOffsetY = new SmoothValue(0);
 	private final SmoothPosition smoothPos = new SmoothPosition(worldX, worldY, originalTileSize);
@@ -64,18 +64,7 @@ public class Box {
 	public Box(int x, int y) {
 		worldX = x;
 		worldY = y;
-		World world = player.pos.world;
-		world.setPos(this, worldX, worldY);
-		this.color = defaultBoxColor;
-		this.textureName = "solid";
-		this.hasCollision = false;
-		this.visualScaleHorizontal = 1;
-		this.visualScaleVertical = 1;
-		this.effect = null;
-		this.visualRotation = 0;
-		this.objectType = BOX;
-		this.direction = Direction.NONE;
-		this.interactsWithPlayer = true;
+		player.pos.world.setPos(this, worldX, worldY);
 	}
 
 	// For player creation or dummy box
