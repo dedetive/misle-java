@@ -20,7 +20,6 @@ import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.world.logic.PhysicsEngine.ObjectType.ENTITY;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.entities.Entity.HealFlag.ABSOLUTE;
-import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
 
 /**
  * Represents an entity with health points (HP).
@@ -28,17 +27,17 @@ import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
  */
 public class Entity extends Box {
     /** Current HP of the entity. */
-    private double HP;
+    private double HP = 1;
 
     /** Maximum HP the entity can have. */
-    private double maxHP;
+    private double maxHP = 1;
 
     /**
      * HP smoothness manager. Should be updated every frame to stay relevant.
      * <p>
      * Shows current HP of the entity that is going to be rendered. Has a slight delay compared to real internal {@link #HP}.
      */
-    private final SmoothValue HPSmoother;
+    private final SmoothValue HPSmoother = new SmoothValue((float) HP);;
 
     /** Locked HP that cannot be recovered or reduced normally. */
     private double lockedHP;
@@ -99,11 +98,8 @@ public class Entity extends Box {
      */
     public Entity(int x, int y) {
         super(x, y);
-        this.setOrigin(new Point(x, y));
+
         this.setObjectType(ENTITY);
-        this.HP = 1;
-        this.maxHP = 1;
-        this.HPSmoother = new SmoothValue((float) HP);
         entities.add(this);
         updateRegenerationTimer();
     }
@@ -113,9 +109,6 @@ public class Entity extends Box {
      */
     public Entity() {
         this.setObjectType(ENTITY);
-        this.HP = 1;
-        this.maxHP = 1;
-        this.HPSmoother = new SmoothValue((float) HP);
         entities.add(this);
         updateRegenerationTimer();
     }
