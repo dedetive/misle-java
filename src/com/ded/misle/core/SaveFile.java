@@ -412,6 +412,7 @@ public class SaveFile {
 
 	public static void saveEverything() {
 		int saveSlot = player.currentSaveSlot;
+		image = saveImages[saveSlot];
 
 		synchronized (fileLock) {
 
