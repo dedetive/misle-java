@@ -47,7 +47,6 @@ public class SaveFile {
 
 	// IMAGE
 
-	private final static BufferedImage[] imageCache = new BufferedImage[3];
 	static BufferedImage image = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB);
 
 	// COLORS
