@@ -489,6 +489,12 @@ public class Box {
 		return origin;
 	}
 
+	public String getId() {
+		return this.effect != null
+			? roomId + "-" + this.getOrigin().x + "." + this.getOrigin().y + "-" + this.effect.getClass().getSimpleName()
+			: roomId + "-" + this.getOrigin().x + "." + this.getOrigin().y;
+	}
+
 	@Override
 	public String toString() {
 		return "Box{" +
