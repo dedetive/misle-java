@@ -26,11 +26,6 @@ public abstract class SaveCreator {
     public static void renderSaveCreator(Graphics g, JPanel panel) {
         if (g instanceof Graphics2D g2d) {
 
-            // ANTI-ALIASING
-            if (antiAliasing.bool()) {
-                g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            }
-
             // BACKGROUND
             drawMenuBackground(g2d);
 
