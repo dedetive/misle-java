@@ -561,24 +561,41 @@ public class PlayingRenderer extends AbstractRenderer {
         }
     }
 
+    static int maxDigitWidth = 12;
     private static void drawCoins(Graphics2D g2d) {
-        int coinTextX = 468;
-        int coinTextY = 222;
-        g2d.setColor(coinTextShadowColor);
-        g2d.setFont(coinTextFont);
-        drawColoredText(g2d, String.valueOf(player.attr.getBalance()), (int) (coinTextX + textShadow), (int)(coinTextY + textShadow));
+        final int coinRightX = 468;
+        final int coinTextY = 32;
+        int spacing = 4;
 
-        g2d.setColor(coinTextUI);
-        drawColoredText(g2d, String.valueOf(player.attr.getBalance()), coinTextX, coinTextY);
+        g2d.setFont(coinTextFont);
+        String balanceText = String.valueOf(player.attr.getBalance());
+
+        int x = coinRightX - maxDigitWidth * balanceText.length();
+
+        for (int i = 0; i < balanceText.length(); i++) {
+            char c = balanceText.charAt(i);
+            int charX = x + i * maxDigitWidth;
+
+            g2d.setColor(coinTextShadowColor);
+            drawColoredText(g2d, String.valueOf(c), charX + textShadow, coinTextY + textShadow);
+
+            g2d.setColor(coinTextUI);
+            drawColoredText(g2d, String.valueOf(c), charX, coinTextY);
+        }
 
         FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
-        int textWidth = fm.stringWidth(String.valueOf(player.attr.getBalance()));
-        int coinPosX = coinTextX + textWidth;
-        int coinPosY = coinTextY - FontManager.getCachedMetrics(g2d, g2d.getFont()).getHeight() + 4;
+        int coinIconX = coinRightX + spacing;
+        int coinIconSize = fm.getHeight();
+        int coinIconY = coinTextY - coinIconSize + 4;
 
-        g2d.drawImage(cachedImages.get(ImageManager.ImageName.COIN), coinPosX, coinPosY,
-            FontManager.getCachedMetrics(g2d, g2d.getFont()).getHeight(), FontManager.getCachedMetrics(g2d, g2d.getFont()).getHeight(), null);
+        g2d.drawImage(
+            cachedImages.get(ImageManager.ImageName.COIN),
+            coinIconX, coinIconY,
+            coinIconSize, coinIconSize,
+            null
+        );
     }
+
 
     private static void drawLevel(Graphics2D g2d) {
         int level = player.attr.getLevel();
