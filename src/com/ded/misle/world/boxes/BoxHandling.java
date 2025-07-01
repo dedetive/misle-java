@@ -1,13 +1,10 @@
 package com.ded.misle.world.boxes;
 
-import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.enemies.EnemyRegistry;
 import com.ded.misle.world.entities.enemies.EnemyType;
-import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.world.logic.World;
 import com.ded.misle.world.logic.effects.Chest;
 import com.ded.misle.world.logic.effects.Collectible;
-import com.ded.misle.world.logic.effects.Effect;
 import com.ded.misle.world.logic.effects.Spawnpoint;
 import com.ded.misle.world.entities.enemies.Enemy;
 
@@ -18,31 +15,11 @@ import java.util.List;
 
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.world.entities.Entity.clearEntities;
-import static com.ded.misle.world.entities.Entity.getEntities;
 import static com.ded.misle.world.entities.npcs.NPC.clearNPCs;
 
 public class BoxHandling {
 
 	private static final List<Box> boxes = new ArrayList<>();
-
-	public enum LineAddBoxModes {
-		HOLLOW,
-		FILL
-	}
-
-	/**
-	 *
-	 *  ...
-	 *
-	 */
-	public static void addBox(int x, int y, Color color, String texture, boolean hasCollision, double boxScaleHorizontal, double boxScaleVertical, Effect effect, double rotation, PhysicsEngine.ObjectType objectType, boolean interactsWithPlayer) {
-		boxes.add(new Box(x, y, color, texture, hasCollision, boxScaleHorizontal, boxScaleVertical, effect, rotation, objectType, interactsWithPlayer));
-	}
-
-	public static Box addBox(int x, int y) {
-		boxes.add(new Box(x, y));
-		return boxes.getLast();
-	}
 
 	public static Box addBox(BoxPreset preset) {
 		Box box = new Box();
@@ -71,11 +48,6 @@ public class BoxHandling {
 		} else {
 			return null;
 		}
-	}
-
-	public static Entity addEntity(int x, int y) {
-		boxes.add(new Entity(x, y));
-		return getEntities().getLast();
 	}
 
 	public static Enemy addEnemyBox(Point pos, EnemyType enemyType, double magnification) {
@@ -114,23 +86,6 @@ public class BoxHandling {
 			BoxPreset.WALL_DEFAULT_DECO
 		};
 		return Arrays.stream(presetsWithExtra).anyMatch(boxPreset -> boxPreset == preset);
-	}
-
-	public static Box addBox(int x, int y, BoxPreset preset) {
-		boxes.add(new Box(x, y));
-		Box box = boxes.getLast();
-		loadPreset(box, preset);
-		if (hasExtra(preset)) {
-			String s = preset.toString();
-			int index = (s.lastIndexOf("_"));
-			char[] p = s.toCharArray();
-			p[index] = '@';
-			s = String.copyValueOf(p);
-			s = s.substring(0, index) + s.substring(index, index + 2).toUpperCase() + s.substring(index + 2).toLowerCase();
-			box.setTexture(s);
-		}
-
-		return box;
 	}
 
 	public static Box createDummyBox() {
