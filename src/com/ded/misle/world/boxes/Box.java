@@ -51,7 +51,6 @@ public class Box {
 	protected SmoothValue visualOffsetY = new SmoothValue(0);
 	private final SmoothPosition smoothPos = new SmoothPosition(worldX, worldY, originalTileSize);
 
-    private static ArrayList<Box> selectedBoxes;
 	private static final Map<String, BufferedImage> cachedTextures = new HashMap<>();
 	private static final Map<String, Integer> rotationInstruction = new HashMap<>();
 	static {
@@ -92,18 +91,6 @@ public class Box {
 			}
 		} catch (IllegalArgumentException e) {
 			drawRawTexture(g2d, screenX, screenY);
-		}
-
-		try {
-			if (selectedBoxes.contains(this)) {
-				for (int i = 0; i <= 270; i += 90) {
-					System.out.println(i);
-					drawRotatedImage(g2d, getTexture("wall_default_overlayW"), screenX, screenY,
-							(int) (originalTileSize * visualScaleHorizontal), (int) (originalTileSize * visualScaleVertical), i + this.visualRotation);
-				}
-			}
-		} catch (NullPointerException e) {
-			// This just means selectedBoxes is empty
 		}
 	}
 
@@ -375,42 +362,6 @@ public class Box {
 		});
 		timer.setRepeats(false);
 		timer.start();
-	}
-
-	// Selecting boxes
-
-	public void addSelectedBox() {
-		try {
-			selectedBoxes.add(this);
-		} catch (NullPointerException e) {
-			// This just means list is empty, so do nothing
-		}
-	}
-
-	public void replaceSelectedBox() {
-		try {
-			clearSelectedBoxes();
-			selectedBoxes.add(this);
-		} catch (NullPointerException e) {
-			// This just means list is empty, so do nothing
-		}
-	}
-
-	public static void clearSelectedBoxes() {
-		try {
-			selectedBoxes.clear();
-		} catch (NullPointerException e) {
-			// This just means list is empty, so do nothing
-		}
-	}
-
-	public static ArrayList<Box> getSelectedBoxes() {
-		try {
-			return selectedBoxes;
-		} catch (NullPointerException e) {
-			// This just means list is empty, so do nothing
-		}
-		return null;
 	}
 
 	// Object type (BOX, HP_BOX)

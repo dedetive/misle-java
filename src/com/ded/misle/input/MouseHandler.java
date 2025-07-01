@@ -1,7 +1,5 @@
 package com.ded.misle.input;
 
-import com.ded.misle.world.boxes.Box;
-import com.ded.misle.world.boxes.BoxHandling;
 import com.ded.misle.items.Item;
 import com.ded.misle.world.data.Direction;
 
@@ -14,7 +12,6 @@ import java.util.Objects;
 import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.renderer.DialogRenderer.fillLetterDisplay;
 import static com.ded.misle.renderer.DialogRenderer.isLetterDisplayFull;
-import static com.ded.misle.world.boxes.Box.clearSelectedBoxes;
 import static com.ded.misle.input.KeyHandler.pressUseButton;
 import static com.ded.misle.world.entities.npcs.NPCDialog.getCurrentTalkingTo;
 import static com.ded.misle.world.data.Direction.LEFT;
@@ -341,7 +338,6 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 						// Get x, y game world coordinates of mouse click and select nearby boxes of that position
 						int mouseGameX = (int) (player.pos.getCameraOffsetX() + mouseX);
 						int mouseGameY = (int) (player.pos.getCameraOffsetY() + mouseY);
-						clearSelectedBoxes();
 						System.out.println();
 						System.out.println("mouse: " + mouseGameX + ", " + mouseGameY);
 					}
