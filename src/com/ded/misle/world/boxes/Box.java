@@ -61,34 +61,6 @@ public class Box {
 				rotationInstruction.put("A", 270);
 	}
 
-	/**
-	 *
-	 * @param x original x of the box
-	 * @param y original y of the box
-	 * @param color color of the box
-	 * @param texture texture of the box
-	 * @param hasCollision whether the box has collision
-	 * @param visualScaleHorizontal how many tilesizes is the box in the x-axis
-	 * @param visualScaleVertical how many tilesizes is the box in the y-axis
-	 * @param effect what the box does when touched or activated
-	 */
-	public Box(int x, int y, Color color, String texture, boolean hasCollision, double visualScaleHorizontal, double visualScaleVertical, Effect effect, double rotation, PhysicsEngine.ObjectType objectType, boolean interactsWithPlayer) {
-		worldX = x;
-		worldY = y;
-		World world = player.pos.world;
-		world.setPos(this, worldX, worldY);
-		this.color = color;
-		this.textureName = texture;
-		this.hasCollision = hasCollision;
-		this.visualScaleHorizontal = visualScaleHorizontal;
-		this.visualScaleVertical = visualScaleVertical;
-		this.effect = effect;
-		this.visualRotation = rotation;
-		this.objectType = objectType;
-		this.direction = Direction.NONE;
-		this.interactsWithPlayer = interactsWithPlayer;
-	}
-
 	public Box(int x, int y) {
 		worldX = x;
 		worldY = y;
