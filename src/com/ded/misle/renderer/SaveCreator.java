@@ -53,7 +53,7 @@ public abstract class SaveCreator {
 
                 // Text
             g2d.setColor(saveCreatorTextShadow);
-            g2d.drawString(text, (int) (textX + textShadow- (double) textWidth / 2), (int) (textY + textShadow));
+            g2d.drawString(text, (int) (textX + textShadow- (double) textWidth / 2), textY + textShadow);
             g2d.setColor(saveCreatorText);
             g2d.drawString(text, (int) (textX - (double) textWidth / 2), textY);
 
@@ -67,12 +67,11 @@ public abstract class SaveCreator {
             textWidth = fm.stringWidth(text);
             textX = (int) (256 - (double) textWidth / 2);
             g2d.setColor(saveCreatorInsertNameShadow);
-            g2d.drawString(text, (int) (textX + textShadow), (int) (textY - 20 + textShadow));
+            g2d.drawString(text, textX + textShadow, textY - 20 + textShadow);
             g2d.setColor(saveCreatorInsertName);
             g2d.drawString(text, textX, textY - 20);
 
-                // Transparent 'Player name'
-
+                // Player name
             if (playerName.isEmpty()) {
                 text = LanguageManager.getText("save_creator_player_name");
                 textWidth = fm.stringWidth(text);
