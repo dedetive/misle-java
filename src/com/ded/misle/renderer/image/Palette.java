@@ -53,6 +53,10 @@ public class Palette {
             .toList();
     }
 
+    public Palette(List<Color> palette) {
+        this.palette = palette;
+    }
+
     /**
      * Returns the color at the specified index in the palette.
      * <p>
