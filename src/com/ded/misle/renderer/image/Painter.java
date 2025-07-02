@@ -9,9 +9,14 @@ import java.util.Map;
 public class Painter {
 
     private final Palette palette;
+    private boolean preserveAlpha = true;
 
     public Painter(Palette palette) {
         this.palette = palette;
+    }
+
+    public void setPreserveAlpha(boolean preserveAlpha) {
+        this.preserveAlpha = preserveAlpha;
     }
 
     public BufferedImage paint(BufferedImage input) {
@@ -36,12 +41,17 @@ public class Painter {
 
         for (int x = 0; x < input.getWidth(); x++) {
             for (int y = 0; y < input.getHeight(); y++) {
-                int rgb = input.getRGB(x, y);
-                output.setRGB(x, y, colorMap.getOrDefault(rgb, rgb));
+                int originalRGB = input.getRGB(x, y);
+                Color targetColor = new Color(colorMap.get(new Color(originalRGB, true).getRGB()));
+
+                int alpha = (originalRGB >> 24) & 0xFF;
+                Color finalColor = preserveAlpha
+                    ? new Color(targetColor.getRed(), targetColor.getGreen(), targetColor.getBlue(), alpha)
+                    : targetColor;
+                output.setRGB(x, y, finalColor.getRGB());
             }
         }
 
         return output;
     }
-
 }
