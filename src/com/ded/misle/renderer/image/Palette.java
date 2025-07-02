@@ -36,21 +36,26 @@ public class Palette {
      * @param img the image to extract unique colors and build the palette from
      */
     public Palette(BufferedImage img) {
-        Map<Color, Integer> colorCountMap = new LinkedHashMap<>();
+        this.palette = PaletteMemorial.paletteMap.computeIfAbsent(
+            img,
+            (img_) -> {
+                Map<Color, Integer> colorCountMap = new LinkedHashMap<>();
 
-        for (int x = 0; x < img.getWidth(); x++) {
-            for (int y = 0; y < img.getHeight(); y++) {
-                Color color = new Color(img.getRGB(x, y), true);
-                colorCountMap.put(color, colorCountMap.getOrDefault(color, 0) + 1);
+                for (int x = 0; x < img.getWidth(); x++) {
+                    for (int y = 0; y < img.getHeight(); y++) {
+                        Color color = new Color(img.getRGB(x, y), true);
+                        colorCountMap.put(color, colorCountMap.getOrDefault(color, 0) + 1);
+                    }
+                }
+
+                List<Map.Entry<Color, Integer>> entries = new ArrayList<>(colorCountMap.entrySet());
+                entries.sort((a, b) -> Integer.compare(b.getValue(), a.getValue()));
+
+                return new Palette(entries.stream()
+                    .map(Map.Entry::getKey)
+                    .toList());
             }
-        }
-
-        List<Map.Entry<Color, Integer>> entries = new ArrayList<>(colorCountMap.entrySet());
-        entries.sort((a, b) -> Integer.compare(b.getValue(), a.getValue()));
-
-        this.palette = entries.stream()
-            .map(Map.Entry::getKey)
-            .toList();
+        ).asList();
     }
 
     public Palette(List<Color> palette) {
