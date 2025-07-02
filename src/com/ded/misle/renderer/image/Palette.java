@@ -30,11 +30,13 @@ public class Palette {
      * <p>
      * All colors are included regardless of alpha value and transparency.
      * The resulting palette is ordered by descending pixel count.
+     * <p>
+     * When multiple color values have the same frequency, the order of appearance is given priority instead.
      *
      * @param img the image to extract unique colors and build the palette from
      */
     public Palette(BufferedImage img) {
-        Map<Color, Integer> colorCountMap = new HashMap<>();
+        Map<Color, Integer> colorCountMap = new LinkedHashMap<>();
 
         for (int x = 0; x < img.getWidth(); x++) {
             for (int y = 0; y < img.getHeight(); y++) {
@@ -43,9 +45,10 @@ public class Palette {
             }
         }
 
-        this.palette = colorCountMap.entrySet()
-            .stream()
-            .sorted((a, b) -> Integer.compare(b.getValue(), a.getValue()))
+        List<Map.Entry<Color, Integer>> entries = new ArrayList<>(colorCountMap.entrySet());
+        entries.sort((a, b) -> Integer.compare(b.getValue(), a.getValue()));
+
+        this.palette = entries.stream()
             .map(Map.Entry::getKey)
             .toList();
     }
