@@ -92,16 +92,21 @@ public abstract class ImageManager {
     }
 
     public static BufferedImage editImageColor(BufferedImage img, Color color) {
-        img = deepCopy(img);
+        EditKey key = new EditKey(img, color);
+        if (colorEditCache.containsKey(key)) return colorEditCache.get(key);
 
-        for (int i = 0; i < img.getWidth(); i++) {
-            for (int j = 0; j < img.getHeight(); j++) {
-                if (img.getRGB(i, j) != 16777215) {
-                    img.setRGB(i, j, color.getRGB());
+        BufferedImage copy = deepCopy(img);
+
+        for (int i = 0; i < copy.getWidth(); i++) {
+            for (int j = 0; j < copy.getHeight(); j++) {
+                if (copy.getRGB(i, j) != 16777215) {
+                    copy.setRGB(i, j, color.getRGB());
                 }
             }
         }
-        return img;
+
+        colorEditCache.put(key, copy);
+        return copy;
     }
 
     public static BufferedImage randomizeImageColors(BufferedImage img) {
