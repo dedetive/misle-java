@@ -22,7 +22,6 @@ public abstract class ImageManager {
     public static final ArrayList<ImageName> playerImages = new ArrayList<>();
 
     private static final Map<EditKey, BufferedImage> colorEditCache = new WeakHashMap<>();
-    private static final Map<BufferedImage, BufferedImage> randomColorCache = new WeakHashMap<>();
     private static final Map<MergeKey, BufferedImage> mergeCache = new WeakHashMap<>();
 
     static {
@@ -131,7 +130,7 @@ public abstract class ImageManager {
         }
 
         mergeCache.put(key, copy);
-        return img;
+        return copy;
     }
 
     static BufferedImage deepCopy(BufferedImage img) {
