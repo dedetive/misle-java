@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class Painter {
 
-    private final Palette palette;
+    private Palette palette;
     private boolean preserveAlpha = true;
 
     public Painter(Palette palette) {
@@ -17,6 +17,10 @@ public class Painter {
 
     public void setPreserveAlpha(boolean preserveAlpha) {
         this.preserveAlpha = preserveAlpha;
+    }
+
+    public void setPalette(Palette palette) {
+        this.palette = palette;
     }
 
     public BufferedImage paint(BufferedImage input) {
