@@ -2,10 +2,7 @@ package com.ded.misle.renderer.image;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.List;
 
 public class Palette {
@@ -13,16 +10,20 @@ public class Palette {
     private final List<Color> palette;
 
     public Palette(BufferedImage img) {
-        Set<Color> colorSet = new LinkedHashSet<>();
+        Map<Color, Integer> colorCountMap = new HashMap<>();
 
         for (int x = 0; x < img.getWidth(); x++) {
             for (int y = 0; y < img.getHeight(); y++) {
-                Color color = new Color(img.getRGB(x, y));
-                colorSet.add(color);
+                Color color = new Color(img.getRGB(x, y), true);
+                colorCountMap.put(color, colorCountMap.getOrDefault(color, 0) + 1);
             }
         }
 
-        this.palette = new ArrayList<>(colorSet);
+        this.palette = colorCountMap.entrySet()
+            .stream()
+            .sorted((a, b) -> Integer.compare(b.getValue(), a.getValue()))
+            .map(Map.Entry::getKey)
+            .toList();
     }
 
     public Color get(int index) {
