@@ -55,11 +55,15 @@ public abstract class ImageManager {
 
         ;
 
+        final Palette palette;
+
         ImageName(String category, String fileName) {
             Path basePath = getPath(com.ded.misle.core.Path.PathTag.RESOURCES).resolve("images");
             Path fullPath = basePath.resolve(category + "/" + fileName);
             try {
                 cachedImages.put(this, ImageIO.read(fullPath.toFile()));
+                this.palette = new Palette(cachedImages.get(this));
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
