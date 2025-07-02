@@ -32,4 +32,19 @@ public class PaletteCurator {
             System.err.println("Failed to save palette image: " + e.getMessage());
         }
     }
+
+    public static Palette getPalette(String paletteName) {
+        Path path = getPath(PathTag.PALETTES).resolve(paletteName + ".png");
+        BufferedImage output = null;
+
+        try {
+            output = ImageIO.read(path.toFile());
+        } catch (IOException e) {
+            System.err.println("Failed to load palette image: " + e.getMessage());
+        }
+
+        return output != null
+            ? new Palette(output)
+            : null;
+    }
 }
