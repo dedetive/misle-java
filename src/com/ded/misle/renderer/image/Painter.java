@@ -24,10 +24,6 @@ public class Painter {
         Palette inputPalette = new Palette(input);
 
         if (this.palette.equals(inputPalette)) return input;
-        if (inputPalette.size() > palette.size()) {
-            System.err.println("Invalid palette size: " + inputPalette.size() + " > " + palette.size());
-            return input;
-        }
 
         List<Color> inputColors = inputPalette.asList();
         List<Color> targetColors = palette.asList();
