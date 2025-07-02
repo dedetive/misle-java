@@ -29,7 +29,7 @@ public class Painter {
         List<Color> targetColors = palette.asList();
 
         Map<Integer, Integer> colorMap = new HashMap<>();
-        for (int i = 0; i < inputColors.size(); i++) {
+        for (int i = 0; i < Math.min(inputColors.size(), targetColors.size()); i++) {
             colorMap.put(inputColors.get(i).getRGB(), targetColors.get(i).getRGB());
         }
 
@@ -38,7 +38,11 @@ public class Painter {
         for (int x = 0; x < input.getWidth(); x++) {
             for (int y = 0; y < input.getHeight(); y++) {
                 int originalRGB = input.getRGB(x, y);
-                Color targetColor = new Color(colorMap.get(new Color(originalRGB, true).getRGB()));
+                Color targetColor = new Color(
+                    colorMap.getOrDefault(
+                        new Color(originalRGB, true)
+                            .getRGB(), originalRGB),
+                    true);
 
                 int alpha = (originalRGB >> 24) & 0xFF;
                 Color finalColor = preserveAlpha
