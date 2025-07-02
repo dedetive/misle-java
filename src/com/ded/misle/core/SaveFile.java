@@ -465,7 +465,7 @@ public class SaveFile {
 			int maxStackSizeMultiplier = (int) (1000 * player.attr.getMaxStackSizeMulti());
 			brandValue(maxStackSizeMultiplier, PixelData.MAX_STACK_SIZE_MULTIPLIER_M, PixelData.MAX_STACK_SIZE_MULTIPLIER_L);
 
-			int balance = player.attr.getBalance();
+			int balance = player.attr.getRealBalance();
 			brandValue(balance, PixelData.BALANCE_E, PixelData.BALANCE_H, PixelData.BALANCE_M, PixelData.BALANCE_L);
 
 			// Name

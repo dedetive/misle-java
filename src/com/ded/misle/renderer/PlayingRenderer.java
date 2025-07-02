@@ -568,7 +568,8 @@ public class PlayingRenderer extends AbstractRenderer {
         int spacing = 4;
 
         g2d.setFont(coinTextFont);
-        String balanceText = String.valueOf(player.attr.getBalance());
+        player.attr.updateBalance();
+        String balanceText = String.valueOf(player.attr.getVisualBalance());
 
         int x = coinRightX - maxDigitWidth * balanceText.length();
 

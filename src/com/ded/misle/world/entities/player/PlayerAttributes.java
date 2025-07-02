@@ -1,6 +1,8 @@
 package com.ded.misle.world.entities.player;
 
 import com.ded.misle.audio.AudioFile;
+import com.ded.misle.renderer.smoother.SyncedValue;
+import com.ded.misle.renderer.smoother.modifiers.BounceModifier;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -8,7 +10,6 @@ import java.util.TimerTask;
 import static com.ded.misle.audio.AudioPlayer.playThis;
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.renderer.MainRenderer.fader;
-import static com.ded.misle.world.data.WorldLoader.loadBoxes;
 import static com.ded.misle.world.data.WorldLoader.unloadBoxes;
 import static com.ded.misle.world.entities.player.Inventory.PossibleItemStats.*;
 import static com.ded.misle.items.Item.updateMaxStackSize;
@@ -37,7 +38,7 @@ public class PlayerAttributes {
 
 	// COINS
 
-	private int balance;
+	private SyncedValue balance = new SyncedValue(0);
 
 	// LEVEL ATTRIBUTES
 
@@ -265,16 +266,24 @@ public class PlayerAttributes {
 
 	// COINS
 
-	public int getBalance() {
-		return balance;
+	public int getVisualBalance() {
+		return balance.getVisualInt();
+	}
+
+	public int getRealBalance() {
+		return (int) balance.getReal();
+	}
+
+	public void updateBalance() {
+		balance.update(13f);
 	}
 
 	public void setBalance(int balance) {
-		this.balance = balance;
+		this.balance = new SyncedValue(balance);
 	}
 
 	public void addBalance(int balance) {
-		this.balance += balance;
+		this.balance.set(this.balance.getReal() + balance);
 	}
 
 	// COUNT LIMIT
