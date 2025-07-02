@@ -10,10 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.ded.misle.game.GamePanel.getWindow;
 import static com.ded.misle.core.Path.getPath;
@@ -23,6 +20,10 @@ import static java.nio.file.Files.createDirectories;
 public abstract class ImageManager {
     public static final Map<ImageName, BufferedImage> cachedImages = new HashMap<>();
     public static final ArrayList<ImageName> playerImages = new ArrayList<>();
+
+    private static final Map<EditKey, BufferedImage> colorEditCache = new WeakHashMap<>();
+    private static final Map<BufferedImage, BufferedImage> randomColorCache = new WeakHashMap<>();
+    private static final Map<MergeKey, BufferedImage> mergeCache = new WeakHashMap<>();
 
     static {
         Collections.addAll(playerImages,
@@ -109,22 +110,27 @@ public abstract class ImageManager {
     }
 
     public static BufferedImage mergeImages(BufferedImage img, BufferedImage target) {
-        img = deepCopy(img);
+        MergeKey key = new MergeKey(img, target);
+        if (mergeCache.containsKey(key)) return mergeCache.get(key);
 
-        Image targetImage = target.getScaledInstance(img.getWidth(), img.getHeight(), Image.SCALE_DEFAULT);
+        BufferedImage copy = deepCopy(img);
+
+        Image targetImage = target.getScaledInstance(copy.getWidth(), copy.getHeight(), Image.SCALE_DEFAULT);
         int width = targetImage.getWidth(null);
         int height = targetImage.getHeight(null);
         target = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         target.getGraphics().drawImage(targetImage, 0, 0, null);
 
-        for (int i = 0; i < img.getWidth(); i++) {
-            for (int j = 0; j < img.getHeight(); j++) {
-                if (img.getRGB(i, j) != 16777215 &&
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (copy.getRGB(i, j) != 16777215 &&
                     target.getRGB(i, j) != 0) {
-                    img.setRGB(i, j, target.getRGB(i, j));
+                    copy.setRGB(i, j, target.getRGB(i, j));
                 }
             }
         }
+
+        mergeCache.put(key, copy);
         return img;
     }
 
@@ -160,4 +166,7 @@ public abstract class ImageManager {
             System.out.println("Failed to take a screenshot");
         }
     }
+
+    private record EditKey(BufferedImage img, Color color) {}
+    private record MergeKey(BufferedImage img, BufferedImage overlay) {}
 }
