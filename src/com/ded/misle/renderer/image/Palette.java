@@ -59,7 +59,7 @@ public class Palette {
     }
 
     public Palette(List<Color> palette) {
-        this.palette = palette;
+        this.palette = List.copyOf(palette);
     }
 
     /**
