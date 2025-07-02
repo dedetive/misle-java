@@ -42,6 +42,9 @@ public class Path {
             case GAME -> {
                 return attemptToFindPath(workingDir, "com/ded/misle", branch);
             }
+            case PALETTES -> {
+                return attemptToFindPath(workingDir, "resources/palettes");
+            }
         }
         throw new RuntimeException(tag.name() + " tag not found when getting path");
     }
@@ -73,6 +76,9 @@ public class Path {
             }
             case GAME -> {
                 return attemptToFindPath(workingDir, "com/ded/misle");
+            }
+            case PALETTES -> {
+                return attemptToFindPath(workingDir, "resources/palettes");
             }
         }
         throw new RuntimeException(tag.name() + " tag not found when getting path");
@@ -122,7 +128,10 @@ public class Path {
         GAME,
         RESOURCES,
         ROOT,
-        CONFIG;
+        CONFIG,
+        PALETTES
+
+        ;
 
         public static final PathTag DEFAULT_TAG = ROOT;
     }
