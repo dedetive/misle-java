@@ -80,4 +80,16 @@ public class PaletteShifter {
     }
 
     //endregion
+
+    //region helper
+
+    private static float clampInt(float value) {
+        return Math.min(255, Math.max(0, Math.round(value * 255)));
+    }
+
+    private static float clampFloat(float value) {
+        return Math.min(1f, Math.max(0f, value));
+    }
+
+    //endregion
 }
