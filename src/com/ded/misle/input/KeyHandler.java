@@ -25,7 +25,7 @@ import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
 import static com.ded.misle.renderer.DialogRenderer.fillLetterDisplay;
 import static com.ded.misle.renderer.DialogRenderer.isLetterDisplayFull;
 import static com.ded.misle.renderer.FontManager.dialogNPCText;
-import static com.ded.misle.renderer.ImageManager.*;
+import static com.ded.misle.renderer.image.ImageManager.*;
 import static com.ded.misle.renderer.MenuButton.*;
 import static com.ded.misle.renderer.MenuRenderer.goToPreviousMenu;
 import static com.ded.misle.renderer.SaveCreator.confirmName;

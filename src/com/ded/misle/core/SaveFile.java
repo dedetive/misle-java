@@ -24,7 +24,7 @@ import static com.ded.misle.core.Path.getPath;
 import static com.ded.misle.game.GamePanel.isDebug;
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.core.SaveFile.PixelColor.*;
-import static com.ded.misle.renderer.ImageManager.*;
+import static com.ded.misle.renderer.image.ImageManager.*;
 
 public class SaveFile {
 

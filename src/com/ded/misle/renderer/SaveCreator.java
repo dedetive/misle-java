@@ -1,6 +1,7 @@
 package com.ded.misle.renderer;
 
 import com.ded.misle.core.LanguageManager;
+import com.ded.misle.renderer.image.ImageManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +10,6 @@ import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 import static com.ded.misle.game.GamePanel.player;
-import static com.ded.misle.core.Setting.antiAliasing;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.dialogNPCText;
 import static com.ded.misle.renderer.MainRenderer.gameStart;

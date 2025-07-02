@@ -3,7 +3,7 @@ package com.ded.misle.world.boxes;
 import com.ded.misle.renderer.smoother.SmoothValue;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.logic.PhysicsEngine;
-import com.ded.misle.renderer.ImageManager;
+import com.ded.misle.renderer.image.ImageManager;
 import com.ded.misle.renderer.smoother.SmoothPosition;
 import com.ded.misle.world.logic.World;
 import com.ded.misle.world.logic.effects.Collectible;
@@ -20,7 +20,7 @@ import java.util.*;
 
 import static com.ded.misle.core.Path.getPath;
 import static com.ded.misle.game.GamePanel.*;
-import static com.ded.misle.renderer.ImageManager.*;
+import static com.ded.misle.renderer.image.ImageManager.*;
 import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 import static com.ded.misle.world.logic.PhysicsEngine.ObjectType.BOX;

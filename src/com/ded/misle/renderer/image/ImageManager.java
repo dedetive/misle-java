@@ -1,4 +1,4 @@
-package com.ded.misle.renderer;
+package com.ded.misle.renderer.image;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

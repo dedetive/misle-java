@@ -3,6 +3,7 @@ package com.ded.misle.renderer;
 import com.ded.misle.core.LanguageManager;
 import com.ded.misle.input.MouseHandler;
 import com.ded.misle.items.Item;
+import com.ded.misle.renderer.image.ImageManager;
 import com.ded.misle.renderer.smoother.SmoothPosition;
 
 import java.awt.*;
@@ -12,7 +13,7 @@ import java.util.List;
 
 import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.renderer.ColorManager.*;
-import static com.ded.misle.renderer.ImageManager.cachedImages;
+import static com.ded.misle.renderer.image.ImageManager.cachedImages;
 import static com.ded.misle.renderer.PlayingRenderer.*;
 
 public abstract class InventoryRenderer {
