@@ -6,9 +6,17 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Represents a unique color palette extracted from a {@link BufferedImage}, ordered by frequency.
+ * Represents a color palette extracted from a {@link BufferedImage}, ordered by color frequency.
  * <p>
- * Colors are sorted from the most to the least frequent, based on how many times each appears in the image.
+ * Each color in the palette corresponds to a unique pixel value found in the image,
+ * with entries ordered from the most to the least frequent.
+ * This allows deterministic mapping of colors by usage, which is useful for tasks such as
+ * palette swapping, visual clustering, recoloring, or compression.
+ * <p>
+ * The palette is immutable once created and supports indexed access, equality comparison,
+ * and conversion to an unmodifiable list.
+ *
+ * @see Painter
  */
 public class Palette {
 
@@ -18,10 +26,12 @@ public class Palette {
     private final List<Color> palette;
 
     /**
-     * Constructs a {@code Palette} from the given image by counting pixel occurrences of each color,
-     * and sorting the result in descending order of frequency.
+     * Constructs a {@code Palette} by analyzing the frequency of each pixel color in the provided image.
+     * <p>
+     * All colors are included regardless of alpha value and transparency.
+     * The resulting palette is ordered by descending pixel count.
      *
-     * @param img the image to extract the palette from
+     * @param img the image to extract unique colors and build the palette from
      */
     public Palette(BufferedImage img) {
         Map<Color, Integer> colorCountMap = new HashMap<>();
@@ -42,9 +52,12 @@ public class Palette {
 
     /**
      * Returns the color at the specified index in the palette.
+     * <p>
+     * Index {@code 0} corresponds to the most frequent color in the source image.
+     * If the index is out of bounds, {@code null} is returned and an error is logged.
      *
-     * @param index the index of the color to retrieve
-     * @return the {@link Color} at the given index, or null if given index is invalid
+     * @param index the position of the color in the palette
+     * @return the color at that index, or {@code null} if out of range
      */
     public Color get(int index) {
         if (index < 0 || index >= palette.size()) {
@@ -57,21 +70,28 @@ public class Palette {
     /**
      * Returns the number of unique colors in this palette.
      *
-     * @return the size of the palette
+     * @return the size of the palette (i.e., number of distinct colors)
      */
     public int size() {
         return palette.size();
     }
 
     /**
-     * Returns the entire palette as an unmodifiable list.
+     * Returns an unmodifiable view of this palette's color list.
+     * <p>
+     * The list is ordered by descending frequency and reflects the palette's internal state.
      *
-     * @return an unmodifiable list of colors
+     * @return an unmodifiable list of the palette's colors
      */
     public List<Color> asList() {
-        return Collections.unmodifiableList(palette);
+        return palette;
     }
 
+    /**
+     * Returns a string representation of this palette, including its size and contents.
+     *
+     * @return a string describing the palette
+     */
     @Override
     public String toString() {
         return "Palette{" +
@@ -80,6 +100,15 @@ public class Palette {
             '}';
     }
 
+    /**
+     * Compares this palette to another for equality.
+     * <p>
+     * Two palettes are considered equal if they contain the exact same colors
+     * in the exact same order.
+     *
+     * @param obj the object to compare with
+     * @return {@code true} if both palettes contain the same colors in order; {@code false} otherwise
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -88,6 +117,11 @@ public class Palette {
         return this.palette.equals(other.palette);
     }
 
+    /**
+     * Returns a hash code for this palette, based on its internal color list.
+     *
+     * @return a hash code representing the palette
+     */
     @Override
     public int hashCode() {
         return palette.hashCode();
