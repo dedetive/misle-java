@@ -79,4 +79,17 @@ public class Palette {
             ", colors=" + palette +
             '}';
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Palette other)) return false;
+
+        return this.palette.equals(other.palette);
+    }
+
+    @Override
+    public int hashCode() {
+        return palette.hashCode();
+    }
 }
