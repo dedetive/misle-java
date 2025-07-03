@@ -81,10 +81,14 @@ public class Player extends Entity {
 	 * A valid weapon is defined as having "weapon" as item type.
 	 */
 	public void attack() {
+		attack(1f);
+	}
+
+	public void attack(float intensity) {
 		String heldItemType = this.inv.getSelectedItem().getType();
 
 		if (heldItemType.equals("weapon")) {
-			this.inv.useWeapon();
+			this.inv.useWeapon(intensity);
 		}
 	}
 
