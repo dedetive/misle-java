@@ -114,6 +114,19 @@ public class PaletteShifter {
         return this.palette;
     }
 
+    public Palette fadeAlpha(float multiplier) {
+        List<Color> faded = palette.asList().stream().map(c -> {
+            int alpha = Math.round(c.getAlpha() * multiplier);
+            return new Color(
+                clampFloat(c.getRed() / 255f),
+                clampFloat(c.getGreen() / 255f),
+                clampFloat(c.getBlue() / 255f),
+                clampFloat(alpha / 255f));
+        }).toList();
+        this.palette = new Palette(faded);
+        return this.palette;
+    }
+
 
     //endregion
 
