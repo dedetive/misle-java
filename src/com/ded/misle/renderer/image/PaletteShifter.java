@@ -127,6 +127,11 @@ public class PaletteShifter {
         return this.palette;
     }
 
+    public Palette transform(java.util.function.Function<Color, Color> transform) {
+        List<Color> mapped = palette.asList().stream().map(transform).toList();
+        this.palette = new Palette(mapped);
+        return this.palette;
+    }
 
     //endregion
 
