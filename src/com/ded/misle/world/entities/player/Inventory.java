@@ -440,12 +440,16 @@ public class Inventory {
 	}
 
 	public void useItem() {
-		if (getSelectedItem() != null) { // Ensure something is selected
+		useItem(1f);
+	}
+
+	public void useItem(float intensity) {
+		if (getSelectedItem() != null) {
 			String type = getSelectedItem().getType();
 
-            switch (type) {
+			switch (type) {
 				case "potion" -> usePotion();
-				case "weapon" -> useWeapon();
+				case "weapon" -> useWeapon(intensity);
 			}
 		}
 	}
@@ -510,7 +514,7 @@ public class Inventory {
 		}
 	}
 
-	public void useWeapon() {
+	public void useWeapon(float intensity) {
 		Item it = getSelectedItem();
 		int attackDelay = Integer.parseInt(it.getAttributes().get("attackDelay").toString());
 		if (it.canUse() && !player.isWaiting()) {
