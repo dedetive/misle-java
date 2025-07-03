@@ -98,6 +98,16 @@ public class PaletteShifter {
     }
 
     /**
+     * Alias for {@link #rotated(int)}. Provided for more intuitive naming in some contexts.
+     *
+     * @param offset the number of positions to rotate the palette by (positive or negative)
+     * @return the updated {@link Palette} after rotation
+     */
+    public Palette offset(int offset) {
+        return rotated(offset);
+    }
+
+    /**
      * Truncates the palette to a maximum number of colors, preserving only the first ones.
      * <p>
      * This can help enforce a color budget for compression, dithering, or stylized restrictions.
