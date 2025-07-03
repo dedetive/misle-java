@@ -79,6 +79,42 @@ public class PaletteShifter {
         return this.palette;
     }
 
+    public Palette gamma(float gamma) {
+        List<Color> result = palette.asList().stream().map(c -> {
+            float r = (float) Math.pow(c.getRed() / 255.0, gamma);
+            float g = (float) Math.pow(c.getGreen() / 255.0, gamma);
+            float b = (float) Math.pow(c.getBlue() / 255.0, gamma);
+            return new Color(clampFloat(r), clampFloat(g), clampFloat(b), c.getAlpha() / 255f);
+        }).toList();
+        this.palette = new Palette(result);
+        return this.palette;
+    }
+
+    public Palette saturate(float multiplier) {
+        List<Color> saturated = palette.asList().stream()
+            .map(c -> {
+                float[] hsb = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
+                hsb[1] = clampFloat(hsb[1] * multiplier);
+                int rgb = Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]);
+                return new Color(rgb, true);
+            }).toList();
+        this.palette = new Palette(saturated);
+        return this.palette;
+    }
+
+    public Palette brightness(float multiplier) {
+        List<Color> brightened = palette.asList().stream()
+            .map(c -> {
+                float[] hsb = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
+                hsb[2] = clampFloat(hsb[2] * multiplier);
+                int rgb = Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]);
+                return new Color(rgb, true);
+            }).toList();
+        this.palette = new Palette(brightened);
+        return this.palette;
+    }
+
+
     //endregion
 
     //region helper
