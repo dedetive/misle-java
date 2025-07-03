@@ -140,5 +140,9 @@ public class PaletteShifter {
         return Math.min(1f, Math.max(0f, value));
     }
 
+    public PaletteShifter copy() {
+        return new PaletteShifter(new Palette(new ArrayList<>(palette.asList())));
+    }
+
     //endregion
 }
