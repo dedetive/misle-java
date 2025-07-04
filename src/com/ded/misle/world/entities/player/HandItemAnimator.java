@@ -16,6 +16,10 @@ public class HandItemAnimator {
     private final Attacker attacker = new Attacker();
 
     public void update() {
+        update(1f);
+    }
+
+    public void update(float damageMultiplier) {
         Item selectedItem = player.inv.getSelectedItem();
 
         if (selectedItem != null) {
@@ -31,7 +35,7 @@ public class HandItemAnimator {
             double damage = Double.parseDouble(selectedItem.getAttributes().get("damage").toString());
 
             attacker.setRange(range);
-            attacker.setDamage(damage);
+            attacker.setDamage(damage * damageMultiplier);
         } else {
             attacker.invalidate();
         }
