@@ -38,7 +38,7 @@ public class Enemy extends Entity {
      */
     public Enemy(Point pos, EnemyType type, double magnification) {
         super(pos.x, pos.y);
-        this.magnification = magnification;
+        this.magnification = magnification + player.getDifficulty().enemyStatMultiplier;
         this.type = type;
         this.load();
         EnemyRegistry.register(this);
