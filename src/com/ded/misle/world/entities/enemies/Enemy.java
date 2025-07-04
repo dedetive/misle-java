@@ -8,6 +8,8 @@ import com.ded.misle.world.logic.effects.Damage;
 
 import java.awt.*;
 
+import static com.ded.misle.game.GamePanel.player;
+
 /**
  * Represents an enemy entity in the game world.
  * Enemies have behaviors, experience and coin drops, and belong to a specific {@link EnemyType}.

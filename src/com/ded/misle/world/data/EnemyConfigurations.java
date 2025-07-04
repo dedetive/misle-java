@@ -35,7 +35,7 @@ public enum EnemyConfigurations {
     GOBLIN(enemy -> {
         enemy.setMaxHP(20);
         enemy.fillHP();
-        enemy.setDamage(3, 2);
+        enemy.setDamage(3);
         enemy.setTexture("../characters/enemy/goblin");
         enemy.setDropTable(DropTable.GOBLIN);
         enemy.setXpDrop(1);
