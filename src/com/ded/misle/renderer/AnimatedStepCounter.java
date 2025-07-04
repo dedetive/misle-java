@@ -1,11 +1,11 @@
 package com.ded.misle.renderer;
 
-import com.ded.misle.core.PraspomiaNumberConverter;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.ded.misle.core.PraspomiaNumberConverter.*;
 
 public class AnimatedStepCounter {
     private int currentStep = 0;
@@ -48,7 +48,10 @@ public class AnimatedStepCounter {
 
     public void draw(Graphics2D g2d, Font baseFont, int x, int y) {
         update();
-        String text = PraspomiaNumberConverter.impureConvertNumberSystem(String.valueOf(currentStep), PraspomiaNumberConverter.ConvertMode.TO_PRASPOMIA);
+        String text =
+            impureConvertNumberSystem(
+                String.valueOf(currentStep),
+                ConvertMode.TO_PRASPOMIA);
         Font scaledFont = FontManager.getResizedFont(baseFont, baseFont.getSize() * scale);
 
         FontMetrics fm = FontManager.getCachedMetrics(g2d, scaledFont);
