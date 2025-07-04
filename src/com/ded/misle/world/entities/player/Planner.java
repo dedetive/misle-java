@@ -346,4 +346,10 @@ public class Planner {
             pauseLock.notifyAll();
         }
     }
+
+    public static double planningMultiplier(int steps) {
+        double adjusted = steps + (steps == 2 ? 0.3 : 0);
+        double log2 = Math.log(adjusted) / Math.log(2);
+        return Math.max(log2, 1.0);
+    }
 }
