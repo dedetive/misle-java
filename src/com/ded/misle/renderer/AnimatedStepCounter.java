@@ -151,6 +151,7 @@ public class AnimatedStepCounter {
 
     public void reset() {
         currentStep = 0;
+        damageMultiplier = 1.0f;
         yOffset = 0;
         scale = 1f;
         maxScale = 2f;
