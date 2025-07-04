@@ -27,11 +27,15 @@ public class AnimatedStepCounter {
     private static final float JUMP_HEIGHT = 10f;
     private static final long ANIMATION_DURATION = 300;
 
+    private boolean earlyFinish = false;
+
     private final Map<String, BufferedImage> renderCache = new HashMap<>();
 
-    public void updateStep(int step) {
+    public void updateStep(int step, int stepsLeft) {
         currentStep = step;
-        damageMultiplier = Planner.planningMultiplier(step, 0);
+        damageMultiplier = !earlyFinish
+            ? Planner.planningMultiplier(step, 0)
+            : Planner.planningMultiplier(step, stepsLeft);
 
         minScale = Math.min(minScale + SCALE_INCREMENT, MAX_ALLOWED_SCALE);
         maxScale = Math.min(maxScale + SCALE_INCREMENT, MAX_ALLOWED_SCALE);
@@ -145,6 +149,10 @@ public class AnimatedStepCounter {
         return new Color(r, g, b);
     }
 
+    public void alertEarlyFinish() {
+        earlyFinish = true;
+    }
+
     public int getCurrentStep() {
         return currentStep;
     }
@@ -156,5 +164,6 @@ public class AnimatedStepCounter {
         scale = 1f;
         maxScale = 2f;
         minScale = 1f;
+        earlyFinish = false;
     }
 }

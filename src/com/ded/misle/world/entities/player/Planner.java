@@ -260,7 +260,7 @@ public class Planner {
                 int steps = player.stepCounter.getCurrentStep();
                 int stepsLeft = path.getLength();
 
-                player.stepCounter.updateStep(steps + 1);
+                player.stepCounter.updateStep(steps + 1, stepsLeft);
 
                 delayPerTurn = quickExecution
                     ? QUICK_DELAY_PER_TURN
@@ -274,6 +274,8 @@ public class Planner {
                 else {
                     // Kills execution sooner, so reduced damage multi
                     finishExecution(steps, stepsLeft);
+                    player.stepCounter.alertEarlyFinish();
+                    player.stepCounter.updateStep(steps, stepsLeft);
                     break;
                 }
                 player.pos.updateLastDirection(interpretDirection(unitaryPoint.x, unitaryPoint.y));
