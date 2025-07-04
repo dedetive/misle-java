@@ -357,8 +357,8 @@ public class Planner {
         }
     }
 
-    public static double planningMultiplier(int successfulSteps, int maxSteps) {
-        double base = Math.max(maxSteps + 2, 2);
+    public static double planningMultiplier(int successfulSteps, int stepsLeft) {
+        double base = Math.max(stepsLeft + 2, 2);
         double value = successfulSteps + (successfulSteps == 2 ? 0.3 : 0);
         return Math.max(1.0, Math.log(value) / Math.log(base));
     }
