@@ -46,14 +46,53 @@ public enum EnemyConfigurations {
         var pursue = new PursueBehavior();
         var wander = new WanderBehavior(3);
 
-        var chain = new ChainBehavior(
-            wait,
-            pursue,
-            pursue,
-            wait,
-            wait,
-            pursue
-        );
+        ChainBehavior chain;
+        switch (player.getDifficulty()) {
+            case EASY -> {
+                chain = new ChainBehavior(
+                    wait,
+                    pursue
+                );
+            }
+            case MEDIUM -> {
+                chain = new ChainBehavior(
+                    wait,
+                    pursue,
+                    wait,
+                    wait,
+                    pursue
+                );
+            }
+            case HARD -> {
+                chain = new ChainBehavior(
+                    wait,
+                    pursue,
+                    pursue,
+                    wait,
+                    wait,
+                    pursue
+                );
+            }
+            case NIGHTMARE -> {
+                chain = new ChainBehavior(
+                    wait,
+                    pursue,
+                    pursue,
+                    wait,
+                    pursue
+                );
+            }
+            default -> {
+                chain = new ChainBehavior(
+                    wait,
+                    pursue,
+                    pursue,
+                    wait,
+                    wait,
+                    pursue
+                );
+            }
+        }
 
         chain.addConditions(
             pursue.getConditions()
