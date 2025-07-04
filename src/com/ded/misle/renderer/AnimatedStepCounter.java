@@ -27,6 +27,9 @@ public class AnimatedStepCounter {
     private static final float JUMP_HEIGHT = 10f;
     private static final long ANIMATION_DURATION = 300;
 
+    private float earlyFinishRotation = 0f;
+    private float earlyFinishYOffset = 0f;
+
     private boolean earlyFinish = false;
 
     private final Map<String, BufferedImage> renderCache = new HashMap<>();
@@ -54,6 +57,11 @@ public class AnimatedStepCounter {
             float progress = delta / (float) ANIMATION_DURATION;
             scale = maxScale - (maxScale - minScale) * progress;
             yOffset = -JUMP_HEIGHT * (1 - progress);
+
+            if (earlyFinish) {
+                earlyFinishRotation = Math.max((float) Math.sin(progress * Math.PI / 4) * 30f, earlyFinishRotation);
+                earlyFinishYOffset = progress * progress * 10f;
+            }
         }
     }
 
@@ -112,14 +120,23 @@ public class AnimatedStepCounter {
             renderCache.put(cacheKey, img);
         }
 
-        g2d.drawImage(
+        Graphics2D g2 = (Graphics2D) g2d.create();
+
+        g2.translate(x, y + (int) yOffset + (int) earlyFinishYOffset);
+        if (earlyFinish) {
+            g2.rotate(Math.toRadians(earlyFinishRotation));
+        }
+
+        g2.drawImage(
             img,
-            x - textWidth / 2,
-            y + (int) yOffset - textHeight / 2,
+            -textWidth / 2,
+            -textHeight / 2,
             textWidth,
             textHeight,
             null
         );
+
+        g2.dispose();
     }
 
     private Color interpolateGradient(float t) {
@@ -166,5 +183,7 @@ public class AnimatedStepCounter {
         maxScale = 2f;
         minScale = 1f;
         earlyFinish = false;
+        earlyFinishRotation = 0f;
+        earlyFinishYOffset = 0f;
     }
 }
