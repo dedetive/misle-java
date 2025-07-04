@@ -274,6 +274,7 @@ public class Planner {
                 else {
                     // Kills execution sooner, so reduced damage multi
                     finishExecution(steps, stepsLeft);
+                    break;
                 }
                 player.pos.updateLastDirection(interpretDirection(unitaryPoint.x, unitaryPoint.y));
                 TurnManager.requestNewTurn();
@@ -281,6 +282,7 @@ public class Planner {
 
                 if (stepsLeft <= 1) {
                     finishExecution(steps, 0);
+                    break;
                 } else {
                     synchronized (lock) {
                         try {
@@ -354,9 +356,6 @@ public class Planner {
     }
 
     private void finishExecution(int successfulSteps, int stepsLeft) {
-        this.isPlanning = false;
-        this.isExecuting = false;
-
         float damageMultiplier = planningMultiplier(successfulSteps, stepsLeft);
 
         player.inv.useItem(damageMultiplier);
