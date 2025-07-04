@@ -1,14 +1,20 @@
 package com.ded.misle.renderer;
 
+import com.ded.misle.world.entities.player.Planner;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.ded.misle.core.PraspomiaNumberConverter.*;
 
 public class AnimatedStepCounter {
+    private static final DecimalFormat df = new DecimalFormat("#.##");
+
     private int currentStep = 0;
+    private float damageMultiplier = 1.0f;
     private float scale = 1f;
     private float yOffset = 0;
     private long lastUpdateTime = 0;
@@ -25,6 +31,7 @@ public class AnimatedStepCounter {
 
     public void updateStep(int step) {
         currentStep = step;
+        damageMultiplier = Planner.planningMultiplier(step, 0);
 
         minScale = Math.min(minScale + SCALE_INCREMENT, MAX_ALLOWED_SCALE);
         maxScale = Math.min(maxScale + SCALE_INCREMENT, MAX_ALLOWED_SCALE);
@@ -50,8 +57,8 @@ public class AnimatedStepCounter {
         update();
         String text =
             impureConvertNumberSystem(
-                String.valueOf(currentStep),
-                ConvertMode.TO_PRASPOMIA);
+                df.format(damageMultiplier),
+                ConvertMode.TO_PRASPOMIA) + "x";
         Font scaledFont = FontManager.getResizedFont(baseFont, baseFont.getSize() * scale);
 
         FontMetrics fm = FontManager.getCachedMetrics(g2d, scaledFont);
