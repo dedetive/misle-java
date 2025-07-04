@@ -141,7 +141,7 @@ public class PlayingRenderer extends AbstractRenderer {
         if (planner.isPlanning()) drawPlanning(g2d);
         else {
             long lastTime = player.getPlanner().getLastTimeExecuted();
-            long extraTime = 1000 + Math.min(20L * player.stepCounter.getCurrentStep(), 1000);
+            long extraTime = 1000 + Math.min(30L * player.stepCounter.getCurrentStep(), 1500);
             long timeSinceEnd = currentTimeMillis() - lastTime;
 
             if (timeSinceEnd < extraTime) {
