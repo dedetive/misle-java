@@ -179,4 +179,14 @@ public class Enemy extends Entity {
     public void setDamage(double damage, int damageRate) {
         this.effect = new Damage(damage * magnification, damageRate).setTriggersOnContact(false);
     }
+
+    /**
+     * Sets damage, with damage rate set to 1.
+     * <p>Is multiplied by this Enemy's {@link #magnification}.
+     *
+     * @param damage Base damage dealt per hit
+     */
+    public void setDamage(double damage) {
+        setDamage(damage, 1);
+    }
 }
