@@ -202,6 +202,19 @@ public class Path extends TilePattern {
     }
 
     /**
+     * Returns the index of given point within this path, linearly.
+     *
+     * @param point the point to get index of
+     * @return the index of given point, or {@code -1} if not found
+     */
+    public int indexOf(Point point) {
+        for (int i = 0; i < points.length; i++) {
+            if (points[i].equals(point)) return i;
+        }
+        return -1;
+    }
+
+    /**
      * Returns first point, or {@code null} if this Path contains no points.
      * @return the starting point of this Path
      */
