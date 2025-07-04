@@ -357,14 +357,14 @@ public class Planner {
         this.isPlanning = false;
         this.isExecuting = false;
 
-        float damageMultiplier = (float) planningMultiplier(successfulSteps, stepsLeft);
+        float damageMultiplier = planningMultiplier(successfulSteps, stepsLeft);
 
         player.inv.useItem(damageMultiplier);
     }
 
-    public static double planningMultiplier(int successfulSteps, int stepsLeft) {
+    public static float planningMultiplier(int successfulSteps, int stepsLeft) {
         double base = Math.max(stepsLeft + 2, 2);
         double value = successfulSteps + (successfulSteps == 2 ? 0.3 : 0);
-        return Math.max(1.0, Math.log(value) / Math.log(base));
+        return (float) Math.max(1.0, Math.log(value) / Math.log(base));
     }
 }
