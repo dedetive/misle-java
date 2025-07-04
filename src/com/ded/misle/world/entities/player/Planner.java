@@ -276,7 +276,7 @@ public class Planner {
 
                 if (!PhysicsEngine.isSpaceOccupied(point.x, point.y, player) && !shouldStop.get())
                     BoxManipulation.movePlayer(unitaryPoint.x, unitaryPoint.y);
-                else {
+                else if (stepsLeft > 1) {
                     // Kills execution sooner, so reduced damage multi
                     finishExecution(steps, stepsLeft);
                     player.stepCounter.alertEarlyFinish();
