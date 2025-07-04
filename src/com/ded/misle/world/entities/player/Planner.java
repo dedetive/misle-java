@@ -7,6 +7,7 @@ import com.ded.misle.world.logic.Path;
 import com.ded.misle.world.logic.PhysicsEngine;
 
 import java.awt.*;
+import java.util.Arrays;
 
 import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.world.data.Direction.interpretDirection;
@@ -263,10 +264,15 @@ public class Planner {
                 if (!PhysicsEngine.isSpaceOccupied(point.x, point.y, player))
                     BoxManipulation.movePlayer(unitaryPoint.x, unitaryPoint.y);
                 else {
-                    // Kills execution sooner, so no damage multi
+                    // Kills execution sooner, so reduced damage multi
+                    int steps = player.stepCounter.getCurrentStep();
+                    int stepsLeft = path.getLength();
                     isPlanning = false;
                     isExecuting = false;
-                    player.inv.useItem();
+
+                    float damageMultiplier = (float) planningMultiplier(steps, stepsLeft);
+
+                    player.inv.useItem(damageMultiplier);
                 }
                 player.pos.updateLastDirection(interpretDirection(unitaryPoint.x, unitaryPoint.y));
                 TurnManager.requestNewTurn();
@@ -277,7 +283,7 @@ public class Planner {
                     isExecuting = false;
                     int steps = player.stepCounter.getCurrentStep();
 
-                    float damageMultiplier = (float) planningMultiplier(steps);
+                    float damageMultiplier = (float) planningMultiplier(steps, 0);
 
                     player.inv.useItem(damageMultiplier);
                 } else {
@@ -351,9 +357,9 @@ public class Planner {
         }
     }
 
-    public static double planningMultiplier(int steps) {
-        double adjusted = steps + (steps == 2 ? 0.3 : 0);
-        double log2 = Math.log(adjusted) / Math.log(2);
-        return Math.max(log2, 1.0);
+    public static double planningMultiplier(int successfulSteps, int maxSteps) {
+        double base = Math.max(maxSteps + 2, 2);
+        double value = successfulSteps + (successfulSteps == 2 ? 0.3 : 0);
+        return Math.max(1.0, Math.log(value) / Math.log(base));
     }
 }
