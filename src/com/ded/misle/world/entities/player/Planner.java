@@ -235,7 +235,10 @@ public class Planner {
             lastTimeStarted = System.currentTimeMillis();
 
             AtomicBoolean shouldStop = new AtomicBoolean(false);
-            Runnable r = () -> shouldStop.set(true);
+            Runnable r = () -> {
+                shouldStop.set(true);
+                skipStep();
+            };
             player.scheduleOnDamage(r);
 
             for (Point point : this.path.getPoints()) {
@@ -269,6 +272,8 @@ public class Planner {
                 path.removePoint(previousPoint);
                 Point unitaryPoint = new Point(point.x - player.getX(), point.y - player.getY());
 
+                player.pos.updateLastDirection(interpretDirection(unitaryPoint.x, unitaryPoint.y));
+
                 if (!PhysicsEngine.isSpaceOccupied(point.x, point.y, player) && !shouldStop.get())
                     BoxManipulation.movePlayer(unitaryPoint.x, unitaryPoint.y);
                 else {
@@ -278,7 +283,6 @@ public class Planner {
                     player.stepCounter.updateStep(steps, stepsLeft);
                     break;
                 }
-                player.pos.updateLastDirection(interpretDirection(unitaryPoint.x, unitaryPoint.y));
                 TurnManager.requestNewTurn();
                 previousPoint = point;
 
