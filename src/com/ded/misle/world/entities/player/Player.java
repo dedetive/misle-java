@@ -34,7 +34,7 @@ public class Player extends Entity {
 	public boolean isIconActive;
 	public boolean isIconTexture;
 
-	private Difficulty difficulty;
+	private Difficulty difficulty = Difficulty.MEDIUM;
 
 	long lastSendTime;
 	private java.util.List<NetClient.Player> onlinePlayerList = new ArrayList<>();
