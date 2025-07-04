@@ -296,6 +296,11 @@ public class Entity extends Box {
 
         applyKnockback(knockback);
 
+        for (Runnable r : onDamage) {
+            r.run();
+        }
+        onDamage.clear();
+
         return finalDamage;
     }
 
@@ -693,5 +698,11 @@ public class Entity extends Box {
 
     public int getMaxSight() {
         return maxSight;
+    }
+
+    private final List<Runnable> onDamage = new ArrayList<>();
+
+    public void scheduleOnDamage(Runnable runnable) {
+        onDamage.add(runnable);
     }
 }
