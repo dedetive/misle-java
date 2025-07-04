@@ -260,17 +260,17 @@ public class Planner {
                     continue;
                 }
 
-                int steps = player.stepCounter.getCurrentStep();
-                int stepsLeft = path.getLength();
-
-                player.stepCounter.updateStep(steps + 1, stepsLeft);
-
                 delayPerTurn = quickExecution
                     ? QUICK_DELAY_PER_TURN
                     : Math.max(delayPerTurn - DELAY_REDUCTION_PER_TURN, MINIMUM_DELAY_PER_TURN);
 
                 path.removePoint(previousPoint);
                 Point unitaryPoint = new Point(point.x - player.getX(), point.y - player.getY());
+
+                int steps = player.stepCounter.getCurrentStep();
+                int stepsLeft = path.getLength();
+
+                player.stepCounter.updateStep(steps + 1, stepsLeft);
 
                 player.pos.updateLastDirection(interpretDirection(unitaryPoint.x, unitaryPoint.y));
 
