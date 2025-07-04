@@ -69,7 +69,7 @@ public class AnimatedStepCounter {
         int textWidth = fm.stringWidth(text);
         int textHeight = fm.getHeight();
 
-        String cacheKey = text + "@" + (int) scale;
+        String cacheKey = text + "@" + (int) scale + "@" + earlyFinish;
         BufferedImage img = renderCache.get(cacheKey);
 
         if (img == null) {
@@ -104,7 +104,8 @@ public class AnimatedStepCounter {
 
             // Text itself
             float normalizedStep = Math.min(currentStep / 100f, 1f);
-            gImg.setColor(interpolateGradient(normalizedStep));
+            if (!earlyFinish) gImg.setColor(interpolateGradient(normalizedStep));
+            else gImg.setColor(new Color(0xAF0000));
             gImg.drawString(text, drawX, drawY);
             gImg.dispose();
 
