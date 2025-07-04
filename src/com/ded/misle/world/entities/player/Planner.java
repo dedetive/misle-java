@@ -275,7 +275,7 @@ public class Planner {
                 if (path.getLength() <= 1) {
                     isPlanning = false;
                     isExecuting = false;
-                    player.inv.useItem();
+                    player.inv.useItem(player.stepCounter.getCurrentStep());
                 } else {
                     synchronized (lock) {
                         try {
