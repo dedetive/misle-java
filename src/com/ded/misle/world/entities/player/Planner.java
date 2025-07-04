@@ -275,7 +275,11 @@ public class Planner {
                 if (path.getLength() <= 1) {
                     isPlanning = false;
                     isExecuting = false;
-                    player.inv.useItem(player.stepCounter.getCurrentStep());
+                    int steps = player.stepCounter.getCurrentStep();
+
+                    float damageMultiplier = (float) planningMultiplier(steps);
+
+                    player.inv.useItem(damageMultiplier);
                 } else {
                     synchronized (lock) {
                         try {
