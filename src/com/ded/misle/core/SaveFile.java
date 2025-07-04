@@ -218,7 +218,7 @@ public class SaveFile {
 				}
 
 				player.setDifficulty(
-					Difficulty.values()[((loadThis(PixelData.DIFFICULTY) / 4) % 4)]
+					Difficulty.values()[((loadThis(PixelData.DIFFICULTY) / 4 - 1) % 4)]
 				);
 
                 player.pos.setSpawnpoint(Math.max(spawnpoint, 0));
@@ -567,9 +567,7 @@ public class SaveFile {
 			}
 
 			Color px = new Color(image.getRGB(0, 110));
-			int value = px.getBlue();
-			value = value - value % 2;
-			value = value - value % 4;
+			int value = 0;
 
 			if (player.isIconActive) value++;
 			if (player.isIconTexture) value += 2;
