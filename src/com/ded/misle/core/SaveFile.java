@@ -1,6 +1,7 @@
 package com.ded.misle.core;
 
 import com.ded.misle.items.Item;
+import com.ded.misle.world.data.Difficulty;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.entities.player.PlayerAttributes;
 import com.ded.misle.world.entities.player.PlayerStats;
@@ -183,6 +184,7 @@ public class SaveFile {
 		BALANCE_L					(GREEN, 0, 1),
 		ICON_ACTIVE_L				(BLUE, 0, 110),
 		IS_PLAYER_TEXTURE_ICON_L	(BLUE, 0, 110),
+		DIFFICULTY					(BLUE, 0, 110),
 
 		;
 
@@ -214,6 +216,10 @@ public class SaveFile {
 					// Forcing spawn at room 2
 					spawnpoint = 2;
 				}
+
+				player.setDifficulty(
+					Difficulty.values()[((loadThis(PixelData.DIFFICULTY) / 4) % 4)]
+				);
 
                 player.pos.setSpawnpoint(Math.max(spawnpoint, 0));
                 player.pos.reloadSpawnpoint();
@@ -567,6 +573,12 @@ public class SaveFile {
 
 			if (player.isIconActive) value++;
 			if (player.isIconTexture) value += 2;
+			switch (player.getDifficulty()) {
+				case EASY -> value += 4;
+				case MEDIUM -> value += 8;
+				case HARD -> value += 12;
+				case NIGHTMARE -> value += 16;
+			}
 
 			image.setRGB(0, 110,
 				new Color(px.getRed(),
@@ -747,7 +759,7 @@ public class SaveFile {
 				case ICON -> {
 					image = saveImages[saveSlot];
 					BufferedImage output = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-					boolean isIconActive = new Color(image.getRGB(0, 110)).getBlue() % 2 == 1;
+					boolean isIconActive = loadAttribute(PixelData.ICON_ACTIVE_L) % 2 == 1;
 
 					if (isIconActive) {
 
