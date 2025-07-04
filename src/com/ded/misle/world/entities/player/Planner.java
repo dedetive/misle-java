@@ -253,7 +253,10 @@ public class Planner {
                     continue;
                 }
 
-                player.stepCounter.updateStep(player.stepCounter.getCurrentStep() + 1);
+                int steps = player.stepCounter.getCurrentStep();
+                int stepsLeft = path.getLength();
+
+                player.stepCounter.updateStep(steps + 1);
 
                 delayPerTurn = quickExecution
                     ? QUICK_DELAY_PER_TURN
@@ -261,31 +264,19 @@ public class Planner {
 
                 path.removePoint(previousPoint);
                 Point unitaryPoint = new Point(point.x - player.getX(), point.y - player.getY());
+
                 if (!PhysicsEngine.isSpaceOccupied(point.x, point.y, player))
                     BoxManipulation.movePlayer(unitaryPoint.x, unitaryPoint.y);
                 else {
                     // Kills execution sooner, so reduced damage multi
-                    int steps = player.stepCounter.getCurrentStep();
-                    int stepsLeft = path.getLength();
-                    isPlanning = false;
-                    isExecuting = false;
-
-                    float damageMultiplier = (float) planningMultiplier(steps, stepsLeft);
-
-                    player.inv.useItem(damageMultiplier);
+                    finishExecution(steps, stepsLeft);
                 }
                 player.pos.updateLastDirection(interpretDirection(unitaryPoint.x, unitaryPoint.y));
                 TurnManager.requestNewTurn();
                 previousPoint = point;
 
-                if (path.getLength() <= 1) {
-                    isPlanning = false;
-                    isExecuting = false;
-                    int steps = player.stepCounter.getCurrentStep();
-
-                    float damageMultiplier = (float) planningMultiplier(steps, 0);
-
-                    player.inv.useItem(damageMultiplier);
+                if (stepsLeft <= 1) {
+                    finishExecution(steps, 0);
                 } else {
                     synchronized (lock) {
                         try {
@@ -355,6 +346,15 @@ public class Planner {
         synchronized (pauseLock) {
             pauseLock.notifyAll();
         }
+    }
+
+    private void finishExecution(int successfulSteps, int stepsLeft) {
+        this.isPlanning = false;
+        this.isExecuting = false;
+
+        float damageMultiplier = (float) planningMultiplier(successfulSteps, stepsLeft);
+
+        player.inv.useItem(damageMultiplier);
     }
 
     public static double planningMultiplier(int successfulSteps, int stepsLeft) {
