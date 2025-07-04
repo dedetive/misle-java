@@ -7,7 +7,7 @@ import com.ded.misle.world.logic.Path;
 import com.ded.misle.world.logic.PhysicsEngine;
 
 import java.awt.*;
-import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.world.data.Direction.interpretDirection;
@@ -234,6 +234,10 @@ public class Planner {
             delayPerTurn = DEFAULT_DELAY_PER_TURN;
             lastTimeStarted = System.currentTimeMillis();
 
+            AtomicBoolean shouldStop = new AtomicBoolean(false);
+            Runnable r = () -> shouldStop.set(true);
+            player.scheduleOnDamage(r);
+
             for (Point point : this.path.getPoints()) {
                 if (!isExecuting) return;
                 synchronized (pauseLock) {
@@ -265,7 +269,7 @@ public class Planner {
                 path.removePoint(previousPoint);
                 Point unitaryPoint = new Point(point.x - player.getX(), point.y - player.getY());
 
-                if (!PhysicsEngine.isSpaceOccupied(point.x, point.y, player))
+                if (!PhysicsEngine.isSpaceOccupied(point.x, point.y, player) && !shouldStop.get())
                     BoxManipulation.movePlayer(unitaryPoint.x, unitaryPoint.y);
                 else {
                     // Kills execution sooner, so reduced damage multi
