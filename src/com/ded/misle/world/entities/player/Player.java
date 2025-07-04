@@ -3,6 +3,7 @@ package com.ded.misle.world.entities.player;
 import com.ded.misle.game.GamePanel;
 import com.ded.misle.net.NetClient;
 import com.ded.misle.renderer.AnimatedStepCounter;
+import com.ded.misle.world.data.Difficulty;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.world.entities.Entity;
@@ -32,6 +33,8 @@ public class Player extends Entity {
 	public BufferedImage icon;
 	public boolean isIconActive;
 	public boolean isIconTexture;
+
+	private Difficulty difficulty;
 
 	long lastSendTime;
 	private java.util.List<NetClient.Player> onlinePlayerList = new ArrayList<>();
@@ -194,4 +197,12 @@ public class Player extends Entity {
 		UUID uuid = new UUID(high, low);
 		return uuid.toString();
 	}
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
 }
