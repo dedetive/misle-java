@@ -239,7 +239,7 @@ public class Planner {
             player.scheduleOnDamage(r);
 
             for (Point point : this.path.getPoints()) {
-                if (!isExecuting) return;
+                if (!isExecuting) break;
                 synchronized (pauseLock) {
                     while (gameState == GameState.PAUSE_MENU) {
                         try {
@@ -295,6 +295,7 @@ public class Planner {
             lastTimeExecuted = System.currentTimeMillis();
             quickExecution = false;
             isExecuting = false;
+            isPlanning = false;
         });
 
         executor.start();
