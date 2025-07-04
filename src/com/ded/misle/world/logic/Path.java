@@ -1,14 +1,11 @@
 package com.ded.misle.world.logic;
 
-import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.data.TilePattern;
-import com.ded.misle.world.logic.attacks.Range;
 
 import java.awt.*;
-import java.awt.List;
 import java.util.*;
 
-public class Path extends TilePattern {
+public class Path extends TilePattern implements Cloneable {
     private final Deque<Point[]> history = new LinkedList<>();
 
     /**
