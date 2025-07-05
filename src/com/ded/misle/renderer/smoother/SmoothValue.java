@@ -111,4 +111,8 @@ public class SmoothValue {
     public int getCurrentInt() {
         return Math.round(getCurrentFloat());
     }
+
+    public void invalidate() {
+        this.target = current;
+    }
 }
