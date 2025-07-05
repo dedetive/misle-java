@@ -40,8 +40,6 @@ public class PlayerPosition {
 	public PlayerPosition() {
 		this.cameraOffsetX = new SyncedValue(0);
 		this.cameraOffsetY = new SyncedValue(0);
-		setCameraOffsetX(0);
-		setCameraOffsetY(0);
 		setRegion(Region.CHAIN_OF_LIES);
 		this.walkingDirection = RIGHT;
 		this.horizontalDirection = RIGHT;
@@ -89,15 +87,23 @@ public class PlayerPosition {
 		);
 	}
 
+	private double lastCameraOffsetX;
 	public double calculateCameraOffsetX() {
 		Planner planner = player.getPlanner();
 		int targetX = planner.isPlanning() && !planner.isExecuting()
 			? planner.getEnd().x
 			: player.getX();
 
-		return Math.clamp(targetX * originalTileSize - (double) originalScreenWidth / 2,
+		double result = Math.clamp(targetX * originalTileSize - (double) originalScreenWidth / 2,
 			- originalTileSize,
 			Math.max(originalWorldWidth - originalScreenWidth + originalTileSize, 0));
+
+		if (Math.abs(lastCameraOffsetX - result) > originalTileSize * 2) {
+			lastCameraOffsetX = result;
+			result = Integer.MIN_VALUE;
+		} else lastCameraOffsetX = result;
+
+		return result;
 	}
 	public double calculateCameraOffsetY() {
 		Planner planner = player.getPlanner();
