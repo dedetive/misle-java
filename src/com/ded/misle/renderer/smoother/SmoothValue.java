@@ -113,6 +113,6 @@ public class SmoothValue {
     }
 
     public void invalidate() {
-        this.target = current;
+        this.current = target;
     }
 }

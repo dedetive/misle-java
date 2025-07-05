@@ -40,6 +40,6 @@ public class SyncedValue {
     }
 
     public void invalidateVisual() {
-        visual.setTarget(real);
+        visual.invalidate();
     }
 }
