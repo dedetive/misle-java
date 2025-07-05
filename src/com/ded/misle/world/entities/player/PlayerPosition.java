@@ -137,6 +137,7 @@ public class PlayerPosition {
 
 		int[] spawnpointCoordinates = room.spawnpointPos;
 		player.setPos(spawnpointCoordinates[0], spawnpointCoordinates[1]);
+		lastCameraOffsetX = Integer.MIN_VALUE;
 	}
 
 	public Region getRegion() {
