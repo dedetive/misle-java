@@ -1,5 +1,6 @@
 package com.ded.misle.game;
 
+import com.ded.misle.core.Setting;
 import com.ded.misle.input.Key;
 import com.ded.misle.input.KeyHandler;
 import com.ded.misle.input.MouseHandler;
@@ -12,6 +13,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 
 import static com.ded.misle.core.Setting.*;
 import static com.ded.misle.renderer.FontManager.buttonFont;
@@ -498,16 +500,21 @@ public class GamePanel extends JPanel implements Runnable {
 	final static float PIXELATION_STEP = 1f;
 	final static float UNPIXELATION_STEP = 2.2f;
 	public static void pixelate(long delay, float maximumBufferScale) {
+		if (Objects.equals(pixelation.str(), "none")) return;
+		if (Objects.equals(pixelation.str(), "low")) maximumBufferScale /= 2.05f;
+
 		GamePanel.maximumBufferScale = maximumBufferScale;
 		try {
 			unpixelating.interrupt();
 		} catch (NullPointerException ignored) {}
 
+		float finalMaximumBufferScale = maximumBufferScale;
+
 		pixelating = new Thread(() -> {
-			while (bufferScale < maximumBufferScale) {
-				bufferScale = Math.min(bufferScale + PIXELATION_STEP, maximumBufferScale);
+			while (bufferScale < finalMaximumBufferScale) {
+				bufferScale = Math.min(bufferScale + PIXELATION_STEP, finalMaximumBufferScale);
 				try {
-					Thread.sleep((long) (delay * PIXELATION_STEP / (maximumBufferScale - DEFAULT_BUFFER_SCALE)));
+					Thread.sleep((long) (delay * PIXELATION_STEP / (finalMaximumBufferScale - DEFAULT_BUFFER_SCALE)));
 				} catch (InterruptedException e) {
 					break;
 				}

@@ -41,7 +41,7 @@ public class Launcher {
 		for (Setting setting : Setting.values()) {
 			updateSetting(setting);
 		}
-		
+
         languageManager = new LanguageManager(languageCode.str());
         levelDesigner = Boolean.parseBoolean(getSetting("levelDesigner"));
 		displayMoreInfo = getSetting("displayMoreInfo");

@@ -190,6 +190,10 @@ public abstract class SettingsMenuRenderer {
         pos = TOP_RIGHT.pos;
         createSetting("settings_general_screenShake", String.valueOf(screenShake.str()),
             pos[0], pos[1], screenShake::cycle, panel, MenuButtonID.SETTING_SCREEN_SHAKE);
+
+        pos = MID_RIGHT.pos;
+        createSetting("settings_general_pixelation", String.valueOf(pixelation.str()),
+            pos[0], pos[1], pixelation::cycle, panel, MenuButtonID.SETTING_PIXELATION);
     }
 
     public static void renderGraphicsMenu(JPanel panel) {

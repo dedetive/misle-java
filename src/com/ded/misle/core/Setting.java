@@ -55,6 +55,11 @@ public enum Setting {
     screenShake(
         true,
         new Boolean[]{true, false}
+    ),
+
+    pixelation(
+        "normal",
+        new String[]{"normal", "low", "none"}
     )
 
     ;
