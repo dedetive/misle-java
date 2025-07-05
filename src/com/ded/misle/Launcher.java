@@ -1,6 +1,7 @@
 package com.ded.misle;
 
 import com.ded.misle.audio.AudioFile;
+import com.ded.misle.core.Setting;
 import com.ded.misle.game.GamePanel;
 import com.ded.misle.core.LanguageManager;
 
@@ -37,13 +38,10 @@ public class Launcher {
 
 		// SETTINGS GETTERS
 
-		updateSetting(screenSize);
-		updateSetting(isFullscreen);
-		updateSetting(fullscreenMode);
-		updateSetting(displayFPS);
-		updateSetting(antiAliasing);
-		updateSetting(frameRateCap);
-		updateSetting(languageCode);
+		for (Setting setting : Setting.values()) {
+			updateSetting(setting);
+		}
+		
         languageManager = new LanguageManager(languageCode.str());
         levelDesigner = Boolean.parseBoolean(getSetting("levelDesigner"));
 		displayMoreInfo = getSetting("displayMoreInfo");
