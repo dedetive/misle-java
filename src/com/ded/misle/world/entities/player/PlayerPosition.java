@@ -56,12 +56,20 @@ public class PlayerPosition {
 		this.cameraOffsetX.set(cameraOffsetX);
 	}
 
+	public void invalidateCameraOffsetX() {
+		this.cameraOffsetX.invalidateVisual();
+	}
+
 	public float getCameraOffsetY() {
 		return cameraOffsetY.getVisual();
 	}
 
 	public void setCameraOffsetY(float cameraOffsetY) {
 		this.cameraOffsetY.set(cameraOffsetY);
+	}
+
+	public void invalidateCameraOffsetY() {
+		this.cameraOffsetY.invalidateVisual();
 	}
 
 	public void addCameraEffect(ValueModifier... modifier) {
