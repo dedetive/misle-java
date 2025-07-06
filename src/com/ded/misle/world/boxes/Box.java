@@ -63,6 +63,7 @@ public class Box {
 	public Box(int x, int y) {
 		worldX = x;
 		worldY = y;
+		this.setOrigin(new Point(x, y));
 		player.pos.world.setPos(this, worldX, worldY);
 	}
 
