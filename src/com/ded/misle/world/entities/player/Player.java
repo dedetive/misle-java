@@ -5,6 +5,7 @@ import com.ded.misle.net.NetClient;
 import com.ded.misle.renderer.AnimatedStepCounter;
 import com.ded.misle.world.data.Difficulty;
 import com.ded.misle.world.data.Direction;
+import com.ded.misle.world.data.PersistentUUIDData;
 import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.world.entities.Entity;
 
@@ -39,6 +40,8 @@ public class Player extends Entity {
 	long lastSendTime;
 	private java.util.List<NetClient.Player> onlinePlayerList = new ArrayList<>();
 	private byte[] uuid = new byte[16];
+
+	private PersistentUUIDData uuidData;
 
 	private boolean waiting;
 
@@ -166,6 +169,7 @@ public class Player extends Entity {
 		if (!Arrays.equals(this.uuid, new byte[16])) return;
 
         this.uuid = uuid;
+		ensureUUIDDataLoaded();
 	}
 
 	public void invalidateUUID() {
@@ -203,6 +207,29 @@ public class Player extends Entity {
 		long high = bb.getLong();
 		long low = bb.getLong();
         return new UUID(high, low);
+	}
+
+	private void ensureUUIDDataLoaded() {
+		if (uuidData == null || uuidData.uuid != this.getUUID()) {
+			uuidData = new PersistentUUIDData(getUUID());
+			uuidData.load();
+		}
+	}
+
+	public void storeTimerInUUID(String id, int turns) {
+		ensureUUIDDataLoaded();
+		this.uuidData.setTurns(id, turns);
+		uuidData.save();
+	}
+
+	public void removeTimerFromUUID(String id) {
+		ensureUUIDDataLoaded();
+		this.uuidData.remove(id);
+	}
+
+	public int loadTimerFromUUID(String id) {
+		ensureUUIDDataLoaded();
+		return this.uuidData.getTurns(id);
 	}
 
     public Difficulty getDifficulty() {
