@@ -27,7 +27,6 @@ public class PersistentUUIDTimerData implements Serializable {
                     return true;
                 }
                 entry.setValue(v - 1);
-                System.out.println(timers);
                 return false;
             })).start();
     }
