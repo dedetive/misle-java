@@ -5,6 +5,7 @@ import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.entities.player.Player;
 import com.ded.misle.world.logic.TurnTimer;
 
+import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
 
 public class Chest extends Effect {
@@ -22,11 +23,32 @@ public class Chest extends Effect {
     public void run(Box chest, Box culprit) {
         if (!(culprit instanceof Player)) return;
 
+        String chestId = chest.getId();
+
+        int storedTurns = player.loadTimerFromUUID(chestId);
+        if (timer == null) {
+            redoTimer(chestId, storedTurns);
+            canOpen = (storedTurns <= 0);
+        }
+
         if (canOpen) {
             canOpen = false;
-            timer = TurnTimer.schedule(openRate, e -> canOpen = true);
+
+            new TurnTimer(1, true, e ->
+                player.storeTimerInUUID(chestId, timer.getRemainingTurnsUntilActivation()))
+                .start()
+                .setStopsAt(openRate);
+
+            redoTimer(chestId, openRate);
             handleBoxChest(chest);
         }
+    }
+
+    private void redoTimer(String chestId, int turns) {
+        timer = TurnTimer.schedule(turns, e -> {
+            canOpen = true;
+            player.removeTimerFromUUID(chestId);
+        });
     }
 
     private void handleBoxChest(Box chest) {
