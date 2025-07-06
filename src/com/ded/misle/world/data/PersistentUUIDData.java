@@ -46,10 +46,8 @@ public class PersistentUUIDData implements Serializable {
     public void save() {
         File file = new File(getPath(Path.PathTag.RESOURCES) + File.separator + "timers_" + uuid + ".dat");
 
-        if (!file.exists()) return;
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-            PersistentUUIDData loadedData = (PersistentUUIDData) ois.readObject();
-            this.merge(loadedData);
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
+            oos.writeObject(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
