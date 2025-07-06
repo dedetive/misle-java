@@ -1,6 +1,7 @@
 package com.ded.misle.world.data;
 
 import com.ded.misle.core.Path;
+import com.ded.misle.world.logic.TurnTimer;
 
 import java.io.*;
 import java.util.HashMap;
@@ -9,7 +10,7 @@ import java.util.UUID;
 
 import static com.ded.misle.core.Path.getPath;
 
-public class PersistentUUIDData implements Serializable {
+public class PersistentUUIDTimerData implements Serializable {
 
     public final UUID uuid;
     @Serial
@@ -17,7 +18,7 @@ public class PersistentUUIDData implements Serializable {
 
     private final Map<String, Integer> timers = new HashMap<>();
 
-    public PersistentUUIDData(UUID uuid) {
+    public PersistentUUIDTimerData(UUID uuid) {
         this.uuid = uuid;
         new TurnTimer(1, true,
             e -> timers.entrySet().removeIf(entry -> {
@@ -47,7 +48,7 @@ public class PersistentUUIDData implements Serializable {
         return new HashMap<>(timers);
     }
 
-    public void merge(PersistentUUIDData other) {
+    public void merge(PersistentUUIDTimerData other) {
         if (!this.uuid.equals(other.uuid)) {
             System.err.println("UUIDs do not match");
             return;
@@ -69,7 +70,7 @@ public class PersistentUUIDData implements Serializable {
         File file = new File(getPath(Path.PathTag.RESOURCES) + File.separator + "timers_" + uuid + ".dat");
 
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-            PersistentUUIDData loadedData = (PersistentUUIDData) ois.readObject();
+            PersistentUUIDTimerData loadedData = (PersistentUUIDTimerData) ois.readObject();
             this.merge(loadedData);
         } catch (Exception ignored) {}
     }

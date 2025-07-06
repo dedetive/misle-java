@@ -5,7 +5,7 @@ import com.ded.misle.net.NetClient;
 import com.ded.misle.renderer.AnimatedStepCounter;
 import com.ded.misle.world.data.Difficulty;
 import com.ded.misle.world.data.Direction;
-import com.ded.misle.world.data.PersistentUUIDData;
+import com.ded.misle.world.data.PersistentUUIDTimerData;
 import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.world.entities.Entity;
 
@@ -41,7 +41,7 @@ public class Player extends Entity {
 	private java.util.List<NetClient.Player> onlinePlayerList = new ArrayList<>();
 	private byte[] uuid = new byte[16];
 
-	private PersistentUUIDData uuidData;
+	private PersistentUUIDTimerData uuidData;
 
 	private boolean waiting;
 
@@ -211,7 +211,7 @@ public class Player extends Entity {
 
 	private void ensureUUIDDataLoaded() {
 		if (uuidData == null || !uuidData.uuid.equals(this.getUUID())) {
-			uuidData = new PersistentUUIDData(getUUID());
+			uuidData = new PersistentUUIDTimerData(getUUID());
 			uuidData.load();
 		}
 	}
