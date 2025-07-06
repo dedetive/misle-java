@@ -102,7 +102,7 @@ public abstract class WorldLoader {
 						case CHEST -> {
 							DropTable dropTable = DropTable.getDropTableByName(getString.apply(parts[1]));
 							box = addBox(BoxPreset.CHEST);
-							long openRate = getLong.apply(parts[2]);
+							int openRate = getInt.apply(parts[2]);
 							box.effect = new Chest(openRate, dropTable);
 						}
 						case ENEMY -> {
