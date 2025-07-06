@@ -97,7 +97,7 @@ public class SmoothValue {
      */
     public float getCurrentFloat() {
         float sum = current;
-        for (ValueModifier mod : modifiers) {
+        for (ValueModifier mod : new ArrayList<>(modifiers)) {
             sum += mod.getOffset();
         }
         return sum;
