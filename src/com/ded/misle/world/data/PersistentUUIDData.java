@@ -12,6 +12,8 @@ import static com.ded.misle.core.Path.getPath;
 public class PersistentUUIDData implements Serializable {
 
     public final UUID uuid;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private final Map<String, Integer> timers = new HashMap<>();
 
