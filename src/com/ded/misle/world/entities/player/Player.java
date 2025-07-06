@@ -172,14 +172,6 @@ public class Player extends Entity {
 		this.uuid = new byte[16];
 	}
 
-	public byte[] getUUIDBytes() {
-		if (Arrays.equals(uuid, new byte[16])) {
-			this.uuid = generateUUID();
-		}
-
-		return this.uuid;
-	}
-
 	public byte[] generateUUID() {
 		UUID uuid = UUID.randomUUID();
 
@@ -190,12 +182,27 @@ public class Player extends Entity {
         return bb.array();
 	}
 
+	public byte[] getUUIDBytes() {
+		if (Arrays.equals(uuid, new byte[16])) {
+			this.uuid = generateUUID();
+		}
+
+		return this.uuid;
+	}
+
 	public String getUUIDString() {
 		ByteBuffer bb = ByteBuffer.wrap(this.getUUIDBytes());
 		long high = bb.getLong();
 		long low = bb.getLong();
 		UUID uuid = new UUID(high, low);
 		return uuid.toString();
+	}
+
+	public UUID getUUID() {
+		ByteBuffer bb = ByteBuffer.wrap(this.getUUIDBytes());
+		long high = bb.getLong();
+		long low = bb.getLong();
+        return new UUID(high, low);
 	}
 
     public Difficulty getDifficulty() {
