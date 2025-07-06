@@ -31,6 +31,8 @@ public class Enemy extends Entity {
     /** Controls the AI behaviors of this enemy. */
     private final BehaviorController controller = new BehaviorController(this);
 
+    private int turnsToRespawn = 0;
+
     /**
      * Constructs a new {@code Enemy} at the given position with a specific type and magnification.
      *
@@ -190,5 +192,23 @@ public class Enemy extends Entity {
      */
     public void setDamage(double damage) {
         setDamage(damage, 1);
+    }
+
+    public void setTurnsToRespawn(int turnsToRespawn) {
+        this.turnsToRespawn = turnsToRespawn;
+    }
+
+    public boolean canRespawn() {
+        return player.loadTimerFromUUID(this.getId()) <= 0;
+    }
+
+    @Override
+    public boolean checkIfDead() {
+        boolean result = super.checkIfDead();
+
+        if (turnsToRespawn > 0)
+            player.storeTimerInUUID(this.getId(), turnsToRespawn);
+
+        return result;
     }
 }
