@@ -3,7 +3,6 @@ package com.ded.misle.world.logic.effects;
 import com.ded.misle.items.DropTable;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.entities.player.Player;
-import com.ded.misle.world.logic.TurnTimer;
 
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
@@ -11,9 +10,6 @@ import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
 public class Chest extends Effect {
     public int openRate;
     public DropTable dropTable;
-
-    private boolean canOpen = true;
-    private TurnTimer timer;
 
     public Chest(int openRate, DropTable dropTable) {
         this.openRate = openRate;
@@ -24,31 +20,12 @@ public class Chest extends Effect {
         if (!(culprit instanceof Player)) return;
 
         String chestId = chest.getId();
-
         int storedTurns = player.loadTimerFromUUID(chestId);
-        if (timer == null) {
-            redoTimer(chestId, storedTurns);
-            canOpen = (storedTurns <= 0);
-        }
 
-        if (canOpen) {
-            canOpen = false;
-
-            new TurnTimer(1, true, e ->
-                player.storeTimerInUUID(chestId, timer.getRemainingTurnsUntilActivation()))
-                .start()
-                .setStopsAt(openRate);
-
-            redoTimer(chestId, openRate);
+        if (storedTurns <= 0) {
             handleBoxChest(chest);
+            player.storeTimerInUUID(chestId, openRate);
         }
-    }
-
-    private void redoTimer(String chestId, int turns) {
-        timer = TurnTimer.schedule(turns, e -> {
-            canOpen = true;
-            player.removeTimerFromUUID(chestId);
-        });
     }
 
     private void handleBoxChest(Box chest) {
@@ -72,7 +49,6 @@ public class Chest extends Effect {
         return "Chest{" +
             "dropTable=" + dropTable +
             ", openRate=" + openRate +
-            ", nextOpenTurn=" + timer.getRemainingTurnsUntilActivation() +
             '}';
     }
 }
