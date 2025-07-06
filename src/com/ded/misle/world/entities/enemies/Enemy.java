@@ -34,6 +34,8 @@ public class Enemy extends Entity {
 
     private int turnsToRespawn = 0;
 
+    private TurnTimer respawnTimer;
+
     /**
      * Constructs a new {@code Enemy} at the given position with a specific type and magnification.
      *
@@ -197,6 +199,8 @@ public class Enemy extends Entity {
 
     public void setTurnsToRespawn(int turnsToRespawn) {
         this.turnsToRespawn = turnsToRespawn;
+        respawnTimer = new TurnTimer(turnsToRespawn + 1, e -> respawnIfPossible());
+        respawnTimer.setRoomScoped(true);
     }
 
     public boolean canRespawn() {
@@ -206,6 +210,7 @@ public class Enemy extends Entity {
     public void respawnIfPossible() {
         if (canRespawn()) {
             respawn();
+            respawnTimer.reset();
         }
     }
 
@@ -215,9 +220,7 @@ public class Enemy extends Entity {
 
         if (result && turnsToRespawn > 0) {
             player.storeTimerInUUID(this.getId(), turnsToRespawn);
-            TurnTimer respawn = new TurnTimer(turnsToRespawn, e -> respawnIfPossible());
-            respawn.setRoomScoped(true);
-            respawn.start();
+            respawnTimer.start();
         } else if (turnsToRespawn <= 0) {
             respawn();
         }
