@@ -210,7 +210,7 @@ public class Player extends Entity {
 	}
 
 	private void ensureUUIDDataLoaded() {
-		if (uuidData == null || uuidData.uuid != this.getUUID()) {
+		if (uuidData == null || !uuidData.uuid.equals(this.getUUID())) {
 			uuidData = new PersistentUUIDData(getUUID());
 			uuidData.load();
 		}
