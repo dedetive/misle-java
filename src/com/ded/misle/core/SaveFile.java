@@ -218,7 +218,7 @@ public class SaveFile {
 				}
 
 				player.setDifficulty(
-					Difficulty.values()[((loadThis(PixelData.DIFFICULTY) / 4 - 1) % 4)]
+					Difficulty.values()[Math.max(((loadThis(PixelData.DIFFICULTY) / 4 - 1) % 4), 0)]
 				);
 
                 player.pos.setSpawnpoint(Math.max(spawnpoint, 0));
