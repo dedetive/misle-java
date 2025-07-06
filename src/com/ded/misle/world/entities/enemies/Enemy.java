@@ -4,6 +4,7 @@ import com.ded.misle.world.data.CoinDropRange;
 import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.ai.AIBehavior;
 import com.ded.misle.world.entities.ai.BehaviorController;
+import com.ded.misle.world.logic.TurnTimer;
 import com.ded.misle.world.logic.effects.Damage;
 
 import java.awt.*;
@@ -202,13 +203,29 @@ public class Enemy extends Entity {
         return player.loadTimerFromUUID(this.getId()) <= 0;
     }
 
+    public void respawnIfPossible() {
+        if (canRespawn()) {
+            respawn();
+        }
+    }
+
     @Override
     public boolean checkIfDead() {
         boolean result = super.checkIfDead();
 
-        if (turnsToRespawn > 0)
+        if (result && turnsToRespawn > 0) {
             player.storeTimerInUUID(this.getId(), turnsToRespawn);
+            TurnTimer respawn = new TurnTimer(turnsToRespawn, e -> respawnIfPossible());
+            respawn.setRoomScoped(true);
+            respawn.start();
+        } else if (turnsToRespawn <= 0) {
+            respawn();
+        }
 
         return result;
+    }
+
+    private void respawn() {
+        new Enemy(this.getOrigin(), type, this.magnification);
     }
 }
