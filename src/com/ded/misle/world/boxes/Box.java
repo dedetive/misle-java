@@ -6,12 +6,10 @@ import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.renderer.image.ImageManager;
 import com.ded.misle.renderer.smoother.SmoothPosition;
 import com.ded.misle.world.logic.World;
-import com.ded.misle.world.logic.effects.Collectible;
 import com.ded.misle.world.logic.effects.Effect;
 import com.ded.misle.world.entities.player.Player;
 
 import javax.imageio.ImageIO;
-import javax.swing.Timer;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -26,7 +24,6 @@ import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 import static com.ded.misle.world.logic.PhysicsEngine.ObjectType.BOX;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.data.WorldLoader.loadBoxes;
-import static com.ded.misle.items.Item.createDroppedItem;
 import static com.ded.misle.renderer.MainRenderer.*;
 
 public class Box {
@@ -325,44 +322,6 @@ public class Box {
 
 	public void setDirection(Direction direction) {
 		this.direction = direction;
-	}
-
-	public void spawnItem(boolean canGoMinus, boolean canGoPlus, int id, int count) {
-		double randomNumber = Math.random();
-
-		int delay = 550;
-		Box droppedItem;
-		int multiplier = 0;
-		if (canGoMinus && canGoPlus) {
-			if (randomNumber > 0.5) {
-				multiplier = 1;
-			} else {
-				multiplier = -1;
-			}
-		} else if (canGoPlus) {
-			multiplier = 1;
-		} else if (canGoMinus) {
-			multiplier = -1;
-		}
-
-		if (Objects.equals(this.textureName, "chest")) {
-			this.setTexture("chest_open");
-		}
-
-		droppedItem = createDroppedItem(this.getX(), this.getY() - 1, id, count);
-
-		moveBox(droppedItem, multiplier, 1, true);
-
-		((Collectible) droppedItem.effect).collectible = false;
-
-		Timer timer = new Timer((int) (delay * 1.5), e -> {
-			((Collectible) droppedItem.effect).collectible = true;
-			if (Objects.equals(this.textureName, "chest_open")) {
-				this.setTexture("chest");
-			}
-		});
-		timer.setRepeats(false);
-		timer.start();
 	}
 
 	// Object type (BOX, HP_BOX)
