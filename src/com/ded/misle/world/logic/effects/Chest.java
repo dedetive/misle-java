@@ -3,9 +3,16 @@ package com.ded.misle.world.logic.effects;
 import com.ded.misle.items.DropTable;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.entities.player.Player;
+import com.ded.misle.world.logic.PhysicsEngine;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import static com.ded.misle.game.GamePanel.player;
-import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
+import static com.ded.misle.items.Item.createDroppedItem;
 
 public class Chest extends Effect {
     public int openRate;
@@ -32,16 +39,31 @@ public class Chest extends Effect {
         int[] results = dropTable.getRandomItemID();
         int id = results[0];
         int count = results[1];
-        boolean canGoMinus = false;
-        boolean canGoPlus = false;
-        if (!isSpaceOccupied(chest.getX() - 1, chest.getY(), new Box())) {
-            canGoMinus = true;
-        }
-        if (!isSpaceOccupied(chest.getX() + 1, chest.getY(), new Box())) {
-            canGoPlus = true;
-        }
 
-        chest.spawnItem(canGoMinus, canGoPlus, id, count);
+        chest.setTexture(chest.textureName + "_open");
+
+        Point c = chest.getPos();
+        List<Point> points = new ArrayList<>(List.of(
+            new Point(c.x - 1, c.y),
+            new Point(c.x + 1, c.y),
+            new Point(c.x, c.y - 1),
+            new Point(c.x, c.y + 1)
+        ));
+
+        points.removeIf(
+            point -> PhysicsEngine.isSpaceOccupied(point.x, point.y)
+        );
+        if (points.isEmpty()) points.add(player.getPos());
+
+        Random random = new Random();
+        Point chosenPos = points.get(random.nextInt(points.size()));
+
+        createDroppedItem(chosenPos.x, chosenPos.y, id, count);
+
+        Timer timer = new Timer(825, e ->
+            chest.setTexture(chest.textureName.replace("_open", "")));
+        timer.setRepeats(false);
+        timer.start();
     }
 
     @Override
