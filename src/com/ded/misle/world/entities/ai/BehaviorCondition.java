@@ -30,7 +30,7 @@ public interface BehaviorCondition {
      */
     void addCondition(Function<BehaviorContext, Boolean> condition);
 
-    void addConditions(Function<BehaviorContext, Boolean>... conditions);
+    void addConditions(Function<BehaviorContext, Boolean>[] conditions);
 
     void addConditions(List<Function<BehaviorContext, Boolean>> conditions);
 
