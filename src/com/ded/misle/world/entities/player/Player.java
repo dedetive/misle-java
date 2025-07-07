@@ -220,7 +220,6 @@ public class Player extends Entity {
 	public void storeTimerInUUID(String id, int turns) {
 		ensureUUIDDataLoaded();
 		this.uuidData.setTurns(id, turns);
-		uuidData.save();
 	}
 
 	public void removeTimerFromUUID(String id) {

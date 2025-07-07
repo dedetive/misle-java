@@ -21,14 +21,18 @@ public class PersistentUUIDTimerData implements Serializable {
     public PersistentUUIDTimerData(UUID uuid) {
         this.uuid = uuid;
         new TurnTimer(1, true,
-            e -> timers.entrySet().removeIf(entry -> {
+            e -> {
+            timers.entrySet().removeIf(entry -> {
                 int v = entry.getValue();
                 if (v < 1) {
                     return true;
                 }
                 entry.setValue(v - 1);
                 return false;
-            })).start();
+            });
+
+            this.save();
+        }).start();
     }
 
     public void setTurns(String targetId, int turns) {
