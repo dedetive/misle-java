@@ -3,6 +3,7 @@ package com.ded.misle.renderer;
 import com.ded.misle.input.KeyHandler;
 import com.ded.misle.world.entities.player.PlayerAttributes;
 
+import static com.ded.misle.core.SaveFile.loadPlayerUUID;
 import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.game.GamePanel.GameState.LEVEL_DESIGNER;
 import static com.ded.misle.game.GamePanel.GameState.PLAYING;
@@ -33,6 +34,7 @@ public abstract class MainRenderer {
 
 	public static void gameStart(int saveSlot) {
 		player.currentSaveSlot = saveSlot;
+		loadPlayerUUID();
 
 		keyH = new KeyHandler();
 
