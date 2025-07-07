@@ -317,7 +317,10 @@ public class SaveFile {
                         // [i][j][1] = Count
                         int itemCount = tempInventory[i][j][2] * 255 + tempInventory[i][j][3];
 
-                        if (itemID == 0 || itemCount == 0) continue;
+                        if (itemID == 0 || itemCount == 0) {
+							player.inv.removeItem(i * 2, j);
+							continue;
+						}
 
                         player.inv.bruteSetItem(Item.createItem(itemID, itemCount), i * 2 + j);
                     }
