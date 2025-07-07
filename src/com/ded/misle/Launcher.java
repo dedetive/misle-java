@@ -61,8 +61,6 @@ public class Launcher {
 			GamePanel.forceResize(screenSize.str());
 			panel.showScreen();
 			panel.startGameThread();
-
-			GamePanel.setDebug(true);
 		});
 	}
 }
