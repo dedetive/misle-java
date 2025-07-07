@@ -310,6 +310,7 @@ public class Item {
 	// COUNT LIMIT
 
 	public static void updateMaxStackSize() {
+		if (player == null || player.inv == null) return;
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 7; j++) {
 				Item item = player.inv.getItem(i, j);

@@ -296,7 +296,8 @@ public class PlayerAttributes {
 		try {
 			updateMaxStackSize();
 		} catch (NullPointerException e) {
-			System.out.println("Max stack multiplier attribute failed because could not read 'inv' as player is null");
+			System.err.println("Max stack multiplier attribute failed.");
+			e.printStackTrace();
 		}
 	}
 
