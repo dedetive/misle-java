@@ -40,8 +40,8 @@ public class SaveFile {
 			saves[i] = (Path.of(filePath + String.valueOf(i) + ".png")).toFile();
             try {
                 saveImages[i] = ImageIO.read(saves[i]);
-            } catch (IOException e) {
-                // This would mean save was not found
+            } catch (IOException ignored) {
+                saveImages[i] = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB);
             }
         }
 	}
