@@ -283,38 +283,6 @@ public class SaveFile {
                 String playerName = new String(nameBytes, StandardCharsets.UTF_8);
                 player.name = playerName.trim();
 
-				byte[][] copies = new byte[4][16];
-
-				for (int i = 0; i < 16; i++) {
-					if (i % 3 == 0) pixelColor = RED;
-					else if (i % 3 == 1) pixelColor = GREEN;
-					else pixelColor = BLUE;
-
-					int offset = i / 3;
-
-					copies[0][i] = (byte) (loadThis(pixelColor, 62 + offset, 64) - 128);
-					copies[1][i] = (byte) (loadThis(pixelColor, 62 - offset, 64) - 128);
-					copies[2][i] = (byte) (loadThis(pixelColor, 62, 64 + offset) - 128);
-					copies[3][i] = (byte) (loadThis(pixelColor, 62, 64 - offset) - 128);
-				}
-
-				boolean valid = true;
-				for (int i = 1; i < 4; i++) {
-					if (!Arrays.equals(copies[0], copies[i])) {
-						valid = false;
-						break;
-					}
-				}
-
-				valid = valid && !Arrays.equals(copies[0], new byte[16]);
-
-				if (valid) {
-					player.setUUID(copies[0]);
-				} else {
-					player.invalidateUUID();
-					player.setUUID(player.generateUUID());
-				}
-
 				// Load inventory
 
                 int[][][] tempInventory = new int[4][7][4];
@@ -798,5 +766,49 @@ public class SaveFile {
 
 	public static boolean backupExists(int saveSlot) {
 		return new File(String.valueOf(SaveFile.saves[saveSlot]).substring(0, String.valueOf(SaveFile.saves[saveSlot]).lastIndexOf(".")) + "B.png").exists();
+	}
+
+	public static void loadPlayerUUID() {
+		int saveSlot = player.currentSaveSlot;
+
+		synchronized (fileLock) {
+			boolean fileExists = checkIfSaveFileExists(saveSlot);
+
+			if (fileExists) {
+				image = saveImages[saveSlot];
+				PixelColor pixelColor;
+				byte[][] copies = new byte[4][16];
+
+				for (int i = 0; i < 16; i++) {
+					if (i % 3 == 0) pixelColor = RED;
+					else if (i % 3 == 1) pixelColor = GREEN;
+					else pixelColor = BLUE;
+
+					int offset = i / 3;
+
+					copies[0][i] = (byte) (loadThis(pixelColor, 62 + offset, 64) - 128);
+					copies[1][i] = (byte) (loadThis(pixelColor, 62 - offset, 64) - 128);
+					copies[2][i] = (byte) (loadThis(pixelColor, 62, 64 + offset) - 128);
+					copies[3][i] = (byte) (loadThis(pixelColor, 62, 64 - offset) - 128);
+				}
+
+				boolean valid = true;
+				for (int i = 1; i < 4; i++) {
+					if (!Arrays.equals(copies[0], copies[i])) {
+						valid = false;
+						break;
+					}
+				}
+
+				valid = valid && !Arrays.equals(copies[0], new byte[16]);
+
+				if (valid) {
+					player.setUUID(copies[0]);
+				} else {
+					player.invalidateUUID();
+					player.setUUID(player.generateUUID());
+				}
+			}
+		}
 	}
 }
