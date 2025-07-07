@@ -1,9 +1,9 @@
 package com.ded.misle.world.logic;
 
 import com.ded.misle.world.boxes.Box;
-import com.ded.misle.world.data.Direction;
-import com.ded.misle.world.logic.effects.Damage;
 import com.ded.misle.world.entities.Entity;
+
+import java.awt.*;
 
 import static com.ded.misle.game.GamePanel.player;
 
@@ -60,6 +60,10 @@ public class PhysicsEngine {
 		}
 
 		return result;
+	}
+
+	public static boolean isPlayerAt(Point point) {
+		return player.getPos().equals(point);
 	}
 
 	private static void handleEffect(Box culprit, Box victim) {
