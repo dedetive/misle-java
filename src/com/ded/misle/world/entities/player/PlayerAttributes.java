@@ -182,7 +182,6 @@ public class PlayerAttributes {
 	public void incrementLevel() {
 		this.level++;
 		updateXPtoLevelUp();
-		System.out.println("Leveled up! Now at level " + this.level + ".");
 		if (level % 10 == 0) {
 			addLevelUpPoints(5);
 		} else if (level % 5 == 0) {
