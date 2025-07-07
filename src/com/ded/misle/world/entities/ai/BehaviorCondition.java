@@ -41,5 +41,6 @@ public interface BehaviorCondition {
      * Use {@link #addCondition(Function)} unless you are intentionally discarding all prior conditions.
      * @param condition a new condition function
      */
+    @Deprecated
     void setCondition(Function<BehaviorContext, Boolean> condition);
 }

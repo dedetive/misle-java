@@ -133,6 +133,7 @@ public abstract class AbstractBehavior implements AIBehavior {
      * @param condition a function that receives the context and returns {@code true} if it matches
      */
     @Override
+    @Deprecated
     public final void setCondition(Function<BehaviorContext, Boolean> condition) {
         this.conditions.clear();
         this.conditions.add(condition);

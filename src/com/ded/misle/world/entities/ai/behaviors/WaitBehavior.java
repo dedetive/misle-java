@@ -30,6 +30,7 @@ public class WaitBehavior extends AbstractBehavior {
      *
      * @param turns the number of turns the entity should wait
      */
+    @SuppressWarnings("deprecation")
     public WaitBehavior(int turns) {
         this.setInterruptible(false);
         this.priority = 0;

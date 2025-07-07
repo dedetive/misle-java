@@ -56,7 +56,7 @@ public class LanguageManager {
 
 			String[] parts = languageCode.split("_");
 
-			Locale locale = new Locale(parts[0], parts.length > 1 ? parts[1] : "");
+			Locale locale = Locale.of(parts[0], parts.length > 1 ? parts[1] : "");
 
 			// Load the target locale's messages
 			messages = ResourceBundle.getBundle("resources.lang.messages", locale, new ResourceBundle.Control() {

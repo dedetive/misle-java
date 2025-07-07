@@ -66,6 +66,7 @@ public class PursueBehavior extends AbstractBehavior {
      * The behavior becomes valid if a path to the target or its last known position exists.
      * Visibility checks are performed using {@link Sight}, and pathfinding via {@link Pathfinder}.
      */
+    @SuppressWarnings("deprecation")
     public PursueBehavior() {
         this.interruptible = true;
         this.priority = 0;
