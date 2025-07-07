@@ -231,4 +231,11 @@ public class Enemy extends Entity {
     private void respawn() {
         new Enemy(this.getOrigin(), type, this.magnification);
     }
+
+    public void scheduleRespawn() {
+        int turns = player.loadTimerFromUUID(this.getId());
+        respawnTimer = new TurnTimer(turns, e -> respawnIfPossible());
+        respawnTimer.setRoomScoped(true);
+        respawnTimer.start();
+    }
 }
