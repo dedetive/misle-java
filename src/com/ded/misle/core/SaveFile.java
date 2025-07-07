@@ -650,7 +650,6 @@ public class SaveFile {
 				return false;
 			}
 		} else {
-			System.out.println("Save file found: " + saves[saveSlot].getPath());
 			return true;
 		}
 	}
