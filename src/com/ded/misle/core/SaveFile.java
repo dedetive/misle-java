@@ -754,14 +754,24 @@ public class SaveFile {
 		} catch (Exception e) {
 			System.out.println(option.toString() + " in save selection screen failed to load!");
         }
-        return 0;
+        return null;
 	}
 
 	public static void deleteSaveFile(int saveSlot) {
 		try {
 			String path = String.valueOf(SaveFile.saves[saveSlot]);
 			path = path.substring(0, path.lastIndexOf("."));
-			SaveFile.saves[saveSlot].renameTo(new File(path + "B.png"));
+			File backup = new File(path + "B.png");
+
+			boolean renamed = SaveFile.saves[saveSlot].renameTo(backup);
+
+			saves[saveSlot] = Path.of(filePath + String.valueOf(saveSlot) + ".png").toFile();
+			saveImages[saveSlot] = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB);
+
+			if (!renamed) {
+				System.out.println("Could not rename save file " + SaveFile.saves[saveSlot].getPath());
+			}
+
 		} catch (SecurityException e) {
 			System.out.println("Could not delete " + SaveFile.saves[saveSlot].getPath());
 		}
