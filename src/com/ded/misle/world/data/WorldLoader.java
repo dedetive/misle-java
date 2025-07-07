@@ -115,6 +115,7 @@ public abstract class WorldLoader {
 							box.setRoomId(room.id);
 							box.setOrigin(new Point(x, y));
 							if (!((Enemy) box).canRespawn()) {
+								((Enemy) box).scheduleRespawn();
 								deleteBox(box);
 								return;
 							}
