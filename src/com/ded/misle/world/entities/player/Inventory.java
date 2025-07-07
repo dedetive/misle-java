@@ -335,6 +335,10 @@ public class Inventory {
 	}
 
 	public void setTempItem(Item tempItem) {
+		if (tempItem == null) {
+			this.tempItem = null;
+			return;
+		}
 		try {
 			this.tempItem = new Item(tempItem.getId(), tempItem.getCount());
 		} catch (Exception e) {

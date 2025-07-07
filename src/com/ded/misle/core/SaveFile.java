@@ -290,15 +290,18 @@ public class SaveFile {
                     for (int j = 0; j < 7; j++) {
                         tempInventory[i][j][0] = loadThis(RED, i, j + 15);
                         tempInventory[i][j][1] = loadThis(GREEN, i, j + 15);
-                        // [i][j][0] = ID
+                        // [i][j][0, 1] = ID
                         int itemID = tempInventory[i][j][0] * 255 + tempInventory[i][j][1];
 
                         tempInventory[i][j][2] = loadThis(BLUE, i, j + 15);
                         tempInventory[i][j][3] = loadThis(RED, j + 15, i);
-                        // [i][j][1] = Count
+                        // [i][j][2, 3] = Count
                         int itemCount = tempInventory[i][j][2] * 255 + tempInventory[i][j][3];
 
-                        if (itemID == 0 || itemCount == 0) continue;
+						if (itemID == 0 || itemCount == 0) {
+							player.inv.removeItem(i, j);
+							continue;
+						}
 
                         player.inv.bruteSetItem(Item.createItem(itemID, itemCount), i, j);
                     }
@@ -318,7 +321,7 @@ public class SaveFile {
                         int itemCount = tempInventory[i][j][2] * 255 + tempInventory[i][j][3];
 
                         if (itemID == 0 || itemCount == 0) {
-							player.inv.removeItem(i * 2, j);
+							player.inv.removeItem(i * 2 + j);
 							continue;
 						}
 
@@ -484,57 +487,59 @@ public class SaveFile {
 
 			// Inventory
 
-			try {
-				int[][][] tempInventory = new int[4][7][4];
-				for (int i = 0; i < 4; i++) {
-					for (int j = 0; j < 7; j++) {
-						if (player.inv.getItem(i, j) == null) {
+			int[][][] tempInventory = new int[4][7][4];
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 7; j++) {
+
+					Item item = player.inv.getItem(i, j);
+
+					if (item == null) {
+						tempInventory[i][j][0] = 0;
+						tempInventory[i][j][1] = 0;
+						tempInventory[i][j][2] = 0;
+						tempInventory[i][j][3] = 0;
+					} else {
+						tempInventory[i][j][0] = getMedium(item.getId());       // HIGH ID
+						tempInventory[i][j][1] = getLow(item.getId());          // LOW ID
+						tempInventory[i][j][2] = getMedium(item.getCount());    // HIGH COUNT
+						tempInventory[i][j][3] = getLow(item.getCount());       // LOW COUNT
+					}
+					brandIntoSaveFile(tempInventory[i][j][0], RED, i, j + 15);
+					brandIntoSaveFile(tempInventory[i][j][1], GREEN, i, j + 15);
+					brandIntoSaveFile(tempInventory[i][j][2], BLUE, i, j + 15);
+					brandIntoSaveFile(tempInventory[i][j][3], RED, j + 15, i);
+				}
+			}
+
+			tempInventory = new int[2][2][4];
+			for (int i = 0; i < 2; i++) {
+				for (int j = 0; j < 2; j++) {
+					try {
+						Item item = player.inv.getItem(i * 2 + j);
+
+						if (item == null) {
 							tempInventory[i][j][0] = 0;
 							tempInventory[i][j][1] = 0;
 							tempInventory[i][j][2] = 0;
 							tempInventory[i][j][3] = 0;
 						} else {
-							tempInventory[i][j][0] = getMedium((player.inv.getItem(i, j).getId()));       // HIGH ID
-							tempInventory[i][j][1] = getLow(player.inv.getItem(i, j).getId());          // LOW ID
-							tempInventory[i][j][2] = getMedium((player.inv.getItem(i, j).getCount()));    // HIGH COUNT
-							tempInventory[i][j][3] = getLow(player.inv.getItem(i, j).getCount());       // LOW COUNT
-						}
-						brandIntoSaveFile(tempInventory[i][j][0], RED, i, j + 15);
-						brandIntoSaveFile(tempInventory[i][j][1], GREEN, i, j + 15);
-						brandIntoSaveFile(tempInventory[i][j][2], BLUE, i, j + 15);
-						brandIntoSaveFile(tempInventory[i][j][3], RED, j + 15, i);
-					}
-				}
-			} catch (NullPointerException e) {
-				// If the game hadn't been started before quitting, this just means the inventory was not loaded yet.
-			}
-
-			try {
-				int[][][] tempInventory = new int[2][2][4];
-				for (int i = 0; i < 2; i++) {
-					for (int j = 0; j < 2; j++) {
-						try {
-							Item item = player.inv.getItem(i * 2 + j);
-
 							tempInventory[i][j][0] = getMedium(item.getId());       // HIGH ID
 							tempInventory[i][j][1] = getLow(item.getId());          // LOW ID
 							tempInventory[i][j][2] = getMedium(item.getCount());    // HIGH COUNT
 							tempInventory[i][j][3] = getLow(item.getCount());       // LOW COUNT
-
-							brandIntoSaveFile(tempInventory[i][j][0], RED, i, j + 25);
-							brandIntoSaveFile(tempInventory[i][j][1], GREEN, i, j + 25);
-							brandIntoSaveFile(tempInventory[i][j][2], BLUE, i, j + 25);
-							brandIntoSaveFile(tempInventory[i][j][3], RED, j + 25, i);
-						} catch (NullPointerException ignored) {
-							brandIntoSaveFile(0, RED, i, j + 25);
-							brandIntoSaveFile(0, GREEN, i, j + 25);
-							brandIntoSaveFile(0, BLUE, i, j + 25);
-							brandIntoSaveFile(0, RED, j + 25, i);
 						}
+
+						brandIntoSaveFile(tempInventory[i][j][0], RED, i, j + 25);
+						brandIntoSaveFile(tempInventory[i][j][1], GREEN, i, j + 25);
+						brandIntoSaveFile(tempInventory[i][j][2], BLUE, i, j + 25);
+						brandIntoSaveFile(tempInventory[i][j][3], RED, j + 25, i);
+					} catch (NullPointerException ignored) {
+						brandIntoSaveFile(0, RED, i, j + 25);
+						brandIntoSaveFile(0, GREEN, i, j + 25);
+						brandIntoSaveFile(0, BLUE, i, j + 25);
+						brandIntoSaveFile(0, RED, j + 25, i);
 					}
 				}
-			} catch (NullPointerException e) {
-				// If the game hadn't been started before quitting, this just means the inventory was not loaded yet.
 			}
 
 			Color px = new Color(image.getRGB(0, 110));
