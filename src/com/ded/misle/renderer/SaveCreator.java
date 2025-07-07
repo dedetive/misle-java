@@ -164,7 +164,6 @@ public abstract class SaveCreator {
 
         if (playerName.toString().trim().isEmpty()) isValid = false;
         if (Objects.equals(playerName.toString().trim(), LanguageManager.getText("save_creator_cannot_be"))) isValid = false;
-        System.out.println(playerName.toString().trim() + ", " + LanguageManager.getText("save_creator_cannot_be") + " = " + isValid);
 
         return isValid;
     }
