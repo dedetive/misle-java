@@ -44,7 +44,7 @@ public enum Setting {
 
     languageCode(Language.en_US,
         Arrays.stream(Language.values())
-            .filter(e -> e != Language.mi_PM)
+            .filter(e -> e != Language.mi_PM && e != Language.pt_BR2)
             .toArray(Language[]::new),
         (val) -> {
             languageManager = new LanguageManager(val.toString());
