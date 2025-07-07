@@ -91,6 +91,7 @@ public class Player extends Entity {
 	}
 
 	public void attack(float intensity) {
+		if (this.inv.getSelectedItem() == null) return;
 		String heldItemType = this.inv.getSelectedItem().getType();
 
 		if (heldItemType.equals("weapon")) {
