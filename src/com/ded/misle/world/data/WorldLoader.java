@@ -1,5 +1,6 @@
 package com.ded.misle.world.data;
 
+import com.ded.misle.world.entities.enemies.Enemy;
 import com.ded.misle.world.entities.enemies.EnemyType;
 import com.ded.misle.world.logic.TurnTimer;
 import com.ded.misle.items.DropTable;
@@ -109,6 +110,14 @@ public abstract class WorldLoader {
 							box = addEnemyBox(new Point(0, 0),
 								EnemyType.valueOf(parts[1].toUpperCase().split(":")[1]),
 								Double.parseDouble(parts[2].split(":")[1]));
+							int x = point[0];
+							int y = point[1];
+							box.setRoomId(room.id);
+							box.setOrigin(new Point(x, y));
+							if (!((Enemy) box).canRespawn()) {
+								deleteBox(box);
+								return;
+							}
 						}
 					}
 				} catch (IllegalArgumentException e) { box = addBox(BoxPreset.WALL_DEFAULT); }
