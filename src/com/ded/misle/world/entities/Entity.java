@@ -16,6 +16,7 @@ import java.util.*;
 import java.util.List;
 
 import static com.ded.misle.game.GamePanel.*;
+import static com.ded.misle.items.Item.createDroppedItem;
 import static com.ded.misle.world.logic.PhysicsEngine.ObjectType.ENTITY;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.entities.Entity.HealFlag.ABSOLUTE;
@@ -176,7 +177,7 @@ public class Entity extends Box {
                     int id = results[0];
                     int count = results[1];
 
-                    this.spawnItem(false, false, id, count);
+                    createDroppedItem(this.getX(), this.getY(), id, count);
 
                     if (this instanceof Enemy) {
                         double xpGain = ((Enemy) this).getXPDrop();
