@@ -6,7 +6,7 @@
     ],
     "custom_color_code": {
       "#36dbdb": "TRAVEL, roomID:1, x:7, y:4",
-      "#56abab": "TRAVEL, roomID:2, x:3, y:7"
+      "#56abab": "TRAVEL, roomID:2, x:3, y:58"
     },
     "background": "GRASS",
     "id": 0
@@ -20,7 +20,7 @@
     "custom_color_code": {
       "#36dbdb": "TRAVEL, roomID:0, x:10, y:13",
       "#e04ae7": "SPAWNPOINT, x:1, y:1",
-      "#a66c13": "CHEST, droptable:potion_chest, openRate:500"
+      "#a66c13": "CHEST, droptable:potion_chest, openRate:120"
     },
     "background": "GRASS",
     "id": 1
@@ -31,7 +31,7 @@
     ],
     "custom_color_code": {
       "#56abab": "TRAVEL, roomID:0, x:11, y:1",
-      "#e04ae7": "SPAWNPOINT, x:2, y:5",
+      "#e04ae7": "SPAWNPOINT, x:2, y:56",
       "#a66c13": "CHEST, droptable:potion_chest, openRate:500",
       "#20bf20": "ENEMY, type:goblin, mag:1"
     },
