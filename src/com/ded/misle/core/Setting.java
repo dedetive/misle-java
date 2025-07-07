@@ -37,7 +37,7 @@ public enum Setting {
         new Boolean[]{true, false}
     ),
 
-    frameRateCap(60,
+    frameRateCap(160,
         new Integer[]{30, 60, 90, 120, 160},
         (val) -> nsPerFrame = 1000000000.0 / Math.clamp((int) val, 30, 144)
     ),
