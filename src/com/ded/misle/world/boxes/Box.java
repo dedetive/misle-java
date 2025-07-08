@@ -4,6 +4,7 @@ import com.ded.misle.renderer.image.Painter;
 import com.ded.misle.renderer.image.Palette;
 import com.ded.misle.renderer.image.PaletteShifter;
 import com.ded.misle.renderer.smoother.SmoothValue;
+import com.ded.misle.world.data.BoxPreset;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.renderer.image.ImageManager;

@@ -1,6 +1,5 @@
 package com.ded.misle.world.data;
 
-import com.ded.misle.world.boxes.BoxPreset;
 import com.ded.misle.world.entities.enemies.Enemy;
 import com.ded.misle.world.entities.enemies.EnemyType;
 import com.ded.misle.world.logic.TurnTimer;

@@ -1,5 +1,6 @@
 package com.ded.misle.world.boxes;
 
+import com.ded.misle.world.data.BoxPreset;
 import com.ded.misle.world.entities.enemies.EnemyRegistry;
 import com.ded.misle.world.entities.enemies.EnemyType;
 import com.ded.misle.world.logic.World;

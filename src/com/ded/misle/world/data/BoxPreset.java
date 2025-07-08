@@ -1,5 +1,6 @@
-package com.ded.misle.world.boxes;
+package com.ded.misle.world.data;
 
+import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.logic.effects.Chest;
 import com.ded.misle.world.logic.effects.Spawnpoint;
 
