@@ -12,6 +12,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.*;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.world.entities.Entity.clearEntities;
@@ -26,7 +27,7 @@ public class BoxHandling {
 
 		box.setVisualScaleHorizontal(1);
 		box.setVisualScaleVertical(1);
-		boolean loaded = loadPreset(box, preset);
+		preset.load(box);
 		if (checkIfPresetHasSides(preset)) {
 			box.setTexture(box.textureName + ".");
 		}
@@ -41,13 +42,9 @@ public class BoxHandling {
 			box.setTexture(s);
 		}
 
-		if (loaded) {
-			boxes.add(box);
+		boxes.add(box);
 
-			return box;
-		} else {
-			return null;
-		}
+		return box;
 	}
 
 	public static Enemy addEnemyBox(Point pos, EnemyType enemyType, double magnification) {
@@ -56,13 +53,35 @@ public class BoxHandling {
 	}
 
 	public enum BoxPreset {
-		GRASS_DARK,
-		GRASS_LIGHT,
-		STONE_BRICK_WALL,
-		WOODEN_FLOOR,
-		CHEST,
-		SPAWNPOINT,
-		TRAVEL,
+		GRASS_DARK(box -> {
+			box.setCollision(false);
+			box.setTexture("grass_dark");
+		}),
+		GRASS_LIGHT(box -> {
+			box.setCollision(false);
+			box.setTexture("grass_light");
+		}),
+		STONE_BRICK_WALL(box -> {
+			box.setCollision(true);
+			box.setTexture("stone_brick_wall");
+		}),
+		WOODEN_FLOOR(box -> {
+			box.setCollision(false);
+			box.setTexture("wooden_floor");
+		}),
+		CHEST(box -> {
+			box.effect = new Chest(0, null);
+			box.setCollision(true);
+			box.setTexture("chest");
+		}),
+		SPAWNPOINT(box -> {
+			box.effect = new Spawnpoint(-1);
+			box.setTexture("spawnpoint");
+		}),
+		TRAVEL(box -> {
+			box.setCollision(true);
+			box.setTexture("invisible");
+		})
 
 		;
 
@@ -74,6 +93,16 @@ public class BoxHandling {
 
 		public boolean hasExtra() {
 			return presetsWithExtra.contains(this);
+		}
+
+		private final Consumer<Box> loadFunc;
+
+		BoxPreset(Consumer<Box> loadFunc) {
+			this.loadFunc = loadFunc;
+		}
+
+		public void load(Box box) {
+			this.loadFunc.accept(box);
 		}
 	}
 
@@ -108,45 +137,6 @@ public class BoxHandling {
 			box.setTexture("invisible");
 			return box;
 		}
-	}
-
-	public static boolean loadPreset(Box box, BoxPreset preset) {
-		boolean loaded = true;
-
-        switch (preset) {
-			case GRASS_DARK -> {
-				box.setCollision(false);
-				box.setTexture("grass_dark");
-			}
-			case STONE_BRICK_WALL -> {
-				box.setCollision(true);
-				box.setTexture("stone_brick_wall");
-			}
-			case WOODEN_FLOOR -> {
-				box.setCollision(false);
-				box.setTexture("wooden_floor");
-			}
-			case GRASS_LIGHT -> {
-				box.setCollision(false);
-				box.setTexture("grass_light");
-			}
-			case BoxPreset.CHEST -> {
-				box.effect = new Chest(0, null);
-				box.setCollision(true);
-				box.setTexture("chest");
-			}
-            case SPAWNPOINT -> {
-                box.effect = new Spawnpoint(-1);
-                box.setTexture("spawnpoint");
-            }
-            case TRAVEL -> {
-                box.setCollision(true);
-                box.setTexture("invisible");
-            }
-            default -> loaded = false;
-        }
-
-		return loaded;
 	}
 
 	// Render boxes with camera offset, scale, and tileSize

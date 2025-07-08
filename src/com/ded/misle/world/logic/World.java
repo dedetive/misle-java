@@ -263,8 +263,8 @@ public class World {
         GRASS(new Box[]{createDummyBox(), createDummyBox()}, new Runnable() {
             @Override
             public void run() {
-                loadPreset(GRASS.box[0], BoxPreset.GRASS_LIGHT);
-                loadPreset(GRASS.box[1], BoxPreset.GRASS_DARK);
+                BoxPreset.GRASS_LIGHT.load(GRASS.box[0]);
+                BoxPreset.GRASS_DARK.load(GRASS.box[1]);
             }
         });
 
