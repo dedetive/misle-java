@@ -2,8 +2,7 @@
   {
     "TUANI_HOUSE": [
       "TUANI_HOUSE_1",
-      "TUANI_HOUSE_2",
-      "TUANI_HOUSE_3"
+      "TUANI_HOUSE_2"
     ],
     "custom_color_code": {
       "#36dbdb": "TRAVEL, roomID:1, x:10, y:13",
