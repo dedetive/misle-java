@@ -20,6 +20,7 @@ import java.util.function.Consumer;
 public enum BoxPreset {
 
     //region Preset Entries
+
     GRASS_DARK(box -> {
         box.setCollision(false);
         box.setTexture("grass_dark");
@@ -51,6 +52,12 @@ public enum BoxPreset {
     })
 
     ;
+
+    private static final Set<BoxPreset> PRESETS_WITH_SIDES = EnumSet.of(
+        STONE_BRICK_WALL,
+        WOODEN_FLOOR
+    );
+
     //endregion
 
     private final Consumer<Box> loadFunc;
@@ -67,11 +74,6 @@ public enum BoxPreset {
     public void load(Box box) {
         this.loadFunc.accept(box);
     }
-
-    private static final Set<BoxPreset> PRESETS_WITH_SIDES = EnumSet.of(
-        STONE_BRICK_WALL,
-        WOODEN_FLOOR
-    );
 
     /**
      * Checks whether this preset has "sides" (typically used for connected textures or adjacency).
