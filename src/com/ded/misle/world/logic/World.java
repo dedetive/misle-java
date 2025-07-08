@@ -1,6 +1,7 @@
 package com.ded.misle.world.logic;
 
 import com.ded.misle.world.boxes.Box;
+import com.ded.misle.world.boxes.BoxPreset;
 
 import java.util.ArrayList;
 import java.util.Arrays;
