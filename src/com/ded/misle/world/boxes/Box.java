@@ -1,5 +1,8 @@
 package com.ded.misle.world.boxes;
 
+import com.ded.misle.renderer.image.Painter;
+import com.ded.misle.renderer.image.Palette;
+import com.ded.misle.renderer.image.PaletteShifter;
 import com.ded.misle.renderer.smoother.SmoothValue;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.logic.PhysicsEngine;
@@ -307,7 +310,31 @@ public class Box {
 				BufferedImage texture = ImageIO.read(fullPath.toFile());
 				cachedTextures.put(boxTextureName, texture); // Cache the loaded image
 			} catch (IOException e) {
-				System.out.println("Can't read Box texture input file: " + fullPath);
+				System.err.println("Can't read Box texture input file: " + fullPath);
+
+				// Attempt to recreate
+				if (boxTextureName.contains("_overlay")) {
+					String overlayType = boxTextureName.substring(boxTextureName.lastIndexOf("_"));
+					BufferedImage origTexture = getTexture(boxTextureName.substring(0, boxTextureName.indexOf("_overlay")));
+					BufferedImage defaultOverlayTexture = getTexture("stone_brick_wall" + overlayType);
+
+					Palette palette = new Palette(origTexture);
+					Palette other = new Palette(defaultOverlayTexture);
+
+					PaletteShifter ps = new PaletteShifter(palette);
+					ps.rotated(2);
+					ps.mergedWith(other);
+					ps.limited(palette.size() + 1);
+					ps.offset(1);
+					ps.gamma(1.35f);
+					palette = ps.getPalette();
+
+					Painter painter = new Painter(palette);
+					BufferedImage texture = painter.paint(defaultOverlayTexture);
+					cachedTextures.put(boxTextureName, texture);
+                    return texture;
+				}
+
 				return null; // Return null if image fails to load
 			}
 		}
