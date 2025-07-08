@@ -17,8 +17,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 
@@ -158,9 +160,13 @@ public abstract class WorldLoader {
 					currentBox = world.grid[x][y][layer];
 					if (currentBox == null) continue;
 					String textureName = currentBox.textureName;
+					BoxPreset preset;
 					try {
-						if (!BoxPreset.valueOf(textureName.toUpperCase()).hasSides()) continue;
+						preset = BoxPreset.valueOf(textureName.toUpperCase());
+						if (!preset.hasSides()) continue;
 					} catch (IllegalArgumentException ignored) { continue; }
+
+					List<Set<BoxPreset>> groups = BoxPreset.getSideGroups(preset);
 
 					b = new Box[3][3][world.layers];
 					b = world.getNeighborhood(currentBox.getX(), currentBox.getY(), 3);
@@ -168,15 +174,15 @@ public abstract class WorldLoader {
 					String corners = ".WASD";
 					String sides = ".WASD";
 
-					sides = checkSide(NORTH, sides, "A", layer);
-					sides = checkSide(WEST, sides, "W", layer);
-					sides = checkSide(EAST, sides, "S", layer);
-					sides = checkSide(SOUTH, sides, "D", layer);
+					sides = checkSide(NORTH, sides, "A", layer, groups);
+					sides = checkSide(WEST, sides, "W", layer, groups);
+					sides = checkSide(EAST, sides, "S", layer, groups);
+					sides = checkSide(SOUTH, sides, "D", layer, groups);
 
-					corners = checkCorner(NORTHWEST, corners, "W", layer);
-					corners = checkCorner(NORTHEAST, corners, "A", layer);
-					corners = checkCorner(SOUTHWEST, corners, "D", layer);
-					corners = checkCorner(SOUTHEAST, corners, "S", layer);
+					corners = checkCorner(NORTHWEST, corners, "W", layer, groups);
+					corners = checkCorner(NORTHEAST, corners, "A", layer, groups);
+					corners = checkCorner(SOUTHWEST, corners, "D", layer, groups);
+					corners = checkCorner(SOUTHEAST, corners, "S", layer, groups);
 
 					currentBox.setTexture(textureName + sides + corners);
 				}
@@ -184,17 +190,35 @@ public abstract class WorldLoader {
 		}
 	}
 
-	private static String checkSide(SideGridDirection direction, String side, String toReplace, int layer) {
-		if (isSameTexture(direction, layer)) return side.replaceFirst(toReplace, "");
+	private static String checkSide(SideGridDirection direction, String side, String toReplace, int layer, List<Set<BoxPreset>> groups) {
+		if (isSameGroup(direction, layer, groups)) return side.replaceFirst(toReplace, "");
 		return side;
 	}
 
-	private static String checkCorner(SideGridDirection cornerDirection, String corner, String toReplace, int layer) {
-		if (isSameTexture(cornerDirection, layer)) return corner.replaceFirst(toReplace, "");
+	private static String checkCorner(SideGridDirection cornerDirection, String corner, String toReplace, int layer, List<Set<BoxPreset>> groups) {
+		if (isSameGroup(cornerDirection, layer, groups)) return corner.replaceFirst(toReplace, "");
 		for (SideGridDirection direction : cornerDirection.breakdown) {
-			if (!isSameTexture(direction, layer)) return corner.replaceFirst(toReplace, "");
+			if (!isSameGroup(direction, layer, groups)) return corner.replaceFirst(toReplace, "");
 		}
 		return corner;
+	}
+
+	private static boolean isSameGroup(SideGridDirection direction, int layer, List<Set<BoxPreset>> groups) {
+		Box neighbor = b[direction.x][direction.y][layer];
+		if (neighbor == null) return false;
+
+		try {
+			int index = neighbor.textureName.indexOf(".");
+			if (index == -1) index = neighbor.textureName.length();
+			BoxPreset neighborPreset = BoxPreset.valueOf(
+				neighbor.textureName.substring(0, index)
+					.toUpperCase());
+			for (Set<BoxPreset> group : groups) {
+				if (group.contains(neighborPreset)) return true;
+			}
+		} catch (IllegalArgumentException ignored) {}
+
+		return false;
 	}
 
 	private static Box[][][] b = new Box[3][3][0];
