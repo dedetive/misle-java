@@ -137,7 +137,7 @@ public abstract class WorldLoader {
 
 	private static final Map<Integer, Callable<Box>> RGBToBox = Map.of(
 		0xC4C4C4, () -> addBox(BoxPreset.STONE_BRICK_WALL),
-		0xDFDFDF, () -> addBox(BoxPreset.FLOOR_DEFAULT)
+		0xDFDFDF, () -> addBox(BoxPreset.WOODEN_FLOOR)
 	);
 
 	private static void fixSides() {
