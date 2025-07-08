@@ -28,7 +28,7 @@ public class BoxHandling {
 		box.setVisualScaleHorizontal(1);
 		box.setVisualScaleVertical(1);
 		preset.load(box);
-		if (checkIfPresetHasSides(preset)) {
+		if (preset.hasSides()) {
 			box.setTexture(box.textureName + ".");
 		}
 
@@ -85,6 +85,11 @@ public class BoxHandling {
 
 		;
 
+		private static final List<BoxPreset> presetsWithSides = List.of(
+			STONE_BRICK_WALL,
+			WOODEN_FLOOR
+		);
+
 		private static final List<BoxPreset> presetsWithExtra = new ArrayList<>(){{
 			// Currently empty
 			// Add with:
@@ -93,6 +98,21 @@ public class BoxHandling {
 
 		public boolean hasExtra() {
 			return presetsWithExtra.contains(this);
+		}
+
+		public boolean hasSides() {
+			if (this.hasExtra()) {
+				String baseName = this.name();
+				if (baseName.contains("_DECO")) {
+					baseName = baseName.substring(0, baseName.indexOf("_DECO"));
+				}
+				try {
+					return presetsWithSides.contains(BoxPreset.valueOf(baseName));
+				} catch (IllegalArgumentException e) {
+					return false;
+				}
+			}
+			return presetsWithSides.contains(this);
 		}
 
 		private final Consumer<Box> loadFunc;
@@ -104,19 +124,6 @@ public class BoxHandling {
 		public void load(Box box) {
 			this.loadFunc.accept(box);
 		}
-	}
-
-	private static final List<BoxPreset> presetsWithSides = List.of(new BoxPreset[] {
-		BoxPreset.STONE_BRICK_WALL,
-		BoxPreset.WOODEN_FLOOR,
-	});
-
-	public static boolean checkIfPresetHasSides(BoxPreset preset) {
-		String presetName = preset.toString();
-		if (preset.hasExtra()) {
-			return presetsWithSides.contains(BoxPreset.valueOf(presetName.substring(0, presetName.indexOf("_DECO"))));
-		}
-		return presetsWithSides.contains(preset);
 	}
 
 	public static Box createDummyBox() {

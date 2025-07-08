@@ -85,7 +85,7 @@ public class Box {
 				drawSolid(g2d, screenX, screenY);
 			} else if (textureName.equals("invisible")) {
 				;
-			} else if (BoxHandling.checkIfPresetHasSides(BoxPreset.valueOf(textureName.toUpperCase().split("\\.")[0]))) {
+			} else if (BoxPreset.valueOf(textureName.toUpperCase().split("\\.")[0]).hasSides()) {
 				drawPresetWithSides(g2d, screenX, screenY);
 			} else {
 				drawRawTexture(g2d, screenX, screenY);

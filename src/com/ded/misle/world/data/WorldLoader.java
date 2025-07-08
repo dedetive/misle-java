@@ -156,7 +156,7 @@ public abstract class WorldLoader {
 					String normalizedName = textureName.substring(0, dotIndex);
 					if (normalizedName.isBlank()) continue;
 
-					boolean hasSides = checkIfPresetHasSides(BoxPreset.valueOf(normalizedName.toUpperCase()));
+					boolean hasSides = BoxPreset.valueOf(normalizedName.toUpperCase()).hasSides();
 					if (hasSides) {
 						b = new Box[3][3][world.layers];
 						b = world.getNeighborhood(currentBox.getX(), currentBox.getY(), 3);
