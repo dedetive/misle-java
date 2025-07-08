@@ -23,7 +23,6 @@ import java.util.*;
 import static com.ded.misle.core.Path.getPath;
 import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.renderer.image.ImageManager.*;
-import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 import static com.ded.misle.world.logic.PhysicsEngine.ObjectType.BOX;
 import static com.ded.misle.world.data.WorldLoader.loadBoxes;

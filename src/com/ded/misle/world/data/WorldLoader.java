@@ -146,7 +146,8 @@ public abstract class WorldLoader {
 			Entity e = new Entity();
 			BoxPreset.CRACKED_STONE_BRICK_WALL.load(e);
 			return e;
-		}
+		},
+		0xB38960, () -> addBox(BoxPreset.WOODEN_FLOOR)
 	);
 
 	private static void fixSides() {
