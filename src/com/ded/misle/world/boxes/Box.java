@@ -106,27 +106,8 @@ public class Box {
 		String[] textureParts = textureName.split("\\.");
 		String textureName = textureParts[0].toLowerCase();
 
-		String textureExtra = "";
-
 		try {
-			if (textureName.contains("@")) {
-				textureExtra = textureName.substring(textureName.indexOf("@") + 1);
-				textureName = textureName.substring(0, textureName.indexOf("@"));
-			} else {
-				drawRotatedImage(g2d, getTexture(textureName), screenX, screenY, (int) (originalTileSize * visualScaleHorizontal), (int) (originalTileSize * visualScaleVertical), this.visualRotation);
-			}
-
-			// Draw extras if any
-			if (textureParts.length > 3) {
-				if (textureParts[3].equals("@")) {
-					switch (textureExtra) {
-						case "Deco":
-							drawRotatedImage(g2d, getTexture(textureName + textureExtra), screenX, screenY, (int) (originalTileSize * visualScaleHorizontal), (int) (originalTileSize * visualScaleVertical), this.visualRotation);
-					}
-				}
-			} else {
-				drawRotatedImage(g2d, getTexture(textureName), screenX, screenY, (int) (originalTileSize * visualScaleHorizontal), (int) (originalTileSize * visualScaleVertical), this.visualRotation);
-			}
+			drawRotatedImage(g2d, getTexture(textureName), screenX, screenY, (int) (originalTileSize * visualScaleHorizontal), (int) (originalTileSize * visualScaleVertical), this.visualRotation);
 
 			// Draw sides if they exist
 			if (textureParts.length > 1) {
@@ -159,9 +140,6 @@ public class Box {
 	}
 
 	private void drawRawTexture(Graphics2D g2d, int screenX, int screenY) {
-		if (textureName.contains("@")) {
-			textureName = textureName.replace("@", "");
-		}
 		drawRotatedImage(g2d, this.getTexture(), screenX, screenY, (int) (originalTileSize * visualScaleHorizontal), (int) (originalTileSize * visualScaleVertical), this.visualRotation);
 	}
 

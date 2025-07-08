@@ -73,31 +73,12 @@ public enum BoxPreset {
         WOODEN_FLOOR
     );
 
-    private static final Set<BoxPreset> PRESETS_WITH_EXTRA = EnumSet.noneOf(BoxPreset.class);
-
-    /**
-     * Checks whether this preset has additional extra properties.
-     *
-     * @return {@code true} if the preset has extra data; {@code false} otherwise
-     */
-    public boolean hasExtra() {
-        return PRESETS_WITH_EXTRA.contains(this);
-    }
-
     /**
      * Checks whether this preset has "sides" (typically used for connected textures or adjacency).
      *
      * @return {@code true} if the preset uses sides; {@code false} otherwise
      */
     public boolean hasSides() {
-        String baseName = this.name();
-        if (this.hasExtra() && baseName.contains("_DECO")) {
-            baseName = baseName.substring(0, baseName.indexOf("_DECO"));
-        }
-        try {
-            return PRESETS_WITH_SIDES.contains(BoxPreset.valueOf(baseName));
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
+        return PRESETS_WITH_SIDES.contains(this);
     }
 }

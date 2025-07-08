@@ -30,16 +30,6 @@ public class BoxHandling {
 			box.setTexture(box.textureName + ".");
 		}
 
-		if (preset.hasExtra()) {
-			String s = preset.toString();
-			int index = (s.lastIndexOf("_"));
-			char[] p = s.toCharArray();
-			p[index] = '@';
-			s = String.copyValueOf(p);
-			s = s.substring(0, index) + s.substring(index, index + 2).toUpperCase() + s.substring(index + 2).toLowerCase();
-			box.setTexture(s);
-		}
-
 		boxes.add(box);
 
 		return box;
