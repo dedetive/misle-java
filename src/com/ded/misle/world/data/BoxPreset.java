@@ -6,6 +6,7 @@ import com.ded.misle.world.logic.effects.Chest;
 import com.ded.misle.world.logic.effects.Spawnpoint;
 
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -145,6 +146,11 @@ public enum BoxPreset {
         WOODEN_FLOOR
     );
 
+    private static final List<Set<BoxPreset>> SIDE_GROUPS = List.of(
+        EnumSet.of(STONE_BRICK_WALL, CRACKED_STONE_BRICK_WALL),
+        EnumSet.of(WOODEN_FLOOR)
+    );
+
     //endregion
 
     /**
@@ -180,6 +186,16 @@ public enum BoxPreset {
      * @return {@code true} if the preset uses sides; {@code false} otherwise
      */
     public boolean hasSides() {
-        return PRESETS_WITH_SIDES.contains(this);
+        return PRESETS_WITH_SIDES.contains(this) || !getSideGroups(this).isEmpty();
+    }
+
+    public static List<Set<BoxPreset>> getSideGroups(BoxPreset preset) {
+        List<Set<BoxPreset>> groups = new java.util.ArrayList<>();
+        for (Set<BoxPreset> group : SIDE_GROUPS) {
+            if (group.contains(preset)) {
+                groups.add(group);
+            }
+        }
+        return groups;
     }
 }
