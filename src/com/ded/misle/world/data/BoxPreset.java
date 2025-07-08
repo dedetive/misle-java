@@ -1,6 +1,7 @@
 package com.ded.misle.world.data;
 
 import com.ded.misle.world.boxes.Box;
+import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.logic.effects.Chest;
 import com.ded.misle.world.logic.effects.Spawnpoint;
 
@@ -41,6 +42,34 @@ public enum BoxPreset {
     STONE_BRICK_WALL(box -> {
         box.setCollision(true);
         box.setTexture("stone_brick_wall");
+    }),
+
+    /**
+     * A cracked stone brick wall tile, solid with collision.
+     * <p>
+     * Commonly used for breakable walls.
+     * <p>
+     * This preset is expected to be an {@link Entity}.
+     * <p>
+     * When applied, it configures the box as:
+     * <ul>
+     *   <li>1 maximum HP</li>
+     *   <li>Starts fully healed</li>
+     *   <li>HP bar hidden by default</li>
+     * </ul>
+     * If the box is not an {@link Entity}, a warning will be logged.
+     */
+    CRACKED_STONE_BRICK_WALL(box -> {
+        try {
+            Entity entity = (Entity) box;
+            entity.setMaxHP(1);
+            entity.fillHP();
+            entity.setDisplayHP(false);
+        } catch (ClassCastException e) {
+            System.err.println("BoxPreset: Cracked stone brick wall was not able to be turned into an entity");
+        }
+        box.setCollision(true);
+        box.setTexture("cracked_stone_brick_wall");
     }),
 
     /**
@@ -112,6 +141,7 @@ public enum BoxPreset {
      */
     private static final Set<BoxPreset> PRESETS_WITH_SIDES = EnumSet.of(
         STONE_BRICK_WALL,
+        CRACKED_STONE_BRICK_WALL,
         WOODEN_FLOOR
     );
 
