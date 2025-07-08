@@ -766,7 +766,8 @@ public class PlayingRenderer extends AbstractRenderer {
         Entity[] entities = getEntities().toArray(new Entity[0]);
 
         for (Entity e : entities) {
-            if (e instanceof Player) continue;
+            if (e instanceof Player || !e.displayHP())
+                continue;
 
             BufferedImage bar = ImageManager.cachedImages.get(ImageManager.ImageName.ENEMY_HEALTH_BAR);
             BufferedImage compatible = new BufferedImage(bar.getWidth(), bar.getHeight(), BufferedImage.TYPE_INT_ARGB);

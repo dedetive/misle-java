@@ -33,6 +33,11 @@ public class Entity extends Box {
     private double maxHP = 1;
 
     /**
+     * Represents whether the entity can have its health bar displayed.
+     */
+    private boolean displayHP = false;
+
+    /**
      * HP smoothness manager. Should be updated every frame to stay relevant.
      * <p>
      * Shows current HP of the entity that is going to be rendered. Has a slight delay compared to real internal {@link #HP}.
@@ -164,7 +169,7 @@ public class Entity extends Box {
 
         if (this.HP == 0) {
             if (!(this instanceof Player)) {
-                if (this.HPSmoother.getCurrentFloat() >= 0.5) {
+                if (this.HPSmoother.getCurrentFloat() >= 0.5 && this.displayHP) {
                     javax.swing.Timer checkAgainTimer = new javax.swing.Timer(30,
                         e -> checkIfDead());
                     checkAgainTimer.setRepeats(false);
@@ -206,6 +211,14 @@ public class Entity extends Box {
 
     public SmoothValue getHPSmoother() {
         return HPSmoother;
+    }
+
+    public boolean displayHP() {
+        return displayHP;
+    }
+
+    public void setDisplayHP(boolean displayHP) {
+        this.displayHP = displayHP;
     }
 
     /**
