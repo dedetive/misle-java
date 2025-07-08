@@ -332,6 +332,13 @@ public class Box {
 					Painter painter = new Painter(palette);
 					BufferedImage texture = painter.paint(defaultOverlayTexture);
 					cachedTextures.put(boxTextureName, texture);
+                    try {
+                        ImageIO.write(texture, "png", fullPath.toFile());
+						System.out.println("Recreated texture: " + boxTextureName);
+					} catch (IOException ex) {
+						System.err.println("Failed to recreate texture: " + boxTextureName + " at path: " + fullPath);
+						return null;
+                    }
                     return texture;
 				}
 
