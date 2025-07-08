@@ -31,7 +31,7 @@ public class BoxHandling {
 			box.setTexture(box.textureName + ".");
 		}
 
-		if (hasExtra(preset)) {
+		if (preset.hasExtra()) {
 			String s = preset.toString();
 			int index = (s.lastIndexOf("_"));
 			char[] p = s.toCharArray();
@@ -59,13 +59,22 @@ public class BoxHandling {
 		SPAWNPOINT,
 		CHEST,
 		STONE_BRICK_WALL,
-		WALL_DEFAULT_DECO,
 		FLOOR_DEFAULT,
 		GRASS_LIGHT,
 		GRASS_DARK,
 		TRAVEL,
 
 		;
+
+		private static final List<BoxPreset> presetsWithExtra = new ArrayList<>(){{
+			// Currently empty
+			// Add with:
+				// add(PRESET_NAME);
+		}};
+
+		public boolean hasExtra() {
+			return presetsWithExtra.contains(this);
+		}
 	}
 
 	private static final List<BoxPreset> presetsWithSides = List.of(new BoxPreset[] {
@@ -75,17 +84,10 @@ public class BoxHandling {
 
 	public static boolean checkIfPresetHasSides(BoxPreset preset) {
 		String presetName = preset.toString();
-		if (hasExtra(preset)) {
+		if (preset.hasExtra()) {
 			return presetsWithSides.contains(BoxPreset.valueOf(presetName.substring(0, presetName.indexOf("_DECO"))));
 		}
 		return presetsWithSides.contains(preset);
-	}
-
-	public static boolean hasExtra(BoxPreset preset) {
-		BoxPreset[] presetsWithExtra = new BoxPreset[]{
-			BoxPreset.WALL_DEFAULT_DECO
-		};
-		return Arrays.stream(presetsWithExtra).anyMatch(boxPreset -> boxPreset == preset);
 	}
 
 	public static Box createDummyBox() {
