@@ -56,12 +56,12 @@ public class BoxHandling {
 	}
 
 	public enum BoxPreset {
-		SPAWNPOINT,
-		CHEST,
+		GRASS_DARK,
+		GRASS_LIGHT,
 		STONE_BRICK_WALL,
 		WOODEN_FLOOR,
-		GRASS_LIGHT,
-		GRASS_DARK,
+		CHEST,
+		SPAWNPOINT,
 		TRAVEL,
 
 		;
@@ -113,39 +113,38 @@ public class BoxHandling {
 	public static boolean loadPreset(Box box, BoxPreset preset) {
 		boolean loaded = true;
 
-		switch (preset) {
-			case SPAWNPOINT:
-				box.effect = new Spawnpoint(-1);
-				box.setTexture("spawnpoint");
-				break;
-			case BoxPreset.CHEST:
+        switch (preset) {
+			case GRASS_DARK -> {
+				box.setCollision(false);
+				box.setTexture("grass_dark");
+			}
+			case STONE_BRICK_WALL -> {
+				box.setCollision(true);
+				box.setTexture("stone_brick_wall");
+			}
+			case WOODEN_FLOOR -> {
+				box.setCollision(false);
+				box.setTexture("wooden_floor");
+			}
+			case GRASS_LIGHT -> {
+				box.setCollision(false);
+				box.setTexture("grass_light");
+			}
+			case BoxPreset.CHEST -> {
 				box.effect = new Chest(0, null);
 				box.setCollision(true);
 				box.setTexture("chest");
-				break;
-			case STONE_BRICK_WALL:
-				box.setCollision(true);
-				box.setTexture("stone_brick_wall");
-				break;
-			case WOODEN_FLOOR:
-				box.setCollision(false);
-				box.setTexture("wooden_floor");
-				break;
-			case GRASS_LIGHT:
-				box.setCollision(false);
-				box.setTexture("grass_light");
-				break;
-			case GRASS_DARK:
-				box.setCollision(false);
-				box.setTexture("grass_dark");
-				break;
-			case TRAVEL:
-				box.setCollision(true);
-				box.setTexture("invisible");
-				break;
-			default:
-				loaded = false;
-		}
+			}
+            case SPAWNPOINT -> {
+                box.effect = new Spawnpoint(-1);
+                box.setTexture("spawnpoint");
+            }
+            case TRAVEL -> {
+                box.setCollision(true);
+                box.setTexture("invisible");
+            }
+            default -> loaded = false;
+        }
 
 		return loaded;
 	}
