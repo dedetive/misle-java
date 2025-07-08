@@ -58,7 +58,7 @@ public class BoxHandling {
 	public enum BoxPreset {
 		SPAWNPOINT,
 		CHEST,
-		WALL_DEFAULT,
+		STONE_BRICK_WALL,
 		WALL_DEFAULT_DECO,
 		FLOOR_DEFAULT,
 		GRASS_LIGHT,
@@ -69,7 +69,7 @@ public class BoxHandling {
 	}
 
 	private static final List<BoxPreset> presetsWithSides = List.of(new BoxPreset[] {
-		BoxPreset.WALL_DEFAULT,
+		BoxPreset.STONE_BRICK_WALL,
 		BoxPreset.FLOOR_DEFAULT,
 	});
 
@@ -121,13 +121,13 @@ public class BoxHandling {
 				box.setCollision(true);
 				box.setTexture("chest");
 				break;
-			case WALL_DEFAULT:
+			case STONE_BRICK_WALL:
 				box.setCollision(true);
-				box.setTexture("wall_default");
+				box.setTexture("stone_brick_wall");
 				break;
 			case FLOOR_DEFAULT:
 				box.setCollision(false);
-				box.setTexture("wall_default");
+				box.setTexture("stone_brick_wall");
 				break;
 			case GRASS_LIGHT:
 				box.setCollision(false);

@@ -121,7 +121,7 @@ public abstract class WorldLoader {
 							}
 						}
 					}
-				} catch (IllegalArgumentException e) { box = addBox(BoxPreset.WALL_DEFAULT); }
+				} catch (IllegalArgumentException e) { box = addBox(BoxPreset.STONE_BRICK_WALL); }
 			} else {
 				box = RGBToBox.get(rgb).call();
 			}
@@ -136,7 +136,7 @@ public abstract class WorldLoader {
 	}
 
 	private static final Map<Integer, Callable<Box>> RGBToBox = Map.of(
-		0xC4C4C4, () -> addBox(BoxPreset.WALL_DEFAULT),
+		0xC4C4C4, () -> addBox(BoxPreset.STONE_BRICK_WALL),
 		0xDFDFDF, () -> addBox(BoxPreset.FLOOR_DEFAULT)
 	);
 
