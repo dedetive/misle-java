@@ -1,5 +1,6 @@
 package com.ded.misle.world.data;
 
+import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.enemies.Enemy;
 import com.ded.misle.world.entities.enemies.EnemyType;
 import com.ded.misle.world.logic.TurnTimer;
@@ -15,7 +16,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 
@@ -137,7 +140,11 @@ public abstract class WorldLoader {
 
 	private static final Map<Integer, Callable<Box>> RGBToBox = Map.of(
 		0xC4C4C4, () -> addBox(BoxPreset.STONE_BRICK_WALL),
-		0xDFDFDF, () -> addBox(BoxPreset.WOODEN_FLOOR)
+		0xDFDFDF, () -> {
+			Entity e = new Entity();
+			BoxPreset.CRACKED_STONE_BRICK_WALL.load(e);
+			return e;
+		}
 	);
 
 	private static void fixSides() {
@@ -151,31 +158,27 @@ public abstract class WorldLoader {
 					currentBox = world.grid[x][y][layer];
 					if (currentBox == null) continue;
 					String textureName = currentBox.textureName;
-					int dotIndex = textureName.indexOf(".");
-					if (dotIndex == -1) continue; // Is not a box that has sides
-					String normalizedName = textureName.substring(0, dotIndex);
-					if (normalizedName.isBlank()) continue;
+					try {
+						if (!BoxPreset.valueOf(textureName.toUpperCase()).hasSides()) continue;
+					} catch (IllegalArgumentException ignored) { continue; }
 
-					boolean hasSides = BoxPreset.valueOf(normalizedName.toUpperCase()).hasSides();
-					if (hasSides) {
-						b = new Box[3][3][world.layers];
-						b = world.getNeighborhood(currentBox.getX(), currentBox.getY(), 3);
+					b = new Box[3][3][world.layers];
+					b = world.getNeighborhood(currentBox.getX(), currentBox.getY(), 3);
 
-						String corners = ".WASD";
-						String sides = ".WASD";
+					String corners = ".WASD";
+					String sides = ".WASD";
 
-						sides = checkSide(NORTH, sides, "A", layer);
-						sides = checkSide(WEST, sides, "W", layer);
-						sides = checkSide(EAST, sides, "S", layer);
-						sides = checkSide(SOUTH, sides, "D", layer);
+					sides = checkSide(NORTH, sides, "A", layer);
+					sides = checkSide(WEST, sides, "W", layer);
+					sides = checkSide(EAST, sides, "S", layer);
+					sides = checkSide(SOUTH, sides, "D", layer);
 
-						corners = checkCorner(NORTHWEST, corners, "W", layer);
-						corners = checkCorner(NORTHEAST, corners, "A", layer);
-						corners = checkCorner(SOUTHWEST, corners, "D", layer);
-						corners = checkCorner(SOUTHEAST, corners, "S", layer);
+					corners = checkCorner(NORTHWEST, corners, "W", layer);
+					corners = checkCorner(NORTHEAST, corners, "A", layer);
+					corners = checkCorner(SOUTHWEST, corners, "D", layer);
+					corners = checkCorner(SOUTHEAST, corners, "S", layer);
 
-						currentBox.setTexture(normalizedName + sides + corners);
-					}
+					currentBox.setTexture(textureName + sides + corners);
 				}
 			}
 		}
