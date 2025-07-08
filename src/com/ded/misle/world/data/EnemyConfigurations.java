@@ -42,6 +42,9 @@ public enum EnemyConfigurations {
         enemy.setCoinDrop(3);
         enemy.setCollision(true);
         enemy.setTurnsToRespawn(50);
+        enemy.scheduleOnDamage(
+            () -> enemy.setDisplayHP(true)
+        );
 
         var wait = new WaitBehavior();
         var pursue = new PursueBehavior();
