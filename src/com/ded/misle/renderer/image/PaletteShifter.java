@@ -64,6 +64,30 @@ public class PaletteShifter {
         this.palette = new Palette(palette.asList());
     }
 
+    /**
+     * Merges the current palette with another palette, adding all unique colors from the given palette.
+     * <p>
+     * Colors from the {@code other} palette are appended only if they are not already present
+     * in the current palette, preserving the order of both palettes.
+     * <p>
+     * This method is useful for combining color sets, ensuring no duplicates, and extending
+     * palettes with additional colors from other sources (e.g., theme overlays or dynamic palettes).
+     * <p>
+     * The original palette remains unchanged; the merged palette is returned as a new {@link Palette}.
+     * The internal state of this {@code PaletteShifter} is also left unmodified.
+     *
+     * @param other the palette whose unique colors will be merged into the current palette
+     * @return a new {@link Palette} containing colors from both palettes, without duplicates
+     */
+    public Palette mergedWith(Palette other) {
+        List<Color> merged = new ArrayList<>(palette.asList());
+        for (Color c : other.asList()) {
+            if (!merged.contains(c)) merged.add(c);
+        }
+        this.palette = new Palette(merged);
+        return this.palette;
+    }
+
     //region ordering
 
     /**
