@@ -26,9 +26,6 @@ public class BoxHandling {
 		box.setVisualScaleHorizontal(1);
 		box.setVisualScaleVertical(1);
 		preset.load(box);
-		if (preset.hasSides()) {
-			box.setTexture(box.textureName + ".");
-		}
 
 		boxes.add(box);
 
