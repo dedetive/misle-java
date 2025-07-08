@@ -73,7 +73,7 @@ public class Entity extends Box {
     private DropTable dropTable;
 
     /** Static list of all active Entities. */
-    private static List<Entity> entities = new ArrayList<>();
+    private static final List<Entity> entities = new ArrayList<>();
 
     /**
      * Returns the list of all Entities.
