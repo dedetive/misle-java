@@ -136,6 +136,7 @@ public class Item {
 
 	public boolean setCount(int count) {
 		this.count = Math.min(count, countLimit);
+		updateMaxStackSize();
 		if (this.count <= 0) {
 			removeItem();
 			return true;
