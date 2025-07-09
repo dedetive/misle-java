@@ -1,12 +1,9 @@
 package com.ded.misle.items;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static com.ded.misle.items.ItemLoader.loadItems;
-
 
 public class ItemGetter {
 
@@ -16,7 +13,14 @@ public class ItemGetter {
 		BUNDLE
 	}
 
+	private static final Map<CacheKey, List<ItemData>> cache = new HashMap<>();
+
 	public static List<ItemData> getParameterizedItems(ParameterKey key, String value) {
+		CacheKey cacheKey = new CacheKey(key, value);
+		if (cache.containsKey(cacheKey)) {
+			return cache.get(cacheKey);
+		}
+
 		List<ItemData> items = new ArrayList<>();
 		List<ItemData> allItems = new ArrayList<>();
 		try {
@@ -24,6 +28,7 @@ public class ItemGetter {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 		for (ItemData item : allItems) {
 			switch (key) {
 				case ID:
@@ -37,7 +42,6 @@ public class ItemGetter {
 					}
 					break;
 				case BUNDLE:
-					// Check if the item has the specified bundle key
 					if (item.getBundles().containsKey(value)) {
 						items.add(item);
 					}
@@ -45,7 +49,9 @@ public class ItemGetter {
 			}
 		}
 
+		cache.put(cacheKey, items);
 		return items;
 	}
 
+	private record CacheKey(ParameterKey key, String value) {}
 }
