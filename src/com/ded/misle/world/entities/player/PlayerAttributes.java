@@ -2,7 +2,6 @@ package com.ded.misle.world.entities.player;
 
 import com.ded.misle.audio.AudioFile;
 import com.ded.misle.renderer.smoother.SyncedValue;
-import com.ded.misle.renderer.smoother.modifiers.BounceModifier;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -12,7 +11,7 @@ import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.renderer.MainRenderer.fader;
 import static com.ded.misle.world.data.WorldLoader.unloadBoxes;
 import static com.ded.misle.world.entities.player.Inventory.PossibleItemStats.*;
-import static com.ded.misle.items.Item.updateMaxStackSize;
+import static com.ded.misle.items.Item.updateInventoryMaxStackSize;
 
 public class PlayerAttributes {
 
@@ -294,7 +293,7 @@ public class PlayerAttributes {
 	public void setMaxStackSizeMulti(float maxStackSizeMulti) {
 		this.maxStackSizeMulti = maxStackSizeMulti;
 		try {
-			updateMaxStackSize();
+			updateInventoryMaxStackSize();
 		} catch (NullPointerException e) {
 			System.err.println("Max stack multiplier attribute failed.");
 			e.printStackTrace();

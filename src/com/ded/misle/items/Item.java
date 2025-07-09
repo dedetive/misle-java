@@ -18,7 +18,6 @@ import java.io.IOException;
 import static com.ded.misle.core.Path.getPath;
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.world.boxes.BoxHandling.addBoxItem;
-import static java.lang.System.currentTimeMillis;
 
 public class Item {
 	private final int id;
@@ -318,16 +317,22 @@ public class Item {
 
 	// COUNT LIMIT
 
-	public static void updateMaxStackSize() {
+	public void updateMaxStackSize() {
+		if (this.getCount() > 1) {
+			this.countLimit = (int) (this.countLimit * player.attr.getMaxStackSizeMulti());
+			if (this.getCount() > this.countLimit) {
+				this.setCount(this.countLimit);
+			}
+		}
+	}
+
+	public static void updateInventoryMaxStackSize() {
 		if (player == null || player.inv == null) return;
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 7; j++) {
 				Item item = player.inv.getItem(i, j);
-				if (item != null && item.getCount() > 1) {
-					item.countLimit = (int) (item.countLimit * player.attr.getMaxStackSizeMulti());
-					if (item.getCount() > item.countLimit) {
-						item.setCount(item.countLimit);
-					}
+				if (item != null) {
+					item.updateMaxStackSize();
 				}
 			}
 		}
