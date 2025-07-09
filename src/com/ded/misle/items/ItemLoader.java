@@ -63,11 +63,11 @@ public class ItemLoader {
 						try {
 							countLimit = Integer.parseInt(value);
 						} catch (NumberFormatException e) {
-							countLimit = (int) (player.attr.getMaxStackSizeMulti() * switch (value) {
+							countLimit = switch (value) {
 								case "consumable" -> 15; // Max value multiplied by max stack size
 								case "material" -> 10;
 								default -> countLimit = 1;
-							});
+							};
                         }
 						break;
 					case "rarity":
