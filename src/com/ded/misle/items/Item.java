@@ -22,23 +22,23 @@ import static java.lang.System.currentTimeMillis;
 
 public class Item {
 	private final int id;
-	private final String name;
-	private String displayName;
-	private final String description;
 	private int countLimit;
-	private final String rarity;
-	private final String type;
-	private final String displayType;
 	private BufferedImage icon;
-	private final Map<String, Object> attributes; // Holds dynamic attributes
 	private int count;
 	private boolean active;
-	private final Color nameColor;
-	private final String displayEffect;
 	private double animationRotation;
 	private double animationX;
 	private double animationY;
 	private double animationBulk;
+	private String displayName;
+	private final String name;
+	private final String displayType;
+	private final String description;
+	private final String rarity;
+	private final String type;
+	private final Map<String, Object> attributes; // Holds dynamic attributes
+	private final Color nameColor;
+	private final String displayEffect;
 
 	private TurnTimer usageDelay;
 	private boolean canUse = true;
@@ -92,7 +92,16 @@ public class Item {
 			}
 
 		} else {
-			throw new Exception("Item with ID " + id + " not found.");
+			System.err.println("Item with ID " + id + " not found.");
+			name = "";
+			displayType = "";
+			description = "";
+			rarity = "";
+			type = "";
+			attributes = new HashMap<>();
+			nameColor = null;
+			displayEffect = "";
+			this.active = false;
 		}
 
 		this.count = 1; // Default count is set to 1
