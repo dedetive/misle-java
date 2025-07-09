@@ -237,18 +237,10 @@ public class Inventory {
 		removeItem(row, col, quantity);
 		PlayingRenderer.updateSelectedItemNamePosition();
 		switch (player.pos.getWalkingDirection()) {
-			case Direction.UP -> {
-				moveBox(droppedItem, 0, -DROP_DISTANCE);
-			}
-			case Direction.DOWN -> {
-				moveBox(droppedItem, 0, DROP_DISTANCE);
-			}
-			case Direction.LEFT -> {
-				moveBox(droppedItem, -DROP_DISTANCE, 0);
-			}
-			case Direction.RIGHT -> {
-				moveBox(droppedItem, DROP_DISTANCE, 0);
-			}
+			case Direction.UP -> moveBox(droppedItem, 0, -DROP_DISTANCE);
+			case Direction.DOWN -> moveBox(droppedItem, 0, DROP_DISTANCE);
+			case Direction.LEFT -> moveBox(droppedItem, -DROP_DISTANCE, 0);
+			case Direction.RIGHT -> moveBox(droppedItem, DROP_DISTANCE, 0);
 			case null, default -> {
 			}
 		}
@@ -261,18 +253,10 @@ public class Inventory {
 		removeItem(position);
 		PlayingRenderer.updateSelectedItemNamePosition();
 		switch (player.pos.getWalkingDirection()) {
-			case Direction.UP -> {
-				moveBox(droppedItem, 0, -DROP_DISTANCE);
-			}
-			case Direction.DOWN -> {
-				moveBox(droppedItem, 0, DROP_DISTANCE);
-			}
-			case Direction.LEFT -> {
-				moveBox(droppedItem, -DROP_DISTANCE, 0);
-			}
-			case Direction.RIGHT -> {
-				moveBox(droppedItem, DROP_DISTANCE, 0);
-			}
+			case Direction.UP -> moveBox(droppedItem, 0, -DROP_DISTANCE);
+			case Direction.DOWN -> moveBox(droppedItem, 0, DROP_DISTANCE);
+			case Direction.LEFT -> moveBox(droppedItem, -DROP_DISTANCE, 0);
+			case Direction.RIGHT -> moveBox(droppedItem, DROP_DISTANCE, 0);
 			case null, default -> {
 			}
 		}
@@ -368,18 +352,10 @@ public class Inventory {
 		destroyTempItem();
 		PlayingRenderer.updateSelectedItemNamePosition();
 		switch (player.pos.getWalkingDirection()) {
-			case UP -> {
-				moveBox(droppedItem, 0, 1);
-			}
-			case DOWN -> {
-				moveBox(droppedItem, 0, 1);
-			}
-			case LEFT -> {
-				moveBox(droppedItem, -DROP_DISTANCE, 1);
-			}
-			case RIGHT -> {
-				moveBox(droppedItem, DROP_DISTANCE, 1);
-			}
+			case Direction.UP -> moveBox(droppedItem, 0, -DROP_DISTANCE);
+			case Direction.DOWN -> moveBox(droppedItem, 0, DROP_DISTANCE);
+			case Direction.LEFT -> moveBox(droppedItem, -DROP_DISTANCE, 0);
+			case Direction.RIGHT -> moveBox(droppedItem, DROP_DISTANCE, 0);
 			case null, default -> {
 			}
 		}
