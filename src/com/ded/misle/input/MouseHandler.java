@@ -175,6 +175,10 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 		return isRightPressed;
 	}
 
+	// TODO:
+	/*  remake this whole mouse input stuff to unspaghettify it
+	 *		well, at least it still works
+	 */
 	public void updateMouse() {
 		boolean isPlanning = player.getPlanner().isPlanning();
 		boolean isExecuting = player.getPlanner().isExecuting();
@@ -310,8 +314,21 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 							case EMPTY -> player.inv.dropDraggedItem(1);
 							case INVENTORY -> {
 								if (isSlotOccupied(false)) {
-									// Swap
-									player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], draggedItem.getCount(), false);
+									if (player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]).getId() == draggedItem.getId() &&
+										player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]).getCount() <
+										player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]).getCountLimit()) {
+										try {
+											// Add one into slot
+											player.inv.addItem(new Item(draggedItem.getId()), getHoveredSlot()[0], getHoveredSlot()[1]);
+											draggedItem.setCount(draggedItem.getCount() - 1);
+											if (draggedItem.getCount() <= 0) player.inv.destroyGrabbedItem();
+										} catch (Exception e) {
+											System.err.println(e.getMessage());
+										}
+									} else {
+										// Swap
+										player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], draggedItem.getCount(), false);
+									}
 								} else {
 									// Put one into slot
 									player.inv.putDraggedItem(getHoveredSlot()[0], getHoveredSlot()[1], 1, false);
