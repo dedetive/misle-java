@@ -35,7 +35,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private final JFrame window;
 	private static volatile boolean running = true;
 	public static KeyHandler keyH;
-	public MouseHandler mouseHandler;
+	public static MouseHandler mouseHandler;
 	Thread gameThread;
 
 	// TILES SIZE
@@ -407,10 +407,12 @@ public class GamePanel extends JPanel implements Runnable {
 		if (Math.abs(dx) > deadZoneWidth) {
 			cameraX += 1.5 * dx * alpha;
 			player.pos.setCameraOffsetX((float) cameraX);
+			mouseHandler.updateCurrentMouseRotation();
 		}
 		if (Math.abs(dy) > deadZoneHeight) {
 			cameraY += 1.5 * dy * alpha;
 			player.pos.setCameraOffsetY((float) cameraY);
+			mouseHandler.updateCurrentMouseRotation();
 		}
 	}
 

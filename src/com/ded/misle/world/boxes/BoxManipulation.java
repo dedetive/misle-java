@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static com.ded.misle.game.GamePanel.mouseHandler;
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.world.data.Direction.interpretDirection;
 
@@ -149,5 +150,6 @@ public class BoxManipulation {
         x = player.getX() + x;
         y = player.getY() + y;
         player.setPos(x, y);
+	    mouseHandler.updateCurrentMouseRotation();
     }
 }

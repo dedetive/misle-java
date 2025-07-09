@@ -1,7 +1,6 @@
 package com.ded.misle.input;
 
 import com.ded.misle.items.Item;
-import com.ded.misle.world.data.Direction;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -14,8 +13,6 @@ import static com.ded.misle.renderer.DialogRenderer.fillLetterDisplay;
 import static com.ded.misle.renderer.DialogRenderer.isLetterDisplayFull;
 import static com.ded.misle.input.KeyHandler.pressUseButton;
 import static com.ded.misle.world.entities.npcs.NPCDialog.getCurrentTalkingTo;
-import static com.ded.misle.world.data.Direction.LEFT;
-import static com.ded.misle.world.data.Direction.RIGHT;
 import static com.ded.misle.renderer.InventoryRenderer.*;
 import static com.ded.misle.renderer.PlayingRenderer.inventoryBarY;
 import static com.ded.misle.renderer.PlayingRenderer.slotStartX;
@@ -109,8 +106,8 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 	public void updateCurrentMouseRotation() {
 		double worldMouseX = mouseX + player.pos.getCameraOffsetX();
 		double worldMouseY = mouseY + player.pos.getCameraOffsetY();
-		double deltaX = worldMouseX - player.getX();
-		double deltaY = worldMouseY - player.getY();
+		double deltaX = worldMouseX - player.getX() * originalTileSize;
+		double deltaY = worldMouseY - player.getY() * originalTileSize;
 
 		relativeMouseRotation = Math.toDegrees(Math.atan2(deltaY, deltaX));
 		if (relativeMouseRotation < 0) {
