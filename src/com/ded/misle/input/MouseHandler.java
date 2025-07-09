@@ -122,6 +122,10 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 		return new Point((int) Math.round(deltaX), (int) Math.round(deltaY));
 	}
 
+	public Point getDistanceFromScreenCenter() {
+		return new Point(this.mouseX - originalScreenWidth / 2, this.mouseY - originalScreenHeight / 2);
+	}
+
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		mouseX = (int) (e.getX() / getWindowScale());
