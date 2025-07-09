@@ -295,13 +295,13 @@ public class Inventory {
 				int itemCount = targetItem.getCount();
 				int draggedCount = getDraggedItem().getCount();
 
-				if (itemCount + count <= getDraggedItem().getCountLimit()) { 	// Less than limit
+				if (itemCount + count <= getDraggedItem().getCountLimit()) { 	// Fewer than limit
 					targetItem.setCount(itemCount + count);
 					getDraggedItem().setCount(draggedCount - count);
 					if (getDraggedItem().getCount() <= 0) destroyGrabbedItem();
 				} else { 														// More than limit
 					targetItem.setCount(getDraggedItem().getCountLimit());
-					getDraggedItem().setCount(draggedCount - count);
+					getDraggedItem().setCount(draggedCount - Math.abs((itemCount - targetItem.getCount())));
 				}
 			}
 			// If any other item, swap
