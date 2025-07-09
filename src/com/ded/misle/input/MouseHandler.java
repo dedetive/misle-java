@@ -37,35 +37,6 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 		return relativeMouseRotation;
 	}
 
-	public double getMouseHorizontalRotation() {
-		double rotation = 0;
-
-		if (relativeMouseRotation >= 0 && relativeMouseRotation <= 90) {
-			rotation = relativeMouseRotation;
-		} else if (relativeMouseRotation > 90 && relativeMouseRotation <= 270) {
-			rotation = relativeMouseRotation - 180;
-			rotation = Math.min(rotation, 90 - 35);
-		} else if (relativeMouseRotation > 270 && relativeMouseRotation <= 360) {
-			rotation = relativeMouseRotation;
-			rotation = Math.max(rotation, 270 + 35);
-		}
-
-		return rotation;
-	}
-
-	public Direction getMouseHorizontalDirection() {
-		Direction direction;
-
-		if ((relativeMouseRotation >= 0 && relativeMouseRotation <= 90) ||
-			(relativeMouseRotation >= 270 && relativeMouseRotation <= 360)) {
-			direction = RIGHT;
-		} else {
-			direction = LEFT;
-		}
-
-		return direction;
-	}
-
 	public static void updateMouseVariableScales() {
 		// PLAYING
 
