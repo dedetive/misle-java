@@ -2,6 +2,7 @@ package com.ded.misle.input;
 
 import com.ded.misle.items.Item;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -104,15 +105,21 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 	}
 
 	public void updateCurrentMouseRotation() {
-		double worldMouseX = mouseX + player.pos.getCameraOffsetX();
-		double worldMouseY = mouseY + player.pos.getCameraOffsetY();
-		double deltaX = worldMouseX - player.getX() * originalTileSize;
-		double deltaY = worldMouseY - player.getY() * originalTileSize;
+		Point delta = getPlayerRelativeDistance();
 
-		relativeMouseRotation = Math.toDegrees(Math.atan2(deltaY, deltaX));
+		relativeMouseRotation = Math.toDegrees(Math.atan2(delta.y, delta.x));
 		if (relativeMouseRotation < 0) {
 			relativeMouseRotation += 360;
 		}
+	}
+
+	public Point getPlayerRelativeDistance() {
+		double worldMouseX = mouseX + player.pos.getCameraOffsetX();
+		double worldMouseY = mouseY + player.pos.getCameraOffsetY();
+		double deltaX = worldMouseX - (player.getX() + 0.5) * originalTileSize;
+		double deltaY = worldMouseY - (player.getY() + 0.5) * originalTileSize;
+
+		return new Point((int) Math.round(deltaX), (int) Math.round(deltaY));
 	}
 
 	@Override
