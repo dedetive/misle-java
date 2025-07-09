@@ -87,6 +87,9 @@ public class PlayerPosition {
 		);
 	}
 
+	private static final double MOUSE_INFLUENCE_X = 1.0 / 3.0;
+	private static final double MOUSE_INFLUENCE_Y = 1.0 / 2.0;
+
 	private double lastCameraOffsetX;
 	public double calculateCameraOffsetX() {
 		Planner planner = player.getPlanner();
@@ -94,11 +97,11 @@ public class PlayerPosition {
 			? planner.getEnd().x
 			: player.getX();
 
-		double result = Math.clamp(targetX * originalTileSize - (double) originalScreenWidth / 2,
+		double result = Math.clamp((double) mouseHandler.getDistanceFromScreenCenter().x * MOUSE_INFLUENCE_X + targetX * originalTileSize - (double) originalScreenWidth / 2,
 			- originalTileSize,
 			Math.max(originalWorldWidth - originalScreenWidth + originalTileSize, 0));
 
-		if (Math.abs(lastCameraOffsetX - result) > originalTileSize * 2) {
+		if (Math.abs(lastCameraOffsetX - result) > originalTileSize * 2 + Math.abs((double) mouseHandler.getDistanceFromScreenCenter().x * MOUSE_INFLUENCE_X)) {
 			lastCameraOffsetX = result;
 			result = Integer.MIN_VALUE;
 		} else lastCameraOffsetX = result;
@@ -111,7 +114,7 @@ public class PlayerPosition {
 			? planner.getEnd().y
 			: player.getY();
 
-		return Math.clamp(targetY * originalTileSize - (double) originalScreenHeight / 2,
+		return Math.clamp((double) mouseHandler.getDistanceFromScreenCenter().y * MOUSE_INFLUENCE_Y + targetY * originalTileSize - (double) originalScreenHeight / 2,
 			(double) - originalTileSize / 2,
 			originalWorldHeight - originalScreenHeight + (double) originalTileSize / 2);
 	}
