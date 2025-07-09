@@ -112,8 +112,10 @@ public class MenuButton {
             }
         }
 
+
         MenuButton button = new MenuButton(bounds, buttonDefaultColor, action, text, id);
         buttons.add(button);
+        if (action == null) button.setFunctionEnabled(false);
 
         Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
         SwingUtilities.convertPointFromScreen(mouseLocation, panel);
@@ -133,10 +135,10 @@ public class MenuButton {
             panel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    if (!button.functionEnabled) return;
                     Point clickPoint = e.getPoint();
                     clickPoint = new Point((int) (clickPoint.x / getWindowScale()), (int) (clickPoint.y / getWindowScale()));
                     for (MenuButton button : new ArrayList<>(buttons)) {
+                        if (!button.functionEnabled) continue;
                         if (button.bounds.contains(clickPoint)) {
                             fadingState.put(button.id, Fader.FadingState.FADING_OUT);
                             fadingProgress.put(button.id, 0.75F);
@@ -166,6 +168,7 @@ public class MenuButton {
             }
 
             if (button.bounds.contains(mousePoint)) {
+                if (!button.functionEnabled) continue;
                 if (!button.isHovered) {
                     button.isHovered = true;
                     button.color = buttonHoveredColor;
@@ -199,7 +202,7 @@ public class MenuButton {
     public static void drawButtons(Graphics2D g2d) {
         try {
             for (MenuButton button : buttons) {
-                if (!button.renderEnabled) return;
+                if (!button.renderEnabled) continue;
 
                 g2d.setColor(buttonBorderColor);
                 g2d.fillRoundRect(button.bounds.x - 1, button.bounds.y - 1,
