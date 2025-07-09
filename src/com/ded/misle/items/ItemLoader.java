@@ -43,7 +43,7 @@ public class ItemLoader {
 			Color nameColor = Color.WHITE;
 			Map<String, Integer> bundleWeights = new HashMap<>();
 			Map<String, Integer> bundleCount = new HashMap<>();
-			int maxCount = 0;
+			int maxCount;
 			Map<String, Object> attributes = new HashMap<>();
 
 			String[] pairs = block.split(",");
@@ -104,7 +104,9 @@ public class ItemLoader {
 			}
 
 			if (name != null && type != null) {
-				items.add(new ItemData(itemId, name, countLimit, rarity, type, resourceID, attributes, bundleWeights, bundleCount, nameColor)); // Store ItemData instead
+				ItemData data = new ItemData(itemId, name, countLimit, rarity, type, resourceID, attributes, bundleWeights, bundleCount, nameColor);
+				items.add(data); // Store ItemData instead
+				itemDataCache.put(itemId, data);
 			}
 		}
 
@@ -112,13 +114,9 @@ public class ItemLoader {
 	}
 
 	// Load item by ID
-	public static ItemData loadItemDataById(int id) throws IOException {
-		List<ItemData> items = loadItems(); // Load all items
-		for (ItemData item : items) {
-			if (item.getId() == id) {
-				return item; // Return item details
-			}
-		}
-		return null; // Return null if not found
+	public static ItemData loadItemDataById(int id) {
+		return itemDataCache.getOrDefault(id, null);
 	}
+
+	private static final Map<Integer, ItemData> itemDataCache = new HashMap<>();
 }

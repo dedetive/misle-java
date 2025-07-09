@@ -4,6 +4,7 @@ import com.ded.misle.core.Setting;
 import com.ded.misle.input.Key;
 import com.ded.misle.input.KeyHandler;
 import com.ded.misle.input.MouseHandler;
+import com.ded.misle.items.ItemLoader;
 import com.ded.misle.world.entities.player.Player;
 import com.ded.misle.renderer.*;
 import com.ded.misle.world.logic.TurnManager;
@@ -13,6 +14,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Objects;
 
 import static com.ded.misle.core.Setting.*;
@@ -281,6 +283,13 @@ public class GamePanel extends JPanel implements Runnable {
 	public static int frameCount = 0;
 	@Override
 	public void run() {
+
+		try {
+			ItemLoader.loadItems();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
 		long lastTimer = System.currentTimeMillis();
 		long lastTime = System.nanoTime();
 		double delta = 0;
