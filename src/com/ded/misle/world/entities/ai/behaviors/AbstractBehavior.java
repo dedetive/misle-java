@@ -1,5 +1,6 @@
 package com.ded.misle.world.entities.ai.behaviors;
 
+import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.entities.ai.AIBehavior;
 import com.ded.misle.world.entities.ai.BehaviorContext;
 
@@ -43,6 +44,7 @@ public abstract class AbstractBehavior implements AIBehavior {
 
         if (context.target().getPos().equals(targetPoint)) {
             context.self().effect.run(context.self(), context.target());
+            context.self().updateLastDirection(Direction.interpretDirection(targetPoint));
         }
     }
 
