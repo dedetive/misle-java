@@ -30,7 +30,7 @@ public enum EnemyConfigurations implements GenericConfigurations {
         goblin.scheduleOnDamage(
             () -> goblin.setDisplayHP(true)
         );
-        goblin.setMaxSight(6);
+        goblin.setMaxSight(9);
 
         var wait = new WaitBehavior();
         var pursue = new PursueBehavior();
