@@ -120,6 +120,7 @@ public class PlayerAttributes {
 
 	public void playerDies() {
 		this.isDead = true;
+		player.setWaiting(true);
 
 		playThis(AudioFile.player_death_jingle);
 		fader.fadeInThenOut(4000);
@@ -141,6 +142,7 @@ public class PlayerAttributes {
 		player.setHP(player.getMaxHP());
 		player.setLockedHP(0);
 		this.isDead = false;
+		player.setWaiting(false);
 	}
 
 	public boolean isDead() {
