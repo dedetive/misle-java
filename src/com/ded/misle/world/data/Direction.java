@@ -1,5 +1,7 @@
 package com.ded.misle.world.data;
 
+import java.awt.*;
+
 public enum Direction {
     UP,
     DOWN,
@@ -16,6 +18,10 @@ public enum Direction {
         }
         if (y > 0) return DOWN;
         else return UP;
+    }
+
+    public static Direction interpretDirection(Point p) {
+        return interpretDirection(p.x, p.y);
     }
 
     public Direction getOpposite() {
