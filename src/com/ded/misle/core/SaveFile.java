@@ -545,7 +545,6 @@ public class SaveFile {
 			Color px = new Color(image.getRGB(0, 110));
 			int value = 0;
 
-			if (player.isIconActive) value++;
 			if (player.isIconTexture) value += 2;
 			switch (player.getDifficulty()) {
 				case EASY -> value += 4;
@@ -554,18 +553,24 @@ public class SaveFile {
 				case NIGHTMARE -> value += 16;
 			}
 
-			image.setRGB(0, 110,
-				new Color(px.getRed(),
-					px.getGreen(),
-					value).getRGB());
-
 			if (player.isIconActive) {
-				for (int i = 0; i < player.icon.getWidth(); i++) {
-					for (int j = 0; j < player.icon.getHeight(); j++) {
-						image.setRGB(i, j + 111, player.icon.getRGB(i, j));
+				try {
+					for (int i = 0; i < player.icon.getWidth(); i++) {
+						for (int j = 0; j < player.icon.getHeight(); j++) {
+							image.setRGB(i, j + 111, player.icon.getRGB(i, j));
+						}
 					}
+				} catch (NullPointerException ignored) {
+					player.isIconActive = false;
 				}
 			}
+
+			if (player.isIconActive) value++;
+
+			image.setRGB(0, 110,
+					new Color(px.getRed(),
+							px.getGreen(),
+							value).getRGB());
 
 			saveImages[saveSlot] = image;
 
