@@ -8,8 +8,7 @@ import com.ded.misle.world.entities.ai.behaviors.WanderBehavior;
 
 public enum EntityConfigurations implements GenericConfigurations {
 	BUNNY(bunny -> {
-		bunny.setMaxHP(3)
-				.fillHP()
+		bunny.setProportionalMaxHP(3)
 				.setTexture("bunny")
 				.setTurnsToRespawn(20)
 				.setVisualScaleHorizontal(0.8)

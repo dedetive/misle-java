@@ -331,6 +331,20 @@ public class Entity<T extends Entity<T>> extends Box {
     }
 
     /**
+     * Sets the maximum HP.<p>
+     * Also updates current HP to maintain the same ratio.
+     *
+     * @param maxHP New maximum HP.
+     */
+    @SuppressWarnings("unchecked")
+    public T setProportionalMaxHP(double maxHP) {
+        double currentHPRatio = this.HP / this.maxHP;
+        this.maxHP = maxHP * getMagnification();
+        this.setHP(Math.min(currentHPRatio, 1) * this.maxHP);
+        return (T) this;
+    }
+
+    /**
      * Returns the current HP.
      *
      * @return current HP.

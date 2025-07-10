@@ -311,7 +311,7 @@ public class PlayerAttributes {
 		try {
 			switch (stat) {
 				case MAX_HP -> {
-					player.setMaxHP(startingHP + levelMaxHP + equipmentMaxHP);
+					player.setProportionalMaxHP(startingHP + levelMaxHP + equipmentMaxHP);
 					player.setHP(Math.min(player.getHP(), player.getMaxHP()));
 				}
 				case MAX_ENTROPY -> this.maxEntropy = startingEntropy + levelMaxEntropy + equipmentMaxEntropy;

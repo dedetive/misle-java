@@ -1,7 +1,6 @@
 package com.ded.misle.world.entities.npcs;
 
 import com.ded.misle.core.LanguageManager;
-import com.ded.misle.world.entities.enemies.EnemyRegistry;
 import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.world.entities.Entity;
 
@@ -35,7 +34,7 @@ public class NPC extends Entity<NPC> {
 		this.setCollision(true);
 		this.name = "NPC";
 		this.nameColor = new Color(0xFFFFFF);
-		this.setMaxHP(20);
+		this.setProportionalMaxHP(20);
 
 		if (interactionType != InteractionType.NONE) {
 			interactableNPCs.add(this);

@@ -63,8 +63,7 @@ public enum BoxPreset {
     CRACKED_STONE_BRICK_WALL(box -> {
         try {
             Entity entity = (Entity) box;
-            entity.setMaxHP(1);
-            entity.fillHP();
+            entity.setProportionalMaxHP(1);
             entity.setDisplayHP(false);
             entity.setTextureInEntitiesDirectory(false);
         } catch (ClassCastException e) {

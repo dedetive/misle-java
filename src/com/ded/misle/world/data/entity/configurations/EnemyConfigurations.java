@@ -22,8 +22,7 @@ import static com.ded.misle.game.GamePanel.player;
  */
 public enum EnemyConfigurations implements GenericConfigurations {
     GOBLIN(goblin -> {
-        goblin.setMaxHP(12)
-                .fillHP()
+        goblin.setProportionalMaxHP(12)
                 .setDamage(2)
                 .setTexture("goblin")
                 .setDropTable(DropTable.GOBLIN)
