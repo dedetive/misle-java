@@ -95,6 +95,8 @@ public class TurnTimer {
      */
     private ActionListener onFinish;
 
+    private ActionListener afterExecution;
+
     /**
      * Creates a one-time timer that triggers after a given number of turns.
      *
@@ -230,6 +232,7 @@ public class TurnTimer {
     private void forceExecution(Iterator<TurnTimer> it, boolean removeNow) {
         ActionEvent e = new ActionEvent(TurnTimer.class, ActionEvent.ACTION_PERFORMED, listener.getClass().getName());
         listener.actionPerformed(e);
+        if (afterExecution != null) afterExecution.actionPerformed(e);
 
         if (!repeats) {
             cleanupAfterFinalExecution(it, removeNow, e);
@@ -342,6 +345,11 @@ public class TurnTimer {
      */
     public TurnTimer setOnFinish(ActionListener listener) {
         this.onFinish = listener;
+        return this;
+    }
+
+    public TurnTimer setAfterExecution(ActionListener afterExecution) {
+        this.afterExecution = afterExecution;
         return this;
     }
 
