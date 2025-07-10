@@ -4,7 +4,6 @@ import com.ded.misle.renderer.smoother.SyncedValue;
 import com.ded.misle.renderer.smoother.ValueModifier;
 import com.ded.misle.renderer.smoother.modifiers.BounceModifier;
 import com.ded.misle.renderer.smoother.modifiers.ShakeModifier;
-import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.logic.RoomManager;
 import com.ded.misle.world.logic.World;
 
@@ -27,12 +26,7 @@ public class PlayerPosition {
 	private double rotation;
 	public World world;
 
-	public Direction walkingDirection;
-	public Direction horizontalDirection;
-	public Direction verticalDirection;
-	private long lastDirectionUpdate;
-
-    public enum Region {
+	public enum Region {
 		VOID,
 		CHAIN_OF_LIES
 	}
@@ -41,9 +35,6 @@ public class PlayerPosition {
 		this.cameraOffsetX = new SyncedValue(0);
 		this.cameraOffsetY = new SyncedValue(0);
 		setRegion(Region.CHAIN_OF_LIES);
-		this.walkingDirection = RIGHT;
-		this.horizontalDirection = RIGHT;
-		this.verticalDirection = UP;
 	}
 
 	public float getCameraOffsetX() {
@@ -182,43 +173,5 @@ public class PlayerPosition {
 		timer.start();
 	}
 
-	public Direction getWalkingDirection() {
-		return player.pos.walkingDirection;
-	}
 
-	public Direction getHorizontalDirection() {
-		return player.pos.horizontalDirection;
-	}
-
-	public Direction getVerticalDirection() {
-		return player.pos.verticalDirection;
-	}
-
-
-	public void updateLastDirection(Direction direction) {
-		walkingDirection = direction;
-		switch (direction) {
-			case LEFT, RIGHT -> horizontalDirection = direction;
-			case UP, DOWN -> verticalDirection = direction;
-		}
-		lastDirectionUpdate = System.currentTimeMillis();
-	}
-
-	public Direction getRecentDirection(long precision) {
-		return getDirectionIfPrecision(walkingDirection, precision);
-	}
-
-	public Direction getRecentHorizontalDirection(long precision) {
-		return getDirectionIfPrecision(horizontalDirection, precision);
-	}
-
-	public Direction getRecentVerticalDirection(long precision) {
-		return getDirectionIfPrecision(verticalDirection, precision);
-	}
-
-	private Direction getDirectionIfPrecision(Direction direction, long precision) {
-		return lastDirectionUpdate + precision > System.currentTimeMillis()
-			? direction
-			: Direction.NONE;
-	}
 }

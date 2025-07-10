@@ -174,11 +174,11 @@ public class PlayingRenderer extends AbstractRenderer {
 //        drawRotatedRect(g2d, playerRect, player.pos.getVisualRotation()); // CUBE PLAYER
 
         long precision = 200;
-        Direction horizontalDirection = player.pos.getRecentHorizontalDirection(precision);
-        Direction verticalDirection = player.pos.getRecentVerticalDirection(precision);
-        Direction totalDirection = player.pos.getRecentDirection(precision);
+        Direction horizontalDirection = player.getRecentHorizontalDirection(precision);
+        Direction verticalDirection = player.getRecentVerticalDirection(precision);
+        Direction totalDirection = player.getRecentDirection(precision);
         BufferedImage playerSprite = null;
-        boolean playerMirror = player.pos.getHorizontalDirection() == LEFT;
+        boolean playerMirror = player.getHorizontalDirection() == LEFT;
 
         // Draw player sprite
         if (totalDirection == NONE) {
@@ -252,7 +252,7 @@ public class PlayingRenderer extends AbstractRenderer {
     private static void drawHandItem(Graphics2D g2d, double playerScreenX, double playerScreenY, MouseHandler mouseHandler) {
         if (player.inv.hasHeldItem()) {
 
-            if (player.pos.getHorizontalDirection() == RIGHT) {
+            if (player.getHorizontalDirection() == RIGHT) {
                 facingMultiplicator = 0.5;
                 mirror = false;
             } else {

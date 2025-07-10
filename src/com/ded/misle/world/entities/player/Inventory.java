@@ -236,7 +236,7 @@ public class Inventory {
 		playThis(drop_item);
 		removeItem(row, col, quantity);
 		PlayingRenderer.updateSelectedItemNamePosition();
-		switch (player.pos.getWalkingDirection()) {
+		switch (player.getWalkingDirection()) {
 			case Direction.UP -> moveBox(droppedItem, 0, -DROP_DISTANCE);
 			case Direction.DOWN -> moveBox(droppedItem, 0, DROP_DISTANCE);
 			case Direction.LEFT -> moveBox(droppedItem, -DROP_DISTANCE, 0);
@@ -252,7 +252,7 @@ public class Inventory {
 		playThis(drop_item);
 		removeItem(position);
 		PlayingRenderer.updateSelectedItemNamePosition();
-		switch (player.pos.getWalkingDirection()) {
+		switch (player.getWalkingDirection()) {
 			case Direction.UP -> moveBox(droppedItem, 0, -DROP_DISTANCE);
 			case Direction.DOWN -> moveBox(droppedItem, 0, DROP_DISTANCE);
 			case Direction.LEFT -> moveBox(droppedItem, -DROP_DISTANCE, 0);
@@ -351,7 +351,7 @@ public class Inventory {
 		if (draggedItem.getCount() == 0) destroyGrabbedItem();
 		destroyTempItem();
 		PlayingRenderer.updateSelectedItemNamePosition();
-		switch (player.pos.getWalkingDirection()) {
+		switch (player.getWalkingDirection()) {
 			case Direction.UP -> moveBox(droppedItem, 0, -DROP_DISTANCE);
 			case Direction.DOWN -> moveBox(droppedItem, 0, DROP_DISTANCE);
 			case Direction.LEFT -> moveBox(droppedItem, -DROP_DISTANCE, 0);

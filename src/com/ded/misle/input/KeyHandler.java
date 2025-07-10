@@ -357,7 +357,7 @@ public class KeyHandler implements KeyListener {
                             BoxManipulation.movePlayer(movement.x, movement.y);
 						// Has an entity
                         } else {
-                            player.pos.updateLastDirection(interpretDirection(movement.x, movement.y));
+                            player.updateLastDirection(interpretDirection(movement.x, movement.y));
 
                             if (targetX > 0 && targetX < worldWidth &&
 								targetY > 0 && targetY < worldHeight &&

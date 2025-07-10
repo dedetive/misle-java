@@ -31,6 +31,10 @@ import static com.ded.misle.world.entities.Entity.HealFlag.ABSOLUTE;
  * Handles health, damage, healing, and death logic. Also manages shared Entity instances.
  */
 public class Entity extends Box {
+    public Direction walkingDirection = Direction.RIGHT;
+    public Direction horizontalDirection = Direction.RIGHT;
+    public Direction verticalDirection = Direction.UP;
+
     /** The type of this entity, which defines its default configuration. */
     protected GenericType type;
     /** A scaling factor that magnifies the entity's attributes (e.g. HP, damage). */
@@ -96,6 +100,7 @@ public class Entity extends Box {
     protected CoinDropRange coinDrop = new CoinDropRange(0);
     protected int turnsToRespawn = Integer.MIN_VALUE;
     protected TurnTimer respawnTimer;
+    private long lastDirectionUpdate;
 
     /**
      * Returns the list of all Entities.
@@ -899,6 +904,45 @@ public class Entity extends Box {
 
     public void scheduleOnDamage(Runnable runnable) {
         onDamage.add(runnable);
+    }
+
+    public Direction getWalkingDirection() {
+        return this.walkingDirection;
+    }
+
+    public Direction getHorizontalDirection() {
+        return this.horizontalDirection;
+    }
+
+    public Direction getVerticalDirection() {
+        return this.verticalDirection;
+    }
+
+    public void updateLastDirection(Direction direction) {
+        walkingDirection = direction;
+        switch (direction) {
+            case LEFT, RIGHT -> horizontalDirection = direction;
+            case UP, DOWN -> verticalDirection = direction;
+        }
+        lastDirectionUpdate = System.currentTimeMillis();
+    }
+
+    public Direction getRecentDirection(long precision) {
+        return getDirectionIfPrecision(walkingDirection, precision);
+    }
+
+    public Direction getRecentHorizontalDirection(long precision) {
+        return getDirectionIfPrecision(horizontalDirection, precision);
+    }
+
+    public Direction getRecentVerticalDirection(long precision) {
+        return getDirectionIfPrecision(verticalDirection, precision);
+    }
+
+    private Direction getDirectionIfPrecision(Direction direction, long precision) {
+        return lastDirectionUpdate + precision > System.currentTimeMillis()
+                ? direction
+                : Direction.NONE;
     }
 
     public void setTextureInEntitiesDirectory(boolean textureInEntitiesDirectory) {

@@ -6,7 +6,6 @@ import com.ded.misle.renderer.AnimatedStepCounter;
 import com.ded.misle.world.data.Difficulty;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.data.PersistentUUIDTimerData;
-import com.ded.misle.world.entities.enemies.EnemyRegistry;
 import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.world.entities.Entity;
 

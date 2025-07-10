@@ -78,7 +78,7 @@ public class HandItemAnimator {
 
             Point origin = new Point(player.getX(), player.getY());
 
-            attacker.attack(origin, player.pos.getWalkingDirection());
+            attacker.attack(origin, player.getWalkingDirection());
 
             selectedItem.delayedSetAnimationRotation(150, 60);
             selectedItem.delayedChangeAnimationBulk(-0.175, 120);

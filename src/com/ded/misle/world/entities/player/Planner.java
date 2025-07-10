@@ -272,7 +272,7 @@ public class Planner {
 
                 player.stepCounter.updateStep(steps + 1, stepsLeft);
 
-                player.pos.updateLastDirection(interpretDirection(unitaryPoint.x, unitaryPoint.y));
+                player.updateLastDirection(interpretDirection(unitaryPoint.x, unitaryPoint.y));
 
                 if (!PhysicsEngine.isSpaceOccupied(point.x, point.y, player) && !shouldStop.get())
                     BoxManipulation.movePlayer(unitaryPoint.x, unitaryPoint.y);
