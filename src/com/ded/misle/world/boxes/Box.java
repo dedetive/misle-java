@@ -266,6 +266,8 @@ public class Box {
 		this.visualScaleVertical = visualScaleVertical;
 	}
 
+	public static final String ENTITY_TEXTURE_DIRECTORY = "../characters/entities/";
+
 	public void setTexture(String texture) {
 		this.textureName = texture;
 	}

@@ -11,6 +11,7 @@ import com.ded.misle.world.entities.ai.behaviors.WanderBehavior;
 import java.awt.*;
 
 import static com.ded.misle.game.GamePanel.player;
+import static com.ded.misle.world.boxes.Box.ENTITY_TEXTURE_DIRECTORY;
 
 /**
  * Centralized definitions of enemy setup configurations.
@@ -24,7 +25,7 @@ public enum EnemyConfigurations implements GenericConfigurations {
         goblin.setMaxHP(20);
         goblin.fillHP();
         goblin.setDamage(3);
-        goblin.setTexture("../characters/enemy/goblin");
+        goblin.setTexture(ENTITY_TEXTURE_DIRECTORY + "goblin");
         goblin.setDropTable(DropTable.GOBLIN);
         goblin.setXpDrop(1);
         goblin.setCoinDrop(3);
