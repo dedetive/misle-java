@@ -48,9 +48,30 @@ public abstract class AbstractBehavior implements AIBehavior {
         }
     }
 
+    /**
+     * List of actions to execute when the behavior becomes active.
+     * <p>
+     * Actions are executed in the order they were added, allowing modular
+     * customization of activation behavior alongside default logic.
+     */
     protected final java.util.List<java.util.function.Consumer<BehaviorContext>> onSwitchInActions = new java.util.ArrayList<>();
+
+    /**
+     * List of actions to execute when the behavior is deactivated.
+     * <p>
+     * Actions are executed in the order they were added, allowing modular
+     * customization of deactivation behavior alongside default logic.
+     */
     protected final java.util.List<java.util.function.Consumer<BehaviorContext>> onSwitchOutActions = new java.util.ArrayList<>();
 
+    /**
+     * Executes all registered activation actions for this behavior.
+     * <p>
+     * This method is final and cannot be overridden directly; instead,
+     * additional actions should be registered via {@link #addOnSwitchIn}.
+     *
+     * @param context the current behavior context
+     */
     @Override
     public final void onSwitchIn(BehaviorContext context) {
         for (var action : onSwitchInActions) {
@@ -58,6 +79,14 @@ public abstract class AbstractBehavior implements AIBehavior {
         }
     }
 
+    /**
+     * Executes all registered deactivation actions for this behavior.
+     * <p>
+     * This method is final and cannot be overridden directly; instead,
+     * additional actions should be registered via {@link #addOnSwitchOut}.
+     *
+     * @param context the current behavior context
+     */
     @Override
     public final void onSwitchOut(BehaviorContext context) {
         for (var action : onSwitchOutActions) {
@@ -65,11 +94,25 @@ public abstract class AbstractBehavior implements AIBehavior {
         }
     }
 
+    /**
+     * Registers a new action to be performed when this behavior becomes active.
+     * <p>
+     * Actions are executed in the order they are added.
+     *
+     * @param action the activation action to add
+     */
     @Override
     public final void addOnSwitchIn(java.util.function.Consumer<BehaviorContext> action) {
         onSwitchInActions.add(action);
     }
 
+    /**
+     * Registers a new action to be performed when this behavior is deactivated.
+     * <p>
+     * Actions are executed in the order they are added.
+     *
+     * @param action the deactivation action to add
+     */
     @Override
     public final void addOnSwitchOut(java.util.function.Consumer<BehaviorContext> action) {
         onSwitchOutActions.add(action);
