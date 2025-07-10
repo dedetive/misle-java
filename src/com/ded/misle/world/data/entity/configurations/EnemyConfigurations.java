@@ -22,19 +22,18 @@ import static com.ded.misle.game.GamePanel.player;
  */
 public enum EnemyConfigurations implements GenericConfigurations {
     GOBLIN(goblin -> {
-        goblin.setMaxHP(12);
-        goblin.fillHP();
-        goblin.setDamage(2);
-        goblin.setTexture("goblin");
-        goblin.setDropTable(DropTable.GOBLIN);
-        goblin.setXpDrop(1);
-        goblin.setCoinDrop(3);
-        goblin.setTurnsToRespawn(50);
-        goblin.scheduleOnDamage(
-            () -> goblin.setDisplayHP(true)
-        );
+        goblin.setMaxHP(12)
+                .fillHP()
+                .setDamage(2)
+                .setTexture("goblin")
+                .setDropTable(DropTable.GOBLIN)
+                .setXpDrop(1)
+                .setCoinDrop(3)
+                .setTurnsToRespawn(50)
+                .scheduleOnDamage(
+                    () -> goblin.setDisplayHP(true))
+                .setMaxSight(8);
 
-        goblin.setMaxSight(8);
         var wait = new WaitBehavior();
         var pursue = new PursueBehavior();
         var wander = new WanderBehavior(3);
