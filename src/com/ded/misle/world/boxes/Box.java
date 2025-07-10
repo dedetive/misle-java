@@ -6,6 +6,7 @@ import com.ded.misle.renderer.image.PaletteShifter;
 import com.ded.misle.renderer.smoother.SmoothValue;
 import com.ded.misle.world.data.BoxPreset;
 import com.ded.misle.world.data.Direction;
+import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.renderer.image.ImageManager;
 import com.ded.misle.renderer.smoother.SmoothPosition;
@@ -32,7 +33,6 @@ public class Box {
 	private int worldX;
 	private int worldY;
 	public int worldLayer;
-	private Direction direction = Direction.NONE;
 
 	private Color color = defaultBoxColor;
 	public String textureName = "solid";
@@ -194,10 +194,9 @@ public class Box {
 	}
 
 	public void setPos(int x, int y) {
-		this.setDirection(
-			Direction.interpretDirection
-				((x - this.worldX), (y - this.worldY))
-		);
+		if (this instanceof Entity) ((Entity) this).updateLastDirection(Direction.interpretDirection(
+				x - this.worldX, y - this.worldY
+		));
 
 		setPos(x, y, -1);
 	}
@@ -323,16 +322,6 @@ public class Box {
 			}
 		}
 		return cachedTextures.get(boxTextureName); // Return the cached image
-	}
-
-	// EFFECT RELATED
-
-	public Direction getDirection() {
-		return direction;
-	}
-
-	public void setDirection(Direction direction) {
-		this.direction = direction;
 	}
 
 	// Object type (BOX, HP_BOX)
