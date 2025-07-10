@@ -26,7 +26,6 @@ public enum EnemyConfigurations implements GenericConfigurations {
         goblin.setDropTable(DropTable.GOBLIN);
         goblin.setXpDrop(1);
         goblin.setCoinDrop(3);
-        goblin.setCollision(true);
         goblin.setTurnsToRespawn(50);
         goblin.scheduleOnDamage(
             () -> goblin.setDisplayHP(true)
