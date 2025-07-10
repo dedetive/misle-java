@@ -121,6 +121,7 @@ public class Entity extends Box {
     public Entity(int x, int y, GenericType type, double magnification) {
         super(x, y);
 
+        this.setCollision(true);
         this.magnification = magnification;
         this.setObjectType(ENTITY);
         entities.add(this);
@@ -142,6 +143,7 @@ public class Entity extends Box {
      * Constructs an Entity with HP and max HP set as 1 and no position.
      */
     public Entity() {
+        this.setCollision(true);
         this.magnification = 1;
         this.setObjectType(ENTITY);
         this.type = null;
