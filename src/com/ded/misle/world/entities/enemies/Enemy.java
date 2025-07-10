@@ -22,7 +22,7 @@ public class Enemy extends Entity<Enemy> {
      * @param magnification a multiplier for stats like HP and damage
      */
     public Enemy(Point pos, EnemyType type, double magnification) {
-        super(pos.x, pos.y, type,magnification + player.getDifficulty().enemyStatMultiplier);
+        super(pos.x, pos.y, type, magnification + player.getDifficulty().enemyStatMultiplier);
         EnemyRegistry.register(this);
     }
 
@@ -31,11 +31,13 @@ public class Enemy extends Entity<Enemy> {
     /**
      * Sets damage.
      * <p>Is multiplied by this Enemy's {@link #magnification}.</p>
-     * @param damage Base damage dealt per hit
+     *
+     * @param damage     Base damage dealt per hit
      * @param damageRate How long it takes per hit in turns
      */
-    public void setDamage(double damage, int damageRate) {
+    public Enemy setDamage(double damage, int damageRate) {
         this.effect = new Damage(damage * getMagnification(), damageRate).setTriggersOnContact(false);
+        return this;
     }
 
     /**
@@ -44,14 +46,16 @@ public class Enemy extends Entity<Enemy> {
      *
      * @param damage Base damage dealt per hit
      */
-    public void setDamage(double damage) {
+    public Enemy setDamage(double damage) {
         setDamage(damage, 1);
+        return this;
     }
 
     /**
      * Kills the enemy and removes it from the registry.
      */
-    public void kill() {
+    public Enemy kill() {
         EnemyRegistry.unregister(this);
+        return this;
     }
 }

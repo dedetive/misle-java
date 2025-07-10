@@ -298,8 +298,9 @@ public class Box {
 		this.visualScaleVertical = visualScaleVertical;
 	}
 
-	public void setTexture(String texture) {
+	public Box setTexture(String texture) {
 		this.textureName = texture;
+		return this;
 	}
 
 	public BufferedImage getTexture() {

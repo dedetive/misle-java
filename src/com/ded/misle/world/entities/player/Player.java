@@ -4,7 +4,6 @@ import com.ded.misle.game.GamePanel;
 import com.ded.misle.net.NetClient;
 import com.ded.misle.renderer.AnimatedStepCounter;
 import com.ded.misle.world.data.Difficulty;
-import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.data.PersistentUUIDTimerData;
 import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.world.entities.Entity;
@@ -38,7 +37,7 @@ public class Player extends Entity<Player> {
 	private Difficulty difficulty = Difficulty.MEDIUM;
 
 	long lastSendTime;
-	private java.util.List<NetClient.Player> onlinePlayerList = new ArrayList<>();
+	private List<NetClient.Player> onlinePlayerList = new ArrayList<>();
 	private byte[] uuid = new byte[16];
 
 	private PersistentUUIDTimerData uuidData;
@@ -73,8 +72,10 @@ public class Player extends Entity<Player> {
 		this.getPlanner().killExecution();
 	}
 
-	public void setWaiting(boolean waiting) {
+	@SuppressWarnings("unchecked")
+	public Player setWaiting(boolean waiting) {
 		this.waiting = waiting;
+		return this;
 	}
 
 	public boolean isWaiting() {
@@ -107,9 +108,9 @@ public class Player extends Entity<Player> {
 	 */
 	public Planner getPlanner() {
 		return planner =
-			planner != null
-				? planner
-				: new Planner(new Point(getX(), getY()));
+				planner != null
+						? planner
+						: new Planner(new Point(getX(), getY()));
 	}
 
 	/**
@@ -140,10 +141,10 @@ public class Player extends Entity<Player> {
 					if (NetClient.isServerOnline()) {
 						/* TODO: please for the sake of Erosius change this ugly check asap */
 						if (GamePanel.gameState == GamePanel.GameState.PLAYING ||
-							GamePanel.gameState == GamePanel.GameState.INVENTORY ||
-							GamePanel.gameState == GamePanel.GameState.FROZEN_PLAYING ||
-							GamePanel.gameState == GamePanel.GameState.DIALOG ||
-							GamePanel.gameState == GamePanel.GameState.PAUSE_MENU
+								GamePanel.gameState == GamePanel.GameState.INVENTORY ||
+								GamePanel.gameState == GamePanel.GameState.FROZEN_PLAYING ||
+								GamePanel.gameState == GamePanel.GameState.DIALOG ||
+								GamePanel.gameState == GamePanel.GameState.PAUSE_MENU
 						) {
 							String uuid = getUUIDString();
 							int heldItemID = inv.getSelectedItem() == null ? 0 : inv.getSelectedItem().getId();
@@ -161,14 +162,14 @@ public class Player extends Entity<Player> {
 		netThread.start();
 	}
 
-    public List<NetClient.Player> getOnlinePlayerList() {
-        return onlinePlayerList;
-    }
+	public List<NetClient.Player> getOnlinePlayerList() {
+		return onlinePlayerList;
+	}
 
 	public void setUUID(byte[] uuid) {
 		if (!Arrays.equals(this.uuid, new byte[16])) return;
 
-        this.uuid = uuid;
+		this.uuid = uuid;
 		ensureUUIDDataLoaded();
 	}
 
@@ -183,7 +184,7 @@ public class Player extends Entity<Player> {
 		bb.putLong(uuid.getMostSignificantBits());
 		bb.putLong(uuid.getLeastSignificantBits());
 
-        return bb.array();
+		return bb.array();
 	}
 
 	public byte[] getUUIDBytes() {
@@ -206,7 +207,7 @@ public class Player extends Entity<Player> {
 		ByteBuffer bb = ByteBuffer.wrap(this.getUUIDBytes());
 		long high = bb.getLong();
 		long low = bb.getLong();
-        return new UUID(high, low);
+		return new UUID(high, low);
 	}
 
 	private void ensureUUIDDataLoaded() {
@@ -231,11 +232,13 @@ public class Player extends Entity<Player> {
 		return this.uuidData.getTurns(id);
 	}
 
-    public Difficulty getDifficulty() {
-        return difficulty;
-    }
+	public Difficulty getDifficulty() {
+		return difficulty;
+	}
 
-    public void setDifficulty(Difficulty difficulty) {
-        this.difficulty = difficulty;
-    }
+	@SuppressWarnings("unchecked")
+	public Player setDifficulty(Difficulty difficulty) {
+		this.difficulty = difficulty;
+		return this;
+	}
 }

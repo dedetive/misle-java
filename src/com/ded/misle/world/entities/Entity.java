@@ -35,16 +35,26 @@ public class Entity<T extends Entity<T>> extends Box {
     public Direction horizontalDirection = Direction.RIGHT;
     public Direction verticalDirection = Direction.UP;
 
-    /** The type of this entity, which defines its default configuration. */
+    /**
+     * The type of this entity, which defines its default configuration.
+     */
     protected GenericType type;
-    /** A scaling factor that magnifies the entity's attributes (e.g. HP, damage). */
+    /**
+     * A scaling factor that magnifies the entity's attributes (e.g. HP, damage).
+     */
     protected final double magnification;
-    /** Controls the AI behaviors of this entity. */
+    /**
+     * Controls the AI behaviors of this entity.
+     */
     protected final BehaviorController controller = new BehaviorController(this);
-    /** Current HP of the entity. */
+    /**
+     * Current HP of the entity.
+     */
     protected double HP = 1;
 
-    /** Maximum HP the entity can have. */
+    /**
+     * Maximum HP the entity can have.
+     */
     protected double maxHP = 1;
 
     /**
@@ -57,23 +67,34 @@ public class Entity<T extends Entity<T>> extends Box {
      * <p>
      * Shows current HP of the entity that is going to be rendered. Has a slight delay compared to real internal {@link #HP}.
      */
-    protected final SmoothValue HPSmoother = new SmoothValue((float) HP);;
+    protected final SmoothValue HPSmoother = new SmoothValue((float) HP);
+    ;
 
-    /** Locked HP that cannot be recovered or reduced normally. */
+    /**
+     * Locked HP that cannot be recovered or reduced normally.
+     */
     protected double lockedHP;
 
-    /** Defense value used to reduce incoming damage. */
+    /**
+     * Defense value used to reduce incoming damage.
+     */
     protected double defense;
 
     protected boolean isRegenerationDoubled;
 
-    /** Chance (0-100%) to invert damage into healing. */
+    /**
+     * Chance (0-100%) to invert damage into healing.
+     */
     protected double inversion;
 
-    /** Quality factor used for regeneration calculation. */
+    /**
+     * Quality factor used for regeneration calculation.
+     */
     protected double regenerationQuality;
 
-    /** Represents how many turns it takes to regenerate again. Default value is 5. */
+    /**
+     * Represents how many turns it takes to regenerate again. Default value is 5.
+     */
     protected int regenerationRate = 5;
 
     /**
@@ -86,17 +107,27 @@ public class Entity<T extends Entity<T>> extends Box {
      */
     protected TurnTimer regenerationTimer;
 
-    /** If true, entity is immune to all damage. */
+    /**
+     * If true, entity is immune to all damage.
+     */
     protected boolean isInvulnerable;
 
-    /** Drop table for items when this entity dies. */
+    /**
+     * Drop table for items when this entity dies.
+     */
     protected DropTable dropTable;
 
-    /** Static list of all active Entities. */
+    /**
+     * Static list of all active Entities.
+     */
     private static final List<Entity> entities = new ArrayList<>();
-    /** The amount of XP awarded to the player when this entity is defeated. */
+    /**
+     * The amount of XP awarded to the player when this entity is defeated.
+     */
     protected double xpDrop = 0;
-    /** The range of coins that may drop from this entity. */
+    /**
+     * The range of coins that may drop from this entity.
+     */
     protected CoinDropRange coinDrop = new CoinDropRange(0);
     protected int turnsToRespawn = Integer.MIN_VALUE;
     protected TurnTimer respawnTimer;
@@ -104,6 +135,7 @@ public class Entity<T extends Entity<T>> extends Box {
 
     /**
      * Returns the list of all Entities.
+     *
      * @return list of Entity instances.
      */
     public static List<Entity> getEntities() {
@@ -120,6 +152,7 @@ public class Entity<T extends Entity<T>> extends Box {
 
     /**
      * Constructs an Entity at a specific position. Default values of HP and max HP are 1.
+     *
      * @param x X-coordinate.
      * @param y Y-coordinate.
      */
@@ -137,6 +170,7 @@ public class Entity<T extends Entity<T>> extends Box {
 
     /**
      * Constructs an Entity at a specific position. Default values of HP and max HP are 1.
+     *
      * @param x X-coordinate.
      * @param y Y-coordinate.
      */
@@ -158,6 +192,7 @@ public class Entity<T extends Entity<T>> extends Box {
 
     /**
      * Sets the current HP. Also checks if this died.
+     *
      * @param HP New HP value.
      */
     public void setHP(double HP) {
@@ -206,8 +241,10 @@ public class Entity<T extends Entity<T>> extends Box {
      *
      * @param xp the XP amount
      */
-    public void setXpDrop(int xp) {
+    @SuppressWarnings("unchecked")
+    public T setXpDrop(int xp) {
         this.xpDrop = xp;
+        return (T) this;
     }
 
     /**
@@ -216,8 +253,10 @@ public class Entity<T extends Entity<T>> extends Box {
      * @param min the minimum number of coins
      * @param max the maximum number of coins
      */
-    public void setCoinDropRange(int min, int max) {
+    @SuppressWarnings("unchecked")
+    public T setCoinDropRange(int min, int max) {
         this.coinDrop = new CoinDropRange(min, max);
+        return (T) this;
     }
 
     /**
@@ -225,8 +264,10 @@ public class Entity<T extends Entity<T>> extends Box {
      *
      * @param coinDropRange the coin drop range
      */
-    public void setCoinDropRange(CoinDropRange coinDropRange) {
+    @SuppressWarnings("unchecked")
+    public T setCoinDropRange(CoinDropRange coinDropRange) {
         this.coinDrop = coinDropRange;
+        return (T) this;
     }
 
     /**
@@ -234,8 +275,10 @@ public class Entity<T extends Entity<T>> extends Box {
      *
      * @param coinDrop the fixed number of coins
      */
-    public void setCoinDrop(int coinDrop) {
+    @SuppressWarnings("unchecked")
+    public T setCoinDrop(int coinDrop) {
         this.coinDrop = new CoinDropRange(coinDrop);
+        return (T) this;
     }
 
     /**
@@ -252,8 +295,10 @@ public class Entity<T extends Entity<T>> extends Box {
      *
      * @param behaviors the list of behaviors
      */
-    public void setBehaviors(AIBehavior... behaviors) {
+    @SuppressWarnings("unchecked")
+    public T setBehaviors(AIBehavior... behaviors) {
         controller.setBehaviors(behaviors);
+        return (T) this;
     }
 
     /**
@@ -276,6 +321,7 @@ public class Entity<T extends Entity<T>> extends Box {
 
     /**
      * Sets the maximum HP.
+     *
      * @param maxHP New maximum HP.
      */
     @SuppressWarnings("unchecked")
@@ -286,6 +332,7 @@ public class Entity<T extends Entity<T>> extends Box {
 
     /**
      * Returns the current HP.
+     *
      * @return current HP.
      */
     public double getHP() {
@@ -294,6 +341,7 @@ public class Entity<T extends Entity<T>> extends Box {
 
     /**
      * Returns the maximum HP.
+     *
      * @return maximum HP.
      */
     public double getMaxHP() {
@@ -303,15 +351,19 @@ public class Entity<T extends Entity<T>> extends Box {
     /**
      * Instantly sets HP to maximum.
      */
-    public void fillHP() {
+    @SuppressWarnings("unchecked")
+    public T fillHP() {
         this.HP = maxHP;
         this.HPSmoother.setTarget((float) HP);
+        return (T) this;
     }
 
-    public void setTurnsToRespawn(int turnsToRespawn) {
+    @SuppressWarnings("unchecked")
+    public T setTurnsToRespawn(int turnsToRespawn) {
         this.turnsToRespawn = turnsToRespawn;
         respawnTimer = new TurnTimer(turnsToRespawn + 1, e -> respawnIfPossible());
         respawnTimer.setRoomScoped(true);
+        return (T) this;
     }
 
     public boolean canRespawn() {
@@ -327,6 +379,7 @@ public class Entity<T extends Entity<T>> extends Box {
 
     /**
      * Checks if the entity is dead. If so, handles drop and removal logic.
+     *
      * @return true if dead, false otherwise.
      */
     private boolean checkIfDead() {
@@ -336,7 +389,7 @@ public class Entity<T extends Entity<T>> extends Box {
             if (!(this instanceof Player)) {
                 if (this.HPSmoother.getCurrentFloat() >= 0.5 && this.displayHP) {
                     javax.swing.Timer checkAgainTimer = new javax.swing.Timer(30,
-                        e -> handleDeath());
+                            e -> handleDeath());
                     checkAgainTimer.setRepeats(false);
                     checkAgainTimer.start();
                     return true;
@@ -378,8 +431,10 @@ public class Entity<T extends Entity<T>> extends Box {
         return displayHP;
     }
 
-    public void setDisplayHP(boolean displayHP) {
+    @SuppressWarnings("unchecked")
+    public T setDisplayHP(boolean displayHP) {
         this.displayHP = displayHP;
+        return (T) this;
     }
 
     public boolean handleDeath() {
@@ -437,6 +492,7 @@ public class Entity<T extends Entity<T>> extends Box {
 
         /**
          * Creates an EnumSet from given DamageFlags.
+         *
          * @param flags Array of flags.
          * @return EnumSet of flags.
          */
@@ -450,8 +506,9 @@ public class Entity<T extends Entity<T>> extends Box {
     /**
      * Deals damage to the entity. <p></p>
      * LockDuration is defaulted to empty and knockback direction is set to NONE.
+     *
      * @param rawDamage Raw incoming damage.
-     * @param flags A set of {@link DamageFlag} values.
+     * @param flags     A set of {@link DamageFlag} values.
      * @return Final damage applied.
      */
     public double takeDamage(double rawDamage, EnumSet<DamageFlag> flags) {
@@ -461,8 +518,9 @@ public class Entity<T extends Entity<T>> extends Box {
     /**
      * Deals damage to the entity. <p></p>
      * LockDuration is defaulted to empty.
+     *
      * @param rawDamage Raw incoming damage.
-     * @param flags A set of {@link DamageFlag} values.
+     * @param flags     A set of {@link DamageFlag} values.
      * @param knockback Direction of the applied knockback.
      * @return Final damage applied.
      */
@@ -472,9 +530,10 @@ public class Entity<T extends Entity<T>> extends Box {
 
     /**
      * Deals damage to the entity.
-     * @param rawDamage Raw incoming damage.
-     * @param flags A set of {@link DamageFlag} values.
-     * @param knockback Direction of the applied knockback.
+     *
+     * @param rawDamage    Raw incoming damage.
+     * @param flags        A set of {@link DamageFlag} values.
+     * @param knockback    Direction of the applied knockback.
      * @param lockDuration Duration before locked HP resets. Does nothing if LOCKER flag is not given.
      * @return Final damage applied.
      */
@@ -508,6 +567,7 @@ public class Entity<T extends Entity<T>> extends Box {
 
     /**
      * Applies inverted healing instead of damage.
+     *
      * @param amount Amount to heal.
      */
     private void handleInversionHeal(double amount) {
@@ -516,7 +576,8 @@ public class Entity<T extends Entity<T>> extends Box {
 
     /**
      * Locks a portion of HP.
-     * @param amount Amount to lock.
+     *
+     * @param amount      Amount to lock.
      * @param durationOpt Optional duration to unlock automatically.
      */
     private void applyLocker(double amount, Optional<Duration> durationOpt) {
@@ -534,8 +595,9 @@ public class Entity<T extends Entity<T>> extends Box {
 
     /**
      * Applies final damage value to HP.
+     *
      * @param amount Damage to apply.
-     * @param flags Damage flags.
+     * @param flags  Damage flags.
      */
     private void applyDamageToHP(double amount, EnumSet<DamageFlag> flags) {
         if (flags.contains(DamageFlag.POST_MORTEM)) {
@@ -547,6 +609,7 @@ public class Entity<T extends Entity<T>> extends Box {
 
     /**
      * Applies knockback effect.
+     *
      * @param dir Direction of knockback.
      */
     private void applyKnockback(Direction dir) {
@@ -562,42 +625,41 @@ public class Entity<T extends Entity<T>> extends Box {
             switch (dir) {
                 case RIGHT -> {
                     visualOffsetX.addModifiers(
-                        new BounceModifier(amplitude, duration, freq),
-                        shaking.clone());
+                            new BounceModifier(amplitude, duration, freq),
+                            shaking.clone());
 
                     visualOffsetY.addModifiers(shaking.clone());
                 }
                 case LEFT -> {
                     visualOffsetX.addModifiers(
-                        new BounceModifier(-amplitude, duration, freq),
-                        shaking.clone());
+                            new BounceModifier(-amplitude, duration, freq),
+                            shaking.clone());
 
                     visualOffsetY.addModifiers(shaking.clone());
                 }
                 case DOWN -> {
                     visualOffsetY.addModifiers(
-                        new BounceModifier(amplitude, duration, freq),
-                        shaking.clone());
+                            new BounceModifier(amplitude, duration, freq),
+                            shaking.clone());
 
                     visualOffsetX.addModifiers(shaking.clone());
                 }
                 case UP -> {
                     visualOffsetY.addModifiers(
-                        new BounceModifier(-amplitude, duration, freq),
-                        shaking.clone());
+                            new BounceModifier(-amplitude, duration, freq),
+                            shaking.clone());
 
                     visualOffsetX.addModifiers(shaking.clone());
                 }
             }
-        } catch (CloneNotSupportedException ignored) {
-            ignored.printStackTrace();
-        }
+        } catch (CloneNotSupportedException ignored) {}
     }
 
     /**
      * Calculates final damage after defense and flags.
+     *
      * @param rawDamage Raw incoming damage.
-     * @param flags Damage flags.
+     * @param flags     Damage flags.
      * @return Final damage value.
      */
     public double calculateDamage(double rawDamage, EnumSet<DamageFlag> flags) {
@@ -623,6 +685,7 @@ public class Entity<T extends Entity<T>> extends Box {
 
     /**
      * Returns locked HP amount.
+     *
      * @return Locked HP.
      */
     public double getLockedHP() {
@@ -631,6 +694,7 @@ public class Entity<T extends Entity<T>> extends Box {
 
     /**
      * Sets locked HP.
+     *
      * @param lockedHP New locked HP.
      * @return New value of locked HP.
      */
@@ -641,10 +705,13 @@ public class Entity<T extends Entity<T>> extends Box {
 
     /**
      * Unlocks a portion of locked HP.
+     *
      * @param damage Amount to unlock.
      */
-    public void unlockHP(double damage) {
+    @SuppressWarnings("unchecked")
+    public T unlockHP(double damage) {
         this.setLockedHP(Math.max(lockedHP - damage, 0));
+        return (T) this;
     }
 
     /**
@@ -692,7 +759,8 @@ public class Entity<T extends Entity<T>> extends Box {
 
     /**
      * Applies healing to this entity.
-     * @param heal Heal amount.
+     *
+     * @param heal  Heal amount.
      * @param flags A set of {@link HealFlag} values.
      * @return Final amount healed.
      */
@@ -711,7 +779,8 @@ public class Entity<T extends Entity<T>> extends Box {
 
     /**
      * Validates whether the healing can be applied.
-     * @param heal Amount to heal.
+     *
+     * @param heal  Amount to heal.
      * @param flags Healing flags.
      * @return true if healing is valid.
      */
@@ -735,6 +804,7 @@ public class Entity<T extends Entity<T>> extends Box {
 
     /**
      * Determines if this heal attempt should revive the entity.
+     *
      * @param flags Healing flags.
      * @return true if revival should occur.
      */
@@ -742,7 +812,7 @@ public class Entity<T extends Entity<T>> extends Box {
         if (!(this instanceof Player)) return false;
 
         boolean revived = this.getHP() > 0 &&
-            (flags.contains(HealFlag.REVIVAL) || flags.contains(HealFlag.REVIVAL_EXCLUSIVE));
+                (flags.contains(HealFlag.REVIVAL) || flags.contains(HealFlag.REVIVAL_EXCLUSIVE));
 
         boolean surpassedLocked = this.getHP() > lockedHP;
 
@@ -751,7 +821,8 @@ public class Entity<T extends Entity<T>> extends Box {
 
     /**
      * Calculates how much healing is actually applied.
-     * @param heal Raw heal amount.
+     *
+     * @param heal  Raw heal amount.
      * @param flags Healing flags.
      * @return Final heal value.
      */
@@ -761,7 +832,7 @@ public class Entity<T extends Entity<T>> extends Box {
         boolean isPlayer = this instanceof Player;
         boolean isDead = (isPlayer && player.attr.isDead()) || this.HP < 0;
 
-        boolean isAbsolute = flags.contains(HealFlag.ABSOLUTE);
+        boolean isAbsolute = flags.contains(ABSOLUTE);
         boolean isOverheal = flags.contains(HealFlag.OVERHEAL);
         boolean isRevival = flags.contains(HealFlag.REVIVAL);
         boolean isRevivalExclusive = flags.contains(HealFlag.REVIVAL_EXCLUSIVE);
@@ -772,8 +843,8 @@ public class Entity<T extends Entity<T>> extends Box {
         if (isOverheal) return heal;
 
         return isAbsolute
-            ? Math.min(heal, this.getMaxHP() - this.getHP())
-            : Math.min(heal, this.getMaxHP() - this.getHP());
+                ? Math.min(heal, this.getMaxHP() - this.getHP())
+                : Math.min(heal, this.getMaxHP() - this.getHP());
     }
 
     // REGENERATION
@@ -782,8 +853,10 @@ public class Entity<T extends Entity<T>> extends Box {
         return regenerationQuality;
     }
 
-    public void setRegenerationQuality(double regenerationQuality) {
+    @SuppressWarnings("unchecked")
+    public T setRegenerationQuality(double regenerationQuality) {
         this.regenerationQuality = regenerationQuality;
+        return (T) this;
     }
 
     public double getRegenerationRate() {
@@ -795,14 +868,17 @@ public class Entity<T extends Entity<T>> extends Box {
         updateRegenerationTimer();
     }
 
-    public void turnRegenerationDoubledOn() {
+    @SuppressWarnings("unchecked")
+    public T turnRegenerationDoubledOn() {
         isRegenerationDoubled = true;
+        return (T) this;
     }
 
-    public void updateRegenerationHP() {
+    @SuppressWarnings("unchecked")
+    public T updateRegenerationHP() {
         if (canRegenerate && ( /* Checks if timer is due */
-            (!player.attr.isDead() || this != player) /* Checks if this is a player, and if it is, whether it is dead or not */
-                && this.getHP() < this.getMaxHP())) { /* Checks if hp is lower than max */
+                (!player.attr.isDead() || this != player) /* Checks if this is a player, and if it is, whether it is dead or not */
+                        && this.getHP() < this.getMaxHP())) { /* Checks if hp is lower than max */
             receiveHeal(regenerationQuality, HealFlag.of(HealFlag.NORMAL));
             if (isRegenerationDoubled) receiveHeal(regenerationQuality, HealFlag.of(HealFlag.NORMAL));
 
@@ -813,6 +889,7 @@ public class Entity<T extends Entity<T>> extends Box {
                 isRegenerationDoubled = false;
             }
         }
+        return (T) this;
     }
 
     /**
@@ -820,7 +897,7 @@ public class Entity<T extends Entity<T>> extends Box {
      */
     private void updateRegenerationTimer() {
         regenerationTimer = new TurnTimer(regenerationRate, e -> canRegenerate = true)
-            .setRoomScoped(!(this instanceof Player));
+                .setRoomScoped(!(this instanceof Player));
     }
 
     // DROP TABLE
@@ -839,8 +916,10 @@ public class Entity<T extends Entity<T>> extends Box {
      *
      * @param dropTable The DropTable to be set.
      */
-    public void setDropTable(DropTable dropTable) {
+    @SuppressWarnings("unchecked")
+    public T setDropTable(DropTable dropTable) {
         this.dropTable = dropTable;
+        return (T) this;
     }
 
 // OTHER ATTRIBUTES
@@ -860,8 +939,10 @@ public class Entity<T extends Entity<T>> extends Box {
      *
      * @param defense The new defense value to be assigned.
      */
-    public void setDefense(double defense) {
+    @SuppressWarnings("unchecked")
+    public T setDefense(double defense) {
         this.defense = defense;
+        return (T) this;
     }
 
     /**
@@ -870,8 +951,10 @@ public class Entity<T extends Entity<T>> extends Box {
      *
      * @param inversion A percentage chance (0 to 100) for inversion to occur.
      */
-    public void setInversion(double inversion) {
+    @SuppressWarnings("unchecked")
+    public T setInversion(double inversion) {
         this.inversion = inversion;
+        return (T) this;
     }
 
     /**
@@ -888,14 +971,18 @@ public class Entity<T extends Entity<T>> extends Box {
      *
      * @param isInvulnerable True to make the Entity invulnerable; false otherwise.
      */
-    public void setIsInvulnerable(boolean isInvulnerable) {
+    @SuppressWarnings("unchecked")
+    public T setIsInvulnerable(boolean isInvulnerable) {
         this.isInvulnerable = isInvulnerable;
+        return (T) this;
     }
 
     protected int maxSight;
 
-    public void setMaxSight(int maxSight) {
+    @SuppressWarnings("unchecked")
+    public T setMaxSight(int maxSight) {
         this.maxSight = maxSight;
+        return (T) this;
     }
 
     public int getMaxSight() {
@@ -904,8 +991,10 @@ public class Entity<T extends Entity<T>> extends Box {
 
     private final List<Runnable> onDamage = new ArrayList<>();
 
-    public void scheduleOnDamage(Runnable runnable) {
+    @SuppressWarnings("unchecked")
+    public T scheduleOnDamage(Runnable runnable) {
         onDamage.add(runnable);
+        return (T) this;
     }
 
     public Direction getWalkingDirection() {
@@ -947,16 +1036,21 @@ public class Entity<T extends Entity<T>> extends Box {
                 : Direction.NONE;
     }
 
-    public void setTextureInEntitiesDirectory(boolean textureInEntitiesDirectory) {
+    @SuppressWarnings("unchecked")
+    public T setTextureInEntitiesDirectory(boolean textureInEntitiesDirectory) {
         this.textureInEntitiesDirectory = textureInEntitiesDirectory;
+        return (T) this;
     }
 
     private boolean textureInEntitiesDirectory = true;
 
     @Override
-    public void setTexture(String texture) {
+    @SuppressWarnings("unchecked")
+    public T setTexture(String texture) {
         String prefix = "";
-	    if (!texture.equals("invisible") && !texture.isEmpty() && textureInEntitiesDirectory) prefix = "../characters/entities/";
-	    super.setTexture(prefix + texture);
+        if (!texture.equals("invisible") && !texture.isEmpty() && textureInEntitiesDirectory)
+            prefix = "../characters/entities/";
+        super.setTexture(prefix + texture);
+        return (T) this;
     }
 }
