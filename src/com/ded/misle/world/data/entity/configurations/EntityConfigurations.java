@@ -8,14 +8,14 @@ import com.ded.misle.world.entities.ai.behaviors.WanderBehavior;
 
 public enum EntityConfigurations implements GenericConfigurations {
 	BUNNY(bunny -> {
-		bunny.setMaxHP(5);
+		bunny.setMaxHP(3);
 		bunny.fillHP();
 		bunny.setTexture("bunny");
-		bunny.setTurnsToRespawn(15);
+		bunny.setTurnsToRespawn(20);
 		bunny.setVisualScaleHorizontal(0.8);
 		bunny.setVisualScaleVertical(0.8);
 
-		var wait = new WaitBehavior(3);
+		var wait = new WaitBehavior(5);
 		var wander = new WanderBehavior(2);
 
 		ChainBehavior wanderThenWait = new ChainBehavior(
