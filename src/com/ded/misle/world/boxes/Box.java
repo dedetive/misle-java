@@ -63,6 +63,7 @@ public class Box {
 		worldX = x;
 		worldY = y;
 		this.setOrigin(new Point(x, y));
+		this.setRoomId(player.pos.getRoomID());
 		player.pos.world.setPos(this, worldX, worldY);
 	}
 
