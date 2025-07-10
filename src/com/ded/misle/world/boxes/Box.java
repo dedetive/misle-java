@@ -290,12 +290,14 @@ public class Box {
 		this.hasCollision = hasCollision;
 	}
 
-	public void setVisualScaleHorizontal(double visualScaleHorizontal) {
+	public Box setVisualScaleHorizontal(double visualScaleHorizontal) {
 		this.visualScaleHorizontal = visualScaleHorizontal;
+		return this;
 	}
 
-	public void setVisualScaleVertical(double visualScaleVertical) {
+	public Box setVisualScaleVertical(double visualScaleVertical) {
 		this.visualScaleVertical = visualScaleVertical;
+		return this;
 	}
 
 	public Box setTexture(String texture) {
