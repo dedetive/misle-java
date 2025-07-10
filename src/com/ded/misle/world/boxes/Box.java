@@ -96,7 +96,10 @@ public class Box {
 
 	private void drawSolid(Graphics2D g2d, int screenX, int screenY) {
 		g2d.setColor(color);
-		Rectangle solidBox = new Rectangle(screenX, screenY, (int) (originalTileSize * visualScaleHorizontal), (int) (originalTileSize * visualScaleVertical));
+		Rectangle solidBox = new Rectangle(screenX,
+				screenY,
+				(int) (originalTileSize * visualScaleHorizontal),
+				(int) (originalTileSize * visualScaleVertical));
 		drawRotatedRect(g2d, solidBox, this.visualRotation);
 	}
 
@@ -105,8 +108,18 @@ public class Box {
 		String[] textureParts = textureName.split("\\.");
 		String textureName = textureParts[0].toLowerCase();
 
+		boolean mirror =
+				this instanceof Entity &&
+				((Entity) this).getHorizontalDirection().equals(Direction.LEFT);
+
 		try {
-			drawRotatedImage(g2d, getTexture(textureName), screenX, screenY, (int) (originalTileSize * visualScaleHorizontal), (int) (originalTileSize * visualScaleVertical), this.visualRotation);
+			drawRotatedImage(g2d,
+					getTexture(textureName),
+					screenX,
+					screenY,
+					(int) (originalTileSize * visualScaleHorizontal),
+					(int) (originalTileSize * visualScaleVertical),
+					this.visualRotation, mirror);
 
 			// Draw sides if they exist
 			if (textureParts.length > 1) {
@@ -115,8 +128,13 @@ public class Box {
 
 				for (String side : eachSide) {
 					if (side.isEmpty()) continue;
-					drawRotatedImage(g2d, getTexture(textureName + "_overlayW"), screenX, screenY,
-						(int) (originalTileSize * visualScaleHorizontal), (int) (originalTileSize * visualScaleVertical), rotationInstruction.get(side) + this.visualRotation);
+					drawRotatedImage(g2d,
+							getTexture(textureName + "_overlayW"),
+							screenX,
+							screenY,
+							(int) (originalTileSize * visualScaleHorizontal),
+							(int) (originalTileSize * visualScaleVertical),
+							rotationInstruction.get(side) + this.visualRotation, mirror);
 				}
 			}
 
@@ -128,8 +146,13 @@ public class Box {
 					if (Objects.equals(corner, "")) {
 						continue;
 					}
-					drawRotatedImage(g2d, getTexture(textureName + "_overlayC"), screenX, screenY,
-						(int) (originalTileSize * visualScaleHorizontal), (int) (originalTileSize * visualScaleVertical), rotationInstruction.get(corner) + this.visualRotation);
+					drawRotatedImage(g2d,
+							getTexture(textureName + "_overlayC"),
+							screenX,
+							screenY,
+							(int) (originalTileSize * visualScaleHorizontal),
+							(int) (originalTileSize * visualScaleVertical),
+							rotationInstruction.get(corner) + this.visualRotation, mirror);
 				}
 			}
 
@@ -139,7 +162,17 @@ public class Box {
 	}
 
 	private void drawRawTexture(Graphics2D g2d, int screenX, int screenY) {
-		drawRotatedImage(g2d, this.getTexture(), screenX, screenY, (int) (originalTileSize * visualScaleHorizontal), (int) (originalTileSize * visualScaleVertical), this.visualRotation);
+		boolean mirror =
+				this instanceof Entity &&
+						((Entity) this).getHorizontalDirection().equals(Direction.LEFT);
+
+		drawRotatedImage(g2d,
+				this.getTexture(),
+				screenX,
+				screenY,
+				(int) (originalTileSize * visualScaleHorizontal),
+				(int) (originalTileSize * visualScaleVertical),
+				this.visualRotation, mirror);
 	}
 
 	public static boolean isInvalid(double screenX, double screenY) {
