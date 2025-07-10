@@ -28,7 +28,7 @@ public abstract class TurnManager {
     private static void updateTurn() {
         player.attr.checkIfLevelUp();
 
-        List<Entity> entitiesCopy = new ArrayList<>(getEntities());
+        List<Entity<?>> entitiesCopy = new ArrayList<>(getEntities());
         for (Entity<?> e : entitiesCopy) {
             e.updateRegenerationHP();
             e.getController().run();
