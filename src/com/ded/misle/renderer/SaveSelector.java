@@ -208,7 +208,7 @@ public abstract class SaveSelector {
     }
     private static void drawIcon(Graphics2D g2d, int offsetX, int saveSlot) {
         g2d.drawImage((BufferedImage) loadSaveScreenInformation(SaveScreenOption.ICON, saveSlot),
-                ICON.x + offsetX + nameWidth(g2d, saveSlot), ICON.y,
+                ICON.x + offsetX + nameWidth(g2d, saveSlot) / 2 + 4, ICON.y,
                 ICON.width, ICON.height, null);
     }
     private static void drawHandItem(Graphics2D g2d, int offsetX, int saveSlot) {
