@@ -3,6 +3,7 @@ package com.ded.misle.renderer;
 import com.ded.misle.core.LanguageManager;
 import com.ded.misle.core.SaveFile;
 import com.ded.misle.items.Item;
+import com.ded.misle.renderer.utils.Plus;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,27 +47,6 @@ public abstract class SaveSelector {
     private static final Rectangle DELETE = new Rectangle(CANCEL.x, CANCEL.y + CANCEL.height + 4, CANCEL.width, CANCEL.height);
     private static final Point BACKUP_WARNING = new Point(DELETE.x + DELETE.width / 2, DELETE.y + DELETE.height + 12);
     private static final Point BACKUP_OVERRIDE_WARNING = new Point(BACKUP_WARNING.x, BACKUP_WARNING.y);
-
-    private static final int PLUS_THICKNESS = 7;
-    private static final int PLUS_ROUNDNESS = 6;
-    private static final double PLUS_SIZE = 0.5d;
-    private static final RoundRectangle2D PLUS_VERTICAL = new RoundRectangle2D.Double(
-            BASE.x + (BASE.width - PLUS_THICKNESS) / 2d,
-            (int) (BASE.y + BASE.height * (1 - PLUS_SIZE) / 2),
-            PLUS_THICKNESS,
-            (int) (BASE.height * PLUS_SIZE),
-            PLUS_ROUNDNESS,
-            PLUS_ROUNDNESS
-    );
-
-    private static final RoundRectangle2D PLUS_HORIZONTAL = new RoundRectangle2D.Double(
-        (int) (BASE.x + BASE.width * (1 - PLUS_SIZE) / 2),
-        BASE.y + (BASE.height - PLUS_THICKNESS) / 2d,
-        (int) (BASE.width * PLUS_SIZE),
-        PLUS_THICKNESS,
-        PLUS_ROUNDNESS,
-        PLUS_ROUNDNESS
-    );
 
     public static void saveSelectorMenu() {
         MainRenderer.previousMenu = MainRenderer.currentMenu;
@@ -313,22 +293,9 @@ public abstract class SaveSelector {
     private static void drawPlusSign(Graphics2D g2d, int offsetX) {
         g2d.setColor(saveSelectorTextBackground);
 
-        g2d.fillRoundRect(
-		        (int) PLUS_VERTICAL.getX(),
-                (int) PLUS_VERTICAL.getY(),
-                (int) PLUS_VERTICAL.getWidth(),
-                (int) PLUS_VERTICAL.getHeight(),
-                (int) PLUS_VERTICAL.getArcWidth(),
-                (int) PLUS_VERTICAL.getArcHeight()
-        );
-
-        g2d.fillRoundRect(
-                (int) PLUS_HORIZONTAL.getX(),
-                (int) PLUS_HORIZONTAL.getY(),
-                (int) PLUS_HORIZONTAL.getWidth(),
-                (int) PLUS_HORIZONTAL.getHeight(),
-                (int) PLUS_HORIZONTAL.getArcWidth(),
-                (int) PLUS_HORIZONTAL.getArcHeight()
-        );
+        new Plus(
+            new Rectangle(BASE.x + offsetX, BASE.y, BASE.width, BASE.height),
+            saveSelectorTextBackground,.5f, 7, 6)
+            .draw(g2d);
     }
 }
