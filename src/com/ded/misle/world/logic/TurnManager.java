@@ -27,12 +27,9 @@ public abstract class TurnManager {
     private static void updateTurn() {
         player.attr.checkIfLevelUp();
 
-        for (Entity box : getEntities()) {
-            box.updateRegenerationHP();
-        }
-
-        for (Enemy enemy : EnemyRegistry.all()) {
-            enemy.getController().run();
+        for (Entity entity : getEntities()) {
+            entity.updateRegenerationHP();
+            entity.getController().run();
         }
     }
 }
