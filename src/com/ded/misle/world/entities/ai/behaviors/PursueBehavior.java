@@ -83,6 +83,12 @@ public class PursueBehavior extends AbstractBehavior {
                     : ctx.lastSeenTargetPos();
 
                 if (targetPos == null) return false;
+                if (ctx.lastSeenTargetPos() != null &&
+                        ctx.lastSeenTargetPos().equals
+                                (ctx.self().getPos())) {
+                    ctx.self().getController().setLastSeenTargetPos(null);
+                    return false;
+                }
 
                 Path p = new Pathfinder().findPath(ctx.self().getPos(), targetPos, collisionCheck);
                 if (p == null) return false;
