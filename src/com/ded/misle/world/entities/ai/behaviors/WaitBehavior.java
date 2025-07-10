@@ -41,6 +41,8 @@ public class WaitBehavior extends AbstractBehavior {
         this.setCondition(
             context -> remainingTurns > 0
         );
+
+        addOnSwitchOut(ctx -> this.remainingTurns = START_TURNS);
     }
 
     /**
@@ -50,19 +52,6 @@ public class WaitBehavior extends AbstractBehavior {
      */
     public WaitBehavior() {
         this(1);
-    }
-
-    /**
-     * Called when the behavior is switched out (no longer active).
-     * Resets the internal turn counter to the original starting value,
-     * thus causing its condition to be true if left defaulted.
-     *
-     * @param context the current behavior context (unused)
-     */
-    @Override
-    public void onSwitchOut(BehaviorContext context) {
-        super.onSwitchOut(context);
-        this.remainingTurns = START_TURNS;
     }
 
     /**

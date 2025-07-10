@@ -48,31 +48,32 @@ public abstract class AbstractBehavior implements AIBehavior {
         }
     }
 
-    /**
-     * Called when the behavior becomes the active behavior.
-     * <p>
-     * This method can be used to trigger setup logic, animation changes,
-     * or other effects when switching to this behavior.
-     * <p>
-     * By default, it is empty.
-     *
-     * @param context the current behavior context
-     */
-    @Override
-    public void onSwitchIn(BehaviorContext context) {}
+    protected final java.util.List<java.util.function.Consumer<BehaviorContext>> onSwitchInActions = new java.util.ArrayList<>();
+    protected final java.util.List<java.util.function.Consumer<BehaviorContext>> onSwitchOutActions = new java.util.ArrayList<>();
 
-    /**
-     * Called when the behavior is no longer the active behavior.
-     * <p>
-     * This method can be used to clean up resources, reset states,
-     * or trigger exit animations when switching away from this behavior.
-     * <p>
-     * By default, it is empty.
-     *
-     * @param context the current behavior context
-     */
     @Override
-    public void onSwitchOut(BehaviorContext context) {}
+    public final void onSwitchIn(BehaviorContext context) {
+        for (var action : onSwitchInActions) {
+            action.accept(context);
+        }
+    }
+
+    @Override
+    public final void onSwitchOut(BehaviorContext context) {
+        for (var action : onSwitchOutActions) {
+            action.accept(context);
+        }
+    }
+
+    @Override
+    public final void addOnSwitchIn(java.util.function.Consumer<BehaviorContext> action) {
+        onSwitchInActions.add(action);
+    }
+
+    @Override
+    public final void addOnSwitchOut(java.util.function.Consumer<BehaviorContext> action) {
+        onSwitchOutActions.add(action);
+    }
 
     /**
      * Checks whether this behavior should be selected based on the given context.

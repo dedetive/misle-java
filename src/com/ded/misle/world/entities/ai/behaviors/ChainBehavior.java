@@ -56,6 +56,12 @@ public class ChainBehavior extends AbstractBehavior {
         this.chain = chain;
         this.setInterruptible(false);
         this.priority = Integer.MIN_VALUE;
+
+        addOnSwitchIn(ctx -> this.interruptible = false);
+        addOnSwitchOut(ctx -> {
+            this.interruptible = true;
+            this.currentChainIndex = 0;
+        });
     }
 
     /**
@@ -110,31 +116,6 @@ public class ChainBehavior extends AbstractBehavior {
                 break;
             }
         }
-    }
-
-    /**
-     * Called when this behavior is activated.
-     * Resets internal state and disables interruptions.
-     *
-     * @param context the behavior context
-     */
-    @Override
-    public void onSwitchIn(BehaviorContext context) {
-        super.onSwitchIn(context);
-        this.interruptible = false;
-    }
-
-    /**
-     * Called when this behavior is deactivated.
-     * Re-enables interruption and resets chain progression to the start.
-     *
-     * @param context the behavior context
-     */
-    @Override
-    public void onSwitchOut(BehaviorContext context) {
-        super.onSwitchOut(context);
-        this.interruptible = true;
-        this.currentChainIndex = 0;
     }
 
     /**

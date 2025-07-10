@@ -38,6 +38,9 @@ public interface AIBehavior extends BehaviorCondition {
      */
     void onSwitchOut(BehaviorContext context);
 
+    void addOnSwitchIn(java.util.function.Consumer<BehaviorContext> action);
+    void addOnSwitchOut(java.util.function.Consumer<BehaviorContext> action);
+
     /**
      * Returns whether the behavior can be interrupted by other higher-priority behaviors.
      *
