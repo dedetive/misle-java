@@ -30,6 +30,8 @@ public class Sight {
      */
     private boolean hasDirectSight = false;
 
+    private int maxSight = Integer.MAX_VALUE;
+
     /**
      * Constructs a PointSight with both an origin and a target.
      *
@@ -59,12 +61,18 @@ public class Sight {
      * @return {@code true} if the origin can see the target, {@code false} otherwise
      */
     public boolean canSee(Point target) {
-        if (mustUpdate) {
+        update: if (mustUpdate) {
             Path pathToTarget = new Path(origin, target)
                 .removePoint(new Point(origin.x, origin.y))
                 .removePoint(new Point(target.x, target.y));
 
+            if (pathToTarget.getSpan() > maxSight) {
+                hasDirectSight = false;
+                break update;
+            }
+
             hasDirectSight = true;
+
             for (Point point : pathToTarget.getPoints()) {
                 if (PhysicsEngine.isSpaceOccupied(point.x, point.y)) {
                     hasDirectSight = false;
@@ -115,4 +123,8 @@ public class Sight {
     public Point getTarget() {
         return target;
     }
+
+	public void setMaxSight(int maxSight) {
+		this.maxSight = maxSight;
+	}
 }
