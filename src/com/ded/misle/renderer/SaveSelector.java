@@ -6,13 +6,13 @@ import com.ded.misle.items.Item;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ConcurrentModificationException;
 
+import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.game.GamePanel.GameState.*;
-import static com.ded.misle.game.GamePanel.gameState;
 import static com.ded.misle.core.SaveFile.*;
-import static com.ded.misle.game.GamePanel.originalTileSize;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.*;
 import static com.ded.misle.renderer.image.ImageManager.*;
@@ -26,6 +26,47 @@ import static com.ded.misle.renderer.MenuRenderer.drawMenuBackground;
 import static com.ded.misle.renderer.SaveCreator.*;
 
 public abstract class SaveSelector {
+
+    private static final Rectangle BASE = new Rectangle(64, 66, 120, 120);
+    private static final RoundRectangle2D NUMBER_RECT = new RoundRectangle2D.Double(BASE.x + BASE.width / 2d - 7, BASE.y + 2, 14, 14, 6, 6);
+    private static final Point NUMBER_POS = new Point((int) (NUMBER_RECT.getX() + NUMBER_RECT.getWidth() / 2), 79);
+    private static final Rectangle DELETE_BUTTON = new Rectangle(BASE.x, BASE.y + BASE.height + 4, BASE.width, 15);
+    private static final Rectangle PLAYER = new Rectangle(BASE.x + BASE.width / 2 - originalTileSize / 2, BASE.y + BASE.height / 2 - originalTileSize / 2, originalTileSize, originalTileSize);
+    private static final Rectangle HAND_ITEM = new Rectangle(PLAYER.x + 20, PLAYER.y + 4, 26, 26);
+    private static final Point LEVEL = new Point(BASE.x + BASE.width / 2, BASE.y + BASE.height - 20);
+    private static final Point PLAYTIME = new Point(BASE.x + BASE.width / 2, BASE.y + BASE.height - 20);
+    private static final Point NAME = new Point(BASE.x + BASE.width / 2, BASE.y + 28);
+    private static final Rectangle ICON = new Rectangle(NAME.x, NAME.y - 12, 16, 16);
+    private static final int SPACING = (originalScreenWidth - BASE.width) / 3;
+
+    private static final int DELETE_OFFSET = 24;
+    private static final int DELETE_SPACING = 200;
+    private static final Rectangle CONFIRMATION = new Rectangle(BASE.x + DELETE_OFFSET + DELETE_SPACING, BASE.y + 2, 128, 25);
+    private static final Rectangle CANCEL = new Rectangle(CONFIRMATION.x, CONFIRMATION.y + CONFIRMATION.height * 2, CONFIRMATION.width, CONFIRMATION.height);
+    private static final Rectangle DELETE = new Rectangle(CANCEL.x, CANCEL.y + CANCEL.height + 4, CANCEL.width, CANCEL.height);
+    private static final Point BACKUP_WARNING = new Point(DELETE.x + DELETE.width / 2, DELETE.y + DELETE.height + 12);
+    private static final Point BACKUP_OVERRIDE_WARNING = new Point(BACKUP_WARNING.x, BACKUP_WARNING.y);
+
+    private static final int PLUS_THICKNESS = 7;
+    private static final int PLUS_ROUNDNESS = 6;
+    private static final double PLUS_SIZE = 0.5d;
+    private static final RoundRectangle2D PLUS_VERTICAL = new RoundRectangle2D.Double(
+            BASE.x + (BASE.width - PLUS_THICKNESS) / 2d,
+            (int) (BASE.y + BASE.height * (1 - PLUS_SIZE) / 2),
+            PLUS_THICKNESS,
+            (int) (BASE.height * PLUS_SIZE),
+            PLUS_ROUNDNESS,
+            PLUS_ROUNDNESS
+    );
+
+    private static final RoundRectangle2D PLUS_HORIZONTAL = new RoundRectangle2D.Double(
+        (int) (BASE.x + BASE.width * (1 - PLUS_SIZE) / 2),
+        BASE.y + (BASE.height - PLUS_THICKNESS) / 2d,
+        (int) (BASE.width * PLUS_SIZE),
+        PLUS_THICKNESS,
+        PLUS_ROUNDNESS,
+        PLUS_ROUNDNESS
+    );
 
     public static void saveSelectorMenu() {
         MainRenderer.previousMenu = MainRenderer.currentMenu;
@@ -46,26 +87,20 @@ public abstract class SaveSelector {
 
             if (askingToDelete != -1) {
                 askToDeleteSave(askingToDelete, panel, g2d);
-                drawButtons(g2d);
             } else {
                 // Save buttons
-                int buttonX = 64;
-                int buttonY = 66;
-                int buttonWidth = 120;
-                int buttonHeight = 120;
-                int buttonSpacing = 12;
-                Rectangle buttonRect;
                 boolean[] existingSaves = new boolean[3];
                 for (int i = 0; i < 3; i++) {
-                    boolean saveExists = (boolean) loadSaveScreenInformation(SaveFile.SaveScreenOption.EXISTS, i);
-                    existingSaves[i] = saveExists;
+                    Object saveExists = loadSaveScreenInformation(SaveFile.SaveScreenOption.EXISTS, i);
+                    if (saveExists == null) continue;
+                    boolean exists = (boolean) saveExists;
+                    existingSaves[i] = exists;
 
-                    buttonRect = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
                     int finalI = i;
 
                     Runnable runnable;
 
-                    if (!saveExists) {
+                    if (!exists) {
                         runnable = () -> {
                             SaveCreator.creatingSave = finalI;
                             MainRenderer.previousMenu = MainRenderer.currentMenu;
@@ -80,18 +115,10 @@ public abstract class SaveSelector {
                         runnable = () -> gameStart(finalI);
                     }
 
+                    drawSaveBase(panel, runnable, i, i * SPACING);
 
-                    createButton(buttonRect, "", runnable, panel,
-                        MenuButtonID.valueOf("SAVE_SELECTOR_SELECT_SAVE" + (i + 1)));
-
-                    if (saveExists) {
-                        buttonRect = new Rectangle(buttonX, buttonY + buttonHeight + 4, buttonWidth, 15);
-                        runnable = () -> askingToDelete = finalI;
-                        createButton(buttonRect, LanguageManager.getText("save_selector_delete"), runnable, panel,
-                            MenuButtonID.valueOf("SAVE_SELECTOR_DELETE_SAVE" + (i + 1)));
-                    }
-
-                    buttonX += buttonWidth + buttonSpacing;
+                    int offsetX = SPACING * i;
+                    if (exists) drawDeleteButton(panel, offsetX, i);
                 }
 
                 // Go back buttonRect
@@ -99,125 +126,9 @@ public abstract class SaveSelector {
 
                 try {
                     drawButtons(g2d);
-
-                    buttonX = 64;
-                    buttonY += 17;
-                    buttonWidth = 60;
-                    buttonHeight = 120;
-                    int backgroundSize = 14;
-
-                    for (int saveSlot = 0; saveSlot < 3; saveSlot++) {
-
-                        // Background
-
-                        g2d.setColor(saveSelectorTextBackground);
-                        g2d.fillRoundRect((int) (buttonX + buttonWidth * 0.975 - backgroundSize * 0.25), (int) (buttonY - backgroundSize * 0.8),
-                            backgroundSize, backgroundSize, 4, 4);
-
-                        // Shadow
-
-                        g2d.setColor(saveSelectorTextShadow);
-                        drawColoredText(g2d, String.valueOf(saveSlot + 1),
-                            (int) (buttonX + buttonWidth * 0.975 + textShadow), buttonY + textShadow);
-
-                        // Number
-
-                        g2d.setColor(saveSelectorNumber);
-                        drawColoredText(g2d, String.valueOf(saveSlot + 1),
-                            (int) (buttonX + buttonWidth * 0.975), buttonY);
-
-                        if (existingSaves[saveSlot]) {
-
-                            // Player
-
-                            boolean isPlayerTextureIcon = (boolean) loadSaveScreenInformation(SaveScreenOption.IS_PLAYER_TEXTURE_ICON, saveSlot);
-
-                            BufferedImage icon = (BufferedImage) loadSaveScreenInformation(SaveScreenOption.ICON, saveSlot);
-
-                            BufferedImage img = isPlayerTextureIcon ?
-                                mergeImages(cachedImages.get(PLAYER_FRONT0_EDIT), icon) :
-                                cachedImages.get(PLAYER_FRONT0);
-
-                            g2d.drawImage(img,
-                                (int) (buttonX + buttonWidth * 0.75), (int) (buttonY - 40 + (double) buttonHeight / 2),
-                                originalTileSize, originalTileSize, null);
-
-                            // Level
-
-                            int level = (int) loadSaveScreenInformation(SaveFile.SaveScreenOption.LEVEL, saveSlot);
-
-                            String text = LanguageManager.getText("save_selector_level") + " " + level;
-                            FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
-                            int textWidth = fm.stringWidth(text);
-
-                            int x = buttonX + buttonWidth - textWidth / 2;
-                            int y = (int) (buttonY + 20 + (double) buttonHeight / 2);
-                            drawColoredText(g2d, text, x, y);
-
-                            // Playtime
-
-                            text = String.valueOf(loadSaveScreenInformation(SaveFile.SaveScreenOption.PLAYTIME, saveSlot));
-                            String[] playtimeText = text.split(":");
-                            text = "";
-                            for (String s : playtimeText) {
-                                if (s.length() <= 2) {
-                                    s = "0" + s;
-                                }
-                                s = ":" + s;
-                                text = text.concat(s);
-                            }
-                            if (text.charAt(0) == ':') text = text.replaceFirst(":", "");
-
-                            textWidth = fm.stringWidth(text);
-
-                            x = buttonX + buttonWidth - textWidth / 2;
-                            y = (int) (buttonY + 20 + (double) buttonHeight / 2 + fm.getHeight());
-                            drawColoredText(g2d, text, x, y);
-
-                            // Name
-
-                            text = String.valueOf(loadSaveScreenInformation(SaveFile.SaveScreenOption.NAME, saveSlot));
-
-                            textWidth = fm.stringWidth(text);
-
-                            x = buttonX + buttonWidth - textWidth / 2;
-                            y = buttonY + 14;
-                            drawColoredText(g2d, text, x, y);
-
-                            // Draw hand item
-
-                            Object itemResult = loadSaveScreenInformation(SaveScreenOption.FIRST_ITEM, saveSlot);
-                            if (itemResult instanceof Item item) {
-
-                                if (item.getId() != 0) {
-                                    drawRotatedImage(g2d, item.getIcon(), buttonX + buttonWidth * 1.1, buttonY - 37 + (double) buttonHeight / 2,
-                                        (int) (100 / 3.75), (int) (100 / 3.75), 0, false);
-                                }
-                            }
-
-                            // Draw icon
-
-                            g2d.drawImage((BufferedImage) loadSaveScreenInformation(SaveScreenOption.ICON, saveSlot),
-                                x + textWidth + 4, buttonY + fm.getHeight() / 8,
-                                16, 16, null);
-
-                        } else {
-
-                            // Plus sign
-
-                            g2d.setColor(saveSelectorTextBackground);
-                            g2d.fillRoundRect(buttonX + buttonWidth + 2, buttonY + buttonHeight / 5,
-                                4, buttonHeight / 4, 3, 3);
-                            g2d.fillRoundRect((int) (buttonX + buttonWidth * 0.8), (int) (buttonY + (double) buttonHeight / 4 + 7),
-                                buttonHeight / 4, 4, 3, 3);
-                        }
-
-                        buttonX += buttonWidth * 2 + buttonSpacing;
-                    }
-
-                } catch (ConcurrentModificationException e) {
-                    //
-                }
+                    for (int i = 0; i < 3; i++)
+                        drawSaveInfo(g2d, SPACING * i, i, existingSaves[i]);
+                } catch (ConcurrentModificationException ignored) {}
             }
         }
     }
@@ -225,86 +136,118 @@ public abstract class SaveSelector {
     public static int askingToDelete = -1;
     public static void askToDeleteSave(int saveSlot, JPanel panel, Graphics2D g2d) {
 
-        int previewX = 112;
-        int previewY = 86;
-        int previewWidth = 120;
-        int previewHeight = 120;
-        int buttonBorderSize = 18;
+        drawSaveBase(panel, null, saveSlot, DELETE_OFFSET);
+        drawButtons(g2d);
 
+        drawSaveInfo(g2d, DELETE_OFFSET, saveSlot, true);
 
-        // BORDER
-        int buttonBorderOffsetPos = 1;
-        int buttonBorderOffsetSize = buttonBorderOffsetPos * 2;
-        g2d.setColor(buttonBorderColor);
-        g2d.fillRoundRect(previewX - buttonBorderOffsetPos, previewY - buttonBorderOffsetPos,
-            previewWidth + buttonBorderOffsetSize, previewHeight + buttonBorderOffsetSize,
-            buttonBorderSize + buttonBorderOffsetPos / 2, buttonBorderSize + buttonBorderOffsetPos / 2);
+        drawConfirmation(panel);
+        drawCancel(panel);
+        drawDelete(panel, saveSlot);
+        drawWarning(g2d, saveSlot);
+        drawBackupOverrideWarning(saveSlot, g2d);
+    }
 
-        // BUTTON
-        g2d.setColor(buttonDefaultColor);
-        g2d.fillRoundRect(previewX, previewY, previewWidth, previewHeight,
-            buttonBorderSize, buttonBorderSize);
+    private static void drawSaveInfo(Graphics2D g2d, int offsetX, int saveSlot, boolean saveExists) {
+        if (saveExists) {
+            g2d.setFont(buttonFont);
 
-        int backgroundSize = 14;
+            drawSaveSlotNumber(g2d, offsetX, saveSlot);
+            drawPlayerIcon(g2d, offsetX, saveSlot);
+            drawLevel(g2d, offsetX, saveSlot);
+            drawPlaytime(g2d, offsetX, saveSlot);
+            drawName(g2d, offsetX, saveSlot);
+            drawHandItem(g2d, offsetX, saveSlot);
+            drawIcon(g2d, offsetX, saveSlot);
+        } else {
+            drawPlusSign(g2d, offsetX);
+        }
+    }
 
+    private static void drawBackupOverrideWarning(int saveSlot, Graphics2D g2d) {
+        if (backupExists(saveSlot)) {
+            g2d.setFont(backupAdvisorFont);
+            FontMetrics fm = getCachedMetrics(g2d, backupAdvisorFont);
+            String[] texts = wrapText(LanguageManager.getText("save_selector_deletion_warning3"), DELETE.width, fm);
+            int extraY = 0;
+            int fontHeight = fm.getHeight();
+            for (String s : texts) {
+                drawColoredText(g2d, s, BACKUP_OVERRIDE_WARNING.x - fm.stringWidth(removeColorIndicators(s)) / 2 + textShadow, BACKUP_OVERRIDE_WARNING.y + extraY + textShadow,
+                        backupAdvisorFont, backupWarningShadow, true);
+                drawColoredText(g2d, s, BACKUP_OVERRIDE_WARNING.x - fm.stringWidth(removeColorIndicators(s)) / 2, BACKUP_OVERRIDE_WARNING.y + extraY,
+                        backupAdvisorFont, backupWarning, false);
+                extraY += fontHeight;
+            }
+        }
+    }
+    private static void drawWarning(Graphics2D g2d, int saveSlot) {
+        g2d.setFont(backupAdvisorFont);
+        FontMetrics fm = getCachedMetrics(g2d, backupAdvisorFont);
+        String[] texts = wrapText(LanguageManager.getText("save_selector_deletion_warning1") + saveSlot + LanguageManager.getText("save_selector_deletion_warning2"), DELETE.width - 4, fm);
+        int extraY = 0;
+        int fontHeight = fm.getHeight();
+        for (String s : texts) {
+            drawColoredText(g2d, s, BACKUP_WARNING.x - fm.stringWidth(removeColorIndicators(s)) / 2, BACKUP_WARNING.y + extraY,
+                    backupAdvisorFont, backupAdvisor, false);
+            extraY += fontHeight;
+        }
+        BACKUP_OVERRIDE_WARNING.y = BACKUP_WARNING.y + extraY;
+    }
+    private static void drawDelete(JPanel panel, int saveSlot) {
+        Runnable runnable = () -> {
+            deleteSaveFile(saveSlot);
+            askingToDelete = -1;
+            clearButtons();
+        };
+        createButton(DELETE, LanguageManager.getText("save_selector_deletion_delete"), runnable, panel, MenuButtonID.SAVE_SELECTOR_CONFIRM_DELETE_SAVE);
+    }
+    private static void drawCancel(JPanel panel) {
+        Runnable runnable = () -> {
+            askingToDelete = -1;
+            clearButtons();
+        };
+        createButton(CANCEL, LanguageManager.getText("save_selector_deletion_cancel"), runnable, panel, MenuButtonID.SAVE_SELECTOR_CANCEL_DELETE_SAVE);
+    }
+    private static void drawConfirmation(JPanel panel) {
+	    createButton(CONFIRMATION,
+                LanguageManager.getText("save_selector_deletion_confirmation"),
+                null,
+                panel,
+                MenuButtonID.SAVE_SELECTOR_DELETE_SAVE_QUESTION);
+    }
+    private static void drawDeleteButton(JPanel panel, int offsetX, int saveSlot) {
+        Rectangle buttonRect = new Rectangle(DELETE_BUTTON.x + offsetX, DELETE_BUTTON.y, DELETE_BUTTON.width, DELETE_BUTTON.height);
+        Runnable runnable = () -> askingToDelete = saveSlot;
+        createButton(buttonRect, LanguageManager.getText("save_selector_delete"), runnable, panel,
+                MenuButtonID.valueOf("SAVE_SELECTOR_DELETE_SAVE" + (saveSlot + 1)));
+    }
+    private static void drawSaveBase(JPanel panel, Runnable runnable, int saveSlot, int offsetX) {
+        Rectangle newButtonRect = new Rectangle(BASE.x + offsetX, BASE.y, BASE.width, BASE.height);
+        createButton(newButtonRect, "", runnable, panel,
+                MenuButtonID.valueOf("SAVE_SELECTOR_SELECT_SAVE" + (saveSlot + 1)));
+    }
+    private static void drawIcon(Graphics2D g2d, int offsetX, int saveSlot) {
+        g2d.drawImage((BufferedImage) loadSaveScreenInformation(SaveScreenOption.ICON, saveSlot),
+                ICON.x + offsetX + nameWidth(g2d, saveSlot), ICON.y,
+                ICON.width, ICON.height, null);
+    }
+    private static void drawHandItem(Graphics2D g2d, int offsetX, int saveSlot) {
+        Object itemResult = loadSaveScreenInformation(SaveScreenOption.FIRST_ITEM, saveSlot);
+        if (itemResult instanceof Item item) {
 
-        g2d.setColor(buttonTextColor);
-        g2d.setFont(buttonFont);
+            if (item.getId() != 0) {
+                drawRotatedImage(g2d, item.getIcon(), HAND_ITEM.x + offsetX, HAND_ITEM.y,
+                        HAND_ITEM.width, HAND_ITEM.height, 0, false);
+            }
+        }
+    }
+    private static void drawName(Graphics2D g2d, int offsetX, int saveSlot) {
+        String text = String.valueOf(loadSaveScreenInformation(SaveScreenOption.NAME, saveSlot));
 
-            // Background
-
-        g2d.setColor(saveSelectorTextBackground);
-        g2d.fillRoundRect((int) (previewX + (double) (previewWidth) / 2 - backgroundSize * 0.25), (int) (previewY - backgroundSize * 0.8 + 18),
-            backgroundSize, backgroundSize, 4, 4);
-
-            // Shadow
-
-        g2d.setColor(saveSelectorTextShadow);
-        drawColoredText(g2d, String.valueOf(saveSlot + 1), (int) (previewX + (double) (previewWidth / 2) + textShadow), (int) (previewY + textShadow + 18));
-
-            // Number
-
-        g2d.setColor(saveSelectorNumber);
-        drawColoredText(g2d, String.valueOf(saveSlot + 1), previewX + previewWidth / 2, previewY + 18);
-
-            // Player
-
-        boolean isPlayerTextureIcon = (boolean) loadSaveScreenInformation(SaveScreenOption.IS_PLAYER_TEXTURE_ICON, saveSlot);
-
-        BufferedImage icon = (BufferedImage) loadSaveScreenInformation(SaveScreenOption.ICON, saveSlot);
-
-        BufferedImage img = isPlayerTextureIcon ?
-            mergeImages(cachedImages.get(PLAYER_FRONT0_EDIT), icon) :
-            cachedImages.get(PLAYER_FRONT0);
-
-        g2d.drawImage(img, previewX + 2 * previewWidth / 5, (int) (previewY - 25 + (double) previewHeight / 2),
-            originalTileSize, originalTileSize, null);
-
-            // Level
-
-        int level = (int) loadSaveScreenInformation(SaveFile.SaveScreenOption.LEVEL, saveSlot);
-
-        String text = LanguageManager.getText("save_selector_level") + " " + level;
-        FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
-        int textWidth = fm.stringWidth(text);
-
-        int x = previewX + previewWidth / 2 - 2 * textWidth / 5;
-        int y = (int) (previewY + 40 + (double) previewHeight / 2);
-        drawColoredText(g2d, text, x, y);
-
-            // Name
-
-        text = String.valueOf(loadSaveScreenInformation(SaveFile.SaveScreenOption.NAME, saveSlot));
-
-        textWidth = fm.stringWidth(text);
-
-        x = (int) (previewX + (double) previewWidth / 2 - (double) textWidth / 2 + 3);
-        y = previewY + 32;
-        drawColoredText(g2d, text, x, y);
-
-            // Playtime
-
-        text = String.valueOf(loadSaveScreenInformation(SaveFile.SaveScreenOption.PLAYTIME, saveSlot));
+        drawColoredText(g2d, text, NAME.x - nameWidth(g2d, saveSlot) / 2 + offsetX, NAME.y);
+    }
+    private static void drawPlaytime(Graphics2D g2d, int offsetX, int saveSlot) {
+        String text = String.valueOf(loadSaveScreenInformation(SaveScreenOption.PLAYTIME, saveSlot));
         String[] playtimeText = text.split(":");
         text = "";
         for (String s : playtimeText) {
@@ -316,92 +259,76 @@ public abstract class SaveSelector {
         }
         if (text.charAt(0) == ':') text = text.replaceFirst(":", "");
 
-        textWidth = fm.stringWidth(text);
+        FontMetrics fm = getCachedMetrics(g2d, g2d.getFont());
+        int textWidth = fm.stringWidth(text);
 
-        x = previewX + previewWidth / 2 - 2 * textWidth / 5;
-        y = (int) (previewY + 40 + (double) previewHeight / 2 + fm.getHeight());
-        drawColoredText(g2d, text, x, y);
+        drawColoredText(g2d, text, PLAYTIME.x - textWidth / 2 + offsetX, PLAYTIME.y + fm.getHeight());
+    }
+    private static void drawLevel(Graphics2D g2d, int offsetX, int saveSlot) {
+        Object loadedLevel = loadSaveScreenInformation(SaveScreenOption.LEVEL, saveSlot);
+        if (loadedLevel == null) return;
+        int level = (int) loadedLevel;
 
-            // Draw hand item
+        String text = LanguageManager.getText("save_selector_level") + " " + level;
+        FontMetrics fm = FontManager.getCachedMetrics(g2d, g2d.getFont());
+        int textWidth = fm.stringWidth(text);
 
-        Object itemResult = loadSaveScreenInformation(SaveScreenOption.FIRST_ITEM, saveSlot);
-        if (itemResult instanceof Item item) {
+        drawColoredText(g2d, text, LEVEL.x - textWidth / 2 + offsetX, LEVEL.y);
+    }
+    private static void drawPlayerIcon(Graphics2D g2d, int offsetX, int saveSlot) {
+        Object isPlayerTextureIcon = loadSaveScreenInformation(SaveScreenOption.IS_PLAYER_TEXTURE_ICON, saveSlot);
+        if (isPlayerTextureIcon == null) return;
 
-            if (item.getId() != 0) {
-                drawRotatedImage(g2d, item.getIcon(), previewX + (double) previewWidth / 2 + 6,
-                    previewY - (double) previewHeight / 2 + 37.5 + (double) previewHeight / 2,
-                    (int) (100 / 3.75), (int) (100 / 3.75), 0, false);
-            }
-        }
+        BufferedImage icon = (BufferedImage) loadSaveScreenInformation(SaveScreenOption.ICON, saveSlot);
 
-        g2d.drawImage(icon, x + textWidth,
-            (int) (y - 100 + (double) fm.getHeight() / 3),
-            16, 16, null);
+        BufferedImage img = (boolean) isPlayerTextureIcon ?
+                mergeImages(cachedImages.get(PLAYER_FRONT0_EDIT), icon) :
+                cachedImages.get(PLAYER_FRONT0);
 
-        int buttonX = 261;
-        int buttonY = 140;
-        int buttonWidth = 100;
-        int buttonHeight = 25;
-        Rectangle button;
+        g2d.drawImage(img,PLAYER.x + offsetX, PLAYER.y, PLAYER.width, PLAYER.height, null);
+    }
+    private static void drawSaveSlotNumber(Graphics2D g2d, int offsetX, int saveSlot) {
+        // Number background
+        g2d.setColor(saveSelectorTextBackground);
+        g2d.fillRoundRect((int) NUMBER_RECT.getX() + offsetX, (int) NUMBER_RECT.getY(),
+                (int) NUMBER_RECT.getWidth(), (int) NUMBER_RECT.getHeight(),
+                (int) NUMBER_RECT.getArcWidth(), (int) NUMBER_RECT.getArcHeight());
 
-        // CONFIRMATION TEXT
-        fm = g2d.getFontMetrics(buttonFont);
-        g2d.setColor(buttonBorderColor);
-        g2d.fillRoundRect(buttonX - buttonBorderOffsetPos, buttonY - buttonHeight - 4 - buttonBorderOffsetPos - fm.getHeight(),
-            buttonWidth + buttonBorderOffsetSize, buttonHeight + buttonBorderOffsetSize,
-            buttonBorderSize + buttonBorderOffsetPos / 2, buttonBorderSize + buttonBorderOffsetPos / 2);
+        // Shadow
+        g2d.setColor(saveSelectorTextShadow);
+        drawColoredText(g2d, String.valueOf(saveSlot + 1),
+                NUMBER_POS.x + textShadow + offsetX - getCachedMetrics(g2d, buttonFont).stringWidth(String.valueOf(saveSlot + 1)) / 2, NUMBER_POS.y + textShadow);
 
-        g2d.setColor(buttonDefaultColor);
-        g2d.fillRoundRect(buttonX, buttonY - buttonHeight - 4 - fm.getHeight(), buttonWidth, buttonHeight,
-            buttonBorderSize, buttonBorderSize);
+        // Number
+        g2d.setColor(saveSelectorNumber);
+        drawColoredText(g2d, String.valueOf(saveSlot + 1),
+                NUMBER_POS.x + offsetX - getCachedMetrics(g2d, buttonFont).stringWidth(String.valueOf(saveSlot + 1)) / 2, NUMBER_POS.y);
+    }
+    private static int nameWidth(Graphics2D g2d, int saveSlot) {
+        String text = String.valueOf(loadSaveScreenInformation(SaveScreenOption.NAME, saveSlot));
 
-        text = LanguageManager.getText("save_selector_deletion_confirmation");
-        fm = g2d.getFontMetrics(buttonFont);
+        FontMetrics fm = getCachedMetrics(g2d, g2d.getFont());
+        return fm.stringWidth(text);
+    }
+    private static void drawPlusSign(Graphics2D g2d, int offsetX) {
+        g2d.setColor(saveSelectorTextBackground);
 
-        drawColoredText(g2d, text, buttonX - fm.stringWidth(text) / 2 + buttonWidth / 2, buttonY - buttonHeight - 1, buttonFont, buttonTextColor, true);
+        g2d.fillRoundRect(
+		        (int) PLUS_VERTICAL.getX(),
+                (int) PLUS_VERTICAL.getY(),
+                (int) PLUS_VERTICAL.getWidth(),
+                (int) PLUS_VERTICAL.getHeight(),
+                (int) PLUS_VERTICAL.getArcWidth(),
+                (int) PLUS_VERTICAL.getArcHeight()
+        );
 
-        // CANCEL
-        button = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
-        Runnable runnable = () -> {
-            askingToDelete = -1;
-            clearButtons();
-        };
-        createButton(button, LanguageManager.getText("save_selector_deletion_cancel"), runnable, panel, MenuButtonID.SAVE_SELECTOR_CANCEL_DELETE_SAVE);
-
-        // DELETE
-        button = new Rectangle(buttonX, buttonY + buttonHeight + 4, buttonWidth, buttonHeight);
-        runnable = () -> {
-            deleteSaveFile(saveSlot);
-            askingToDelete = -1;
-            clearButtons();
-        };
-        createButton(button, LanguageManager.getText("save_selector_deletion_delete"), runnable, panel, MenuButtonID.SAVE_SELECTOR_CONFIRM_DELETE_SAVE);
-
-        // WARNING
-        g2d.setFont(backupAdvisorFont);
-        fm = g2d.getFontMetrics(backupAdvisorFont);
-        String[] texts = wrapText(LanguageManager.getText("save_selector_deletion_warning1") + saveSlot + LanguageManager.getText("save_selector_deletion_warning2"), buttonWidth * 3 / 2, fm);
-        double extraY = 15;
-        int fontHeight = fm.getHeight();
-        for (String s : texts) {
-            drawColoredText(g2d, s, buttonX + buttonWidth * 3 / 8 - fm.stringWidth(s) / 3, (int) (buttonY + buttonHeight * 2 + extraY),
-                backupAdvisorFont, backupAdvisor, false);
-            extraY += fontHeight;
-        }
-
-        // Backup deletion saveCreationWarning
-        if (backupExists(saveSlot)) {
-            g2d.setFont(backupAdvisorFont);
-            fm = g2d.getFontMetrics(backupAdvisorFont);
-            texts = wrapText(LanguageManager.getText("save_selector_deletion_warning3"), buttonWidth * 3 / 2, fm);
-            fontHeight = fm.getHeight();
-            for (String s : texts) {
-                drawColoredText(g2d, s, (int) (buttonX + (double) buttonWidth / 2 - (double) fm.stringWidth(s) / 2 + textShadow), (int) ((int) (buttonY + buttonHeight * 2 + extraY) + textShadow),
-                    backupAdvisorFont, backupWarningShadow, true);
-                drawColoredText(g2d, s, buttonX + buttonWidth / 2 - fm.stringWidth(s) / 2, (int) (buttonY + buttonHeight * 2 + extraY),
-                    backupAdvisorFont, backupWarning, false);
-                extraY += fontHeight;
-            }
-        }
+        g2d.fillRoundRect(
+                (int) PLUS_HORIZONTAL.getX(),
+                (int) PLUS_HORIZONTAL.getY(),
+                (int) PLUS_HORIZONTAL.getWidth(),
+                (int) PLUS_HORIZONTAL.getHeight(),
+                (int) PLUS_HORIZONTAL.getArcWidth(),
+                (int) PLUS_HORIZONTAL.getArcHeight()
+        );
     }
 }
