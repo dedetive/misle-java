@@ -66,6 +66,7 @@ public enum BoxPreset {
             entity.setMaxHP(1);
             entity.fillHP();
             entity.setDisplayHP(false);
+            entity.setTextureInEntitiesDirectory(false);
         } catch (ClassCastException e) {
             System.err.println("BoxPreset: Cracked stone brick wall was not able to be turned into an entity");
         }

@@ -902,4 +902,17 @@ public class Entity extends Box {
     public void scheduleOnDamage(Runnable runnable) {
         onDamage.add(runnable);
     }
+
+    public void setTextureInEntitiesDirectory(boolean textureInEntitiesDirectory) {
+        this.textureInEntitiesDirectory = textureInEntitiesDirectory;
+    }
+
+    private boolean textureInEntitiesDirectory = true;
+
+    @Override
+    public void setTexture(String texture) {
+        String prefix = "";
+	    if (!texture.equals("invisible") && !texture.isEmpty() && textureInEntitiesDirectory) prefix = "../characters/entities/";
+	    super.setTexture(prefix + texture);
+    }
 }
