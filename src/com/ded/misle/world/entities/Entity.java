@@ -68,9 +68,8 @@ public class Entity<T extends Entity<T>> extends Box {
      * Shows current HP of the entity that is going to be rendered. Has a slight delay compared to real internal {@link #HP}.
      */
     protected final SmoothValue HPSmoother = new SmoothValue((float) HP);
-    ;
 
-    /**
+	/**
      * Locked HP that cannot be recovered or reduced normally.
      */
     protected double lockedHP;
@@ -120,7 +119,7 @@ public class Entity<T extends Entity<T>> extends Box {
     /**
      * Static list of all active Entities.
      */
-    private static final List<Entity> entities = new ArrayList<>();
+    private static final List<Entity<?>> entities = new ArrayList<>();
     /**
      * The amount of XP awarded to the player when this entity is defeated.
      */
@@ -138,7 +137,7 @@ public class Entity<T extends Entity<T>> extends Box {
      *
      * @return list of Entity instances.
      */
-    public static List<Entity> getEntities() {
+    public static List<Entity<?>> getEntities() {
         return entities;
     }
 
@@ -466,7 +465,7 @@ public class Entity<T extends Entity<T>> extends Box {
 
     protected void respawn() {
         switch (this.getClass().getSimpleName()) {
-            case "Entity" -> new Entity(this.getOrigin().x, this.getOrigin().y, type, this.magnification);
+            case "Entity" -> new Entity<>(this.getOrigin().x, this.getOrigin().y, type, this.magnification);
             case "Enemy" -> new Enemy(this.getOrigin(), (EnemyType) type, this.magnification);
         }
     }
