@@ -125,28 +125,26 @@ public abstract class WorldLoader {
 						}
 					}
 				} catch (IllegalArgumentException e) { box = addBox(BoxPreset.STONE_BRICK_WALL); }
+
+				int x = point[0];
+				int y = point[1];
+				int z = point[2];
+				box.setRoomId(room.id);
+				box.setPos(x, y, z);
+				box.setOrigin(new Point(x, y));
 			} else {
-				box = RGBToBox.get(rgb).call();
+				RGBBoxMappings.get(rgb).ifPresent(b -> {
+					int x = point[0];
+					int y = point[1];
+					int z = point[2];
+					b.setRoomId(room.id);
+					b.setPos(x, y, z);
+					b.setOrigin(new Point(x, y));
+				});
 			}
-			int x = point[0];
-			int y = point[1];
-			int z = point[2];
-			box.setRoomId(room.id);
-			box.setPos(x, y, z);
-			box.setOrigin(new Point(x, y));
 		} catch (Exception ignored) {}
 
 	}
-
-	private static final Map<Integer, Callable<Box>> RGBToBox = Map.of(
-		0xC4C4C4, () -> addBox(BoxPreset.STONE_BRICK_WALL),
-		0xDFDFDF, () -> {
-			Entity e = new Entity();
-			BoxPreset.CRACKED_STONE_BRICK_WALL.load(e);
-			return e;
-		},
-		0xB38960, () -> addBox(BoxPreset.WOODEN_FLOOR)
-	);
 
 	private static void fixSides() {
 		World world = player.pos.world;
