@@ -12,7 +12,7 @@ import static com.ded.misle.game.GamePanel.player;
  * Represents an enemy entity in the game world.
  * Enemies have behaviors, experience and coin drops, and belong to a specific {@link EnemyType}.
  */
-public class Enemy extends Entity {
+public class Enemy extends Entity<Enemy> {
 
     /**
      * Constructs a new {@code Enemy} at the given position with a specific type and magnification.

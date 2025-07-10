@@ -18,7 +18,7 @@ import java.util.List;
 import static com.ded.misle.game.GamePanel.isRunning;
 import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 
-public class Player extends Entity {
+public class Player extends Entity<Player> {
 
 	public final PlayerKeys keys;
 	public final PlayerPosition pos;

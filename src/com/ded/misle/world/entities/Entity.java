@@ -30,7 +30,7 @@ import static com.ded.misle.world.entities.Entity.HealFlag.ABSOLUTE;
  * Represents an entity with health points (HP).
  * Handles health, damage, healing, and death logic. Also manages shared Entity instances.
  */
-public class Entity extends Box {
+public class Entity<T extends Entity<T>> extends Box {
     public Direction walkingDirection = Direction.RIGHT;
     public Direction horizontalDirection = Direction.RIGHT;
     public Direction verticalDirection = Direction.UP;
@@ -278,8 +278,10 @@ public class Entity extends Box {
      * Sets the maximum HP.
      * @param maxHP New maximum HP.
      */
-    public void setMaxHP(double maxHP) {
+    @SuppressWarnings("unchecked")
+    public T setMaxHP(double maxHP) {
         this.maxHP = maxHP * getMagnification();
+        return (T) this;
     }
 
     /**
