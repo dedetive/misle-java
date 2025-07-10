@@ -38,7 +38,28 @@ public interface AIBehavior extends BehaviorCondition {
      */
     void onSwitchOut(BehaviorContext context);
 
+    /**
+     * Adds a new action to be executed when the behavior becomes active.
+     * <p>
+     * This allows behaviors to register custom logic to run upon activation,
+     * in addition to their own default activation behavior.
+     * <p>
+     * Actions are executed in the order they were added.
+     *
+     * @param action the action to execute upon activation
+     */
     void addOnSwitchIn(java.util.function.Consumer<BehaviorContext> action);
+
+    /**
+     * Adds a new action to be executed when the behavior is deactivated.
+     * <p>
+     * This allows behaviors to register custom logic to run upon deactivation,
+     * in addition to their own default deactivation behavior.
+     * <p>
+     * Actions are executed in the order they were added.
+     *
+     * @param action the action to execute upon deactivation
+     */
     void addOnSwitchOut(java.util.function.Consumer<BehaviorContext> action);
 
     /**
