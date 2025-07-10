@@ -29,7 +29,7 @@ public class BehaviorController implements Runnable {
     private AIBehavior currentBehavior;
 
     /** All available behaviors this entity can choose from. */
-    private AIBehavior[] behaviors;
+    private AIBehavior[] behaviors = new AIBehavior[0];
 
     /**
      * Constructs a new {@code BehaviorController} for the given entity.

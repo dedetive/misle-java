@@ -5,8 +5,6 @@ import com.ded.misle.world.entities.ai.behaviors.ChainBehavior;
 import com.ded.misle.world.entities.ai.behaviors.PursueBehavior;
 import com.ded.misle.world.entities.ai.behaviors.WaitBehavior;
 import com.ded.misle.world.entities.ai.behaviors.WanderBehavior;
-import com.ded.misle.world.entities.enemies.EnemyConfigurator;
-import com.ded.misle.world.entities.enemies.EnemyType;
 
 import java.awt.*;
 
@@ -19,7 +17,7 @@ import static com.ded.misle.game.GamePanel.player;
  * <p>
  * These are used by {@link EnemyType}.
  */
-public enum EnemyConfigurations {
+public enum EnemyConfigurations implements GenericConfigurations {
     RED_BLOCK(enemy -> {
         enemy.setMaxHP(50);
         enemy.fillHP();

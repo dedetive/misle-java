@@ -2,7 +2,6 @@ package com.ded.misle.world.data;
 
 import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.enemies.Enemy;
-import com.ded.misle.world.entities.enemies.EnemyType;
 import com.ded.misle.world.logic.TurnTimer;
 import com.ded.misle.items.DropTable;
 import com.ded.misle.world.boxes.Box;
@@ -16,10 +15,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.function.Function;

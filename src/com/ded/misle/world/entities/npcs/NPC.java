@@ -1,6 +1,7 @@
 package com.ded.misle.world.entities.npcs;
 
 import com.ded.misle.core.LanguageManager;
+import com.ded.misle.world.entities.enemies.EnemyRegistry;
 import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.world.entities.Entity;
 
@@ -20,6 +21,7 @@ public class NPC extends Entity {
     private int dialogMaxIndex;
     public String name;
     public Color nameColor;
+
     public enum InteractionType {
         NONE,
         DIALOG,
@@ -27,7 +29,7 @@ public class NPC extends Entity {
     }
 
     public NPC(int x, int y, InteractionType interactionType) {
-        super(x, y);
+        super(x, y, 1);
         this.setColor(new Color(0xFFFF00));
         this.setObjectType(PhysicsEngine.ObjectType.NPC);
         this.setCollision(true);

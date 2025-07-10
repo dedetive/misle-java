@@ -1,8 +1,9 @@
 package com.ded.misle.world.boxes;
 
 import com.ded.misle.world.data.BoxPreset;
+import com.ded.misle.world.data.EnemyType;
 import com.ded.misle.world.entities.enemies.EnemyRegistry;
-import com.ded.misle.world.entities.enemies.EnemyType;
+import com.ded.misle.world.data.EntityType;
 import com.ded.misle.world.logic.World;
 import com.ded.misle.world.logic.effects.Collectible;
 import com.ded.misle.world.entities.enemies.Enemy;
@@ -32,8 +33,8 @@ public class BoxHandling {
 		return box;
 	}
 
-	public static Enemy addEnemyBox(Point pos, EnemyType enemyType, double magnification) {
-		boxes.add(new Enemy(pos, enemyType, magnification));
+	public static Enemy addEnemyBox(Point pos, EnemyType entityType, double magnification) {
+		boxes.add(new Enemy(pos, entityType, magnification));
 		return EnemyRegistry.all().getLast();
 	}
 

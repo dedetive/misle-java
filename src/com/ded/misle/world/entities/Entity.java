@@ -3,7 +3,9 @@ package com.ded.misle.world.entities;
 import com.ded.misle.renderer.smoother.SmoothValue;
 import com.ded.misle.renderer.smoother.modifiers.BounceModifier;
 import com.ded.misle.renderer.smoother.modifiers.ShakeModifier;
-import com.ded.misle.world.data.Direction;
+import com.ded.misle.world.data.*;
+import com.ded.misle.world.entities.ai.AIBehavior;
+import com.ded.misle.world.entities.ai.BehaviorController;
 import com.ded.misle.world.logic.TurnTimer;
 import com.ded.misle.items.DropTable;
 import com.ded.misle.world.boxes.Box;
@@ -26,59 +28,71 @@ import static com.ded.misle.world.entities.Entity.HealFlag.ABSOLUTE;
  * Handles health, damage, healing, and death logic. Also manages shared Entity instances.
  */
 public class Entity extends Box {
+    /** The type of this entity, which defines its default configuration. */
+    protected GenericType type;
+    /** A scaling factor that magnifies the entity's attributes (e.g. HP, damage). */
+    protected final double magnification;
+    /** Controls the AI behaviors of this entity. */
+    protected final BehaviorController controller = new BehaviorController(this);
     /** Current HP of the entity. */
-    private double HP = 1;
+    protected double HP = 1;
 
     /** Maximum HP the entity can have. */
-    private double maxHP = 1;
+    protected double maxHP = 1;
 
     /**
      * Represents whether the entity can have its health bar displayed.
      */
-    private boolean displayHP = false;
+    protected boolean displayHP = false;
 
     /**
      * HP smoothness manager. Should be updated every frame to stay relevant.
      * <p>
      * Shows current HP of the entity that is going to be rendered. Has a slight delay compared to real internal {@link #HP}.
      */
-    private final SmoothValue HPSmoother = new SmoothValue((float) HP);;
+    protected final SmoothValue HPSmoother = new SmoothValue((float) HP);;
 
     /** Locked HP that cannot be recovered or reduced normally. */
-    private double lockedHP;
+    protected double lockedHP;
 
     /** Defense value used to reduce incoming damage. */
-    private double defense;
+    protected double defense;
 
-    private boolean isRegenerationDoubled;
+    protected boolean isRegenerationDoubled;
 
     /** Chance (0-100%) to invert damage into healing. */
-    private double inversion;
+    protected double inversion;
 
     /** Quality factor used for regeneration calculation. */
-    private double regenerationQuality;
+    protected double regenerationQuality;
 
     /** Represents how many turns it takes to regenerate again. Default value is 5. */
-    private int regenerationRate = 5;
+    protected int regenerationRate = 5;
 
     /**
      * Represents whether the regeneration cooldown has passed or not.
      */
-    private boolean canRegenerate = true;
+    protected boolean canRegenerate = true;
 
     /**
      * Timer responsible for turning {@link #canRegenerate} true.
      */
-    private TurnTimer regenerationTimer;
+    protected TurnTimer regenerationTimer;
 
     /** If true, entity is immune to all damage. */
-    private boolean isInvulnerable;
+    protected boolean isInvulnerable;
 
     /** Drop table for items when this entity dies. */
-    private DropTable dropTable;
+    protected DropTable dropTable;
 
     /** Static list of all active Entities. */
     private static final List<Entity> entities = new ArrayList<>();
+    /** The amount of XP awarded to the player when this entity is defeated. */
+    protected double xpDrop;
+    /** The range of coins that may drop from this entity. */
+    protected CoinDropRange coinDrop;
+    protected int turnsToRespawn = 0;
+    protected TurnTimer respawnTimer;
 
     /**
      * Returns the list of all Entities.
@@ -101,19 +115,33 @@ public class Entity extends Box {
      * @param x X-coordinate.
      * @param y Y-coordinate.
      */
-    public Entity(int x, int y) {
+    public Entity(int x, int y, GenericType type, double magnification) {
         super(x, y);
 
+        this.magnification = magnification;
         this.setObjectType(ENTITY);
         entities.add(this);
         updateRegenerationTimer();
+        this.type = type;
+        this.load();
+    }
+
+    /**
+     * Constructs an Entity at a specific position. Default values of HP and max HP are 1.
+     * @param x X-coordinate.
+     * @param y Y-coordinate.
+     */
+    public Entity(int x, int y, double magnification) {
+        this(x, y, null, magnification);
     }
 
     /**
      * Constructs an Entity with HP and max HP set as 1 and no position.
      */
     public Entity() {
+        this.magnification = 1;
         this.setObjectType(ENTITY);
+        this.type = null;
         entities.add(this);
         updateRegenerationTimer();
     }
@@ -125,7 +153,115 @@ public class Entity extends Box {
     public void setHP(double HP) {
         this.HP = HP;
         this.HPSmoother.setTarget((float) HP);
-        checkIfDead();
+        handleDeath();
+    }
+
+    /**
+     * Applies the configuration from this entity's {@link EntityType}.
+     */
+    protected void load() {
+        if (type == null) return;
+        type.applyTo(this);
+    }
+
+    /**
+     * Returns the magnification factor used to scale the entity's stats.
+     *
+     * @return the magnification multiplier
+     */
+    public double getMagnification() {
+        return this.magnification;
+    }
+
+    /**
+     * Returns the {@link EntityType} of this entity.
+     *
+     * @return the type of this entity
+     */
+    public GenericType getEntityType() {
+        return type;
+    }
+
+    /**
+     * Returns the amount of XP this entity drops when defeated.
+     *
+     * @return the XP drop value
+     */
+    public double getXPDrop() {
+        return xpDrop;
+    }
+
+    /**
+     * Sets the amount of XP this entity will drop.
+     *
+     * @param xp the XP amount
+     */
+    public void setXpDrop(int xp) {
+        this.xpDrop = xp;
+    }
+
+    /**
+     * Sets the coin drop range using minimum and maximum values.
+     *
+     * @param min the minimum number of coins
+     * @param max the maximum number of coins
+     */
+    public void setCoinDropRange(int min, int max) {
+        this.coinDrop = new CoinDropRange(min, max);
+    }
+
+    /**
+     * Sets the coin drop range using a {@link CoinDropRange} object.
+     *
+     * @param coinDropRange the coin drop range
+     */
+    public void setCoinDropRange(CoinDropRange coinDropRange) {
+        this.coinDrop = coinDropRange;
+    }
+
+    /**
+     * Sets a fixed coin drop amount (min = max = amount).
+     *
+     * @param coinDrop the fixed number of coins
+     */
+    public void setCoinDrop(int coinDrop) {
+        this.coinDrop = new CoinDropRange(coinDrop);
+    }
+
+    /**
+     * Returns a randomly rolled coin drop based on the drop range.
+     *
+     * @return the coin drop amount
+     */
+    public int getCoinDrop() {
+        return coinDrop.roll();
+    }
+
+    /**
+     * Sets the AI behaviors for this entity.
+     *
+     * @param behaviors the list of behaviors
+     */
+    public void setBehaviors(AIBehavior... behaviors) {
+        controller.setBehaviors(behaviors);
+    }
+
+    /**
+     * Returns the list of AI behaviors assigned to this entity.
+     *
+     * @return the array of behaviors
+     */
+    public AIBehavior[] getBehaviors() {
+        return controller.getBehaviors();
+    }
+
+    /**
+     * Returns the {@link BehaviorController} managing this entity's behavior.
+     *
+     * @return the behavior controller
+     */
+    public BehaviorController getController() {
+        return controller;
     }
 
     /**
@@ -133,7 +269,7 @@ public class Entity extends Box {
      * @param maxHP New maximum HP.
      */
     public void setMaxHP(double maxHP) {
-        this.maxHP = maxHP;
+        this.maxHP = maxHP * getMagnification();
     }
 
     /**
@@ -160,18 +296,35 @@ public class Entity extends Box {
         this.HPSmoother.setTarget((float) HP);
     }
 
+    public void setTurnsToRespawn(int turnsToRespawn) {
+        this.turnsToRespawn = turnsToRespawn;
+        respawnTimer = new TurnTimer(turnsToRespawn + 1, e -> respawnIfPossible());
+        respawnTimer.setRoomScoped(true);
+    }
+
+    public boolean canRespawn() {
+        return player.loadTimerFromUUID(this.getId()) <= 0;
+    }
+
+    public void respawnIfPossible() {
+        if (canRespawn()) {
+            respawn();
+            respawnTimer.reset();
+        }
+    }
+
     /**
      * Checks if the entity is dead. If so, handles drop and removal logic.
      * @return true if dead, false otherwise.
      */
-    public boolean checkIfDead() {
+    private boolean checkIfDead() {
         if (player.pos.world == null) return false;
 
         if (this.HP == 0) {
             if (!(this instanceof Player)) {
                 if (this.HPSmoother.getCurrentFloat() >= 0.5 && this.displayHP) {
                     javax.swing.Timer checkAgainTimer = new javax.swing.Timer(30,
-                        e -> checkIfDead());
+                        e -> handleDeath());
                     checkAgainTimer.setRepeats(false);
                     checkAgainTimer.start();
                     return true;
@@ -185,10 +338,10 @@ public class Entity extends Box {
                     createDroppedItem(this.getX(), this.getY(), id, count);
 
                     if (this instanceof Enemy) {
-                        double xpGain = ((Enemy) this).getXPDrop();
+                        double xpGain = this.getXPDrop();
                         player.attr.addXP(xpGain);
 
-                        int coinGain = ((Enemy) this).getCoinDrop();
+                        int coinGain = this.getCoinDrop();
                         player.attr.addBalance(coinGain);
                     }
                 }
@@ -219,6 +372,33 @@ public class Entity extends Box {
 
     public void setDisplayHP(boolean displayHP) {
         this.displayHP = displayHP;
+    }
+
+    public boolean handleDeath() {
+        boolean result = checkIfDead();
+
+        if (result && turnsToRespawn > 0) {
+            player.storeTimerInUUID(this.getId(), turnsToRespawn);
+            respawnTimer.start();
+        } else if (result) {
+            respawn();
+        }
+
+        return result;
+    }
+
+    protected void respawn() {
+        switch (this.getClass().getSimpleName()) {
+            case "Entity" -> new Entity(this.getOrigin().x, this.getOrigin().y, type, this.magnification);
+            case "Enemy" -> new Enemy(this.getOrigin(), (EnemyType) type, this.magnification);
+        }
+    }
+
+    public void scheduleRespawn() {
+        int turns = player.loadTimerFromUUID(this.getId());
+        respawnTimer = new TurnTimer(turns, e -> respawnIfPossible());
+        respawnTimer.setRoomScoped(true);
+        respawnTimer.start();
     }
 
     /**
@@ -704,7 +884,7 @@ public class Entity extends Box {
         this.isInvulnerable = isInvulnerable;
     }
 
-    private int maxSight;
+    protected int maxSight;
 
     public void setMaxSight(int maxSight) {
         this.maxSight = maxSight;
