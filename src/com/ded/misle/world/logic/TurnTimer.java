@@ -95,6 +95,13 @@ public class TurnTimer {
      */
     private ActionListener onFinish;
 
+    /**
+     * The action to be executed immediately after the main listener triggers,
+     * but before the timer is potentially rescheduled or removed.
+     * <p>
+     * Unlike {@link #onFinish}, this listener is called after every execution,
+     * including repeated executions and forced executions.
+     */
     private ActionListener afterExecution;
 
     /**
@@ -216,18 +223,20 @@ public class TurnTimer {
      * Forces this timer to execute immediately, regardless of its scheduled turn.
      * This does remove it from the queue if it is not a repeating timer.
      * If the timer is repeating, reschedules the next execution unless {@code stopsAt} has been hit.
+     * <p>
+     * This method also triggers {@link #afterExecution} after the main listener.
      */
     public void forceExecution() {
         forceExecution(queue.iterator(), true);
     }
-
     /**
      * Forces this timer to execute immediately, regardless of its scheduled turn.
-     * This removes it from the queue if it is not a repeating timer.
-     * If the timer is repeating, reschedules the next execution unless {@code stopsAt} has been hit.
-     * Should only ever be used in {@link #executeAllDueTimers()}
+     * <p>
+     * Executes the main listener action and, if present, the {@link #afterExecution} listener
+     * after it. If the timer is non-repeating, or has hit its {@code stopsAt} limit, it is removed.
      *
-     * @param it Iterator used to execute all due timers.
+     * @param it        The iterator used during timer processing.
+     * @param removeNow Whether to remove immediately via {@link #kill()}, or via {@link Iterator#remove()}.
      */
     private void forceExecution(Iterator<TurnTimer> it, boolean removeNow) {
         ActionEvent e = new ActionEvent(TurnTimer.class, ActionEvent.ACTION_PERFORMED, listener.getClass().getName());
@@ -256,13 +265,14 @@ public class TurnTimer {
     /**
      * Finalizes the execution of this timer when it is no longer meant to continue.
      * <p>
-     * This method removes the timer from the queue, either by invoking {@link #kill()}
-     * or by using the provided iterator, depending on the {@code removeNow} flag.
-     * It also executes the {@code onFinish} listener, if one is set.
+     * Removes the timer from the queue and calls {@link #onFinish} if set.
+     * <p>
+     * Note: {@link #afterExecution} is <b>not</b> triggered here, as it should
+     * only run immediately after a normal execution.
      *
-     * @param it        The iterator used when this method is called from a loop over the queue.
-     * @param removeNow Whether to use {@link #kill()} or {@code it.remove()} to remove the timer.
-     * @param e         The {@link ActionEvent} used for the {@code onFinish} listener.
+     * @param it        The iterator used during queue processing.
+     * @param removeNow Whether to remove via {@link #kill()} (if true) or {@link Iterator#remove()} (if false).
+     * @param e         The {@link ActionEvent} passed to {@code onFinish}.
      */
     private void cleanupAfterFinalExecution(Iterator<TurnTimer> it, boolean removeNow, ActionEvent e) {
         if (removeNow) kill();
@@ -299,8 +309,11 @@ public class TurnTimer {
 
     /**
      * Enables or disables repetition of the timer after triggering.
+     * <p>
+     * Note: {@link #afterExecution} is called after <i>every</i> trigger, including repeats.
      *
      * @param repeats {@code true} to make the timer repeat; {@code false} for one-time use.
+     * @return this timer instance, for chaining
      */
     public TurnTimer setRepeats(boolean repeats) {
         this.repeats = repeats;
@@ -348,6 +361,16 @@ public class TurnTimer {
         return this;
     }
 
+    /**
+     * Sets a listener to execute immediately after the main timer action.
+     * <p>
+     * This listener is called after every execution of the timer, regardless of whether
+     * it will repeat or stop afterward. It differs from {@link #onFinish}, which only
+     * executes once when the timer finishes naturally.
+     *
+     * @param afterExecution the {@code ActionListener} to run after each execution
+     * @return this timer instance, for chaining
+     */
     public TurnTimer setAfterExecution(ActionListener afterExecution) {
         this.afterExecution = afterExecution;
         return this;
@@ -363,9 +386,11 @@ public class TurnTimer {
     }
 
     /**
-     * Returns how many turns left until this timer is triggered. If the timer is not in the queue for whatever reason, 0 is returned.
+     * Returns the remaining number of turns until this timer's next activation.
+     * <p>
+     * If the timer is not active in the queue, returns 0.
      *
-     * @return Number of turns left until execution.
+     * @return the number of turns left until this timer triggers, or 0 if inactive
      */
     public int getRemainingTurnsUntilActivation() {
         return queue.contains(this) ? this.executionTurn - turnNum : 0;
