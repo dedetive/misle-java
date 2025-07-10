@@ -26,7 +26,7 @@ public interface AIBehavior extends BehaviorCondition {
      *
      * @param context the current behavior context
      */
-    void onSwitchIn(BehaviorContext context);
+    void switchIn(BehaviorContext context);
 
     /**
      * Called when this behavior is no longer the active behavior.
@@ -36,7 +36,7 @@ public interface AIBehavior extends BehaviorCondition {
      *
      * @param context the current behavior context
      */
-    void onSwitchOut(BehaviorContext context);
+    void switchOut(BehaviorContext context);
 
     /**
      * Adds a new action to be executed when the behavior becomes active.

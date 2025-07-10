@@ -73,7 +73,7 @@ public abstract class AbstractBehavior implements AIBehavior {
      * @param context the current behavior context
      */
     @Override
-    public final void onSwitchIn(BehaviorContext context) {
+    public final void switchIn(BehaviorContext context) {
         for (var action : onSwitchInActions) {
             action.accept(context);
         }
@@ -88,7 +88,7 @@ public abstract class AbstractBehavior implements AIBehavior {
      * @param context the current behavior context
      */
     @Override
-    public final void onSwitchOut(BehaviorContext context) {
+    public final void switchOut(BehaviorContext context) {
         for (var action : onSwitchOutActions) {
             action.accept(context);
         }

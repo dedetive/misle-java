@@ -85,7 +85,7 @@ public class ChainBehavior extends AbstractBehavior {
     @Override
     public void tryExecute(BehaviorContext context) {
         if (isDone()) {
-            onSwitchIn(context);
+            switchIn(context);
         }
 
         AIBehavior currentBehavior = chain[currentChainIndex];
@@ -97,10 +97,10 @@ public class ChainBehavior extends AbstractBehavior {
         controller.run();
 
         if (currentBehavior.isInterruptible() || !currentBehavior.matches(context)) {
-            currentBehavior.onSwitchOut(context);
+            currentBehavior.switchOut(context);
             advanceToNextValid(context);
 
-            if (isDone()) onSwitchOut(context);
+            if (isDone()) switchOut(context);
         }
     }
 

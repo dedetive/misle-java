@@ -67,8 +67,8 @@ public class BehaviorController implements Runnable {
 
         boolean isSwitching = bestBehavior != currentBehavior;
         if (isSwitching) {
-            if (currentBehavior != null) currentBehavior.onSwitchOut(context);
-            if (bestBehavior != null) bestBehavior.onSwitchIn(context);
+            if (currentBehavior != null) currentBehavior.switchOut(context);
+            if (bestBehavior != null) bestBehavior.switchIn(context);
             else this.run();
         }
 
