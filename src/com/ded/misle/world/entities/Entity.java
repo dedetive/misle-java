@@ -94,7 +94,7 @@ public class Entity extends Box {
     protected double xpDrop = 0;
     /** The range of coins that may drop from this entity. */
     protected CoinDropRange coinDrop = new CoinDropRange(0);
-    protected int turnsToRespawn = 0;
+    protected int turnsToRespawn = Integer.MIN_VALUE;
     protected TurnTimer respawnTimer;
 
     /**
@@ -379,7 +379,7 @@ public class Entity extends Box {
         if (result && turnsToRespawn > 0) {
             player.storeTimerInUUID(this.getId(), turnsToRespawn);
             respawnTimer.start();
-        } else if (result) {
+        } else if (result && turnsToRespawn != Integer.MIN_VALUE) {
             respawn();
         }
 
