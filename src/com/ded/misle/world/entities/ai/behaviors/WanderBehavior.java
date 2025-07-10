@@ -7,6 +7,7 @@ import com.ded.misle.world.entities.ai.BehaviorType;
 import com.ded.misle.world.logic.Path;
 import com.ded.misle.world.logic.Pathfinder;
 import com.ded.misle.world.logic.PhysicsEngine;
+import com.ded.misle.world.logic.effects.Damage;
 
 import java.awt.Point;
 import java.util.*;
@@ -102,10 +103,14 @@ public class WanderBehavior extends AbstractBehavior {
 
 
         if (validPos.isEmpty()) {
-            Point target =
+            Path path =
                     new Pathfinder().findPath(self.getPos(), self.getOrigin(),
-                            p -> !PhysicsEngine.isSpaceOccupied(p.x, p.y) ||
-                            player.getPos().equals(p)).getStart();
+                            p -> (!PhysicsEngine.isSpaceOccupied(p.x, p.y) ||
+                                    self.getPos().equals(p)) ||
+                                    (player.getPos().equals(p) && self.effect instanceof Damage)
+                    );
+            if (path == null) return;
+            Point target = path.getStart();
             attemptToMove(context, target);
             return;
         }
@@ -158,12 +163,12 @@ public class WanderBehavior extends AbstractBehavior {
                 .filter(cardinalPoint -> isWithinWanderRegion(origin, cardinalPoint))
                 .filter(cardinalPoint ->
                     !(PhysicsEngine.isSpaceOccupied(cardinalPoint.x, cardinalPoint.y)) ||
-                    player.getPos().equals(cardinalPoint))
+                    player.getPos().equals(cardinalPoint) && self.effect instanceof Damage)
                 .toList();
         } else {
             return Stream.of(neighbors)
                 .filter(p -> !PhysicsEngine.isSpaceOccupied(p.x, p.y) ||
-                    player.getPos().equals(p))
+                    player.getPos().equals(p) && self.effect instanceof Damage)
                 .filter(p -> getDistanceFromOrigin(p, origin) < getDistanceFromOrigin(currentPos, origin))
                 .toList();
         }
@@ -184,7 +189,7 @@ public class WanderBehavior extends AbstractBehavior {
             return neighbors.stream()
                 .filter(customPath::contains)
                 .filter(p -> !PhysicsEngine.isSpaceOccupied(p.x, p.y) ||
-                    player.getPos().equals(p))
+                    player.getPos().equals(p) && self.effect instanceof Damage)
                 .toList();
         } else {
             Point nearest = Arrays.stream(customPath.getPoints())
@@ -194,7 +199,7 @@ public class WanderBehavior extends AbstractBehavior {
 
             return neighbors.stream()
                 .filter(p -> !PhysicsEngine.isSpaceOccupied(p.x, p.y) ||
-                    player.getPos().equals(p))
+                    player.getPos().equals(p) && self.effect instanceof Damage)
                 .filter(p -> getDistanceFromOrigin(p, nearest) < getDistanceFromOrigin(currentPos, nearest))
                 .toList();
         }
