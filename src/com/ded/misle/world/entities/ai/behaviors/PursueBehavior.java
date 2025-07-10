@@ -75,7 +75,9 @@ public class PursueBehavior extends AbstractBehavior {
             ctx -> {
                 if (ctx.target() == null) return false;
 
-                boolean canSeeTarget = (new Sight(ctx.self().getPos()).canSee(ctx.target().getPos()));
+                Sight sight = new Sight(ctx.self().getPos());
+                sight.setMaxSight(ctx.self().getMaxSight());
+                boolean canSeeTarget = (sight.canSee(ctx.target().getPos()));
                 Point targetPos = canSeeTarget
                     ? ctx.target().getPos()
                     : ctx.lastSeenTargetPos();
@@ -103,13 +105,15 @@ public class PursueBehavior extends AbstractBehavior {
         Entity self = context.self();
         Entity target = context.target();
 
-        boolean canSeeTarget = (new Sight(self.getPos()).canSee(target.getPos()));
+        Sight sight = new Sight(self.getPos());
+        sight.setMaxSight(self.getMaxSight());
+        boolean canSeeTarget = (sight.canSee(target.getPos()));
         Point targetPos = canSeeTarget
             ? target.getPos()
             : context.lastSeenTargetPos();
 
         if (canSeeTarget) {
-            ((Enemy) self).getController().setLastSeenTargetPos(target.getPos());
+            self.getController().setLastSeenTargetPos(target.getPos());
         }
 
         Path pathToTarget = new Pathfinder().findPath(
