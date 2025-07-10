@@ -91,9 +91,9 @@ public class Entity extends Box {
     /** Static list of all active Entities. */
     private static final List<Entity> entities = new ArrayList<>();
     /** The amount of XP awarded to the player when this entity is defeated. */
-    protected double xpDrop;
+    protected double xpDrop = 0;
     /** The range of coins that may drop from this entity. */
-    protected CoinDropRange coinDrop;
+    protected CoinDropRange coinDrop = new CoinDropRange(0);
     protected int turnsToRespawn = 0;
     protected TurnTimer respawnTimer;
 
@@ -339,15 +339,11 @@ public class Entity extends Box {
                     int count = results[1];
 
                     createDroppedItem(this.getX(), this.getY(), id, count);
-
-                    if (this instanceof Enemy) {
-                        double xpGain = this.getXPDrop();
-                        player.attr.addXP(xpGain);
-
-                        int coinGain = this.getCoinDrop();
-                        player.attr.addBalance(coinGain);
-                    }
                 }
+
+                player.attr.addXP(this.getXPDrop());
+
+                player.attr.addBalance(this.getCoinDrop());
 
                 entities.remove(this);
                 deleteBox(this);
