@@ -1,8 +1,9 @@
 package com.ded.misle.world.logic;
 
 import com.ded.misle.world.entities.Entity;
-import com.ded.misle.world.entities.enemies.Enemy;
-import com.ded.misle.world.entities.enemies.EnemyRegistry;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.world.entities.Entity.getEntities;
@@ -27,9 +28,10 @@ public abstract class TurnManager {
     private static void updateTurn() {
         player.attr.checkIfLevelUp();
 
-        for (Entity entity : getEntities()) {
-            entity.updateRegenerationHP();
-            entity.getController().run();
+        List<Entity> entitiesCopy = new ArrayList<>(getEntities());
+        for (Entity<?> e : entitiesCopy) {
+            e.updateRegenerationHP();
+            e.getController().run();
         }
     }
 }
