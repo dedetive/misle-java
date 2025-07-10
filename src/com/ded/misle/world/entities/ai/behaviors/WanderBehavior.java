@@ -5,6 +5,7 @@ import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.ai.BehaviorContext;
 import com.ded.misle.world.entities.ai.BehaviorType;
 import com.ded.misle.world.logic.Path;
+import com.ded.misle.world.logic.Pathfinder;
 import com.ded.misle.world.logic.PhysicsEngine;
 
 import java.awt.Point;
@@ -101,6 +102,11 @@ public class WanderBehavior extends AbstractBehavior {
 
 
         if (validPos.isEmpty()) {
+            Point target =
+                    new Pathfinder().findPath(self.getPos(), self.getOrigin(),
+                            p -> !PhysicsEngine.isSpaceOccupied(p.x, p.y) ||
+                            player.getPos().equals(p)).getStart();
+            attemptToMove(context, target);
             return;
         }
 
