@@ -2,8 +2,29 @@ package com.ded.misle.world.data.entity.configurations;
 
 import com.ded.misle.world.data.entity.EntityConfigurator;
 import com.ded.misle.world.data.entity.GenericConfigurations;
+import com.ded.misle.world.entities.ai.behaviors.ChainBehavior;
+import com.ded.misle.world.entities.ai.behaviors.WaitBehavior;
+import com.ded.misle.world.entities.ai.behaviors.WanderBehavior;
 
 public enum EntityConfigurations implements GenericConfigurations {
+	BUNNY(bunny -> {
+		bunny.setMaxHP(5);
+		bunny.fillHP();
+		bunny.setTexture("bunny");
+		bunny.setTurnsToRespawn(15);
+		bunny.setVisualScaleHorizontal(0.8);
+		bunny.setVisualScaleVertical(0.8);
+
+		var wait = new WaitBehavior(3);
+		var wander = new WanderBehavior(2);
+
+		ChainBehavior wanderThenWait = new ChainBehavior(
+				wander,
+				wait
+		);
+
+		bunny.setBehaviors(wanderThenWait);
+	})
 
 	;
 
