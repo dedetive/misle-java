@@ -20,18 +20,18 @@ import static com.ded.misle.game.GamePanel.player;
  * These are used by {@link EnemyType}.
  */
 public enum EnemyConfigurations implements GenericConfigurations {
-    GOBLIN(enemy -> {
-        enemy.setMaxHP(20);
-        enemy.fillHP();
-        enemy.setDamage(3);
-        enemy.setTexture("../characters/enemy/goblin");
-        enemy.setDropTable(DropTable.GOBLIN);
-        enemy.setXpDrop(1);
-        enemy.setCoinDrop(3);
-        enemy.setCollision(true);
-        enemy.setTurnsToRespawn(50);
-        enemy.scheduleOnDamage(
-            () -> enemy.setDisplayHP(true)
+    GOBLIN(goblin -> {
+        goblin.setMaxHP(20);
+        goblin.fillHP();
+        goblin.setDamage(3);
+        goblin.setTexture("../characters/enemy/goblin");
+        goblin.setDropTable(DropTable.GOBLIN);
+        goblin.setXpDrop(1);
+        goblin.setCoinDrop(3);
+        goblin.setCollision(true);
+        goblin.setTurnsToRespawn(50);
+        goblin.scheduleOnDamage(
+            () -> goblin.setDisplayHP(true)
         );
 
         var wait = new WaitBehavior();
@@ -90,9 +90,9 @@ public enum EnemyConfigurations implements GenericConfigurations {
             pursue.getConditions()
         );
 
-        enemy.getController().setTarget(player);
+        goblin.getController().setTarget(player);
 
-        enemy.setBehaviors(
+        goblin.setBehaviors(
             chain,
             wander
         );
