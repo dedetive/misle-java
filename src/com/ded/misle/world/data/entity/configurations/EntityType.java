@@ -1,6 +1,7 @@
-package com.ded.misle.world.data;
+package com.ded.misle.world.data.entity.configurations;
 
 import com.ded.misle.world.boxes.Box;
+import com.ded.misle.world.data.entity.GenericType;
 import com.ded.misle.world.entities.Entity;
 
 /**
@@ -11,9 +12,7 @@ import com.ded.misle.world.entities.Entity;
  */
 public enum EntityType implements GenericType {
 
-
     ;
-
 
     /**
      * Reference to a predefined configuration for an entity.

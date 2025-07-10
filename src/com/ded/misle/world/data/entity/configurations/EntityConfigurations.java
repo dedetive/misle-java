@@ -1,4 +1,7 @@
-package com.ded.misle.world.data;
+package com.ded.misle.world.data.entity.configurations;
+
+import com.ded.misle.world.data.entity.EntityConfigurator;
+import com.ded.misle.world.data.entity.GenericConfigurations;
 
 public enum EntityConfigurations implements GenericConfigurations {
 

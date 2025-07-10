@@ -1,4 +1,4 @@
-package com.ded.misle.world.data;
+package com.ded.misle.world.data.entity;
 
 import com.ded.misle.world.entities.enemies.Enemy;
 

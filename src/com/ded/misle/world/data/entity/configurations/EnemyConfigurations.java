@@ -1,6 +1,8 @@
-package com.ded.misle.world.data;
+package com.ded.misle.world.data.entity.configurations;
 
 import com.ded.misle.items.DropTable;
+import com.ded.misle.world.data.entity.EnemyConfigurator;
+import com.ded.misle.world.data.entity.GenericConfigurations;
 import com.ded.misle.world.entities.ai.behaviors.ChainBehavior;
 import com.ded.misle.world.entities.ai.behaviors.PursueBehavior;
 import com.ded.misle.world.entities.ai.behaviors.WaitBehavior;
@@ -106,7 +108,9 @@ public enum EnemyConfigurations implements GenericConfigurations {
             chain,
             wander
         );
-    });
+    })
+
+    ;
 
     /**
      * The functional configurator for this enemy setup.

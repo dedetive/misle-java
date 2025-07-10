@@ -1,6 +1,7 @@
-package com.ded.misle.world.data;
+package com.ded.misle.world.data.entity.configurations;
 
 import com.ded.misle.world.boxes.Box;
+import com.ded.misle.world.data.entity.GenericType;
 import com.ded.misle.world.entities.enemies.Enemy;
 
 /**
@@ -11,7 +12,9 @@ import com.ded.misle.world.entities.enemies.Enemy;
  */
 public enum EnemyType implements GenericType {
 	RED_BLOCK(EnemyConfigurations.RED_BLOCK),
-	GOBLIN(EnemyConfigurations.GOBLIN);
+	GOBLIN(EnemyConfigurations.GOBLIN)
+
+	;
 
 	/**
 	 * Reference to a predefined configuration for an enemy.

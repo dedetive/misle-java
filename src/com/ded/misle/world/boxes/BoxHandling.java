@@ -1,9 +1,8 @@
 package com.ded.misle.world.boxes;
 
 import com.ded.misle.world.data.BoxPreset;
-import com.ded.misle.world.data.EnemyType;
+import com.ded.misle.world.data.entity.configurations.EnemyType;
 import com.ded.misle.world.entities.enemies.EnemyRegistry;
-import com.ded.misle.world.data.EntityType;
 import com.ded.misle.world.logic.World;
 import com.ded.misle.world.logic.effects.Collectible;
 import com.ded.misle.world.entities.enemies.Enemy;
