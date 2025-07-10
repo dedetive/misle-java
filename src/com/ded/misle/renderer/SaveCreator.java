@@ -2,6 +2,7 @@ package com.ded.misle.renderer;
 
 import com.ded.misle.core.LanguageManager;
 import com.ded.misle.renderer.image.ImageManager;
+import com.ded.misle.renderer.utils.Plus;
 
 import javax.swing.*;
 import java.awt.*;
@@ -118,14 +119,10 @@ public abstract class SaveCreator {
                 drawButtons(g2d);
 
                     // Add image plus
-                g2d.setColor(saveSelectorTextBackground);
-                g2d.fillRoundRect((int) (buttonX + (double) buttonWidth / 2 - 1),
-                    (int) (buttonY + (double) buttonHeight / 5 + 1),
-                    4, buttonHeight / 2, 3, 3);
-
-                g2d.fillRoundRect((int) (buttonX + (double) buttonWidth / 2 - 9),
-                    (int) (buttonY + (double) buttonHeight / 4 + 8),
-                    buttonHeight / 2, 4, 3, 3);
+                new Plus(
+                        buttonRect,
+                        saveSelectorTextBackground,.5f, 3, 3)
+                        .draw(g2d);
             } else {
                     // Clear icon
                 buttonRect = new Rectangle(buttonX, buttonY + 9 * buttonHeight / 8, buttonWidth, buttonHeight / 4);
