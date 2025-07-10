@@ -3,6 +3,7 @@ package com.ded.misle.world.data;
 import com.ded.misle.world.data.entity.configurations.EnemyType;
 import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.enemies.Enemy;
+import com.ded.misle.world.logic.RoomManager;
 import com.ded.misle.world.logic.TurnTimer;
 import com.ded.misle.items.DropTable;
 import com.ded.misle.world.boxes.Box;
@@ -126,24 +127,23 @@ public abstract class WorldLoader {
 					}
 				} catch (IllegalArgumentException e) { box = addBox(BoxPreset.STONE_BRICK_WALL); }
 
-				int x = point[0];
-				int y = point[1];
-				int z = point[2];
-				box.setRoomId(room.id);
-				box.setPos(x, y, z);
-				box.setOrigin(new Point(x, y));
+				setupBoxPos(room, point, box);
 			} else {
 				RGBBoxMappings.get(rgb).ifPresent(b -> {
-					int x = point[0];
-					int y = point[1];
-					int z = point[2];
-					b.setRoomId(room.id);
-					b.setPos(x, y, z);
-					b.setOrigin(new Point(x, y));
+					setupBoxPos(room, point, b);
 				});
 			}
 		} catch (Exception ignored) {}
 
+	}
+
+	private static void setupBoxPos(Room room, int[] point, Box box) {
+		int x = point[0];
+		int y = point[1];
+		int z = point[2];
+		box.setRoomId(room.id);
+		box.setPos(x, y, z);
+		box.setOrigin(new Point(x, y));
 	}
 
 	private static void fixSides() {
