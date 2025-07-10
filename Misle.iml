@@ -10,7 +10,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src/resources/images" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/resources/images/boxes" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/resources/images/characters" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/resources/images/characters/enemy" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/resources/images/characters/npc" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/resources/images/characters/player" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/resources/images/items" type="java-resource" />
@@ -19,6 +18,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/resources/rooms" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/resources/savefiles" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/resources/palettes" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/resources/images/characters/entities" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/out/production/Misle/com/ded/misle" />
       <excludeFolder url="file://$MODULE_DIR$/src/out" />
     </content>
