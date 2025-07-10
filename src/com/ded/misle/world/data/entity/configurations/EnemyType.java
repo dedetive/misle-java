@@ -11,7 +11,6 @@ import com.ded.misle.world.entities.enemies.Enemy;
  * management and easier code navigation.
  */
 public enum EnemyType implements GenericType {
-	RED_BLOCK(EnemyConfigurations.RED_BLOCK),
 	GOBLIN(EnemyConfigurations.GOBLIN)
 
 	;

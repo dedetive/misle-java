@@ -20,18 +20,6 @@ import static com.ded.misle.game.GamePanel.player;
  * These are used by {@link EnemyType}.
  */
 public enum EnemyConfigurations implements GenericConfigurations {
-    RED_BLOCK(enemy -> {
-        enemy.setMaxHP(50);
-        enemy.fillHP();
-        enemy.setDamage(5, 1);
-        enemy.setTexture("solid");
-        enemy.setColor(new Color(0xA02020));
-        enemy.setDropTable(DropTable.POTION_CHEST);
-        enemy.setXpDrop(50);
-        enemy.setCoinDropRange(0, 100);
-        enemy.setCollision(true);
-    }),
-
     GOBLIN(enemy -> {
         enemy.setMaxHP(20);
         enemy.fillHP();
