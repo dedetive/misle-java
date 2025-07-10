@@ -1,9 +1,9 @@
 package com.ded.misle.world.data;
 
 import com.ded.misle.world.data.entity.configurations.EnemyType;
+import com.ded.misle.world.data.entity.configurations.EntityType;
 import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.enemies.Enemy;
-import com.ded.misle.world.logic.RoomManager;
 import com.ded.misle.world.logic.TurnTimer;
 import com.ded.misle.items.DropTable;
 import com.ded.misle.world.boxes.Box;
@@ -18,9 +18,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.function.Function;
 
 import static com.ded.misle.game.GamePanel.player;
@@ -86,6 +84,7 @@ public abstract class WorldLoader {
 					TRAVEL,
 					CHEST,
 					SPAWNPOINT,
+					ENTITY,
 					ENEMY
 				}
 				try {
@@ -110,6 +109,20 @@ public abstract class WorldLoader {
 							int openRate = getInt.apply(parts[2]);
 							box.effect = new Chest(openRate, dropTable);
 						}
+						case ENTITY -> {
+							box = new Entity(0, 0,
+									EntityType.valueOf(parts[1].toUpperCase().split(":")[1]),
+									Double.parseDouble(parts[2].split(":")[1]));
+							int x = point[0];
+							int y = point[1];
+							box.setRoomId(room.id);
+							box.setOrigin(new Point(x, y));
+							if (!((Entity) box).canRespawn()) {
+								((Entity) box).scheduleRespawn();
+								deleteBox(box);
+								return;
+							}
+						}
 						case ENEMY -> {
 							box = addEnemyBox(new Point(0, 0),
 								EnemyType.valueOf(parts[1].toUpperCase().split(":")[1]),
@@ -129,9 +142,7 @@ public abstract class WorldLoader {
 
 				setupBoxPos(room, point, box);
 			} else {
-				RGBBoxMappings.get(rgb).ifPresent(b -> {
-					setupBoxPos(room, point, b);
-				});
+				RGBBoxMappings.get(rgb).ifPresent(b -> setupBoxPos(room, point, b));
 			}
 		} catch (Exception ignored) {}
 
