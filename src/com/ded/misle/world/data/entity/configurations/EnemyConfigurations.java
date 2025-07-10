@@ -19,9 +19,9 @@ import static com.ded.misle.game.GamePanel.player;
  */
 public enum EnemyConfigurations implements GenericConfigurations {
     GOBLIN(goblin -> {
-        goblin.setMaxHP(20);
+        goblin.setMaxHP(12);
         goblin.fillHP();
-        goblin.setDamage(3);
+        goblin.setDamage(2);
         goblin.setTexture("goblin");
         goblin.setDropTable(DropTable.GOBLIN);
         goblin.setXpDrop(1);
@@ -30,7 +30,7 @@ public enum EnemyConfigurations implements GenericConfigurations {
         goblin.scheduleOnDamage(
             () -> goblin.setDisplayHP(true)
         );
-        goblin.setMaxSight(9);
+        goblin.setMaxSight(8);
 
         var wait = new WaitBehavior();
         var pursue = new PursueBehavior();
@@ -46,9 +46,6 @@ public enum EnemyConfigurations implements GenericConfigurations {
             }
             case MEDIUM -> {
                 chain = new ChainBehavior(
-                    wait,
-                    pursue,
-                    wait,
                     wait,
                     pursue
                 );
