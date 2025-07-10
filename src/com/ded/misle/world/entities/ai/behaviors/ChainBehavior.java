@@ -59,8 +59,7 @@ public class ChainBehavior extends AbstractBehavior {
 
         addOnSwitchIn(ctx -> this.interruptible = false);
         addOnSwitchOut(ctx -> {
-            this.interruptible = true;
-            this.currentChainIndex = 0;
+            reset();
         });
     }
 
@@ -100,7 +99,7 @@ public class ChainBehavior extends AbstractBehavior {
             currentBehavior.switchOut(context);
             advanceToNextValid(context);
 
-            if (isDone()) switchOut(context);
+            if (isDone()) reset();
         }
     }
 
@@ -126,6 +125,14 @@ public class ChainBehavior extends AbstractBehavior {
     @Override
     public BehaviorType getType() {
         return BehaviorType.CHAIN;
+    }
+
+    /**
+     * Returns the behavior back to its initial state.
+     */
+    private void reset() {
+        this.interruptible = true;
+        this.currentChainIndex = 0;
     }
 
     /**

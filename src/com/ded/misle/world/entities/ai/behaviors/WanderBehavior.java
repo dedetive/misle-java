@@ -101,7 +101,6 @@ public class WanderBehavior extends AbstractBehavior {
         }
         else validPos = computeValidPositionsDistance(self);
 
-
         if (validPos.isEmpty()) {
             Path path =
                     new Pathfinder().findPath(self.getPos(), self.getOrigin(),
