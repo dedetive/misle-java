@@ -19,6 +19,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/resources/savefiles" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/resources/palettes" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/resources/images/characters/entities" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/resources/images/particles" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/out/production/Misle/com/ded/misle" />
       <excludeFolder url="file://$MODULE_DIR$/src/out" />
     </content>
