@@ -40,6 +40,9 @@ public abstract class ImageManager {
             ENEMY_HEALTH_BAR("ui", "enemy_health_bar.png"),
             ENEMY_HEALTH_BAR_INSIDE("ui", "enemy_health_bar_inside.png"),
 
+        // PARTICLES
+            SURPRISE_PARTICLE("particles", "surprise_particle.png"),
+
         // CHARACTER
             // PLAYER
                 PLAYER_FRONT0("characters/player", "player_front0.png"),
