@@ -62,6 +62,22 @@ public class Palette {
         this.palette = List.copyOf(palette);
     }
 
+    public Palette(Color... palette) {
+        this(List.of(palette));
+    }
+
+    public static Palette of(BufferedImage img) {
+        return new Palette(img);
+    }
+
+    public static Palette of(List<Color> palette) {
+        return new Palette(palette);
+    }
+
+    public static Palette of(Color... palette) {
+        return new Palette(palette);
+    }
+
     /**
      * Returns the color at the specified index in the palette.
      * <p>
