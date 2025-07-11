@@ -16,6 +16,10 @@ public abstract class Particle implements ParticleInterface {
 		this.modifiers = modifiers;
 	}
 
+	public Particle(BufferedImage image, Point origin, ParticleModifier... modifiers) {
+		this(image, origin, 1f, modifiers);
+	}
+
 	@Override
 	public void update() {
 		for (ParticleModifier modifier : modifiers) {
