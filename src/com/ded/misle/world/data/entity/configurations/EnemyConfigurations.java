@@ -4,6 +4,7 @@ import com.ded.misle.items.DropTable;
 import com.ded.misle.renderer.image.ImageManager;
 import com.ded.misle.renderer.image.Palette;
 import com.ded.misle.renderer.particles.modifiers.Lifetime;
+import com.ded.misle.renderer.particles.modifiers.Offset;
 import com.ded.misle.renderer.particles.modifiers.PaletteSwap;
 import com.ded.misle.renderer.particles.presets.SurprisedParticle;
 import com.ded.misle.world.data.entity.EnemyConfigurator;
@@ -15,6 +16,8 @@ import com.ded.misle.world.entities.ai.behaviors.PursueBehavior;
 import com.ded.misle.world.entities.ai.behaviors.WaitBehavior;
 import com.ded.misle.world.entities.ai.behaviors.WanderBehavior;
 import com.ded.misle.world.logic.TurnTimer;
+
+import java.awt.*;
 
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.renderer.image.ImageManager.cachedImages;
@@ -110,8 +113,9 @@ public enum EnemyConfigurations implements GenericConfigurations {
                         new SurprisedParticle(
                         ctx.self().getPos(),
                         Lifetime.ofSeconds(1f),
-                        PaletteSwap.of(
-                                Palette.of(goblin.getTexture())
+                        PaletteSwap.of(Palette.of(
+                                new Color(0x002000),
+                                new Color(0x80dE80))
                         )
                 );
 	            particle.start();
