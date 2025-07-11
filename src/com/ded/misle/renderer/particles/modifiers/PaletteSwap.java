@@ -36,4 +36,9 @@ public class PaletteSwap implements ParticleModifier {
 		editedImage = p.paint(originalImage);
 		particle.setImage(editedImage);
 	}
+
+	@Override
+	public ActivationTime getActivationTime() {
+		return ActivationTime.FRAME;
+	}
 }

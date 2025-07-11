@@ -35,4 +35,9 @@ public class Lifetime implements ParticleModifier {
 		if (System.currentTimeMillis() - initialTime > lifetime)
 			particle.destroy();
 	}
+
+	@Override
+	public ActivationTime getActivationTime() {
+		return ActivationTime.FRAME;
+	}
 }
