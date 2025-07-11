@@ -3,6 +3,7 @@ package com.ded.misle.renderer;
 import com.ded.misle.core.LanguageManager;
 import com.ded.misle.net.NetClient;
 import com.ded.misle.renderer.image.ImageManager;
+import com.ded.misle.renderer.particles.ParticleRegistry;
 import com.ded.misle.renderer.smoother.SmoothValue;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.entities.Entity;
@@ -753,6 +754,7 @@ public class PlayingRenderer extends AbstractRenderer {
 
     private static void drawUIElements(Graphics2D g2d) {
         drawEntityHealthBars(g2d);
+        ParticleRegistry.updateThenDraw(g2d);
         drawHealthBar(g2d);
         drawEntropyBar(g2d);
         drawXPBar(g2d);
