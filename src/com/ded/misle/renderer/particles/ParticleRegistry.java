@@ -1,13 +1,13 @@
 package com.ded.misle.renderer.particles;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public final class ParticleRegistry {
 	private ParticleRegistry() {}
 
-	private static final List<Particle> particles = new ArrayList<>();
+	private static final List<Particle> particles = new CopyOnWriteArrayList<>();
 
 	public static void updateThenDraw(Graphics2D g2d) {
 		for (Particle particle : particles) {
