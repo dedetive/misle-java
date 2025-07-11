@@ -58,22 +58,66 @@ public class Palette {
         ).asList();
     }
 
+    /**
+     * Constructs a {@code Palette} from the provided list of colors.
+     * <p>
+     * The order of colors in the list is preserved in the resulting palette.
+     * <p>
+     * This constructor is suitable for manually creating a palette or for cases where
+     * the palette order is already determined externally.
+     *
+     * @param palette the list of colors to use for the palette
+     */
     public Palette(List<Color> palette) {
         this.palette = List.copyOf(palette);
     }
 
+    /**
+     * Constructs a {@code Palette} from the provided array of colors.
+     * <p>
+     * The colors are stored in the same order as provided in the array.
+     * <p>
+     * This is a convenience constructor for directly supplying color values.
+     *
+     * @param palette the array of colors to include in the palette
+     */
     public Palette(Color... palette) {
         this(List.of(palette));
     }
 
+    /**
+     * Creates a new {@code Palette} from the given image.
+     * <p>
+     * This method is equivalent to calling {@code new Palette(image)} but allows for a more
+     * fluent and expressive API.
+     *
+     * @param img the image to extract the palette from
+     * @return the resulting {@code Palette}
+     */
     public static Palette of(BufferedImage img) {
         return new Palette(img);
     }
 
+    /**
+     * Creates a new {@code Palette} from the given list of colors.
+     * <p>
+     * This method provides a more expressive way to create palettes with explicit color lists.
+     *
+     * @param palette the list of colors to use
+     * @return the resulting {@code Palette}
+     */
     public static Palette of(List<Color> palette) {
         return new Palette(palette);
     }
 
+    /**
+     * Creates a new {@code Palette} from the given array of colors.
+     * <p>
+     * This method provides a convenient way to create palettes with explicit color values.
+     *
+     * @param palette the array of colors to use
+     * @return the resulting {@code Palette}
+     */
     public static Palette of(Color... palette) {
         return new Palette(palette);
     }
