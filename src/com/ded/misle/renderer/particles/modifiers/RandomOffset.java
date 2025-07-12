@@ -1,11 +1,11 @@
 package com.ded.misle.renderer.particles.modifiers;
 
-import com.ded.misle.renderer.particles.Particle;
-import com.ded.misle.renderer.particles.ParticleModifier;
+import com.ded.misle.renderer.particles.*;
 
 import java.awt.geom.Point2D;
 import java.util.Random;
 
+@ModifierType(ModifierType.Type.POSITIONAL)
 public class RandomOffset implements ParticleModifier {
 	private static final Random random = new Random();
 

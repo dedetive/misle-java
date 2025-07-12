@@ -1,8 +1,8 @@
 package com.ded.misle.renderer.particles.modifiers;
 
-import com.ded.misle.renderer.particles.Particle;
-import com.ded.misle.renderer.particles.ParticleModifier;
+import com.ded.misle.renderer.particles.*;
 
+@ModifierType(ModifierType.Type.DESTRUCTIVE)
 public class Lifetime implements ParticleModifier {
 
 	private final long lifetime;

@@ -2,11 +2,11 @@ package com.ded.misle.renderer.particles.modifiers;
 
 import com.ded.misle.renderer.image.Painter;
 import com.ded.misle.renderer.image.Palette;
-import com.ded.misle.renderer.particles.Particle;
-import com.ded.misle.renderer.particles.ParticleModifier;
+import com.ded.misle.renderer.particles.*;
 
 import java.awt.image.BufferedImage;
 
+@ModifierType(ModifierType.Type.TRANSFORMER)
 public class PaletteSwap implements ParticleModifier {
 	private BufferedImage editedImage;
 	Palette newPalette;
