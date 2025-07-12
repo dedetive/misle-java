@@ -1,7 +1,8 @@
-package com.ded.misle.world.entities.config.configurations;
+package com.ded.misle.world.entities.config.types;
 
 import com.ded.misle.world.boxes.Box;
-import com.ded.misle.world.entities.config.GenericType;
+import com.ded.misle.world.entities.config.EnemyConfigurations;
+import com.ded.misle.world.entities.config.api.GenericType;
 import com.ded.misle.world.entities.enemies.Enemy;
 
 /**
