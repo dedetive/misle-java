@@ -16,6 +16,14 @@ public class Offset implements ParticleModifier {
 		return new Offset(offset);
 	}
 
+	public Offset(float x, float y) {
+		this.offset = new Point2D.Float(x, y);
+	}
+
+	public static Offset of(float x, float y) {
+		return new Offset(x, y);
+	}
+
 	@Override
 	public void modify(Particle particle) {
 		Point2D.Float p = particle.getWorldPosition();
