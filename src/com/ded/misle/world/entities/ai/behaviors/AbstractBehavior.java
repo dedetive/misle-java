@@ -1,8 +1,8 @@
 package com.ded.misle.world.entities.ai.behaviors;
 
 import com.ded.misle.world.data.Direction;
-import com.ded.misle.world.entities.ai.AIBehavior;
-import com.ded.misle.world.entities.ai.BehaviorContext;
+import com.ded.misle.world.entities.ai.core.AIBehavior;
+import com.ded.misle.world.entities.ai.core.BehaviorContext;
 
 import java.awt.*;
 import java.util.Arrays;

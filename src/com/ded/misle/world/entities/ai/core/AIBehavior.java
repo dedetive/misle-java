@@ -1,4 +1,4 @@
-package com.ded.misle.world.entities.ai;
+package com.ded.misle.world.entities.ai.core;
 
 /**
  * Represents an AI behavior that can be conditionally executed in a world context.

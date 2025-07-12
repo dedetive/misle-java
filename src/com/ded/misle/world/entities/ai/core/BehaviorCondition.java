@@ -1,4 +1,4 @@
-package com.ded.misle.world.entities.ai;
+package com.ded.misle.world.entities.ai.core;
 
 import java.util.List;
 import java.util.function.Function;

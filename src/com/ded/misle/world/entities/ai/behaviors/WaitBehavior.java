@@ -1,7 +1,7 @@
 package com.ded.misle.world.entities.ai.behaviors;
 
-import com.ded.misle.world.entities.ai.BehaviorContext;
-import com.ded.misle.world.entities.ai.BehaviorType;
+import com.ded.misle.world.entities.ai.core.BehaviorContext;
+import com.ded.misle.world.entities.ai.core.BehaviorType;
 
 /**
  * An AI behavior that causes an entity to do nothing ("wait") for a fixed number of turns.

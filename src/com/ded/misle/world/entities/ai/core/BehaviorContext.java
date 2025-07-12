@@ -1,4 +1,4 @@
-package com.ded.misle.world.entities.ai;
+package com.ded.misle.world.entities.ai.core;
 
 import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.logic.World;

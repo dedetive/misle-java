@@ -1,9 +1,9 @@
 package com.ded.misle.world.entities.ai.behaviors;
 
-import com.ded.misle.world.entities.ai.AIBehavior;
-import com.ded.misle.world.entities.ai.BehaviorContext;
-import com.ded.misle.world.entities.ai.BehaviorController;
-import com.ded.misle.world.entities.ai.BehaviorType;
+import com.ded.misle.world.entities.ai.core.AIBehavior;
+import com.ded.misle.world.entities.ai.core.BehaviorContext;
+import com.ded.misle.world.entities.ai.core.BehaviorController;
+import com.ded.misle.world.entities.ai.core.BehaviorType;
 
 import java.util.Arrays;
 

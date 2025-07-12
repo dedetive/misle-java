@@ -2,9 +2,8 @@ package com.ded.misle.world.entities.ai.behaviors;
 
 import com.ded.misle.world.boxes.BoxManipulation;
 import com.ded.misle.world.entities.Entity;
-import com.ded.misle.world.entities.ai.BehaviorContext;
-import com.ded.misle.world.entities.ai.BehaviorType;
-import com.ded.misle.world.entities.enemies.Enemy;
+import com.ded.misle.world.entities.ai.core.BehaviorContext;
+import com.ded.misle.world.entities.ai.core.BehaviorType;
 import com.ded.misle.world.logic.Path;
 import com.ded.misle.world.logic.Pathfinder;
 import com.ded.misle.world.logic.PhysicsEngine;
@@ -47,7 +46,7 @@ import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
  *
  * @see com.ded.misle.world.logic.Pathfinder
  * @see com.ded.misle.world.logic.Sight
- * @see com.ded.misle.world.entities.ai.BehaviorContext
+ * @see BehaviorContext
  */
 public class PursueBehavior extends AbstractBehavior {
 
