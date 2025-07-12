@@ -85,4 +85,9 @@ public interface ParticleModifier {
 	default void updateIfNeeded(ActivationTime current, Particle particle) {
 		if (shouldUpdate(current)) this.modify(particle);
 	}
+
+	default ModifierType.Type getType() {
+		ModifierType ann = this.getClass().getAnnotation(ModifierType.class);
+		return ann != null ? ann.value() : ModifierType.Type.GENERIC;
+	}
 }
