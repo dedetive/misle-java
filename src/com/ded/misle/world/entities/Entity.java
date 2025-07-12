@@ -405,6 +405,10 @@ public class Entity<T extends Entity<T>> extends Box {
                             e -> handleDeath());
                     checkAgainTimer.setRepeats(false);
                     checkAgainTimer.start();
+
+                    this.setCollision(false);
+                    this.effect = null;
+                    this.setBehaviors();
                     return true;
                 }
 

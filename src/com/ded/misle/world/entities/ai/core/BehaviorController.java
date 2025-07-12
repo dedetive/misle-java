@@ -47,6 +47,8 @@ public class BehaviorController implements Runnable {
      */
     @Override
     public void run() {
+        if (behaviors.length == 0) return;
+
         BehaviorContext context = new BehaviorContext(
             entity,
             target,
