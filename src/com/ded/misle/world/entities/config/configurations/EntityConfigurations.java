@@ -1,7 +1,7 @@
-package com.ded.misle.world.data.entity.configurations;
+package com.ded.misle.world.entities.config.configurations;
 
-import com.ded.misle.world.data.entity.EntityConfigurator;
-import com.ded.misle.world.data.entity.GenericConfigurations;
+import com.ded.misle.world.entities.config.EntityConfigurator;
+import com.ded.misle.world.entities.config.GenericConfigurations;
 import com.ded.misle.world.entities.ai.behaviors.ChainBehavior;
 import com.ded.misle.world.entities.ai.behaviors.WaitBehavior;
 import com.ded.misle.world.entities.ai.behaviors.WanderBehavior;

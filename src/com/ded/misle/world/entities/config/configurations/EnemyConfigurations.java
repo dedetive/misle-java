@@ -1,4 +1,4 @@
-package com.ded.misle.world.data.entity.configurations;
+package com.ded.misle.world.entities.config.configurations;
 
 import com.ded.misle.items.DropTable;
 import com.ded.misle.renderer.image.Palette;
@@ -7,8 +7,8 @@ import com.ded.misle.renderer.particles.modifier.Offset;
 import com.ded.misle.renderer.particles.modifier.PaletteSwap;
 import com.ded.misle.renderer.particles.modifier.RandomOffset;
 import com.ded.misle.renderer.particles.preset.SurprisedParticle;
-import com.ded.misle.world.data.entity.EnemyConfigurator;
-import com.ded.misle.world.data.entity.GenericConfigurations;
+import com.ded.misle.world.entities.config.EnemyConfigurator;
+import com.ded.misle.world.entities.config.GenericConfigurations;
 import com.ded.misle.world.entities.ai.core.AIBehavior;
 import com.ded.misle.world.entities.ai.core.BehaviorContext;
 import com.ded.misle.world.entities.ai.behaviors.ChainBehavior;

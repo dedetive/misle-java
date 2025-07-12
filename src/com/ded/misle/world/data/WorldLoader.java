@@ -1,7 +1,7 @@
 package com.ded.misle.world.data;
 
-import com.ded.misle.world.data.entity.configurations.EnemyType;
-import com.ded.misle.world.data.entity.configurations.EntityType;
+import com.ded.misle.world.entities.config.configurations.EnemyType;
+import com.ded.misle.world.entities.config.configurations.EntityType;
 import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.enemies.Enemy;
 import com.ded.misle.world.logic.TurnTimer;

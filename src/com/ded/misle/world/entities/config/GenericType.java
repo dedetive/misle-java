@@ -1,4 +1,4 @@
-package com.ded.misle.world.data.entity;
+package com.ded.misle.world.entities.config;
 
 import com.ded.misle.world.boxes.Box;
 

@@ -1,7 +1,7 @@
-package com.ded.misle.world.data.entity.configurations;
+package com.ded.misle.world.entities.config.configurations;
 
 import com.ded.misle.world.boxes.Box;
-import com.ded.misle.world.data.entity.GenericType;
+import com.ded.misle.world.entities.config.GenericType;
 import com.ded.misle.world.entities.Entity;
 
 /**
