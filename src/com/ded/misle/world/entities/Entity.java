@@ -455,7 +455,7 @@ public class Entity<T extends Entity<T>> extends Box {
 
         if (result && turnsToRespawn > 0) {
             player.storeTimerInUUID(this.getId(), turnsToRespawn);
-            respawnTimer.start();
+            scheduleRespawn();
         } else if (result && turnsToRespawn != Integer.MIN_VALUE) {
             respawn();
         }
@@ -472,6 +472,7 @@ public class Entity<T extends Entity<T>> extends Box {
 
     public void scheduleRespawn() {
         int turns = player.loadTimerFromUUID(this.getId());
+        respawnTimer.kill();
         respawnTimer = new TurnTimer(turns, e -> respawnIfPossible())
                 .setRoomScoped(true)
                 .start();
