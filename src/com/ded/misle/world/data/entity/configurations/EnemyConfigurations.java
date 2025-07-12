@@ -1,11 +1,11 @@
 package com.ded.misle.world.data.entity.configurations;
 
 import com.ded.misle.items.DropTable;
-import com.ded.misle.renderer.image.ImageManager;
 import com.ded.misle.renderer.image.Palette;
 import com.ded.misle.renderer.particles.modifiers.Lifetime;
 import com.ded.misle.renderer.particles.modifiers.Offset;
 import com.ded.misle.renderer.particles.modifiers.PaletteSwap;
+import com.ded.misle.renderer.particles.modifiers.RandomOffset;
 import com.ded.misle.renderer.particles.presets.SurprisedParticle;
 import com.ded.misle.world.data.entity.EnemyConfigurator;
 import com.ded.misle.world.data.entity.GenericConfigurations;
@@ -18,9 +18,9 @@ import com.ded.misle.world.entities.ai.behaviors.WanderBehavior;
 import com.ded.misle.world.logic.TurnTimer;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 import static com.ded.misle.game.GamePanel.player;
-import static com.ded.misle.renderer.image.ImageManager.cachedImages;
 
 /**
  * Centralized definitions of enemy setup configurations.
@@ -110,14 +110,15 @@ public enum EnemyConfigurations implements GenericConfigurations {
         chain.addOnSwitchIn(
             ctx -> {
                 SurprisedParticle particle =
-                        new SurprisedParticle(
-                        ctx.self().getPos(),
-                        Lifetime.ofSeconds(1f),
-                        PaletteSwap.of(Palette.of(
+                    new SurprisedParticle(
+                        (ctx.self().getPos()),
+                            Lifetime.ofSeconds(1f),
+                            PaletteSwap.of(Palette.of(
                                 new Color(0x002000),
-                                new Color(0x80dE80))
-                        )
-                );
+                                new Color(0x80dE80))),
+                            Offset.of(20f, 0f),
+                            RandomOffset.of(-15f, 15, 0, 2)
+                    );
 	            particle.start();
             }
         );
