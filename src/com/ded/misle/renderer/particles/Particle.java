@@ -24,43 +24,15 @@ public abstract class Particle implements ParticleInterface {
 		this(image, new Point2D.Float(worldPosition.x, worldPosition.y), modifiers);
 	}
 
-	@Override
-	public void update() {
-		updateModifiers(FRAME);
-	}
+	public final Point2D.Float getWorldPosition() { return worldPosition; }
+	public final void setWorldPosition(Point2D.Float worldPosition) { this.worldPosition = worldPosition; }
+	public final float getSizeMulti() { return sizeMulti; }
+	public final void setSizeMulti(float sizeMulti) { this.sizeMulti = sizeMulti; }
+	public final BufferedImage getImage() { return image; }
+	public final void setImage(BufferedImage image) { this.image = image; }
 
 	@Override
-	public void destroy() {
-		updateModifiers(DESTROY);
-		ParticleRegistry.remove(this);
-	}
-
-	@Override
-	public void start() {
-		updateModifiers(START);
-		ParticleRegistry.add(this);
-	}
-
-	@Override
-	public boolean isRunning() {
-		return ParticleRegistry.contains(this);
-	}
-
-	public Point2D.Float getWorldPosition() { return worldPosition; }
-	public void setWorldPosition(Point2D.Float worldPosition) { this.worldPosition = worldPosition; }
-	public float getSizeMulti() { return sizeMulti; }
-	public void setSizeMulti(float sizeMulti) { this.sizeMulti = sizeMulti; }
-	public BufferedImage getImage() { return image; }
-	public void setImage(BufferedImage image) { this.image = image; }
-
-	protected void updateModifiers(ParticleModifier.ActivationTime time) {
-		for (ParticleModifier modifier : modifiers) {
-			modifier.updateIfNeeded(time, this);
-		}
-	}
-
-	@Override
-	public void draw(Graphics2D g) {
+	public final void draw(Graphics2D g) {
 		g.scale(sizeMulti, sizeMulti);
 		Point2D.Float drawPos = ParticleInterface.getDrawPos(worldPosition);
 		g.drawImage(image,
@@ -68,5 +40,33 @@ public abstract class Particle implements ParticleInterface {
 				Math.round(drawPos.y),
 				null);
 		g.scale(1 / sizeMulti, 1 / sizeMulti);
+	}
+
+	@Override
+	public final void update() {
+		updateModifiers(FRAME);
+	}
+
+	@Override
+	public final void destroy() {
+		updateModifiers(DESTROY);
+		ParticleRegistry.remove(this);
+	}
+
+	@Override
+	public final void start() {
+		updateModifiers(START);
+		ParticleRegistry.add(this);
+	}
+
+	@Override
+	public final boolean isRunning() {
+		return ParticleRegistry.contains(this);
+	}
+
+	protected final void updateModifiers(ParticleModifier.ActivationTime time) {
+		for (ParticleModifier modifier : modifiers) {
+			modifier.updateIfNeeded(time, this);
+		}
 	}
 }
