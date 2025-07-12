@@ -1,0 +1,30 @@
+package com.ded.misle.renderer.particles.modifiers;
+
+import com.ded.misle.renderer.particles.Particle;
+import com.ded.misle.renderer.particles.ParticleModifier;
+
+import java.awt.geom.Point2D;
+
+public class Offset implements ParticleModifier {
+	private final Point2D.Float offset;
+
+	public Offset(Point2D.Float offset) {
+		this.offset = offset;
+	}
+
+	public static Offset of(Point2D.Float offset) {
+		return new Offset(offset);
+	}
+
+	@Override
+	public void modify(Particle particle) {
+		Point2D.Float p = particle.getWorldPosition();
+		p.x += offset.x;
+		p.y += offset.y;
+	}
+
+	@Override
+	public ActivationTime getActivationTime() {
+		return ActivationTime.INIT;
+	}
+}
