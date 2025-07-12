@@ -1,8 +1,8 @@
 package com.ded.misle.renderer.particles;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
-import static com.ded.misle.game.GamePanel.originalTileSize;
 import static com.ded.misle.game.GamePanel.player;
 
 public interface ParticleInterface {
@@ -12,9 +12,9 @@ public interface ParticleInterface {
 	void start();
 	boolean isRunning();
 
-	static Point getDrawPos(Point origin) {
-		return new Point(
-				(int) (origin.x * originalTileSize - player.pos.getCameraOffsetX()),
-				(int) (origin.y * originalTileSize- player.pos.getCameraOffsetY()));
+	static Point2D.Float getDrawPos(Point2D.Float worldPosition) {
+		return new Point2D.Float(
+				(int) (worldPosition.x - player.pos.getCameraOffsetX()),
+				(int) (worldPosition.y - player.pos.getCameraOffsetY()));
 	}
 }
