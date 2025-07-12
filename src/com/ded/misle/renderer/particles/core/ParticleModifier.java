@@ -1,4 +1,4 @@
-package com.ded.misle.renderer.particles;
+package com.ded.misle.renderer.particles.core;
 
 /**
  * Interface representing a modifier that can alter a {@link Particle}'s state or behavior.

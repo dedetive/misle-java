@@ -1,8 +1,8 @@
-package com.ded.misle.renderer.particles.modifiers;
+package com.ded.misle.renderer.particles.modifier;
 
 import com.ded.misle.renderer.image.Painter;
 import com.ded.misle.renderer.image.Palette;
-import com.ded.misle.renderer.particles.*;
+import com.ded.misle.renderer.particles.core.*;
 
 import java.awt.image.BufferedImage;
 

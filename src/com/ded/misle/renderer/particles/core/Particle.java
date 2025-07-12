@@ -1,11 +1,11 @@
-package com.ded.misle.renderer.particles;
+package com.ded.misle.renderer.particles.core;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 import static com.ded.misle.game.GamePanel.originalTileSize;
-import static com.ded.misle.renderer.particles.ParticleModifier.ActivationTime.*;
+import static com.ded.misle.renderer.particles.core.ParticleModifier.ActivationTime.*;
 
 /**
  * Base abstract class representing a visual particle in the game world.

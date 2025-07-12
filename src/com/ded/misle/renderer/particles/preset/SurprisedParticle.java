@@ -1,7 +1,7 @@
-package com.ded.misle.renderer.particles.presets;
+package com.ded.misle.renderer.particles.preset;
 
-import com.ded.misle.renderer.particles.Particle;
-import com.ded.misle.renderer.particles.ParticleModifier;
+import com.ded.misle.renderer.particles.core.Particle;
+import com.ded.misle.renderer.particles.core.ParticleModifier;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

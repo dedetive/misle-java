@@ -2,11 +2,11 @@ package com.ded.misle.world.data.entity.configurations;
 
 import com.ded.misle.items.DropTable;
 import com.ded.misle.renderer.image.Palette;
-import com.ded.misle.renderer.particles.modifiers.Lifetime;
-import com.ded.misle.renderer.particles.modifiers.Offset;
-import com.ded.misle.renderer.particles.modifiers.PaletteSwap;
-import com.ded.misle.renderer.particles.modifiers.RandomOffset;
-import com.ded.misle.renderer.particles.presets.SurprisedParticle;
+import com.ded.misle.renderer.particles.modifier.Lifetime;
+import com.ded.misle.renderer.particles.modifier.Offset;
+import com.ded.misle.renderer.particles.modifier.PaletteSwap;
+import com.ded.misle.renderer.particles.modifier.RandomOffset;
+import com.ded.misle.renderer.particles.preset.SurprisedParticle;
 import com.ded.misle.world.data.entity.EnemyConfigurator;
 import com.ded.misle.world.data.entity.GenericConfigurations;
 import com.ded.misle.world.entities.ai.AIBehavior;
@@ -18,7 +18,6 @@ import com.ded.misle.world.entities.ai.behaviors.WanderBehavior;
 import com.ded.misle.world.logic.TurnTimer;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 import static com.ded.misle.game.GamePanel.player;
 

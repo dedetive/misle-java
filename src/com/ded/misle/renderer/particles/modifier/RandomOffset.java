@@ -1,6 +1,6 @@
-package com.ded.misle.renderer.particles.modifiers;
+package com.ded.misle.renderer.particles.modifier;
 
-import com.ded.misle.renderer.particles.*;
+import com.ded.misle.renderer.particles.core.*;
 
 import java.awt.geom.Point2D;
 import java.util.Random;

@@ -1,4 +1,4 @@
-package com.ded.misle.renderer.particles;
+package com.ded.misle.renderer.particles.core;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
