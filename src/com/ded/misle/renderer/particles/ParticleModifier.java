@@ -86,6 +86,17 @@ public interface ParticleModifier {
 		if (shouldUpdate(current)) this.modify(particle);
 	}
 
+	/**
+	 * Returns the declared type of this modifier based on its {@link ModifierType} annotation.
+	 * <p>
+	 * This is used for introspection and tooling support, allowing systems and developers to
+	 * classify modifiers (e.g., positional, destructive, etc.) without requiring manual checks.
+	 * <p>
+	 * If the modifier class is not annotated with {@link ModifierType}, it defaults to {@link ModifierType.Type#GENERIC}.
+	 * This allows non-categorized modifiers to still function without causing errors.
+	 *
+	 * @return the type of this modifier, or {@code GENERIC} if unspecified
+	 */
 	default ModifierType.Type getType() {
 		ModifierType ann = this.getClass().getAnnotation(ModifierType.class);
 		return ann != null ? ann.value() : ModifierType.Type.GENERIC;
