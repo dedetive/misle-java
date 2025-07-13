@@ -50,9 +50,11 @@ public abstract class Particle implements ParticleInterface {
 	 * Constructs a particle with the specified image, world position, and modifiers.
 	 * <p>
 	 * The provided world position coordinates are multiplied by {@code originalTileSize} internally,
-	 * converting from tile units to pixel coordinates.
+	 * converting from tile units to pixel coordinates. All provided modifiers are immediately triggered
+	 * with the {@link ParticleModifier.ActivationTime#INIT} phase.
 	 * <p>
-	 * Modifiers are immediately invoked with the {@link ParticleModifier.ActivationTime#INIT} phase.
+	 * The particle is automatically registered as inactive in the {@link ParticleRegistry}, allowing
+	 * modifiers to respond to {@link ParticleModifier.ActivationTime#INACTIVE_FRAME} updates until started.
 	 *
 	 * @param image the base image for this particle
 	 * @param worldPosition the initial world position in tile coordinates
@@ -64,6 +66,7 @@ public abstract class Particle implements ParticleInterface {
 				new Point2D.Float(worldPosition.x * originalTileSize, worldPosition.y * originalTileSize);
 		this.modifiers = modifiers;
 		updateModifiers(INIT);
+		ParticleRegistry.addInactive(this);
 	}
 
 	/**
@@ -153,6 +156,20 @@ public abstract class Particle implements ParticleInterface {
 	@Override
 	public final void update() {
 		updateModifiers(FRAME);
+	}
+
+	/**
+	 * Updates the particle while it is still inactive.
+	 * <p>
+	 * This is called every frame for particles that have been constructed
+	 * but not yet started with {@link #start()}. It triggers all modifiers
+	 * that respond to the {@link ParticleModifier.ActivationTime#INACTIVE_FRAME} phase.
+	 * <p>
+	 * Useful for preparing particles, animating idle behavior, or implementing
+	 * delayed starts.
+	 */
+	public final void updateInactive() {
+		updateModifiers(INACTIVE_FRAME);
 	}
 
 	/**
