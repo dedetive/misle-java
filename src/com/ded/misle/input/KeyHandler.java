@@ -359,10 +359,10 @@ public class KeyHandler implements KeyListener {
 						// Player is stuck
                         } else if (isSpaceOccupied(player.getX(), player.getY(), player)) {
                             BoxManipulation.movePlayer(movement.x, movement.y);
-							player.takeDamage(5, Entity.DamageFlag.of(
+							player.takeDamage(5 + player.getMaxHP() / 120, Entity.DamageFlag.of(
 									Entity.DamageFlag.ABSOLUTE,
 											Entity.DamageFlag.LOCKER
-							), Optional.ofNullable(Duration.of(10, ChronoUnit.SECONDS)), NONE);
+							), 100, NONE);
 						// Has an entity
                         } else {
                             player.updateLastDirection(interpretDirection(movement.x, movement.y));

@@ -18,20 +18,20 @@ public class Damage extends Effect {
     public int damageRate;
 
     public EnumSet<Entity.DamageFlag> flags;
-    public Optional<Duration> lockDuration;
+    public int lockDuration;
 
     private boolean canDamage = true;
     TurnTimer t;
 
     public Damage(double damage, int damageRate) {
-        this(damage, damageRate, Entity.DamageFlag.of(NORMAL), Optional.empty());
+        this(damage, damageRate, Entity.DamageFlag.of(NORMAL), 0);
     }
 
     public Damage(double damage, int damageRate, EnumSet<Entity.DamageFlag> flags) {
-        this(damage, damageRate, flags, Optional.empty());
+        this(damage, damageRate, flags, 0);
     }
 
-    public Damage(double damage, int damageRate, EnumSet<Entity.DamageFlag> flags, Optional<Duration> lockDuration) {
+    public Damage(double damage, int damageRate, EnumSet<Entity.DamageFlag> flags, int lockDuration) {
         this.damageRate = damageRate;
         this.damage = damage;
         this.flags = flags;

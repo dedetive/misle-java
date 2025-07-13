@@ -502,7 +502,7 @@ public class Entity<T extends Entity<T>> extends Box {
         POST_MORTEM,
 
         /**
-         * No damage is actually done. Instead, a portion of the HP is locked and temporarily not considered. Uses <code>lockDuration</code> to define how many milliseconds it takes for the HP to be unlocked.
+         * No damage is actually done. Instead, a portion of the HP is locked and temporarily not considered. Uses <code>lockDuration</code> to define how many turns it takes for the HP to be unlocked.
          */
         LOCKER,
 
@@ -530,7 +530,7 @@ public class Entity<T extends Entity<T>> extends Box {
      * @return Final damage applied.
      */
     public double takeDamage(double rawDamage, EnumSet<DamageFlag> flags) {
-        return takeDamage(rawDamage, flags, Optional.empty(), Direction.NONE);
+        return takeDamage(rawDamage, flags, 0, Direction.NONE);
     }
 
     /**
@@ -543,7 +543,7 @@ public class Entity<T extends Entity<T>> extends Box {
      * @return Final damage applied.
      */
     public double takeDamage(double rawDamage, EnumSet<DamageFlag> flags, Direction knockback) {
-        return takeDamage(rawDamage, flags, Optional.empty(), knockback);
+        return takeDamage(rawDamage, flags, 0, knockback);
     }
 
     /**
@@ -555,7 +555,7 @@ public class Entity<T extends Entity<T>> extends Box {
      * @param lockDuration Duration before locked HP resets. Does nothing if LOCKER flag is not given.
      * @return Final damage applied.
      */
-    public double takeDamage(double rawDamage, EnumSet<DamageFlag> flags, Optional<Duration> lockDuration, Direction knockback) {
+    public double takeDamage(double rawDamage, EnumSet<DamageFlag> flags, int lockDuration, Direction knockback) {
         isRegenerationDoubled = false;
 
         if (rawDamage <= 0) return 0;
@@ -596,24 +596,16 @@ public class Entity<T extends Entity<T>> extends Box {
      * Locks a portion of HP.
      *
      * @param amount      Amount to lock.
-     * @param durationOpt Optional duration to unlock automatically.
+     * @param duration Optional duration to unlock automatically.
      */
-    private void applyLocker(double amount, Optional<Duration> durationOpt) {
+    private void applyLocker(double amount, int duration) {
         lockedHP += amount;
-        if (lockedHP >= maxHP) {
-            this.HP -= lockedHP;
-            handleDeath();
-            return;
-        }
-        durationOpt.ifPresent(duration -> {
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    unlockHP(amount);
-                }
-            }, duration.toMillis());
-        });
+        this.setHP(Math.min(this.HP, maxHP - lockedHP));
+        handleDeath();
+
+                TurnTimer.schedule(
+		        duration, e -> unlockHP(amount)
+        ).setRoomScoped(!(this instanceof Player));
     }
 
     /**
