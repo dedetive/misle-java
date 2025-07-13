@@ -15,10 +15,10 @@ import static com.ded.misle.game.GamePanel.player;
 public class BehaviorController implements Runnable {
 
     /** The entity that owns this behavior controller. */
-    private final Entity entity;
+    private final Entity<?> entity;
 
     /** The current target the entity may be reacting to. */
-    private Entity target;
+    private Entity<?> target;
 
     /**
      * The position the entity last saw its target.
@@ -36,7 +36,7 @@ public class BehaviorController implements Runnable {
      *
      * @param entity the entity whose behavior is being controlled
      */
-    public BehaviorController(Entity entity) {
+    public BehaviorController(Entity<?> entity) {
         this.entity = entity;
     }
 
@@ -87,7 +87,7 @@ public class BehaviorController implements Runnable {
      *
      * @param target the target entity
      */
-    public void setTarget(Entity target) {
+    public void setTarget(Entity<?> target) {
         this.target = target;
     }
 
