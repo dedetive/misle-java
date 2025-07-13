@@ -600,6 +600,11 @@ public class Entity<T extends Entity<T>> extends Box {
      */
     private void applyLocker(double amount, Optional<Duration> durationOpt) {
         lockedHP += amount;
+        if (lockedHP >= maxHP) {
+            this.HP -= lockedHP;
+            handleDeath();
+            return;
+        }
         durationOpt.ifPresent(duration -> {
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
