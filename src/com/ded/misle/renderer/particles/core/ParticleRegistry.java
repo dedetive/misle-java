@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Global registry and manager for all active particles in the game.
+ * Global registry and manager for all active and inactive particles in the game.
  * <p>
- * This class handles the update and rendering of all currently running particles.
+ * This class handles the update and rendering of all active particles,
+ * and also stores particles that were created but not yet started.
  * Particles must be explicitly added or removed via this registry in order to be
  * processed each frame. Thread-safe for concurrent access.
  * <p>
@@ -35,7 +36,13 @@ public final class ParticleRegistry {
 	private static final List<Particle> particles = new CopyOnWriteArrayList<>();
 
 	/**
-	 * Updates and draws all currently registered particles.
+	 * Thread-safe list of inactive particles (created but not yet started).
+	 * Useful for managing preloaded or delayed particles, and for modifiers manipulation.
+	 */
+	private static final List<Particle> inactiveParticles = new CopyOnWriteArrayList<>();
+
+	/**
+	 * Updates and draws all currently active particles.
 	 * <p>
 	 * This method should be called once per frame, during the main
 	 * rendering cycle of the game.
@@ -43,6 +50,7 @@ public final class ParticleRegistry {
 	 * @param g2d the graphics context to draw all particles with
 	 */
 	public static void updateThenDraw(Graphics2D g2d) {
+		updateInactive();
 		for (Particle particle : particles) {
 			particle.update();
 			particle.draw(g2d);
@@ -50,11 +58,48 @@ public final class ParticleRegistry {
 	}
 
 	/**
-	 * Adds a new particle to the registry, marking it as active.
+	 * Updates all registered inactive particles.
+	 * <p>
+	 * This method is called before rendering active particles, allowing
+	 * inactive particles to process modifiers or prepare internal state
+	 * (e.g., delay-based activation, passive animations).
+	 * <p>
+	 * Inactive particles are those added via {@link #addInactive(Particle)}
+	 * but not yet started via {@link Particle#start()}.
+	 */
+	private static void updateInactive() {
+		for (Particle particle : inactiveParticles) {
+			particle.updateInactive();
+		}
+	}
+
+	/**
+	 * Registers a particle as inactive, to be updated but not rendered.
+	 * <p>
+	 * Inactive particles do not get drawn or counted as running, but still
+	 * receive {@link ParticleModifier.ActivationTime#INACTIVE_FRAME} updates
+	 * each frame, allowing them to prepare behavior or react passively.
+	 * <p>
+	 * Particles in this state can be promoted to active via {@link Particle#start()}.
 	 *
-	 * @param particle the particle to add
+	 * @param particle the particle to register as inactive
+	 */
+	public static void addInactive(Particle particle) {
+		inactiveParticles.add(particle);
+	}
+
+	/**
+	 * Activates a particle, registering it for updates and rendering.
+	 * <p>
+	 * If the particle is currently in the inactive list, it is removed from there
+	 * and added to the active particle list. Otherwise, it is added directly to the active list.
+	 * <p>
+	 * This method is typically called from {@link Particle#start()}.
+	 *
+	 * @param particle the particle to activate and render
 	 */
 	public static void add(Particle particle) {
+		inactiveParticles.remove(particle);
 		particles.add(particle);
 	}
 
