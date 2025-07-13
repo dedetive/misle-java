@@ -41,6 +41,11 @@ public @interface ModifierType {
 	 */
 	enum Type {
 		/**
+		 * A modifier that causes the particle to be started or created under certain conditions.
+		 */
+		CONSTRUCTIVE,
+
+		/**
 		 * A modifier that causes the particle to be destroyed or removed under certain conditions.
 		 */
 		DESTRUCTIVE,
