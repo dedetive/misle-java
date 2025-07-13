@@ -8,18 +8,20 @@ import com.ded.misle.world.boxes.BoxManipulation;
 import com.ded.misle.world.entities.npcs.NPC;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.input.Key.*;
+import static com.ded.misle.world.data.Direction.NONE;
 import static com.ded.misle.world.data.Direction.interpretDirection;
 import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
 import static com.ded.misle.renderer.DialogRenderer.fillLetterDisplay;
@@ -351,14 +353,19 @@ public class KeyHandler implements KeyListener {
                     } else {
 						int targetX = player.getX() + movement.x;
 						int targetY = player.getY() + movement.y;
-						// Is empty or player is stuck
-                        if (!isSpaceOccupied(targetX, targetY, player) ||
-							isSpaceOccupied(player.getX(), player.getY(), player)) {
+						// Is empty
+                        if (!isSpaceOccupied(targetX, targetY, player)) {
                             BoxManipulation.movePlayer(movement.x, movement.y);
+						// Player is stuck
+                        } else if (isSpaceOccupied(player.getX(), player.getY(), player)) {
+                            BoxManipulation.movePlayer(movement.x, movement.y);
+							player.takeDamage(5, Entity.DamageFlag.of(
+									Entity.DamageFlag.ABSOLUTE,
+											Entity.DamageFlag.LOCKER
+							), Optional.ofNullable(Duration.of(10, ChronoUnit.SECONDS)), NONE);
 						// Has an entity
                         } else {
                             player.updateLastDirection(interpretDirection(movement.x, movement.y));
-
                             if (targetX > 0 && targetX < worldWidth &&
 								targetY > 0 && targetY < worldHeight &&
 								Arrays.stream(player.pos.world.grid[targetX][targetY]).
