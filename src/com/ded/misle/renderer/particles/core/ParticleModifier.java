@@ -42,6 +42,13 @@ public interface ParticleModifier {
 		INIT,
 
 		/**
+		 * Modifier is applied on every frame update, but only while the
+		 * particle is inactive.
+		 * This is useful for starting conditions.
+		 */
+		INACTIVE_FRAME,
+
+		/**
 		 * Modifier is applied once when the particle starts (e.g., when added to the registry).
 		 */
 		START,
