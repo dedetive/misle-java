@@ -54,17 +54,20 @@ public interface ParticleInterface {
 
 	/**
 	 * Calculates the screen-space position where a particle should be drawn,
-	 * by applying the camera offset to its world position.
+	 * by applying the camera offset to its world position and by
+	 * reverting size scale multiplier.
 	 * <p>
 	 * This utility ensures that particles are always drawn relative to the camera,
 	 * regardless of where the player is in the world.
 	 *
 	 * @param worldPosition the raw position of the particle in world coordinates
+	 * @param sizeMulti the particle's size multiplier for normalizing scale
 	 * @return a 2D point representing the on-screen drawing position
+	 *
 	 */
-	static Point2D.Float getDrawPos(Point2D.Float worldPosition) {
+	static Point2D.Float getDrawPos(Point2D.Float worldPosition, float sizeMulti) {
 		return new Point2D.Float(
-				(int) (worldPosition.x - player.pos.getCameraOffsetX()),
-				(int) (worldPosition.y - player.pos.getCameraOffsetY()));
+				(worldPosition.x - player.pos.getCameraOffsetX()) / sizeMulti,
+				(worldPosition.y - player.pos.getCameraOffsetY()) / sizeMulti);
 	}
 }

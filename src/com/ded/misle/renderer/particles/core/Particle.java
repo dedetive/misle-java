@@ -130,7 +130,7 @@ public abstract class Particle implements ParticleInterface {
 	/**
 	 * Draws the particle on the provided graphics context.
 	 * <p>
-	 * The particle's position is converted to screen coordinates via {@link ParticleInterface#getDrawPos(Point2D.Float)},
+	 * The particle's position is converted to screen coordinates via {@link ParticleInterface#getDrawPos(Point2D.Float, float)},
 	 * and the image is rendered scaled by {@link #sizeMulti}.
 	 *
 	 * @param g the graphics context on which to draw the particle
@@ -138,7 +138,7 @@ public abstract class Particle implements ParticleInterface {
 	@Override
 	public final void draw(Graphics2D g) {
 		g.scale(sizeMulti, sizeMulti);
-		Point2D.Float drawPos = ParticleInterface.getDrawPos(worldPosition);
+		Point2D.Float drawPos = ParticleInterface.getDrawPos(worldPosition, sizeMulti);
 		g.drawImage(image,
 				Math.round(drawPos.x),
 				Math.round(drawPos.y),
