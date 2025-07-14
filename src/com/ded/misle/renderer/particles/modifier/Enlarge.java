@@ -1,8 +1,8 @@
 package com.ded.misle.renderer.particles.modifier;
 
-import com.ded.misle.renderer.particles.core.Particle;
-import com.ded.misle.renderer.particles.core.ParticleModifier;
+import com.ded.misle.renderer.particles.core.*;
 
+@ModifierType(ModifierType.Type.TRANSFORMER)
 public class Enlarge implements ParticleModifier {
 	private final float max;
 	private final float step;
