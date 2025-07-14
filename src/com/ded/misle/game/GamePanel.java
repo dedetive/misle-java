@@ -279,6 +279,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public static double nsPerFrame;
 	public static double deltaTime;
+	public static final double FIXED_DELTA = 0.0064;
 
 	public static int frameCount = 0;
 	@Override

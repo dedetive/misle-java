@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.ded.misle.game.GamePanel.FIXED_DELTA;
 import static com.ded.misle.game.GamePanel.deltaTime;
 
 /**
@@ -60,7 +61,7 @@ public class SmoothValue {
         if (current == 0 && target != 0) {
             current = target;
         } else if (Math.abs(current - target) >= 0.1f) {
-            current += (float)((target - current) * deltaTime * speed);
+            current += (float)((target - current) * FIXED_DELTA * speed);
         }
 
         Iterator<ValueModifier> iter = modifiers.iterator();
