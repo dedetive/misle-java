@@ -792,7 +792,7 @@ public class PlayingRenderer extends AbstractRenderer {
             float w = bar.getWidth();
 
             SmoothValue hp = e.getHPSmoother();
-            hp.update(12);
+            hp.update(12, Math.min(deltaTime, 0.01));
 
             w *= (float) (hp.getCurrentFloat() / e.getMaxHP());
             w = Math.max(w, 1);

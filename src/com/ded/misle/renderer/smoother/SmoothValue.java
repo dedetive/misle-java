@@ -54,14 +54,30 @@ public class SmoothValue {
     /**
      * Updates the current value toward the target and updates all active modifiers.
      * This should be called once per frame.
+     * <p>
+     * Utilizes {@link com.ded.misle.game.GamePanel#FIXED_DELTA} as delta.
      *
      * @param speed the interpolation speed factor
      */
     public void update(float speed) {
+        update(speed, FIXED_DELTA);
+    }
+
+    /**
+     * Updates the current value toward the target and updates all active modifiers.
+     * This should be called once per frame.
+     * <p>
+     * Allows specified delta time, rather than {@link com.ded.misle.game.GamePanel#FIXED_DELTA}
+     * used in {@link #update(float)}.
+     *
+     * @param speed the interpolation speed factor
+     * @param delta delta time used to normalize per frame update or real time.
+     */
+    public void update(float speed, double delta) {
         if (current == 0 && target != 0) {
             current = target;
         } else if (Math.abs(current - target) >= 0.1f) {
-            current += (float)((target - current) * FIXED_DELTA * speed);
+            current += (float)((target - current) * delta * speed);
         }
 
         Iterator<ValueModifier> iter = modifiers.iterator();
