@@ -109,14 +109,16 @@ public enum EnemyConfigurations implements GenericConfigurations {
                 SurprisedParticle particle =
                     new SurprisedParticle(
                         (ctx.self().getPos()),
-                            Lifetime.ofSeconds(1f),
+                            Lifetime.ofSeconds(5f),
                             PaletteSwap.of(Palette.of(
                                 new Color(0x002000),
                                 new Color(0x80dE80))),
                             Offset.of(20f, 0f),
                             RandomOffset.of(-15f, 15, 0, 2),
-                            FadeOut.of(0.5f)
+                            FadeOut.of(0.2f),
+                            Enlarge.of(0.015f)
                     );
+                particle.setSizeMulti(1.35f);
 	            particle.start();
             }
         );
