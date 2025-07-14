@@ -2,10 +2,7 @@ package com.ded.misle.world.entities.config;
 
 import com.ded.misle.items.DropTable;
 import com.ded.misle.renderer.image.Palette;
-import com.ded.misle.renderer.particles.modifier.Lifetime;
-import com.ded.misle.renderer.particles.modifier.Offset;
-import com.ded.misle.renderer.particles.modifier.PaletteSwap;
-import com.ded.misle.renderer.particles.modifier.RandomOffset;
+import com.ded.misle.renderer.particles.modifier.*;
 import com.ded.misle.renderer.particles.preset.SurprisedParticle;
 import com.ded.misle.world.entities.config.types.EnemyType;
 import com.ded.misle.world.entities.config.api.EnemyConfigurator;
@@ -117,7 +114,8 @@ public enum EnemyConfigurations implements GenericConfigurations {
                                 new Color(0x002000),
                                 new Color(0x80dE80))),
                             Offset.of(20f, 0f),
-                            RandomOffset.of(-15f, 15, 0, 2)
+                            RandomOffset.of(-15f, 15, 0, 2),
+                            FadeOut.of(0.5f)
                     );
 	            particle.start();
             }
