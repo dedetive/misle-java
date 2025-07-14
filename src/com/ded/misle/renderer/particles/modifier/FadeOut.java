@@ -34,20 +34,7 @@ public class FadeOut implements ParticleModifier {
 
 	@Override
 	public void modify(Particle particle) {
-		BufferedImage original = particle.getImage();
-
-		int w = original.getWidth();
-		int h = original.getHeight();
-
-		BufferedImage faded = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = faded.createGraphics();
-		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha.getCurrentFloat());
-		g.setComposite(ac);
-		g.drawImage(original, 0, 0, null);
-		g.dispose();
-		particle.setImage(faded);
-
-		alpha.update(speed);
+		FadeIn.fade(particle, alpha, speed);
 	}
 
 	@Override
