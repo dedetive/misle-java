@@ -7,7 +7,7 @@ import java.awt.geom.Point2D;
 
 import static com.ded.misle.game.GamePanel.FIXED_DELTA;
 
-@ModifierType(ModifierType.Type.TRANSFORMER)
+@ModifierType(ModifierType.Type.POSITIONAL)
 public class Acceleration implements ParticleModifier {
 
 	private final SyncedValue velocity;
