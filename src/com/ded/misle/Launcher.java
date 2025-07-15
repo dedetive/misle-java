@@ -22,7 +22,6 @@ public class Launcher {
 	// VARIABLE INITIALIZATIONS
 
 	public static String windowTitle;
-	public static boolean levelDesigner;
 	public static LanguageManager languageManager;
 	public static String displayMoreInfo;
 
@@ -43,7 +42,6 @@ public class Launcher {
 		}
 
         languageManager = new LanguageManager(languageCode.str());
-        levelDesigner = Boolean.parseBoolean(getSetting("levelDesigner"));
 		displayMoreInfo = getSetting("displayMoreInfo");
 
 		// WINDOW CONFIGS

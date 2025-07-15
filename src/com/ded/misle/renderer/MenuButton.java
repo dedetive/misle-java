@@ -26,7 +26,6 @@ public class MenuButton {
         MAIN_MENU_PLAY,
         MAIN_MENU_QUIT,
         MAIN_MENU_SETTINGS,
-        MAIN_MENU_LEVEL_DESIGNER,
 
         PAUSE_MENU_QUIT,
         PAUSE_MENU_RESUME,

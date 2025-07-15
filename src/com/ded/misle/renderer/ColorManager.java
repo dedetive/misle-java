@@ -158,10 +158,6 @@ public abstract class ColorManager {
     public final static Color dialogWindowBackground = new Color(140, 110, 70, 245);
     public final static Color dialogTextColor = defaultWhite;
 
-    // Level Designer
-
-    public final static Color gridColor = Color.BLACK;
-
     public enum StringToColorCode {
         SLINGSHOT_DAMAGE(LanguageManager.getText("slingshot_damage"), slingshotDamageColor),
         HP(LanguageManager.getText("hp"), vitalityColor),

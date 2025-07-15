@@ -5,10 +5,8 @@ import com.ded.misle.world.entities.player.PlayerAttributes;
 
 import static com.ded.misle.core.SaveFile.loadPlayerUUID;
 import static com.ded.misle.game.GamePanel.*;
-import static com.ded.misle.game.GamePanel.GameState.LEVEL_DESIGNER;
 import static com.ded.misle.game.GamePanel.GameState.PLAYING;
 import static com.ded.misle.core.SaveFile.loadSaveFile;
-import static com.ded.misle.world.data.WorldLoader.loadBoxes;
 import static com.ded.misle.world.entities.player.Planner.resumeExecution;
 import static java.lang.System.currentTimeMillis;
 
@@ -72,26 +70,6 @@ public abstract class MainRenderer {
 		currentMenu = PLAYING;
 		gameState = PLAYING;
 		resumeExecution();
-	}
-
-	public static void enterLevelDesigner() {
-		previousMenu = currentMenu;
-		currentMenu = LEVEL_DESIGNER;
-		startTime = currentTimeMillis();
-		gameState = GameState.LOADING_MENU;
-
-		loadBoxes();
-
-		Timer timer = new Timer(LOADING_DURATION, e -> gameState = LEVEL_DESIGNER);
-
-		timer.setRepeats(false);
-		timer.start();
-	}
-
-	public static void softEnterLevelDesigner() {
-		previousMenu = currentMenu;
-		currentMenu = LEVEL_DESIGNER;
-		gameState = LEVEL_DESIGNER;
 	}
 
     public static void drawRotatedImage(Graphics2D g2d, BufferedImage image, double x, double y, int width, int height, double angle) {

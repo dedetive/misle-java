@@ -20,7 +20,6 @@ import static com.ded.misle.core.Setting.*;
 import static com.ded.misle.renderer.FontManager.buttonFont;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.MainRenderer.*;
-import static com.ded.misle.input.KeyHandler.updateDesignerSpeed;
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.renderer.MenuButton.clearButtons;
 import static com.ded.misle.input.MouseHandler.updateMouseVariableScales;
@@ -80,7 +79,6 @@ public class GamePanel extends JPanel implements Runnable {
 		LOADING_MENU,
 		SAVE_CREATOR,
 		SAVE_SELECTOR,
-		LEVEL_DESIGNER,
 		FROZEN_PLAYING,
 	}
 
@@ -89,7 +87,6 @@ public class GamePanel extends JPanel implements Runnable {
 		PLAYING,
 		INVENTORY,
 		PAUSE_MENU,
-		LEVEL_DESIGNER,
 		FROZEN_PLAYING,
 	}
 
@@ -253,9 +250,6 @@ public class GamePanel extends JPanel implements Runnable {
 		clearButtons();
 		FontManager.updateFontScript();
 		updateMouseVariableScales();
-		if (levelDesigner) {
-			updateDesignerSpeed();
-		}
 
 		PlayingRenderer.updateSelectedItemNamePosition();
 
@@ -318,25 +312,11 @@ public class GamePanel extends JPanel implements Runnable {
 					} // Only update if in the playing state
 					case PAUSE_MENU -> {
 						if (player.keys.keyPressed.get(Key.PAUSE)) {
-                            if (levelDesigner) {
-                                softEnterLevelDesigner();
-                            } else {
-                                softGameStart();
-                            }
+                            softGameStart();
                             clearButtons();
 							this.setCursor(Cursor.getDefaultCursor());
 							player.keys.keyPressed.put(Key.PAUSE, false);
 						}
-					}
-					case LEVEL_DESIGNER -> {
-						player.pos.setCameraOffsetX((float) (player.getX() - screenWidth / 2 + player.getVisualScaleHorizontal() / 2 * tileSize));
-						player.pos.setCameraOffsetY((float) (player.getY() - screenHeight / 2 + player.getVisualScaleVertical() / 2 * tileSize));
-
-						player.pos.setCameraOffsetX((float) Math.max(0, Math.min(player.pos.getCameraOffsetX(), worldWidth - screenWidth)));
-						player.pos.setCameraOffsetY((float) Math.max(0, Math.min(player.pos.getCameraOffsetY(), worldHeight - screenHeight)));
-
-						keyH.updateKeys(mouseHandler);
-						mouseHandler.updateMouse();
 					}
 					case DIALOG -> {
 						keyH.updateKeys(mouseHandler);
@@ -470,9 +450,6 @@ public class GamePanel extends JPanel implements Runnable {
 				break;
 			case GameState.LOADING_MENU:
 				MenuRenderer.renderLoadingMenu(g2dBuffer, this);
-				break;
-			case GameState.LEVEL_DESIGNER:
-				LevelDesignerRenderer.renderLevelDesigner(g2dBuffer, this, mouseHandler);
 				break;
 			case GameState.SAVE_SELECTOR:
 				SaveSelector.renderSaveSelector(g2dBuffer, this);

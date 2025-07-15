@@ -327,17 +327,6 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 						}
 					}
 				}
-				case GameState.LEVEL_DESIGNER -> {
-					if (isLeftPressed()) {
-						// detect box in click position
-					} else if (isReleased) {
-						// Get x, y game world coordinates of mouse click and select nearby boxes of that position
-						int mouseGameX = (int) (player.pos.getCameraOffsetX() + mouseX);
-						int mouseGameY = (int) (player.pos.getCameraOffsetY() + mouseY);
-						System.out.println();
-						System.out.println("mouse: " + mouseGameX + ", " + mouseGameY);
-					}
-				}
 				case GameState.DIALOG -> {
 					if (isLeftPressed()) {
 						if (isLetterDisplayFull()) {

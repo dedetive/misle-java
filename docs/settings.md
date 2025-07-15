@@ -15,7 +15,6 @@ Each setting uses the format:
 | frameRateCap         | Sets the maximum frames per second                           | 30 / 60 / 90 / 120 / 160                                      | 60       |
 | displayFPS           | Displays FPS on-screen                                       | true / false                                                  | false    |
 | language             | Sets the language for the game                               | de_DE / el_GR / en_US / es_ES / mi_PM / pt_BR / ru_RU / zh_CN | en_US    |
-| levelDesigner        | Toggles Level Designer mode (mostly non-functional)          | true / false                                                  | false    | 
 | heldItemFollowsMouse | Toggles whether held item follows mouse or walking direction | true / false                                                  | true     |
 | antiAliasing         | Toggles Anti-Aliasing                                        | true / false                                                  | true     |
 | displayMoreInfo      | Displays HP / Entropy values and other info                  | false / exact / percentage                                    | false    |
@@ -46,7 +45,6 @@ fullscreenMode = windowed
 displayFPS = false
 frameRateCap = 160
 language = pt_BR
-levelDesigner = false
 heldItemFollowsMouse = false
 antiAliasing = true
 displayMoreInfo = exact

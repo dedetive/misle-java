@@ -105,11 +105,7 @@ public abstract class MenuRenderer {
             int playButtonHeight = 41;
             Rectangle playButton = new Rectangle(playButtonX, playButtonY, playButtonWidth, playButtonHeight);
 
-            if (!levelDesigner) {
-                createButton(playButton, LanguageManager.getText("main_menu_play"), SaveSelector::saveSelectorMenu, panel, MenuButtonID.MAIN_MENU_PLAY);
-            } else {
-                createButton(playButton, LanguageManager.getText("main_menu_level_designer"), MainRenderer::enterLevelDesigner, panel, MenuButtonID.MAIN_MENU_LEVEL_DESIGNER);
-            }
+            createButton(playButton, LanguageManager.getText("main_menu_play"), SaveSelector::saveSelectorMenu, panel, MenuButtonID.MAIN_MENU_PLAY);
 
             // Quit button
 

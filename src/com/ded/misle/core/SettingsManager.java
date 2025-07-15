@@ -138,7 +138,6 @@ public class SettingsManager {
 				defaultSetting = "60";
 				break;
 			case "isFullscreen":
-			case "levelDesigner":
 			case "displayFPS":
 			case "displayMoreInfo":
 				defaultSetting = "false";

@@ -35,7 +35,6 @@ import static com.ded.misle.world.entities.npcs.NPC.getDialogNPCs;
 import static com.ded.misle.world.entities.npcs.NPC.getSelectedNPCs;
 import static com.ded.misle.world.entities.npcs.NPCDialog.getCurrentTalkingTo;
 import static com.ded.misle.world.entities.npcs.NPCDialog.startDialog;
-import static com.ded.misle.renderer.LevelDesignerRenderer.levelDesignerGrid;
 import static com.ded.misle.renderer.MenuRenderer.pauseGame;
 import static com.ded.misle.world.data.items.Item.createItem;
 import static java.awt.event.KeyEvent.*;
@@ -130,16 +129,6 @@ public class KeyHandler implements KeyListener {
 		for (Key key : values()) {
 			player.keys.keyPressed.put(key, false);
 		}
-	}
-
-	static double baseDesignerSpeed = 1.67;
-	static int designerSpeed = (int) (baseDesignerSpeed);
-	static {
-		updateDesignerSpeed();
-	}
-
-	public static void updateDesignerSpeed() {
-		designerSpeed = (int) (baseDesignerSpeed);
 	}
 
 	@Override
@@ -424,73 +413,6 @@ public class KeyHandler implements KeyListener {
 			}
 		}
 
-		// LEVEL DESIGNER EXCLUSIVE
-
-		if (gameState == GameState.LEVEL_DESIGNER) {
-
-			// Designer speed manipulation
-
-			if (isPressed(DEBUG1)) {
-				if (!isPressed(SHIFT)) {
-					baseDesignerSpeed = Math.min(3, baseDesignerSpeed + 0.4);
-					updateDesignerSpeed();
-				} else {
-					baseDesignerSpeed = Math.max(0.4, baseDesignerSpeed - 0.4);
-					updateDesignerSpeed();
-				}
-			}
-
-			// Movement
-
-			int[] willMovePlayer = {0, 0};
-
-			if (isPressed(UP)) {
-				if (!isPressed(LEFT) || !isPressed(RIGHT)) {
-					willMovePlayer[1] -= designerSpeed;
-				}
-			}
-			if (isPressed(DOWN)) {
-				if (!isPressed(LEFT) || !isPressed(RIGHT)) {
-					willMovePlayer[1] += designerSpeed;
-				}
-			}
-			if (isPressed(LEFT)) {
-				if (!isPressed(UP) || !isPressed(DOWN)) {
-					willMovePlayer[0] -= designerSpeed;
-				}
-			}
-			if (isPressed(RIGHT)) {
-				willMovePlayer[0] += designerSpeed;
-			}
-
-			if (willMovePlayer[0] != 0 || willMovePlayer[1] != 0) {
-				BoxManipulation.movePlayer(willMovePlayer[0], willMovePlayer[1]);
-			}
-
-			// Pause
-
-			if (isPressed(PAUSE)) {
-				pauseGame();
-			}
-
-			// Zooming
-
-			if (isPressed(EQUAL)) {
-				gameScale = Math.min(8, gameScale + 0.25);
-				updateTileSize();
-			}
-			if (isPressed(MINUS)) {
-				gameScale = Math.max(0.75, gameScale - 0.25);
-				updateTileSize();
-			}
-			if (isPressed(NUM_0) && isPressed(CTRL)) {
-				gameScale = getWindowScale();
-			}
-			if (isPressed(GRID)) {
-				levelDesignerGrid = !levelDesignerGrid;
-			}
-		}
-
 		// SAVE CREATOR EXCLUSIVE
 
 		if (gameState == GameState.SAVE_CREATOR) {
@@ -549,42 +471,19 @@ public class KeyHandler implements KeyListener {
 
 		// DEBUG KEYS '[' AND ']'
 
-		if (gameState != GameState.LEVEL_DESIGNER) {
-			if (isPressed(DEBUG1)) {
-				if (!isPressed(SHIFT)) {
-					for (int i = 1; i <= 27; i++) {
-						if (i != 5) {
-							player.inv.addItem(createItem(i, 1));
-						}
+		if (isPressed(DEBUG1)) {
+			if (!isPressed(SHIFT)) {
+				for (int i = 1; i <= 27; i++) {
+					if (i != 5) {
+						player.inv.addItem(createItem(i, 1));
 					}
-				} else {
-					player.takeDamage(10, Entity.DamageFlag.of(Entity.DamageFlag.NORMAL));
-
-//					if (isPressed(CTRL)) {
-//						player.attr.setLevel(1);
-//					} else {
-//						player.attr.addXP(player.attr.getXPtoLevelUp() * 9 / 10);
-//					}
 				}
-
-
+			} else {
+				player.takeDamage(10, Entity.DamageFlag.of(Entity.DamageFlag.NORMAL));
 			}
+
 			if (isPressed(DEBUG2)) {
-
 				player.inv.clearInventory();
-
-//				player.setColor(getRandomColor());
-
-//				for (ImageManager.ImageName img : playerImages) {
-//					try {
-//						Path path = getPath();
-//						path = path.resolve(path + "/resources/images/ui/img.png");
-//						mergeImages(cachedImages.get(img), ImageIO.read(path.toFile()));
-//					} catch (IOException e) {
-//						e.printStackTrace();
-//					}
-//				}
-
 			}
 		}
 
