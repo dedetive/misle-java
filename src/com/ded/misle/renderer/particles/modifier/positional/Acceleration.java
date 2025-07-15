@@ -14,10 +14,18 @@ public class Acceleration implements ParticleModifier {
 
 	private final float acceleration;
 
-	public Acceleration(float acceleration, ValueModifier... modifiers) {
+	public Acceleration(float acceleration, float initialVelocity, ValueModifier... modifiers) {
 		this.acceleration = acceleration;
-		this.velocity = new SyncedValue(0f);
+		this.velocity = new SyncedValue(initialVelocity);
 		this.velocity.addModifier(modifiers);
+	}
+
+	public Acceleration(float acceleration, ValueModifier... modifiers) {
+		this(acceleration, 0f, modifiers);
+	}
+
+	public static Acceleration of(float acceleration, float initialVelocity, ValueModifier... modifiers) {
+		return new Acceleration(acceleration, initialVelocity, modifiers);
 	}
 
 	public static Acceleration of(float acceleration, ValueModifier... modifiers) {
