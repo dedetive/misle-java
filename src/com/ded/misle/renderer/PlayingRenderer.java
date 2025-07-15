@@ -208,18 +208,18 @@ public class PlayingRenderer extends AbstractRenderer {
             AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.35f);
             g2d.setComposite(ac);
             drawRotatedImage(g2d, playerSprite,
-                plannerScreenX - player.getVisualScaleHorizontal() * 0.25 * originalTileSize,
-                plannerScreenY - player.getVisualScaleVertical() * 0.25 * originalTileSize,
-                (int) (player.getVisualScaleHorizontal() * 1.5 * originalTileSize),
-                (int) (player.getVisualScaleVertical() * 1.5 * originalTileSize), player.pos.getRotation(), playerMirror);
+                plannerScreenX - player.getVisualScaleHorizontal() * 0.125 * originalTileSize,
+                plannerScreenY - player.getVisualScaleVertical() * 0.125 * originalTileSize,
+                (int) (player.getVisualScaleHorizontal() * 1.25 * originalTileSize),
+                (int) (player.getVisualScaleVertical() * 1.25 * originalTileSize), player.pos.getRotation(), playerMirror);
             g2d.setComposite(originalComposite);
         }
 
         drawRotatedImage(g2d, playerSprite,
-            playerScreenX - player.getVisualScaleHorizontal() * 0.25 * originalTileSize,
-            playerScreenY - player.getVisualScaleVertical() * 0.25 * originalTileSize,
-            (int) (player.getVisualScaleHorizontal() * 1.5 * originalTileSize),
-            (int) (player.getVisualScaleVertical() * 1.5 * originalTileSize), player.pos.getRotation(), playerMirror);
+            playerScreenX - player.getVisualScaleHorizontal() * 0.125 * originalTileSize,
+            playerScreenY - player.getVisualScaleVertical() * 0.125 * originalTileSize,
+            (int) (player.getVisualScaleHorizontal() * 1.25 * originalTileSize),
+            (int) (player.getVisualScaleVertical() * 1.25 * originalTileSize), player.pos.getRotation(), playerMirror);
 
         drawHandItem(g2d, playerScreenX, playerScreenY, mouseHandler);
 
