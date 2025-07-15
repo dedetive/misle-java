@@ -24,6 +24,16 @@ public enum Direction {
         return interpretDirection(p.x, p.y);
     }
 
+    public int degrees() {
+        return switch (this) {
+            case UP -> 270;
+            case LEFT -> 180;
+            case DOWN -> 90;
+            case RIGHT -> 0;
+            default -> -1;
+        };
+    }
+
     public Direction getOpposite() {
         return switch (this) {
             case LEFT -> RIGHT;
