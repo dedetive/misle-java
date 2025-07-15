@@ -10,8 +10,9 @@ import static com.ded.misle.world.data.items.ItemGetter.getParameterizedItems;
 public record DropTable(String name, List<ItemData> items) {
 	private static final ArrayList<DropTable> dropTables = new ArrayList<>();
 
-	public static DropTable POTION_CHEST = new DropTable("potion_chest");
-	public static DropTable GOBLIN = new DropTable("goblin_drop");
+	public static final DropTable POTION_CHEST = new DropTable("potion_chest");
+	public static final DropTable GOBLIN = new DropTable("goblin_drop");
+	public static final DropTable MUNI = new DropTable("muni_drop");
 
 	public DropTable(String name, List<ItemData> items) {
 		this.name = name;

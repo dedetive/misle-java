@@ -1,5 +1,6 @@
 package com.ded.misle.world.entities.config;
 
+import com.ded.misle.world.data.items.DropTable;
 import com.ded.misle.world.entities.config.api.EntityConfigurator;
 import com.ded.misle.world.entities.config.api.GenericConfigurations;
 import com.ded.misle.world.entities.ai.behaviors.ChainBehavior;
@@ -11,6 +12,7 @@ public enum EntityConfigurations implements GenericConfigurations {
 		muni.setProportionalMaxHP(3)
 				.setTexture("muni")
 				.setTurnsToRespawn(20)
+				.setDropTable(DropTable.MUNI)
 				.setVisualScaleHorizontal(0.8)
 				.setVisualScaleVertical(0.8);
 
