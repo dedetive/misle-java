@@ -1,5 +1,6 @@
 package com.ded.misle.world.boxes;
 
+import com.ded.misle.renderer.smoother.SmoothValue;
 import com.ded.misle.world.data.BoxPreset;
 import com.ded.misle.world.entities.config.types.EnemyType;
 import com.ded.misle.world.entities.enemies.EnemyRegistry;
@@ -47,6 +48,12 @@ public class BoxHandling {
 			boxes.add(box);
 			box.effect = new Collectible(id, count, true);
 			box.setTexture(".." + File.separator + "items" + File.separator + id);
+			box.setVisualScaleHorizontal(0.75);
+			box.setVisualScaleVertical(0.75);
+			Random rand = new Random();
+			box.visualOffsetX = new SmoothValue(rand.nextFloat() * 0.6f - 0.5f);
+			box.visualOffsetY = new SmoothValue(rand.nextFloat() * 0.6f - 0.5f);
+			box.setVisualRotation((rand.nextFloat() * 30f + 345f) % 360f);
 			return box;
 		} else {
 			Box box = new Box(x, y);
