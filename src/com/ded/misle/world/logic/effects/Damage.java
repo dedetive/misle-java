@@ -44,10 +44,10 @@ public class Damage extends Effect {
         if (!(victim instanceof Entity)) return;
         if (!culprit.getInteractsWithPlayer() && victim == player) return;
 
-        handleBoxDamageCooldown(culprit, (Entity) victim);
+        handleBoxDamageCooldown(culprit, (Entity<?>) victim);
     }
 
-    private void handleBoxDamageCooldown(Box culprit, Entity victim) {
+    private void handleBoxDamageCooldown(Box culprit, Entity<?> victim) {
 
         Direction hitDirection = Direction.interpretDirection(
             culprit.getX() - victim.getX(),
