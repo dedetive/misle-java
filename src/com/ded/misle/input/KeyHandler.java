@@ -7,14 +7,11 @@ import com.ded.misle.world.logic.TurnManager;
 import com.ded.misle.world.boxes.BoxManipulation;
 import com.ded.misle.world.entities.npcs.NPC;
 
-import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -40,7 +37,7 @@ import static com.ded.misle.world.entities.npcs.NPCDialog.getCurrentTalkingTo;
 import static com.ded.misle.world.entities.npcs.NPCDialog.startDialog;
 import static com.ded.misle.renderer.LevelDesignerRenderer.levelDesignerGrid;
 import static com.ded.misle.renderer.MenuRenderer.pauseGame;
-import static com.ded.misle.items.Item.createItem;
+import static com.ded.misle.world.data.items.Item.createItem;
 import static java.awt.event.KeyEvent.*;
 
 public class KeyHandler implements KeyListener {

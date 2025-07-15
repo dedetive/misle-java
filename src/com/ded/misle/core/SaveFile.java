@@ -1,6 +1,6 @@
 package com.ded.misle.core;
 
-import com.ded.misle.items.Item;
+import com.ded.misle.world.data.items.Item;
 import com.ded.misle.world.data.Difficulty;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.entities.player.PlayerAttributes;

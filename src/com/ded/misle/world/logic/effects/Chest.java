@@ -1,6 +1,6 @@
 package com.ded.misle.world.logic.effects;
 
-import com.ded.misle.items.DropTable;
+import com.ded.misle.world.data.items.DropTable;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.entities.player.Player;
 import com.ded.misle.world.logic.PhysicsEngine;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Random;
 
 import static com.ded.misle.game.GamePanel.player;
-import static com.ded.misle.items.Item.createDroppedItem;
+import static com.ded.misle.world.data.items.Item.createDroppedItem;
 
 public class Chest extends Effect {
     public int openRate;

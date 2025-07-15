@@ -7,7 +7,7 @@ import com.ded.misle.world.entities.player.Player;
 import static com.ded.misle.audio.AudioFile.collect_item;
 import static com.ded.misle.audio.AudioPlayer.playThis;
 import static com.ded.misle.game.GamePanel.player;
-import static com.ded.misle.items.Item.createItem;
+import static com.ded.misle.world.data.items.Item.createItem;
 import static com.ded.misle.world.boxes.BoxHandling.deleteBox;
 
 public class Collectible extends Effect {

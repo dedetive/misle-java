@@ -1,4 +1,4 @@
-package com.ded.misle.items;
+package com.ded.misle.world.data.items;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -9,7 +9,6 @@ import java.util.*;
 import java.util.List;
 
 import static com.ded.misle.core.Path.getPath;
-import static com.ded.misle.game.GamePanel.player;
 
 public class ItemLoader {
 	private static final Path FILE_PATH = getPath(com.ded.misle.core.Path.PathTag.RESOURCES).resolve("items.json");

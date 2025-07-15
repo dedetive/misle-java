@@ -1,9 +1,9 @@
-package com.ded.misle.items;
+package com.ded.misle.world.data.items;
 
 import java.io.IOException;
 import java.util.*;
 
-import static com.ded.misle.items.ItemLoader.loadItems;
+import static com.ded.misle.world.data.items.ItemLoader.loadItems;
 
 public class ItemGetter {
 

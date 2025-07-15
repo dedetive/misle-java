@@ -1,4 +1,4 @@
-package com.ded.misle.items;
+package com.ded.misle.world.data.items;
 
 import java.awt.*;
 import java.util.Map;

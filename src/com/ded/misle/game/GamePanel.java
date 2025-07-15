@@ -1,10 +1,9 @@
 package com.ded.misle.game;
 
-import com.ded.misle.core.Setting;
 import com.ded.misle.input.Key;
 import com.ded.misle.input.KeyHandler;
 import com.ded.misle.input.MouseHandler;
-import com.ded.misle.items.ItemLoader;
+import com.ded.misle.world.data.items.ItemLoader;
 import com.ded.misle.world.entities.player.Player;
 import com.ded.misle.renderer.*;
 import com.ded.misle.world.logic.TurnManager;

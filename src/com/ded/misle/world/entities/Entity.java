@@ -10,18 +10,17 @@ import com.ded.misle.world.entities.config.api.GenericType;
 import com.ded.misle.world.entities.ai.core.AIBehavior;
 import com.ded.misle.world.entities.ai.core.BehaviorController;
 import com.ded.misle.world.logic.TurnTimer;
-import com.ded.misle.items.DropTable;
+import com.ded.misle.world.data.items.DropTable;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.entities.enemies.Enemy;
 import com.ded.misle.world.entities.npcs.NPC;
 import com.ded.misle.world.entities.player.Player;
 
-import java.time.Duration;
 import java.util.*;
 import java.util.List;
 
 import static com.ded.misle.game.GamePanel.*;
-import static com.ded.misle.items.Item.createDroppedItem;
+import static com.ded.misle.world.data.items.Item.createDroppedItem;
 import static com.ded.misle.world.logic.PhysicsEngine.ObjectType.ENTITY;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.entities.Entity.HealFlag.ABSOLUTE;

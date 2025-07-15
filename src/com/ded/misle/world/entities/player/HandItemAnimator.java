@@ -1,6 +1,6 @@
 package com.ded.misle.world.entities.player;
 
-import com.ded.misle.items.Item;
+import com.ded.misle.world.data.items.Item;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.data.TilePattern;
 import com.ded.misle.world.logic.attacks.Range;

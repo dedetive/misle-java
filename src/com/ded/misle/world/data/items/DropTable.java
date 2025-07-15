@@ -1,11 +1,11 @@
-package com.ded.misle.items;
+package com.ded.misle.world.data.items;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import static com.ded.misle.items.ItemGetter.getParameterizedItems;
+import static com.ded.misle.world.data.items.ItemGetter.getParameterizedItems;
 
 public class DropTable {
 	private static final ArrayList<DropTable> dropTables = new ArrayList<>();

@@ -2,7 +2,7 @@ package com.ded.misle.renderer;
 
 import com.ded.misle.core.LanguageManager;
 import com.ded.misle.core.SaveFile;
-import com.ded.misle.items.Item;
+import com.ded.misle.world.data.items.Item;
 import com.ded.misle.renderer.utils.Plus;
 
 import javax.swing.*;

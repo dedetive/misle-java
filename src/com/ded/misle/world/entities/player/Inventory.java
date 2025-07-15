@@ -2,7 +2,7 @@ package com.ded.misle.world.entities.player;
 
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.boxes.BoxHandling;
-import com.ded.misle.items.Item;
+import com.ded.misle.world.data.items.Item;
 import com.ded.misle.renderer.PlayingRenderer;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.entities.Entity;

@@ -1,6 +1,6 @@
 package com.ded.misle.input;
 
-import com.ded.misle.items.Item;
+import com.ded.misle.world.data.items.Item;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

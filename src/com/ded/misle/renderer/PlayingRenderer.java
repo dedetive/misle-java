@@ -13,7 +13,7 @@ import com.ded.misle.world.logic.World;
 import com.ded.misle.world.entities.npcs.NPC;
 import com.ded.misle.input.MouseHandler;
 import com.ded.misle.world.boxes.BoxHandling;
-import com.ded.misle.items.Item;
+import com.ded.misle.world.data.items.Item;
 import com.ded.misle.world.logic.attacks.Range;
 
 import java.awt.*;

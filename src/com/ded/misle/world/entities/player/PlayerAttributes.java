@@ -11,7 +11,7 @@ import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.renderer.MainRenderer.fader;
 import static com.ded.misle.world.data.WorldLoader.unloadBoxes;
 import static com.ded.misle.world.entities.player.Inventory.PossibleItemStats.*;
-import static com.ded.misle.items.Item.updateInventoryMaxStackSize;
+import static com.ded.misle.world.data.items.Item.updateInventoryMaxStackSize;
 
 public class PlayerAttributes {
 

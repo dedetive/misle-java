@@ -1,4 +1,4 @@
-package com.ded.misle.items;
+package com.ded.misle.world.data.items;
 
 import com.ded.misle.core.LanguageManager;
 import com.ded.misle.world.boxes.Box;

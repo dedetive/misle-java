@@ -1,6 +1,6 @@
 package com.ded.misle.world.entities.config;
 
-import com.ded.misle.items.DropTable;
+import com.ded.misle.world.data.items.DropTable;
 import com.ded.misle.renderer.image.Palette;
 import com.ded.misle.renderer.particles.modifier.destructive.Lifetime;
 import com.ded.misle.renderer.particles.modifier.positional.*;

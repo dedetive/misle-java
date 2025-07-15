@@ -5,7 +5,7 @@ import com.ded.misle.world.entities.config.types.EntityType;
 import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.enemies.Enemy;
 import com.ded.misle.world.logic.TurnTimer;
-import com.ded.misle.items.DropTable;
+import com.ded.misle.world.data.items.DropTable;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.logic.effects.Chest;
 import com.ded.misle.world.logic.effects.Spawnpoint;
