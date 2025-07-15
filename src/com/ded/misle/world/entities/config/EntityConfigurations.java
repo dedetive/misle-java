@@ -7,9 +7,9 @@ import com.ded.misle.world.entities.ai.behaviors.WaitBehavior;
 import com.ded.misle.world.entities.ai.behaviors.WanderBehavior;
 
 public enum EntityConfigurations implements GenericConfigurations {
-	BUNNY(bunny -> {
-		bunny.setProportionalMaxHP(3)
-				.setTexture("bunny")
+	MUNI(muni -> {
+		muni.setProportionalMaxHP(3)
+				.setTexture("muni")
 				.setTurnsToRespawn(20)
 				.setVisualScaleHorizontal(0.8)
 				.setVisualScaleVertical(0.8);
@@ -22,7 +22,7 @@ public enum EntityConfigurations implements GenericConfigurations {
 				wait
 		);
 
-		bunny.setBehaviors(wanderThenWait);
+		muni.setBehaviors(wanderThenWait);
 	})
 
 	;

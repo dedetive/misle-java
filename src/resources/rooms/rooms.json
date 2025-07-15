@@ -33,7 +33,7 @@
       "#e04ae7": "SPAWNPOINT, x:37, y:56",
       "#a66c13": "CHEST, droptable:potion_chest, openRate:500",
       "#20bf20": "ENEMY, type:goblin, mag:1",
-      "#fbbde3": "ENTITY, type:bunny, mag:1"
+      "#fbbde3": "ENTITY, type:muni, mag:1"
     },
     "background": "GRASS",
     "id": 2

@@ -12,7 +12,7 @@ import com.ded.misle.world.entities.Entity;
  * management and easier code navigation.
  */
 public enum EntityType implements GenericType {
-    BUNNY(EntityConfigurations.BUNNY)
+    MUNI(EntityConfigurations.MUNI)
 
     ;
 
