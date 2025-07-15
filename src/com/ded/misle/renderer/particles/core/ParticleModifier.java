@@ -13,6 +13,7 @@ package com.ded.misle.renderer.particles.core;
  * By default, modifiers apply their effect only during the lifecycle phase returned by {@code getActivationTime()},
  * but this can be overridden with {@link #shouldUpdate(ActivationTime)} for custom timing.
  */
+@ModifierType(ModifierType.Type.GENERIC)
 public interface ParticleModifier {
 
 	/**
