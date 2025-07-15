@@ -1,5 +1,7 @@
 package com.ded.misle.world.entities;
 
+import com.ded.misle.renderer.particles.core.Particle;
+import com.ded.misle.renderer.particles.preset.DamageParticle;
 import com.ded.misle.renderer.smoother.SmoothValue;
 import com.ded.misle.renderer.smoother.modifiers.BounceModifier;
 import com.ded.misle.renderer.smoother.modifiers.ShakeModifier;
@@ -585,6 +587,10 @@ public class Entity<T extends Entity<T>> extends Box {
         }
 
         applyKnockback(knockback);
+//        Particle damageParticles = new DamageParticle(
+//                this.getPos()
+//        );
+//        damageParticles.start();
 
         for (Runnable r : onDamage) {
             r.run();

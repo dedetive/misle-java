@@ -42,6 +42,11 @@ public abstract class ImageManager {
 
         // PARTICLES
             SURPRISE_PARTICLE("particles", "surprise.png"),
+            DAMAGE_PARTICLE0("particles", "damage0.png"),
+            DAMAGE_PARTICLE1("particles", "damage1.png"),
+            DAMAGE_PARTICLE2("particles", "damage2.png"),
+            DAMAGE_PARTICLE3("particles", "damage3.png"),
+            DAMAGE_PARTICLE4("particles", "damage4.png"),
 
         // CHARACTER
             // PLAYER
