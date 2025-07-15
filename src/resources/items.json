@@ -356,6 +356,16 @@
     "nameColor": "#B8B6A7"
   },
   {
+    "id": 28,
+    "resourceID": 28,
+    "name": "Muni Fur",
+    "countLimit": "material",
+    "rarity": "F",
+    "type": "material",
+    "nameColor": "#ffffff",
+    "bundles": "muni_drop|2|1"
+  },
+  {
     "id": -1,
     "resourceID": -1,
     "name": "",
