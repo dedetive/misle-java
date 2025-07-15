@@ -119,7 +119,7 @@ public enum EnemyConfigurations implements GenericConfigurations {
                             RandomOffset.of(-15f, 15, 0, 2),
                             FadeOut.of(0.2f),
                             Enlarge.of(0.04f),
-                            Acceleration.of(-0.5f)
+                            Acceleration.of(-0.5f, 270)
                     );
                 particle.setSizeMulti(1.35f);
 	            particle.start();
