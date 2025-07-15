@@ -1,11 +1,8 @@
-package com.ded.misle.renderer.particles.modifier;
+package com.ded.misle.renderer.particles.modifier.transformer;
 
 import com.ded.misle.renderer.particles.core.*;
 import com.ded.misle.renderer.smoother.SmoothValue;
 import com.ded.misle.renderer.smoother.ValueModifier;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
 
 @ModifierType(ModifierType.Type.TRANSFORMER)
 public class FadeOut implements ParticleModifier {

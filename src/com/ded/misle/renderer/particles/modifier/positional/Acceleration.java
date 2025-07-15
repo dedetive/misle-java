@@ -1,4 +1,4 @@
-package com.ded.misle.renderer.particles.modifier;
+package com.ded.misle.renderer.particles.modifier.positional;
 
 import com.ded.misle.renderer.particles.core.*;
 import com.ded.misle.renderer.smoother.*;

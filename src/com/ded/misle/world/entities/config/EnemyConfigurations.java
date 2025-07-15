@@ -2,7 +2,9 @@ package com.ded.misle.world.entities.config;
 
 import com.ded.misle.items.DropTable;
 import com.ded.misle.renderer.image.Palette;
-import com.ded.misle.renderer.particles.modifier.*;
+import com.ded.misle.renderer.particles.modifier.destructive.Lifetime;
+import com.ded.misle.renderer.particles.modifier.positional.*;
+import com.ded.misle.renderer.particles.modifier.transformer.*;
 import com.ded.misle.renderer.particles.preset.SurprisedParticle;
 import com.ded.misle.world.entities.config.types.EnemyType;
 import com.ded.misle.world.entities.config.api.EnemyConfigurator;
