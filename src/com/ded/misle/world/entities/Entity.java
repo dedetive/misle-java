@@ -3,6 +3,7 @@ package com.ded.misle.world.entities;
 import com.ded.misle.renderer.smoother.SmoothValue;
 import com.ded.misle.renderer.smoother.modifiers.BounceModifier;
 import com.ded.misle.renderer.smoother.modifiers.ShakeModifier;
+import com.ded.misle.world.boxes.BoxHandling;
 import com.ded.misle.world.data.*;
 import com.ded.misle.world.entities.config.types.EnemyType;
 import com.ded.misle.world.entities.config.types.EntityType;
@@ -20,7 +21,7 @@ import java.util.*;
 import java.util.List;
 
 import static com.ded.misle.game.GamePanel.*;
-import static com.ded.misle.world.data.items.Item.createDroppedItem;
+import static com.ded.misle.world.boxes.BoxManipulation.moveBox;
 import static com.ded.misle.world.logic.PhysicsEngine.ObjectType.ENTITY;
 import static com.ded.misle.world.boxes.BoxHandling.*;
 import static com.ded.misle.world.entities.Entity.HealFlag.ABSOLUTE;
@@ -30,6 +31,7 @@ import static com.ded.misle.world.entities.Entity.HealFlag.ABSOLUTE;
  * Handles health, damage, healing, and death logic. Also manages shared Entity instances.
  */
 public class Entity<T extends Entity<T>> extends Box {
+    public Direction lastHitDirection = Direction.NONE;
     public Direction walkingDirection = Direction.RIGHT;
     public Direction horizontalDirection = Direction.RIGHT;
     public Direction verticalDirection = Direction.UP;
@@ -399,8 +401,8 @@ public class Entity<T extends Entity<T>> extends Box {
 
         if (this.HP == 0) {
             if (!(this instanceof Player)) {
-                if (this.HPSmoother.getCurrentFloat() >= 0.5 && this.displayHP) {
-                    javax.swing.Timer checkAgainTimer = new javax.swing.Timer(30,
+                if (this.HPSmoother.getCurrentFloat() >= maxHP / 6 && this.displayHP) {
+                    javax.swing.Timer checkAgainTimer = new javax.swing.Timer(5,
                             e -> handleDeath());
                     checkAgainTimer.setRepeats(false);
                     checkAgainTimer.start();
@@ -416,7 +418,15 @@ public class Entity<T extends Entity<T>> extends Box {
                     int id = results[0];
                     int count = results[1];
 
-                    createDroppedItem(this.getX(), this.getY(), id, count);
+                    Box droppedItem = BoxHandling.addBoxItem(this.getX(), this.getY(), id, count);
+                    switch (this.lastHitDirection) {
+                        case Direction.UP -> moveBox(droppedItem, 0, -1);
+                        case Direction.DOWN -> moveBox(droppedItem, 0, 1);
+                        case Direction.LEFT -> moveBox(droppedItem, -1, 0);
+                        case Direction.RIGHT -> moveBox(droppedItem, 1, 0);
+                        case null, default -> {
+                        }
+                    }
                 }
 
                 player.attr.addXP(this.getXPDrop());
@@ -561,6 +571,8 @@ public class Entity<T extends Entity<T>> extends Box {
 
         boolean inversionTriggers = Math.random() * 100 < inversion;
         double finalDamage = calculateDamage(rawDamage, flags);
+
+        this.lastHitDirection = knockback.getOpposite();
 
         if (inversionTriggers) {
             handleInversionHeal(finalDamage);
