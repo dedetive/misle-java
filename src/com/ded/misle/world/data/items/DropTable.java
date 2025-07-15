@@ -7,19 +7,20 @@ import java.util.Random;
 
 import static com.ded.misle.world.data.items.ItemGetter.getParameterizedItems;
 
-public class DropTable {
+public record DropTable(String name, List<ItemData> items) {
 	private static final ArrayList<DropTable> dropTables = new ArrayList<>();
 
 	public static DropTable POTION_CHEST = new DropTable("potion_chest");
 	public static DropTable GOBLIN = new DropTable("goblin_drop");
 
-	public String name;
-	private final List<ItemData> itemsInBundle;
+	public DropTable(String name, List<ItemData> items) {
+		this.name = name;
+		this.items = items;
+	}
 
-	DropTable(String dropTableName) {
-		this.name = dropTableName;
+	public DropTable(String dropTableName) {
+		this(dropTableName, getParameterizedItems(ItemGetter.ParameterKey.BUNDLE, dropTableName));
 		dropTables.add(this);
-		itemsInBundle = getParameterizedItems(ItemGetter.ParameterKey.BUNDLE, this.name);
 	}
 
 	public static DropTable getDropTableByName(String name) {
@@ -32,22 +33,22 @@ public class DropTable {
 	}
 
 	public List<ItemData> getItemDatas() {
-		return itemsInBundle;
+		return items();
 	}
 
 	public int[] getAllIDs() {
-		int[] ids = new int[itemsInBundle.size()];
-		for (int i = 0; i < itemsInBundle.size(); i++) {
-			ids[i] = itemsInBundle.get(i).getId();
+		int[] ids = new int[items().size()];
+		for (int i = 0; i < items().size(); i++) {
+			ids[i] = items().get(i).getId();
 		}
 
 		return ids;
 	}
 
 	public String[] getAllItemNames() {
-		String[] names = new String[itemsInBundle.size()];
-		for (int i = 0; i < itemsInBundle.size(); i++) {
-			names[i] = itemsInBundle.get(i).getName();
+		String[] names = new String[items().size()];
+		for (int i = 0; i < items().size(); i++) {
+			names[i] = items().get(i).getName();
 		}
 
 		return names;
@@ -63,7 +64,7 @@ public class DropTable {
 
 		// Calculate total weight
 		int totalWeight = 0;
-		for (ItemData item : itemsInBundle) {
+		for (ItemData item : items()) {
 			int weight = item.getBundles().get(name);  // get weight for specific bundle
 			totalWeight += weight;
 			// Add each item as many times as its weight for easier random selection
@@ -85,7 +86,7 @@ public class DropTable {
 	public String toString() {
 		return "DropTable{" +
 			"name=" + name +
-			", size=" + itemsInBundle.size() +
+			", size=" + items().size() +
 			", ids=" + Arrays.toString(getAllIDs()) +
 //			", items=\n" + Arrays.toString(getAllItemNames()) +
 			"}";
