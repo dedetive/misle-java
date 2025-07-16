@@ -111,10 +111,12 @@ public class Painter {
 
         List<Color> inputColors = inputPalette.asList();
         List<Color> targetColors = palette.asList();
+        if (targetColors.isEmpty()) return input;
 
         Map<Integer, Integer> colorMap = new HashMap<>();
-        for (int i = 0; i < Math.min(inputColors.size(), targetColors.size()); i++) {
-            colorMap.put(inputColors.get(i).getRGB(), targetColors.get(i).getRGB());
+        for (int i = 0; i < inputColors.size(); i++) {
+            if (targetColors.size() <= i) colorMap.put(inputColors.get(i).getRGB(), targetColors.get(i % targetColors.size()).getRGB());
+            else colorMap.put(inputColors.get(i).getRGB(), targetColors.get(i).getRGB());
         }
 
         BufferedImage output = new BufferedImage(input.getWidth(), input.getHeight(), BufferedImage.TYPE_INT_ARGB);
