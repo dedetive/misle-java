@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.ded.misle.game.GamePanel.*;
-import static com.ded.misle.input.Key.*;
+import static com.ded.misle.input.KeyDep.*;
 import static com.ded.misle.world.data.Direction.NONE;
 import static com.ded.misle.world.data.Direction.interpretDirection;
 import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
@@ -39,7 +39,7 @@ import static com.ded.misle.renderer.MenuRenderer.pauseGame;
 import static com.ded.misle.world.data.items.Item.createItem;
 import static java.awt.event.KeyEvent.*;
 
-public class KeyHandler implements KeyListener {
+public class KeyHandlerDep implements KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -62,12 +62,12 @@ public class KeyHandler implements KeyListener {
 		}
 	}
 
-	Key[] continuousInput = new Key[]{
+	KeyDep[] continuousInput = new KeyDep[]{
 		CTRL,
 		SHIFT,
 	};
 
-	Key[] outputOnRelease = new Key[] {
+	KeyDep[] outputOnRelease = new KeyDep[] {
 		UP,
 		DOWN,
 		LEFT,
@@ -92,7 +92,7 @@ public class KeyHandler implements KeyListener {
 		PLANNING_CONFIRM,
 	};
 
-	Key[] cooldownOnPress = new Key[]{
+	KeyDep[] cooldownOnPress = new KeyDep[]{
 		DEBUG1,
 		DEBUG2,
 		BACKSPACE,
@@ -100,12 +100,12 @@ public class KeyHandler implements KeyListener {
 		RIGHT_MENU,
 	};
 
-	Key[] cooldownOnRelease = new Key[] {
+	KeyDep[] cooldownOnRelease = new KeyDep[] {
 		DODGE,
 		USE,
 	};
 
-	Key[] triggerLogic = new Key[] {
+	KeyDep[] triggerLogic = new KeyDep[] {
 		DODGE,
 		DROP,
 		USE,
@@ -116,17 +116,17 @@ public class KeyHandler implements KeyListener {
 	};
 
 	private void triggerLogicIfNeeded() {
-		for (Key key : triggerLogic) {
+		for (KeyDep key : triggerLogic) {
 			if (isPressed(key)) {
 				TurnManager.requestNewTurn();
 			}
 		}
 	}
 
-	static HashMap<Key, Integer> keyCodes = new HashMap<>();
+	static HashMap<KeyDep, Integer> keyCodes = new HashMap<>();
 
-	public KeyHandler() {
-		for (Key key : values()) {
+	public KeyHandlerDep() {
+		for (KeyDep key : values()) {
 			player.keys.keyPressed.put(key, false);
 		}
 	}
@@ -135,7 +135,7 @@ public class KeyHandler implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 
-		for (Key key : continuousInput) {
+		for (KeyDep key : continuousInput) {
 			if (code == keyCodes.get(key)) {
 				player.keys.keyPressed.put(key, true);
 				if (!(gameState == GameState.SAVE_CREATOR && e.getKeyCode() != VK_BACK_SPACE)) {
@@ -144,7 +144,7 @@ public class KeyHandler implements KeyListener {
 			}
 		}
 
-		for (Key key : cooldownOnPress) {
+		for (KeyDep key : cooldownOnPress) {
 			if (code == keyCodes.get(key)) {
 				handleCooldownPress(key);
 				if (!(gameState == GameState.SAVE_CREATOR && e.getKeyCode() != VK_BACK_SPACE)) {
@@ -172,21 +172,21 @@ public class KeyHandler implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		int code = e.getKeyCode();
 
-		for (Key key : continuousInput) {
+		for (KeyDep key : continuousInput) {
 			if (code == keyCodes.get(key)) {
 				player.keys.keyPressed.put(key, false);
 				return;
 			}
 		}
 
-		for (Key key : outputOnRelease) {
+		for (KeyDep key : outputOnRelease) {
 			if (code == keyCodes.get(key)) {
 				player.keys.keyPressed.put(key, true);
 				return;
 			}
 		}
 
-		for (Key key : cooldownOnRelease) {
+		for (KeyDep key : cooldownOnRelease) {
 			if (code == keyCodes.get(key)) {
 				handleCooldownPress(key);
 				return;
@@ -194,7 +194,7 @@ public class KeyHandler implements KeyListener {
 		}
 	}
 
-	private void handleCooldownPress(Key key) {
+	private void handleCooldownPress(KeyDep key) {
 		long currentTime = System.currentTimeMillis();
 		double cooldownEndTime = player.keys.getKeyCurrentCooldown(key);
 		double cooldownDuration = player.keys.getKeyMaxCooldown(key);
@@ -226,9 +226,7 @@ public class KeyHandler implements KeyListener {
 
 			Planner planner = player.getPlanner();
 
-			if ((isPressed(PLANNING_TOGGLE) ||
-				(planner.isPlanning() && isPressed(PAUSE)))
-				&& !planner.isExecuting()) {
+			if ((isPressed(PLANNING_TOGGLE) || (planner.isPlanning() && isPressed(PAUSE))) && !planner.isExecuting()) {
 				if (planner.isPlanning()) {
 					player.keys.keyPressed.put(PAUSE, false);
 					planner.setPlanning(false);
@@ -305,7 +303,7 @@ public class KeyHandler implements KeyListener {
 
 			}
 			if (isPressed(USE)) {
-				pressUseButton(mouseHandler);
+				pressUseButton();
 				player.keys.keyPressed.put(USE, false);
 			}
 
@@ -351,7 +349,7 @@ public class KeyHandler implements KeyListener {
 							), 100, NONE);
 						// Has an entity
                         } else {
-                            player.updateLastDirection(interpretDirection(movement.x, movement.y));
+                             player.updateLastDirection(interpretDirection(movement.x, movement.y));
                             if (targetX > 0 && targetX < worldWidth &&
 								targetY > 0 && targetY < worldHeight &&
 								Arrays.stream(player.pos.world.grid[targetX][targetY]).
@@ -494,17 +492,17 @@ public class KeyHandler implements KeyListener {
 	}
 
 	public void setKeysToFalse() {
-		List<Key> keysToSetFalse = new ArrayList<>();
+		List<KeyDep> keysToSetFalse = new ArrayList<>();
 		keysToSetFalse.addAll(List.of(outputOnRelease));
 		keysToSetFalse.addAll(List.of(cooldownOnRelease));
 		keysToSetFalse.addAll(List.of(cooldownOnPress));
 
-		for (Key key : keysToSetFalse) {
+		for (KeyDep key : keysToSetFalse) {
 			player.keys.keyPressed.put(key, false);
 		}
 	}
 
-	public static void pressUseButton(MouseHandler mouseHandler) {
+	public static void pressUseButton() {
 		ArrayList<NPC> nearbyNPCs = getSelectedNPCs();
 
 		if (nearbyNPCs.isEmpty()) {
@@ -520,11 +518,11 @@ public class KeyHandler implements KeyListener {
 		}
 	}
 
-	public static String getChar(Key key) {
+	public static String getChar(KeyDep key) {
 		return getKeyText(key.keyCode);
 	}
 
-	public static boolean isPressed(Key key) {
+	public static boolean isPressed(KeyDep key) {
 		try {
 			return player.keys.keyPressed.get(key);
 		} catch (NullPointerException e) {

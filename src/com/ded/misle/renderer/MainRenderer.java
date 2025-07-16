@@ -1,6 +1,6 @@
 package com.ded.misle.renderer;
 
-import com.ded.misle.input.KeyHandler;
+import com.ded.misle.input.KeyHandlerDep;
 import com.ded.misle.world.entities.player.PlayerAttributes;
 
 import static com.ded.misle.core.SaveFile.loadPlayerUUID;
@@ -34,7 +34,7 @@ public abstract class MainRenderer {
 		player.currentSaveSlot = saveSlot;
 		loadPlayerUUID();
 
-		keyH = new KeyHandler();
+		keyH = new KeyHandlerDep();
 
 		previousMenu = currentMenu;
 		currentMenu = PLAYING;

@@ -1,16 +1,16 @@
 package com.ded.misle.world.entities.player;
 
-import com.ded.misle.input.Key;
+import com.ded.misle.input.KeyDep;
 
-import static com.ded.misle.input.Key.*;
+import static com.ded.misle.input.KeyDep.*;
 
 import java.util.HashMap;
 
 public class PlayerKeys {
 
-	public HashMap<Key, Boolean> keyPressed;
-	private HashMap<Key, Double> keyMaxCooldown = new HashMap<>();
-	private HashMap<Key, Double> keyCurrentCooldown = new HashMap<>();
+	public HashMap<KeyDep, Boolean> keyPressed;
+	private HashMap<KeyDep, Double> keyMaxCooldown = new HashMap<>();
+	private HashMap<KeyDep, Double> keyCurrentCooldown = new HashMap<>();
 
 	public PlayerKeys() {
 		this.keyPressed = new HashMap<>();
@@ -24,11 +24,11 @@ public class PlayerKeys {
 
 	}
 
-	public HashMap<Key, Boolean> getKeyPressed() {
+	public HashMap<KeyDep, Boolean> getKeyPressed() {
 		return keyPressed;
 	}
 
-	public double getKeyMaxCooldown(Key key) {
+	public double getKeyMaxCooldown(KeyDep key) {
 		try {
 			return Math.max(keyMaxCooldown.get(key), 0);
 		} catch (NullPointerException e) {
@@ -36,11 +36,11 @@ public class PlayerKeys {
 		}
 	}
 
-	public void setKeyMaxCooldown(Key key, double cooldownMS) {
+	public void setKeyMaxCooldown(KeyDep key, double cooldownMS) {
 		this.keyMaxCooldown.put(key, Math.max(cooldownMS, 0));
 	}
 
-	public double getKeyCurrentCooldown(Key key) {
+	public double getKeyCurrentCooldown(KeyDep key) {
 		try {
 			return Math.max(keyCurrentCooldown.get(key), 0);
 		} catch (NullPointerException e) {
@@ -48,11 +48,11 @@ public class PlayerKeys {
 		}
 	}
 
-	public void setKeyCurrentCooldown(Key key, double cooldownMS) {
+	public void setKeyCurrentCooldown(KeyDep key, double cooldownMS) {
 		this.keyCurrentCooldown.put(key, Math.max(cooldownMS, 0));
 	}
 
-	public void fillKeyCurrentCooldown(Key key) {
+	public void fillKeyCurrentCooldown(KeyDep key) {
 		this.keyCurrentCooldown.put(key, System.currentTimeMillis() + getKeyMaxCooldown(key));
 	}
 
