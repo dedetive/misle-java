@@ -5,7 +5,7 @@ import com.ded.misle.world.data.TilePattern;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Range extends TilePattern {
+public class Range extends TilePattern implements Cloneable {
     private static final Point[] defaultPoints = new Point[]{new Point(1, 0)};
     /**
      * The range used when {@link #getDefaultRange()} is called. Refers to a Range with a single point to the right of the origin.
