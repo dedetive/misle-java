@@ -10,10 +10,13 @@ import java.util.Map;
  * A pixel-wise image recoloring tool that remaps the colors of a {@link BufferedImage}
  * to a new target palette, optionally preserving alpha transparency.
  * <p>
- * The {@code Painter} class is designed to perform color substitutions based on palette index positions.
+ * The {@code Painter} class performs color substitutions based on palette index positions.
  * It compares the palette of the input image with a target {@link Palette}, and replaces each pixel's color
  * accordingly. The input palette is generated at runtime from the unique colors found in the image,
- * and each of those is mapped to the color of the same index in the target palette.
+ * and each color is mapped to a target color of the same index in the target palette.
+ * <p>
+ * If the target palette has fewer colors than the input palette, it loops cyclically through the target colors,
+ * assigning input index {@code i} to {@code i % target.size()} in the target palette.
  *
  * <p>
  * This is commonly used for tasks such as:
@@ -28,9 +31,8 @@ import java.util.Map;
  * then no recoloring is applied and the original image is returned unchanged.
  *
  * <p>
- * Color mapping respects index order. If the target palette is smaller than the input's palette,
- * only up to {@code min(input.size, target.size)} colors are remapped. Any remaining input colors
- * without a mapped target are retained unmodified in the final image.
+ * Color mapping respects index order. If the input palette has more colors than the target,
+ * mapping loops back to the beginning of the target palette using modulo indexing.
  * <p>
  * Transparency (alpha) is handled by the {@link #preserveAlpha} flag:
  * <ul>
@@ -94,8 +96,9 @@ public class Painter {
      * The remapping is performed based on palette index position:
      * color at index {@code i} in the input is mapped to color at index {@code i} in the target.
      * <p>
-     * If the input palette has more colors than the target, only the colors within the shared range
-     * are recolored; unmatched colors are preserved.
+     * If the input palette has more colors than the target palette, color mapping wraps around
+     * using modulo indexing: {@code input[i] → target[i % target.size()]}.
+     * This allows smaller palettes to act as cycling overlays or themes.
      * <p>
      * Alpha channel handling is determined by the {@link #preserveAlpha} flag.
      *
