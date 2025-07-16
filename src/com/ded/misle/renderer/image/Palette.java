@@ -36,6 +36,10 @@ public class Palette {
      * @param img the image to extract unique colors and build the palette from
      */
     public Palette(BufferedImage img) {
+        if (img == null) {
+            palette = new ArrayList<>();
+            return;
+        }
         this.palette = PaletteMemorial.paletteMap.computeIfAbsent(
             img,
             (img_) -> {
