@@ -1,6 +1,5 @@
 package com.ded.misle.input;
 
-import com.ded.misle.game.GamePanel;
 import com.ded.misle.renderer.*;
 import com.ded.misle.world.boxes.BoxManipulation;
 import com.ded.misle.world.data.Direction;
@@ -10,6 +9,7 @@ import com.ded.misle.world.logic.TurnManager;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.input.KeyHandlerDep.removeExtraChars;
@@ -17,6 +17,7 @@ import static com.ded.misle.renderer.DialogRenderer.fillLetterDisplay;
 import static com.ded.misle.renderer.DialogRenderer.isLetterDisplayFull;
 import static com.ded.misle.renderer.MenuButton.clearButtons;
 import static com.ded.misle.renderer.SaveCreator.playerName;
+import static com.ded.misle.renderer.SaveSelector.askingToDelete;
 import static com.ded.misle.renderer.SettingsMenuRenderer.moveSettingMenu;
 import static com.ded.misle.renderer.image.ImageManager.getCurrentScreen;
 import static com.ded.misle.renderer.image.ImageManager.saveScreenshot;
@@ -27,79 +28,107 @@ import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
 
 public enum Action {
 	//region Game state
-	PANIC_CRASH(() -> System.exit(0)),
-	PAUSE_GAME(MenuRenderer::pauseGame),
+	PANIC_CRASH(() -> System.exit(0), e -> true),
+	PAUSE_GAME(MenuRenderer::pauseGame, e -> gameState == GameState.PLAYING && !player.isWaiting()),
 	//endregion
 	//region Plans
-	CANCEL_PLANNING(() -> player.getPlanner().setPlanning(false)),
-	START_PLANNING(() -> player.getNewPlanner().setPlanning(true)),
-	SKIP_STEP(() -> player.getPlanner().skipStep()),
-	TOGGLE_PLAN_QUICK_EXECUTION(() -> player.getPlanner().toggleQuickExecution()),
-	EXECUTE_PLAN(() -> player.getPlanner().executePlan()),
+	CANCEL_PLANNING(() -> player.getPlanner().setPlanning(false),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && player.getPlanner().isPlanning() && !player.getPlanner().isExecuting()),
+	START_PLANNING(() -> player.getNewPlanner().setPlanning(true),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && !player.getPlanner().isExecuting()),
+	SKIP_STEP(() -> player.getPlanner().skipStep(),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && player.getPlanner().isExecuting()),
+	TOGGLE_PLAN_QUICK_EXECUTION(() -> player.getPlanner().toggleQuickExecution(),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && player.getPlanner().isExecuting()),
+	EXECUTE_PLAN(() -> player.getPlanner().executePlan(),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && player.getPlanner().isPlanning() && !player.getPlanner().isExecuting()),
 	//endregion
 	//region Inventory
-	SELECT_INVENTORY_SLOT((slot) -> player.inv.setSelectedSlot((Integer) slot)),
-	DROP_SINGLE(() -> player.inv.dropItem(0, player.inv.getSelectedSlot(), 1)),
-	DROP_ALL(() -> player.inv.dropItem(0, player.inv.getSelectedSlot(), player.inv.getSelectedItem().getCount())),
-	USE(KeyHandlerDep::pressUseButton),
+	SELECT_INVENTORY_SLOT((slot) -> player.inv.setSelectedSlot((Integer) slot),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning()),
+	DROP_SINGLE(() -> player.inv.dropItem(0, player.inv.getSelectedSlot(), 1),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && player.inv.hasHeldItem()),
+	DROP_ALL(() -> player.inv.dropItem(0, player.inv.getSelectedSlot(), player.inv.getSelectedItem().getCount()),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && player.inv.hasHeldItem()),
+	USE(KeyHandlerDep::pressUseButton,
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && !player.getPlanner().isExecuting()),
 	TOGGLE_INVENTORY(() ->
 			gameState =
-					gameState == GameState.PLAYING ? GameState.INVENTORY : GameState.PLAYING),
+					gameState == GameState.PLAYING ? GameState.INVENTORY : GameState.PLAYING,
+			e -> (gameState == GameState.PLAYING || gameState == GameState.INVENTORY) && !player.getPlanner().isPlanning()),
 	INVENTORY_SWAP((pos) -> {
 		int[] p = (int[]) pos;
 		player.inv.setTempItem(player.inv.getItem(p[0], p[1]));
 		player.inv.bruteSetItem(player.inv.getItem(0, p[2]), p[0], p[1]);
 		player.inv.bruteSetItem(player.inv.getTempItem(), 0, p[2]);
 		player.inv.destroyTempItem();
-	}),
+	}, e -> gameState == GameState.INVENTORY && isValidHoveredSlot(mouseHandler.getHoveredSlot()) && player.inv.getItem(((int[]) e)[0], ((int[]) e)[1]) != null),
 	INVENTORY_DROP_SINGLE((pos) -> {
 		int[] p = (int[]) pos;
 		player.inv.dropItem(p[0], p[1], 1);
-	}),
+	}, e -> gameState == GameState.INVENTORY && isValidHoveredSlot(mouseHandler.getHoveredSlot()) && player.inv.getItem(((int[]) e)[0], ((int[]) e)[1]) != null),
 	INVENTORY_DROP_ALL((pos) -> {
 		int[] p = (int[]) pos;
 		player.inv.dropItem(p[0], p[1], player.inv.getItem(p[0], p[1]).getCount());
-	}),
+	}, e -> gameState == GameState.INVENTORY && isValidHoveredSlot(mouseHandler.getHoveredSlot()) && player.inv.getItem(((int[]) e)[0], ((int[]) e)[1]) != null),
 	INVENTORY_EXTRA_DROP_SINGLE((index) -> {
 		int i = (Integer) index;
 		player.inv.dropItem(i, 1);
-	}),
+	}, e -> gameState == GameState.INVENTORY && isValidExtraSlot(mouseHandler.getExtraHoveredSlot()) && player.inv.getItem((Integer) e) != null),
 	INVENTORY_EXTRA_DROP_ALL((index) -> {
 		int i = (Integer) index;
 		player.inv.dropItem(i, player.inv.getItem(i).getCount());
-	}),
+	}, e -> gameState == GameState.INVENTORY && isValidExtraSlot(mouseHandler.getExtraHoveredSlot()) && player.inv.getItem((Integer) e) != null),
 	//endregion
 	//region Movement
 		//region Regular
-		MOVE((direction) -> {
-			switch ((Direction) direction) {
-				case UP -> BoxManipulation.movePlayer(player.getX(), player.getY() - 1);
-				case DOWN -> BoxManipulation.movePlayer(player.getX(), player.getY() + 1);
-				case LEFT -> BoxManipulation.movePlayer(player.getX() - 1, player.getY());
-				case RIGHT -> BoxManipulation.movePlayer(player.getX() + 1, player.getY());
-			}
-		}),
+		MOVE((direction) ->
+			BoxManipulation.movePlayer(offsetPlayerPos(direction).x, offsetPlayerPos(direction).y), e -> gameState == GameState.PLAYING &&
+			!player.isWaiting() &&
+			!player.attr.isDead() &&
+			!player.getPlanner().isExecuting() &&
+			!player.getPlanner().isPlanning() &&
+			!isSpaceOccupied(offsetPlayerPos(e).x, offsetPlayerPos(e).y, player)),
 		//endregion
 		//region Bump onto entity
-		MOVE_BUMP_REGULAR((direction) -> player.updateLastDirection((Direction) direction)),
+		MOVE_BUMP_REGULAR((direction) -> player.updateLastDirection((Direction) direction),
+				e -> gameState == GameState.PLAYING &&
+						!player.isWaiting() &&
+						!player.attr.isDead() &&
+						!player.getPlanner().isExecuting() &&
+						!player.getPlanner().isPlanning() &&
+						!isSpaceOccupied(player.getX(), player.getY(), player) &&
+						!(offsetPlayerPos(e).x > 0 && offsetPlayerPos(e).x < worldWidth &&
+						offsetPlayerPos(e).y > 0 && offsetPlayerPos(e).y < worldHeight &&
+						Arrays.stream(player.pos.world.grid[offsetPlayerPos(e).x][offsetPlayerPos(e).y]).
+								anyMatch(box -> box instanceof Entity))
+				),
 		MOVE_BUMP_ENTITY((direction) -> {
 			player.updateLastDirection((Direction) direction);
 			player.attack();
-		}),
+		}, e -> gameState == GameState.PLAYING &&
+				!player.isWaiting() &&
+				!player.attr.isDead() &&
+				!player.getPlanner().isExecuting() &&
+				!player.getPlanner().isPlanning() &&
+				!isSpaceOccupied(player.getX(), player.getY(), player) &&
+				(offsetPlayerPos(e).x > 0 && offsetPlayerPos(e).x < worldWidth &&
+						offsetPlayerPos(e).y > 0 && offsetPlayerPos(e).y < worldHeight &&
+						Arrays.stream(player.pos.world.grid[offsetPlayerPos(e).x][offsetPlayerPos(e).y]).
+								anyMatch(box -> box instanceof Entity))),
 		//endregion
 		//region Stuck
 		MOVE_STUCK((direction) -> {
-			switch ((Direction) direction) {
-				case UP -> BoxManipulation.movePlayer(player.getX(), player.getY() - 1);
-				case DOWN -> BoxManipulation.movePlayer(player.getX(), player.getY() + 1);
-				case LEFT -> BoxManipulation.movePlayer(player.getX() - 1, player.getY());
-				case RIGHT -> BoxManipulation.movePlayer(player.getX() + 1, player.getY());
-			}
+			BoxManipulation.movePlayer(offsetPlayerPos(direction).x, offsetPlayerPos(direction).y);
 			player.takeDamage(5 + player.getMaxHP() / 120, Entity.DamageFlag.of(
 					Entity.DamageFlag.ABSOLUTE,
 					Entity.DamageFlag.LOCKER
 			), 100, NONE);
-		}),
+		}, e -> gameState == GameState.PLAYING &&
+				!player.isWaiting() &&
+				!player.attr.isDead() &&
+				!player.getPlanner().isExecuting() &&
+				isSpaceOccupied(player.getX(), player.getY(), player)),
 		//endregion
 		//region Plan
 		MOVE_PLAN((direction) -> {
@@ -122,16 +151,22 @@ public enum Action {
 					Arrays.stream(player.pos.world.grid[target.x][target.y]).anyMatch(box -> box instanceof Entity)) {
 				player.getPlanner().addEnemyPoint(target);
 			}
-		}),
+		}, e -> gameState == GameState.PLAYING &&
+				!player.isWaiting() &&
+				player.getPlanner().isPlanning() &&
+				!player.getPlanner().isExecuting()
+		),
 		//endregion
 	//endregion
 	//region Save creator
 	APPEND_NAME_CHAR((ch) -> {
 		if (playerName.length() < 16)
 				playerName.append(removeExtraChars((Character) ch));
-		}),
-	REMOVE_NAME_CHAR(() -> playerName.setLength(Math.max(playerName.length() - 1, 0))),
-	CONFIRM_NAME(SaveCreator::confirmName),
+		}, e -> gameState == GameState.SAVE_CREATOR && playerName.length() < 16),
+	REMOVE_NAME_CHAR(() -> playerName.setLength(Math.max(playerName.length() - 1, 0)),
+			e -> gameState == GameState.SAVE_CREATOR && !playerName.isEmpty()),
+	CONFIRM_NAME(SaveCreator::confirmName,
+			e -> gameState == GameState.SAVE_CREATOR),
 	//endregion
 	//region Dialog
 	ADVANCE_DIALOG(() -> {
@@ -140,52 +175,60 @@ public enum Action {
 		} else {
 			fillLetterDisplay();
 		}
-	}),
+	}, e -> gameState == GameState.DIALOG),
 //endregion
 	//region Menus
-	GO_TO_PREVIOUS_MENU(MenuRenderer::goToPreviousMenu),
+	GO_TO_PREVIOUS_MENU(MenuRenderer::goToPreviousMenu,
+		e -> (gameState == GameState.OPTIONS_MENU || gameState == GameState.SAVE_SELECTOR || gameState == GameState.SAVE_CREATOR) && askingToDelete == -1),
 	SAVE_SELECTOR_CANCEL_DELETE(() -> {
-		SaveSelector.askingToDelete = -1;
+		askingToDelete = -1;
 		clearButtons();
-	}),
+	}, e -> gameState == GameState.SAVE_SELECTOR && askingToDelete > -1),
 	SETTING_MENU_MOVE_LEFT(() -> {
 		moveSettingMenu(-1);
 		SettingsMenuRenderer.leftKeyIndicatorWidth = 19;
-	}),
+	}, e -> gameState == GameState.OPTIONS_MENU),
 	SETTING_MENU_MOVE_RIGHT(() -> {
 		moveSettingMenu(1);
 		SettingsMenuRenderer.rightKeyIndicatorWidth = 19;
-	}),
+	}, e -> gameState == GameState.OPTIONS_MENU),
 	//endregion
 	//region Misc
-	SCREENSHOT(() -> saveScreenshot(getCurrentScreen())),
-	TRIGGER_LOGIC(TurnManager::requestNewTurn),
+	SCREENSHOT(() -> saveScreenshot(getCurrentScreen()),
+			e -> true),
+	TRIGGER_LOGIC(TurnManager::requestNewTurn,
+			e -> !player.getPlanner().isPlanning()),
 	//endregion
 	//region Debug
 	DEBUG_GIVE_ITEMS(() -> {
 		for (int i = 1; i <= 27; i++) {
 			if (i != 5) player.inv.addItem(createItem(i, 1));
 		}
-	}),
-	DEBUG_CLEAR_INV(() -> player.inv.clearInventory()),
+	}, e -> true),
+	DEBUG_CLEAR_INV(() -> player.inv.clearInventory(), e -> true),
 //endregion
 
 	//region
 	;
+
 	private final Consumer<Object> paramAction;
 	private final Runnable noParamAction;
+	private final Predicate<Object> condition;
 
-	Action(Consumer<Object> paramAction) {
+	Action(Consumer<Object> paramAction, Predicate<Object> condition) {
 		this.paramAction = paramAction;
+		this.condition = condition;
 		this.noParamAction = null;
 	}
 
-	Action(Runnable noParamAction) {
+	Action(Runnable noParamAction, Predicate<Object> condition) {
 		this.noParamAction = noParamAction;
+		this.condition = condition;
 		this.paramAction = null;
 	}
 
 	public void execute() {
+		if (!condition.test(null)) return;
 		if (noParamAction == null) {
 			System.err.println("Action " + this.name() + " requires an object!");
 			return;
@@ -194,6 +237,7 @@ public enum Action {
 	}
 
 	public <T> void execute(T obj) {
+		if (!condition.test(obj)) return;
 		if (paramAction == null) {
 			System.err.println("Action " + this.name() + " does not accept parameters, but received: " + obj);
 			execute();
@@ -206,6 +250,24 @@ public enum Action {
 					" received an object of invalid type: " +
 					(obj != null ? obj.getClass().getName() : "null"));
 		}
+	}
+	//endregion
+
+	//region Aux
+	private static boolean isValidHoveredSlot(int[] hoveredSlot) {
+		return hoveredSlot[0] >= 0 && hoveredSlot[1] >= 0;
+	}
+	private static boolean isValidExtraSlot(int[] extraSlot) {
+		return extraSlot[0] >= 0 && extraSlot[1] >= 0;
+	}
+	private static <T> Point offsetPlayerPos(T direction) {
+		return switch ((Direction) direction) {
+			case UP -> new Point(player.getX(), player.getY() - 1);
+			case DOWN -> new Point(player.getX(), player.getY() + 1);
+			case LEFT -> new Point(player.getX() - 1, player.getY());
+			case RIGHT -> new Point(player.getX() + 1, player.getY());
+			default -> new Point(player.getX(), player.getY());
+		};
 	}
 	//endregion
 }
