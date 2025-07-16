@@ -127,14 +127,17 @@ public class Range extends TilePattern implements Cloneable {
      */
     public static Range getDefaultRange() {
         try {
-            return defaultRange.clone();
+            return defaultRange.deepCopy();
         } catch (CloneNotSupportedException e) {
             return null;
         }
     }
 
-    @Override
-    public Range clone() throws CloneNotSupportedException {
-        return (Range) super.clone();
+    public Range deepCopy() throws CloneNotSupportedException {
+        Point[] copied = new Point[this.points.length];
+        for (int i = 0; i < this.points.length; i++) {
+            copied[i] = new Point(this.points[i]);
+        }
+        return new Range(copied);
     }
 }

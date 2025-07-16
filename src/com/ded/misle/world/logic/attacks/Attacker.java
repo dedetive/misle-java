@@ -70,7 +70,7 @@ public class Attacker {
 
     public Range getRange() {
         try {
-            return range.clone();
+            return range.deepCopy();
         } catch (CloneNotSupportedException e) {
             return range;
         }

@@ -10,6 +10,8 @@ import com.ded.misle.world.logic.TurnTimer;
 
 import javax.swing.*;
 
+import java.util.Objects;
+
 import static com.ded.misle.audio.AudioFile.*;
 import static com.ded.misle.audio.AudioPlayer.playThis;
 import static com.ded.misle.game.GamePanel.player;
@@ -430,8 +432,9 @@ public class Inventory {
 			switch (type) {
 				case "potion" -> usePotion();
 				case "weapon" -> useWeapon(intensity);
+				default -> useWeapon(intensity);
 			}
-		}
+		} else useWeapon(intensity);
 	}
 
 	public void usePotion() {
@@ -496,11 +499,12 @@ public class Inventory {
 
 	public void useWeapon(float intensity) {
 		Item it = getSelectedItem();
-		int attackDelay = Integer.parseInt(it.getAttributes().get("attackDelay").toString());
-		if (it.canUse() && !player.isWaiting()) {
-
+		boolean nullItem = it == null || !Objects.equals(it.getType(), "weapon");
+		int attackDelay = nullItem ?
+				1
+				: Integer.parseInt(it.getAttributes().get("attackDelay").toString());
+		if (!nullItem && (it.canUse() && !player.isWaiting())) {
 			it.setCanUse(false);
-
 			it.setUsageDelay(
 				new TurnTimer(attackDelay, e -> it.setCanUse(true))
 			);
@@ -510,13 +514,14 @@ public class Inventory {
 					player.animator.update(intensity);
 					switch (it.getAttributes().get("kind").toString()) {
 						case "claw" -> player.animator.animateClaw();
-						// Weapon goes upward for a bit and then swings downwards
-						// Deals area damage
-						case "ranged" -> {     // throw a box projectile to held direction
+						case "ranged" -> {
 						}
 					}
 				}
 			}
+		} else {
+			player.animator.update(intensity);
+			player.animator.animateHand();
 		}
 	}
 

@@ -9,6 +9,7 @@ import com.ded.misle.world.logic.attacks.Attacker;
 import javax.swing.*;
 
 import java.awt.*;
+import java.util.Objects;
 
 import static com.ded.misle.game.GamePanel.player;
 
@@ -22,7 +23,7 @@ public class HandItemAnimator {
     public void update(float damageMultiplier) {
         Item selectedItem = player.inv.getSelectedItem();
 
-        if (selectedItem != null) {
+        if (selectedItem != null && Objects.equals(selectedItem.getType(), "weapon")) {
             String strRange = selectedItem.getAttributes().containsKey("range")
                 ? (selectedItem.getAttributes().get("range").toString())
                 : "";
@@ -37,7 +38,8 @@ public class HandItemAnimator {
             attacker.setRange(range);
             attacker.setDamage(damage * damageMultiplier);
         } else {
-            attacker.invalidate();
+            attacker.setRange(Range.getDefaultRange());
+            attacker.setDamage(damageMultiplier);
         }
     }
 
@@ -76,9 +78,7 @@ public class HandItemAnimator {
         scheduleAnimation(215, () -> {
             if (player.inv.getSelectedItem() != selectedItem) return;
 
-            Point origin = new Point(player.getX(), player.getY());
-
-            attacker.attack(origin, player.getWalkingDirection());
+            attacker.attack(player.getPos(), player.getWalkingDirection());
 
             selectedItem.delayedSetAnimationRotation(150, 60);
             selectedItem.delayedChangeAnimationBulk(-0.175, 120);
@@ -96,5 +96,11 @@ public class HandItemAnimator {
                 selectedItem.delayedMoveAnimationX(-15, 30);
             });
         });
+    }
+
+    public void animateHand() {
+        player.setWaiting(true);
+        attacker.attack(player.getPos(), player.getWalkingDirection());
+        scheduleAnimation(60, () -> player.setWaiting(false));
     }
 }
