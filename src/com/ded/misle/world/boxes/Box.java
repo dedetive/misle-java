@@ -312,6 +312,8 @@ public class Box {
 
 
 	public static BufferedImage getTexture(String boxTextureName) {
+		if (boxTextureName.contains("invisible")) return null;
+
 		// Check if the texture is already cached
 		if (!cachedTextures.containsKey(boxTextureName)) {
 			Path basePath = getPath(com.ded.misle.core.Path.PathTag.RESOURCES).resolve("images/boxes/");
@@ -323,8 +325,6 @@ public class Box {
 				BufferedImage texture = ImageIO.read(fullPath.toFile());
 				cachedTextures.put(boxTextureName, texture); // Cache the loaded image
 			} catch (IOException e) {
-				System.err.println("Can't read Box texture input file: " + fullPath);
-
 				// Attempt to recreate
 				if (boxTextureName.contains("_overlay")) {
 					String overlayType = boxTextureName.substring(boxTextureName.lastIndexOf("_"));
@@ -355,6 +355,7 @@ public class Box {
                     return texture;
 				}
 
+				System.err.println("Can't read Box texture input file: " + fullPath);
 				return null; // Return null if image fails to load
 			}
 		}
