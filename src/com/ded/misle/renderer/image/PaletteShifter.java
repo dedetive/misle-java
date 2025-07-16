@@ -140,7 +140,7 @@ public class PaletteShifter {
      * @return the updated {@link Palette} with limited colors
      */
     public Palette limited(int maxSize) {
-        List<Color> sub = palette.asList().subList(0, Math.min(maxSize, palette.size()));
+        List<Color> sub = palette.asList().subList(0, Math.max(Math.min(maxSize, palette.size()), 0));
         this.palette = new Palette(sub);
         return this.palette;
     }
