@@ -1,9 +1,11 @@
 package com.ded.misle.world.entities;
 
-import com.ded.misle.renderer.particles.core.Particle;
+import com.ded.misle.renderer.image.*;
+import com.ded.misle.renderer.particles.modifier.constructive.Count;
 import com.ded.misle.renderer.particles.modifier.destructive.Lifetime;
 import com.ded.misle.renderer.particles.modifier.positional.*;
 import com.ded.misle.renderer.particles.modifier.transformer.FadeOut;
+import com.ded.misle.renderer.particles.modifier.transformer.PaletteSwap;
 import com.ded.misle.renderer.particles.preset.DamageParticle;
 import com.ded.misle.renderer.smoother.SmoothValue;
 import com.ded.misle.renderer.smoother.modifiers.BounceModifier;
@@ -589,6 +591,7 @@ public class Entity<T extends Entity<T>> extends Box {
             }
         }
 
+        createDamageParticles(knockback);
         applyKnockback(knockback);
 
         for (Runnable r : onDamage) {
@@ -644,17 +647,6 @@ public class Entity<T extends Entity<T>> extends Box {
      * @param dir Direction of knockback.
      */
     private void applyKnockback(Direction dir) {
-        Particle damageParticles = new DamageParticle(
-                this.getPos(),
-                Lifetime.ofSeconds(4f),
-                FadeOut.of(0.04f),
-                Acceleration.of(-0.2f, 1.2f, dir.getOpposite().degrees()),
-                Acceleration.of(16f, -0.6f, 90f),
-                Offset.of(20f, 5f),
-                RandomOffset.of(-2, 2, 0, 0)
-        );
-        damageParticles.start();
-
         float amplitude = 0.5f;
         float duration = 0.3f;
         float freq = 8f;
@@ -695,6 +687,34 @@ public class Entity<T extends Entity<T>> extends Box {
                 }
             }
         } catch (CloneNotSupportedException ignored) {}
+    }
+
+    private void createDamageParticles(Direction dir) {
+        Palette damagePalette = new Palette(this.getTexture());
+        PaletteShifter shifter = new PaletteShifter(damagePalette);
+        Random rand = new Random();
+	    new DamageParticle(
+			    this.getPos(),
+			    Count.of(rand.nextInt(4,8), () -> {
+                    shifter.offset(-1);
+                    shifter.limited(damagePalette.size() - 1);
+                    shifter.shuffled();
+                    shifter.gamma(rand.nextFloat(0.85f, 1.05f));
+                    Palette p = shifter.saturate(rand.nextFloat(1f, 1.6f));
+                    return new DamageParticle(
+                            this.getPos(),
+                            Lifetime.ofSeconds(rand.nextFloat(3.9f, 5f)),
+                            FadeOut.of(rand.nextFloat(0.0375f, 0.0425f)),
+                            Acceleration.of(rand.nextFloat(-0.215f, -0.185f),
+                                    rand.nextFloat(1.13f, 1.27f),
+                                    rand.nextFloat(dir.getOpposite().degrees() - 20f, dir.getOpposite().degrees() + 20f)),
+                            Acceleration.of(16f, -0.6f, 90f),
+                            Offset.of(20f, 5f),
+                            RandomOffset.of(-2, 2, 0, 0),
+                            PaletteSwap.of(p)
+                    );
+                })
+	    );
     }
 
     /**
