@@ -30,18 +30,8 @@ public class KeyRegistry {
 			if (key.onCooldown()) continue;
 
 			key.lastTimeActivated = System.currentTimeMillis();
-			key.action().execute();
-		}
-	}
-
-	public static <T> void trigger(KeyEvent keyEvent, KeyInputType inputType, T parameter) {
-		List<Key> mappedKeys = keyMap.getOrDefault(keyEvent.getKeyCode(), List.of());
-		for (Key key : mappedKeys) {
-			if (key.keyInputType() != inputType) continue;
-			if (key.onCooldown()) continue;
-
-			key.lastTimeActivated = System.currentTimeMillis();
-			key.action().execute(parameter);
+			if (key.parameter() != null) key.action().execute(key.parameter());
+			else key.action().execute();
 		}
 	}
 
