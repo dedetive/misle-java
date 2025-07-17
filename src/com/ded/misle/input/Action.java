@@ -28,57 +28,57 @@ import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
 
 public enum Action {
 	//region Game state
-	PANIC_CRASH(() -> System.exit(0), e -> true),
-	PAUSE_GAME(MenuRenderer::pauseGame, e -> gameState == GameState.PLAYING && !player.isWaiting()),
+	PANIC_CRASH(() -> System.exit(0), e -> true, false),
+	PAUSE_GAME(MenuRenderer::pauseGame, e -> gameState == GameState.PLAYING && !player.isWaiting(), false),
 	//endregion
 	//region Plans
 	CANCEL_PLANNING(() -> player.getPlanner().setPlanning(false),
-			e -> gameState == GameState.PLAYING && !player.isWaiting() && player.getPlanner().isPlanning() && !player.getPlanner().isExecuting()),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && player.getPlanner().isPlanning() && !player.getPlanner().isExecuting(), false),
 	START_PLANNING(() -> player.getNewPlanner().setPlanning(true),
-			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && !player.getPlanner().isExecuting()),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && !player.getPlanner().isExecuting(), false),
 	SKIP_STEP(() -> player.getPlanner().skipStep(),
-			e -> gameState == GameState.PLAYING && !player.isWaiting() && player.getPlanner().isExecuting()),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && player.getPlanner().isExecuting(), false),
 	TOGGLE_PLAN_QUICK_EXECUTION(() -> player.getPlanner().toggleQuickExecution(),
-			e -> gameState == GameState.PLAYING && !player.isWaiting() && player.getPlanner().isExecuting()),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && player.getPlanner().isExecuting(), false),
 	EXECUTE_PLAN(() -> player.getPlanner().executePlan(),
-			e -> gameState == GameState.PLAYING && !player.isWaiting() && player.getPlanner().isPlanning() && !player.getPlanner().isExecuting()),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && player.getPlanner().isPlanning() && !player.getPlanner().isExecuting(), false),
 	//endregion
 	//region Inventory
 	SELECT_INVENTORY_SLOT((slot) -> player.inv.setSelectedSlot((Integer) slot),
-			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning()),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning(), false),
 	DROP_SINGLE(() -> player.inv.dropItem(0, player.inv.getSelectedSlot(), 1),
-			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && player.inv.hasHeldItem()),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && player.inv.hasHeldItem(), false),
 	DROP_ALL(() -> player.inv.dropItem(0, player.inv.getSelectedSlot(), player.inv.getSelectedItem().getCount()),
-			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && player.inv.hasHeldItem()),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && player.inv.hasHeldItem(), false),
 	USE(KeyHandlerDep::pressUseButton,
-			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && !player.getPlanner().isExecuting()),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && !player.getPlanner().isExecuting(), true),
 	TOGGLE_INVENTORY(() ->
 			gameState =
 					gameState == GameState.PLAYING ? GameState.INVENTORY : GameState.PLAYING,
-			e -> (gameState == GameState.PLAYING || gameState == GameState.INVENTORY) && !player.getPlanner().isPlanning()),
+			e -> (gameState == GameState.PLAYING || gameState == GameState.INVENTORY) && !player.getPlanner().isPlanning(), false),
 	INVENTORY_SWAP((pos) -> {
 		int[] p = (int[]) pos;
 		player.inv.setTempItem(player.inv.getItem(p[0], p[1]));
 		player.inv.bruteSetItem(player.inv.getItem(0, p[2]), p[0], p[1]);
 		player.inv.bruteSetItem(player.inv.getTempItem(), 0, p[2]);
 		player.inv.destroyTempItem();
-	}, e -> gameState == GameState.INVENTORY && isValidHoveredSlot(mouseHandler.getHoveredSlot()) && player.inv.getItem(((int[]) e)[0], ((int[]) e)[1]) != null),
+	}, e -> gameState == GameState.INVENTORY && isValidHoveredSlot(mouseHandler.getHoveredSlot()) && player.inv.getItem(((int[]) e)[0], ((int[]) e)[1]) != null, false),
 	INVENTORY_DROP_SINGLE((pos) -> {
 		int[] p = (int[]) pos;
 		player.inv.dropItem(p[0], p[1], 1);
-	}, e -> gameState == GameState.INVENTORY && isValidHoveredSlot(mouseHandler.getHoveredSlot()) && player.inv.getItem(((int[]) e)[0], ((int[]) e)[1]) != null),
+	}, e -> gameState == GameState.INVENTORY && isValidHoveredSlot(mouseHandler.getHoveredSlot()) && player.inv.getItem(((int[]) e)[0], ((int[]) e)[1]) != null, false),
 	INVENTORY_DROP_ALL((pos) -> {
 		int[] p = (int[]) pos;
 		player.inv.dropItem(p[0], p[1], player.inv.getItem(p[0], p[1]).getCount());
-	}, e -> gameState == GameState.INVENTORY && isValidHoveredSlot(mouseHandler.getHoveredSlot()) && player.inv.getItem(((int[]) e)[0], ((int[]) e)[1]) != null),
+	}, e -> gameState == GameState.INVENTORY && isValidHoveredSlot(mouseHandler.getHoveredSlot()) && player.inv.getItem(((int[]) e)[0], ((int[]) e)[1]) != null, false),
 	INVENTORY_EXTRA_DROP_SINGLE((index) -> {
 		int i = (Integer) index;
 		player.inv.dropItem(i, 1);
-	}, e -> gameState == GameState.INVENTORY && isValidExtraSlot(mouseHandler.getExtraHoveredSlot()) && player.inv.getItem((Integer) e) != null),
+	}, e -> gameState == GameState.INVENTORY && isValidExtraSlot(mouseHandler.getExtraHoveredSlot()) && player.inv.getItem((Integer) e) != null, false),
 	INVENTORY_EXTRA_DROP_ALL((index) -> {
 		int i = (Integer) index;
 		player.inv.dropItem(i, player.inv.getItem(i).getCount());
-	}, e -> gameState == GameState.INVENTORY && isValidExtraSlot(mouseHandler.getExtraHoveredSlot()) && player.inv.getItem((Integer) e) != null),
+	}, e -> gameState == GameState.INVENTORY && isValidExtraSlot(mouseHandler.getExtraHoveredSlot()) && player.inv.getItem((Integer) e) != null, false),
 	//endregion
 	//region Movement
 		//region Regular
@@ -88,7 +88,7 @@ public enum Action {
 			!player.attr.isDead() &&
 			!player.getPlanner().isExecuting() &&
 			!player.getPlanner().isPlanning() &&
-			!isSpaceOccupied(offsetPlayerPos(e).x, offsetPlayerPos(e).y, player)),
+			!isSpaceOccupied(offsetPlayerPos(e).x, offsetPlayerPos(e).y, player), true),
 		//endregion
 		//region Bump onto entity
 		MOVE_BUMP_REGULAR((direction) -> player.updateLastDirection((Direction) direction),
@@ -101,8 +101,8 @@ public enum Action {
 						!(offsetPlayerPos(e).x > 0 && offsetPlayerPos(e).x < worldWidth &&
 						offsetPlayerPos(e).y > 0 && offsetPlayerPos(e).y < worldHeight &&
 						Arrays.stream(player.pos.world.grid[offsetPlayerPos(e).x][offsetPlayerPos(e).y]).
-								anyMatch(box -> box instanceof Entity))
-				),
+								anyMatch(box -> box instanceof Entity)),
+				true),
 		MOVE_BUMP_ENTITY((direction) -> {
 			player.updateLastDirection((Direction) direction);
 			player.attack();
@@ -115,7 +115,7 @@ public enum Action {
 				(offsetPlayerPos(e).x > 0 && offsetPlayerPos(e).x < worldWidth &&
 						offsetPlayerPos(e).y > 0 && offsetPlayerPos(e).y < worldHeight &&
 						Arrays.stream(player.pos.world.grid[offsetPlayerPos(e).x][offsetPlayerPos(e).y]).
-								anyMatch(box -> box instanceof Entity))),
+								anyMatch(box -> box instanceof Entity)), true),
 		//endregion
 		//region Stuck
 		MOVE_STUCK((direction) -> {
@@ -128,7 +128,7 @@ public enum Action {
 				!player.isWaiting() &&
 				!player.attr.isDead() &&
 				!player.getPlanner().isExecuting() &&
-				isSpaceOccupied(player.getX(), player.getY(), player)),
+				isSpaceOccupied(player.getX(), player.getY(), player), true),
 		//endregion
 		//region Plan
 		MOVE_PLAN((direction) -> {
@@ -154,19 +154,18 @@ public enum Action {
 		}, e -> gameState == GameState.PLAYING &&
 				!player.isWaiting() &&
 				player.getPlanner().isPlanning() &&
-				!player.getPlanner().isExecuting()
-		),
+				!player.getPlanner().isExecuting(), false),
 		//endregion
 	//endregion
 	//region Save creator
 	APPEND_NAME_CHAR((ch) -> {
 		if (playerName.length() < 16)
 				playerName.append(removeExtraChars((Character) ch));
-		}, e -> gameState == GameState.SAVE_CREATOR && playerName.length() < 16),
+		}, e -> gameState == GameState.SAVE_CREATOR && playerName.length() < 16, false),
 	REMOVE_NAME_CHAR(() -> playerName.setLength(Math.max(playerName.length() - 1, 0)),
-			e -> gameState == GameState.SAVE_CREATOR && !playerName.isEmpty()),
+			e -> gameState == GameState.SAVE_CREATOR && !playerName.isEmpty(), false),
 	CONFIRM_NAME(SaveCreator::confirmName,
-			e -> gameState == GameState.SAVE_CREATOR),
+			e -> gameState == GameState.SAVE_CREATOR, false),
 	//endregion
 	//region Dialog
 	ADVANCE_DIALOG(() -> {
@@ -175,37 +174,37 @@ public enum Action {
 		} else {
 			fillLetterDisplay();
 		}
-	}, e -> gameState == GameState.DIALOG),
+	}, e -> gameState == GameState.DIALOG, false),
 //endregion
 	//region Menus
 	GO_TO_PREVIOUS_MENU(MenuRenderer::goToPreviousMenu,
-		e -> (gameState == GameState.OPTIONS_MENU || gameState == GameState.SAVE_SELECTOR || gameState == GameState.SAVE_CREATOR) && askingToDelete == -1),
+		e -> (gameState == GameState.OPTIONS_MENU || gameState == GameState.SAVE_SELECTOR || gameState == GameState.SAVE_CREATOR) && askingToDelete == -1, false),
 	SAVE_SELECTOR_CANCEL_DELETE(() -> {
 		askingToDelete = -1;
 		clearButtons();
-	}, e -> gameState == GameState.SAVE_SELECTOR && askingToDelete > -1),
+	}, e -> gameState == GameState.SAVE_SELECTOR && askingToDelete > -1, false),
 	SETTING_MENU_MOVE_LEFT(() -> {
 		moveSettingMenu(-1);
 		SettingsMenuRenderer.leftKeyIndicatorWidth = 19;
-	}, e -> gameState == GameState.OPTIONS_MENU),
+	}, e -> gameState == GameState.OPTIONS_MENU, false),
 	SETTING_MENU_MOVE_RIGHT(() -> {
 		moveSettingMenu(1);
 		SettingsMenuRenderer.rightKeyIndicatorWidth = 19;
-	}, e -> gameState == GameState.OPTIONS_MENU),
+	}, e -> gameState == GameState.OPTIONS_MENU, false),
 	//endregion
 	//region Misc
 	SCREENSHOT(() -> saveScreenshot(getCurrentScreen()),
-			e -> true),
-	TRIGGER_LOGIC(TurnManager::requestNewTurn,
-			e -> !player.getPlanner().isPlanning()),
+			e -> true, false),
+	TRIGGER_LOGIC(() -> {},
+			e -> !player.getPlanner().isPlanning(), true),
 	//endregion
 	//region Debug
 	DEBUG_GIVE_ITEMS(() -> {
 		for (int i = 1; i <= 27; i++) {
 			if (i != 5) player.inv.addItem(createItem(i, 1));
 		}
-	}, e -> true),
-	DEBUG_CLEAR_INV(() -> player.inv.clearInventory(), e -> true),
+	}, e -> true, false),
+	DEBUG_CLEAR_INV(() -> player.inv.clearInventory(), e -> true, false),
 //endregion
 
 	//region
@@ -214,16 +213,19 @@ public enum Action {
 	private final Consumer<Object> paramAction;
 	private final Runnable noParamAction;
 	private final Predicate<Object> condition;
+	private final boolean triggersLogic;
 
-	Action(Consumer<Object> paramAction, Predicate<Object> condition) {
+	Action(Consumer<Object> paramAction, Predicate<Object> condition, boolean triggersLogic) {
 		this.paramAction = paramAction;
 		this.condition = condition;
+		this.triggersLogic = triggersLogic;
 		this.noParamAction = null;
 	}
 
-	Action(Runnable noParamAction, Predicate<Object> condition) {
+	Action(Runnable noParamAction, Predicate<Object> condition, boolean triggersLogic) {
 		this.noParamAction = noParamAction;
 		this.condition = condition;
+		this.triggersLogic = triggersLogic;
 		this.paramAction = null;
 	}
 
@@ -234,6 +236,7 @@ public enum Action {
 			return;
 		}
 		noParamAction.run();
+		if (this.triggersLogic) TurnManager.requestNewTurn();
 	}
 
 	public <T> void execute(T obj) {
@@ -245,6 +248,7 @@ public enum Action {
 		}
 		try {
 			paramAction.accept(obj);
+			if (this.triggersLogic) TurnManager.requestNewTurn();
 		} catch (ClassCastException e) {
 			System.err.println("Action " + this.name() +
 					" received an object of invalid type: " +
