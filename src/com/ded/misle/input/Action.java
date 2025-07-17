@@ -15,7 +15,9 @@ import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.input.KeyHandlerDep.removeExtraChars;
 import static com.ded.misle.renderer.DialogRenderer.fillLetterDisplay;
 import static com.ded.misle.renderer.DialogRenderer.isLetterDisplayFull;
+import static com.ded.misle.renderer.MainRenderer.softGameStart;
 import static com.ded.misle.renderer.MenuButton.clearButtons;
+import static com.ded.misle.renderer.MenuRenderer.pauseGame;
 import static com.ded.misle.renderer.SaveCreator.playerName;
 import static com.ded.misle.renderer.SaveSelector.askingToDelete;
 import static com.ded.misle.renderer.SettingsMenuRenderer.moveSettingMenu;
@@ -90,7 +92,7 @@ public enum Action {
 	//region Movement
 		//region Regular
 		MOVE((direction) ->
-			BoxManipulation.movePlayer(offsetPlayerPos(direction).x, offsetPlayerPos(direction).y), e -> gameState == GameState.PLAYING &&
+			BoxManipulation.movePlayer(getDirectionPoint(direction).x, getDirectionPoint(direction).y), e -> gameState == GameState.PLAYING &&
 			!player.isWaiting() &&
 			!player.attr.isDead() &&
 			!player.getPlanner().isExecuting() &&
@@ -126,7 +128,7 @@ public enum Action {
 		//endregion
 		//region Stuck
 		MOVE_STUCK((direction) -> {
-			BoxManipulation.movePlayer(offsetPlayerPos(direction).x, offsetPlayerPos(direction).y);
+			BoxManipulation.movePlayer(getDirectionPoint(direction).x, getDirectionPoint(direction).y);
 			player.takeDamage(5 + player.getMaxHP() / 120, Entity.DamageFlag.of(
 					Entity.DamageFlag.ABSOLUTE,
 					Entity.DamageFlag.LOCKER
@@ -262,6 +264,13 @@ public enum Action {
 					(obj != null ? obj.getClass().getName() : "null"));
 		}
 	}
+
+	public <T> boolean canExecute(T obj) {
+		return condition.test(obj);
+	}
+	public boolean canExecute() {
+		return condition.test(null);
+	}
 	//endregion
 
 	//region Aux
@@ -272,12 +281,15 @@ public enum Action {
 		return extraSlot[0] >= 0 && extraSlot[1] >= 0;
 	}
 	private static <T> Point offsetPlayerPos(T direction) {
+		return new Point(getDirectionPoint(direction).x + player.getX(), getDirectionPoint(direction).y + player.getY());
+	}
+	private static <T> Point getDirectionPoint(T direction) {
 		return switch ((Direction) direction) {
-			case UP -> new Point(player.getX(), player.getY() - 1);
-			case DOWN -> new Point(player.getX(), player.getY() + 1);
-			case LEFT -> new Point(player.getX() - 1, player.getY());
-			case RIGHT -> new Point(player.getX() + 1, player.getY());
-			default -> new Point(player.getX(), player.getY());
+			case UP -> new Point(0, -1);
+			case DOWN -> new Point(0, 1);
+			case LEFT -> new Point(-1, 0);
+			case RIGHT -> new Point(1, 0);
+			default -> new Point(0, 0);
 		};
 	}
 	//endregion
