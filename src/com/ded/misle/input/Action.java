@@ -239,7 +239,7 @@ public enum Action {
 	}
 
 	public void execute() {
-		if (!condition.test(null)) return;
+		if (!canExecute()) return;
 		if (noParamAction == null) {
 			System.err.println("Action " + this.name() + " requires an object!");
 			return;
@@ -249,7 +249,7 @@ public enum Action {
 	}
 
 	public <T> void execute(T obj) {
-		if (!condition.test(obj)) return;
+		if (!canExecute(obj)) return;
 		if (paramAction == null) {
 			System.err.println("Action " + this.name() + " does not accept parameters, but received: " + obj);
 			execute();
