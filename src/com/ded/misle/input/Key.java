@@ -33,11 +33,11 @@ public final class Key {
 	}
 
 	public static Key of(int keyCode, Action action, KeyInputType keyInputType, Supplier<Object> parameterSupplier, long cooldown) {
-		return new Key(keyCode, action, keyInputType, null, cooldown);
+		return new Key(keyCode, action, keyInputType, parameterSupplier, cooldown);
 	}
 
 	public static Key of(int keyCode, Action action, KeyInputType keyInputType, Supplier<Object> parameterSupplier) {
-		return new Key(keyCode, action, keyInputType, null, 0);
+		return new Key(keyCode, action, keyInputType, parameterSupplier, 0);
 	}
 
 	public int keyCode() {
