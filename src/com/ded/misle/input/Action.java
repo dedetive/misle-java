@@ -29,7 +29,14 @@ import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
 public enum Action {
 	//region Game state
 	PANIC_CRASH(() -> System.exit(0), e -> true, false),
-	PAUSE_GAME(MenuRenderer::pauseGame, e -> gameState == GameState.PLAYING && !player.isWaiting(), false),
+	PAUSE(() -> {
+		pauseGame();
+		clearButtons();
+	}, e -> gameState == GameState.PLAYING && !player.isWaiting(), false),
+	UNPAUSE(() -> {
+		softGameStart();
+		clearButtons();
+	}, e -> gameState == GameState.PAUSE_MENU, false),
 	//endregion
 	//region Plans
 	CANCEL_PLANNING(() -> player.getPlanner().setPlanning(false),
