@@ -44,4 +44,12 @@ public class KeyRegistry {
 			key.action().execute(parameter);
 		}
 	}
+
+	public static boolean isValid(int keyCode) {
+		return keyMap.containsKey(keyCode);
+	}
+
+	public static List<Key> getKeys() {
+		return keys;
+	}
 }
