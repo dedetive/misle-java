@@ -94,6 +94,10 @@ public final class Key {
 		return System.currentTimeMillis() - lastTimeActivated < cooldown;
 	}
 
+	public void resetCooldown() {
+		this.lastTimeActivated = System.currentTimeMillis();
+	}
+
 	@Override
 	public String toString() {
 		return "Key{" +
