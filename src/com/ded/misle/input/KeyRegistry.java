@@ -5,37 +5,43 @@ import java.util.*;
 
 public class KeyRegistry {
 	private static final List<Key> keys = new ArrayList<>();
-	private static final Map<Integer, Action> actionMap = new HashMap<>();
+	private static final Map<Integer, List<Key>> keyMap = new HashMap<>();
 
 	public static void addKey(Key key) {
-		keys.add(key);
-		actionMap.put(key.keyCode(), key.action());
+		if (keys.stream().noneMatch(existing -> existing.equals(key))) {
+			keys.add(key);
+			keyMap.computeIfAbsent(key.keyCode(), k -> new ArrayList<>()).add(key);
+		}
 	}
 
 	public static void removeKey(Key key) {
 		keys.remove(key);
-		actionMap.remove(key.keyCode());
-	}
-
-	public static void trigger(KeyEvent keyEvent) {
-		Action action = actionMap.get(keyEvent.getKeyCode());
-		if (action != null) {
-			action.execute();
+		List<Key> mappedKeys = keyMap.get(key.keyCode());
+		if (mappedKeys != null) {
+			mappedKeys.remove(key);
+			if (mappedKeys.isEmpty()) keyMap.remove(key.keyCode());
 		}
 	}
 
-	public static <T> void trigger(KeyEvent keyEvent, T parameter) {
-		Action action = actionMap.get(keyEvent.getKeyCode());
-		if (action != null) {
-			action.execute(parameter);
+	public static void trigger(KeyEvent keyEvent, KeyInputType inputType) {
+		List<Key> mappedKeys = keyMap.getOrDefault(keyEvent.getKeyCode(), List.of());
+		for (Key key : mappedKeys) {
+			if (key.keyInputType() != inputType) continue;
+			if (key.onCooldown()) continue;
+
+			key.lastTimeActivated = System.currentTimeMillis();
+			key.action().execute();
 		}
 	}
 
-	public static List<Key> getKeys() {
-		return Collections.unmodifiableList(keys);
-	}
+	public static <T> void trigger(KeyEvent keyEvent, KeyInputType inputType, T parameter) {
+		List<Key> mappedKeys = keyMap.getOrDefault(keyEvent.getKeyCode(), List.of());
+		for (Key key : mappedKeys) {
+			if (key.keyInputType() != inputType) continue;
+			if (key.onCooldown()) continue;
 
-	public static Collection<Action> getActions() {
-		return Collections.unmodifiableCollection(actionMap.values());
+			key.lastTimeActivated = System.currentTimeMillis();
+			key.action().execute(parameter);
+		}
 	}
 }
