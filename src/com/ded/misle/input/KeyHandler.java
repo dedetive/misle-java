@@ -6,6 +6,7 @@ import java.util.*;
 
 public class KeyHandler implements KeyListener {
 	private static final Set<Integer> heldKeys = new HashSet<>();
+	private static final Set<Integer> triggeredHeldKeys = new HashSet<>();
 
 	@Override
 	public void keyTyped(KeyEvent e) {}
@@ -22,8 +23,13 @@ public class KeyHandler implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 		if (!KeyRegistry.isValid(keyCode)) return;
-		KeyRegistry.trigger(e, KeyInputType.ON_RELEASE);
 		setKeyHeld(keyCode, false);
+		if (triggeredHeldKeys.contains(keyCode)) {
+			setKeyTriggered(keyCode, false);
+			return;
+		}
+		setKeyTriggered(keyCode, false);
+		KeyRegistry.trigger(e, KeyInputType.ON_RELEASE);
 	}
 
 	public static void setKeyHeld(int keyCode, boolean held) {
@@ -31,11 +37,17 @@ public class KeyHandler implements KeyListener {
 		else heldKeys.remove(keyCode);
 	}
 
+	public static void setKeyTriggered(int keyCode, boolean held) {
+		if (held) triggeredHeldKeys.add(keyCode);
+		else triggeredHeldKeys.remove(keyCode);
+	}
+
 	public static void triggerAllHeld() {
 		for (Key key : KeyRegistry.getKeys()) {
 			if (key.keyInputType() == KeyInputType.ON_HOLD && heldKeys.contains(key.keyCode()) && !key.onCooldown()) {
-				key.action().execute();
-				key.lastTimeActivated = System.currentTimeMillis();
+				if (key.action().canExecute(key.parameter())) setKeyTriggered(key.keyCode(), true);
+				KeyRegistry.trigger(key.keyCode(), KeyInputType.ON_HOLD);
+				key.resetCooldown();
 			}
 		}
 	}

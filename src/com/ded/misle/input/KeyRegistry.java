@@ -24,12 +24,16 @@ public class KeyRegistry {
 	}
 
 	public static void trigger(KeyEvent keyEvent, KeyInputType inputType) {
-		List<Key> mappedKeys = keyMap.getOrDefault(keyEvent.getKeyCode(), List.of());
+		trigger(keyEvent.getKeyCode(), inputType);
+	}
+
+	public static void trigger(int keyCode, KeyInputType inputType) {
+		List<Key> mappedKeys = keyMap.getOrDefault(keyCode, List.of());
 		for (Key key : mappedKeys) {
 			if (key.keyInputType() != inputType) continue;
 			if (key.onCooldown()) continue;
 
-			key.lastTimeActivated = System.currentTimeMillis();
+			key.resetCooldown();
 			boolean earlyReturn = key.mayConflict() && key.action().canExecute(key.parameter());
 			if (key.parameter() != null) key.action().execute(key.parameter());
 			else key.action().execute();
