@@ -21,6 +21,14 @@ public final class Key {
 		this(keyCode, action, keyInputType, 0);
 	}
 
+	public static Key of(int keyCode, Action action, KeyInputType keyInputType, long cooldown) {
+		return new Key(keyCode, action, keyInputType, cooldown);
+	}
+
+	public static Key of(int keyCode, Action action, KeyInputType keyInputType) {
+		return new Key(keyCode, action, keyInputType, 0);
+	}
+
 	public int keyCode() {
 		return keyCode;
 	}
