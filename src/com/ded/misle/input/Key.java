@@ -50,7 +50,7 @@ public final class Key {
 	}
 
 	public boolean onCooldown() {
-		return System.currentTimeMillis() - lastTimeActivated > cooldown;
+		return System.currentTimeMillis() - lastTimeActivated < cooldown;
 	}
 
 	@Override
