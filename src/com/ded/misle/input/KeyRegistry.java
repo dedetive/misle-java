@@ -30,8 +30,10 @@ public class KeyRegistry {
 			if (key.onCooldown()) continue;
 
 			key.lastTimeActivated = System.currentTimeMillis();
+			boolean earlyReturn = key.mayConflict() && key.action().canExecute(key.parameter());
 			if (key.parameter() != null) key.action().execute(key.parameter());
 			else key.action().execute();
+			if (earlyReturn) return;
 		}
 	}
 
