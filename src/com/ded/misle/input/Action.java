@@ -47,9 +47,9 @@ public enum Action {
 	SELECT_INVENTORY_SLOT((slot) -> player.inv.setSelectedSlot((Integer) slot),
 			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning(), false),
 	DROP_SINGLE(() -> player.inv.dropItem(0, player.inv.getSelectedSlot(), 1),
-			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && player.inv.hasHeldItem(), false),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && player.inv.hasHeldItem(), true),
 	DROP_ALL(() -> player.inv.dropItem(0, player.inv.getSelectedSlot(), player.inv.getSelectedItem().getCount()),
-			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && player.inv.hasHeldItem(), false),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && player.inv.hasHeldItem(), true),
 	USE(KeyHandlerDep::pressUseButton,
 			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && !player.getPlanner().isExecuting(), true),
 	TOGGLE_INVENTORY(() ->
@@ -66,19 +66,19 @@ public enum Action {
 	INVENTORY_DROP_SINGLE((pos) -> {
 		int[] p = (int[]) pos;
 		player.inv.dropItem(p[0], p[1], 1);
-	}, e -> gameState == GameState.INVENTORY && isValidHoveredSlot(mouseHandler.getHoveredSlot()) && player.inv.getItem(((int[]) e)[0], ((int[]) e)[1]) != null, false),
+	}, e -> gameState == GameState.INVENTORY && isValidHoveredSlot(mouseHandler.getHoveredSlot()) && player.inv.getItem(((int[]) e)[0], ((int[]) e)[1]) != null, true),
 	INVENTORY_DROP_ALL((pos) -> {
 		int[] p = (int[]) pos;
 		player.inv.dropItem(p[0], p[1], player.inv.getItem(p[0], p[1]).getCount());
-	}, e -> gameState == GameState.INVENTORY && isValidHoveredSlot(mouseHandler.getHoveredSlot()) && player.inv.getItem(((int[]) e)[0], ((int[]) e)[1]) != null, false),
+	}, e -> gameState == GameState.INVENTORY && isValidHoveredSlot(mouseHandler.getHoveredSlot()) && player.inv.getItem(((int[]) e)[0], ((int[]) e)[1]) != null, true),
 	INVENTORY_EXTRA_DROP_SINGLE((index) -> {
 		int i = (Integer) index;
 		player.inv.dropItem(i, 1);
-	}, e -> gameState == GameState.INVENTORY && isValidExtraSlot(mouseHandler.getExtraHoveredSlot()) && player.inv.getItem((Integer) e) != null, false),
+	}, e -> gameState == GameState.INVENTORY && isValidExtraSlot(mouseHandler.getExtraHoveredSlot()) && player.inv.getItem((Integer) e) != null, true),
 	INVENTORY_EXTRA_DROP_ALL((index) -> {
 		int i = (Integer) index;
 		player.inv.dropItem(i, player.inv.getItem(i).getCount());
-	}, e -> gameState == GameState.INVENTORY && isValidExtraSlot(mouseHandler.getExtraHoveredSlot()) && player.inv.getItem((Integer) e) != null, false),
+	}, e -> gameState == GameState.INVENTORY && isValidExtraSlot(mouseHandler.getExtraHoveredSlot()) && player.inv.getItem((Integer) e) != null, true),
 	//endregion
 	//region Movement
 		//region Regular
