@@ -310,17 +310,7 @@ public class GamePanel extends JPanel implements Runnable {
 						TurnManager.updateIfNeeded();
 						updateCamera();
 					} // Only update if in the playing state
-					case PAUSE_MENU -> {
-						if (player.keys.keyPressed.get(KeyDep.PAUSE)) {
-                            softGameStart();
-                            clearButtons();
-							this.setCursor(Cursor.getDefaultCursor());
-							player.keys.keyPressed.put(KeyDep.PAUSE, false);
-						}
-					}
-					case DIALOG -> {
-						mouseHandler.updateMouse();
-					}
+					case DIALOG -> mouseHandler.updateMouse();
 					case null, default -> {
 					}
 				}
