@@ -34,8 +34,6 @@ public abstract class MainRenderer {
 		player.currentSaveSlot = saveSlot;
 		loadPlayerUUID();
 
-		keyH = new KeyHandlerDep();
-
 		previousMenu = currentMenu;
 		currentMenu = PLAYING;
 		startTime = currentTimeMillis();
