@@ -138,8 +138,8 @@ public final class InitKeys {
 	private static List<Key> getInventoryNumbers() {
 		return new ArrayList<>() {{
 			for (int i = 0; i < 7; i++) {
-				int slot = i - 1;
-				this.add(new KeyBuilder(VK_0 + i, Action.SELECT_INVENTORY_SLOT, KeyInputType.ON_RELEASE)
+				int slot = i;
+				this.add(new KeyBuilder(VK_1 + i, Action.SELECT_INVENTORY_SLOT, KeyInputType.ON_RELEASE)
 						.withParameter(() -> slot)
 						.build());
 			}
