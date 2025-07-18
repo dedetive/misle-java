@@ -1,6 +1,6 @@
 package com.ded.misle.input;
 
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Supplier;
 
 public final class Key {
@@ -14,8 +14,9 @@ public final class Key {
 	private final long initialCooldown;
 	private boolean isInitialCooldown = false;
 	private long lastTimeActivated = 0;
+	private final List<Integer> dependencies;
 
-	public Key(int keyCode, Action action, KeyInputType keyInputType, Supplier<Object> parameterSupplier, boolean mayConflict, long cooldown, long initialCooldown) {
+	public Key(int keyCode, Action action, KeyInputType keyInputType, Supplier<Object> parameterSupplier, boolean mayConflict, long cooldown, long initialCooldown, List<Integer> dependencies) {
 		this.keyCode = keyCode;
 		this.action = action;
 		this.keyInputType = keyInputType;
@@ -23,6 +24,7 @@ public final class Key {
 		this.mayConflict = mayConflict;
 		this.cooldown = cooldown;
 		this.initialCooldown = initialCooldown;
+		this.dependencies = dependencies;
 	}
 
 	public int keyCode() {
@@ -81,5 +83,9 @@ public final class Key {
 
 	public boolean mayConflict() {
 		return mayConflict;
+	}
+
+	public List<Integer> dependencies() {
+		return dependencies;
 	}
 }

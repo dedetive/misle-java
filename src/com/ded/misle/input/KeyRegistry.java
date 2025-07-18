@@ -33,6 +33,8 @@ public class KeyRegistry {
 			if (key.keyInputType() != inputType) continue;
 			if (key.onCooldown()) continue;
 
+			if (!dependenciesSatisfied(key)) continue;
+
 			key.recountCooldown();
 			boolean earlyReturn = key.mayConflict() && key.action().canExecute(key.parameter());
 			if (key.parameter() != null) key.action().execute(key.parameter());
@@ -43,6 +45,15 @@ public class KeyRegistry {
 
 	public static boolean isValid(int keyCode) {
 		return keyMap.containsKey(keyCode);
+	}
+
+	private static boolean dependenciesSatisfied(Key key) {
+		if (key.dependencies() == null || key.dependencies().isEmpty()) return true;
+
+		for (int requiredKey : key.dependencies()) {
+			if (!KeyHandler.isHeld(requiredKey)) return false;
+		}
+		return true;
 	}
 
 	public static List<Key> getKeys() {

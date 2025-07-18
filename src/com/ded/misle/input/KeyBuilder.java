@@ -1,5 +1,6 @@
 package com.ded.misle.input;
 
+import java.util.*;
 import java.util.function.Supplier;
 
 public class KeyBuilder {
@@ -11,6 +12,7 @@ public class KeyBuilder {
 	private boolean mayConflict = true;
 	private long cooldown = 0;
 	private long initialCooldown = 0;
+	private List<Integer> dependencies = new ArrayList<>();
 
 	public KeyBuilder(int keyCode, Action action, KeyInputType inputType) {
 		this.keyCode = keyCode;
@@ -38,7 +40,12 @@ public class KeyBuilder {
 		return this;
 	}
 
+	public KeyBuilder withDependencies(Integer... dependencies) {
+		Collections.addAll(this.dependencies, dependencies);
+		return this;
+	}
+
 	public Key build() {
-		return new Key(keyCode, action, inputType, parameterSupplier, mayConflict, cooldown, initialCooldown);
+		return new Key(keyCode, action, inputType, parameterSupplier, mayConflict, cooldown, initialCooldown, dependencies);
 	}
 }

@@ -50,9 +50,13 @@ public class KeyHandler implements KeyListener {
 		else triggeredHeldKeys.remove(keyCode);
 	}
 
+	public static boolean isHeld(int keyCode) {
+		return heldKeys.contains(keyCode);
+	}
+
 	public static void triggerAllHeld() {
 		for (Key key : KeyRegistry.getKeys()) {
-			if (key.keyInputType() == KeyInputType.ON_HOLD && heldKeys.contains(key.keyCode())) {
+			if (key.keyInputType() == KeyInputType.ON_HOLD && isHeld(key.keyCode())) {
 				if (toTrigger.contains(key.keyCode())) {
 					key.applyInitialCooldown(true);
 					setToTrigger(key.keyCode(), false);
