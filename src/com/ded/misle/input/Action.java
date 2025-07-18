@@ -91,8 +91,11 @@ public enum Action {
 	//endregion
 	//region Movement
 		//region Regular
-		MOVE((direction) ->
-			BoxManipulation.movePlayer(getDirectionPoint(direction).x, getDirectionPoint(direction).y), e -> gameState == GameState.PLAYING &&
+		MOVE((direction) -> {
+			player.setWaiting(true);
+		BoxManipulation.movePlayer(getDirectionPoint(direction).x, getDirectionPoint(direction).y);
+		player.setWaiting(false);
+	}, e -> gameState == GameState.PLAYING &&
 			!player.isWaiting() &&
 			!player.attr.isDead() &&
 			!player.getPlanner().isExecuting() &&
