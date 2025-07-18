@@ -176,6 +176,8 @@ public enum Action {
 		}, e -> gameState == GameState.SAVE_CREATOR && playerName.length() < 16, false),
 	REMOVE_NAME_CHAR(() -> playerName.setLength(Math.max(playerName.length() - 1, 0)),
 			e -> gameState == GameState.SAVE_CREATOR && !playerName.isEmpty(), false),
+	REMOVE_WHOLE_NAME(() -> playerName.setLength(0),
+			e -> gameState == GameState.SAVE_CREATOR && !playerName.isEmpty(), false),
 	CONFIRM_NAME(SaveCreator::confirmName,
 			e -> gameState == GameState.SAVE_CREATOR, false),
 	//endregion
