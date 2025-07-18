@@ -11,55 +11,18 @@ public final class Key {
 	private final boolean mayConflict;
 
 	private final long cooldown;
-	public long lastTimeActivated = 0;
+	private final long initialCooldown;
+	private boolean isInitialCooldown = false;
+	private long lastTimeActivated = 0;
 
-	public Key(int keyCode, Action action, KeyInputType keyInputType, Supplier<Object> parameterSupplier, boolean mayConflict, long cooldown) {
+	public Key(int keyCode, Action action, KeyInputType keyInputType, Supplier<Object> parameterSupplier, boolean mayConflict, long cooldown, long initialCooldown) {
 		this.keyCode = keyCode;
 		this.action = action;
 		this.keyInputType = keyInputType;
 		this.parameterSupplier = parameterSupplier;
 		this.mayConflict = mayConflict;
 		this.cooldown = cooldown;
-	}
-
-	public Key(int keyCode, Action action, KeyInputType keyInputType, Supplier<Object> parameterSupplier, boolean mayConflict) {
-		this(keyCode, action, keyInputType, parameterSupplier, mayConflict, 0);
-	}
-
-	public static Key of(int keyCode, Action action, KeyInputType keyInputType, long cooldown, boolean mayConflict) {
-		return new Key(keyCode, action, keyInputType, null, mayConflict, cooldown);
-	}
-
-	public static Key of(int keyCode, Action action, KeyInputType keyInputType, boolean mayConflict) {
-		return new Key(keyCode, action, keyInputType, null, mayConflict, 0);
-	}
-
-	public Key(int keyCode, Action action, KeyInputType keyInputType, Supplier<Object> parameterSupplier) {
-		this(keyCode, action, keyInputType, parameterSupplier, false, 0);
-	}
-
-	public static Key of(int keyCode, Action action, KeyInputType keyInputType, long cooldown) {
-		return new Key(keyCode, action, keyInputType, null, false, cooldown);
-	}
-
-	public static Key of(int keyCode, Action action, KeyInputType keyInputType) {
-		return new Key(keyCode, action, keyInputType, null, false, 0);
-	}
-
-	public static Key of(int keyCode, Action action, KeyInputType keyInputType, Supplier<Object> parameterSupplier, long cooldown, boolean mayConflict) {
-		return new Key(keyCode, action, keyInputType, parameterSupplier, mayConflict, cooldown);
-	}
-
-	public static Key of(int keyCode, Action action, KeyInputType keyInputType, Supplier<Object> parameterSupplier, boolean mayConflict) {
-		return new Key(keyCode, action, keyInputType, parameterSupplier, mayConflict, 0);
-	}
-
-	public static Key of(int keyCode, Action action, KeyInputType keyInputType, Supplier<Object> parameterSupplier, long cooldown) {
-		return new Key(keyCode, action, keyInputType, parameterSupplier, false, cooldown);
-	}
-
-	public static Key of(int keyCode, Action action, KeyInputType keyInputType, Supplier<Object> parameterSupplier) {
-		return new Key(keyCode, action, keyInputType, parameterSupplier, false, 0);
+		this.initialCooldown = initialCooldown;
 	}
 
 	public int keyCode() {
@@ -91,11 +54,17 @@ public final class Key {
 	}
 
 	public boolean onCooldown() {
-		return System.currentTimeMillis() - lastTimeActivated < cooldown;
+		return System.currentTimeMillis() - lastTimeActivated < (isInitialCooldown ? initialCooldown : cooldown);
 	}
 
-	public void resetCooldown() {
+	public void recountCooldown() {
 		this.lastTimeActivated = System.currentTimeMillis();
+		this.isInitialCooldown = false;
+	}
+
+	public void applyInitialCooldown(boolean resetTime) {
+		if (resetTime) this.lastTimeActivated = System.currentTimeMillis();
+		this.isInitialCooldown = true;
 	}
 
 	@Override

@@ -33,7 +33,7 @@ public class KeyRegistry {
 			if (key.keyInputType() != inputType) continue;
 			if (key.onCooldown()) continue;
 
-			key.resetCooldown();
+			key.recountCooldown();
 			boolean earlyReturn = key.mayConflict() && key.action().canExecute(key.parameter());
 			if (key.parameter() != null) key.action().execute(key.parameter());
 			else key.action().execute();
