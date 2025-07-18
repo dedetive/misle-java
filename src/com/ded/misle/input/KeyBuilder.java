@@ -12,7 +12,7 @@ public class KeyBuilder {
 	private boolean mayConflict = true;
 	private long cooldown = 0;
 	private long initialCooldown = 0;
-	private List<Integer> dependencies = new ArrayList<>();
+	private final List<Integer> dependencies = new ArrayList<>();
 
 	public KeyBuilder(int keyCode, Action action, KeyInputType inputType) {
 		this.keyCode = keyCode;
