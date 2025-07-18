@@ -61,10 +61,10 @@ public enum Action {
 			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && player.inv.hasHeldItem(), true),
 	USE(KeyHandlerDep::pressUseButton,
 			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && !player.getPlanner().isExecuting(), true),
-	TOGGLE_INVENTORY(() ->
-			gameState =
-					gameState == GameState.PLAYING ? GameState.INVENTORY : GameState.PLAYING,
+	TOGGLE_INVENTORY(() -> gameState = gameState == GameState.PLAYING ? GameState.INVENTORY : GameState.PLAYING,
 			e -> (gameState == GameState.PLAYING || gameState == GameState.INVENTORY) && !player.getPlanner().isPlanning(), false),
+	CLOSE_INVENTORY(() -> gameState = GameState.PLAYING,
+			e -> gameState == GameState.INVENTORY, false),
 	INVENTORY_SWAP((pos) -> {
 		int[] p = (int[]) pos;
 		player.inv.setTempItem(player.inv.getItem(p[0], p[1]));
