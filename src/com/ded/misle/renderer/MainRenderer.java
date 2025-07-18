@@ -1,6 +1,5 @@
 package com.ded.misle.renderer;
 
-import com.ded.misle.input.KeyHandlerDep;
 import com.ded.misle.world.entities.player.PlayerAttributes;
 
 import static com.ded.misle.core.SaveFile.loadPlayerUUID;

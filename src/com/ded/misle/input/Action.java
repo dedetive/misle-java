@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import static com.ded.misle.game.GamePanel.*;
-import static com.ded.misle.input.KeyHandlerDep.removeExtraChars;
+import static com.ded.misle.input.KeyHelper.removeExtraChars;
 import static com.ded.misle.renderer.DialogRenderer.fillLetterDisplay;
 import static com.ded.misle.renderer.DialogRenderer.isLetterDisplayFull;
 import static com.ded.misle.renderer.MainRenderer.softGameStart;
@@ -59,7 +59,7 @@ public enum Action {
 			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && player.inv.hasHeldItem(), true),
 	DROP_ALL(() -> player.inv.dropItem(0, player.inv.getSelectedSlot(), player.inv.getSelectedItem().getCount()),
 			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && player.inv.hasHeldItem(), true),
-	USE(KeyHandlerDep::pressUseButton,
+	USE(KeyHelper::pressUseButton,
 			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && !player.getPlanner().isExecuting(), true),
 	TOGGLE_INVENTORY(() -> gameState = gameState == GameState.PLAYING ? GameState.INVENTORY : GameState.PLAYING,
 			e -> (gameState == GameState.PLAYING || gameState == GameState.INVENTORY) && !player.getPlanner().isPlanning(), false),

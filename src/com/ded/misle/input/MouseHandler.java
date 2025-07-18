@@ -10,9 +10,9 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import static com.ded.misle.game.GamePanel.*;
+import static com.ded.misle.input.KeyHelper.pressUseButton;
 import static com.ded.misle.renderer.DialogRenderer.fillLetterDisplay;
 import static com.ded.misle.renderer.DialogRenderer.isLetterDisplayFull;
-import static com.ded.misle.input.KeyHandlerDep.pressUseButton;
 import static com.ded.misle.world.entities.npcs.NPCDialog.getCurrentTalkingTo;
 import static com.ded.misle.renderer.InventoryRenderer.*;
 import static com.ded.misle.renderer.PlayingRenderer.inventoryBarY;
@@ -210,37 +210,37 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 										// Swap
 										player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], draggedItem.getCount(), false);
 										// Quick equip item
-									else if ((player.keys.keyPressed.get(KeyDep.SHIFT)) && Objects.equals(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]).getSubtype(), "ring")) {
-										boolean[] isSpaceOccupied = new boolean[3];
-										int firstValidPosition = -1;
-										boolean isAnyEmpty = false;
-										for (int i = 0; i < 3; i++) {
-											isSpaceOccupied[i] = player.inv.getItem(i) != null;
-											if (!isSpaceOccupied[i]) firstValidPosition = i;
-											if (!isSpaceOccupied[i]) {
-												isAnyEmpty = true;
-												break;
-											}
-										}
-										if (isAnyEmpty) {
-											player.inv.bruteSetItem(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]), firstValidPosition);
-											player.inv.removeItem(getHoveredSlot()[0], getHoveredSlot()[1]);
-										}
-									} else if ((player.keys.keyPressed.get(KeyDep.SHIFT) &&
-										getHoveredSlot()[0] == 0 &&
-										!Arrays.equals(player.inv.getFirstEmptyInventorySlot(), new int[]{-1, -1}))) {
-										// Quick move item to first inventory slot
-										player.inv.bruteSetItem(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]),
-											player.inv.getFirstEmptyInventorySlot()[0], player.inv.getFirstEmptyInventorySlot()[1]);
-										player.inv.removeItem(getHoveredSlot()[0], getHoveredSlot()[1]);
-									} else if ((player.keys.keyPressed.get(KeyDep.SHIFT) &&
-										getHoveredSlot()[0] > 0 &&
-										!Arrays.equals(player.inv.getFirstEmptyBarSlot(), new int[]{-1, -1}))) {
-										// Quick move item to first bar slot
-										player.inv.bruteSetItem(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]),
-											player.inv.getFirstEmptyBarSlot()[0], player.inv.getFirstEmptyBarSlot()[1]);
-										player.inv.removeItem(getHoveredSlot()[0], getHoveredSlot()[1]);
-									}
+//									else if ((player.keys.keyPressed.get(KeyDep.SHIFT)) && Objects.equals(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]).getSubtype(), "ring")) {
+//										boolean[] isSpaceOccupied = new boolean[3];
+//										int firstValidPosition = -1;
+//										boolean isAnyEmpty = false;
+//										for (int i = 0; i < 3; i++) {
+//											isSpaceOccupied[i] = player.inv.getItem(i) != null;
+//											if (!isSpaceOccupied[i]) firstValidPosition = i;
+//											if (!isSpaceOccupied[i]) {
+//												isAnyEmpty = true;
+//												break;
+//											}
+//										}
+//										if (isAnyEmpty) {
+//											player.inv.bruteSetItem(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]), firstValidPosition);
+//											player.inv.removeItem(getHoveredSlot()[0], getHoveredSlot()[1]);
+//										}
+//									} else if ((player.keys.keyPressed.get(KeyDep.SHIFT) &&
+//										getHoveredSlot()[0] == 0 &&
+//										!Arrays.equals(player.inv.getFirstEmptyInventorySlot(), new int[]{-1, -1}))) {
+//										// Quick move item to first inventory slot
+//										player.inv.bruteSetItem(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]),
+//											player.inv.getFirstEmptyInventorySlot()[0], player.inv.getFirstEmptyInventorySlot()[1]);
+//										player.inv.removeItem(getHoveredSlot()[0], getHoveredSlot()[1]);
+//									} else if ((player.keys.keyPressed.get(KeyDep.SHIFT) &&
+//										getHoveredSlot()[0] > 0 &&
+//										!Arrays.equals(player.inv.getFirstEmptyBarSlot(), new int[]{-1, -1}))) {
+//										// Quick move item to first bar slot
+//										player.inv.bruteSetItem(player.inv.getItem(getHoveredSlot()[0], getHoveredSlot()[1]),
+//											player.inv.getFirstEmptyBarSlot()[0], player.inv.getFirstEmptyBarSlot()[1]);
+//										player.inv.removeItem(getHoveredSlot()[0], getHoveredSlot()[1]);
+//									}
 									// Grab item
 									else
 										player.inv.initDraggingItem(getHoveredSlot()[0], getHoveredSlot()[1], -1, false);
@@ -256,28 +256,28 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 										// Swap only if it is a ring
 										player.inv.initDraggingItem(getExtraHoveredSlot()[0], getExtraHoveredSlot()[1], draggedItem.getCount(), true);
 										// Quick unequip ring
-									else if (player.keys.keyPressed.get(KeyDep.SHIFT)) {
-										boolean[] isSpaceOccupied = new boolean[4];
-										int[] firstValidPosition = new int[]{-1, -1};
-										boolean isAnyEmpty = false;
-										for (int i = 0; i < 4; i++) {
-											for (int j = 0; j < 7; j++) {
-												isSpaceOccupied[i] = player.inv.getItem(i, j) != null;
-												if (!isSpaceOccupied[i] && Arrays.equals(firstValidPosition, new int[]{-1, -1}))
-													firstValidPosition = new int[]{i, j};
-												if (!isSpaceOccupied[i]) {
-													isAnyEmpty = true;
-													break;
-												}
-											}
-											if (isAnyEmpty) break;
-										}
-										if (isAnyEmpty) {
-											Item item = player.inv.getItem(getExtraHoveredSlot()[1] * 2 + getExtraHoveredSlot()[0]);
-											player.inv.bruteSetItem(item, firstValidPosition[0], firstValidPosition[1]);
-											player.inv.removeItem(getExtraHoveredSlot()[1] * 2 + getExtraHoveredSlot()[0]);
-										}
-									}
+//									else if (player.keys.keyPressed.get(KeyDep.SHIFT)) {
+//										boolean[] isSpaceOccupied = new boolean[4];
+//										int[] firstValidPosition = new int[]{-1, -1};
+//										boolean isAnyEmpty = false;
+//										for (int i = 0; i < 4; i++) {
+//											for (int j = 0; j < 7; j++) {
+//												isSpaceOccupied[i] = player.inv.getItem(i, j) != null;
+//												if (!isSpaceOccupied[i] && Arrays.equals(firstValidPosition, new int[]{-1, -1}))
+//													firstValidPosition = new int[]{i, j};
+//												if (!isSpaceOccupied[i]) {
+//													isAnyEmpty = true;
+//													break;
+//												}
+//											}
+//											if (isAnyEmpty) break;
+//										}
+//										if (isAnyEmpty) {
+//											Item item = player.inv.getItem(getExtraHoveredSlot()[1] * 2 + getExtraHoveredSlot()[0]);
+//											player.inv.bruteSetItem(item, firstValidPosition[0], firstValidPosition[1]);
+//											player.inv.removeItem(getExtraHoveredSlot()[1] * 2 + getExtraHoveredSlot()[0]);
+//										}
+//									}
 									// Grab item
 									else if (!hasDraggedItem())
 										player.inv.initDraggingItem(getExtraHoveredSlot()[0], getExtraHoveredSlot()[1], -1, true);

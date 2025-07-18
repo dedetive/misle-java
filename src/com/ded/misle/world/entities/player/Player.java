@@ -19,7 +19,6 @@ import static com.ded.misle.renderer.ColorManager.defaultBoxColor;
 
 public class Player extends Entity<Player> {
 
-	public final PlayerKeys keys;
 	public final PlayerPosition pos;
 	public final PlayerAttributes attr;
 	public final PlayerStats stats;
@@ -54,7 +53,6 @@ public class Player extends Entity<Player> {
 		this.effect = null;
 
 		this.inv = new Inventory();
-		this.keys = new PlayerKeys();
 		this.pos = new PlayerPosition();
 		this.attr = new PlayerAttributes();
 		this.stats = new PlayerStats();
@@ -64,7 +62,6 @@ public class Player extends Entity<Player> {
 
 	public void unloadPlayer() {
 		this.invalidateUUID();
-		this.keys.resetAllCooldowns();
 		this.attr.unloadAttributes();
 		this.inv.destroyGrabbedItem();
 		this.inv.destroyTempItem();

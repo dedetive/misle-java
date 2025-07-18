@@ -2,7 +2,6 @@ package com.ded.misle.renderer;
 
 import com.ded.misle.core.LanguageManager;
 import com.ded.misle.core.SettingsManager;
-import com.ded.misle.input.KeyHandlerDep;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,8 +10,6 @@ import java.util.ConcurrentModificationException;
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.core.Setting.*;
 import static com.ded.misle.game.GamePanel.*;
-import static com.ded.misle.input.KeyDep.LEFT_MENU;
-import static com.ded.misle.input.KeyDep.RIGHT_MENU;
 import static com.ded.misle.renderer.ColorManager.*;
 import static com.ded.misle.renderer.FontManager.dialogNPCText;
 import static com.ded.misle.renderer.MainRenderer.textShadow;
@@ -132,10 +129,10 @@ public abstract class SettingsMenuRenderer {
                 g2d.fillRoundRect(x, y, width, height, arcW, arcW);
 
                 if (i == 0) {
-                    text = KeyHandlerDep.getChar(LEFT_MENU);
+                    text = "A";
                 }
                 else {
-                    text = KeyHandlerDep.getChar(RIGHT_MENU);
+                    text = "D";
                 }
                 textWidth = fm.stringWidth(text);
 
