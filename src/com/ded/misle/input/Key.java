@@ -47,12 +47,17 @@ public final class Key {
 		var that = (Key) obj;
 		return this.keyCode == that.keyCode &&
 				Objects.equals(this.action, that.action) &&
-				Objects.equals(this.keyInputType, that.keyInputType);
+				Objects.equals(this.keyInputType, that.keyInputType) &&
+				Objects.equals(this.parameterSupplier.get(), that.parameterSupplier.get()) &&
+				this.mayConflict == that.mayConflict &&
+				this.cooldown == that.cooldown &&
+				this.initialCooldown == that.initialCooldown &&
+				this.dependencies.equals(that.dependencies);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(keyCode, action, keyInputType);
+		return Objects.hash(keyCode, action, keyInputType, parameterSupplier, mayConflict, cooldown, initialCooldown, dependencies);
 	}
 
 	public boolean onCooldown() {
