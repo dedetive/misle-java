@@ -5,7 +5,8 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
 
-import static com.ded.misle.core.MathUtils.*;
+import static com.ded.misle.utils.Constants.DEFAULT_GAMMA_CORRECTION;
+import static com.ded.misle.utils.MathUtils.*;
 
 /**
  * Represents a color palette extracted from a {@link BufferedImage}, ordered by color frequency.
@@ -185,8 +186,6 @@ public class Palette {
                 Math.round(a * 255)
         );
     }
-
-    private final static float DEFAULT_GAMMA_CORRECTION = 2.4f;
 
     /**
      * Returns the color at the specified index in the palette.

@@ -1,6 +1,6 @@
 package com.ded.misle.world.logic;
 
-import com.ded.misle.core.MathUtils;
+import com.ded.misle.utils.MathUtils;
 
 import java.awt.*;
 import java.util.*;

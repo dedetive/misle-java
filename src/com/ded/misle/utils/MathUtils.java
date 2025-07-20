@@ -1,4 +1,4 @@
-package com.ded.misle.core;
+package com.ded.misle.utils;
 
 import java.awt.*;
 
