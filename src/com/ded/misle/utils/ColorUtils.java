@@ -4,7 +4,23 @@ import java.awt.*;
 
 import static com.ded.misle.utils.MathUtils.lerp;
 
+/**
+ * Utility class providing color-related operations, such as gamma correction
+ * and gamma-correct color interpolation.
+ * <p>
+ * Currently, this class offers static methods for converting colors between sRGB and
+ * linear color spaces, and for interpolating colors correctly accounting for gamma.
+ * <p>
+ * It is designed to assist in accurate color blending and manipulation within the game engine.
+ * <p>
+ * This class is not meant to be instantiated.
+ */
 public final class ColorUtils {
+	/**
+	 * Private constructor to prevent instantiation.
+	 * <p>
+	 * {@code ColorUtils} is a utility class with only static methods and should not be instantiated.
+	 */
 	private ColorUtils() {}
 
 	/**
