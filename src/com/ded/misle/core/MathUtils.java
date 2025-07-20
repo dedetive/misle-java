@@ -36,4 +36,20 @@ public class MathUtils {
     public static int manhattan(Point a, Point b) {
         return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
     }
+
+    public static float lerp(float a, float b, float t) {
+        return a * (1 - t) + b * t;
+    }
+
+    public static float[] gammaToLinear(Color c, float gamma) {
+        return new float[]{
+                (float) Math.pow(c.getRed() / 255.0, gamma),
+                (float) Math.pow(c.getGreen() / 255.0, gamma),
+                (float) Math.pow(c.getBlue() / 255.0, gamma)
+        };
+    }
+
+    public static int linearToGamma(float v, float gamma) {
+        return Math.min(255, Math.max(0, (int) Math.round(Math.pow(v, 1.0 / gamma) * 255)));
+    }
 }

@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
 
+import static com.ded.misle.core.MathUtils.*;
+
 /**
  * Represents a color palette extracted from a {@link BufferedImage}, ordered by color frequency.
  * <p>
@@ -125,6 +127,66 @@ public class Palette {
     public static Palette of(Color... palette) {
         return new Palette(palette);
     }
+
+    public static Palette gradientOf(int steps, Color... colors) {
+        return Palette.gradientOf(steps, DEFAULT_GAMMA_CORRECTION, colors);
+    }
+
+    public static Palette gradientOf(int steps, float gamma, Color... colors) {
+        if (steps < 0) {
+            System.err.println("steps cannot be negative");
+            return Palette.of(colors);
+        }
+        if (colors == null || colors.length == 0) {
+            System.err.println("colors cannot be null or empty");
+            return Palette.of(colors);
+        }
+        if (steps < colors.length) {
+            System.err.println("steps cannot be less than colors.length");
+            return Palette.of(colors);
+        }
+        if (colors.length == 1 || steps == colors.length) {
+            return Palette.of(colors);
+        }
+
+        List<Color> gradient = new ArrayList<>(steps);
+
+        int segments = colors.length - 1;
+        int stepsPerSegment = steps / segments;
+        int remainder = steps % segments;
+
+        for (int i = 0; i < segments; i++) {
+            Color c1 = colors[i];
+            Color c2 = colors[i + 1];
+            int stepsThisSegment = stepsPerSegment + (i < remainder ? 1 : 0);
+
+            for (int j = 0; j < stepsThisSegment; j++) {
+                float t = j / (float) (stepsThisSegment - 1);
+                gradient.add(interpolateColor(c1, c2, t, gamma));
+            }
+        }
+
+        return Palette.of(gradient);
+    }
+
+    private static Color interpolateColor(Color c1, Color c2, float t, float gamma) {
+        float[] rgb1 = gammaToLinear(c1, gamma);
+        float[] rgb2 = gammaToLinear(c2, gamma);
+
+        float r = lerp(rgb1[0], rgb2[0], t);
+        float g = lerp(rgb1[1], rgb2[1], t);
+        float b = lerp(rgb1[2], rgb2[2], t);
+        float a = lerp(c1.getAlpha() / 255f, c2.getAlpha() / 255f, t);
+
+        return new Color(
+                linearToGamma(r, gamma),
+                linearToGamma(g, gamma),
+                linearToGamma(b, gamma),
+                Math.round(a * 255)
+        );
+    }
+
+    private final static float DEFAULT_GAMMA_CORRECTION = 2.4f;
 
     /**
      * Returns the color at the specified index in the palette.
