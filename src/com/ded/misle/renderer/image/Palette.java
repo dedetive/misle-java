@@ -24,7 +24,11 @@ import static com.ded.misle.utils.MathUtils.*;
 public class Palette {
 
     /**
-     * The list of unique colors, ordered by their frequency (most common first).
+     * The list of unique colors, ordered by their frequency (most common first) when extracted from an image,
+     * or in the provided order when manually constructed.
+     * <p>
+     * This list defines the core color data of the {@code Palette} and is immutable once assigned.
+     * Used as the source for all accessors and palette operations.
      */
     private final List<Color> palette;
 
