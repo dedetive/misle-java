@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
 
+import static com.ded.misle.utils.ColorUtils.*;
 import static com.ded.misle.utils.Constants.DEFAULT_GAMMA_CORRECTION;
 import static com.ded.misle.utils.MathUtils.*;
 
@@ -196,35 +197,6 @@ public class Palette {
         }
 
         return Palette.of(gradient);
-    }
-
-    /**
-     * Interpolates between two colors using gamma-correct blending.
-     * <p>
-     * The colors are first converted to linear RGB space using the specified {@code gamma},
-     * interpolated linearly based on {@code t}, and then converted back to gamma-encoded space.
-     *
-     * @param c1    The starting color.
-     * @param c2    The ending color.
-     * @param t     The interpolation factor, where 0 returns {@code c1} and 1 returns {@code c2}.
-     * @param gamma The gamma value used for gamma-linear conversion.
-     * @return The gamma-correct interpolated color.
-     */
-    private static Color interpolateColor(Color c1, Color c2, float t, float gamma) {
-        float[] rgb1 = gammaToLinear(c1, gamma);
-        float[] rgb2 = gammaToLinear(c2, gamma);
-
-        float r = lerp(rgb1[0], rgb2[0], t);
-        float g = lerp(rgb1[1], rgb2[1], t);
-        float b = lerp(rgb1[2], rgb2[2], t);
-        float a = lerp(c1.getAlpha() / 255f, c2.getAlpha() / 255f, t);
-
-        return new Color(
-                linearToGamma(r, gamma),
-                linearToGamma(g, gamma),
-                linearToGamma(b, gamma),
-                Math.round(a * 255)
-        );
     }
 
     /**
