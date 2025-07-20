@@ -18,5 +18,5 @@ public final class Constants {
 	 * This constant corresponds to the approximate gamma of the sRGB color space,
 	 * and is used to convert between gamma-encoded and linear color representations.
 	 */
-	public final static float DEFAULT_GAMMA_CORRECTION = 2.4f;
+	public final static float DEFAULT_GAMMA_CORRECTION = 2.2f;
 }
