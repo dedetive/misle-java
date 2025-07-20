@@ -1,5 +1,7 @@
 package com.ded.misle.renderer.image;
 
+import com.ded.misle.utils.Constants;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
@@ -133,10 +135,32 @@ public class Palette {
         return new Palette(palette);
     }
 
+    /**
+     * Creates a palette by interpolating the given {@code colors} evenly over the specified number of {@code steps}.
+     * <p>
+     * This is a convenience method that uses the default gamma correction value defined by {@link Constants#DEFAULT_GAMMA_CORRECTION}.
+     *
+     * @param steps  Total number of colors to generate in the gradient.
+     * @param colors The base colors to interpolate between.
+     * @return A {@code Palette} representing the full gradient.
+     */
     public static Palette gradientOf(int steps, Color... colors) {
         return Palette.gradientOf(steps, DEFAULT_GAMMA_CORRECTION, colors);
     }
 
+    /**
+     * Creates a palette by interpolating the given {@code colors} evenly over the specified number of {@code steps},
+     * using gamma-correct color blending.
+     * <p>
+     * If the number of {@code steps} is less than or equal to the number of input colors, the resulting palette
+     * simply returns those original colors. Otherwise, each pair of adjacent base colors defines a segment,
+     * and colors are interpolated with proper gamma correction across each segment.
+     *
+     * @param steps  Total number of colors to generate in the final palette.
+     * @param gamma  Gamma value used to convert between gamma-encoded and linear space for blending.
+     * @param colors The base colors to interpolate between. Must contain at least one color.
+     * @return A {@code Palette} containing the full interpolated gradient.
+     */
     public static Palette gradientOf(int steps, float gamma, Color... colors) {
         if (steps < 0) {
             System.err.println("steps cannot be negative");
@@ -174,6 +198,18 @@ public class Palette {
         return Palette.of(gradient);
     }
 
+    /**
+     * Interpolates between two colors using gamma-correct blending.
+     * <p>
+     * The colors are first converted to linear RGB space using the specified {@code gamma},
+     * interpolated linearly based on {@code t}, and then converted back to gamma-encoded space.
+     *
+     * @param c1    The starting color.
+     * @param c2    The ending color.
+     * @param t     The interpolation factor, where 0 returns {@code c1} and 1 returns {@code c2}.
+     * @param gamma The gamma value used for gamma-linear conversion.
+     * @return The gamma-correct interpolated color.
+     */
     private static Color interpolateColor(Color c1, Color c2, float t, float gamma) {
         float[] rgb1 = gammaToLinear(c1, gamma);
         float[] rgb2 = gammaToLinear(c2, gamma);
