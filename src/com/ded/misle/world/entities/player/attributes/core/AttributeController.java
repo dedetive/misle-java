@@ -11,9 +11,10 @@ public final class AttributeController {
 	}
 
 	public void updateAttributes() {
-		for (Attribute<?, ?> attribute : attributes) {
-			attribute.update();
-		}
+		Arrays.stream(attributes)
+				.filter(t -> t instanceof Attribute.PassiveAttribute<?,?>)
+				.forEach(t ->
+						((Attribute.PassiveAttribute<?,?>) t).update());
 	}
 
 	public void set(Attribute<?, ?>... attributes) {
