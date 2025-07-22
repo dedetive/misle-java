@@ -2,6 +2,7 @@ package com.ded.misle.world.entities.player;
 
 import com.ded.misle.audio.AudioFile;
 import com.ded.misle.renderer.smoother.SyncedValue;
+import com.ded.misle.world.entities.player.attributes.Strength;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -319,7 +320,12 @@ public class PlayerAttributes {
 				case REGENERATION_QUALITY ->
 					player.setRegenerationQuality(startingRegenerationQuality + levelRegenerationQuality + equipmentRegenerationQuality);
 				case INVERSION -> player.setInversion(this.equipmentInversion);
-				case STRENGTH -> this.strength = this.equipmentStrength + this.levelStrength;
+				case STRENGTH -> {
+					this.strength = this.equipmentStrength + this.levelStrength;
+					player.attributeController.get(Strength.class)
+							.ifPresent(str ->
+									str.setValue((int) Math.round(this.strength)));
+				}
 				case ALL -> {
 					for (Stat argument : Stat.values()) {
 						if (argument == Stat.ALL)
