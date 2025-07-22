@@ -33,6 +33,7 @@ public abstract class ImageManager {
     public enum ImageName {
         // UI
             INVENTORY_BAR("ui", "inventory_bar.png"),
+            INVENTORY_SATCHEL("ui", "inventory_satchel.png"),
             INVENTORY_MENU("ui", "inventory_background.png"),
             INVENTORY_RINGLESS_EXTRA_SLOT("ui", "inventory_ringless_extra_slot.png"),
             COIN("ui", "coin.png"),

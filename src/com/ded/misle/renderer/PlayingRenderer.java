@@ -752,18 +752,6 @@ public class PlayingRenderer extends AbstractRenderer {
         }
     }
 
-    private static void drawUIElements(Graphics2D g2d) {
-        drawEntityHealthBars(g2d);
-        ParticleRegistry.updateThenDraw(g2d);
-        drawHealthBar(g2d);
-        drawEntropyBar(g2d);
-        drawXPBar(g2d);
-        drawLevel(g2d);
-        drawCoins(g2d);
-        drawInventoryBar(g2d);
-        drawSelectedItemName(g2d);
-    }
-
     private static void drawEntityHealthBars(Graphics2D g2d) {
         Entity[] entities = getEntities().toArray(new Entity[0]);
 
@@ -806,6 +794,26 @@ public class PlayingRenderer extends AbstractRenderer {
 
             g2d.drawImage(bar, drawX, drawY, null);
         }
+    }
+
+    private static void drawInventorySatchel(Graphics2D g2d) {
+        g2d.drawImage(cachedImages.get(ImageManager.ImageName.INVENTORY_SATCHEL),
+                originalScreenWidth - 64,
+                originalScreenHeight - 64,
+                null);
+    }
+
+    private static void drawUIElements(Graphics2D g2d) {
+        drawEntityHealthBars(g2d);
+        ParticleRegistry.updateThenDraw(g2d);
+        drawHealthBar(g2d);
+        drawEntropyBar(g2d);
+        drawXPBar(g2d);
+        drawLevel(g2d);
+        drawCoins(g2d);
+        drawInventoryBar(g2d);
+        drawInventorySatchel(g2d);
+        drawSelectedItemName(g2d);
     }
 }
 
