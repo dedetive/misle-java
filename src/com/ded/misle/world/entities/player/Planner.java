@@ -362,7 +362,7 @@ public class Planner {
     }
 
     private void finishExecution(int successfulSteps, int stepsLeft) {
-        float damageMultiplier = planningMultiplier(successfulSteps, stepsLeft);
+        float damageMultiplier = planningMultiplier(++successfulSteps, stepsLeft);
 
         player.inv.useItem(damageMultiplier);
     }
