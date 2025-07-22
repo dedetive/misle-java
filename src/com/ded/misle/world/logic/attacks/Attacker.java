@@ -63,6 +63,10 @@ public class Attacker {
         return this;
     }
 
+    public double getDamage() {
+        return damage;
+    }
+
     public Attacker setRange(Range range) {
         this.range = range;
         return this;
