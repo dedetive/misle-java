@@ -32,6 +32,12 @@ public final class AttributeController {
 	}
 
 	public void add(Attribute<?, ?> attribute) {
+		for (Attribute<?, ?> a : attributes) {
+			if (a.getClass().equals(attribute.getClass())) {
+				System.err.println("Warning: Attempted to add an attribute that already exists");
+				return;
+			}
+		}
 		this.attributes = Arrays.copyOf(attributes, attributes.length + 1);
 		this.attributes[attributes.length - 1] = attribute;
 	}
