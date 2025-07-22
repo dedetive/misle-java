@@ -5,6 +5,8 @@ import com.ded.misle.net.NetClient;
 import com.ded.misle.renderer.AnimatedStepCounter;
 import com.ded.misle.world.data.Difficulty;
 import com.ded.misle.world.data.PersistentUUIDTimerData;
+import com.ded.misle.world.entities.player.attributes.Strength;
+import com.ded.misle.world.entities.player.attributes.core.AttributeController;
 import com.ded.misle.world.logic.PhysicsEngine;
 import com.ded.misle.world.entities.Entity;
 
@@ -26,6 +28,9 @@ public class Player extends Entity<Player> {
 	private Planner planner;
 	public HandItemAnimator animator = new HandItemAnimator();
 	public final AnimatedStepCounter stepCounter = new AnimatedStepCounter();
+	public final AttributeController attributeController = new AttributeController(
+			Strength.of(0)
+	);
 
 	public int currentSaveSlot;
 	public String name = "";
@@ -88,12 +93,6 @@ public class Player extends Entity<Player> {
 	}
 
 	public void attack(float intensity) {
-		if (this.inv.getSelectedItem() == null) {
-			this.inv.useWeapon(intensity);
-			return;
-		}
-		String heldItemType = this.inv.getSelectedItem().getType();
-
 		this.inv.useWeapon(intensity);
 	}
 

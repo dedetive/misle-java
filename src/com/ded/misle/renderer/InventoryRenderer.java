@@ -5,6 +5,7 @@ import com.ded.misle.input.MouseHandler;
 import com.ded.misle.world.data.items.Item;
 import com.ded.misle.renderer.image.ImageManager;
 import com.ded.misle.renderer.smoother.SmoothPosition;
+import com.ded.misle.world.entities.player.attributes.Strength;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -125,7 +126,8 @@ public abstract class InventoryRenderer {
         drawStat(g2d, formattedEntropy, 384, 47);
             // STR
         drawStat(g2d, LanguageManager.getText("inventory_strength"), 384, 65);
-		String formattedStrength = Long.toString(Math.round(player.attr.getStrength()));
+		String formattedStrength = Long.toString(Math.round(player.attributeController.get(Strength.class)
+                .orElse(Strength.of(0)).getValue()));
 		formattedStrength = formattedStrength + LanguageManager.getText("inventory_strength_measure_word");
         drawStat(g2d, formattedStrength, 384, 79);
             // SPD

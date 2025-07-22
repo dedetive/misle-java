@@ -3,6 +3,7 @@ package com.ded.misle.world.entities.player;
 import com.ded.misle.world.data.items.Item;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.data.TilePattern;
+import com.ded.misle.world.entities.player.attributes.Strength;
 import com.ded.misle.world.logic.attacks.Range;
 import com.ded.misle.world.logic.attacks.Attacker;
 
@@ -10,6 +11,7 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.Optional;
 
 import static com.ded.misle.game.GamePanel.player;
 
@@ -23,6 +25,9 @@ public class HandItemAnimator {
     public void update(float damageMultiplier) {
         Item selectedItem = player.inv.getSelectedItem();
 
+        double damage = 1;
+        Range range = Range.getDefaultRange();
+
         if (selectedItem != null && Objects.equals(selectedItem.getType(), "weapon")) {
             String strRange = selectedItem.getAttributes().containsKey("range")
                 ? (selectedItem.getAttributes().get("range").toString())
@@ -31,16 +36,18 @@ public class HandItemAnimator {
                 attacker.invalidate();
                 return;
             }
-            Range range = Range.toRange(strRange);
+            range = Range.toRange(strRange);
 
-            double damage = Double.parseDouble(selectedItem.getAttributes().get("damage").toString());
-
-            attacker.setRange(range);
-            attacker.setDamage(damage * damageMultiplier);
-        } else {
-            attacker.setRange(Range.getDefaultRange());
-            attacker.setDamage(damageMultiplier);
+            damage = Double.parseDouble(selectedItem.getAttributes().get("damage").toString());
         }
+
+        attacker.setRange(range);
+        attacker.setDamage(damage);
+
+        Optional<Strength> strength = player.attributeController.get(Strength.class);
+        strength.ifPresent(value -> value.apply(attacker));
+
+        attacker.setDamage(attacker.getDamage() * damageMultiplier);
     }
 
     public Range getRange(Direction direction) {
