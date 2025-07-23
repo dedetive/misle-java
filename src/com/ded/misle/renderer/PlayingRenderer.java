@@ -801,7 +801,7 @@ public class PlayingRenderer extends AbstractRenderer {
             InventorySatchelRendering.shouldRender = shouldRender;
         }
 
-        private static void draw(Graphics2D g2d) {
+        private static void drawIfPossible(Graphics2D g2d) {
             if (!shouldRender) return;
             g2d.drawImage(cachedImages.get(ImageManager.ImageName.INVENTORY_SATCHEL),
                     originalScreenWidth - 64,
@@ -818,7 +818,7 @@ public class PlayingRenderer extends AbstractRenderer {
         drawXPBar(g2d);
         drawLevel(g2d);
         drawCoins(g2d);
-        InventorySatchelRendering.draw(g2d);
+        InventorySatchelRendering.drawIfPossible(g2d);
         drawInventoryBar(g2d);
         drawSelectedItemName(g2d);
     }
