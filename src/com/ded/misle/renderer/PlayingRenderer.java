@@ -5,6 +5,7 @@ import com.ded.misle.net.NetClient;
 import com.ded.misle.renderer.image.ImageManager;
 import com.ded.misle.renderer.particles.core.ParticleRegistry;
 import com.ded.misle.renderer.smoother.SmoothValue;
+import com.ded.misle.renderer.ui.InventorySatchelRendering;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.player.Planner;
@@ -791,22 +792,6 @@ public class PlayingRenderer extends AbstractRenderer {
             bar = compatible;
 
             g2d.drawImage(bar, drawX, drawY, null);
-        }
-    }
-
-    private static class InventorySatchelRendering {
-        private static boolean shouldRender = true;
-
-        protected static void setRender(boolean shouldRender) {
-            InventorySatchelRendering.shouldRender = shouldRender;
-        }
-
-        private static void drawIfPossible(Graphics2D g2d) {
-            if (!shouldRender) return;
-            g2d.drawImage(cachedImages.get(ImageManager.ImageName.INVENTORY_SATCHEL),
-                    originalScreenWidth - 64,
-                    originalScreenHeight - 64,
-                    null);
         }
     }
 
