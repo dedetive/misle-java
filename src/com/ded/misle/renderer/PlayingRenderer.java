@@ -18,9 +18,7 @@ import com.ded.misle.world.logic.attacks.Range;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.Objects;
+import java.util.*;
 
 import static com.ded.misle.Launcher.*;
 import static com.ded.misle.game.GamePanel.*;
@@ -797,7 +795,14 @@ public class PlayingRenderer extends AbstractRenderer {
     }
 
     private static class InventorySatchelRendering {
+        private static boolean shouldRender = true;
+
+        protected static void setRender(boolean shouldRender) {
+            InventorySatchelRendering.shouldRender = shouldRender;
+        }
+
         private static void draw(Graphics2D g2d) {
+            if (!shouldRender) return;
             g2d.drawImage(cachedImages.get(ImageManager.ImageName.INVENTORY_SATCHEL),
                     originalScreenWidth - 64,
                     originalScreenHeight - 64,
