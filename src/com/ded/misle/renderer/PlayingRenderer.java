@@ -5,7 +5,7 @@ import com.ded.misle.net.NetClient;
 import com.ded.misle.renderer.image.ImageManager;
 import com.ded.misle.renderer.particles.core.ParticleRegistry;
 import com.ded.misle.renderer.smoother.SmoothValue;
-import com.ded.misle.renderer.ui.InventorySatchelRendering;
+import com.ded.misle.renderer.ui.InventorySatchelRenderer;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.player.Planner;
@@ -803,7 +803,7 @@ public class PlayingRenderer extends AbstractRenderer {
         drawXPBar(g2d);
         drawLevel(g2d);
         drawCoins(g2d);
-        InventorySatchelRendering.drawIfPossible(g2d);
+        InventorySatchelRenderer.drawIfPossible(g2d);
         drawInventoryBar(g2d);
         drawSelectedItemName(g2d);
     }

@@ -8,11 +8,11 @@ import static com.ded.misle.game.GamePanel.originalScreenHeight;
 import static com.ded.misle.game.GamePanel.originalScreenWidth;
 import static com.ded.misle.renderer.image.ImageManager.cachedImages;
 
-public class InventorySatchelRendering {
+public class InventorySatchelRenderer {
 	private static boolean shouldRender = true;
 
 	public static void setRender(boolean shouldRender) {
-		InventorySatchelRendering.shouldRender = shouldRender;
+		InventorySatchelRenderer.shouldRender = shouldRender;
 	}
 
 	public static void drawIfPossible(Graphics2D g2d) {
