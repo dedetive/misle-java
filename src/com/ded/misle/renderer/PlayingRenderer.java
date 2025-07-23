@@ -796,11 +796,13 @@ public class PlayingRenderer extends AbstractRenderer {
         }
     }
 
-    private static void drawInventorySatchel(Graphics2D g2d) {
-        g2d.drawImage(cachedImages.get(ImageManager.ImageName.INVENTORY_SATCHEL),
-                originalScreenWidth - 64,
-                originalScreenHeight - 64,
-                null);
+    private static class InventorySatchelRendering {
+        private static void draw(Graphics2D g2d) {
+            g2d.drawImage(cachedImages.get(ImageManager.ImageName.INVENTORY_SATCHEL),
+                    originalScreenWidth - 64,
+                    originalScreenHeight - 64,
+                    null);
+        }
     }
 
     private static void drawUIElements(Graphics2D g2d) {
@@ -811,8 +813,8 @@ public class PlayingRenderer extends AbstractRenderer {
         drawXPBar(g2d);
         drawLevel(g2d);
         drawCoins(g2d);
+        InventorySatchelRendering.draw(g2d);
         drawInventoryBar(g2d);
-        drawInventorySatchel(g2d);
         drawSelectedItemName(g2d);
     }
 }
