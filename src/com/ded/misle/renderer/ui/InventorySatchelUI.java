@@ -8,13 +8,20 @@ import static com.ded.misle.game.GamePanel.originalScreenHeight;
 import static com.ded.misle.game.GamePanel.originalScreenWidth;
 import static com.ded.misle.renderer.image.ImageManager.cachedImages;
 
-public final class InventorySatchelUI {
+public final class InventorySatchelUI implements UIElement {
 	private boolean isActive = true;
 
+	@Override
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
 
+	@Override
+	public boolean isActive() {
+		return false;
+	}
+
+	@Override
 	public void drawIfPossible(Graphics2D g2d) {
 		if (!isActive) return;
 		g2d.drawImage(cachedImages.get(ImageManager.ImageName.INVENTORY_SATCHEL),
