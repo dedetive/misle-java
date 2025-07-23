@@ -9,14 +9,14 @@ import static com.ded.misle.game.GamePanel.originalScreenWidth;
 import static com.ded.misle.renderer.image.ImageManager.cachedImages;
 
 public class InventorySatchelRenderer {
-	private static boolean shouldRender = true;
+	private static boolean isActive = true;
 
-	public static void setRender(boolean shouldRender) {
-		InventorySatchelRenderer.shouldRender = shouldRender;
+	public static void setActive(boolean isActive) {
+		InventorySatchelRenderer.isActive = isActive;
 	}
 
 	public static void drawIfPossible(Graphics2D g2d) {
-		if (!shouldRender) return;
+		if (!isActive) return;
 		g2d.drawImage(cachedImages.get(ImageManager.ImageName.INVENTORY_SATCHEL),
 				originalScreenWidth - 64,
 				originalScreenHeight - 64,
