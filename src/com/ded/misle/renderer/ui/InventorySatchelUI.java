@@ -29,4 +29,17 @@ public final class InventorySatchelUI implements UIElement {
 				originalScreenHeight - 64,
 				null);
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+
+		return this.getClass() == obj.getClass();
+	}
+
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
+	}
 }
