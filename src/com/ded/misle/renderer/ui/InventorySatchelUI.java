@@ -18,7 +18,7 @@ public final class InventorySatchelUI implements UIElement {
 
 	@Override
 	public boolean isActive() {
-		return false;
+		return isActive;
 	}
 
 	@Override
