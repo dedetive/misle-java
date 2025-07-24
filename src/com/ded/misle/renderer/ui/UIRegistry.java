@@ -10,6 +10,7 @@ public final class UIRegistry {
 	private static final List<UIElement> elements = new ArrayList<>();
 
 	public static <T extends UIElement> void add(T element) {
+		if (elements.contains(element)) return;
 		elements.add(element);
 	}
 
