@@ -1,7 +1,7 @@
 package com.ded.misle.game;
 
 import com.ded.misle.input.*;
-import com.ded.misle.renderer.menu.MenuManager;
+import com.ded.misle.renderer.menu.core.MenuManager;
 import com.ded.misle.world.data.items.ItemLoader;
 import com.ded.misle.world.entities.player.Player;
 import com.ded.misle.renderer.*;

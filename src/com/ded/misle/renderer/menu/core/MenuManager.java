@@ -1,17 +1,19 @@
-package com.ded.misle.renderer.menu;
+package com.ded.misle.renderer.menu.core;
+
+import com.ded.misle.renderer.menu.menus.MainMenu;
 
 import java.awt.*;
 
 public final class MenuManager {
 	private MenuManager() {}
 
-	private static Menu mainActive;
+	private static com.ded.misle.renderer.menu.core.Menu mainActive;
 
 	public static void init() {
 		setCurrent(new MainMenu());
 	}
 
-	public static void setCurrent(Menu main) {
+	public static void setCurrent(com.ded.misle.renderer.menu.core.Menu main) {
 		mainActive = main;
 		mainActive.init();
 	}

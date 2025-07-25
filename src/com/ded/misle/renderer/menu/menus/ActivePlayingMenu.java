@@ -1,5 +1,6 @@
-package com.ded.misle.renderer.menu;
+package com.ded.misle.renderer.menu.menus;
 
+import com.ded.misle.renderer.menu.core.Menu;
 import com.ded.misle.renderer.ui.elements.InventorySatchelUI;
 import com.ded.misle.renderer.ui.core.UIRegistry;
 

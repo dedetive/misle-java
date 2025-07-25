@@ -1,4 +1,4 @@
-package com.ded.misle.renderer.menu;
+package com.ded.misle.renderer.menu.core;
 
 import java.awt.*;
 
