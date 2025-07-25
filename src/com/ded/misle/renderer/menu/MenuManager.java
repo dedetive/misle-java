@@ -7,6 +7,10 @@ public final class MenuManager {
 
 	private static Menu mainActive;
 
+	public static void init() {
+		setCurrent(new MainMenu());
+	}
+
 	public static void setCurrent(Menu main) {
 		mainActive = main;
 		mainActive.init();
