@@ -1,6 +1,7 @@
 package com.ded.misle.game;
 
 import com.ded.misle.input.*;
+import com.ded.misle.renderer.menu.MenuManager;
 import com.ded.misle.world.data.items.ItemLoader;
 import com.ded.misle.world.entities.player.Player;
 import com.ded.misle.renderer.*;
@@ -422,32 +423,34 @@ public class GamePanel extends JPanel implements Runnable {
 			g2dBuffer.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		}
 
-		switch (gameState) {
-			case GameState.INVENTORY:
-			case GameState.PLAYING:
-			case GameState.FROZEN_PLAYING:
-			case GameState.DIALOG:
-				new PlayingRenderer().render(g2dBuffer, mouseHandler);
-				break;
-			case GameState.MAIN_MENU:
-				MenuRenderer.renderMainMenu(g2dBuffer, this);
-				break;
-			case GameState.OPTIONS_MENU:
-				SettingsMenuRenderer.renderOptionsMenu(g2dBuffer, this);
-				break;
-			case GameState.PAUSE_MENU:
-				MenuRenderer.renderPauseMenu(g2dBuffer, this);
-				break;
-			case GameState.LOADING_MENU:
-				MenuRenderer.renderLoadingMenu(g2dBuffer, this);
-				break;
-			case GameState.SAVE_SELECTOR:
-				SaveSelector.renderSaveSelector(g2dBuffer, this);
-				break;
-			case SAVE_CREATOR:
-				SaveCreator.renderSaveCreator(g2dBuffer, this);
-				break;
-		}
+		MenuManager.draw(g2dBuffer);
+
+//		switch (gameState) {
+//			case GameState.INVENTORY:
+//			case GameState.PLAYING:
+//			case GameState.FROZEN_PLAYING:
+//			case GameState.DIALOG:
+//				new PlayingRenderer().render(g2dBuffer, mouseHandler);
+//				break;
+//			case GameState.MAIN_MENU:
+//				MenuRenderer.renderMainMenu(g2dBuffer, this);
+//				break;
+//			case GameState.OPTIONS_MENU:
+//				SettingsMenuRenderer.renderOptionsMenu(g2dBuffer, this);
+//				break;
+//			case GameState.PAUSE_MENU:
+//				MenuRenderer.renderPauseMenu(g2dBuffer, this);
+//				break;
+//			case GameState.LOADING_MENU:
+//				MenuRenderer.renderLoadingMenu(g2dBuffer, this);
+//				break;
+//			case GameState.SAVE_SELECTOR:
+//				SaveSelector.renderSaveSelector(g2dBuffer, this);
+//				break;
+//			case SAVE_CREATOR:
+//				SaveCreator.renderSaveCreator(g2dBuffer, this);
+//				break;
+//		}
 
 		if (displayFPS.bool()) {
 			g2dBuffer.setFont(buttonFont);
