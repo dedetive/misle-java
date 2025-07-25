@@ -9,7 +9,7 @@ import com.ded.misle.renderer.smoother.ValueModifier;
  * using an exponential falloff, producing a natural bouncing motion.
  * Useful for visual reactions like knockback, damage impact, or UI feedback.
  */
-public class BounceModifier implements ValueModifier {
+public class BounceModifier implements ValueModifier, Cloneable {
     /**
      * The current time elapsed since the modifier started.
      */

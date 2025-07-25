@@ -10,7 +10,7 @@ import java.util.Random;
  * Useful for visual feedback such as screen shake, damage impact, or dynamic offset effects.
  * The offset is randomly updated each frame within the given strength.
  */
-public class ShakeModifier implements ValueModifier {
+public class ShakeModifier implements ValueModifier, Cloneable {
     /**
      * The maximum strength of the shake, determining the range of random offset values.
      */
