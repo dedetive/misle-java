@@ -14,6 +14,16 @@ public final class UIRegistry {
 		elements.add(element);
 	}
 
+	public <T extends AbstractUIElement.SingletonUIElement> void add(Class<T> clazz) {
+		try {
+			T element = clazz.getDeclaredConstructor().newInstance();
+			if (elements.contains(element)) return;
+			elements.add(element);
+		} catch (ReflectiveOperationException e) {
+			System.err.println(("Failed to instantiate UI element: " + clazz.getName() + " — " + e.getMessage()));
+		}
+	}
+
 	public <T extends UIElement> void remove(T element) {
 		elements.remove(element);
 	}
