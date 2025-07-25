@@ -1,4 +1,4 @@
-package com.ded.misle.renderer.ui;
+package com.ded.misle.renderer.ui.core;
 
 public abstract class AbstractUIElement implements UIElement {
 

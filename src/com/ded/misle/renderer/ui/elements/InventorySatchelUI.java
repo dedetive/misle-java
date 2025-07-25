@@ -1,6 +1,7 @@
-package com.ded.misle.renderer.ui;
+package com.ded.misle.renderer.ui.elements;
 
 import com.ded.misle.renderer.image.ImageManager;
+import com.ded.misle.renderer.ui.core.AbstractUIElement;
 
 import java.awt.*;
 

@@ -1,6 +1,6 @@
 package com.ded.misle.renderer.menu;
 
-import com.ded.misle.renderer.ui.*;
+import com.ded.misle.renderer.ui.core.UIRegistry;
 
 import java.awt.*;
 

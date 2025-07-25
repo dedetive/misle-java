@@ -1,4 +1,4 @@
-package com.ded.misle.renderer.ui;
+package com.ded.misle.renderer.ui.core;
 
 import java.awt.*;
 import java.util.ArrayList;
