@@ -70,13 +70,11 @@ public final class Title extends AbstractUIElement {
 		BufferedImage img = new BufferedImage(textWidth, imageHeight + 8, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D gImg = img.createGraphics();
 
-		gImg.setColor(menuTitleShadowColor);
 		for (Point p : shadowIterationPoints) {
-			drawColoredText(gImg, text, p.x, p.y + imageHeight);
+			drawColoredText(gImg, text, p.x, p.y + imageHeight, menuTitleShadowColor);
 		}
 
-		gImg.setColor(menuTitleColor);
-		drawColoredText(gImg, text, 0, imageHeight);
+		drawColoredText(gImg, text, 0, imageHeight, menuTitleColor);
 		gImg.dispose();
 		return img;
 	}
