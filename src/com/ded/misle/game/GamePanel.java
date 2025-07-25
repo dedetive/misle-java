@@ -277,6 +277,8 @@ public class GamePanel extends JPanel implements Runnable {
 	public void run() {
 
 		InitKeys.init();
+		MenuManager.init();
+
 		try {
 			ItemLoader.loadItems();
 		} catch (IOException e) {
