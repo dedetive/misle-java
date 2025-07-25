@@ -5,28 +5,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class UIRegistry {
-	private UIRegistry() {}
+	public UIRegistry() {}
 
-	private static final List<UIElement> elements = new ArrayList<>();
+	private final List<UIElement> elements = new ArrayList<>();
 
-	public static <T extends UIElement> void add(T element) {
+	public <T extends UIElement> void add(T element) {
 		if (elements.contains(element)) return;
 		elements.add(element);
 	}
 
-	public static <T extends UIElement> void remove(T element) {
+	public <T extends UIElement> void remove(T element) {
 		elements.remove(element);
 	}
 
-	public static void clear() {
+	public void clear() {
 		elements.clear();
 	}
 
-	public static List<UIElement> getAll() {
+	public List<UIElement> getAll() {
 		return elements;
 	}
 
-	public static List<UIElement> getActive() {
+	public List<UIElement> getActive() {
 		List<UIElement> active = new ArrayList<>(elements.size());
 		List<UIElement> copy = new ArrayList<>(elements);
 		for (UIElement e : copy) {
@@ -35,7 +35,7 @@ public final class UIRegistry {
 		return active;
 	}
 
-	public static void drawActive(Graphics2D g2d) {
+	public void drawActive(Graphics2D g2d) {
 		for (UIElement e : getActive()) {
 			if (e.isActive()) {
 				e.drawIfPossible(g2d);
