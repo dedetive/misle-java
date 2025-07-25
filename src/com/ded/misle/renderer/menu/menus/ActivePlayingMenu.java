@@ -15,6 +15,6 @@ public class ActivePlayingMenu implements Menu {
 
 	@Override
 	public void init() {
-		registry.add(new InventorySatchelUI());
+		registry.add(InventorySatchelUI.class);
 	}
 }
