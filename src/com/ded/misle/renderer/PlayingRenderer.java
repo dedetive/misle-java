@@ -803,7 +803,6 @@ public class PlayingRenderer extends AbstractRenderer {
         drawXPBar(g2d);
         drawLevel(g2d);
         drawCoins(g2d);
-        InventorySatchelUI.drawIfPossible(g2d);
         drawInventoryBar(g2d);
         drawSelectedItemName(g2d);
     }
