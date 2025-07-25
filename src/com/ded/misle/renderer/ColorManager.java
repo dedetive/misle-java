@@ -198,6 +198,10 @@ public abstract class ColorManager {
         drawColoredText(g2d, text, x, y, g2d.getFont(), g2d.getColor(), false);
     }
 
+    public static void drawColoredText(Graphics2D g2d, String text, int x, int y, Color baseColor) {
+        drawColoredText(g2d, text, x, y, g2d.getFont(), baseColor, false);
+    }
+
     public static void drawColoredText(Graphics2D g2d, String text, int x, int y, Font font, Color baseColor, boolean forceBaseColor) {
         g2d.setFont(font);
 
