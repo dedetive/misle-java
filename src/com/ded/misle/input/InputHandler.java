@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.*;
 
-public class KeyHandler implements KeyListener {
+public class InputHandler implements KeyListener {
 	private static final Set<Integer> heldKeys = new HashSet<>();
 	private static final Set<Integer> toTrigger = new HashSet<>();
 	private static final Set<Integer> triggeredHeldKeys = new HashSet<>();

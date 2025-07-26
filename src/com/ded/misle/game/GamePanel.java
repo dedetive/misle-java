@@ -31,7 +31,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private final JFrame window;
 	private static volatile boolean running = true;
-	public static KeyHandler keyH;
+	public static InputHandler keyH;
 	public static MouseHandler mouseHandler;
 	Thread gameThread;
 
@@ -63,7 +63,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public static Player player;
 	static {
 		player = new Player();
-		keyH = new KeyHandler();
+		keyH = new InputHandler();
 	}
 
 	// GAMESTATE
@@ -305,7 +305,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 			// Process updates and rendering while delta is >= 1
 			while (delta >= 1) {
-				KeyHandler.triggerAllHeld();
+				InputHandler.triggerAllHeld();
 
 				switch (gameState) {
 					case PLAYING, INVENTORY ->  {

@@ -5,14 +5,19 @@ import com.ded.misle.renderer.menu.core.Menu;
 import com.ded.misle.renderer.smoother.SmoothValue;
 import com.ded.misle.renderer.smoother.modifiers.SineWaveModifier;
 import com.ded.misle.renderer.ui.core.UIRegistry;
+import com.ded.misle.renderer.ui.elements.Button;
 import com.ded.misle.renderer.ui.elements.MainBackground;
 import com.ded.misle.renderer.ui.elements.Title;
 
 import java.awt.*;
 
+import static com.ded.misle.game.GamePanel.originalScreenHeight;
+import static com.ded.misle.game.GamePanel.originalScreenWidth;
+
 public class MainMenu implements Menu {
 	private final UIRegistry registry = new UIRegistry();
 	private final Title title = new Title(LanguageManager.getText("misle"));
+	private final Button startButton = new Button(LanguageManager.getText("start"), new Rectangle(100, 100, 100, 100));
 	private final SmoothValue smoothTitleScale = new SmoothValue(1.6f);
 	private final SmoothValue smoothTitleRotation = new SmoothValue(0f);
 
@@ -36,5 +41,7 @@ public class MainMenu implements Menu {
 				new SineWaveModifier(4f, 0.6f)
 		);
 		registry.add(title);
+		registry.add(startButton);
+		registry.add(new Button(LanguageManager.getText("uwu"), new Rectangle(originalScreenWidth / 2 - 64, originalScreenHeight - 30, 128, 20)));
 	}
 }

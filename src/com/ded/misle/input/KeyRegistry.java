@@ -51,8 +51,8 @@ public class KeyRegistry {
 		if (key.dependencies() == null || key.dependencies().isEmpty()) return true;
 
 		for (int requiredKey : key.dependencies()) {
-			if (requiredKey > 0 && !KeyHandler.isHeld(requiredKey)) return false;
-			else if (requiredKey < 0 && KeyHandler.isHeld(Math.abs(requiredKey))) return false;
+			if (requiredKey > 0 && !InputHandler.isHeld(requiredKey)) return false;
+			else if (requiredKey < 0 && InputHandler.isHeld(Math.abs(requiredKey))) return false;
 		}
 		return true;
 	}
