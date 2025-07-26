@@ -23,6 +23,7 @@ public final class MenuManager {
 	}
 
 	public static void draw(Graphics2D g2d) {
-		mainActive.draw(g2d);
+		if (mainActive != null) mainActive.draw(g2d);
+		else init();
 	}
 }
