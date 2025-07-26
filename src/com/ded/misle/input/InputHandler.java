@@ -14,16 +14,20 @@ public class InputHandler implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		int keyCode = e.getKeyCode();
+		keyPressed(e.getKeyCode());
+	}
+	public void keyPressed(int keyCode) {
 		if (!KeyRegistry.isValid(keyCode)) return;
-		KeyRegistry.trigger(e, KeyInputType.ON_PRESS);
+		KeyRegistry.trigger(keyCode, KeyInputType.ON_PRESS);
 		if (!heldKeys.contains(keyCode)) setToTrigger(keyCode, true);
 		setKeyHeld(keyCode, true);
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		int keyCode = e.getKeyCode();
+		keyReleased(e.getKeyCode());
+	}
+	public void keyReleased(int keyCode) {
 		if (!KeyRegistry.isValid(keyCode)) return;
 		setKeyHeld(keyCode, false);
 		if (triggeredHeldKeys.contains(keyCode)) {
@@ -32,7 +36,7 @@ public class InputHandler implements KeyListener {
 			return;
 		}
 		setKeyTriggered(keyCode, false);
-		KeyRegistry.trigger(e, KeyInputType.ON_RELEASE);
+		KeyRegistry.trigger(keyCode, KeyInputType.ON_RELEASE);
 	}
 
 	public static void setKeyHeld(int keyCode, boolean held) {
