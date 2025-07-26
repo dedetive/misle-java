@@ -4,6 +4,7 @@ import com.ded.misle.renderer.*;
 import com.ded.misle.renderer.ui.core.AbstractUIElement;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
@@ -26,10 +27,12 @@ public final class Title extends AbstractUIElement {
 	private static final HashMap<String, Integer> innerTextWidthCache = new HashMap<>();
 	private static final int textX = originalScreenWidth / 2;
 	private static final int textY = 28;
+	private static final int defaultHeight = 64;
 
 	private final String text;
 	private double scale = 1.0;
-	private double rotation = 0.0;
+	private double degrees = 0.0;
+	private AffineTransform transform;
 
 	/* Weakly cached render data */
 	private BufferedImage finalImage;
@@ -48,9 +51,15 @@ public final class Title extends AbstractUIElement {
 		return this;
 	}
 
-	public Title setRotation(double rotation) {
-		this.rotation = rotation;
+	public Title setRotation(double degrees) {
+		this.degrees = degrees;
 		needsRecalculation = true;
+		if (degrees != 0.0) {
+			this.transform = new AffineTransform();
+			transform.rotate(Math.toRadians(degrees), textX, textY + (double) defaultHeight / 2);
+		} else {
+			this.transform = null;
+		}
 		return this;
 	}
 
@@ -61,17 +70,17 @@ public final class Title extends AbstractUIElement {
 		String plainText = ColorManager.removeColorIndicators(text);
 
 		FontMetrics fm = FontManager.getCachedMetrics(g2d, FontManager.titleFont);
-		int textWidth = innerTextWidthCache.computeIfAbsent(text + ":" + scale,
+		int textWidth = innerTextWidthCache.computeIfAbsent(text + ":" + scale + ":" + this.degrees,
 				s -> fm.stringWidth(plainText));
 
-		finalImage = innerImageCache.computeIfAbsent(text + ":" + scale, s ->
+		finalImage = innerImageCache.computeIfAbsent(text + ":" + scale + ":" + this.degrees, s ->
 				generateTextImage(text, textWidth, fm.getHeight() + MainRenderer.textShadow)
 		);
 
 		drawWidth = (int) (textWidth * 2 * scale);
-		drawHeight = (int) (64 * scale);
+		drawHeight = (int) (defaultHeight * scale);
 		drawX = (int) (textX - textWidth / 2.5 * scale);
-		drawY = (int) (textY - 32 * scale);
+		drawY = (int) (textY - (double) defaultHeight / 2 * scale);
 	}
 
 	private BufferedImage generateTextImage(String text, int textWidth, int imageHeight) {
@@ -90,6 +99,12 @@ public final class Title extends AbstractUIElement {
 	@Override
 	public void drawIfPossible(Graphics2D g2d) {
 		recalculate(g2d);
-		g2d.drawImage(finalImage, drawX, drawY, drawWidth, drawHeight, null);
+		if (transform != null) {
+			AffineTransform original = g2d.getTransform();
+			g2d.transform(transform);
+			g2d.drawImage(finalImage, drawX, drawY, drawWidth, drawHeight, null);
+			g2d.setTransform(original);
+		}
+		else g2d.drawImage(finalImage, drawX, drawY, drawWidth, drawHeight, null);
 	}
 }
