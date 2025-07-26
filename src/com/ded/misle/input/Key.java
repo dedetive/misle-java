@@ -33,6 +33,10 @@ public final class Key {
 		return inputIdentifier.keyCode();
 	}
 
+	public InputInteraction getInputIdentifier() {
+		return inputIdentifier;
+	}
+
 	public Action action() {
 		return action;
 	}
