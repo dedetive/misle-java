@@ -31,4 +31,13 @@ public record MouseInteraction(Rectangle pos, MouseButton button) implements Inp
 	public static MouseInteraction of(Rectangle pos, MouseButton button) {
 		return new MouseInteraction(pos, button);
 	}
+
+	public boolean isAnywhere() {
+		return this.pos == null;
+	}
+
+	@Override
+	public <T> boolean checkValidity(T args) {
+		return isAnywhere() || args instanceof Point && pos.contains((Point) args);
+	}
 }
