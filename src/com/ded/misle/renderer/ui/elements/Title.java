@@ -70,10 +70,10 @@ public final class Title extends AbstractUIElement {
 		String plainText = ColorManager.removeColorIndicators(text);
 
 		FontMetrics fm = FontManager.getCachedMetrics(g2d, FontManager.titleFont);
-		int textWidth = innerTextWidthCache.computeIfAbsent(text + ":" + scale + ":" + this.degrees,
+		int textWidth = innerTextWidthCache.computeIfAbsent(text,
 				s -> fm.stringWidth(plainText));
 
-		finalImage = innerImageCache.computeIfAbsent(text + ":" + scale + ":" + this.degrees, s ->
+		finalImage = innerImageCache.computeIfAbsent(text, s ->
 				generateTextImage(text, textWidth, fm.getHeight() + MainRenderer.textShadow)
 		);
 
