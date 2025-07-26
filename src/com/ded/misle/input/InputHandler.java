@@ -1,16 +1,17 @@
 package com.ded.misle.input;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.util.*;
 
-public class InputHandler implements KeyListener {
+import static com.ded.misle.input.interaction.MouseInteraction.MOUSE_SERIAL_CODE;
+
+public class InputHandler implements KeyListener, MouseListener, MouseMotionListener {
 	private static final Set<Integer> heldKeys = new HashSet<>();
 	private static final Set<Integer> toTrigger = new HashSet<>();
 	private static final Set<Integer> triggeredHeldKeys = new HashSet<>();
 
 	@Override
-	public void keyTyped(KeyEvent e) {}
+	public void keyTyped(KeyEvent ignored) {}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -72,5 +73,34 @@ public class InputHandler implements KeyListener {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent ignored) {}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		keyPressed(e.getButton() + MOUSE_SERIAL_CODE);
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		keyReleased(e.getButton() + MOUSE_SERIAL_CODE);
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent ignored) {}
+
+	@Override
+	public void mouseExited(MouseEvent ignored) {}
+
+	@Override
+	public void mouseDragged(MouseEvent ignoredTemp) {
+		// TODO: add support for dragging
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		keyPressed(e.getButton() + MOUSE_SERIAL_CODE);
 	}
 }
