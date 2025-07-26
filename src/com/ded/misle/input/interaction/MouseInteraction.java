@@ -1,4 +1,4 @@
-package com.ded.misle.input;
+package com.ded.misle.input.interaction;
 
 import java.awt.*;
 

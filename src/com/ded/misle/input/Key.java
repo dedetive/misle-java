@@ -1,5 +1,7 @@
 package com.ded.misle.input;
 
+import com.ded.misle.input.interaction.MouseInteraction;
+
 import java.util.*;
 import java.util.function.Supplier;
 
