@@ -14,21 +14,26 @@ public class MainMenu implements Menu {
 	private final UIRegistry registry = new UIRegistry();
 	private final Title title = new Title(LanguageManager.getText("misle"));
 	private final SmoothValue smoothTitleScale = new SmoothValue(1.6f);
+	private final SmoothValue smoothTitleRotation = new SmoothValue(0f);
 
 	@Override
 	public void draw(Graphics2D g2d) {
 		title.setScale(smoothTitleScale.getCurrentFloat() - smoothTitleScale.getCurrentFloat() % 0.04f);
+		title.setRotation(smoothTitleRotation.getCurrentFloat());
 		smoothTitleScale.update(0.05f);
+		smoothTitleRotation.update(0.05f);
 		registry.drawActive(g2d);
 	}
 
 	@Override
 	public void init() {
 		registry.add(MainBackground.class);
-		title.setScale(smoothTitleScale.getCurrentFloat());
 		smoothTitleScale.addModifiers(
 				new SineWaveModifier(0.3f, 0.8f),
 				new SineWaveModifier(0.2f, 0.04f)
+		);
+		smoothTitleRotation.addModifiers(
+				new SineWaveModifier(4f, 0.6f)
 		);
 		registry.add(title);
 	}
