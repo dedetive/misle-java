@@ -1,10 +1,13 @@
 package com.ded.misle.input;
 
+import com.ded.misle.input.interaction.InputInteraction;
+import com.ded.misle.input.interaction.KeyboardInteraction;
+
 import java.util.*;
 import java.util.function.Supplier;
 
 public class KeyBuilder {
-	private final int keyCode;
+	private final InputInteraction interaction;
 	private final Action action;
 	private final KeyInputType inputType;
 
@@ -14,10 +17,17 @@ public class KeyBuilder {
 	private long initialCooldown = 0;
 	private final List<Integer> dependencies = new ArrayList<>();
 
-	public KeyBuilder(int keyCode, Action action, KeyInputType inputType) {
-		this.keyCode = keyCode;
+	public KeyBuilder(InputInteraction interaction, Action action, KeyInputType inputType) {
+		this.interaction = interaction;
 		this.action = action;
 		this.inputType = inputType;
+	}
+
+	/**
+	 * This assumes keyboard interaction.
+	 */
+	public KeyBuilder(int keyboardCode, Action action, KeyInputType inputType) {
+		this(new KeyboardInteraction(keyboardCode), action, inputType);
 	}
 
 	public KeyBuilder withParameter(Supplier<Object> supplier) {
@@ -46,6 +56,6 @@ public class KeyBuilder {
 	}
 
 	public Key build() {
-		return new Key(keyCode, action, inputType, parameterSupplier, mayConflict, cooldown, initialCooldown, dependencies);
+		return new Key(interaction, action, inputType, parameterSupplier, mayConflict, cooldown, initialCooldown, dependencies);
 	}
 }
