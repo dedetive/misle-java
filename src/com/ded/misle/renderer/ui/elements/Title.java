@@ -29,6 +29,7 @@ public final class Title extends AbstractUIElement {
 
 	private final String text;
 	private double scale = 1.0;
+	private double rotation = 0.0;
 
 	/* Weakly cached render data */
 	private BufferedImage finalImage;
@@ -43,6 +44,12 @@ public final class Title extends AbstractUIElement {
 
 	public Title setScale(double scale) {
 		this.scale = scale;
+		needsRecalculation = true;
+		return this;
+	}
+
+	public Title setRotation(double rotation) {
+		this.rotation = rotation;
 		needsRecalculation = true;
 		return this;
 	}
