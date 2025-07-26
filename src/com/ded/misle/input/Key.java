@@ -1,12 +1,12 @@
 package com.ded.misle.input;
 
-import com.ded.misle.input.interaction.MouseInteraction;
+import com.ded.misle.input.interaction.*;
 
 import java.util.*;
 import java.util.function.Supplier;
 
 public final class Key {
-	private final Object inputIdentifier;
+	private final InputInteraction inputIdentifier;
 	private final Action action;
 	private final KeyInputType keyInputType;
 	private final Supplier<Object> parameterSupplier;
@@ -18,7 +18,7 @@ public final class Key {
 	private long lastTimeActivated = 0;
 	private final List<Integer> dependencies;
 
-	private Key(Object input, Action action, KeyInputType keyInputType, Supplier<Object> parameterSupplier, boolean mayConflict, long cooldown, long initialCooldown, List<Integer> dependencies) {
+	public Key(InputInteraction input, Action action, KeyInputType keyInputType, Supplier<Object> parameterSupplier, boolean mayConflict, long cooldown, long initialCooldown, List<Integer> dependencies) {
 		this.inputIdentifier = input;
 		this.action = action;
 		this.keyInputType = keyInputType;
@@ -29,20 +29,8 @@ public final class Key {
 		this.dependencies = dependencies;
 	}
 
-	public Key(int keyCode, Action action, KeyInputType keyInputType, Supplier<Object> parameterSupplier, boolean mayConflict, long cooldown, long initialCooldown, List<Integer> dependencies) {
-		this((Object) keyCode, action, keyInputType, parameterSupplier, mayConflict, cooldown, initialCooldown, dependencies);
-	}
-
-	public Key(MouseInteraction mouseInteraction, Action action, KeyInputType keyInputType, Supplier<Object> parameterSupplier, boolean mayConflict, long cooldown, long initialCooldown, List<Integer> dependencies) {
-		this((Object) mouseInteraction, action, keyInputType, parameterSupplier, mayConflict, cooldown, initialCooldown, dependencies);
-	}
-
 	public int keyCode() {
-		return isKeyboard() ? (int) inputIdentifier : 0;
-	}
-
-	public MouseInteraction mouseInteraction() {
-		return isMouse() ? (MouseInteraction) inputIdentifier : null;
+		return inputIdentifier.keyCode();
 	}
 
 	public Action action() {
@@ -51,14 +39,6 @@ public final class Key {
 
 	public KeyInputType keyInputType() {
 		return keyInputType;
-	}
-
-	public boolean isKeyboard() {
-		return inputIdentifier instanceof Integer;
-	}
-
-	public boolean isMouse() {
-		return inputIdentifier instanceof MouseInteraction;
 	}
 
 	@Override
