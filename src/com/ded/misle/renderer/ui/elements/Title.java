@@ -41,9 +41,10 @@ public final class Title extends AbstractUIElement {
 		this.text = treatedText;
 	}
 
-	public void setScale(double scale) {
+	public Title setScale(double scale) {
 		this.scale = scale;
 		needsRecalculation = true;
+		return this;
 	}
 
 	private void recalculate(Graphics2D g2d) {
