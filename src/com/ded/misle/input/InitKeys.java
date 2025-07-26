@@ -1,5 +1,6 @@
 package com.ded.misle.input;
 
+import com.ded.misle.input.interaction.MouseInteraction;
 import com.ded.misle.world.data.Direction;
 
 import java.awt.event.KeyEvent;

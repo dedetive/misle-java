@@ -31,7 +31,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private final JFrame window;
 	private static volatile boolean running = true;
-	public static InputHandler keyH;
+	public static InputHandler inputHandler;
 	public static MouseHandler mouseHandler;
 	Thread gameThread;
 
@@ -63,7 +63,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public static Player player;
 	static {
 		player = new Player();
-		keyH = new InputHandler();
+		inputHandler = new InputHandler();
 	}
 
 	// GAMESTATE
@@ -122,14 +122,14 @@ public class GamePanel extends JPanel implements Runnable {
 		window.add(this);
 		this.setLayout(null);
 		this.setDoubleBuffered(true);
-		this.addKeyListener(keyH);
+		this.addKeyListener(inputHandler);
 		this.setFocusable(true);
 
 		this.setBackground(windowBackground);
 
 		mouseHandler = new MouseHandler();
-		addMouseListener(keyH);
-		addMouseMotionListener(keyH);
+		addMouseListener(inputHandler);
+		addMouseMotionListener(inputHandler);
 
 		updateMouseVariableScales();
 
