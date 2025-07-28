@@ -35,7 +35,16 @@ public class MainMenu implements Menu {
 	private final UIRegistry registry = new UIRegistry();
 	private final Title title = new Title(LanguageManager.getText("misle")).setRainbowness(0.005f);
 	private final Button startButton = new Button(LanguageManager.getText("main_menu_play"), START_BUTTON_RECTANGLE);
+	private final Key startButtonFunc = startButton.addFunction(new KeyBuilder(
+			MouseInteraction.of(START_BUTTON_RECTANGLE, MouseInteraction.MouseButton.LEFT),
+			new Action(() -> gameStart(1), (ignored) -> MenuManager.getCurrent().equals(this), false),
+			KeyInputType.ON_RELEASE
+	));
 	private final Button quitButton = new Button(LanguageManager.getText("main_menu_quit"), QUIT_BUTTON_RECTANGLE);
+	private final Key quitButtonFunc = quitButton.addFunction(new KeyBuilder(
+			MouseInteraction.of(QUIT_BUTTON_RECTANGLE, MouseInteraction.MouseButton.LEFT),
+			new Action(GamePanel::quitGame, (ignored) -> MenuManager.getCurrent().equals(this), false),
+			KeyInputType.ON_RELEASE));
 	private final SmoothValue smoothTitleScale = new SmoothValue(1.6f);
 	private final SmoothValue smoothTitleRotation = new SmoothValue(0f);
 	private final List<Key> keys = new ArrayList<>();
@@ -51,6 +60,12 @@ public class MainMenu implements Menu {
 
 	@Override
 	public void init() {
+		keys.add(startButtonFunc);
+		keys.add(quitButtonFunc);
+		for (Key key : keys) {
+			KeyRegistry.addKey(key);
+		}
+
 		registry.add(MainBackground.class);
 		smoothTitleScale.addModifiers(
 				new SineWaveModifier(0.3f, 0.8f),
@@ -59,19 +74,6 @@ public class MainMenu implements Menu {
 		smoothTitleRotation.addModifiers(
 				new SineWaveModifier(4f, 0.6f)
 		);
-		keys.add(startButton.addFunction(new KeyBuilder(
-				MouseInteraction.of(START_BUTTON_RECTANGLE, MouseInteraction.MouseButton.LEFT),
-				new Action(() -> gameStart(1), (ignored) -> MenuManager.getCurrent().equals(this), false),
-				KeyInputType.ON_RELEASE
-		)));
-		keys.add(quitButton.addFunction(new KeyBuilder(
-				MouseInteraction.of(QUIT_BUTTON_RECTANGLE, MouseInteraction.MouseButton.LEFT),
-				new Action(GamePanel::quitGame, (ignored) -> MenuManager.getCurrent().equals(this), false),
-				KeyInputType.ON_RELEASE
-		)));
-		for (Key key : keys) {
-			KeyRegistry.addKey(key);
-		}
 		registry.add(title);
 		registry.add(startButton);
 		registry.add(quitButton);
