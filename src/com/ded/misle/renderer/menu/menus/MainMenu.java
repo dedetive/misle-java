@@ -5,6 +5,7 @@ import com.ded.misle.game.GamePanel;
 import com.ded.misle.input.*;
 import com.ded.misle.input.interaction.MouseInteraction;
 import com.ded.misle.renderer.menu.core.Menu;
+import com.ded.misle.renderer.menu.core.MenuManager;
 import com.ded.misle.renderer.smoother.SmoothValue;
 import com.ded.misle.renderer.smoother.modifiers.SineWaveModifier;
 import com.ded.misle.renderer.ui.core.UIRegistry;
@@ -13,6 +14,8 @@ import com.ded.misle.renderer.ui.elements.MainBackground;
 import com.ded.misle.renderer.ui.elements.Title;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.renderer.MainRenderer.gameStart;
@@ -35,6 +38,7 @@ public class MainMenu implements Menu {
 	private final Button quitButton = new Button(LanguageManager.getText("main_menu_quit"), QUIT_BUTTON_RECTANGLE);
 	private final SmoothValue smoothTitleScale = new SmoothValue(1.6f);
 	private final SmoothValue smoothTitleRotation = new SmoothValue(0f);
+	private final List<Key> keys = new ArrayList<>();
 
 	@Override
 	public void draw(Graphics2D g2d) {
@@ -55,16 +59,19 @@ public class MainMenu implements Menu {
 		smoothTitleRotation.addModifiers(
 				new SineWaveModifier(4f, 0.6f)
 		);
-		KeyRegistry.addKey(startButton.addFunction(new KeyBuilder(
+		keys.add(startButton.addFunction(new KeyBuilder(
 				MouseInteraction.of(START_BUTTON_RECTANGLE, MouseInteraction.MouseButton.LEFT),
-				new Action(() -> gameStart(1), (ignored) -> true, false),
+				new Action(() -> gameStart(1), (ignored) -> MenuManager.getCurrent().equals(this), false),
 				KeyInputType.ON_RELEASE
 		)));
-		KeyRegistry.addKey(quitButton.addFunction(new KeyBuilder(
+		keys.add(quitButton.addFunction(new KeyBuilder(
 				MouseInteraction.of(QUIT_BUTTON_RECTANGLE, MouseInteraction.MouseButton.LEFT),
-				new Action(GamePanel::quitGame, (ignored) -> true, false),
+				new Action(GamePanel::quitGame, (ignored) -> MenuManager.getCurrent().equals(this), false),
 				KeyInputType.ON_RELEASE
 		)));
+		for (Key key : keys) {
+			KeyRegistry.addKey(key);
+		}
 		registry.add(title);
 		registry.add(startButton);
 		registry.add(quitButton);
