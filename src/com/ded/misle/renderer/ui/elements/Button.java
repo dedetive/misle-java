@@ -110,17 +110,21 @@ public class Button extends AbstractUIElement {
 		int textWidth = innerTextWidthCache.computeIfAbsent(text,
 				s -> fm.stringWidth(ColorManager.removeColorIndicators(text)));
 
-		BufferedImage img = new BufferedImage(textWidth, fm.getHeight() + 1, BufferedImage.TYPE_INT_ARGB);
+		float textScale = Math.clamp(bounds.height / 18f, 0.7f, 2.2f);
+		textScale -= textScale % 0.7f;
+
+		BufferedImage img = new BufferedImage((int) (textWidth * textScale), (int) ((fm.getHeight() + 4) * textScale), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D gImg = img.createGraphics();
 
+		gImg.scale(textScale, textScale);
 		for (Point p : shadowIterationPoints) {
 			drawColoredText(gImg, text, p.x, p.y + fm.getHeight(), menuTitleShadowColor);
 		}
 
 		drawColoredText(gImg, text, 0, fm.getHeight(), menuTitleColor);
 
-		textDrawX = (int) (bounds.x + (bounds.width - textWidth / 2.5) / 2);
-		textDrawY = bounds.y + (bounds.height - fm.getHeight() * 10 / 6) / 2;
+		textDrawX = (int) (bounds.x + (bounds.width - textWidth / (2.5 / textScale)) / 2);
+		textDrawY = (int) (bounds.y + (bounds.height - fm.getHeight() * 10 / (6 / textScale)) / 2);
 		/* empirically chosen values, looks good though */
 
 		return img;
