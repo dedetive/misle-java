@@ -109,8 +109,8 @@ public abstract class ColorManager {
     public final static Color buttonFadingColor = new Color(0xdfdaba);
         // Main menu
     public final static Color menuBackgroundColor = new Color(0x9d7a53);
-    public final static Color menuTitleColor = defaultLightYellow;
-    public final static Color menuTitleShadowColor = defaultShadowColor;
+    public final static Color menuTitleColor =  new Color(225, 210, 170, 255);
+    public final static Color menuTitleShadowColor =  new Color(56, 28, 12, 240);
     public final static Color menuVersionColor = new Color(217, 217, 217);
     public final static Color menuVersionShadowColor = defaultShadowColor;
         // Loading
