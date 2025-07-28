@@ -4,6 +4,8 @@ import com.ded.misle.core.LanguageManager;
 import com.ded.misle.game.GamePanel;
 import com.ded.misle.input.*;
 import com.ded.misle.input.interaction.MouseInteraction;
+import com.ded.misle.renderer.MainRenderer;
+import com.ded.misle.renderer.MenuRenderer;
 import com.ded.misle.renderer.menu.core.Menu;
 import com.ded.misle.renderer.menu.core.MenuManager;
 import com.ded.misle.renderer.smoother.SmoothValue;
@@ -31,6 +33,11 @@ public class MainMenu implements Menu {
 			129 + 35,
 			60,
 			30);
+	private final static Rectangle SETTINGS_BUTTON_RECTANGLE = new Rectangle(
+			(originalScreenWidth - 128) / 2,
+			129 + 35,
+			60,
+			30);
 
 	private final UIRegistry registry = new UIRegistry();
 	private final Title title = new Title(LanguageManager.getText("misle")).setRainbowness(0.005f);
@@ -44,6 +51,11 @@ public class MainMenu implements Menu {
 	private final Key quitButtonFunc = quitButton.addFunction(new KeyBuilder(
 			MouseInteraction.of(QUIT_BUTTON_RECTANGLE, MouseInteraction.MouseButton.LEFT),
 			new Action(GamePanel::quitGame, (ignored) -> MenuManager.getCurrent().equals(this), false),
+			KeyInputType.ON_RELEASE));
+	private final Button settingsButton = new Button(LanguageManager.getText("main_menu_options"), SETTINGS_BUTTON_RECTANGLE);
+	private final Key settingsButtonFunc = settingsButton.addFunction(new KeyBuilder(
+			MouseInteraction.of(SETTINGS_BUTTON_RECTANGLE, MouseInteraction.MouseButton.LEFT),
+			new Action(MenuRenderer::optionsMenu, (ignored) -> MenuManager.getCurrent().equals(this), false),
 			KeyInputType.ON_RELEASE));
 	private final SmoothValue smoothTitleScale = new SmoothValue(1.6f);
 	private final SmoothValue smoothTitleRotation = new SmoothValue(0f);
@@ -61,6 +73,7 @@ public class MainMenu implements Menu {
 	@Override
 	public void init() {
 		keys.add(startButtonFunc);
+		keys.add(settingsButtonFunc);
 		keys.add(quitButtonFunc);
 		for (Key key : keys) {
 			KeyRegistry.addKey(key);
@@ -76,6 +89,7 @@ public class MainMenu implements Menu {
 		);
 		registry.add(title);
 		registry.add(startButton);
+		registry.add(settingsButton);
 		registry.add(quitButton);
 		registry.add(new Button(LanguageManager.getText("uwu"), new Rectangle(originalScreenWidth / 2 - 64, originalScreenHeight - 30, 128, 20)));
 	}
