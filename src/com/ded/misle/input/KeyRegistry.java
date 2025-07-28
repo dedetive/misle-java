@@ -1,6 +1,7 @@
 package com.ded.misle.input;
 
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.*;
 
 public class KeyRegistry {
@@ -28,12 +29,21 @@ public class KeyRegistry {
 	}
 
 	public static void trigger(int keyCode, KeyInputType inputType) {
+		trigger(keyCode, inputType, null);
+	}
+
+	public static void trigger(int keyCode, KeyInputType inputType, MouseEvent mouseEvent) {
 		List<Key> mappedKeys = keyMap.getOrDefault(keyCode, List.of());
 		for (Key key : mappedKeys) {
 			if (key.keyInputType() != inputType) continue;
 			if (key.onCooldown()) continue;
 
 			if (!dependenciesSatisfied(key)) continue;
+
+			if (mouseEvent != null) {
+				System.out.println(key.getInputIdentifier().checkValidity(mouseEvent));
+				if (!key.getInputIdentifier().checkValidity(mouseEvent)) return;
+			}
 
 			key.recountCooldown();
 			boolean earlyReturn = key.mayConflict() && key.action().canExecute(key.parameter());
