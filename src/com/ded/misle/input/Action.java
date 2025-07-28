@@ -229,14 +229,14 @@ public static final Action GO_TO_PREVIOUS_MENU = new Action(MenuRenderer::goToPr
 	private final Predicate<Object> condition;
 	private final boolean triggersLogic;
 
-	Action(Consumer<Object> paramAction, Predicate<Object> condition, boolean triggersLogic) {
+	public Action(Consumer<Object> paramAction, Predicate<Object> condition, boolean triggersLogic) {
 		this.paramAction = paramAction;
 		this.condition = condition;
 		this.triggersLogic = triggersLogic;
 		this.noParamAction = null;
 	}
 
-	Action(Runnable noParamAction, Predicate<Object> condition, boolean triggersLogic) {
+	public Action(Runnable noParamAction, Predicate<Object> condition, boolean triggersLogic) {
 		this.noParamAction = noParamAction;
 		this.condition = condition;
 		this.triggersLogic = triggersLogic;
