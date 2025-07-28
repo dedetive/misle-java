@@ -1,6 +1,7 @@
 package com.ded.misle.renderer.ui.elements;
 
 import com.ded.misle.renderer.*;
+import com.ded.misle.renderer.image.*;
 import com.ded.misle.renderer.ui.core.AbstractUIElement;
 
 import java.awt.*;
@@ -32,6 +33,8 @@ public final class Title extends AbstractUIElement {
 	private final String text;
 	private double scale = 1.0;
 	private double degrees = 0.0;
+	private float rainbowness = 0.0f;
+	private float currentHue = 0.0f;
 	private AffineTransform transform;
 
 	/* Weakly cached render data */
@@ -63,6 +66,11 @@ public final class Title extends AbstractUIElement {
 		return this;
 	}
 
+	public Title setRainbowness(float rainbowness) {
+		this.rainbowness = rainbowness;
+		return this;
+	}
+
 	private void recalculate(Graphics2D g2d) {
 		if (!needsRecalculation) return;
 		needsRecalculation = false;
@@ -81,6 +89,13 @@ public final class Title extends AbstractUIElement {
 		drawHeight = (int) (defaultHeight * scale);
 		drawX = (int) (textX - textWidth / 2.5 * scale);
 		drawY = (int) (textY - (double) defaultHeight / 2 * scale);
+
+		Palette p = new Palette(finalImage);
+		PaletteShifter shifter = new PaletteShifter(p);
+		p = shifter.hueShift(currentHue);
+		Painter painter = new Painter(p);
+		finalImage = painter.paint(finalImage);
+		currentHue += rainbowness;
 	}
 
 	private BufferedImage generateTextImage(String text, int textWidth, int imageHeight) {
