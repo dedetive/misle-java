@@ -2,6 +2,8 @@ package com.ded.misle.renderer;
 
 import com.ded.misle.game.GamePanel;
 import com.ded.misle.core.LanguageManager;
+import com.ded.misle.renderer.menu.core.MenuManager;
+import com.ded.misle.renderer.menu.menus.SettingsMenu;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,6 +52,7 @@ public abstract class MenuRenderer {
     public static void optionsMenu() {
         MainRenderer.previousMenu = MainRenderer.currentMenu;
         MainRenderer.currentMenu = OPTIONS_MENU;
+        MenuManager.setCurrent(new SettingsMenu());
         gameState = OPTIONS_MENU;
         clearButtonFading();
         switchToEmpty();
