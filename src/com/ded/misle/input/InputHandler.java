@@ -7,6 +7,7 @@ import static com.ded.misle.input.interaction.MouseInteraction.MOUSE_SERIAL_CODE
 
 public class InputHandler implements KeyListener, MouseListener, MouseMotionListener {
 	private static final Set<Integer> heldKeys = new HashSet<>();
+	private static final HashMap<Integer, MouseEvent> heldMouseButtons = new HashMap<>();
 	private static final Set<Integer> toTrigger = new HashSet<>();
 	private static final Set<Integer> triggeredHeldKeys = new HashSet<>();
 
@@ -25,6 +26,7 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 		KeyRegistry.trigger(keyCode, KeyInputType.ON_PRESS, mouseEvent);
 		if (!heldKeys.contains(keyCode)) setToTrigger(keyCode, true);
 		setKeyHeld(keyCode, true);
+		if (mouseEvent != null) heldMouseButtons.put(keyCode, mouseEvent);
 	}
 
 	@Override
@@ -37,6 +39,7 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 	public void keyReleased(int keyCode, MouseEvent mouseEvent) {
 		if (!KeyRegistry.isValid(keyCode)) return;
 		setKeyHeld(keyCode, false);
+		heldMouseButtons.remove(keyCode);
 		if (triggeredHeldKeys.contains(keyCode)) {
 			setToTrigger(keyCode, false);
 			setKeyTriggered(keyCode, false);
@@ -74,7 +77,9 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 				}
 				if (!key.onCooldown() && key.action().canExecute(key.parameter())) {
 					setKeyTriggered(key.keyCode(), true);
-					KeyRegistry.trigger(key.keyCode(), KeyInputType.ON_HOLD);
+					KeyRegistry.trigger(key.keyCode(),
+							KeyInputType.ON_HOLD,
+							heldMouseButtons.getOrDefault(key.keyCode(), null));
 					key.recountCooldown();
 				}
 			}
