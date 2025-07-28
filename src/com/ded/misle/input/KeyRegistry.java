@@ -12,7 +12,7 @@ public class KeyRegistry {
 		List<Key> keys = new ArrayList<>(KeyRegistry.keys);
 		keys.addAll(KeyRegistry.keys);
 		if (keys.stream().noneMatch(existing -> existing.equals(key))) {
-			keys.add(key);
+			KeyRegistry.keys.add(key);
 			keyMap.computeIfAbsent(key.keyCode(), k -> new ArrayList<>()).add(key);
 		}
 	}
