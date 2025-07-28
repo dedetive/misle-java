@@ -11,13 +11,18 @@ import com.ded.misle.renderer.ui.elements.Title;
 
 import java.awt.*;
 
-import static com.ded.misle.game.GamePanel.originalScreenHeight;
-import static com.ded.misle.game.GamePanel.originalScreenWidth;
+import static com.ded.misle.game.GamePanel.*;
 
 public class MainMenu implements Menu {
+	private final static Rectangle START_BUTTON_RECTANGLE = new Rectangle(
+			(originalScreenWidth - 128) / 2,
+			129,
+			128,
+			30);
+
 	private final UIRegistry registry = new UIRegistry();
 	private final Title title = new Title(LanguageManager.getText("misle"));
-	private final Button startButton = new Button(LanguageManager.getText("start"), new Rectangle(100, 100, 100, 100));
+	private final Button startButton = new Button(LanguageManager.getText("START"), START_BUTTON_RECTANGLE);
 	private final SmoothValue smoothTitleScale = new SmoothValue(1.6f);
 	private final SmoothValue smoothTitleRotation = new SmoothValue(0f);
 
