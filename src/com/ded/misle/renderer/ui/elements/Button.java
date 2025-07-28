@@ -26,9 +26,9 @@ public class Button extends AbstractUIElement {
 	private static final HashMap<String, BufferedImage> innerImageCache = new HashMap<>();
 	private static final HashMap<String, BufferedImage> textImageCache = new HashMap<>();
 	private static final HashMap<String, Integer> innerTextWidthCache = new HashMap<>();
-	private static final Color BUTTON_FRAME = new Color(0x3f2206);
-	private static final Color BUTTON_BODY_SHADOW = new Color(0x8A6945);
-	private static final Color BUTTON_BODY = new Color(0xBCA163);
+	private static final Color BUTTON_FRAME = new Color(0xFF3f2206, true);
+	private static final Color BUTTON_BODY_SHADOW = new Color(0x9D8A6945, true);
+	private static final Color BUTTON_BODY = new Color(0x60FFE39D, true);
 	private static final int BORDER_SIZE = 2;
 	private static final int SHADOW_SIZE = 3;
 
