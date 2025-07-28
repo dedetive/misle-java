@@ -389,7 +389,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private BufferedImage screenBuffer;
 	private Graphics2D g2dBuffer;
-	private static final float DEFAULT_BUFFER_SCALE = 1.5f;
+	private static final float DEFAULT_BUFFER_SCALE = 1f;
 	private static float maximumBufferScale;
 	private static float bufferScale = DEFAULT_BUFFER_SCALE;
 
