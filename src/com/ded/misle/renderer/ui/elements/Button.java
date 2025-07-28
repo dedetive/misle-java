@@ -27,8 +27,10 @@ public class Button extends AbstractUIElement {
 	private static final HashMap<String, BufferedImage> textImageCache = new HashMap<>();
 	private static final HashMap<String, Integer> innerTextWidthCache = new HashMap<>();
 	private static final Color BUTTON_FRAME = new Color(0x3f2206);
-	private static final Color BUTTON_BODY = new Color(0xa18053);
-	private static final int borderSize = 2;
+	private static final Color BUTTON_BODY_SHADOW = new Color(0x8A6945);
+	private static final Color BUTTON_BODY = new Color(0xBCA163);
+	private static final int BORDER_SIZE = 2;
+	private static final int SHADOW_SIZE = 3;
 
 	private String text;
 	private Rectangle bounds;
@@ -87,8 +89,18 @@ public class Button extends AbstractUIElement {
 
 		gImg.setColor(BUTTON_FRAME);
 		gImg.fillRect(0, 0, bounds.width, bounds.height);
+
+		gImg.setColor(BUTTON_BODY_SHADOW);
+		gImg.fillRect(BORDER_SIZE, BORDER_SIZE,
+				bounds.width - BORDER_SIZE * 2,
+				bounds.height - BORDER_SIZE * 2);
+
 		gImg.setColor(BUTTON_BODY);
-		gImg.fillRect(borderSize, borderSize, bounds.width - borderSize * 2, bounds.height - borderSize * 2);
+		gImg.fillRect(
+				BORDER_SIZE,
+				BORDER_SIZE,
+				bounds.width - BORDER_SIZE * 2 - SHADOW_SIZE,
+				bounds.height - BORDER_SIZE * 2 - SHADOW_SIZE);
 
 		return img;
 	}
@@ -108,7 +120,7 @@ public class Button extends AbstractUIElement {
 		drawColoredText(gImg, text, 0, fm.getHeight(), menuTitleColor);
 
 		textDrawX = (int) (bounds.x + (bounds.width - textWidth / 2.5) / 2);
-		textDrawY = bounds.y + (bounds.height - fm.getHeight() * 11 / 6) / 2;
+		textDrawY = bounds.y + (bounds.height - fm.getHeight() * 10 / 6) / 2;
 		/* empirically chosen values, looks good though */
 
 		return img;
