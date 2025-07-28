@@ -1,5 +1,7 @@
 package com.ded.misle.renderer;
 
+import com.ded.misle.renderer.menu.core.MenuManager;
+import com.ded.misle.renderer.menu.menus.ActivePlayingMenu;
 import com.ded.misle.world.entities.player.PlayerAttributes;
 
 import static com.ded.misle.core.SaveFile.loadPlayerUUID;
@@ -38,7 +40,6 @@ public abstract class MainRenderer {
 		startTime = currentTimeMillis();
 		gameState = GameState.LOADING_MENU;
 
-
 		loadSaveFile();
 
 		player.attr.updateStat(PlayerAttributes.Stat.ALL);
@@ -56,6 +57,7 @@ public abstract class MainRenderer {
 			player.stats.resetStartTimestamp();
 			player.pos.reloadSpawnpoint();
 			gameState = PLAYING;
+			MenuManager.setCurrent(new ActivePlayingMenu());
 		});
 
 		timer.setRepeats(false);
