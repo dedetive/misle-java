@@ -31,8 +31,8 @@ public class MainMenu implements Menu {
 
 	private final UIRegistry registry = new UIRegistry();
 	private final Title title = new Title(LanguageManager.getText("misle")).setRainbowness(0.005f);
-	private final Button startButton = new Button(LanguageManager.getText("START"), START_BUTTON_RECTANGLE);
-	private final Button quitButton = new Button(LanguageManager.getText("quit"), QUIT_BUTTON_RECTANGLE);
+	private final Button startButton = new Button(LanguageManager.getText("main_menu_play"), START_BUTTON_RECTANGLE);
+	private final Button quitButton = new Button(LanguageManager.getText("main_menu_quit"), QUIT_BUTTON_RECTANGLE);
 	private final SmoothValue smoothTitleScale = new SmoothValue(1.6f);
 	private final SmoothValue smoothTitleRotation = new SmoothValue(0f);
 
