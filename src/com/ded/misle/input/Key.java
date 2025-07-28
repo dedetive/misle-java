@@ -50,7 +50,7 @@ public final class Key {
 		if (obj == this) return true;
 		if (obj == null || obj.getClass() != this.getClass()) return false;
 		var that = (Key) obj;
-		return  Objects.equals(this.inputIdentifier, that.inputIdentifier) &&
+		return  Objects.equals(this.inputIdentifier.keyCode(), that.inputIdentifier.keyCode()) &&
 				Objects.equals(this.action, that.action) &&
 				Objects.equals(this.keyInputType, that.keyInputType) &&
 				this.mayConflict == that.mayConflict &&
