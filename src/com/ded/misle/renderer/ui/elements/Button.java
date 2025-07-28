@@ -1,10 +1,13 @@
 package com.ded.misle.renderer.ui.elements;
 
+import com.ded.misle.input.*;
+import com.ded.misle.input.interaction.MouseInteraction;
 import com.ded.misle.renderer.*;
 import com.ded.misle.renderer.ui.core.AbstractUIElement;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.ded.misle.renderer.ColorManager.*;
@@ -25,10 +28,11 @@ public class Button extends AbstractUIElement {
 	private static final HashMap<String, Integer> innerTextWidthCache = new HashMap<>();
 	private static final Color BUTTON_FRAME = new Color(0x3f2206);
 	private static final Color BUTTON_BODY = new Color(0xa18053);
+	private static final int borderSize = 2;
 
 	private String text;
 	private Rectangle bounds;
-	private static final int borderSize = 2;
+	private final java.util.List<Key> keys = new ArrayList<>();
 
 	private BufferedImage buttonImage;
 	private BufferedImage textImage;
@@ -53,6 +57,17 @@ public class Button extends AbstractUIElement {
 		needsRecalculation = true;
 		return this;
 	}
+	public Key addFunction(Action action, MouseInteraction.MouseButton mouseButton) {
+		return addFunction(new KeyBuilder(MouseInteraction.of(bounds, mouseButton),
+				action,
+				KeyInputType.ON_RELEASE));
+	}
+	public Key addFunction(KeyBuilder keyBuilder) {
+		Key key = keyBuilder.build();
+		this.keys.add(key);
+		return key;
+	}
+
 
 	private void recalculate(Graphics2D g2d) {
 		if (!needsRecalculation) return;
