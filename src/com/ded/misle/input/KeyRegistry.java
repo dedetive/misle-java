@@ -9,6 +9,8 @@ public class KeyRegistry {
 	private static final Map<Integer, List<Key>> keyMap = new HashMap<>();
 
 	public static void addKey(Key key) {
+		List<Key> keys = new ArrayList<>(KeyRegistry.keys);
+		keys.addAll(KeyRegistry.keys);
 		if (keys.stream().noneMatch(existing -> existing.equals(key))) {
 			keys.add(key);
 			keyMap.computeIfAbsent(key.keyCode(), k -> new ArrayList<>()).add(key);
