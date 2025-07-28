@@ -113,6 +113,9 @@ public class Button extends AbstractUIElement {
 
 		float textScale = Math.clamp(bounds.height / 18f, 0.7f, 2.2f);
 		textScale -= textScale % 0.7f;
+		textScale = textScale < 2f
+				? Math.min(textScale, 1f)
+				: 2f;
 
 		BufferedImage img = new BufferedImage((int) (textWidth * textScale), (int) ((textHeight + 4) * textScale), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D gImg = img.createGraphics();
