@@ -41,7 +41,6 @@ public class KeyRegistry {
 			if (!dependenciesSatisfied(key)) continue;
 
 			if (mouseEvent != null) {
-				System.out.println(key.getInputIdentifier().checkValidity(mouseEvent));
 				if (!key.getInputIdentifier().checkValidity(mouseEvent)) return;
 			}
 
