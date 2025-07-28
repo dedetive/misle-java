@@ -107,7 +107,7 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 
 	@Override
 	public void mouseDragged(MouseEvent ignoredTemp) {
-		// TODO: add support for dragging
+		heldMouseButtons.replaceAll((c, v) -> ignoredTemp);
 	}
 
 	@Override
