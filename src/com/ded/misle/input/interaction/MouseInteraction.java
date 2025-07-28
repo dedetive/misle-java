@@ -1,7 +1,10 @@
 package com.ded.misle.input.interaction;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.Random;
+
+import static com.ded.misle.game.GamePanel.getWindowScale;
 
 public record MouseInteraction(Rectangle pos, MouseButton button) implements InputInteraction {
 	public static final int MOUSE_SERIAL_CODE = new Random().nextInt();
@@ -38,6 +41,9 @@ public record MouseInteraction(Rectangle pos, MouseButton button) implements Inp
 
 	@Override
 	public <T> boolean checkValidity(T args) {
-		return isAnywhere() || args instanceof Point && pos.contains((Point) args);
+		return isAnywhere() || args instanceof MouseEvent &&
+				pos.contains(
+						new Point((int) (((MouseEvent) args).getX() / getWindowScale()),
+				(int) (((MouseEvent) args).getY() / getWindowScale())));
 	}
 }
