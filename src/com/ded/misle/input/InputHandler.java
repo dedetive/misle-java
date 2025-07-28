@@ -15,11 +15,14 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		keyPressed(e.getKeyCode());
+		keyPressed(e.getKeyCode(), null);
 	}
 	public void keyPressed(int keyCode) {
+		keyPressed(keyCode, null);
+	}
+	public void keyPressed(int keyCode, MouseEvent mouseEvent) {
 		if (!KeyRegistry.isValid(keyCode)) return;
-		KeyRegistry.trigger(keyCode, KeyInputType.ON_PRESS);
+		KeyRegistry.trigger(keyCode, KeyInputType.ON_PRESS, mouseEvent);
 		if (!heldKeys.contains(keyCode)) setToTrigger(keyCode, true);
 		setKeyHeld(keyCode, true);
 	}
@@ -80,7 +83,7 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		keyPressed(e.getButton() + MOUSE_SERIAL_CODE);
+		keyPressed(e.getButton() + MOUSE_SERIAL_CODE, e);
 	}
 
 	@Override
