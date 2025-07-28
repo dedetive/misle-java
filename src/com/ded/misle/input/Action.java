@@ -28,70 +28,70 @@ import static com.ded.misle.world.data.items.Item.createItem;
 import static com.ded.misle.world.entities.npcs.NPCDialog.getCurrentTalkingTo;
 import static com.ded.misle.world.logic.PhysicsEngine.isSpaceOccupied;
 
-public enum Action {
+public class Action {
 	//region Game state
-	PANIC_CRASH(() -> System.exit(0), e -> true, false),
-	PAUSE(() -> {
+	public static final Action PANIC_CRASH = new Action(() -> System.exit(0), e -> true, false);
+	public static final Action PAUSE = new Action(() -> {
 		pauseGame();
 		clearButtons();
-	}, e -> gameState == GameState.PLAYING && !player.isWaiting(), false),
-	UNPAUSE(() -> {
+	}, e -> gameState == GameState.PLAYING && !player.isWaiting(), false);
+	public static final Action UNPAUSE = new Action(() -> {
 		softGameStart();
 		clearButtons();
-	}, e -> gameState == GameState.PAUSE_MENU, false),
+	}, e -> gameState == GameState.PAUSE_MENU, false);
 	//endregion
 	//region Plans
-	CANCEL_PLANNING(() -> player.getPlanner().setPlanning(false),
-			e -> gameState == GameState.PLAYING && !player.isWaiting() && player.getPlanner().isPlanning() && !player.getPlanner().isExecuting(), false),
-	START_PLANNING(() -> player.getNewPlanner().setPlanning(true),
-			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && !player.getPlanner().isExecuting(), false),
-	SKIP_STEP(() -> player.getPlanner().skipStep(),
-			e -> gameState == GameState.PLAYING && !player.isWaiting() && player.getPlanner().isExecuting(), false),
-	TOGGLE_PLAN_QUICK_EXECUTION(() -> player.getPlanner().toggleQuickExecution(),
-			e -> gameState == GameState.PLAYING && !player.isWaiting() && player.getPlanner().isExecuting(), false),
-	EXECUTE_PLAN(() -> player.getPlanner().executePlan(),
-			e -> gameState == GameState.PLAYING && !player.isWaiting() && player.getPlanner().isPlanning() && !player.getPlanner().isExecuting(), false),
+	public static final Action CANCEL_PLANNING = new Action(() -> player.getPlanner().setPlanning(false),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && player.getPlanner().isPlanning() && !player.getPlanner().isExecuting(), false);
+	public static final Action START_PLANNING = new Action(() -> player.getNewPlanner().setPlanning(true),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && !player.getPlanner().isExecuting(), false);
+	public static final Action SKIP_STEP = new Action(() -> player.getPlanner().skipStep(),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && player.getPlanner().isExecuting(), false);
+	public static final Action TOGGLE_PLAN_QUICK_EXECUTION = new Action(() -> player.getPlanner().toggleQuickExecution(),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && player.getPlanner().isExecuting(), false);
+	public static final Action EXECUTE_PLAN = new Action(() -> player.getPlanner().executePlan(),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && player.getPlanner().isPlanning() && !player.getPlanner().isExecuting(), false);
 	//endregion
 	//region Inventory
-	SELECT_INVENTORY_SLOT((slot) -> player.inv.setSelectedSlot((Integer) slot),
-			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning(), false),
-	DROP_SINGLE(() -> player.inv.dropItem(0, player.inv.getSelectedSlot(), 1),
-			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && player.inv.hasHeldItem(), true),
-	DROP_ALL(() -> player.inv.dropItem(0, player.inv.getSelectedSlot(), player.inv.getSelectedItem().getCount()),
-			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && player.inv.hasHeldItem(), true),
-	USE(KeyHelper::pressUseButton,
-			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && !player.getPlanner().isExecuting(), true),
-	TOGGLE_INVENTORY(() -> gameState = gameState == GameState.PLAYING ? GameState.INVENTORY : GameState.PLAYING,
-			e -> (gameState == GameState.PLAYING || gameState == GameState.INVENTORY) && !player.getPlanner().isPlanning(), false),
-	CLOSE_INVENTORY(() -> gameState = GameState.PLAYING,
-			e -> gameState == GameState.INVENTORY, false),
-	INVENTORY_SWAP((pos) -> {
+	public static final Action SELECT_INVENTORY_SLOT = new Action((slot) -> player.inv.setSelectedSlot((Integer) slot),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning(), false);
+	public static final Action DROP_SINGLE = new Action(() -> player.inv.dropItem(0, player.inv.getSelectedSlot(), 1),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && player.inv.hasHeldItem(), true);
+	public static final Action DROP_ALL = new Action(() -> player.inv.dropItem(0, player.inv.getSelectedSlot(), player.inv.getSelectedItem().getCount()),
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && player.inv.hasHeldItem(), true);
+	public static final Action USE = new Action(KeyHelper::pressUseButton,
+			e -> gameState == GameState.PLAYING && !player.isWaiting() && !player.getPlanner().isPlanning() && !player.getPlanner().isExecuting(), true);
+	public static final Action TOGGLE_INVENTORY = new Action(() -> gameState = gameState == GameState.PLAYING ? GameState.INVENTORY : GameState.PLAYING,
+			e -> (gameState == GameState.PLAYING || gameState == GameState.INVENTORY) && !player.getPlanner().isPlanning(), false);
+	public static final Action CLOSE_INVENTORY = new Action(() -> gameState = GameState.PLAYING,
+			e -> gameState == GameState.INVENTORY, false);
+	public static final Action INVENTORY_SWAP = new Action((pos) -> {
 		int[] p = (int[]) pos;
 		player.inv.setTempItem(player.inv.getItem(p[0], p[1]));
 		player.inv.bruteSetItem(player.inv.getItem(0, p[2]), p[0], p[1]);
 		player.inv.bruteSetItem(player.inv.getTempItem(), 0, p[2]);
 		player.inv.destroyTempItem();
-	}, e -> gameState == GameState.INVENTORY && isValidHoveredSlot(mouseHandler.getHoveredSlot()) && player.inv.getItem(((int[]) e)[0], ((int[]) e)[1]) != null, false),
-	INVENTORY_DROP_SINGLE((pos) -> {
+	}, e -> gameState == GameState.INVENTORY && isValidHoveredSlot(mouseHandler.getHoveredSlot()) && player.inv.getItem(((int[]) e)[0], ((int[]) e)[1]) != null, false);
+	public static final Action INVENTORY_DROP_SINGLE = new Action((pos) -> {
 		int[] p = (int[]) pos;
 		player.inv.dropItem(p[0], p[1], 1);
-	}, e -> gameState == GameState.INVENTORY && isValidHoveredSlot(mouseHandler.getHoveredSlot()) && player.inv.getItem(((int[]) e)[0], ((int[]) e)[1]) != null, true),
-	INVENTORY_DROP_ALL((pos) -> {
+	}, e -> gameState == GameState.INVENTORY && isValidHoveredSlot(mouseHandler.getHoveredSlot()) && player.inv.getItem(((int[]) e)[0], ((int[]) e)[1]) != null, true);
+	public static final Action INVENTORY_DROP_ALL = new Action((pos) -> {
 		int[] p = (int[]) pos;
 		player.inv.dropItem(p[0], p[1], player.inv.getItem(p[0], p[1]).getCount());
-	}, e -> gameState == GameState.INVENTORY && isValidHoveredSlot(mouseHandler.getHoveredSlot()) && player.inv.getItem(((int[]) e)[0], ((int[]) e)[1]) != null, true),
-	INVENTORY_EXTRA_DROP_SINGLE((index) -> {
+	}, e -> gameState == GameState.INVENTORY && isValidHoveredSlot(mouseHandler.getHoveredSlot()) && player.inv.getItem(((int[]) e)[0], ((int[]) e)[1]) != null, true);
+	public static final Action INVENTORY_EXTRA_DROP_SINGLE = new Action((index) -> {
 		int i = (Integer) index;
 		player.inv.dropItem(i, 1);
-	}, e -> gameState == GameState.INVENTORY && isValidExtraSlot(mouseHandler.getExtraHoveredSlot()) && player.inv.getItem((Integer) e) != null, true),
-	INVENTORY_EXTRA_DROP_ALL((index) -> {
+	}, e -> gameState == GameState.INVENTORY && isValidExtraSlot(mouseHandler.getExtraHoveredSlot()) && player.inv.getItem((Integer) e) != null, true);
+	public static final Action INVENTORY_EXTRA_DROP_ALL = new Action((index) -> {
 		int i = (Integer) index;
 		player.inv.dropItem(i, player.inv.getItem(i).getCount());
-	}, e -> gameState == GameState.INVENTORY && isValidExtraSlot(mouseHandler.getExtraHoveredSlot()) && player.inv.getItem((Integer) e) != null, true),
+	}, e -> gameState == GameState.INVENTORY && isValidExtraSlot(mouseHandler.getExtraHoveredSlot()) && player.inv.getItem((Integer) e) != null, true);
 	//endregion
 	//region Movement
 		//region Regular
-		MOVE((direction) -> {
+	public static final Action MOVE = new Action((direction) -> {
 			player.setWaiting(true);
 		BoxManipulation.movePlayer(getDirectionPoint(direction).x, getDirectionPoint(direction).y);
 		player.setWaiting(false);
@@ -100,10 +100,10 @@ public enum Action {
 			!player.attr.isDead() &&
 			!player.getPlanner().isExecuting() &&
 			!player.getPlanner().isPlanning() &&
-			!isSpaceOccupied(offsetPlayerPos(e).x, offsetPlayerPos(e).y, player), true),
+			!isSpaceOccupied(offsetPlayerPos(e).x, offsetPlayerPos(e).y, player), true);
 		//endregion
 		//region Bump onto entity
-		MOVE_BUMP_REGULAR((direction) -> player.updateLastDirection((Direction) direction),
+		public static final Action MOVE_BUMP_REGULAR = new Action((direction) -> player.updateLastDirection((Direction) direction),
 				e -> gameState == GameState.PLAYING &&
 						!player.isWaiting() &&
 						!player.attr.isDead() &&
@@ -114,8 +114,8 @@ public enum Action {
 						offsetPlayerPos(e).y > 0 && offsetPlayerPos(e).y < worldHeight &&
 						Arrays.stream(player.pos.world.grid[offsetPlayerPos(e).x][offsetPlayerPos(e).y]).
 								anyMatch(box -> box instanceof Entity)),
-				true),
-		MOVE_BUMP_ENTITY((direction) -> {
+				true);
+	public static final Action MOVE_BUMP_ENTITY = new Action((direction) -> {
 			player.updateLastDirection((Direction) direction);
 			player.attack();
 		}, e -> gameState == GameState.PLAYING &&
@@ -127,10 +127,10 @@ public enum Action {
 				(offsetPlayerPos(e).x > 0 && offsetPlayerPos(e).x < worldWidth &&
 						offsetPlayerPos(e).y > 0 && offsetPlayerPos(e).y < worldHeight &&
 						Arrays.stream(player.pos.world.grid[offsetPlayerPos(e).x][offsetPlayerPos(e).y]).
-								anyMatch(box -> box instanceof Entity)), true),
+								anyMatch(box -> box instanceof Entity)), true);
 		//endregion
 		//region Stuck
-		MOVE_STUCK((direction) -> {
+		public static final Action MOVE_STUCK = new Action((direction) -> {
 			BoxManipulation.movePlayer(getDirectionPoint(direction).x, getDirectionPoint(direction).y);
 			player.takeDamage(5 + player.getMaxHP() / 120, Entity.DamageFlag.of(
 					Entity.DamageFlag.ABSOLUTE,
@@ -140,10 +140,10 @@ public enum Action {
 				!player.isWaiting() &&
 				!player.attr.isDead() &&
 				!player.getPlanner().isExecuting() &&
-				isSpaceOccupied(player.getX(), player.getY(), player), true),
+				isSpaceOccupied(player.getX(), player.getY(), player), true);
 		//endregion
 		//region Plan
-		MOVE_PLAN((direction) -> {
+		public static final Action MOVE_PLAN = new Action((direction) -> {
 			Point last = player.getPlanner().getEnd();
 			int x = last != null ? last.x : player.getX();
 			int y = last != null ? last.y : player.getY();
@@ -166,59 +166,59 @@ public enum Action {
 		}, e -> gameState == GameState.PLAYING &&
 				!player.isWaiting() &&
 				player.getPlanner().isPlanning() &&
-				!player.getPlanner().isExecuting(), false),
+				!player.getPlanner().isExecuting(), false);
 		//endregion
 	//endregion
 	//region Save creator
-	APPEND_NAME_CHAR((ch) -> {
+		public static final Action APPEND_NAME_CHAR = new Action((ch) -> {
 		if (playerName.length() < 16)
 				playerName.append(removeExtraChars((Character) ch));
-		}, e -> gameState == GameState.SAVE_CREATOR && playerName.length() < 16, false),
-	REMOVE_NAME_CHAR(() -> playerName.setLength(Math.max(playerName.length() - 1, 0)),
-			e -> gameState == GameState.SAVE_CREATOR && !playerName.isEmpty(), false),
-	REMOVE_WHOLE_NAME(() -> playerName.setLength(0),
-			e -> gameState == GameState.SAVE_CREATOR && !playerName.isEmpty(), false),
-	CONFIRM_NAME(SaveCreator::confirmName,
-			e -> gameState == GameState.SAVE_CREATOR, false),
+		}, e -> gameState == GameState.SAVE_CREATOR && playerName.length() < 16, false);
+	public static final Action REMOVE_NAME_CHAR = new Action(() -> playerName.setLength(Math.max(playerName.length() - 1, 0)),
+			e -> gameState == GameState.SAVE_CREATOR && !playerName.isEmpty(), false);
+	public static final Action REMOVE_WHOLE_NAME = new Action(() -> playerName.setLength(0),
+			e -> gameState == GameState.SAVE_CREATOR && !playerName.isEmpty(), false);
+	public static final Action CONFIRM_NAME = new Action(SaveCreator::confirmName,
+			e -> gameState == GameState.SAVE_CREATOR, false);
 	//endregion
 	//region Dialog
-	ADVANCE_DIALOG(() -> {
+	public static final Action ADVANCE_DIALOG = new Action(() -> {
 		if (isLetterDisplayFull()) {
 			getCurrentTalkingTo().incrementDialogIndex();
 		} else {
 			fillLetterDisplay();
 		}
-	}, e -> gameState == GameState.DIALOG, false),
+	}, e -> gameState == GameState.DIALOG, false);
 //endregion
 	//region Menus
-	GO_TO_PREVIOUS_MENU(MenuRenderer::goToPreviousMenu,
-		e -> (gameState == GameState.OPTIONS_MENU || gameState == GameState.SAVE_SELECTOR || gameState == GameState.SAVE_CREATOR) && askingToDelete == -1, false),
-	SAVE_SELECTOR_CANCEL_DELETE(() -> {
+public static final Action GO_TO_PREVIOUS_MENU = new Action(MenuRenderer::goToPreviousMenu,
+		e -> (gameState == GameState.OPTIONS_MENU || gameState == GameState.SAVE_SELECTOR || gameState == GameState.SAVE_CREATOR) && askingToDelete == -1, false);
+	public static final Action SAVE_SELECTOR_CANCEL_DELETE = new Action(() -> {
 		askingToDelete = -1;
 		clearButtons();
-	}, e -> gameState == GameState.SAVE_SELECTOR && askingToDelete > -1, false),
-	SETTING_MENU_MOVE_LEFT(() -> {
+	}, e -> gameState == GameState.SAVE_SELECTOR && askingToDelete > -1, false);
+	public static final Action SETTING_MENU_MOVE_LEFT = new Action(() -> {
 		moveSettingMenu(-1);
 		SettingsMenuRenderer.leftKeyIndicatorWidth = 19;
-	}, e -> gameState == GameState.OPTIONS_MENU, false),
-	SETTING_MENU_MOVE_RIGHT(() -> {
+	}, e -> gameState == GameState.OPTIONS_MENU, false);
+	public static final Action SETTING_MENU_MOVE_RIGHT = new Action(() -> {
 		moveSettingMenu(1);
 		SettingsMenuRenderer.rightKeyIndicatorWidth = 19;
-	}, e -> gameState == GameState.OPTIONS_MENU, false),
+	}, e -> gameState == GameState.OPTIONS_MENU, false);
 	//endregion
 	//region Misc
-	SCREENSHOT(() -> saveScreenshot(getCurrentScreen()),
-			e -> true, false),
-	TRIGGER_LOGIC(() -> {},
-			e -> !player.getPlanner().isPlanning(), true),
+	public static final Action SCREENSHOT = new Action(() -> saveScreenshot(getCurrentScreen()),
+			e -> true, false);
+	public static final Action TRIGGER_LOGIC = new Action(() -> {},
+			e -> !player.getPlanner().isPlanning(), true);
 	//endregion
 	//region Debug
-	DEBUG_GIVE_ITEMS(() -> {
+	public static final Action DEBUG_GIVE_ITEMS = new Action(() -> {
 		for (int i = 1; i <= 27; i++) {
 			if (i != 5) player.inv.addItem(createItem(i, 1));
 		}
-	}, e -> true, false),
-	DEBUG_CLEAR_INV(() -> player.inv.clearInventory(), e -> true, false),
+	}, e -> true, false);
+	public static final Action DEBUG_CLEAR_INV = new Action(() -> player.inv.clearInventory(), e -> true, false);
 //endregion
 
 	//region
@@ -246,7 +246,7 @@ public enum Action {
 	public void execute() {
 		if (!canExecute()) return;
 		if (noParamAction == null) {
-			System.err.println("Action " + this.name() + " requires an object!");
+			System.err.println("Action " + this.toString() + " requires an object!");
 			return;
 		}
 		noParamAction.run();
@@ -256,7 +256,7 @@ public enum Action {
 	public <T> void execute(T obj) {
 		if (!canExecute(obj)) return;
 		if (paramAction == null) {
-			System.err.println("Action " + this.name() + " does not accept parameters, but received: " + obj);
+			System.err.println("Action " + this.toString() + " does not accept parameters, but received: " + obj);
 			execute();
 			return;
 		}
@@ -264,7 +264,7 @@ public enum Action {
 			paramAction.accept(obj);
 			if (this.triggersLogic) TurnManager.requestNewTurn();
 		} catch (ClassCastException e) {
-			System.err.println("Action " + this.name() +
+			System.err.println("Action " + this.toString() +
 					" received an object of invalid type: " +
 					(obj != null ? obj.getClass().getName() : "null"));
 		}
