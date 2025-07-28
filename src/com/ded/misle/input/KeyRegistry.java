@@ -43,7 +43,7 @@ public class KeyRegistry {
 			if (!dependenciesSatisfied(key)) continue;
 
 			if (mouseEvent != null) {
-				if (!key.getInputIdentifier().checkValidity(mouseEvent)) return;
+				if (!key.getInputIdentifier().checkValidity(mouseEvent)) continue;
 			}
 
 			key.recountCooldown();
