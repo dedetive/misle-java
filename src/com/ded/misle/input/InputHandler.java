@@ -29,9 +29,12 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		keyReleased(e.getKeyCode());
+		keyReleased(e.getKeyCode(), null);
 	}
 	public void keyReleased(int keyCode) {
+		keyReleased(keyCode, null);
+	}
+	public void keyReleased(int keyCode, MouseEvent mouseEvent) {
 		if (!KeyRegistry.isValid(keyCode)) return;
 		setKeyHeld(keyCode, false);
 		if (triggeredHeldKeys.contains(keyCode)) {
@@ -40,7 +43,7 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 			return;
 		}
 		setKeyTriggered(keyCode, false);
-		KeyRegistry.trigger(keyCode, KeyInputType.ON_RELEASE);
+		KeyRegistry.trigger(keyCode, KeyInputType.ON_RELEASE, mouseEvent);
 	}
 
 	public static void setKeyHeld(int keyCode, boolean held) {
@@ -88,7 +91,7 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		keyReleased(e.getButton() + MOUSE_SERIAL_CODE);
+		keyReleased(e.getButton() + MOUSE_SERIAL_CODE, e);
 	}
 
 	@Override
