@@ -53,7 +53,6 @@ public final class Key {
 		return  Objects.equals(this.inputIdentifier, that.inputIdentifier) &&
 				Objects.equals(this.action, that.action) &&
 				Objects.equals(this.keyInputType, that.keyInputType) &&
-				Objects.equals(this.parameterSupplier.get(), that.parameterSupplier.get()) &&
 				this.mayConflict == that.mayConflict &&
 				this.cooldown == that.cooldown &&
 				this.initialCooldown == that.initialCooldown &&
