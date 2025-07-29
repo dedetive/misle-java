@@ -13,7 +13,7 @@ import java.util.List;
 public class SettingsMenu implements Menu {
 	private final UIRegistry registry = new UIRegistry();
 
-	private static final HashMap<SettingState, Button> SETTING_STATE_BUTTONS = new HashMap<>();
+	private static final HashMap<SettingTab, Button> TAB_BUTTONS = new HashMap<>();
 	private static final List<Button> PERSISTENT_BUTTONS = new ArrayList<>();
 
 	@Override
@@ -26,13 +26,12 @@ public class SettingsMenu implements Menu {
 		registry.add(MainBackground.class);
 		registry.add(new Title(LanguageManager.getText("settings_menu_options")));
 
-		SettingState.values(); // load values
-		for (Button b : PERSISTENT_BUTTONS) {
+		SettingTab.values(); // load values
+		for (Button b : PERSISTENT_BUTTONS)
 			registry.add(b);
-		}
 	}
 
-	enum SettingState {
+	enum SettingTab {
 		EMPTY,
 		GENERAL(new Button(
 				LanguageManager.getText("settings_menu_general"), new Rectangle(42, 220, 50, 31)
@@ -45,17 +44,17 @@ public class SettingsMenu implements Menu {
 		)),
 		GAMEPLAY(new Button(
 				LanguageManager.getText("settings_menu_gameplay"), new Rectangle(237, 220, 50, 31)
-		)),
+		));
 
-		;
+		final List<Button> settingButtons = new ArrayList<>();
 
-		SettingState(Button button) {
+		SettingTab(Button button) {
 			PERSISTENT_BUTTONS.add(button);
 		}
 
-		SettingState() {}
+		SettingTab() {}
 
-		static SettingState getStateByOrder(int order) {
+		static SettingTab getTabByOrder(int order) {
 			return switch (order) {
 				case -2 -> GAMEPLAY;
 				case -1 -> GAMEPLAY;
