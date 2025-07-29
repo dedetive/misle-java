@@ -4,7 +4,6 @@ import com.ded.misle.core.LanguageManager;
 import com.ded.misle.game.GamePanel;
 import com.ded.misle.input.*;
 import com.ded.misle.input.interaction.MouseInteraction;
-import com.ded.misle.renderer.MainRenderer;
 import com.ded.misle.renderer.MenuRenderer;
 import com.ded.misle.renderer.menu.core.Menu;
 import com.ded.misle.renderer.menu.core.MenuManager;
