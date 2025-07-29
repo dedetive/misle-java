@@ -5,28 +5,25 @@ import java.util.function.Consumer;
 
 import static com.ded.misle.Launcher.languageManager;
 import static com.ded.misle.core.LanguageManager.Language;
+import static com.ded.misle.game.GamePanel.forceResize;
 import static com.ded.misle.game.GamePanel.nsPerFrame;
 import static com.ded.misle.renderer.FontManager.updateFontScript;
 
-/*
-    TODO:
-        - Add missing onCycles values
-        - Remove SettingManager setting-specific cycles methods
-        - Update SettingsMenuRenderer to use setting::cycle
-        instead of calling SettingsManager setting-specific cycle method
-*/
 public enum Setting {
 
     screenSize("medium",
-        new String[]{"small", "medium", "big", "huge"}
+        new String[]{"small", "medium", "big", "huge"},
+        (val) -> forceResize(val.toString())
     ),
 
     isFullscreen(true,
-        new Boolean[]{true, false}
+        new Boolean[]{true, false},
+        (val) -> forceResize(val.toString())
     ),
 
     fullscreenMode("windowed",
-        new String[]{"windowed", "exclusive"}
+        new String[]{"windowed", "exclusive"},
+        (val) -> forceResize(val.toString())
     ),
 
     displayFPS(true,
