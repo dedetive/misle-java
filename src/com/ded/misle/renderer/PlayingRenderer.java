@@ -20,7 +20,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
 
-import static com.ded.misle.Launcher.*;
+import static com.ded.misle.core.Setting.displayMoreInfo;
 import static com.ded.misle.game.GamePanel.*;
 import static com.ded.misle.renderer.FontManager.*;
 import static com.ded.misle.renderer.image.ImageManager.mergeImages;
@@ -324,11 +324,11 @@ public class PlayingRenderer extends AbstractRenderer {
         g2d.fillRect(healthBarX, healthBarY, healthBarWidth, (int) (healthBarHeight * lockedHPPercentage));
 
         // More info (Current HP / Max HP)
-        if (!Objects.equals(displayMoreInfo, "false")) {
+        if (!Objects.equals(displayMoreInfo.str(), "false")) {
             g2d.setFont(itemInfoFont);
             String str;
 
-            if (Objects.equals(displayMoreInfo, "exact")) {
+            if (Objects.equals(displayMoreInfo.str(), "exact")) {
                 str = (int) player.getHP() + "/" + (int) player.getMaxHP();
             } else {
                 str = (int) (100 * player.getHP() / player.getMaxHP()) + "%";
@@ -378,11 +378,11 @@ public class PlayingRenderer extends AbstractRenderer {
         g2d.fillRect(entropyBarX, (int) (entropyBarY + entropyBarHeight - entropyBarHeight * entropyPercentage), entropyBarWidth, (int) (entropyBarHeight * entropyPercentage));
 
         // More info (Current Entropy / Max Entropy)
-        if (!Objects.equals(displayMoreInfo, "false")) {
+        if (!Objects.equals(displayMoreInfo.str(), "false")) {
             g2d.setFont(itemInfoFont);
 
             String str;
-            if (Objects.equals(displayMoreInfo, "exact")) {
+            if (Objects.equals(displayMoreInfo.str(), "exact")) {
                 str = (int) player.attr.getEntropy() + "/" + (int) player.attr.getMaxEntropy();
             } else {
                 str = (int) (100 * player.attr.getEntropy() / player.attr.getMaxEntropy()) + "%";
@@ -435,11 +435,11 @@ public class PlayingRenderer extends AbstractRenderer {
             (int) (xpBarWidth * xpPercentage), xpBarHeight, arcWidth, arcHeight);
 
         // More info
-        if (!Objects.equals(displayMoreInfo, "false")) {
+        if (!Objects.equals(displayMoreInfo.str(), "false")) {
             g2d.setFont(itemInfoFont);
 
             String str;
-            if (Objects.equals(displayMoreInfo, "exact")) {
+            if (Objects.equals(displayMoreInfo.str(), "exact")) {
                 str = (int) player.attr.getXP() + "/" + (int) player.attr.getXPtoLevelUp();
             } else {
                 str = (int) (100 * player.attr.getXP() / player.attr.getXPtoLevelUp()) + "%";
@@ -474,7 +474,7 @@ public class PlayingRenderer extends AbstractRenderer {
             // Draw the slot (DISABLED, ENABLE FOR TESTING)
 //			g2d.setColor(Color.GRAY);
 //			g2d.fillRect(slotX, slotY, slotSize, slotSize);
-            if (!Objects.equals(displayMoreInfo, "false")) {
+            if (!Objects.equals(displayMoreInfo.str(), "false")) {
                 g2d.setFont(FontManager.coinTextFont);
                 g2d.setColor(slotIndicator);
                 drawColoredText(g2d, String.valueOf(i + 1), slotX + slotSize[0] / 3, slotY + slotSize[1]);

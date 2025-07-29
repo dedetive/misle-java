@@ -57,6 +57,11 @@ public enum Setting {
     pixelation(
         "normal",
         new String[]{"normal", "low", "none"}
+    ),
+
+    displayMoreInfo(
+            "false",
+            new String[]{"false, exact, percentage"}
     )
 
     ;
