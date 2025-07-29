@@ -4,11 +4,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static com.ded.misle.Launcher.*;
-import static com.ded.misle.game.GamePanel.*;
-import static com.ded.misle.core.Setting.*;
-import static com.ded.misle.renderer.FontManager.updateFontScript;
-
 /**
  * This is for changing settings (use changeThis()) and for getting the path of the game (use getPath())
  */
@@ -151,67 +146,5 @@ public class SettingsManager {
 				break;
 		}
 		return defaultSetting;
-	}
-
-	// Graphics
-	public static void cycleScreenSize() {
-		String[] screenSizes = new String[]{"small", "medium", "big", "huge"};
-		screenSize.set(cycleThroughSetting(screenSizes, screenSize.str()));
-
-		changeSetting("screenSize", screenSize.str());
-		forceResize(screenSize.str());
-	}
-
-	public static void cycleIsFullscreen() {
-		isFullscreen.set(cycleBoolean("isFullscreen", isFullscreen.bool()));
-		forceResize(screenSize.str());
-	}
-
-	public static void cycleFullscreenMode() {
-		String[] modes = new String[]{"windowed", "exclusive"};
-		fullscreenMode.set(cycleThroughSetting(modes, fullscreenMode.str()));
-
-		changeSetting("fullscreenMode", fullscreenMode.str());
-		forceResize(screenSize.str());
-	}
-
-	public static void cycleDisplayFPS() {
-		displayFPS.set(cycleBoolean("displayFPS", displayFPS.bool()));
-	}
-
-	public static void cycleAntiAliasing() {
-		antiAliasing.set(cycleBoolean("antiAliasing", antiAliasing.bool()));
-	}
-
-	// Gameplay
-
-	// General-use methods
-	public static boolean cycleBoolean(String setting, boolean currentValue) {
-		boolean cycledResult = !currentValue;
-
-		changeSetting(setting, String.valueOf(cycledResult));
-
-		return cycledResult;
-	}
-	private static String cycleThroughSetting(String[] possibleValues, String currentValue) {
-		String value;
-		for (int i = 0; i < possibleValues.length; i++) {
-			if (possibleValues[i].equals(currentValue)) {
-				try {
-					value = possibleValues[i + 1];
-				} catch (ArrayIndexOutOfBoundsException e) {
-					value = possibleValues[0];
-				}
-				return value;
-			}
-		}
-		return possibleValues[0];
-	}
-
-	public static void cycleDisplayMoreInfo() {
-		String[] modes = new String[]{"false", "exact", "percentage"};
-		displayMoreInfo = cycleThroughSetting(modes, displayMoreInfo);
-
-		changeSetting("displayMoreInfo", displayMoreInfo);
 	}
 }
