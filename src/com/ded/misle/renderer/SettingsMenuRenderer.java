@@ -197,12 +197,12 @@ public abstract class SettingsMenuRenderer {
         // isFullscreen
         int[] pos = TOP_LEFT.pos;
         createSetting("settings_graphics_isFullscreen", isFullscreen.str(),
-            pos[0], pos[1], SettingsManager::cycleIsFullscreen, panel, MenuButtonID.SETTING_FULLSCREEN);
+            pos[0], pos[1], isFullscreen::cycle, panel, MenuButtonID.SETTING_FULLSCREEN);
 
         // fullscreenMode
         pos = TOP_RIGHT.pos;
         createSetting("settings_graphics_fullscreenMode", fullscreenMode.str(),
-            pos[0], pos[1], SettingsManager::cycleFullscreenMode, panel, MenuButtonID.SETTING_FULLSCREEN_MODE);
+            pos[0], pos[1], fullscreenMode::cycle, panel, MenuButtonID.SETTING_FULLSCREEN_MODE);
 
         // frameRateCap
         pos = MID_LEFT.pos;
@@ -212,17 +212,17 @@ public abstract class SettingsMenuRenderer {
         // displayFPS
         pos = MID_RIGHT.pos;
         createSetting("settings_graphics_displayFPS", displayFPS.str(),
-            pos[0], pos[1], SettingsManager::cycleDisplayFPS, panel, MenuButtonID.SETTING_DISPLAY_FPS);
+            pos[0], pos[1], displayFPS::cycle, panel, MenuButtonID.SETTING_DISPLAY_FPS);
 
         // screenSize
         pos = BOTTOM_LEFT.pos;
         createSetting("settings_graphics_screenSize", screenSize.str(),
-            pos[0], pos[1], SettingsManager::cycleScreenSize, panel, MenuButtonID.SETTING_SCREEN_SIZE);
+            pos[0], pos[1], screenSize::cycle, panel, MenuButtonID.SETTING_SCREEN_SIZE);
 
         // antiAliasing
         pos = BOTTOM_RIGHT.pos;
         createSetting("settings_graphics_antiAliasing", antiAliasing.str(),
-            pos[0], pos[1], SettingsManager::cycleAntiAliasing, panel, MenuButtonID.SETTING_ANTIALIASING);
+            pos[0], pos[1], antiAliasing::cycle, panel, MenuButtonID.SETTING_ANTIALIASING);
     }
 
     public static void renderAudioMenu(JPanel panel) {
@@ -233,7 +233,7 @@ public abstract class SettingsMenuRenderer {
         // DisplayMoreInfo
         int[] pos = TOP_LEFT.pos;
         createSetting("settings_gameplay_displayMoreInfo", String.valueOf(displayMoreInfo),
-            pos[0], pos[1], SettingsManager::cycleDisplayMoreInfo, panel, MenuButtonID.SETTING_DISPLAY_MORE_INFO);
+            pos[0], pos[1], displayMoreInfo::cycle, panel, MenuButtonID.SETTING_DISPLAY_MORE_INFO);
     }
 
     public static void createSetting(String text, String value, int unscaledX, int unscaledY, Runnable action, JPanel panel, MenuButtonID id) {
