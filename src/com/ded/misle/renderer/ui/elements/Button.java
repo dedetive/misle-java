@@ -70,6 +70,11 @@ public class Button extends AbstractUIElement {
 		return key;
 	}
 
+	public Button addFunctionChained(KeyBuilder keyBuilder) {
+		Key key = keyBuilder.build();
+		this.keys.add(key);
+		return this;
+	}
 
 	private void recalculate(Graphics2D g2d) {
 		if (!needsRecalculation) return;
