@@ -1,7 +1,11 @@
 package com.ded.misle.renderer.menu.menus;
 
 import com.ded.misle.core.LanguageManager;
+import com.ded.misle.input.Action;
+import com.ded.misle.input.KeyRegistry;
+import com.ded.misle.input.interaction.MouseInteraction;
 import com.ded.misle.renderer.menu.core.Menu;
+import com.ded.misle.renderer.menu.core.MenuManager;
 import com.ded.misle.renderer.ui.core.UIRegistry;
 import com.ded.misle.renderer.ui.elements.*;
 import com.ded.misle.renderer.ui.elements.Button;
@@ -11,10 +15,14 @@ import java.util.*;
 import java.util.List;
 
 public class SettingsMenu implements Menu {
+	private static final List<Button> PERSISTENT_BUTTONS = new ArrayList<>();
+
+	private static List<Button> tabButtons = new ArrayList<>();
+
+	private SettingTab currentTab = SettingTab.EMPTY;
+
 	private final UIRegistry registry = new UIRegistry();
 
-	private static final HashMap<SettingTab, Button> TAB_BUTTONS = new HashMap<>();
-	private static final List<Button> PERSISTENT_BUTTONS = new ArrayList<>();
 
 	@Override
 	public void draw(Graphics2D g2d) {
@@ -27,11 +35,23 @@ public class SettingsMenu implements Menu {
 		registry.add(new Title(LanguageManager.getText("settings_menu_options")));
 
 		SettingTab.values(); // load values
-		for (Button b : PERSISTENT_BUTTONS)
-			registry.add(b);
+		for (Button b : PERSISTENT_BUTTONS) registry.add(b);
 	}
 
-	enum SettingTab {
+	public SettingsMenu setCurrentTab(SettingTab tab) {
+		if (tab == currentTab) return this;
+		for (Button b : tabButtons) registry.remove(b);
+		tabButtons = tab.tabButtons;
+		for (Button b : tabButtons) registry.add(b);
+		currentTab = tab;
+		return this;
+	}
+
+	public SettingTab getCurrentTab() {
+		return currentTab;
+	}
+
+	public enum SettingTab {
 		EMPTY,
 		GENERAL(new Button(
 				LanguageManager.getText("settings_menu_general"), new Rectangle(42, 220, 50, 31)
@@ -46,7 +66,7 @@ public class SettingsMenu implements Menu {
 				LanguageManager.getText("settings_menu_gameplay"), new Rectangle(237, 220, 50, 31)
 		));
 
-		final List<Button> settingButtons = new ArrayList<>();
+		final List<Button> tabButtons = new ArrayList<>();
 
 		SettingTab(Button button) {
 			PERSISTENT_BUTTONS.add(button);
@@ -54,7 +74,7 @@ public class SettingsMenu implements Menu {
 
 		SettingTab() {}
 
-		static SettingTab getTabByOrder(int order) {
+		private static SettingTab getTabByOrder(int order) {
 			return switch (order) {
 				case -2 -> GAMEPLAY;
 				case -1 -> GAMEPLAY;
