@@ -70,6 +70,12 @@ public class SettingsMenu implements Menu {
 
 		SettingTab(Button button) {
 			PERSISTENT_BUTTONS.add(button);
+			KeyRegistry.addKey(button.addFunction(
+					new Action(() -> ((SettingsMenu) MenuManager.getCurrent()).setCurrentTab(this),
+							(ignored) -> MenuManager.getCurrent() instanceof SettingsMenu && !((SettingsMenu) MenuManager.getCurrent()).getCurrentTab().equals(this),
+							false),
+					MouseInteraction.MouseButton.LEFT
+			));
 		}
 
 		SettingTab() {}
