@@ -1,10 +1,6 @@
 package com.ded.misle.game;
 
-import com.ded.misle.TimeMarker;
 import com.ded.misle.input.*;
-import com.ded.misle.renderer.image.Painter;
-import com.ded.misle.renderer.image.Palette;
-import com.ded.misle.renderer.image.PaletteShifter;
 import com.ded.misle.renderer.menu.core.MenuManager;
 import com.ded.misle.world.data.items.ItemLoader;
 import com.ded.misle.world.entities.player.Player;
