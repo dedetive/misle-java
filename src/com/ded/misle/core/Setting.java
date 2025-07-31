@@ -62,6 +62,11 @@ public enum Setting {
     displayMoreInfo(
             "false",
             new String[]{"false, exact, percentage"}
+    ),
+
+    newVisuals(
+            false,
+            new Boolean[]{true, false}
     )
 
     ;
