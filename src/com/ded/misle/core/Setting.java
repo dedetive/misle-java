@@ -1,5 +1,7 @@
 package com.ded.misle.core;
 
+import com.ded.misle.renderer.menu.core.MenuManager;
+
 import java.util.Arrays;
 import java.util.function.Consumer;
 
@@ -66,7 +68,8 @@ public enum Setting {
 
     newVisuals(
             false,
-            new Boolean[]{true, false}
+            new Boolean[]{true, false},
+            (val) -> { if (val.equals(true)) MenuManager.init(); }
     )
 
     ;
