@@ -4,6 +4,7 @@ import com.ded.misle.renderer.image.Painter;
 import com.ded.misle.renderer.image.Palette;
 import com.ded.misle.renderer.image.PaletteShifter;
 import com.ded.misle.renderer.smoother.SmoothValue;
+import com.ded.misle.renderer.ui.elements.BoxRepresentation;
 import com.ded.misle.world.data.BoxPreset;
 import com.ded.misle.world.data.Direction;
 import com.ded.misle.world.entities.Entity;
@@ -36,6 +37,7 @@ public class Box {
 
 	private Color color = defaultBoxColor;
 	public String textureName = "solid";
+	public BoxRepresentation representation = new BoxRepresentation();
 
 	private boolean hasCollision = false;
 	private PhysicsEngine.ObjectType objectType = BOX;
@@ -247,6 +249,7 @@ public class Box {
 			world = player.pos.world;
 			world.setPos(this, x, y, layer, false);
 		}
+		representation.setPosition(this.getPos());
 	}
 
 	public double getVisualOffsetX() {
@@ -303,6 +306,7 @@ public class Box {
 
 	public Box setTexture(String texture) {
 		this.textureName = texture;
+		representation.setTexture(getTexture(textureName));
 		return this;
 	}
 
