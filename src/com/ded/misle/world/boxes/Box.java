@@ -185,9 +185,13 @@ public class Box {
 	}
 
 	public void updateVisualPosition(float speed) {
+		float oldVisualPositionX = smoothPos.getRenderX();
+		float oldVisualPositionY = smoothPos.getRenderY();
 		smoothPos.setTarget(worldX, worldY, originalTileSize);
 		this.smoothPos.update(speed);
-		representation.triggerUpdate();
+		if ((oldVisualPositionX != smoothPos.getRenderX()) ||
+				(oldVisualPositionY != smoothPos.getRenderY()))
+			representation.triggerUpdate();
 	}
 
 	public float getRenderX() {
@@ -261,9 +265,13 @@ public class Box {
 	}
 
 	public void updateVisualOffset(float speed) {
+		float oldVisualOffsetX = visualOffsetX.getCurrentFloat();
+		float oldVisualOffsetY = visualOffsetY.getCurrentFloat();
 		visualOffsetX.update(speed);
 		visualOffsetY.update(speed);
-		representation.triggerUpdate();
+		if ((oldVisualOffsetX != visualOffsetX.getCurrentFloat()) ||
+				(oldVisualOffsetY != visualOffsetY.getCurrentFloat()))
+			representation.triggerUpdate();
 	}
 
 	public double getVisualScaleHorizontal() {
