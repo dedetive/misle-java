@@ -14,20 +14,25 @@ public class BoxRepresentation extends AbstractUIElement {
 	private BufferedImage texture;
 	private Point position;
 
+	private boolean shouldUpdate = true;
+
 	public BoxRepresentation() {
 		BoxScreen.addBox(this);
 	}
 
 	public BoxRepresentation updatePosition(Box box) {
-		float renderX = box.getRenderX();
-		float renderY = box.getRenderY();
-		float cameraOffsetX = player.pos.getCameraOffsetX();
-		float cameraOffsetY = player.pos.getCameraOffsetY();
+		if (shouldUpdate) {
+			float renderX = box.getRenderX();
+			float renderY = box.getRenderY();
+			float cameraOffsetX = player.pos.getCameraOffsetX();
+			float cameraOffsetY = player.pos.getCameraOffsetY();
 
-		int screenX = (int) (renderX - cameraOffsetX - box.getVisualOffsetX() * originalTileSize);
-		int screenY = (int) (renderY - cameraOffsetY - box.getVisualOffsetY() * originalTileSize);
+			int screenX = (int) (renderX - cameraOffsetX - box.getVisualOffsetX() * originalTileSize);
+			int screenY = (int) (renderY - cameraOffsetY - box.getVisualOffsetY() * originalTileSize);
 
-		position = new Point(screenX, screenY);
+			position = new Point(screenX, screenY);
+		}
+		shouldUpdate = false;
 		return this;
 	}
 
@@ -36,10 +41,14 @@ public class BoxRepresentation extends AbstractUIElement {
 		return this;
 	}
 
+	public BoxRepresentation triggerUpdate() {
+		shouldUpdate = true;
+		return this;
+	}
+
 	@Override
 	public void drawIfPossible(Graphics2D g2d) {
 		if (texture == null || position == null) return;
-
 		if (isInvalid(position.x, position.y)) return;
 		g2d.drawImage(texture, position.x, position.y, originalTileSize, originalTileSize, null);
 	}
