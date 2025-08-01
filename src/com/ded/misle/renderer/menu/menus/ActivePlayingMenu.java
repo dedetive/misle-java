@@ -1,5 +1,6 @@
 package com.ded.misle.renderer.menu.menus;
 
+import com.ded.misle.game.GamePanel;
 import com.ded.misle.renderer.menu.core.Menu;
 import com.ded.misle.renderer.ui.elements.BoxScreen;
 import com.ded.misle.renderer.ui.elements.InventorySatchelUI;
@@ -7,10 +8,18 @@ import com.ded.misle.renderer.ui.core.UIRegistry;
 
 import java.awt.*;
 
+import static com.ded.misle.game.GamePanel.player;
+
 public class ActivePlayingMenu implements Menu {
 	private final UIRegistry registry = new UIRegistry();
 
 	public void draw(Graphics2D g2d) {
+		GamePanel.updateCamera();
+		player.updateVisualPosition(50f);
+		player.updateVisualOffset(10f);
+		player.pos.updateCameraOffset(200f);
+		BoxScreen.updateRepresentations();
+
 		registry.drawActive(g2d);
 	}
 

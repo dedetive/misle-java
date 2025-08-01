@@ -2,6 +2,7 @@ package com.ded.misle.game;
 
 import com.ded.misle.input.*;
 import com.ded.misle.renderer.menu.core.MenuManager;
+import com.ded.misle.renderer.ui.elements.BoxScreen;
 import com.ded.misle.world.data.items.ItemLoader;
 import com.ded.misle.world.entities.player.Player;
 import com.ded.misle.renderer.*;
@@ -311,7 +312,6 @@ public class GamePanel extends JPanel implements Runnable {
 					case PLAYING, INVENTORY ->  {
 						mouseHandler.updateMouse();
 						TurnManager.updateIfNeeded();
-						updateCamera();
 					} // Only update if in the playing state
 					case DIALOG -> mouseHandler.updateMouse();
 					case null, default -> {
@@ -343,7 +343,7 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 	}
 
-	public void updateCamera() {
+	public static void updateCamera() {
 		// Camera dead zone
 		double deadZoneWidth = originalTileSize;
 		double deadZoneHeight = originalTileSize * 9 / 16d;
