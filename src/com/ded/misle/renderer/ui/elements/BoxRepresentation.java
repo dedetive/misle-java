@@ -18,7 +18,7 @@ public class BoxRepresentation extends AbstractUIElement {
 		BoxScreen.addBox(this);
 	}
 
-	public BoxRepresentation setCalculatedPosition(Box box) {
+	public BoxRepresentation updatePosition(Box box) {
 		float renderX = box.getRenderX();
 		float renderY = box.getRenderY();
 		float cameraOffsetX = player.pos.getCameraOffsetX();
