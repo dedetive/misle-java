@@ -23,6 +23,7 @@ import java.util.function.Function;
 
 import static com.ded.misle.game.GamePanel.player;
 import static com.ded.misle.core.Path.getPath;
+import static com.ded.misle.world.boxes.Box.getTexture;
 import static com.ded.misle.world.logic.RoomManager.*;
 import static com.ded.misle.world.data.WorldLoader.SideGridDirection.*;
 import static com.ded.misle.world.boxes.BoxHandling.*;
@@ -168,6 +169,9 @@ public abstract class WorldLoader {
 					currentBox = world.grid[x][y][layer];
 					if (currentBox == null) continue;
 					String textureName = currentBox.textureName;
+					String s = textureName.substring(0, Math.max(textureName.indexOf('.'), 0));
+					if (s.isEmpty()) s = textureName;
+					currentBox.representation.setTexture(getTexture(s));
 					BoxPreset preset;
 					try {
 						preset = BoxPreset.valueOf(textureName.toUpperCase());
