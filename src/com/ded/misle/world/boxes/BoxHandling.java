@@ -1,6 +1,7 @@
 package com.ded.misle.world.boxes;
 
 import com.ded.misle.renderer.smoother.SmoothValue;
+import com.ded.misle.renderer.ui.elements.BoxScreen;
 import com.ded.misle.world.data.BoxPreset;
 import com.ded.misle.world.entities.config.types.EnemyType;
 import com.ded.misle.world.entities.enemies.EnemyRegistry;
@@ -125,6 +126,7 @@ public class BoxHandling {
 	}
 
 	public static void clearAllBoxes() {
+		BoxScreen.flush();
 		boxes.clear();
 		clearEntities();
 		EnemyRegistry.clear();
