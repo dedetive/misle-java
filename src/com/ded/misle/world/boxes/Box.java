@@ -187,6 +187,7 @@ public class Box {
 	public void updateVisualPosition(float speed) {
 		smoothPos.setTarget(worldX, worldY, originalTileSize);
 		this.smoothPos.update(speed);
+		representation.triggerUpdate();
 	}
 
 	public float getRenderX() {
@@ -230,7 +231,7 @@ public class Box {
 	}
 
 	public void setPos(int x, int y) {
-		if (this instanceof Entity) ((Entity) this).updateLastDirection(Direction.interpretDirection(
+		if (this instanceof Entity) ((Entity<?>) this).updateLastDirection(Direction.interpretDirection(
 				x - this.worldX, y - this.worldY
 		));
 
@@ -249,7 +250,6 @@ public class Box {
 			world = player.pos.world;
 			world.setPos(this, x, y, layer, false);
 		}
-		representation.setPosition(this.getPos());
 	}
 
 	public double getVisualOffsetX() {
@@ -263,6 +263,7 @@ public class Box {
 	public void updateVisualOffset(float speed) {
 		visualOffsetX.update(speed);
 		visualOffsetY.update(speed);
+		representation.triggerUpdate();
 	}
 
 	public double getVisualScaleHorizontal() {
@@ -273,7 +274,10 @@ public class Box {
 		return visualScaleVertical;
 	}
 
-	public void setVisualRotation(double visualRotation) { this.visualRotation = visualRotation; }
+	public void setVisualRotation(double visualRotation) {
+		this.visualRotation = visualRotation;
+		representation.triggerUpdate();
+	}
 
 	public double getVisualRotation() { return visualRotation; }
 
@@ -306,7 +310,7 @@ public class Box {
 
 	public Box setTexture(String texture) {
 		this.textureName = texture;
-		representation.setTexture(getTexture(textureName));
+		representation.triggerUpdate();
 		return this;
 	}
 
