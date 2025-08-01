@@ -312,6 +312,7 @@ public class GamePanel extends JPanel implements Runnable {
 					case PLAYING, INVENTORY ->  {
 						mouseHandler.updateMouse();
 						TurnManager.updateIfNeeded();
+						if (!newVisuals.bool()) updateCamera();
 					} // Only update if in the playing state
 					case DIALOG -> mouseHandler.updateMouse();
 					case null, default -> {
