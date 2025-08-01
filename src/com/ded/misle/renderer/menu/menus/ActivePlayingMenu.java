@@ -1,6 +1,7 @@
 package com.ded.misle.renderer.menu.menus;
 
 import com.ded.misle.renderer.menu.core.Menu;
+import com.ded.misle.renderer.ui.elements.BoxScreen;
 import com.ded.misle.renderer.ui.elements.InventorySatchelUI;
 import com.ded.misle.renderer.ui.core.UIRegistry;
 
@@ -16,5 +17,6 @@ public class ActivePlayingMenu implements Menu {
 	@Override
 	public void init() {
 		registry.add(InventorySatchelUI.class);
+		registry.add(BoxScreen.class);
 	}
 }
