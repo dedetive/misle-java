@@ -108,7 +108,7 @@ public class PlayerPosition {
 
 		return Math.clamp((double) mouseHandler.getDistanceFromScreenCenter().y * MOUSE_INFLUENCE_Y + targetY * originalTileSize - (double) originalScreenHeight / 2,
 			(double) - originalTileSize / 2,
-			originalWorldHeight - originalScreenHeight + (double) originalTileSize / 2);
+			Math.max(originalWorldHeight, originalScreenHeight) - originalScreenHeight + (double) originalTileSize / 2);
 	}
 
 	public void updateCameraOffset(float speed) {
