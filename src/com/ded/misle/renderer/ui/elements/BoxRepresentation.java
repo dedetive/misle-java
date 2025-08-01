@@ -20,6 +20,11 @@ public class BoxRepresentation extends AbstractUIElement {
 		return this;
 	}
 
+	public BoxRepresentation setWorldPosition(Point position) {
+		this.position = new Point(position.x * originalTileSize, position.y * originalTileSize);
+		return this;
+	}
+
 	public BoxRepresentation setTexture(BufferedImage texture) {
 		this.texture = texture;
 		return this;
