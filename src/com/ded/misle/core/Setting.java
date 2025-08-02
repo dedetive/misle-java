@@ -20,12 +20,12 @@ public enum Setting {
 
     isFullscreen(true,
         new Boolean[]{true, false},
-        (val) -> forceResize(val.toString())
+        (val) -> forceResize(screenSize.str())
     ),
 
     fullscreenMode("windowed",
         new String[]{"windowed", "exclusive"},
-        (val) -> forceResize(val.toString())
+        (val) -> forceResize(screenSize.str())
     ),
 
     displayFPS(true,
