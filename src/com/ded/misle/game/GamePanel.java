@@ -124,13 +124,15 @@ public class GamePanel extends JPanel implements Runnable {
 		this.setLayout(null);
 		this.setDoubleBuffered(true);
 		this.addKeyListener(inputHandler);
+		addMouseListener(inputHandler);
+		addMouseMotionListener(inputHandler);
 		this.setFocusable(true);
 
 		this.setBackground(windowBackground);
 
 		mouseHandler = new MouseHandler();
-		addMouseListener(inputHandler);
-		addMouseMotionListener(inputHandler);
+		addMouseListener(mouseHandler);
+		addMouseMotionListener(mouseHandler);
 
 		updateMouseVariableScales();
 
