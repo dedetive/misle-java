@@ -5,6 +5,7 @@ import com.ded.misle.renderer.smoother.ValueModifier;
 import com.ded.misle.renderer.smoother.modifiers.BounceModifier;
 import com.ded.misle.renderer.smoother.modifiers.ShakeModifier;
 import com.ded.misle.renderer.ui.elements.BoxScreen;
+import com.ded.misle.renderer.ui.elements.TileGameBackground;
 import com.ded.misle.world.logic.RoomManager;
 import com.ded.misle.world.logic.World;
 
@@ -117,8 +118,10 @@ public class PlayerPosition {
 		this.cameraOffsetX.update(speed);
 		this.cameraOffsetY.update(speed);
 		if (oldCameraOffsetX != cameraOffsetX.getVisual() ||
-				oldCameraOffsetY != cameraOffsetY.getVisual())
+				oldCameraOffsetY != cameraOffsetY.getVisual()) {
 			BoxScreen.triggerGlobalUpdate();
+			TileGameBackground.triggerUpdate();
+		}
 	}
 
 	public int getSpawnpoint() {
