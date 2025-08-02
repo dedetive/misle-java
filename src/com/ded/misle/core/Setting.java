@@ -125,7 +125,7 @@ public enum Setting {
 
         Object current = get();
         for (int i = 0; i < cycleOptions.length; i++) {
-            if (cycleOptions[i].equals(current)) {
+            if (cycleOptions[i].toString().equals(current.toString())) {
                 Object nextValue = cycleOptions[(i + 1) % cycleOptions.length];
                 set(nextValue);
                 SettingsManager.changeSetting(this.name(), this.str());
