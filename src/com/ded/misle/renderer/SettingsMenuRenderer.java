@@ -232,7 +232,7 @@ public abstract class SettingsMenuRenderer {
     public static void renderGameplayMenu(JPanel panel) {
         // DisplayMoreInfo
         int[] pos = TOP_LEFT.pos;
-        createSetting("settings_gameplay_displayMoreInfo", String.valueOf(displayMoreInfo),
+        createSetting("settings_gameplay_displayMoreInfo", displayMoreInfo.str(),
             pos[0], pos[1], displayMoreInfo::cycle, panel, MenuButtonID.SETTING_DISPLAY_MORE_INFO);
     }
 
