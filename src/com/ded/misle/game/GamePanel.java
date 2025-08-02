@@ -114,11 +114,6 @@ public class GamePanel extends JPanel implements Runnable {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setSize((int) screenWidth, (int) screenHeight);
 		setWindow(window);
-		try {
-			forceResize(screenSize.str());
-		} catch (IllegalArgumentException e) {
-			forceResize(screenSize.strDefault());
-		}
 
 		window.add(this);
 		this.setLayout(null);
@@ -135,8 +130,6 @@ public class GamePanel extends JPanel implements Runnable {
 		addMouseMotionListener(mouseHandler);
 
 		updateMouseVariableScales();
-
-		forceResize(screenSize.str());
 
 		// Handle window close event
 		window.addWindowListener(new WindowAdapter() {
@@ -192,7 +185,6 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public static void forceResize(String screenSize) {
-		double previousScale = getWindowScale();
 		ScreenSizeDimensions screen = ScreenSizeDimensions.valueOf(screenSize);
 		int preferredX = screen.x;
 		int preferredY = screen.y;
@@ -211,7 +203,7 @@ public class GamePanel extends JPanel implements Runnable {
 				window.setUndecorated(true);
 				window.setResizable(false);
 				window.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds());
-				window.setVisible(true);
+				window.setVisible(isVisible);
 				windowScale = (double) window.getWidth() / 512;
 				gameScale = getWindowScale();
 				GamePanel.screenWidth = window.getWidth();
@@ -223,6 +215,7 @@ public class GamePanel extends JPanel implements Runnable {
 					window.dispose();
 					window.setUndecorated(true);
 					device.setFullScreenWindow(window);
+					window.setVisible(isVisible);
 					windowScale = (double) window.getWidth() / 512;
 					gameScale = getWindowScale();
 					GamePanel.screenWidth = window.getWidth();
@@ -239,21 +232,16 @@ public class GamePanel extends JPanel implements Runnable {
 			window.pack();
 			window.setResizable(false);
 			window.setLocationRelativeTo(null);
-			window.setVisible(true);
+			window.setVisible(isVisible);
 		}
 
 		// Update game variables for resizing
 		updateTileSize();
-		player.setVisualScaleHorizontal(0.91);
-		player.setVisualScaleVertical(0.91);
 		worldWidth = originalWorldWidth * getWindowScale();
 		worldHeight = originalWorldHeight * getWindowScale();
 
 		clearButtons();
 		FontManager.updateFontScript();
-		updateMouseVariableScales();
-
-		PlayingRenderer.updateSelectedItemNamePosition();
 
 		window.repaint();
 	}
@@ -264,8 +252,10 @@ public class GamePanel extends JPanel implements Runnable {
 		gameThread.start();
 	}
 
+	private static boolean isVisible = false;
 	public void showScreen() {
 		window.setVisible(true);
+		isVisible = true;
 	}
 
 	public static boolean isRunning() {

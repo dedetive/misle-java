@@ -54,9 +54,13 @@ public class Launcher {
 
 		SwingUtilities.invokeLater(() -> {
 			GamePanel panel = new GamePanel();
-			GamePanel.forceResize(screenSize.str());
-			panel.showScreen();
 			panel.startGameThread();
+			try {
+				GamePanel.forceResize(screenSize.str());
+			} catch (IllegalArgumentException e) {
+				GamePanel.forceResize(screenSize.strDefault());
+			}
+			panel.showScreen();
 		});
 	}
 }
