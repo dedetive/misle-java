@@ -1,5 +1,6 @@
 package com.ded.misle.world.logic;
 
+import com.ded.misle.renderer.ui.elements.TileGameBackground;
 import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.data.BoxPreset;
 
@@ -49,6 +50,7 @@ public class World {
         this.grid = new Box[worldWidth][worldHeight][layers];
         setWorldBorders(worldWidth, worldHeight);
         player.pos.world = this;
+        TileGameBackground.triggerUpdate();
     }
 
     /**
