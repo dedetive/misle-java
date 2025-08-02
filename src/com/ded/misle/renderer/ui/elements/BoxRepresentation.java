@@ -14,14 +14,14 @@ public class BoxRepresentation extends AbstractUIElement {
 	private BufferedImage texture;
 	private Point position;
 
-	private boolean shouldUpdate = true;
+	private boolean needsRecalculation = true;
 
 	public BoxRepresentation() {
 		BoxScreen.addBox(this);
 	}
 
 	public BoxRepresentation updatePosition(Box box) {
-		if (shouldUpdate) {
+		if (needsRecalculation) {
 			float renderX = box.getRenderX();
 			float renderY = box.getRenderY();
 			float cameraOffsetX = player.pos.getCameraOffsetX();
@@ -32,7 +32,7 @@ public class BoxRepresentation extends AbstractUIElement {
 
 			position = new Point(screenX, screenY);
 		}
-		shouldUpdate = false;
+		needsRecalculation = false;
 		return this;
 	}
 
@@ -42,7 +42,7 @@ public class BoxRepresentation extends AbstractUIElement {
 	}
 
 	public BoxRepresentation triggerUpdate() {
-		shouldUpdate = true;
+		needsRecalculation = true;
 		return this;
 	}
 
