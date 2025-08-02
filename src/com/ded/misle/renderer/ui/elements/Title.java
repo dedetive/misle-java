@@ -85,10 +85,17 @@ public final class Title extends AbstractUIElement {
 				generateTextImage(text, textWidth, fm.getHeight() + MainRenderer.textShadow)
 		);
 
-		drawWidth = (int) (textWidth * 2 * scale);
-		drawHeight = (int) (defaultHeight * scale);
-		drawX = (int) (textX - textWidth / 2.5 * scale);
-		drawY = (int) (textY - (double) defaultHeight / 2 * scale);
+		drawWidth = textWidth * 2;
+		drawHeight = defaultHeight;
+		drawX = (int) ((double) textX - (double) textWidth / 2.5d);
+		drawY = (int) ((double) textY - (double) defaultHeight / 2d);
+
+		transform = new AffineTransform();
+
+		transform.translate(textX, textY);
+		transform.rotate(Math.toRadians(degrees));
+		transform.scale(scale, scale);
+		transform.translate(-textX, -textY);
 
 		Palette p = new Palette(finalImage);
 		PaletteShifter shifter = new PaletteShifter(p);
@@ -114,12 +121,11 @@ public final class Title extends AbstractUIElement {
 	@Override
 	public void drawIfPossible(Graphics2D g2d) {
 		recalculate(g2d);
-		if (transform != null) {
-			AffineTransform original = g2d.getTransform();
-			g2d.transform(transform);
-			g2d.drawImage(finalImage, drawX, drawY, drawWidth, drawHeight, null);
-			g2d.setTransform(original);
-		}
-		else g2d.drawImage(finalImage, drawX, drawY, drawWidth, drawHeight, null);
+
+		AffineTransform original = g2d.getTransform();
+		g2d.transform(transform);
+		g2d.drawImage(finalImage, drawX, drawY, drawWidth, drawHeight, null);
+		g2d.setTransform(original);
 	}
+
 }

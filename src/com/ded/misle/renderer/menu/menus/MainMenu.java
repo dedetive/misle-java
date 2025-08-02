@@ -62,7 +62,7 @@ public class MainMenu implements Menu {
 
 	@Override
 	public void draw(Graphics2D g2d) {
-		title.setScale(smoothTitleScale.getCurrentFloat() - smoothTitleScale.getCurrentFloat() % 0.04f);
+		title.setScale(smoothTitleScale.getCurrentFloat());
 		title.setRotation(smoothTitleRotation.getCurrentFloat());
 		smoothTitleScale.update(0.05f);
 		smoothTitleRotation.update(0.05f);
@@ -80,11 +80,11 @@ public class MainMenu implements Menu {
 
 		registry.add(MainBackground.class);
 		smoothTitleScale.addModifiers(
-				new SineWaveModifier(0.3f, 0.8f),
-				new SineWaveModifier(0.2f, 0.04f)
+				new SineWaveModifier(0.3f, 1.2f),
+				new SineWaveModifier(0.2f, 0.08f)
 		);
 		smoothTitleRotation.addModifiers(
-				new SineWaveModifier(4f, 0.6f)
+				new SineWaveModifier(4f, 0.7f)
 		);
 		registry.add(title);
 		registry.add(startButton);
