@@ -2,6 +2,7 @@ package com.ded.misle.renderer.ui.elements;
 
 import com.ded.misle.renderer.*;
 import com.ded.misle.renderer.image.*;
+import com.ded.misle.renderer.menu.core.MenuManager;
 import com.ded.misle.renderer.ui.core.AbstractUIElement;
 
 import java.awt.*;
@@ -103,6 +104,8 @@ public final class Title extends AbstractUIElement {
 		Painter painter = new Painter(p);
 		finalImage = painter.paint(finalImage);
 		currentHue += rainbowness;
+
+		MenuManager.requestUpdate();
 	}
 
 	private BufferedImage generateTextImage(String text, int textWidth, int imageHeight) {

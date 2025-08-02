@@ -1,5 +1,6 @@
 package com.ded.misle.renderer.ui.elements;
 
+import com.ded.misle.renderer.menu.core.MenuManager;
 import com.ded.misle.renderer.ui.core.AbstractUIElement;
 import com.ded.misle.world.logic.World;
 
@@ -39,6 +40,7 @@ public class TileGameBackground extends AbstractUIElement.SingletonUIElement {
 
 	public static void triggerUpdate() {
 		recalculate();
+		MenuManager.requestUpdate();
 	}
 
 	@Override

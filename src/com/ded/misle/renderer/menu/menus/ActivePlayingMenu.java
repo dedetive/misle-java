@@ -12,13 +12,16 @@ import static com.ded.misle.game.GamePanel.player;
 public class ActivePlayingMenu implements Menu {
 	private final UIRegistry registry = new UIRegistry();
 
-	public void draw(Graphics2D g2d) {
+	@Override
+	public void update() {
 		GamePanel.updateCamera();
 		player.updateVisualPosition(50f);
 		player.updateVisualOffset(10f);
 		player.pos.updateCameraOffset(200f);
 		BoxScreen.updateRepresentations();
+	}
 
+	public void draw(Graphics2D g2d) {
 		registry.drawActive(g2d);
 	}
 

@@ -1,5 +1,6 @@
 package com.ded.misle.renderer.ui.elements;
 
+import com.ded.misle.renderer.menu.core.MenuManager;
 import com.ded.misle.renderer.ui.core.AbstractUIElement;
 import com.ded.misle.world.boxes.Box;
 
@@ -31,6 +32,7 @@ public class BoxRepresentation extends AbstractUIElement {
 			int screenY = (int) (renderY - cameraOffsetY - box.getVisualOffsetY() * originalTileSize);
 
 			position = new Point(screenX, screenY);
+			MenuManager.requestUpdate();
 		}
 		needsRecalculation = false;
 		return this;
