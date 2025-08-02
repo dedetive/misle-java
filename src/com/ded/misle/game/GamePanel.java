@@ -295,9 +295,6 @@ public class GamePanel extends JPanel implements Runnable {
 		int frames = 0;
 		nsPerFrame = 1000000000.0 / Math.clamp(frameRateCap.integer(), 30, 160);
 
-		screenBuffer = new BufferedImage((int) screenWidth, (int) screenHeight, BufferedImage.TYPE_INT_RGB);
-		g2dBuffer = screenBuffer.createGraphics();
-
 		// GAME LOOP
 
 		while (running) {
