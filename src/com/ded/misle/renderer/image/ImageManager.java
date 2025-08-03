@@ -31,6 +31,8 @@ public abstract class ImageManager {
     }
 
     public enum ImageName {
+        MISSING_TEXTURE("boxes", "missing_texture.png"),
+
         // UI
             INVENTORY_BAR("ui", "inventory_bar.png"),
             INVENTORY_SATCHEL("ui", "inventory_satchel.png"),

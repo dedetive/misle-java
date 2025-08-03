@@ -1,5 +1,6 @@
 package com.ded.misle.renderer.ui.elements;
 
+import com.ded.misle.renderer.image.ImageManager;
 import com.ded.misle.renderer.menu.core.MenuManager;
 import com.ded.misle.renderer.ui.core.AbstractUIElement;
 import com.ded.misle.world.boxes.Box;
@@ -10,6 +11,7 @@ import java.util.List;
 
 import static com.ded.misle.game.GamePanel.originalTileSize;
 import static com.ded.misle.game.GamePanel.player;
+import static com.ded.misle.renderer.image.ImageManager.cachedImages;
 import static com.ded.misle.world.boxes.Box.isInvalid;
 
 public class BoxRepresentation extends AbstractUIElement {
@@ -55,7 +57,11 @@ public class BoxRepresentation extends AbstractUIElement {
 
 	@Override
 	public void drawIfPossible(Graphics2D g2d) {
-		if (texture == null || position == null) return;
+		if (position == null) return;
+		if (texture == null) {
+			g2d.drawImage(cachedImages.get(ImageManager.ImageName.MISSING_TEXTURE), position.x, position.y, originalTileSize, originalTileSize, null);
+			return;
+		}
 		if (isInvalid(position.x, position.y)) return;
 		g2d.drawImage(texture, position.x, position.y, originalTileSize, originalTileSize, null);
 	}
