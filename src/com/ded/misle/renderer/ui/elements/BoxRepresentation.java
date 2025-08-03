@@ -6,6 +6,7 @@ import com.ded.misle.world.boxes.Box;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import static com.ded.misle.game.GamePanel.originalTileSize;
 import static com.ded.misle.game.GamePanel.player;
@@ -55,5 +56,9 @@ public class BoxRepresentation extends AbstractUIElement {
 		if (texture == null || position == null) return;
 		if (isInvalid(position.x, position.y)) return;
 		g2d.drawImage(texture, position.x, position.y, originalTileSize, originalTileSize, null);
+	}
+
+	public int getPriority() {
+		return priority;
 	}
 }

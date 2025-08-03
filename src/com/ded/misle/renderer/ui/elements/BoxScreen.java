@@ -5,7 +5,7 @@ import com.ded.misle.world.boxes.Box;
 import com.ded.misle.world.boxes.BoxHandling;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
 public class BoxScreen extends AbstractUIElement.SingletonUIElement {
@@ -44,7 +44,9 @@ public class BoxScreen extends AbstractUIElement.SingletonUIElement {
 	public void drawIfPossible(Graphics2D g2d) {
 		updateRepresentations();
 		List<BoxRepresentation> boxes = new ArrayList<>(BoxScreen.boxes);
-		for (BoxRepresentation box : boxes)
+		boxes.sort(Comparator.comparingInt(BoxRepresentation::getPriority));
+		for (BoxRepresentation box : boxes) {
 			box.drawIfPossible(g2d);
+		}
 	}
 }
