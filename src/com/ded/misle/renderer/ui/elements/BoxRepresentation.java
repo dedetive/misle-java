@@ -14,6 +14,7 @@ import static com.ded.misle.world.boxes.Box.isInvalid;
 public class BoxRepresentation extends AbstractUIElement {
 	private BufferedImage texture;
 	private Point position;
+	private int priority = Integer.MIN_VALUE;
 
 	private boolean needsRecalculation = true;
 
@@ -23,6 +24,7 @@ public class BoxRepresentation extends AbstractUIElement {
 
 	public BoxRepresentation updatePosition(Box box) {
 		if (needsRecalculation) {
+			this.priority = box.worldLayer;
 			float renderX = box.getRenderX();
 			float renderY = box.getRenderY();
 			float cameraOffsetX = player.pos.getCameraOffsetX();
