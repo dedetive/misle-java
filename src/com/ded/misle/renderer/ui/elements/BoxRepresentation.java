@@ -16,6 +16,7 @@ public class BoxRepresentation extends AbstractUIElement {
 	private BufferedImage texture;
 	private Point position;
 	private int priority = Integer.MIN_VALUE;
+	private String metadata;
 
 	private boolean needsRecalculation = true;
 
@@ -26,6 +27,7 @@ public class BoxRepresentation extends AbstractUIElement {
 	public BoxRepresentation updatePosition(Box box) {
 		if (needsRecalculation) {
 			this.priority = box.worldLayer;
+			this.metadata = box.toString().replaceFirst("^.*?\\{", this.getClass().getSimpleName() + "{");
 			float renderX = box.getRenderX();
 			float renderY = box.getRenderY();
 			float cameraOffsetX = player.pos.getCameraOffsetX();
@@ -60,5 +62,10 @@ public class BoxRepresentation extends AbstractUIElement {
 
 	public int getPriority() {
 		return priority;
+	}
+
+	@Override
+	public String toString() {
+		return this.metadata;
 	}
 }
