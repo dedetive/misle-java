@@ -50,12 +50,8 @@ public class Player extends Entity<Player> {
 
 	public Player() {
 		this.setTexture("invisible");
-		this.setColor(defaultBoxColor);
 		this.setObjectType(PhysicsEngine.ObjectType.PLAYER);
 		this.setCollision(true);
-		this.setVisualScaleHorizontal(0.91);
-		this.setVisualScaleVertical(0.91);
-		this.effect = null;
 
 		this.inv = new Inventory();
 		this.pos = new PlayerPosition();
