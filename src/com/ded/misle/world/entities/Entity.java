@@ -1115,4 +1115,20 @@ public class Entity<T extends Entity<T>> extends Box {
         super.setTexture(prefix + texture);
         return (T) this;
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + "{" +
+                "textureName=" + textureName +
+                ", Type=" + this.type +
+                ", x=" + getX() +
+                ", y=" + getY() +
+                ", z=" + worldLayer +
+                ", Magnification=" + this.magnification +
+                ", MaxHP=" + this.getMaxHP() +
+                ", CurrentHP=" + this.getHP() +
+                ", Defense=" + this.getDefense() +
+                ", Effect=" + (effect != null ? effect.toString() : "null") +
+                '}';
+    }
 }
