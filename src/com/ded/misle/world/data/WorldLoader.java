@@ -125,7 +125,7 @@ public abstract class WorldLoader {
 							}
 						}
 						case ENEMY -> {
-							box = addEnemyBox(new Point(0, 0),
+							box = new Enemy(new Point(0, 0),
 								EnemyType.valueOf(parts[1].toUpperCase().split(":")[1]),
 								Double.parseDouble(parts[2].split(":")[1]));
 							int x = point[0];

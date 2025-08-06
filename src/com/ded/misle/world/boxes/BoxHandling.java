@@ -3,6 +3,7 @@ package com.ded.misle.world.boxes;
 import com.ded.misle.renderer.smoother.SmoothValue;
 import com.ded.misle.renderer.ui.elements.BoxScreen;
 import com.ded.misle.world.data.BoxPreset;
+import com.ded.misle.world.entities.Entity;
 import com.ded.misle.world.entities.config.types.EnemyType;
 import com.ded.misle.world.entities.enemies.EnemyRegistry;
 import com.ded.misle.world.logic.World;
@@ -21,6 +22,10 @@ import static com.ded.misle.world.entities.npcs.NPC.clearNPCs;
 public class BoxHandling {
 
 	private static final List<Box> boxes = new ArrayList<>();
+
+	public static void addBox(Box box) {
+		boxes.add(box);
+	}
 
 	public static Box addBox(BoxPreset preset) {
 		Box box = new Box();

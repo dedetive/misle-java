@@ -170,6 +170,7 @@ public class Entity<T extends Entity<T>> extends Box {
         this.magnification = magnification;
         this.setObjectType(ENTITY);
         entities.add(this);
+        addBox(this);
         updateRegenerationTimer();
         this.type = type;
         this.load();
