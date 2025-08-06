@@ -58,11 +58,11 @@ public class BoxRepresentation extends AbstractUIElement {
 	@Override
 	public void drawIfPossible(Graphics2D g2d) {
 		if (position == null) return;
+		if (isInvalid(position.x, position.y)) return;
 		if (texture == null) {
 			g2d.drawImage(cachedImages.get(ImageManager.ImageName.MISSING_TEXTURE), position.x, position.y, originalTileSize, originalTileSize, null);
 			return;
 		}
-		if (isInvalid(position.x, position.y)) return;
 		g2d.drawImage(texture, position.x, position.y, originalTileSize, originalTileSize, null);
 	}
 
