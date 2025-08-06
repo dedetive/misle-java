@@ -29,7 +29,7 @@ public class BoxRepresentation extends AbstractUIElement {
 	public BoxRepresentation updatePosition(Box box) {
 		if (needsRecalculation) {
 			this.priority = box.worldLayer;
-			this.metadata = box.toString().replaceFirst("^.*?\\{", this.getClass().getSimpleName() + "{");
+			this.metadata = box.toString().replaceFirst("^.*?\\{", this.getClass().getSimpleName() + "{" + "Class=" + box.getClass().getSimpleName() + ", ");
 			float renderX = box.getRenderX();
 			float renderY = box.getRenderY();
 			float cameraOffsetX = player.pos.getCameraOffsetX();
