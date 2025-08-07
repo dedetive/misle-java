@@ -113,7 +113,7 @@ public class Box {
 
 		boolean mirror =
 				this instanceof Entity &&
-				((Entity) this).getHorizontalDirection().equals(Direction.LEFT);
+				((Entity<?>) this).getHorizontalDirection().equals(Direction.LEFT);
 
 		try {
 			drawRotatedImage(g2d,
@@ -167,7 +167,7 @@ public class Box {
 	private void drawRawTexture(Graphics2D g2d, int screenX, int screenY) {
 		boolean mirror =
 				this instanceof Entity &&
-						((Entity) this).getHorizontalDirection().equals(Direction.LEFT);
+						((Entity<?>) this).getHorizontalDirection().equals(Direction.LEFT);
 
 		drawRotatedImage(g2d,
 				this.getTexture(),
