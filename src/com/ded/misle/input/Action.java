@@ -298,4 +298,14 @@ public static final Action GO_TO_PREVIOUS_MENU = new Action(MenuRenderer::goToPr
 		};
 	}
 	//endregion
+
+	@Override
+	public String toString() {
+		return super.toString() + "{" +
+				"paramAction=" + paramAction +
+				", noParamAction=" + noParamAction +
+				", condition=" + condition +
+				", " + triggersLogic +
+				"}";
+	}
 }
