@@ -61,7 +61,7 @@ public final class Key {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(inputIdentifier, action, keyInputType, parameterSupplier, mayConflict, cooldown, initialCooldown, dependencies);
+		return Objects.hash(inputIdentifier, action, keyInputType, mayConflict, cooldown, initialCooldown, dependencies);
 	}
 
 	public boolean onCooldown() {
