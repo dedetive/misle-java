@@ -2,6 +2,14 @@
 
 ![License: MISLE 1.2](https://img.shields.io/badge/license-MISLE%201.2-blueviolet)
 
+### WARNING!
+
+This project has been deprecated in favor of a full rewrite using my custom, general-purpose 2D engine, immensively improving performance and quality of internal technicalities. 
+
+No new commits are expected to come to this repository. However, it will stay open for archival purposes. Bad code will not be fixed or improved.
+
+There is **no ETA** for open-sourcing next Misle iteration, nor public releases for said engine.
+
 ### About the game
 
 Misle is a free and open-source, turn-based tactical RPG featuring a fully original world, developed with a custom-built Java engine.
